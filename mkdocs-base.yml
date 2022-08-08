@@ -1,6 +1,6 @@
 # MkDocs configuration
 # Used as base - look for .yml files with INHERIT
-site_name: Percona Operator for PostgreSQL
+site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
@@ -67,7 +67,7 @@ plugins:
       - "setting-up/client/docker.md"
   # https://github.com/orzih/mkdocs-with-pdf
   with-pdf:
-    output_path: "_pdf/PerconaOperatorPostgreSQL.pdf"
+    output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Documentation"
     cover_subtitle: 1.3.0 (August 4, 2022)
     author: "Percona Technical Documentation Team"
