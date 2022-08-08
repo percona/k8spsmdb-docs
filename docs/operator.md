@@ -44,22 +44,22 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ upgradeOptions.versionServiceEndpoint }} |
+| **Key**         | {{ optionlink('upgradeOptions.versionServiceEndpoint') }} |
 | **Value**       | string |
 | **Example**     | `https://check.percona.com` |
 | **Description** | The Version Service URL used to check versions compatibility for upgrade |
 |                 | |
-| **Key**         | {{ upgradeOptions.apply }} |
+| **Key**         | {{ optionlink('upgradeOptions.apply') }} |
 | **Value**       | string |
 | **Example**     | `4.4-recommended` |
 | **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `4.4.2-4`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them). |
 |                 | |
-| **Key**         | {{ upgradeOptions.schedule }} |
+| **Key**         | {{ optionlink('upgradeOptions.schedule') }} |
 | **Value**       | string |
 | **Example**     | `0 2 \* \* \*` |
 | **Description** | Scheduled time to check for updates, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) |
 |                 | |
-| **Key**         | {{ upgradeOptions.setFCV](operator.html#upgradeoptions-setfcv }} |
+| **Key**         | {{ optionlink('upgradeOptions.setFCV') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | If enabled, [FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/) will be set to match the version during major version upgrade |
@@ -71,27 +71,27 @@ has only two of them:
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ secrets.key }} |
+| **Key**         | {{ optionlink('secrets.key') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-key` |
 | **Description** | The secret name for the [MongoDB Internal Auth Key](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist. |
 |                 | |
-| **Key**         | {{ secrets.users }} |
+| **Key**         | {{ optionlink('secrets.users') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-users` |
 | **Description** | The name of the Secrets object for the MongoDB users **required to run the operator.** |
 |                 | |
-| **Key**         | {{ secrets.ssl }} |
+| **Key**         | {{ optionlink('secrets.ssl') }} |
 | **Value**       | string |
 | **Example**     | `my-custom-ssl` |
 | **Description** | A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details |
 |                 | |
-| **Key**         | {{ secrets.sslInternal }} |
+| **Key**         | {{ optionlink('secrets.sslInternal') }} |
 | **Value**       | string |
 | **Example**     | `my-custom-ssl-internal` |
 | **Description** | A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details |
 |                 | |
-| **Key**         | {{ secrets.encryptionKey }} |
+| **Key**         | {{ optionlink('secrets.encryptionKey') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) |
@@ -102,397 +102,397 @@ The replsets section controls the MongoDB Replica Set.
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ replsets.name }} |
+| **Key**         | {{ optionlink('replsets.name') }} |
 | **Value**       | string |
 | **Example**     | `rs 0` |
 | **Description** | The name of the [MongoDB Replica Set](https://docs.mongodb.com/manual/replication/) |
 |                 | |
-| **Key**         | {{ replsets.size }} |
+| **Key**         | {{ optionlink('replsets.size') }} |
 | **Value**       | int |
 | **Example**     | 3 |
 | **Description** | The size of the MongoDB Replica Set, must be >= 3 for [High-Availability](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) |
 |                 | |
-| **Key**         | {{ replsets.configuration }} |
+| **Key**         | {{ optionlink('replsets.configuration') }} |
 | **Value**       | string |
 | **Example**     | <pre>&VerticalLine;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for mongod. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html). |
 |                 | |
-| **Key**         | {{ replsets.affinity.antiAffinityTopologyKey }} |
+| **Key**         | {{ optionlink('replsets.affinity.antiAffinityTopologyKey') }} |
 | **Value**       | string |
 | **Example**     | `kubernetes.io/hostname` |
 | **Description** | The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.affinity.advanced }} |
+| **Key**         | {{ optionlink('replsets.affinity.advanced') }} |
 | **Value**       | subdoc |
 | **Example**     | |
 | **Description** | In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used |
 |                 | |
-| **Key**         | {{ replsets.tolerations.key }} |
+| **Key**         | {{ optionlink('replsets.tolerations.key') }} |
 | **Value**       | string |
 | **Example**     | `node.alpha.kubernetes.io/unreachable` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.tolerations.operator }} |
+| **Key**         | {{ optionlink('replsets.tolerations.operator') }} |
 | **Value**       | string |
 | **Example**     | `Exists` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.tolerations.effect }} |
+| **Key**         | {{ optionlink('replsets.tolerations.effect') }} |
 | **Value**       | string |
 | **Example**     | `NoExecute` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.tolerations.tolerationSeconds }} |
+| **Key**         | {{ optionlink('replsets.tolerations.tolerationSeconds') }} |
 | **Value**       | int |
 | **Example**     | `6000` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit  for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.priorityClassName }} |
+| **Key**         | {{ optionlink('replsets.priorityClassName') }} |
 | **Value**       | string |
 | **Example**     | `high priority` |
 | **Description** | The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass)  for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.annotations }} |
+| **Key**         | {{ optionlink('replsets.annotations') }} |
 | **Value**       | string |
 | **Example**     | `iam.amazonaws.com/role: role-arn` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.labels }} |
+| **Key**         | {{ optionlink('replsets.labels') }} |
 | **Value**       | label |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.nodeSelector }} |
+| **Key**         | {{ optionlink('replsets.nodeSelector') }} |
 | **Value**       | label |
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint  for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.engine }} |
+| **Key**         | {{ optionlink('replsets.storage.engine') }} |
 | **Value**       | string |
 | **Example**     | `wiredTiger` |
 | **Description** | Sets the storage.engine option <https://docs.mongodb.com/manual/reference/configuration-options/#storage.engine>\`_ for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.wiredTiger.engineConfig.cacheSizeRatio }} |
+| **Key**         | {{ optionlink('replsets.storage.wiredTiger.engineConfig.cacheSizeRatio') }} |
 | **Value**       | float |
 | **Example**     | `0.5` |
 | **Description** | The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.cacheSizeGB) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.wiredTiger.engineConfig.directoryForIndexes }} |
+| **Key**         | {{ optionlink('replsets.storage.wiredTiger.engineConfig.directoryForIndexes') }} |
 | **Value**       | bool |
 | **Example**     | `false` |
 | **Description** | Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.wiredTiger.engineConfig.journalCompressor }} |
+| **Key**         | {{ optionlink('replsets.storage.wiredTiger.engineConfig.journalCompressor') }} |
 | **Value**       | string |
 | **Example**     | `snappy` |
 | **Description** | Sets the [storage.wiredTiger.engineConfig.journalCompressor option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.journalCompressor) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.wiredTiger.collectionConfig.blockCompressor }} |
+| **Key**         | {{ optionlink('replsets.storage.wiredTiger.collectionConfig.blockCompressor') }} |
 | **Value**       | string |
 | **Example**     | `snappy` |
 | **Description** | Sets the [storage.wiredTiger.collectionConfig.blockCompressor option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.collectionConfig.blockCompressor) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.wiredTiger.indexConfig.prefixCompression }} |
+| **Key**         | {{ optionlink('replsets.storage.wiredTiger.indexConfig.prefixCompression') }} |
 | **Value**       | bool |
 | **Example**     | `true` |
 | **Description** | Sets the [storage.wiredTiger.indexConfig.prefixCompression option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.indexConfig.prefixCompression) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.storage.inMemory.engineConfig.inMemorySizeRatio }} |
+| **Key**         | {{ optionlink('replsets.storage.inMemory.engineConfig.inMemorySizeRatio') }} |
 | **Value**       | float |
 | **Example**     | `0.9` |
 | **Description** | The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.inMemory.engineConfig.inMemorySizeGB) for the Replica Set nodes |
 |                 | |
-| **Key**         | {{ replsets.livenessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('replsets.livenessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `4` |
 | **Description** | Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ replsets.livenessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('replsets.livenessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `60` |
 | **Description** | Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 |                 | |
-| **Key**         | {{ replsets.livenessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('replsets.livenessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `30` |
 | **Description** | How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ replsets.livenessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('replsets.livenessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ replsets.livenessProbe.startupDelaySeconds }} |
+| **Key**         | {{ optionlink('replsets.livenessProbe.startupDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `7200` |
 | **Description** | Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet |
 |                 | |
-| **Key**         | {{ replsets.readinessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('replsets.readinessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `8` |
 | **Description** | Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ replsets.readinessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('replsets.readinessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) |
 |                 | |
-| **Key**         | {{ replsets.readinessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('replsets.readinessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ replsets.readinessProbe.successThreshold }} |
+| **Key**         | {{ optionlink('replsets.readinessProbe.successThreshold') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed |
 |                 | |
-| **Key**         | {{ replsets.readinessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('replsets.readinessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ replsets.runtimeClassName }} |
+| **Key**         | {{ optionlink('replsets.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
 | **Description** | Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.image }} |
+| **Key**         | {{ optionlink('replsets.sidecars.image') }} |
 | **Value**       | string |
 | **Example**     | `busybox` |
 | **Description** | Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.command }} |
+| **Key**         | {{ optionlink('replsets.sidecars.command') }} |
 | **Value**       | array |
 | **Example**     | `["/bin/sh"]` |
 | **Description** | Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.args }} |
+| **Key**         | {{ optionlink('replsets.sidecars.args') }} |
 | **Value**       | array |
 | **Example**     | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 | **Description** | Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.name }} |
+| **Key**         | {{ optionlink('replsets.sidecars.name') }} |
 | **Value**       | string |
 | **Example**     | `rs-sidecar-1` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.volumeMounts.mountPath }} |
+| **Key**         | {{ optionlink('replsets.sidecars.volumeMounts.mountPath') }} |
 | **Value**       | string |
 | **Example**     | `/volume1` |
 | **Description** | Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecars.volumeMounts.name }} |
+| **Key**         | {{ optionlink('replsets.sidecars.volumeMounts.name') }} |
 | **Value**       | string |
 | **Example**     | `sidecar-volume-claim` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecarVolumes.name }} |
+| **Key**         | {{ optionlink('replsets.sidecarVolumes.name') }} |
 | **Value**       | string |
 | **Example**     | `sidecar-config` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecarVolumes.configMap.name }} |
+| **Key**         | {{ optionlink('replsets.sidecarVolumes.configMap.name') }} |
 | **Value**       | string |
 | **Example**     | `myconfigmap` |
 | **Description** | Name of the [ConfigMap](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecarVolumes.secret.secretName }} |
+| **Key**         | {{ optionlink('replsets.sidecarVolumes.secret.secretName') }} |
 | **Value**       | string |
 | **Example**     | `sidecar-secret` |
 | **Description** | Name of the [Secret](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.sidecarPVCs }} |
+| **Key**         | {{ optionlink('replsets.sidecarPVCs') }} |
 | **Value**       | subdoc |
 | **Example**     | |
 | **Description** | [Persistent Volume Claim](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods |
 |                 | |
-| **Key**         | {{ replsets.podDisruptionBudget.maxUnavailable }} |
+| **Key**         | {{ optionlink('replsets.podDisruptionBudget.maxUnavailable') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods |
 |                 | |
-| **Key**         | {{ replsets.podDisruptionBudget.minAvailable }} |
+| **Key**         | {{ optionlink('replsets.podDisruptionBudget.minAvailable') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods |
 |                 | |
-| **Key**         | {{ replsets.expose.enabled }} |
+| **Key**         | {{ optionlink('replsets.expose.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enable or disable exposing [MongoDB Replica Set](https://docs.mongodb.com/manual/replication/) nodes with dedicated IP addresses |
 |                 | |
-| **Key**         | {{ replsets.expose.exposeType }} |
+| **Key**         | {{ optionlink('replsets.expose.exposeType') }} |
 | **Value**       | string |
 | **Example**     | `ClusterIP` |
 | **Description** | The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.enabled }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.size }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.size') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.afinity.antiAffinityTopologyKey }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.afinity.antiAffinityTopologyKey') }} |
 | **Value**       | string |
 | **Example**     | `kubernetes.io/hostname` |
 | **Description** | The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.affinity.advanced }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.affinity.advanced') }} |
 | **Value**       | subdoc |
 | **Example**     | |
 | **Description** | In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.tolerations.key }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.tolerations.key') }} |
 | **Value**       | string |
 | **Example**     | `node.alpha.kubernetes.io/unreachable` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.tolerations.operator }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.tolerations.operator') }} |
 | **Value**       | string |
 | **Example**     | `Exists` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.tolerations.effect }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.tolerations.effect') }} |
 | **Value**       | string |
 | **Example**     | `NoExecute` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.tolerations.tolerationSeconds }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.tolerations.tolerationSeconds') }} |
 | **Value**       | int |
 | **Example**     | `6000` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.priorityClassName }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.priorityClassName') }} |
 | **Value**       | string |
 | **Example**     | `high priority` |
 | **Description** | The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.annotations }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.annotations') }} |
 | **Value**       | string |
 | **Example**     | `iam.amazonaws.com/role: role-arn` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.labels }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.labels') }} |
 | **Value**       | label |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.nonvoting.nodeSelector }} |
+| **Key**         | {{ optionlink('replsets.nonvoting.nodeSelector') }} |
 | **Value**       | label |
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.enabled }} |
+| **Key**         | {{ optionlink('replsets.arbiter.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enable or disable creation of [Replica Set Arbiter](https://docs.mongodb.com/manual/core/replica-set-arbiter/) nodes within the cluster |
 |                 | |
-| **Key**         | {{ replsets.arbiter.size }} |
+| **Key**         | {{ optionlink('replsets.arbiter.size') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | The number of [Replica Set Arbiter](https://docs.mongodb.com/manual/core/replica-set-arbiter/) instances within the cluster |
 |                 | |
-| **Key**         | {{ replsets.arbiter.afinity.antiAffinityTopologyKey }} |
+| **Key**         | {{ optionlink('replsets.arbiter.afinity.antiAffinityTopologyKey') }} |
 | **Value**       | string |
 | **Example**     | `kubernetes.io/hostname` |
 | **Description** | The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter |
 |                 | |
-| **Key**         | {{ replsets.arbiter.affinity.advanced }} |
+| **Key**         | {{ optionlink('replsets.arbiter.affinity.advanced') }} |
 | **Value**       | subdoc |
 | **Example**     | |
 | **Description** | In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used |
 |                 | |
-| **Key**         | {{ replsets.arbiter.tolerations.key }} |
+| **Key**         | {{ optionlink('replsets.arbiter.tolerations.key') }} |
 | **Value**       | string |
 | **Example**     | `node.alpha.kubernetes.io/unreachable` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.tolerations.operator }} |
+| **Key**         | {{ optionlink('replsets.arbiter.tolerations.operator') }} |
 | **Value**       | string |
 | **Example**     | `Exists` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.tolerations.effect }} |
+| **Key**         | {{ optionlink('replsets.arbiter.tolerations.effect') }} |
 | **Value**       | string |
 | **Example**     | `NoExecute` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.tolerations.tolerationSeconds }} |
+| **Key**         | {{ optionlink('replsets.arbiter.tolerations.tolerationSeconds') }} |
 | **Value**       | int |
 | **Example**     | `6000` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.priorityClassName }} |
+| **Key**         | {{ optionlink('replsets.arbiter.priorityClassName') }} |
 | **Value**       | string |
 | **Example**     | `high priority` |
 | **Description** | The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.annotations }} |
+| **Key**         | {{ optionlink('replsets.arbiter.annotations') }} |
 | **Value**       | string |
 | **Example**     | `iam.amazonaws.com/role: role-arn` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.labels }} |
+| **Key**         | {{ optionlink('replsets.arbiter.labels') }} |
 | **Value**       | label |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.arbiter.nodeSelector }} |
+| **Key**         | {{ optionlink('replsets.arbiter.nodeSelector') }} |
 | **Value**       | label |
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes |
 |                 | |
-| **Key**         | {{ replsets.resources.limits.cpu }} |
+| **Key**         | {{ optionlink('replsets.resources.limits.cpu') }} |
 | **Value**       | string |
 | **Example**     | `300m` |
 | **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
-| **Key**         | {{ replsets.resources.limits.memory }} |
+| **Key**         | {{ optionlink('replsets.resources.limits.memory') }} |
 | **Value**       | string |
 | **Example**     | `0.5G` |
 | **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
-| **Key**         | {{ replsets.resources.requests.cpu }} |
+| **Key**         | {{ optionlink('replsets.resources.requests.cpu') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
-| **Key**         | {{ replsets.resources.requests.memory }} |
+| **Key**         | {{ optionlink('replsets.resources.requests.memory') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.emptyDir }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.emptyDir') }} |
 | **Value**       | string |
 | **Example**     | `{}` |
 | **Description** | The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.hostPath.path }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.hostPath.path') }} |
 | **Value**       | string |
 | **Example**     | `/data` |
 | **Description** | [Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.hostPath.type }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.hostPath.type') }} |
 | **Value**       | string |
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.persistentVolumeClaim.storageClassName }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
 | **Example**     | `standard` |
 | **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.persistentVolumeClaim.accessModes }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.accessModes') }} |
 | **Value**       | array |
 | **Example**     | `[ "ReadWriteOnce" ]` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container |
 |                 | |
-| **Key**         | {{ replsets.volumeSpec.persistentVolumeClaim.resources.requests.storage }} |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.resources.requests.storage') }} |
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container |
@@ -504,27 +504,27 @@ options for Percona Monitoring and Management.
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ pmm.enabled }} |
+| **Key**         | {{ optionlink('pmm.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enables or disables monitoring Percona Server for MongoDB with [PMM](https://www.percona.com/doc/percona-monitoring-and-managementindex.metrics-monitor.dashboard.html) |
 |                 | |
-| **Key**         | {{ pmm.image }} |
+| **Key**         | {{ optionlink('pmm.image') }} |
 | **Value**       | string |
 | **Example**     | `percona/pmm-client:2.27.0` |
 | **Description** | PMM Client docker image to use |
 |                 | |
-| **Key**         | {{ pmm.serverHost }} |
+| **Key**         | {{ optionlink('pmm.serverHost') }} |
 | **Value**       | string |
 | **Example**     | `monitoring-service` |
 | **Description** | Address of the PMM Server to collect data from the Cluster |
 |                 | |
-| **Key**         | {{ pmm.mongodParams](operator.html#pmm-mongodparams) |                                                                                                                                                          |
+| **Key**         | {{ optionlink('pmm.mongodParams') }} |
 | **Value**       | string |
 | **Example**     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 | **Description** | Additional parameters which will be passed to the [pmm-admin add mongodb](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` Pods |
 |                 | |
-| **Key**         | {{ pmm.mongosParams }} |
+| **Key**         | {{ optionlink('pmm.mongosParams') }} |
 | **Value**       | string |
 | **Example**     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 | **Description** | Additional parameters which will be passed to the [pmm-admin add mongodb](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongos` Pods |
@@ -536,312 +536,312 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ sharding.enabled }} |
+| **Key**         | {{ optionlink('sharding.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `true` |
 | **Description** | Enables or disables [Percona Server for MondoDB sharding](https://docs.mongodb.com/manual/sharding/) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.size }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.size') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.configuration }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.configuration') }} |
 | **Value**       | string |
 | **Example**     | <pre>&VerticalLine;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for Config Servers. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.livenessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `4` |
 | **Description** | Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.livenessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `60` |
 | **Description** | Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.livenessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `30` |
 | **Description** | How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.livenessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.livenessProbe.startupDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.startupDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `7200` |
 | **Description** | Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.readinessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.readinessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.readinessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.readinessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.readinessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.readinessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.readinessProbe.successThreshold }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.readinessProbe.successThreshold') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.readinessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.readinessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.runtimeClassName }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
 | **Description** | Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Config Server Pods |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.sidecars.image }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.sidecars.image') }} |
 | **Value**       | string |
 | **Example**     | `busybox` |
 | **Description** | Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.sidecars.command }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.sidecars.command') }} |
 | **Value**       | array |
 | **Example**     | `["/bin/sh"]` |
 | **Description** | Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.sidecars.args }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.sidecars.args') }} |
 | **Value**       | array |
 | **Example**     | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 | **Description** | Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.sidecars.name }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.sidecars.name') }} |
 | **Value**       | string |
 | **Example**     | `rs-sidecar-1` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.emptyDir }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.emptyDir') }} |
 | **Value**       | string |
 | **Example**     | `{}` |
 | **Description** | The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.hostPath.path }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.hostPath.path') }} |
 | **Value**       | string |
 | **Example**     | `/data` |
 | **Description** | [Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the Config Server Pod containers |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.hostPath.type }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.hostPath.type') }} |
 | **Value**       | string |
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
 | **Example**     | `standard` |
 | **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the Config Server container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes') }} |
 | **Value**       | array |
 | **Example**     | `[ "ReadWriteOnce" ]` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the Config Server container |
 |                 | |
-| **Key**         | {{ sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage }} |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage') }} |
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container |
 |                 | |
-| **Key**         | {{ sharding.mongos.size }} |
+| **Key**         | {{ optionlink('sharding.mongos.size') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster |
 |                 | |
-| **Key**         | {{ sharding.mongos.configuration }} |
+| **Key**         | {{ optionlink('sharding.mongos.configuration') }} |
 | **Value**       | string |
 | **Example**     | <pre>&VerticalLine;<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for mongos. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options |
 |                 | |
-| **Key**         | {{ sharding.mongos.afinity.antiAffinityTopologyKey }} |
+| **Key**         | {{ optionlink('sharding.mongos.afinity.antiAffinityTopologyKey') }} |
 | **Value**       | string |
 | **Example**     | `kubernetes.io/hostname` |
 | **Description** | The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos |
 |                 | |
-| **Key**         | {{ sharding.mongos.affinity.advanced }} |
+| **Key**         | {{ optionlink('sharding.mongos.affinity.advanced') }} |
 | **Value**       | subdoc |
 | **Example**     | |
 | **Description** | In cases where the Pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used |
 |                 | |
-| **Key**         | {{ sharding.mongos.tolerations.key }} |
+| **Key**         | {{ optionlink('sharding.mongos.tolerations.key') }} |
 | **Value**       | string |
 | **Example**     | `node.alpha.kubernetes.io/unreachable` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.tolerations.operator }} |
+| **Key**         | {{ optionlink('sharding.mongos.tolerations.operator') }} |
 | **Value**       | string |
 | **Example**     | `Exists` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.tolerations.effect }} |
+| **Key**         | {{ optionlink('sharding.mongos.tolerations.effect') }} |
 | **Value**       | string |
 | **Example**     | `NoExecute` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.tolerations.tolerationSeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.tolerations.tolerationSeconds') }} |
 | **Value**       | int |
 | **Example**     | `6000` |
 | **Description** | The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.priorityClassName }} |
+| **Key**         | {{ optionlink('sharding.mongos.priorityClassName') }} |
 | **Value**       | string |
 | **Example**     | `high priority` |
 | **Description** | The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.annotations }} |
+| **Key**         | {{ optionlink('sharding.mongos.annotations') }} |
 | **Value**       | string |
 | **Example**     | `iam.amazonaws.com/role: role-arn` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.labels }} |
+| **Key**         | {{ optionlink('sharding.mongos.labels') }} |
 | **Value**       | label |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.nodeSelector }} |
+| **Key**         | {{ optionlink('sharding.mongos.nodeSelector') }} |
 | **Value**       | label |
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances |
 |                 | |
-| **Key**         | {{ sharding.mongos.livenessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('sharding.mongos.livenessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `4` |
 | **Description** | Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ sharding.mongos.livenessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.livenessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `60` |
 | **Description** | Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) |
 |                 | |
-| **Key**         | {{ sharding.mongos.livenessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.livenessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `30` |
 | **Description** | How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ sharding.mongos.livenessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.livenessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ sharding.mongos.livenessProbe.startupDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.livenessProbe.startupDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `7200` |
 | **Description** | Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet |
 |                 | |
-| **Key**         | {{ sharding.mongos.readinessProbe.failureThreshold }} |
+| **Key**         | {{ optionlink('sharding.mongos.readinessProbe.failureThreshold') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up |
 |                 | |
-| **Key**         | {{ sharding.mongos.readinessProbe.initialDelaySeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.readinessProbe.initialDelaySeconds') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) |
 |                 | |
-| **Key**         | {{ sharding.mongos.readinessProbe.periodSeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.readinessProbe.periodSeconds') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) |
 |                 | |
-| **Key**         | {{ sharding.mongos.readinessProbe.successThreshold }} |
+| **Key**         | {{ optionlink('sharding.mongos.readinessProbe.successThreshold') }} |
 | **Value**       | int |
 | **Example**     | `1` |
 | **Description** | Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed |
 |                 | |
-| **Key**         | {{ sharding.mongos.readinessProbe.timeoutSeconds }} |
+| **Key**         | {{ optionlink('sharding.mongos.readinessProbe.timeoutSeconds') }} |
 | **Value**       | int |
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
-| **Key**         | {{ sharding.mongos.runtimeClassName }} |
+| **Key**         | {{ optionlink('sharding.mongos.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
 | **Description** | Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for mongos Pods |
 |                 | |
-| **Key**         | {{ sharding.mongos.sidecars.image }} |
+| **Key**         | {{ optionlink('sharding.mongos.sidecars.image') }} |
 | **Value**       | string |
 | **Example**     | `busybox` |
 | **Description** | Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods |
 |                 | |
-| **Key**         | {{ sharding.mongos.sidecars.command }} |
+| **Key**         | {{ optionlink('sharding.mongos.sidecars.command') }} |
 | **Value**       | array |
 | **Example**     | `["/bin/sh"]` |
 | **Description** | Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods |
 |                 | |
-| **Key**         | {{ sharding.mongos.sidecars.args }} |
+| **Key**         | {{ optionlink('sharding.mongos.sidecars.args') }} |
 | **Value**       | array |
 | **Example**     | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 | **Description** | Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods |
 |                 | |
-| **Key**         | {{ sharding.mongos.sidecars.name }} |
+| **Key**         | {{ optionlink('sharding.mongos.sidecars.name') }} |
 | **Value**       | string |
 | **Example**     | `rs-sidecar-1` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods |
 |                 | |
-| **Key**         | {{ sharding.mongos.limits.cpu }} |
+| **Key**         | {{ optionlink('sharding.mongos.limits.cpu') }} |
 | **Value**       | string |
 | **Example**     | `300m` |
 | **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container |
 |                 | |
-| **Key**         | {{ sharding.mongos.limits.memory }} |
+| **Key**         | {{ optionlink('sharding.mongos.limits.memory') }} |
 | **Value**       | string |
 | **Example**     | `0.5G` |
 | **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container |
 |                 | |
-| **Key**         | {{ sharding.mongos.resources.requests.cpu }} |
+| **Key**         | {{ optionlink('sharding.mongos.resources.requests.cpu') }} |
 | **Value**       | string |
 | **Example**     | `300m` |
 | **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container |
 |                 | |
-| **Key**         | {{ sharding.mongos.requests.memory }} |
+| **Key**         | {{ optionlink('sharding.mongos.requests.memory') }} |
 | **Value**       | string |
 | **Example**     | `0.5G` |
 | **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container |
 |                 | |
-| **Key**         | {{ sharding.mongos.expose.exposeType }} |
+| **Key**         | {{ optionlink('sharding.mongos.expose.exposeType') }} |
 | **Value**       | string |
 | **Example**     | `ClusterIP` |
 | **Description** | The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed |
 |                 | |
-| **Key**         | {{ sharding.mongos.expose.servicePerPod }} |
+| **Key**         | {{ optionlink('sharding.mongos.expose.servicePerPod') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | If set to `true`, a separate ClusterIP Service is created for each mongos instance |
 |                 | |
-| **Key**         | {{ sharding.mongos.expose.loadBalancerSourceRanges }} |
+| **Key**         | {{ optionlink('sharding.mongos.expose.loadBalancerSourceRanges') }} |
 | **Value**       | string |
 | **Example**     | `10.0.0.0/8` |
 | **Description** | The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) |                                                     |
 |                 | |
-| **Key**         | {{ sharding.mongos.expose.serviceAnnotations }} |
+| **Key**         | {{ optionlink('sharding.mongos.expose.serviceAnnotations') }} |
 | **Value**       | string |
 | **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon |
 |                 | |
-| **Key**         | {{ sharding.mongos.auditLog.destination }} |
+| **Key**         | {{ optionlink('sharding.mongos.auditLog.destination') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | Sets the [auditLog.destination option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** |
 |                 | |
-| **Key**         | {{ sharding.mongos.auditLog.format }} |
+| **Key**         | {{ optionlink('sharding.mongos.auditLog.format') }} |
 | **Value**       | string |
 | **Example**     | `BSON` |
 | **Description** | Sets the [auditLog.format option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** |
 |                 | |
-| **Key**         | {{ sharding.mongos.auditLog.filter }} |
+| **Key**         | {{ optionlink('sharding.mongos.auditLog.filter') }} |
 | **Value**       | string |
 | **Example**     | `{}` |
 | **Description** | Sets the [auditLog.filter option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** ||
@@ -855,7 +855,7 @@ replsets.configuration.
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ mongod.security.encryptionKeySecret }} |
+| **Key**         | {{ optionlink('mongod.security.encryptionKeySecret') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) **Please note that this option is deprecated; use** spec.secrets.encryptionKey **instead** |
@@ -869,147 +869,147 @@ Percona Server for MongoDB backups.
 
 |                 | |
 |-----------------|-|
-| **Key**         | {{ backup.enabled }} |
+| **Key**         | {{ optionlink('backup.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `true` |
 | **Description** | Enables or disables making backups |
 |                 | |
-| **Key**         | {{ backup.image }} |
+| **Key**         | {{ optionlink('backup.image') }} |
 | **Value**       | string |
 | **Example**     | `percona/percona-server-mongodb-operator:1.12.0-backup` |
 | **Description** | The Percona Server for MongoDB Docker image to use for the backup |
 |                 | |
-| **Key**         | {{ backup.serviceAccountName }} |
+| **Key**         | {{ optionlink('backup.serviceAccountName') }} |
 | **Value**       | string |
 | **Example**     | `percona-server-mongodb-operator` |
 | **Description** | Name of the separate privileged service account used by the Operator |
 |                 | |
-| **Key**         | {{ backup.annotations }} |
+| **Key**         | {{ optionlink('backup.annotations') }} |
 | **Value**       | string |
 | **Example**     | `sidecar.istio.io/inject: "false"` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the backup job |
 |                 | |
-| **Key**         | {{ backup.resources.limits.cpu }} |
+| **Key**         | {{ optionlink('backup.resources.limits.cpu') }} |
 | **Value**       | string |
 | **Example**     | `100m` |
 | **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups |
 |                 | |
-| **Key**         | {{ backup.resources.limits.memory }} |
+| **Key**         | {{ optionlink('backup.resources.limits.memory') }} |
 | **Value**       | string |
 | **Example**     | `0.2G` |
 | **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups |
 |                 | |
-| **Key**         | {{ backup.resources.requests.cpu }} |
+| **Key**         | {{ optionlink('backup.resources.requests.cpu') }} |
 | **Value**       | string |
 | **Example**     | `100m` |
 | **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups |
 |                 | |
-| **Key**         | {{ backup.resources.requests.memory }} |
+| **Key**         | {{ optionlink('backup.resources.requests.memory') }} |
 | **Value**       | string |
 | **Example**     | `0.1G` |
 | **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.type }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.type') }} |
 | **Value**       | string |
 | **Example**     | `s3` |
 | **Description** | The cloud storage type used for backups. Only `s3` type is currently supported |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.insecureSkipTLSVerify }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.insecureSkipTLSVerify') }} |
 | **Value**       | boolean |
 | **Example**     | `true` |
 | **Description** | Enable or disable verification of the storage server TLS certificate. Disabling it may be useful e.g. to skip TLS verification for private S3-compatible storage with a self-issued certificate |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.credentialsSecret }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.credentialsSecret') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-name-backup-s3` |
 | **Description** | The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.bucket }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.bucket') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The [Amazon S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) name for backups |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.prefix }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.prefix') }} |
 | **Value**       | string |
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.region }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.region') }} |
 | **Value**       | string |
 | **Example**     | `us-east-1` |
 | **Description** | The [AWS region](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.s3.endpointUrl }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.endpointUrl') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud) |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.azure.credentialsSecret }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.credentialsSecret') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-azure-secret` |
 | **Description** | The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.azure.container }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.container') }} |
 | **Value**       | string |
 | **Example**     | `my-container` |
 | **Description** | Name of the [container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) for backups |
 |                 | |
-| **Key**         | {{ backup.storages.<storage-name>.azure.prefix }} |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.prefix') }} |
 | **Value**       | string |
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) |
 |                 | |
-| **Key**         | {{ backup.pitr.enabled }} |
+| **Key**         | {{ optionlink('backup.pitr.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog) |
 |                 | |
-| **Key**         | {{ backup.pitr.oplogSpanMin }} |
+| **Key**         | {{ optionlink('backup.pitr.oplogSpanMin') }} |
 | **Value**       | int |
 | **Example**     | `10` |
 | **Description** | Number of minutes between the uploads of oplogs |
 |                 | |
-| **Key**         | {{ backup.pitr.compressionType }} |
+| **Key**         | {{ optionlink('backup.pitr.compressionType') }} |
 | **Value**       | string |
 | **Example**     | `gzip` |
 | **Description** | The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups) |
 |                 | |
-| **Key**         | {{ backup.pitr.compressionLevel }} |
+| **Key**         | {{ optionlink('backup.pitr.compressionLevel') }} |
 | **Value**       | int |
 | **Example**     | `6` |
 | **Description** | The point-in-time-recovery chunks compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups)) |
 |                 | |
-| **Key**         | {{ backup.tasks.name }} |
+| **Key**         | {{ optionlink('backup.tasks.name') }} |
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The name of the backup |
 |                 | |
-| **Key**         | {{ backup.tasks.enabled }} |
+| **Key**         | {{ optionlink('backup.tasks.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `true` |
 | **Description** | Enables or disables this exact backup |
 |                 | |
-| **Key**         | {{ backup.tasks.schedule }} |
+| **Key**         | {{ optionlink('backup.tasks.schedule') }} |
 | **Value**       | string |
 | **Example**     | `0 0 \* \* 6` |
 | **Description** | The scheduled time to make a backup, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) |
 |                 | |
-| **Key**         | {{ backup.tasks.keep }} |
+| **Key**         | {{ optionlink('backup.tasks.keep') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups |
 |                 | |
-| **Key**         | {{ backup.tasks.storageName }} |
+| **Key**         | {{ optionlink('backup.tasks.storageName') }} |
 | **Value**       | string |
 | **Example**     | `st-us-west` |
 | **Description** | The name of the S3-compatible storage for backups, configured in the storages subsection |
 |                 | |
-| **Key**         | {{ backup.tasks.compressionType }} |
+| **Key**         | {{ optionlink('backup.tasks.compressionType') }} |
 | **Value**       | string |
 | **Example**     | `gzip` |
 | **Description** | The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup) |
 |                 | |
-| **Key**         | {{ backup.tasks.compressionLevel }} |
+| **Key**         | {{ optionlink('backup.tasks.compressionLevel') }} |
 | **Value**       | int |
 | **Example**     | `6` |
 | **Description** | The backup compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)) |
