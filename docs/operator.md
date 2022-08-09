@@ -114,7 +114,7 @@ The replsets section controls the MongoDB Replica Set.
 |                 | |
 | **Key**         | {{ optionlink('replsets.configuration') }} |
 | **Value**       | string |
-| **Example**     | <pre>&VerticalLine;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
+| **Example**     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for mongod. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html). |
 |                 | |
 | **Key**         | {{ optionlink('replsets.affinity.antiAffinityTopologyKey') }} |
@@ -548,7 +548,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.configuration') }} |
 | **Value**       | string |
-| **Example**     | <pre>&VerticalLine;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
+| **Example**     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for Config Servers. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options |
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.livenessProbe.failureThreshold') }} |
@@ -663,7 +663,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.configuration') }} |
 | **Value**       | string |
-| **Example**     | <pre>&VerticalLine;<br>systemLog:<br>  verbosity: 1</pre> |
+| **Example**     | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
 | **Description** | Custom configuration options for mongos. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.afinity.antiAffinityTopologyKey') }} |
