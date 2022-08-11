@@ -34,14 +34,14 @@ default web browser.
 2. Deploy the operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
 ```bash
-$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/bundle.yaml
+$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
 ```
 
 
 3. Deploy MongoDB cluster with:
 
 ```bash
-$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/cr-minimal.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
 ```
 
 This deploys a one shard MongoDB cluster with one replica set with one node,
@@ -62,7 +62,7 @@ minimal-cluster-rs0-0                             1/1     Running   0          3
 You can clone the repository with all manifests and source code by executing the following command:
 
 ```bash
-$ git clone -b v1.12.0 https://github.com/percona/percona-server-mongodb-operator
+$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
 ```
 
 
@@ -94,7 +94,7 @@ output to your terminal. The following command will do this, naming the new
 Pod `percona-client`:
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 ```
 
 Executing it may require some time to deploy the correspondent Pod.  Now run

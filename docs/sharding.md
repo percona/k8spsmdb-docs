@@ -62,7 +62,7 @@ processes of your replica set.
 it may require some time to deploy the corresponding Pod):
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 ```
 
 

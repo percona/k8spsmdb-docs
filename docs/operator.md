@@ -18,8 +18,8 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | platform        | string             | `kubernetes` | Override/set the Kubernetes platform: *kubernetes* or *openshift* |
 | pause           | boolean            | `false`      | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back. |
 | unmanaged       | boolean            | `false`      | Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates |
-| crVersion       | string             | `1.12.0`     | Version of the Operator the Custom Resource belongs to |
-| image           | string             | `percona/percona`-`server`-`mongodb:4.4.13-13` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
+| crVersion       | string             | `{{ release }}`     | Version of the Operator the Custom Resource belongs to |
+| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb44recommended }}` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
 | imagePullPolicy | string             | `Always`     | The [policy used to update images](https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
@@ -511,7 +511,7 @@ options for Percona Monitoring and Management.
 |                 | |
 | **Key**         | {{ optionlink('pmm.image') }} |
 | **Value**       | string |
-| **Example**     | `percona/pmm-client:2.27.0` |
+| **Example**     | `percona/pmm-client:{{ pmm2recommended }}` |
 | **Description** | PMM Client docker image to use |
 |                 | |
 | **Key**         | {{ optionlink('pmm.serverHost') }} |
@@ -876,7 +876,7 @@ Percona Server for MongoDB backups.
 |                 | |
 | **Key**         | {{ optionlink('backup.image') }} |
 | **Value**       | string |
-| **Example**     | `percona/percona-server-mongodb-operator:1.12.0-backup` |
+| **Example**     | `percona/percona-server-mongodb-operator:{{ release }}-backup` |
 | **Description** | The Percona Server for MongoDB Docker image to use for the backup |
 |                 | |
 | **Key**         | {{ optionlink('backup.serviceAccountName') }} |

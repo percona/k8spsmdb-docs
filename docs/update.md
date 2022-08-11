@@ -26,8 +26,8 @@ the official repository on Github, and do the same for the Role-based access
 control:
 
 ```bash
-$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/crd.yaml
-$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/rbac.yaml
+$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
 ```
 
 
@@ -39,18 +39,18 @@ $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mong
 3. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
 deployment, supplying necessary image names with a newer version tag. This
 is done with the `kubectl patch deployment` command. For example, updating
-to the `1.12.0` version should look as follows:
+to the `{{ release }}` version should look as follows:
 
 ```bash
 $ kubectl patch deployment percona-server-mongodb-operator \
-   -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:1.12.0"}]}}}}'
+   -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
 
 $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
    "spec": {
-      "crVersion":"1.12.0",
-      "image": "percona/percona-server-mongodb:4.4.13-13",
-      "backup": { "image": "percona/percona-server-mongodb-operator:1.12.0-backup" },
-      "pmm": { "image": "percona/pmm-client:2.27.0" }
+      "crVersion":"{{ release }}",
+      "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+      "backup": { "image": "percona/percona-server-mongodb-operator:{{ release }}-backup" },
+      "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
    }}'
 ```
 
@@ -76,8 +76,8 @@ the official repository on Github, and do the same for the Role-based access
 control:
 
 ```bash
-$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/crd.yaml
-$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.12.0/deploy/rbac.yaml
+$ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
 ```
 
 
@@ -89,18 +89,18 @@ command.
 3. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
 deployment, supplying necessary image names with a newer version tag. This
 is done with the `kubectl patch deployment` command. For example, updating
-to the `1.12.0` version should look as follows:
+to the `{{ release }}` version should look as follows:
 
 ```bash
 $ kubectl patch deployment percona-server-mongodb-operator \
-   -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:1.12.0"}]}}}}'
+   -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
 
 $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
    "spec": {
-      "crVersion":"1.12.0",
-      "image": "percona/percona-server-mongodb:4.4.13-13",
-      "backup": { "image": "percona/percona-server-mongodb-operator:1.12.0-backup" },
-      "pmm": { "image": "percona/pmm-client:2.27.0" }
+      "crVersion":"{{ release }}",
+      "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+      "backup": { "image": "percona/percona-server-mongodb-operator:{{ release }}-backup" },
+      "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
    }}'
 ```
 
@@ -195,8 +195,8 @@ clusters (ex. 5.0 will not be automatically used instead of 4.4),
 
 
     * *version number* - specify the desired version explicitly
-(version numbers are specified as 4.4.13-13,
-4.2.19-19, etc.),
+(version numbers are specified as {{ mongodb44recommended }},
+{{ mongodb42recommended }}, etc.),
 
 
     * `Never` or `Disabled` - disable automatic upgrades.

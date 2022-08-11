@@ -103,7 +103,7 @@ At success, you will see the message that namespace/<namespace name> was created
 2. Use the following `git clone` command to download the correct branch of the percona-server-mongodb-operator repository:
 
 ```bash
-$ git clone -b v1.12.0 https://github.com/percona/percona-server-mongodb-operator
+$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
 ```
 
 After the repository is downloaded, change the directory to run the rest of the commands in this document:
@@ -185,7 +185,7 @@ output to your terminal. The following command will do this, naming the new
 Pod `percona-client`:
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 ```
 
 Executing it may require some time to deploy the correspondent Pod. Now run

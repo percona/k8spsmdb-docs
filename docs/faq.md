@@ -49,7 +49,7 @@ and the exact version is determined by the Docker image in use.
 
 Percona-certified Docker images used by the Operator are listed [here](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/images.html).
 For example, Percona Server for MongoDB 4.4 is supported with the following
-recommended version: 4.4.13-13. More details on the exact Percona
+recommended version: {{ mongodb44recommended }}. More details on the exact Percona
 Server for MongoDB version can be found in the release notes ([5.0](https://docs.percona.com/percona-server-for-mongodb/5.0/release_notes/index.html),\`4.4 <[https://www.percona.com/doc/percona-server-for-mongodb/4.4/release_notes/index.html](https://www.percona.com/doc/percona-server-for-mongodb/4.4/release_notes/index.html)>\`_, and [4.2](https://www.percona.com/doc/percona-server-for-mongodb/4.2/release_notes/index.html)).
 
 ## How can I add custom sidecar containers to my cluster?

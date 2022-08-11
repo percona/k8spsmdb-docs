@@ -12,22 +12,14 @@ completely removed in MongoDB 4.2.
 ## Officially supported platforms
 
 The following platforms were tested and are officially supported by the Operator
-1.12.0:
+{{ release }}:
 
 
-* OpenShift 4.7 - 4.10
-
-
-* Google Kubernetes Engine (GKE) 1.19 - 1.22
-
-
-* Amazon Elastic Container Service for Kubernetes (EKS) 1.19 - 1.22
-
-
-* Minikube 1.23
-
-
-* VMWare Tanzu
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.19 - {{ gkerecommended }}
+* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.19 - 1.22
+* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.7 - 4.10
+* [Minikube](https://minikube.sigs.k8s.io/docs/) 1.23
+* [VMWare Tanzu](https://tanzu.vmware.com/)
 
 Other Kubernetes platforms may also work but have not been tested.
 

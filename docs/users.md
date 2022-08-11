@@ -18,7 +18,7 @@ There are no unprivileged (general purpose) user accounts created by
 default. If you need general purpose users, please run commands below:
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 mongodb@percona-client:/$ mongo "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 rs0:PRIMARY> db.createUser({
     user: "myApp",
@@ -36,7 +36,7 @@ rs0:PRIMARY> db.createUser({
 Now check the newly created user:
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 mongodb@percona-client:/$ mongo "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 rs0:PRIMARY> use myApp
 rs0:PRIMARY> db.test.insert({ x: 1 })
@@ -59,49 +59,14 @@ required secrets can be set in `deploy/cr.yaml` under the
 
 **WARNING**: These users should not be used to run an application.
 
-| User Purpose
+| User Purpose    | Username Secret Key          | Password Secret Key              |
+|:----------------|:-----------------------------|:---------------------------------|
+| Backup/Restore  | MONGODB_BACKUP_USER          | MONGODB_BACKUP_PASSWORD          |
+| Cluster Admin   | MONGODB_CLUSTER_ADMIN_USER   | MONGODB_CLUSTER_ADMIN_PASSWORD   |
+| Cluster Monitor | MONGODB_CLUSTER_MONITOR_USER | MONGODB_CLUSTER_MONITOR_PASSWORD |
+| User Admin      | MONGODB_USER_ADMIN_USER      | MONGODB_USER_ADMIN_PASSWORD      |
+| PMM Server      | PMM_SERVER_USER              | PMM_SERVER_PASSWORD              |
 
- | Username Secret Key
-
- | Password Secret Key
-
- |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |  |  |  |  |  |  |  |  |  |
-| Backup/Restore
-
-                                 | MONGODB_BACKUP_USER
-
-                                                                                                                                                                                                                                                                                                                                                                       | MONGODB_BACKUP_PASSWORD
-
-                  |
-| Cluster Admin
-
-                                  | MONGODB_CLUSTER_ADMIN_USER
-
-                                                                                                                                                                                                                                                                                                                                                                | MONGODB_CLUSTER_ADMIN_PASSWORD
-
-           |
-| Cluster Monitor
-
-                                | MONGODB_CLUSTER_MONITOR_USER
-
-                                                                                                                                                                                                                                                                                                                                                              | MONGODB_CLUSTER_MONITOR_PASSWORD
-
-         |
-| User Admin
-
-                                     | MONGODB_USER_ADMIN_USER
-
-                                                                                                                                                                                                                                                                                                                                                                   | MONGODB_USER_ADMIN_PASSWORD
-
-              |
-| PMM Server
-
-                                     | PMM_SERVER_USER
-
-                                                                                                                                                                                                                                                                                                                                                                           | PMM_SERVER_PASSWORD
-
-                      |
 Backup/Restore - MongoDB Role: [backup](https://docs.mongodb.com/manual/reference/built-in-roles/#backup), [clusterMonitor](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterMonitor), [restore](https://docs.mongodb.com/manual/reference/built-in-roles/#restore)
 
 Cluster Admin - MongoDB Role: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
@@ -185,62 +150,19 @@ file contains default passwords for MongoDB system users.
 
 These development-mode credentials from `deploy/secrets.yaml` are:
 
-| Secret Key
+| Secret Key                       | Secret Value         |
+|:---------------------------------|:---------------------|
+| MONGODB_BACKUP_USER              | backup               |
+| MONGODB_BACKUP_PASSWORD          | backup123456         |
+| MONGODB_CLUSTER_ADMIN_USER       | clusterAdmin         |
+| MONGODB_CLUSTER_ADMIN_PASSWORD   | clusterAdmin123456   |
+| MONGODB_CLUSTER_MONITOR_USER     | clusterMonitor       |
+| MONGODB_CLUSTER_MONITOR_PASSWORD | clusterMonitor123456 |
+| MONGODB_USER_ADMIN_USER          | userAdmin            |
+| MONGODB_USER_ADMIN_PASSWORD      | userAdmin123456      |
+| PMM_SERVER_USER                  | admin                |
+| PMM_SERVER_PASSWORD              | admin                |
 
-                                     | Secret Value
-
-                                                                                                                                                                                                                                                                                                                                                                              |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| MONGODB_BACKUP_USER
-
-                            | backup
-
-                                                                                                                                                                                                                                                                                                                                                                                    |
-| MONGODB_BACKUP_PASSWORD
-
-                        | backup123456
-
-                                                                                                                                                                                                                                                                                                                                                                              |
-| MONGODB_CLUSTER_ADMIN_USER
-
-                     | clusterAdmin
-
-                                                                                                                                                                                                                                                                                                                                                                              |
-| MONGODB_CLUSTER_ADMIN_PASSWORD
-
-                 | clusterAdmin123456
-
-                                                                                                                                                                                                                                                                                                                                                                        |
-| MONGODB_CLUSTER_MONITOR_USER
-
-                   | clusterMonitor
-
-                                                                                                                                                                                                                                                                                                                                                                            |
-| MONGODB_CLUSTER_MONITOR_PASSWORD
-
-               | clusterMonitor123456
-
-                                                                                                                                                                                                                                                                                                                                                                      |
-| MONGODB_USER_ADMIN_USER
-
-                        | userAdmin
-
-                                                                                                                                                                                                                                                                                                                                                                                 |
-| MONGODB_USER_ADMIN_PASSWORD
-
-                    | userAdmin123456
-
-                                                                                                                                                                                                                                                                                                                                                                           |
-| PMM_SERVER_USER
-
-                                | pmm
-
-                                                                                                                                                                                                                                                                                                                                                                                       |
-| PMM_SERVER_PASSWORD
-
-                            | supa|^|pazz
-
-                                                                                                                                                                                                                                                                                                                                                                               |
 **WARNING**: Do not use the default MongoDB Users in production!
 
 ## [MongoDB Internal Authentication Key (optional)](users.html#internal-authentication-key)

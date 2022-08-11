@@ -73,8 +73,8 @@ for the example OpenShift `psmdb` project:
 ```bash
 $ docker tag \
     docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0 \
-    172.30.162.173:5000/psmdb/percona-server-mongodb:4.4.13-13
-$ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:4.4.13-13
+    172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
+$ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
 ```
 
 
@@ -83,11 +83,11 @@ $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:4.4.13-13
 ```bash
 $ oc get is
 NAME                              DOCKER REPO                                                             TAGS             UPDATED
-percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  4.4.13-13  2 hours ago
+percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb44recommended }}  2 hours ago
 ```
 
 
-7. When the custom registry image is available, edit the the `image:` option in `deploy/operator.yaml` configuration file with a Docker Repo + Tag string (it should look like\`\`docker-registry.default.svc:5000/psmdb/percona-server-mongodb:4.4.13-13\`\`)
+7. When the custom registry image is available, edit the the `image:` option in `deploy/operator.yaml` configuration file with a Docker Repo + Tag string (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}`)
 
 **NOTE**: If the registry requires authentication, you can specify the `imagePullSecrets` option for all images.
 

@@ -73,7 +73,7 @@ $ kubectl apply -f percona-server-mongodb-operator/deploy/cr.yaml
 **URL:**
 
 ```text
-https://$API_SERVER/apis/psmdb.percona.com/v1-12-0/namespaces/default/perconaservermongodbs
+https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/default/perconaservermongodbs
 ```
 
 **Authentication:**
@@ -85,7 +85,7 @@ Authorization: Bearer $KUBE_TOKEN
 **cURL Request:**
 
 ```bash
-$ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1-12-0/namespaces/default/perconaservermongodbs" \
+$ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/default/perconaservermongodbs" \
             -H "Content-Type: application/json" \
             -H "Accept: application/json" \
             -H "Authorization: Bearer $KUBE_TOKEN" \
