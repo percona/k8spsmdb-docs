@@ -3,11 +3,12 @@
 The Operator was developed and tested with Percona Server for MongoDB 4.2,
 4.4, and 5.0. Other options may also work but have not been tested.
 
-**NOTE**: The [MMAPv1 storage engine](https://docs.mongodb.com/manual/core/storage-engines/)
-is no longer supported for all MongoDB versions starting from the Operator
-version 1.6. MMAPv1 was already deprecated by MongoDB for a long time.
-WiredTiger is the default storage engine since MongoDB 3.2, and MMAPv1 was
-completely removed in MongoDB 4.2.
+!!! note
+    The [MMAPv1 storage engine](https://docs.mongodb.com/manual/core/storage-engines/)
+    is no longer supported for all MongoDB versions starting from the Operator
+    version 1.6. MMAPv1 was already deprecated by MongoDB for a long time.
+    WiredTiger is the default storage engine since MongoDB 3.2, and MMAPv1 was
+    completely removed in MongoDB 4.2.
 
 ## Officially supported platforms
 
@@ -44,5 +45,6 @@ turned on (the default behavior).
 Also, the number of Replica Set Nodes should not be odd
 if [Arbiter](arbiter.md#arbiter) is not enabled.
 
-**NOTE**: Use Storage Class with XFS as the default filesystem if possible
-[to achieve better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
+!!! note
+    Use Storage Class with XFS as the default filesystem if possible
+    [to achieve better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).

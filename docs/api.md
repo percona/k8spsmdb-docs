@@ -16,9 +16,10 @@ $ kubectl create namespace my-namespace-name
 Trying to create an already-existing namespace will show you a
 self-explanatory error message. Also, you can use the `defalut` namespace.
 
-**NOTE**: In this document `default` namespace is used in all examples.
-Substitute `default` with your namespace name if you use a different
-one.
+!!! note
+    In this document `default` namespace is used in all examples.
+    Substitute `default` with your namespace name if you use a different
+    one.
 
 
 2. Prepare:

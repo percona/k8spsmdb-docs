@@ -6,7 +6,8 @@
 
 Install Helm following its [official installation instructions](https://docs.helm.sh/using_helm/#installing-helm).
 
-**NOTE**: Helm v3 is needed to run the following steps.
+!!! note
+    Helm v3 is needed to run the following steps.
 
 ## Installation
 
@@ -30,9 +31,10 @@ The `my-op` parameter in the above example is the name of [a new release object]
 which is created for the Operator when you install its Helm chart (use any
 name you like).
 
-**NOTE**: If nothing explicitly specified, `helm install` command will work
-with `default` namespace. To use different namespace, provide it with
-the following additional parameter: `--namespace my-namespace`.
+!!! note
+    If nothing explicitly specified, `helm install` command will work
+    with `default` namespace. To use different namespace, provide it with
+    the following additional parameter: `--namespace my-namespace`.
 
 
 3. Install Percona Server for MongoDB:
@@ -52,11 +54,12 @@ Custom options can be passed to a `helm install` command as a
 `--set key=value[,key=value]` argument. The options passed with a chart can be
 any of the Operator’s [Custom Resource options](operator.md#operator-custom-resource-options).
 
-**NOTE**: Parameters from the [Replica Set section](operator.md#operator-replsets-section)
-are treated differently: if you specify *any* parameter from replsets<operator.replsets-section>,
-the Operator *will not* use default values for this Replica Set.
-So do not specify Replica Set options at all or specify all needed options
-for the Replica Set.
+!!! note
+    Parameters from the [Replica Set section](operator.md#operator-replsets-section)
+    are treated differently: if you specify *any* parameter from replsets<operator.replsets-section>,
+    the Operator *will not* use default values for this Replica Set.
+    So do not specify Replica Set options at all or specify all needed options
+    for the Replica Set.
 
 The following example will deploy a Percona Server for MongoDB Cluster in the
 `psmdb` namespace, with disabled backups and 20 Gi storage:

@@ -25,5 +25,6 @@ for the `image` key in the `deploy/cr.yaml` configuration file:
 
 The Pod should be restarted to get the new image.
 
-**NOTE**: When the Pod is continuously restarting, you may have to delete it
-to apply image changes.
+!!! note
+    When the Pod is continuously restarting, you may have to delete it
+    to apply image changes.

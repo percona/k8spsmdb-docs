@@ -53,7 +53,8 @@ replsets:
     ....
 ```
 
-**NOTE**: You can find description of other possible options in the [replsets.arbiter section](operator.md#replsets-arbiter-enabled) of the [Custom Resource options reference](operator.md#operator-custom-resource-options).
+!!! note
+    You can find description of other possible options in the [replsets.arbiter section](operator.md#replsets-arbiter-enabled) of the [Custom Resource options reference](operator.md#operator-custom-resource-options).
 
 ## Adding non-voting nodes
 
@@ -63,10 +64,12 @@ election process. This feature is required to have more than 7 nodes, or if
 there is a [node in the edge location](https://en.wikipedia.org/wiki/Edge_computing),
 which obviously should not participate in the voting process.
 
-**NOTE**: Non-voting nodes support has technical preview status and is not
-recommended for production environments.
+!!! note
+    Non-voting nodes support has technical preview status and is not
+    recommended for production environments.
 
-**NOTE**: It is possible to add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md#operator-replication) for details.
+!!! note
+    It is possible to add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md#operator-replication) for details.
 
 Percona Operator for MongoDB has the ability to configure non-voting
 nodes in the Replica Set section of the
@@ -94,4 +97,5 @@ replsets:
     ....
 ```
 
-**NOTE**: You can find description of other possible options in the [replsets.nonvoting section](operator.md#replsets-nonvoting-enabled) of the [Custom Resource options reference](operator.md#operator-custom-resource-options).
+!!! note
+    You can find description of other possible options in the [replsets.nonvoting section](operator.md#replsets-nonvoting-enabled) of the [Custom Resource options reference](operator.md#operator-custom-resource-options).

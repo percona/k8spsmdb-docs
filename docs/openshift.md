@@ -47,8 +47,9 @@ $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-
 $ cd percona-server-mongodb-operator
 ```
 
-**NOTE**: It is crucial to specify the right branch with `-b`
-option while cloning the code on this step. Please be careful.
+!!! note
+    It is crucial to specify the right branch with `-b`
+    option while cloning the code on this step. Please be careful.
 
 
 2. The Custom Resource Definition for Percona Server for MongoDB should be
@@ -64,8 +65,9 @@ This step should be done only once; it does not need to be repeated with other d
 $ oc apply --server-side -f deploy/crd.yaml
 ```
 
-**NOTE**: Setting Custom Resource Definition requires your user to
-have cluster-admin role privileges.
+!!! note
+    Setting Custom Resource Definition requires your user to
+    have cluster-admin role privileges.
 
 If you want to manage Percona Server for MongoDB cluster with a
 non-privileged user, the necessary permissions can be granted by applying the

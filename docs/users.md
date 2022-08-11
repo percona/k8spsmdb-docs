@@ -57,7 +57,8 @@ required secrets can be set in `deploy/cr.yaml` under the
 
 *Secret name field:* `spec.secrets.users`
 
-**WARNING**: These users should not be used to run an application.
+!!! warning
+    These users should not be used to run an application.
 
 | User Purpose    | Username Secret Key          | Password Secret Key              |
 |:----------------|:-----------------------------|:---------------------------------|
@@ -75,9 +76,10 @@ Cluster Monitor - MongoDB Role: [clusterMonitor](https://docs.mongodb.com/manual
 
 User Admin - MongoDB Role: [userAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#userAdmin)
 
-**NOTE**: If you change credentials for the `MONGODB_CLUSTER_MONITOR` user,
-the cluster Pods will go into restart cycle, and the cluster can be not
-accessible through the `mongos` service until this cycle finishes.
+!!! note
+    If you change credentials for the `MONGODB_CLUSTER_MONITOR` user,
+    the cluster Pods will go into restart cycle, and the cluster can be not
+    accessible through the `mongos` service until this cycle finishes.
 
 ### YAML Object Format
 
@@ -125,13 +127,14 @@ with the following command:
 kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_PASSWORD": "'$(echo -n new_password | base64)'"}}'
 ```
 
-**NOTE**: The operator creates and updates an additional Secrets object named
-based on the cluster name, like `internal-my-cluster-name-users`. It is
-used only by the Operator and should undergo no manual changes by the user.
-This object contains secrets with the same passwords as the one specified
-in `spec.secrets.users` (e.g. `my-cluster-name-secrets`). When the
-user updates `my-cluster-name-secrets`, the Operator propagates these
-changes to the internal `internal-my-cluster-name-users` Secrets object.
+!!! note
+    The operator creates and updates an additional Secrets object named
+    based on the cluster name, like `internal-my-cluster-name-users`. It is
+    used only by the Operator and should undergo no manual changes by the user.
+    This object contains secrets with the same passwords as the one specified
+    in `spec.secrets.users` (e.g. `my-cluster-name-secrets`). When the
+    user updates `my-cluster-name-secrets`, the Operator propagates these
+    changes to the internal `internal-my-cluster-name-users` Secrets object.
 
 ### Password Rotation Policies and Timing
 
@@ -140,8 +143,9 @@ creates the necessary transaction to change passwords. This rotation happens
 almost instantly (the delay can be up to a few seconds), and it’s not needed to
 take any action beyond changing the password.
 
-**NOTE**: Please don’t change `secrets.users` option in CR, make changes
-inside the secrets object itself.
+!!! note
+    Please don’t change `secrets.users` option in CR, make changes
+    inside the secrets object itself.
 
 ## [Development Mode](users.html#development-mode)
 
@@ -163,7 +167,8 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 | PMM_SERVER_USER                  | admin                |
 | PMM_SERVER_PASSWORD              | admin                |
 
-**WARNING**: Do not use the default MongoDB Users in production!
+!!! warning
+    Do not use the default MongoDB Users in production!
 
 ## [MongoDB Internal Authentication Key (optional)](users.html#internal-authentication-key)
 

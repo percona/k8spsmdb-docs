@@ -66,7 +66,8 @@ name and a specific suffix:
 
 * `my-cluster-name-mongos` for the mongos Pods,
 
-**NOTE**: To find the cluster name, you can use the following command:
+!!! note
+    To find the cluster name, you can use the following command:
 
 ```bash
 $ kubectl get psmdb
@@ -102,10 +103,11 @@ To view the created ConfigMap, use the following command:
 $ kubectl describe configmaps my-cluster-name-rs0-mongod
 ```
 
-**NOTE**: Do not forget to restart Percona Server for MongoDB to ensure the
-cluster has updated the configuration (see details on how to connect in the
-[Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
-page).
+!!! note
+    Do not forget to restart Percona Server for MongoDB to ensure the
+    cluster has updated the configuration (see details on how to connect in the
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    page).
 
 ## Use a Secret Object
 
@@ -124,7 +126,8 @@ name and a specific suffix:
 
 * `my-cluster-name-mongos` for the mongos Pods,
 
-**NOTE**: To find the cluster name, you can use the following command:
+!!! note
+    To find the cluster name, you can use the following command:
 
 ```bash
 $ kubectl get psmdb
@@ -157,13 +160,14 @@ follows:
 $ cat mongod.conf | base64
 ```
 
-**NOTE**: Similarly, you can read the list of options from a Base64 encoded
-string:
+!!! note
+    Similarly, you can read the list of options from a Base64 encoded
+    string:
 
-```bash
-$ echo "ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\
-AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==" | base64 --decode
-```
+    ```bash
+    $ echo "ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\
+    AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==" | base64 --decode
+    ```
 
 Finally, use a yaml file to create the Secret object. For example, you can
 create a `deploy/my-mongod-secret.yaml` file with the following contents:
@@ -184,7 +188,8 @@ When ready, apply it with the following command:
 $ kubectl create -f deploy/my-mongod-secret.yaml
 ```
 
-**NOTE**: Do not forget to restart Percona Server for MongoDB to ensure the
-cluster has updated the configuration (see details on how to connect in the
-[Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
-page).
+!!! note
+    Do not forget to restart Percona Server for MongoDB to ensure the
+    cluster has updated the configuration (see details on how to connect in the
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    page).

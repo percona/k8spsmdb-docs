@@ -7,8 +7,9 @@ $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-
 $ cd percona-server-mongodb-operator
 ```
 
-**NOTE**: It is crucial to specify the right branch with `-b`
-option while cloning the code on this step. Please be careful.
+!!! note
+    It is crucial to specify the right branch with `-b`
+    option while cloning the code on this step. Please be careful.
 
 2. The Custom Resource Definition for Percona Server for MongoDB should be
 created from the `deploy/crd.yaml` file. The Custom Resource Definition
@@ -48,9 +49,10 @@ Further details about users and roles can be found in [Kubernetes documentation]
 $ kubectl apply -f deploy/rbac.yaml
 ```
 
-**NOTE**: Setting RBAC requires your user to have cluster-admin role
-privileges. For example, those using Google Kubernetes Engine can
-grant user needed privileges with the following command:
+!!! note
+    Setting RBAC requires your user to have cluster-admin role
+    privileges. For example, those using Google Kubernetes Engine can
+    grant user needed privileges with the following command:
 
 ```default
 $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)

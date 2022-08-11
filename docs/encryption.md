@@ -2,7 +2,8 @@
 
 [Data at rest encryption in Percona Server for MongoDB](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) is supported by the Operator since version 1.1.0.
 
-**NOTE**: “Data at rest” means inactive data stored as files, database records, etc.
+!!! note
+    “Data at rest” means inactive data stored as files, database records, etc.
 
 Following options the `mongod` section of the `deploy/cr.yaml` file should
 be edited to turn this feature on:

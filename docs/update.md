@@ -9,16 +9,18 @@ Operator itself, and upgrades of the Percona Server for MongoDB.
 This upgrade can be done either in semi-automatic or in manual mode. **Manual
 update mode is the recommended way for a production cluster**.
 
-**NOTE**: Operational support is provided for the last 3 minor versions of the
-Operator. Customers will get complete support for the latest minor version.
-Bug fixes and improvements are not backported to older minor versions.
+!!! note
+    Operational support is provided for the last 3 minor versions of the
+    Operator. Customers will get complete support for the latest minor version.
+    Bug fixes and improvements are not backported to older minor versions.
 
 ### Semi-automatic upgrade
 
-**NOTE**: Only the incremental update to a nearest minor version is supported
-(for example, update from 1.5.0 to 1.6.0).
-To update to a newer version, which differs from the current version by more
-than one, make several incremental updates sequentially.
+!!! note
+    Only the incremental update to a nearest minor version is supported
+    (for example, update from 1.5.0 to 1.6.0).
+    To update to a newer version, which differs from the current version by more
+    than one, make several incremental updates sequentially.
 
 
 1. Update the Custom Resource Definition file for the Operator, taking it from
@@ -65,10 +67,11 @@ $ kubectl rollout status sts my-cluster-name-rs0
 
 ### Manual upgrade
 
-**NOTE**: Only the incremental update to a nearest minor version of the Operator
-is supported (for example, update from 1.5.0 to 1.6.0).
-To update to a newer version, which differs from the current version by more
-than one, make several incremental updates sequentially.
+!!! note
+    Only the incremental update to a nearest minor version of the Operator
+    is supported (for example, update from 1.5.0 to 1.6.0).
+    To update to a newer version, which differs from the current version by more
+    than one, make several incremental updates sequentially.
 
 
 1. Update the Custom Resource Definition file for the Operator, taking it from
@@ -155,9 +158,10 @@ upgraded, the Operator updates the CR to reflect the new image paths and carries
 on sequential Pods deletion in a safe order, allowing StatefulSet to redeploy
 the cluster Pods with the new image.
 
-**NOTE**: Being enabled, Smart Update will force the Operator to take MongoDB
-version from Version Service and not from the `mongod.image` option during
-the very first start of the cluster.
+!!! note
+    Being enabled, Smart Update will force the Operator to take MongoDB
+    version from Version Service and not from the `mongod.image` option during
+    the very first start of the cluster.
 
 The upgrade details are set in the `upgradeOptions` section of the
 `deploy/cr.yaml` configuration file. Make the following edits to configure
@@ -201,10 +205,11 @@ clusters (ex. 5.0 will not be automatically used instead of 4.4),
 
     * `Never` or `Disabled` - disable automatic upgrades.
 
-**NOTE**: When automatic upgrades are disabled by the `apply` option,
-Smart Update functionality will continue working for changes triggered
-by other events, such as rotating a password, or
-changing resource values.
+!!! note
+    When automatic upgrades are disabled by the `apply` option,
+    Smart Update functionality will continue working for changes triggered
+    by other events, such as rotating a password, or
+    changing resource values.
 
 
 2. Make sure the `versionServiceEndpoint` key is set to a valid Version
@@ -222,9 +227,10 @@ can be done with the `kubectl` command as follows:
 $ kubectl run version-service --image=perconalab/version-service --env="SERVE_HTTP=true" --port 11000 --expose
 ```
 
-**NOTE**: Version Service is never checked if automatic updates are disabled.
-If automatic updates are enabled, but Version Service URL can not be
-reached, upgrades will not occur.
+!!! note
+    Version Service is never checked if automatic updates are disabled.
+    If automatic updates are enabled, but Version Service URL can not be
+    reached, upgrades will not occur.
 
 
 3. Use the `schedule` option to specify the update checks time in CRON format.
@@ -259,8 +265,9 @@ for example, to change Percona Server for MongoDB major version from 4.2 to 5.0,
 you should first upgrade it to 4.4, and later make a separate upgrade from 4.4
 to 5.0. The same is true for major version downgrades.
 
-**NOTE**: It is recommended to take a backup before upgrade, as well as to
-perform upgrade on staging environment.
+!!! note
+    It is recommended to take a backup before upgrade, as well as to
+    perform upgrade on staging environment.
 
 Major version upgrade can be initiated using the [upgradeOptions.apply](operator.md#upgradeoptions-apply)
 key in the `deploy/cr.yaml` configuration file:
@@ -271,10 +278,11 @@ spec:
     apply: 4.4-recommended
 ```
 
-**NOTE**: When making downgrades (e.g. changing version from 4.4 to 4.2), make
-sure to remove incompatible features that are persisted and/or update
-incompatible configuration settings. Compatibility issues between major
-MongoDB versions can be found in [upstream documentation](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
+!!! note
+    When making downgrades (e.g. changing version from 4.4 to 4.2), make
+    sure to remove incompatible features that are persisted and/or update
+    incompatible configuration settings. Compatibility issues between major
+    MongoDB versions can be found in [upstream documentation](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
 
 By default the Operator doesn’t set [FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
 to match the new version, thus making sure that backwards-incompatible features
@@ -283,9 +291,10 @@ recommended and safe behavior). You can turn this backward compatibility off at
 any moment (after the upgrade or even before it) by setting the [upgradeOptions.setFCV](operator.md#upgradeoptions-setfcv) flag in the
 `deploy/cr.yaml` configuration file to `true`.
 
-**NOTE**: With setFeatureCompatibilityVersion set major version rollback is not
-currently supported by the Operator. Therefore it is recommended to stay
-without enabling this flag for some time after the major upgrade to ensure
-the likelihood of downgrade is minimal. Setting `setFCV` flag to `true`
-simultaneously with the `apply` flag should be done only if the whole
-procedure is tested on staging and you are 100% sure about it.
+!!! note
+    With setFeatureCompatibilityVersion set major version rollback is not
+    currently supported by the Operator. Therefore it is recommended to stay
+    without enabling this flag for some time after the major upgrade to ensure
+    the likelihood of downgrade is minimal. Setting `setFCV` flag to `true`
+    simultaneously with the `apply` flag should be done only if the whole
+    procedure is tested on staging and you are 100% sure about it.

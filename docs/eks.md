@@ -36,8 +36,9 @@ To create your cluster, you will need the following data:
 
 * the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html) and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances in the total number of nodes.
 
-**NOTE**: [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances
-are not recommended for production environment, but may be useful e.g. for testing purposes.
+!!! note
+    [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances
+    are not recommended for production environment, but may be useful e.g. for testing purposes.
 
 The most easy and visually clear way is to describe the desired cluster in YAML
 and to pass this configuration to the `eksctl` command.
@@ -69,10 +70,11 @@ nodeGroups:
           - "systemctl restart docker"
 ```
 
-**NOTE**: `preBootstrapCommands` section is used in the
-above example to increase the limits for the amount of opened files:
-this is important and shouldn’t be omitted, taking into account the
-default EKS soft limit of 65536 files.
+!!! note
+    `preBootstrapCommands` section is used in the
+    above example to increase the limits for the amount of opened files:
+    this is important and shouldn’t be omitted, taking into account the
+    default EKS soft limit of 65536 files.
 
 When the cluster configuration file is ready, you can actually create your cluster
 by the following command:

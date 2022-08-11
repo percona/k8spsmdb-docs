@@ -11,23 +11,21 @@ of each request to the necessary subset of data (so-called *shard*).
 
 A MongoDB Sharding involves the following components:
 
-
 * `shard` - a replica set which contains a subset of data stored in the
 database (similar to a traditional MongoDB replica set),
 
-
 * `mongos` - a query router, which acts as an entry point for client applications,
-
 
 * `config servers` - a replica set to store metadata and configuration
 settings for the sharded database cluster.
 
-**NOTE**: Percona Operator for MongoDB 1.6.0 supported only one shard of
-a MongoDB cluster; still, this limited sharding support allowed using
-`mongos` as an entry point instead of provisioning a load-balancer per
-replica set node. Multiple shards are supported starting from the Operator
-1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-object, and starting from 1.12.0 they are deployed by the [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
+!!! note
+    Percona Operator for MongoDB 1.6.0 supported only one shard of
+    a MongoDB cluster; still, this limited sharding support allowed using
+    `mongos` as an entry point instead of provisioning a load-balancer per
+    replica set node. Multiple shards are supported starting from the Operator
+    1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+    object, and starting from 1.12.0 they are deployed by the [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
 
 ## Turning sharding on and off
 
@@ -42,8 +40,9 @@ When sharding is turned on, the Operator runs replica sets with config
 servers and mongos instances. Their number is controlled by
 `configsvrReplSet.size` and `mongos.size` keys, respectively.
 
-**NOTE**: Config servers for now can properly work only with WiredTiger engine,
-and sharded MongoDB nodes can use either WiredTiger or InMemory one.
+!!! note
+    Config servers for now can properly work only with WiredTiger engine,
+    and sharded MongoDB nodes can use either WiredTiger or InMemory one.
 
 By default [replsets section](operator.md#operator-replsets-section) of the
 `deploy/cr.yaml` configuration file contains only one replica set, `rs0`.
@@ -57,52 +56,44 @@ With sharding turned on, you have `mongos` service as an entry point to access
 your database. If you do not use sharding, you have to access `mongod`
 processes of your replica set.
 
-
 1. Run percona-client and connect its console output to your terminal (running
-it may require some time to deploy the corresponding Pod):
+    it may require some time to deploy the corresponding Pod):
 
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-```
-
+    ```bash
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
+    ```
 
 2. Find the password for the admin user, which you will need to access the
-cluster. Use `kubectl get secrets` to see the list of Secrets objects (by
-default Secrets object you are interested in has `my-cluster-name-secrets`
-name). Then `kubectl get secret my-cluster-name-secrets -o yaml` will return
-the YAML file with generated secrets, including the `MONGODB_USER_ADMIN`
-and `MONGODB_USER_ADMIN_PASSWORD` strings:
+    cluster. Use `kubectl get secrets` to see the list of Secrets objects (by
+    default Secrets object you are interested in has `my-cluster-name-secrets`
+    name). Then `kubectl get secret my-cluster-name-secrets -o yaml` will return
+    the YAML file with generated secrets, including the `MONGODB_USER_ADMIN`
+    and `MONGODB_USER_ADMIN_PASSWORD` strings:
 
-```yaml
-...
-data:
-  ...
-  MONGODB_USER_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
-  MONGODB_USER_ADMIN_USER: dXNlckFkbWlu
-```
+    ```yaml
+    ...
+    data:
+      ...
+      MONGODB_USER_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
+      MONGODB_USER_ADMIN_USER: dXNlckFkbWlu
+    ```
 
-Here the actual login name and password are base64-encoded, and
-`echo 'aDAzQ0pCY3NSWEZ2ZUIzS1I=' | base64 --decode` will bring it back to a
-human-readable form.
-
+    Here the actual login name and password are base64-encoded, and
+    `echo 'aDAzQ0pCY3NSWEZ2ZUIzS1I=' | base64 --decode` will bring it back to a
+    human-readable form.
 
 3. Now run `mongo` tool in the percona-client command shell using the login
-(which is normally `userAdmin`) and password obtained from the secret.
+    (which is normally `userAdmin`) and password obtained from the Secret.
+    The command will look different depending on whether sharding is on or off:
 
+    === "if sharding is on"
+        ```bash
+        $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+        ```
 
-    * If sharding is turned on, the command will look as follows (with your
-database cluster namespace instead of the `<namespace name>`
-placeholder).
-
-```bash
-$ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-```
-
-
-    * If sharding is turned off, the command will look as follows (with your
-database cluster namespace instead of the `<namespace name>`
-placeholder).
-
-```bash
-$ mongo "mongodb+srv://userAdmin:userAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-```
+    === "if sharding is off"
+        ```bash
+        $ mongo "mongodb+srv://userAdmin:userAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```
+     Of course, you should substitute yourr database cluster namespace instead
+     of the `<namespace name>` placeholder.

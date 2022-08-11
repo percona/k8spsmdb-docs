@@ -12,8 +12,9 @@ This feature can be useful in several cases:
 - simplify the migration of the MongoDB cluster to and from Kubernetes
 - add remote nodes to the replica set for disaster recovery
 
-**NOTE**: Cross-site replication has technical preview status and is not
-recommended for production environments.
+!!! note
+    Cross-site replication has technical preview status and is not
+    recommended for production environments.
 
 Configuring the cross-site replication for the cluster controlled by the Operator is explained in the following subsections.
 
@@ -51,9 +52,10 @@ spec:
 The above example is using the LoadBalancer Kubernetes Service object, but there
 are other options (ClusterIP, NodePort, etc.).
 
-**NOTE**: The above example will create a LoadBalancer per each Replica Set Pod.
-In most cases, this Load Balancer should be internet-facing for cross-region
-replication to work.
+!!! note
+    The above example will create a LoadBalancer per each Replica Set Pod.
+    In most cases, this Load Balancer should be internet-facing for cross-region
+    replication to work.
 
 To list the endpoints assigned to Pods, list the Kubernetes Service objects by
 executing `kubectl get services -l "app.kubernetes.io/instance=CLUSTER_NAME"` command.
@@ -152,9 +154,10 @@ should set `updateStrategy` key to `OnDelete` and `backup.enabled` to
 `false`, because [Smart Updates](update.md#operator-update-smartupdates) and
 [backups](backups.md#backups) are not allowed on unmanaged clusters.
 
-**NOTE**: Setting `unmanaged` to true will not only prevent the Operator from
-controlling the Replica Set configuration, but it will also result in not
-generating certificates and users credentials for new clusters.
+!!! note
+    Setting `unmanaged` to true will not only prevent the Operator from
+    controlling the Replica Set configuration, but it will also result in not
+    generating certificates and users credentials for new clusters.
 
 Here is an example:
 
@@ -274,8 +277,9 @@ After ServiceExport object is created, exported Services can be resolved from
 any Pod in any fleet cluster as
 `SERVICE_EXPORT_NAME.NAMESPACE.svc.clusterset.local`.
 
-**NOTE**: This means that ServiceExports with the same name and namespace will
-be recognized as a single combined Service.
+!!! note
+    This means that ServiceExports with the same name and namespace will
+    be recognized as a single combined Service.
 
 MCS can charge cross-site replication with additional limitations specific to
 the cloud provider. For example, GKE demands all participating Pods to be in the

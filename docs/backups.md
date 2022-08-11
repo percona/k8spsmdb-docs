@@ -3,8 +3,6 @@
 The Operator usually stores Server for MongoDB backups outside the Kubernetes cluster: on [Amazon S3 or S3-compatible
 storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services), or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
-
-
 ![image](assets/images/backup-s3.svg)
 
 The Operator allows doing cluster backup in two
@@ -14,7 +12,8 @@ file to be executed automatically in proper time. *On-demand backups*
 can be done manually at any moment. Both ways use the [Percona
 Backup for MongoDB](https://github.com/percona/percona-backup-mongodb) tool.
 
-**WARNING**: Backups made with the Operator versions before 1.9.0 are incompatible for restore with the Operator 1.9.0 and later. That is because Percona Backup for MongoDB 1.5.0 used by the newer Operator versions [processes system collections Users and Roles differently](https://www.percona.com/doc/percona-backup-mongodb/running.html#pbm-running-backup-restoring). The recommended approach is to **make a fresh backup after upgrading |operator| to version 1.9.0**.
+!!! warning
+    Backups made with the Operator versions before 1.9.0 are incompatible for restore with the Operator 1.9.0 and later. That is because Percona Backup for MongoDB 1.5.0 used by the newer Operator versions [processes system collections Users and Roles differently](https://www.percona.com/doc/percona-backup-mongodb/running.html#pbm-running-backup-restoring). The recommended approach is to **make a fresh backup after upgrading |operator| to version 1.9.0**.
 
 ## Making scheduled backups
 
@@ -25,11 +24,9 @@ be set to `true` to enable backups), and the following subsections:
 
 
 * `storages` subsection contains data needed to access the S3-compatible cloud
-to store backups,
-
-
+    to store backups,
 * `tasks` subsection allows to actually schedule backups (the schedule is
-specified in [crontab format](https://en.wikipedia.org/wiki/Cron)).
+    specified in [crontab format](https://en.wikipedia.org/wiki/Cron)).
 
 ### Backups on Amazon S3 or S3-compatible storage
 
@@ -50,8 +47,9 @@ data:
   AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
 ```
 
-**NOTE**: The following command can be used to get a base64-encoded string from
-a plain text one: `$ echo -n 'plain-text-string' | base64`
+!!! note
+    The following command can be used to get a base64-encoded string from
+    a plain text one: `$ echo -n 'plain-text-string' | base64`
 
 The `name` value is the [Kubernetes
 secret](https://kubernetes.io/docs/concepts/configuration/secret/)
@@ -89,25 +87,16 @@ backup:
   ...
 ```
 
-**NOTE**: Using AWS EC2 instances for backups makes it possible to automate
-access to AWS S3 buckets based on IAM roles <https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html>
-for Service Accounts with no need to specify the S3 credentials explicitly.
-Following steps are needed to turn this feature on:
+??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
+    Following steps are needed to turn this feature on:
 
-
-* Create the [IAM instance profile](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
-and the permission policy within where you specify the access level that
-grants the access to S3 buckets.
-
-
-* Attach the IAM profile to an EC2 instance.
-
-
-* Configure an S3 storage bucket and verify the connection from the EC2
-instance to it.
-
-
-* Do not provide `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+    * Create the [IAM instance profile](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
+        and the permission policy within where you specify the access level that
+        grants the access to S3 buckets.
+    * Attach the IAM profile to an EC2 instance.
+    * Configure an S3 storage bucket and verify the connection from the EC2
+        instance to it.
+    * Do not provide `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 If you use some S3-compatible storage instead of the original
 Amazon S3, the [endpointURL](https://docs.min.io/docs/aws-cli-with-minio.html) is needed in the `s3` subsection which points to the actual cloud used for backups and
@@ -150,8 +139,9 @@ data:
   AZURE_STORAGE_ACCOUNT_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
 ```
 
-**NOTE**: The following command can be used to get a base64-encoded string from
-a plain text one: `$ echo -n 'plain-text-string' | base64`
+!!! note
+    The following command can be used to get a base64-encoded string from
+    a plain text one: `$ echo -n 'plain-text-string' | base64`
 
 The `name` value is the [Kubernetes
 secret](https://kubernetes.io/docs/concepts/configuration/secret/)
@@ -231,20 +221,21 @@ When the backup destination is configured and applied with kubectl apply -f depl
 $ kubectl apply -f deploy/backup/backup.yaml
 ```
 
-**NOTE**: Storing backup settings in a separate file can be replaced by
-passing its content to the `kubectl apply` command as follows:
+!!! note
+    Storing backup settings in a separate file can be replaced by
+    passing its content to the `kubectl apply` command as follows:
 
-```bash
-$ cat <<EOF | kubectl apply -f-
-apiVersion: psmdb.percona.com/v1
-kind: PerconaServerMongoDBBackup
-metadata:
-  name: backup1
-spec:
-  clusterName: my-cluster-name
-  storageName: s3-us-west
-EOF
-```
+    ```bash
+    $ cat <<EOF | kubectl apply -f-
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBBackup
+    metadata:
+      name: backup1
+    spec:
+      clusterName: my-cluster-name
+      storageName: s3-us-west
+    EOF
+    ```
 
 ## Storing operations logs for point-in-time recovery
 
@@ -264,10 +255,11 @@ backup:
     enabled: true
 ```
 
-**NOTE**: It is necessary to have at least one full backup to use point-in-time
-recovery. Percona Backup for MongoDB will not upload operations logs if there
-is no full backup. This is true for new clusters and also true for clusters
-which have been just recovered from backup.
+!!! note
+    It is necessary to have at least one full backup to use point-in-time
+    recovery. Percona Backup for MongoDB will not upload operations logs if there
+    is no full backup. This is true for new clusters and also true for clusters
+    which have been just recovered from backup.
 
 Percona Backup for MongoDB uploads operations logs to the same bucket where
 full backup is stored. This makes point-in-time recovery functionality available
@@ -275,20 +267,22 @@ only if there is a single bucket in [spec.backup.storages](operator.md#backup-st
 Otherwise point-in-time recovery will not be enabled and there will be an error
 message in the operator logs.
 
-**NOTE**: Adding a new bucket when point-in-time recovery is enabled will not
-break it, but put error message about the additional bucket in the operator
-logs as well.
+!!! note
+    Adding a new bucket when point-in-time recovery is enabled will not
+    break it, but put error message about the additional bucket in the operator
+    logs as well.
 
 ## Restore the cluster from a previously saved backup
 
 Backup can be restored not only on the Kubernetes cluster where it was made, but
 also on any Kubernetes-based environment with the installed Operator.
 
-**NOTE**: When restoring to a new Kubernetes-based environment, make sure it
-has a Secrets object with the same user passwords as in the original cluster.
-More details about secrets can be found in [System Users](users.md#users-system-users). The
-name of the required Secrets object can be found out from the spec.secrets
-key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).
+!!! note
+    When restoring to a new Kubernetes-based environment, make sure it
+    has a Secrets object with the same user passwords as in the original cluster.
+    More details about secrets can be found in [System Users](users.md#users-system-users). The
+    name of the required Secrets object can be found out from the spec.secrets
+    key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).
 
 Following things are needed to restore a previously saved backup:
 
@@ -303,8 +297,9 @@ backups can be listed with the following command:
 $ kubectl get psmdb-backup
 ```
 
-**NOTE**: Obviously, you can make this check only on the same cluster on
-which you have previously made the backup.
+!!! note
+    Obviously, you can make this check only on the same cluster on
+    which you have previously made the backup.
 
 And the following command will list available clusters:
 
@@ -374,20 +369,21 @@ backupSource:
 $ kubectl apply -f deploy/backup/restore.yaml
 ```
 
-**NOTE**: Storing backup settings in a separate file can be replaced by
-passing its content to the `kubectl apply` command as follows:
+!!! note
+    Storing backup settings in a separate file can be replaced by
+    passing its content to the `kubectl apply` command as follows:
 
-```bash
-$ cat <<EOF | kubectl apply -f-
-apiVersion: psmdb.percona.com/v1
-kind: PerconaServerMongoDBRestore
-metadata:
-  name: restore1
-spec:
-  clusterName: my-cluster-name
-  backupName: backup1
-EOF
-```
+    ```bash
+    $ cat <<EOF | kubectl apply -f-
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore1
+    spec:
+      clusterName: my-cluster-name
+      backupName: backup1
+    EOF
+    ```
 
 ### Restoring backup with point-in-time recovery
 
@@ -456,23 +452,24 @@ backupSource:
 $ kubectl apply -f deploy/backup/restore.yaml
 ```
 
-**NOTE**: Storing backup settings in a separate file can be replaced by
-passing its content to the `kubectl apply` command as follows:
+!!! note
+    Storing backup settings in a separate file can be replaced by
+    passing its content to the `kubectl apply` command as follows:
 
-```bash
-$ cat <<EOF | kubectl apply -f-
-apiVersion: psmdb.percona.com/v1
-kind: PerconaServerMongoDBRestore
-metadata:
-  name: restore1
-spec:
-  clusterName: my-cluster-name
-  backupName: backup1
-  pitr:
-    type: date
-    date: YYYY-MM-DD hh:mm:ss
-EOF
-```
+    ```bash
+    $ cat <<EOF | kubectl apply -f-
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore1
+    spec:
+      clusterName: my-cluster-name
+      backupName: backup1
+      pitr:
+        type: date
+        date: YYYY-MM-DD hh:mm:ss
+    EOF
+    ```
 
 ## Delete the unneeded backup
 

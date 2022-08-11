@@ -89,16 +89,18 @@ percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona
 
 7. When the custom registry image is available, edit the the `image:` option in `deploy/operator.yaml` configuration file with a Docker Repo + Tag string (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}`)
 
-**NOTE**: If the registry requires authentication, you can specify the `imagePullSecrets` option for all images.
+!!! note
+    If the registry requires authentication, you can specify the `imagePullSecrets` option for all images.
 
 
 8. Repeat steps 3-5 for other images, and update corresponding options
 in the `deploy/cr.yaml` file.
 
-**NOTE**: Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptions-apply)
-option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#operator-update-smartupdates)
-will try using the image recommended by the Version Service instead of the
-custom one.
+!!! note
+    Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptions-apply)
+    option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#operator-update-smartupdates)
+    will try using the image recommended by the Version Service instead of the
+    custom one.
 
 
 9. Now follow the standard Percona Operator for MongoDB [installation instruction](./openshift.html)

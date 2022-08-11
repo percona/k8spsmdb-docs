@@ -4,7 +4,8 @@ Percona Monitoring and Management (PMM) [provides an excellent
 solution](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html)
 of monitoring Percona Server for MongoDB.
 
-**NOTE**: Only PMM 2.x versions are supported by the Operator.
+!!! note
+    Only PMM 2.x versions are supported by the Operator.
 
 PMM is a client/server application. *PMM Client* runs on each node with the
 database you wish to monitor: it collects needed metrics and sends gathered data
@@ -47,21 +48,22 @@ secrets file contains your PMM Server user name (`admin` by default).
 secrets file contains the password specified for the PMM Server during its
 installation.
 
-**NOTE**: You use `deploy/secrets.yaml` file to *create* Secrets Object.
-The file contains all values for each key/value pair in a convenient
-plain text format. But the resulting Secrets contain passwords stored
-as base64-encoded strings. If you want to *update* password field,
-you’ll need to encode the value into base64 format. To do this, you can
-run `echo -n "password" | base64` in your local shell to get valid
-values. For example, setting the PMM Server user’s password to
-new_password\` in the `my-cluster-name-secrets` object can be done
-with the following command:
+!!! note
+    You use `deploy/secrets.yaml` file to *create* Secrets Object.
+    The file contains all values for each key/value pair in a convenient
+    plain text format. But the resulting Secrets contain passwords stored
+    as base64-encoded strings. If you want to *update* password field,
+    you’ll need to encode the value into base64 format. To do this, you can
+    run `echo -n "password" | base64` in your local shell to get valid
+    values. For example, setting the PMM Server user’s password to
+    `new_password` in the `my-cluster-name-secrets` object can be done
+    with the following command:
 
-```bash
-kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_PASSWORD": '$(echo -n new_password | base64)'}}'
-```
+    ```bash
+    kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_PASSWORD": '$(echo -n new_password | base64)'}}'
+    ```
 
-Apply changes with the `kubectl apply -f deploy/secrets.yaml` command.
+    Apply changes with the `kubectl apply -f deploy/secrets.yaml` command.
 
 
     * Starting from the Operator version 1.12.0, MongoDB operation profiling is
@@ -87,11 +89,12 @@ spec:
 specify additional parameters for the [pmm-admin add mongodb](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` and
 `mongos` Pods respectively, if needed.
 
-**NOTE**: Please take into account that Operator automatically manages
-common MongoDB Service Monitoring parameters mentioned in the officiall `pmm-admin add mongodb` [documentation](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring),
-such like username, password, service-name, host, etc. Assigning values
-to these parameters is not recommended and can negatively affect the
-functionality of the PMM setup carried out by the Operator.
+!!! note
+    Please take into account that Operator automatically manages
+    common MongoDB Service Monitoring parameters mentioned in the officiall `pmm-admin add mongodb` [documentation](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring),
+    such like username, password, service-name, host, etc. Assigning values
+    to these parameters is not recommended and can negatively affect the
+    functionality of the PMM setup carried out by the Operator.
 
 When done, apply the edited `deploy/cr.yaml` file:
 

@@ -23,8 +23,9 @@ we will add support for multiple shards.
 
 * [K8SPSMDB-282](https://jira.percona.com/browse/K8SPSMDB-282): Official support for [Percona Monitoring and Management (PMM) v.2](../monitoring.md#operator-monitoring)
 
-**NOTE**: Monitoring with PMM v.1 configured according to the [unofficial instruction](https://www.percona.com/blog/2020/07/23/using-percona-kubernetes-operators-with-percona-monitoring-and-management/)
-will not work after the upgrade. Please switch to PMM v.2.
+!!! note
+    Monitoring with PMM v.1 configured according to the [unofficial instruction](https://www.percona.com/blog/2020/07/23/using-percona-kubernetes-operators-with-percona-monitoring-and-management/)
+    will not work after the upgrade. Please switch to PMM v.2.
 
 ## Improvements
 
@@ -62,6 +63,7 @@ the Operator. MMAPv1 was already deprecated by MongoDB for a long time.
 WiredTiger is the default storage engine since MongoDB 3.2, and MMAPv1 was
 completely removed in MongoDB 4.2.
 
-**NOTE**: Upgrade of the Operator from 1.5.0 to 1.6.0 will fail if MMAPv1 is
-used, but MongoDB cluster will continue to run. It is recommended to
-migrate your clusters to WiredTiger engine before the upgrade.
+!!! note
+    Upgrade of the Operator from 1.5.0 to 1.6.0 will fail if MMAPv1 is
+    used, but MongoDB cluster will continue to run. It is recommended to
+    migrate your clusters to WiredTiger engine before the upgrade.
