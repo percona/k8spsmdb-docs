@@ -4,7 +4,7 @@
 
 ```bash
 $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-cd percona-server-mongodb-operator
+$ cd percona-server-mongodb-operator
 ```
 
 **NOTE**: It is crucial to specify the right branch with `-b`
@@ -99,19 +99,7 @@ $ kubectl get pods
 
 The result should look as follows:
 
-```text
-NAME                                               READY   STATUS    RESTARTS   AGE
-my-cluster-name-cfg-0                              2/2     Running   0          11m
-my-cluster-name-cfg-1                              2/2     Running   1          10m
-my-cluster-name-cfg-2                              2/2     Running   1          9m
-my-cluster-name-mongos-55659468f7-2kvc2            1/1     Running   0          11m
-my-cluster-name-mongos-55659468f7-7jfqc            1/1     Running   0          11m
-my-cluster-name-mongos-55659468f7-dfwcj            1/1     Running   0          11m
-my-cluster-name-rs0-0                              2/2     Running   0          11m
-my-cluster-name-rs0-1                              2/2     Running   0          10m
-my-cluster-name-rs0-2                              2/2     Running   0          9m
-percona-server-mongodb-operator-6fc78d686d-26hdz   1/1     Running   0          37m
-```
+--8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
 9. Check connectivity to a newly created cluster.
 

@@ -147,20 +147,7 @@ $ kubectl get pods
 
 The result should look as follows:
 
-```text
-NAME                                               READY   STATUS    RESTARTS   AGE
-my-cluster-name-cfg-0                              2/2     Running   0          11m
-my-cluster-name-cfg-1                              2/2     Running   1          10m
-my-cluster-name-cfg-2                              2/2     Running   1          9m
-my-cluster-name-mongos-55659468f7-2kvc2            1/1     Running   0          11m
-my-cluster-name-mongos-55659468f7-7jfqc            1/1     Running   0          11m
-my-cluster-name-mongos-55659468f7-dfwcj            1/1     Running   0          11m
-my-cluster-name-rs0-0                              2/2     Running   0          11m
-my-cluster-name-rs0-1                              2/2     Running   0          10m
-my-cluster-name-rs0-2                              2/2     Running   0          9m
-percona-server-mongodb-operator-6fc78d686d-26hdz   1/1     Running   0          37m
-```
-
+--8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
 5. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
 

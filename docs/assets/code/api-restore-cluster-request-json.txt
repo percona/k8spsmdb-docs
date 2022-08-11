@@ -1,0 +1,14 @@
+```json
+{
+   "apiVersion":"psmdb.percona.com/v1",
+   "kind":"PerconaServerMongoDBRestore",
+   "metadata":{
+      "name":"restore1",
+      "namespace":"default"
+   },
+   "spec":{
+      "backupName":"backup1",
+      "clusterName":"my-cluster-name"
+   }
+}
+```

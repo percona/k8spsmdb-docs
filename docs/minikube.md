@@ -51,13 +51,7 @@ and [Custom Resource Options](operator.md#operator-custom-resource-options). The
 process may take some time. The process is over when both operator and replica set pod
 have reached their Running status. `kubectl get pods` output should look like this:
 
-```text
-NAME                                              READY   STATUS    RESTARTS   AGE
-percona-server-mongodb-operator-d859b69b6-t44vk   1/1     Running   0          50s
-minimal-cluster-cfg-0                             1/1     Running   0          41s
-minimal-cluster-mongos-6cc8f5b79b-c2qm6           1/1     Running   0          36s
-minimal-cluster-rs0-0                             1/1     Running   0          39s
-```
+--8<-- "./docs/assets/code/kubectl-get-minimal-response.txt"
 
 You can clone the repository with all manifests and source code by executing the following command:
 
