@@ -43,7 +43,7 @@ Click the `Install Operator` button.
 1. Clone the percona-server-mongodb-operator repository:
 
 ```bash
-$ git clone -b v1.12.0 https://github.com/percona/percona-server-mongodb-operator
+$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
 $ cd percona-server-mongodb-operator
 ```
 
@@ -190,10 +190,20 @@ my-cluster-name-rs0-2                              2/2     Running   0          
 percona-server-mongodb-operator-6fc78d686d-26hdz   1/1     Running   0          37m
 ```
 
+4. Check connectivity to newly created cluster.
 
-4. Check connectivity to newly created cluster. Please note that mongo client command shall be executed inside the container manually.
+First of all, run a container with a MongoDB client and connect its console
+output to your terminal. The following command will do this, naming the new
+Pod `percona-client`:
 
 ```bash
-$ oc run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
+$ oc run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
+```
+
+Executing it may require some time to deploy the correspondent Pod. Now run
+`mongo` tool in the percona-client command shell using the login (which is
+`userAdmin`) with a proper password obtained from the Secret:
+
+```bash
 percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
 ```

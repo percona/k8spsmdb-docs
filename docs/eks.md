@@ -190,8 +190,10 @@ $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongod
 
 Executing it may require some time to deploy the correspondent Pod. Now run
 `mongo` tool in the percona-client command shell using the login (which is
-`userAdmin`) and password obtained from the secret:
+`userAdmin`) with a proper password obtained from the Secret, and a proper
+namespace name instead of the `<namespace name>` placeholder:
 
 ```bash
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+```
 ```

@@ -1,16 +1,14 @@
 # Install Percona server for MongoDB on Kubernetes
 
-
 1. Clone the percona-server-mongodb-operator repository:
 
 ```bash
-$ git clone -b v1.12.0 https://github.com/percona/percona-server-mongodb-operator
+$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
 cd percona-server-mongodb-operator
 ```
 
 **NOTE**: It is crucial to specify the right branch with `-b`
 option while cloning the code on this step. Please be careful.
-
 
 2. The Custom Resource Definition for Percona Server for MongoDB should be
 created from the `deploy/crd.yaml` file. The Custom Resource Definition
@@ -23,7 +21,6 @@ $ kubectl apply --server-side -f deploy/crd.yaml
 
 This step should be done only once; the step does not need to be repeated
 with any other Operator deployments.
-
 
 3. Create a namespace and set the context for the namespace. The resource names
 must be unique within the namespace and provide a way to divide cluster
@@ -38,9 +35,8 @@ $ kubectl create namespace <namespace name>
 $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
 ```
 
-At success, you will see the message that namespace/<namespace name> was
+At success, you will see the message that `namespace/<namespace name>` was
 created, and the context was modified.
-
 
 4. The role-based access control (RBAC) for Percona Server for MongoDB is
 configured with the `deploy/rbac.yaml` file. Role-based access is based on
@@ -60,13 +56,11 @@ grant user needed privileges with the following command:
 $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 ```
 
-
 5. Start the operator within Kubernetes:
 
 ```bash
 $ kubectl apply -f deploy/operator.yaml
 ```
-
 
 6. Add the MongoDB Users secrets to Kubernetes. These secrets
 should be placed as plain text in the stringData section of the
@@ -84,12 +78,10 @@ $ kubectl create -f deploy/secrets.yaml
 
 More details about secrets can be found in [Users](users.md#users).
 
-
 7. Now certificates should be generated. By default, the Operator generates
 certificates automatically, and no actions are required at this step. Still,
 you can generate and apply your own certificates as secrets according
 to the [TLS instructions](TLS.md#tls).
-
 
 8. After the operator is started, Percona Server for MongoDB cluster can
 be created with the following command:
@@ -121,11 +113,21 @@ my-cluster-name-rs0-2                              2/2     Running   0          
 percona-server-mongodb-operator-6fc78d686d-26hdz   1/1     Running   0          37m
 ```
 
+9. Check connectivity to a newly created cluster.
 
-9. Check connectivity to newly created cluster, using the login (which is
-`userAdmin`) and corresponding password from the secret:
+First of all, run a container with a MongoDB client and connect its console
+output to your terminal. The following command will do this, naming the new
+Pod `percona-client`:
 
 ```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:4.4.13-13 --restart=Never -- bash -il
-percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
+```
+
+Executing it may require some time to deploy the correspondent Pod. Now run
+`mongo` tool in the percona-client command shell using the login (which is
+`userAdmin`) with a proper password obtained from the Secret, and a proper
+namespace name instead of the `<namespace name>` placeholder:
+
+```bash
+$ percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```

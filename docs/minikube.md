@@ -102,5 +102,5 @@ Executing it may require some time to deploy the correspondent Pod.  Now run
 `userAdmin`) and password obtained from the secret:
 
 ```bash
-$ mongo "mongodb://userAdmin:userAdminPassword@minimal-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false"
+$ mongo "mongodb://userAdmin:userAdmin123456@minimal-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false"
 ```
