@@ -30,8 +30,6 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Use private registry](custom-registry.md)
 
-* [Deploy with Service Broker](broker.md)
-
 # Configuration
 
 * [Application and system users](users.md)

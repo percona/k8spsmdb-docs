@@ -116,7 +116,6 @@ nav:
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           - "Use private registry": custom-registry.md
-          - "Deploy with Service Broker": broker.md
           
     - Configuration:
           - "Application and system users": users.md
