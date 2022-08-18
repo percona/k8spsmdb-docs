@@ -34,7 +34,7 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
 
     You may wait a few minutes for the cluster to be generated, and then you will see it listed in the Google Cloud console (select *Kubernetes Engine* → *Clusters* in the left menu panel):
 
-    ![image](img/gke-quickstart-cluster-connect.png)
+    ![image](assets/images/gke-quickstart-cluster-connect.png)
 
     Now you should configure the command-line access to your newly created cluster to make `kubectl` be able to use it.
 
@@ -140,7 +140,7 @@ The result should look as follows:
 
 Also, you can see the same information when browsing Pods of your cluster in Google Cloud console via the *Object Browser*:
 
-![image](./docs/assets/images/gke-quickstart-object-browser.png)
+![image](assets/images/gke-quickstart-object-browser.png)
 
 If all nodes are up and running, you can try to connect to the cluster.
 
@@ -170,11 +170,11 @@ Review the detailed information for `Warning` statements and then correct the co
 
 Alternatively, you can examine your Pods via the *object browser*. Errors will look as follows:
 
-![image](./docs/assets/images/gke-quickstart-object-browser-error.png)
+![image](assets/images/gke-quickstart-object-browser-error.png)
 
 Clicking the problematic Pod will bring you to the details page with the same warning:
 
-![image](./docs/assets/images/gke-quickstart-object-browser-details.png)
+![image](assets/images/gke-quickstart-object-browser-details.png)
 
 ## Removing the GKE cluster
 
@@ -190,6 +190,6 @@ The return statement requests your confirmation of the deletion. Type `y` to con
 
 Also, you can delete your cluster via the GKE console. Just click the `Delete` popup menu item in the clusters list:
 
-![image](./docs/assets/images/gke-quickstart-cluster-connect.png)
+![image](assets/images/gke-quickstart-cluster-connect.png)
 
 The cluster deletion may take time.
