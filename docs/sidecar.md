@@ -1,10 +1,11 @@
 # Using sidecar containers
 
-The Operator allows you to deploy additional (so-called *sidecar*) containers to
-the Pod. You can use this feature to run debugging tools, some specific
+The Operator allows you to deploy additional (so-called *sidecar*) containers
+to the Pod. You can use this feature to run debugging tools, some specific
 monitoring solutions, etc.
 
 !!! note
+
     Custom sidecar containers [can easily access other components of your cluster](https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication).
     Therefore they should be used carefully and by experienced users only.
 
@@ -81,8 +82,11 @@ which were tested with sidecar containers and are known to work.
 
 ### Persistent Volume
 
-You can use [Persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) when you need dynamically provisioned storage which doesn’t depend on the Pod lifecycle.
-To use such volume, you should *claim* durable storage with [persistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/volumes/#persistentvolumeclaim) without specifying any non-important details.
+You can use [Persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+when you need dynamically provisioned storage which doesn’t depend on the Pod
+lifecycle. To use such volume, you should *claim* durable storage with
+[persistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/volumes/#persistentvolumeclaim)
+without specifying any non-important details.
 
 The following example requests 1G storage with `sidecar-volume-claim`
 PersistentVolumeClaim, and mounts the correspondent Persistent Volume to the
@@ -113,6 +117,7 @@ sidecarPVCs:
 ```
 
 !!! note
+
     Sidecar containers for *mongos* Pods have limited Persistent volumes
     support: `sharding.mongos.sidecarPVCs` option can be used if there is a
     single mongos in deployment or when `ReadWriteMany/ReadOnlyMany`
@@ -149,12 +154,14 @@ and mounts it to the `rs-sidecar-0` container’s filesystem under the
 `/secret` directory.
 
 !!! note
+
     Don’t forget you need to [create a Secret Object](https://kubernetes.io/docs/concepts/configuration/secret/) before you can use it.
 
 ### configMap
 
-You can use a [configMap volume](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) to pass some configuration data to the container.
-Secrets are stored with the Kubernetes API and mounted to the container as RAM-stored files.
+You can use a [configMap volume](https://kubernetes.io/docs/concepts/storage/volumes/#configmap)
+to pass some configuration data to the container. Secrets are stored with the
+Kubernetes API and mounted to the container as RAM-stored files.
 
 You can mount a configMap volume as follows:
 
@@ -176,8 +183,10 @@ sidecarVolumes:
 
 The above example creates a `sidecar-config` volume (based on already existing
 `myconfigmap` [configMap object](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/))
-and mounts it to the `rs-sidecar-0` container’s filesystem under the
-`/config` directory.
+and mounts it to the `rs-sidecar-0` container’s filesystem under the `/config`
+directory.
 
 !!! note
-    Don’t forget you need to [create a configMap Object](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap) before you can use it.
+
+    Don’t forget you need to [create a configMap Object](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap)
+    before you can use it.

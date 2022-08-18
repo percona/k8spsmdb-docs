@@ -12,14 +12,13 @@ of each request to the necessary subset of data (so-called *shard*).
 A MongoDB Sharding involves the following components:
 
 * `shard` - a replica set which contains a subset of data stored in the
-database (similar to a traditional MongoDB replica set),
-
+    database (similar to a traditional MongoDB replica set),
 * `mongos` - a query router, which acts as an entry point for client applications,
-
 * `config servers` - a replica set to store metadata and configuration
-settings for the sharded database cluster.
+    settings for the sharded database cluster.
 
 !!! note
+
     Percona Operator for MongoDB 1.6.0 supported only one shard of
     a MongoDB cluster; still, this limited sharding support allowed using
     `mongos` as an entry point instead of provisioning a load-balancer per
@@ -41,6 +40,7 @@ servers and mongos instances. Their number is controlled by
 `configsvrReplSet.size` and `mongos.size` keys, respectively.
 
 !!! note
+
     Config servers for now can properly work only with WiredTiger engine,
     and sharded MongoDB nodes can use either WiredTiger or InMemory one.
 

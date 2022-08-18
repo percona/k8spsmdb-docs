@@ -2,10 +2,7 @@
 
 The Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptographic protocol for the following types of communication:
 
-
 * Internal - communication between Percona Server for MongoDB instances in the cluster
-
-
 * External - communication between the client application and the cluster
 
 The internal certificate is also used as an authorization method.
@@ -14,11 +11,8 @@ Certificates for TLS security can be generated in several ways. By default, the
 Operator generates long-term certificates automatically if there are no
 certificate secrets available. Other options are the following ones:
 
-
 * the Operator can use a specifically installed *cert-manager*, which will
-automatically generate and renew short-term TLS certificates,
-
-
+    automatically generate and renew short-term TLS certificates,
 * certificates can be generated manually.
 
 You can also use pre-generated certificates available in the
@@ -43,20 +37,15 @@ self-signed issuer is local to the operator namespace. This self-signed issuer
 is created because Percona Server for MongoDB requires all certificates issued
 by the same CA (Certificate authority).
 
-Self-signed issuer allows you to deploy and use the Percona
-Operator without creating a cluster issuer separately.
+Self-signed issuer allows you to deploy and use the Percona Operator without
+creating a cluster issuer separately.
 
 ### Installation of the *cert-manager*
 
 The steps to install the *cert-manager* are the following:
 
-
 * create a namespace,
-
-
 * disable resource validations on the cert-manager namespace,
-
-
 * install the cert-manager.
 
 The following commands perform all the needed actions:
@@ -89,24 +78,14 @@ you will find that they are valid and short-term.
 
 To generate certificates manually, follow these steps:
 
-
-1. Provision a Certificate Authority (CA) to generate TLS certificates
-
-
-2. Generate a CA key and certificate file with the server details
-
-
-3. Create the server TLS certificates using the CA keys, certs, and server details
+1. Provision a Certificate Authority (CA) to generate TLS certificates,
+2. Generate a CA key and certificate file with the server details,
+3. Create the server TLS certificates using the CA keys, certs, and server details.
 
 The set of commands generate certificates with the following attributes:
 
-
 * `Server-pem` - Certificate
-
-
 * `Server-key.pem` - the private key
-
-
 * `ca.pem` - Certificate Authority
 
 You should generate certificates twice: one set is for external communications,
@@ -202,53 +181,50 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
 
 ## Check your certificates for expiration
 
-
 1. First, check the necessary secrets names (`my-cluster-name-ssl` and
-`my-cluster-name-ssl-internal` by default):
+    `my-cluster-name-ssl-internal` by default):
 
-```bash
-$ kubectl get certificate
-```
+    ```bash
+    $ kubectl get certificate
+    ```
 
-You will have the following response:
+    You will have the following response:
 
-```text
-NAME                           READY   SECRET                         AGE
-my-cluster-name-ssl            True    my-cluster-name-ssl            49m
-my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
-```
-
+    ```text
+    NAME                           READY   SECRET                         AGE
+    my-cluster-name-ssl            True    my-cluster-name-ssl            49m
+    my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
+    ```
 
 2. Optionally you can also check that the certificates issuer is up and running:
 
-```bash
-$ kubectl get issuer
-```
+    ```bash
+    $ kubectl get issuer
+    ```
 
-The response should be as follows:
+    The response should be as follows:
 
-```text
-NAME                       READY   AGE
-my-cluster-name-psmdb-ca   True    61s
-```
-
+    ```text
+    NAME                       READY   AGE
+    my-cluster-name-psmdb-ca   True    61s
+    ```
 
 3. Now use the following command to find out the certificates validity dates,
-substituting Secrets names if necessary:
+    substituting Secrets names if necessary:
 
-```bash
-$ {
-  kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
-  kubectl get secret/my-cluster-name-ssl -o jsonpath='{.data.ca\.crt}' | base64 --decode | openssl x509 -noout -dates
-  }
-```
+    ```bash
+    $ {
+      kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
+      kubectl get secret/my-cluster-name-ssl -o jsonpath='{.data.ca\.crt}' | base64 --decode | openssl x509 -noout -dates
+      }
+    ```
 
-The resulting output will be self-explanatory:
+    The resulting output will be self-explanatory:
 
-```text
-notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
-notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
-```
+    ```text
+    notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
+    notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
+    ```
 
 ## Run Percona Server for MongoDB without TLS
 

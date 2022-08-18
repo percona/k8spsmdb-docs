@@ -4,16 +4,13 @@ The design of the Operator is tighly bound to the Percona Server for
 MongoDB replica set, which is briefly described in the following
 diagram.
 
-
-
-![image](replication.png)
+![image](assets/images/replication.png)
 
 A replica set consists of one primary server and several secondary ones
 (two in the picture), and the client application accesses the servers
 via a driver.
 
-To provide high availability the Operator uses [node
-affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
+To provide high availability the Operator uses [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 to run MongoDB instances on separate worker nodes if possible, and the
 database cluster is deployed as a single Replica Set with at least three
 nodes. If a node fails, the pod with the mongod process is automatically
@@ -28,15 +25,14 @@ members from DNS SRV entries without having to list hostnames for the
 dynamically assigned nodes.
 
 !!! note
+
     The Operator uses security settings which are more secure
     than the default Percona Server for MongoDB setup. The initial
     configuration contains default passwords for all needed user accounts,
     which should be changed in the production environment, as stated in
     the  [installation instructions](openshift.html).
 
-
-
-![image](operator.png)
+![image](assets/images/operator.png)
 
 To provide data storage for stateful applications, Kubernetes uses
 Persistent Volumes. A *PersistentVolumeClaim* (PVC) is used to implement

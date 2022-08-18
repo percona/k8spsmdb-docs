@@ -7,11 +7,7 @@ in one of the following ways:
 
 
 * edit the `deploy/cr.yaml` file,
-
-
 * use a ConfigMap,
-
-
 * use a Secret object.
 
 You can pass configuration settings separately for **mongod** Pods,
@@ -57,21 +53,17 @@ application.
 You should give the ConfigMap a specific name, which is composed of your cluster
 name and a specific suffix:
 
-
 * `my-cluster-name-rs0-mongod` for the Replica Set (mongod) Pods,
-
-
 * `my-cluster-name-cfg-mongod` for the Config Server Pods,
-
-
 * `my-cluster-name-mongos` for the mongos Pods,
 
 !!! note
+
     To find the cluster name, you can use the following command:
 
-```bash
-$ kubectl get psmdb
-```
+    ```bash
+    $ kubectl get psmdb
+    ```
 
 For example, let’s define a `mongod.conf` configuration file and put there
 several MongoDB options we used in the previous example:
@@ -90,8 +82,8 @@ You can create a ConfigMap from the `mongod.conf` file with the
 $ kubectl create configmap <configmap-name> <resource-type=resource-name>
 ```
 
-The following example defines `my-cluster-name-rs0-mongod` as the ConfigMap
-name and the `mongod.conf` file as the data source:
+The following example defines `my-cluster-name-rs0-mongod` as the ConfigMap name
+and the `mongod.conf` file as the data source:
 
 ```bash
 $ kubectl create configmap my-cluster-name-rs0-mongod --from-file=mongod.conf=mongod.conf
@@ -104,6 +96,7 @@ $ kubectl describe configmaps my-cluster-name-rs0-mongod
 ```
 
 !!! note
+
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
     [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
@@ -117,28 +110,21 @@ This can be useful if you need additional protection for some sensitive data.
 You should create a Secret object with a specific name, composed of your cluster
 name and a specific suffix:
 
-
 * `my-cluster-name-rs0-mongod` for the Replica Set Pods,
-
-
 * `my-cluster-name-cfg-mongod` for the Config Server Pods,
-
-
 * `my-cluster-name-mongos` for the mongos Pods,
 
 !!! note
+
     To find the cluster name, you can use the following command:
 
-```bash
-$ kubectl get psmdb
-```
+    ```bash
+    $ kubectl get psmdb
+    ```
 
 Configuration options should be put inside a specific key:
 
-
 * `data.mongod` key for Replica Set (mongod) and Config Server Pods,
-
-
 * `data.mongos` key for mongos Pods.
 
 Actual options should be encoded with [Base64](https://en.wikipedia.org/wiki/Base64).
@@ -161,6 +147,7 @@ $ cat mongod.conf | base64
 ```
 
 !!! note
+
     Similarly, you can read the list of options from a Base64 encoded
     string:
 
@@ -189,6 +176,7 @@ $ kubectl create -f deploy/my-mongod-secret.yaml
 ```
 
 !!! note
+
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
     [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)

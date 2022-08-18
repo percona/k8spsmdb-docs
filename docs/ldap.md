@@ -1,8 +1,17 @@
 # How to integrate Percona Operator for MongoDB with OpenLDAP
 
-LDAP services provided by software like OpenLDAP, Microsoft Active Directory, etc. are widely used by enterprises to control information about users, systems, networks, services and applications and the corresponding access rights for the authentication/authorization process in a centralized way.
+LDAP services provided by software like OpenLDAP, Microsoft Active Directory,
+etc. are widely used by enterprises to control information about users, systems,
+networks, services and applications and the corresponding access rights for the
+authentication/authorization process in a centralized way.
 
-The following guide covers a simple integration of the already-installed OpenLDAP server with Percona Distribution for MongoDB and the Operator. You can know more about LDAP concepts and [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) files used to configure it, and find how to install and configure OpenLDAP in the official [OpenLDAP](https://www.openldap.org/doc/admin26/) and [Percona Server for MongoDB](https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html) documentation.
+The following guide covers a simple integration of the already-installed
+OpenLDAP server with Percona Distribution for MongoDB and the Operator. You can
+know more about LDAP concepts and [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
+files used to configure it, and find how to install and configure OpenLDAP in
+the official [OpenLDAP](https://www.openldap.org/doc/admin26/) and
+[Percona Server for MongoDB](https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html)
+documentation.
 
 ## The OpenLDAP side
 
@@ -43,10 +52,7 @@ $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=perco
 
 In order to get MongoDB connected with OpenLDAP we need to configure both:
 
-
 * Mongod
-
-
 * Internal mongodb role
 
 As for mongod you may use the following code snippet:
@@ -73,18 +79,26 @@ setParameter:
   authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
 ```
 
-This fragment provides mongod with LDAP-specific parameters, such as FQDN of the LDAP server (`server`), explicit lookup user, domain rules, etc.
+This fragment provides mongod with LDAP-specific parameters, such as FQDN of the
+LDAP server (`server`), explicit lookup user, domain rules, etc.
 
-Put the snippet on you local machine and create a Kubernetes Secret object named based on [your MongoDB cluster name](operator.md#cluster-name).
+Put the snippet on you local machine and create a Kubernetes Secret object named
+based on [your MongoDB cluster name](operator.md#cluster-name).
 
 ```bash
 $ kubectl create secret generic my-cluster-name-rs0-mongod --from-file=mongod.conf=<path-to-mongod-ldap-configuration>
 ```
 
 !!! note
-    [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html)  is not yet supproted by the Operator.
 
-Next step is to start the MongoDB cluster up as it’s described in [Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes). On successful completion of the steps from this doc, we are to proceed with setting the LDAP user roles inside the MongoDB. For this, log into MongoDB as administrator and execute the following:
+    [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html) is not yet
+    supproted by the Operator.
+
+Next step is to start the MongoDB cluster up as it’s described in
+[Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
+On successful completion of the steps from this doc, we are to proceed with
+setting the LDAP user roles inside the MongoDB. For this, log into MongoDB as
+administrator and execute the following:
 
 ```bash
 var admin = db.getSiblingDB("admin")
@@ -97,7 +111,8 @@ admin.createRole(
 )
 ```
 
-Now the new `percona` user created inside OpenLDAP is able to login to MongoDB as administrator. You can check this with the following command:
+Now the new `percona` user created inside OpenLDAP is able to login to MongoDB
+as administrator. You can check this with the following command:
 
 ```bash
 $ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
