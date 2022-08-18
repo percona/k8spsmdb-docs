@@ -33,9 +33,9 @@ Install Helm following its [official installation instructions](https://docs.hel
 
     !!! note
 
-    If nothing explicitly specified, `helm install` command will work
-    with `default` namespace. To use different namespace, provide it with
-    the following additional parameter: `--namespace my-namespace`.
+        If nothing explicitly specified, `helm install` command will work
+        with `default` namespace. To use different namespace, provide it with
+        the following additional parameter: `--namespace my-namespace`.
 
 3. Install Percona Server for MongoDB:
 
