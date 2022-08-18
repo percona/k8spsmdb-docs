@@ -32,7 +32,6 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
-
 3. Deploy MongoDB cluster with:
 
     ```bash

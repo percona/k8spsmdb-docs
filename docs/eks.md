@@ -6,7 +6,6 @@ This quickstart shows you how to deploy Percona Operator for MongoDB on Amazon E
 
 The following tools are used in this guide and therefore should be preinstalled:
 
-
 1. **AWS Command Line Interface (AWS CLI)** for interacting with the different
     parts of AWS. You can install it following the [official installation instructions for your system](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 

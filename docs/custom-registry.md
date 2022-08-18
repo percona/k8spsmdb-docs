@@ -94,5 +94,4 @@ OpenShift environment demonstrates the process:
         will try using the image recommended by the Version Service instead of the
         custom one.
 
-
 9. Now follow the standard Percona Operator for MongoDB [installation instruction](./index.md/#advanced-installation-guides).

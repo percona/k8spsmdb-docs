@@ -140,8 +140,7 @@ The result should look as follows:
 
 Also, you can see the same information when browsing Pods of your cluster in Google Cloud console via the *Object Browser*:
 
-
-![image](img/gke-quickstart-object-browser.png)
+![image](./docs/assets/images/gke-quickstart-object-browser.png)
 
 If all nodes are up and running, you can try to connect to the cluster.
 
@@ -171,11 +170,11 @@ Review the detailed information for `Warning` statements and then correct the co
 
 Alternatively, you can examine your Pods via the *object browser*. Errors will look as follows:
 
-![image](img/gke-quickstart-object-browser-error.png)
+![image](./docs/assets/images/gke-quickstart-object-browser-error.png)
 
 Clicking the problematic Pod will bring you to the details page with the same warning:
 
-![image](img/gke-quickstart-object-browser-details.png)
+![image](./docs/assets/images/gke-quickstart-object-browser-details.png)
 
 ## Removing the GKE cluster
 
@@ -191,6 +190,6 @@ The return statement requests your confirmation of the deletion. Type `y` to con
 
 Also, you can delete your cluster via the GKE console. Just click the `Delete` popup menu item in the clusters list:
 
-![image](img/gke-quickstart-cluster-connect.png)
+![image](./docs/assets/images/gke-quickstart-cluster-connect.png)
 
 The cluster deletion may take time.

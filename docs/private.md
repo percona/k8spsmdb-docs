@@ -1,13 +1,13 @@
 # Creating a private S3-compatible cloud for backups
 
-As it is mentioned in
-[backups](backups.html)
-any cloud storage which implements the S3 API can be used for backups. The one way to setup and implement the S3 API storage on Kubernetes or OpenShift is
-[Minio](https://www.minio.io/) - the S3-compatible object storage
-server deployed via Docker on your own infrastructure.
+As it is mentioned in [backups](backups.html), any cloud storage which
+implements the S3 API can be used for backups. The one way to setup and
+implement the S3 API storage on Kubernetes or OpenShift is
+[Minio](https://www.minio.io/) - the S3-compatible object storage server
+deployed via Docker on your own infrastructure.
 
-Setting up Minio to be used with Percona Operator for MongoDB
-backups involves following steps:
+Setting up Minio to be used with Percona Operator for MongoDB backups involves
+the following steps:
 
 1. Install Minio in your Kubernetes or OpenShift
     environment and create the correspondent Kubernetes Service as
