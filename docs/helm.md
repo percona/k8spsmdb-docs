@@ -7,45 +7,45 @@
 Install Helm following its [official installation instructions](https://docs.helm.sh/using_helm/#installing-helm).
 
 !!! note
+
     Helm v3 is needed to run the following steps.
 
 ## Installation
 
 
 1. Add the Percona’s Helm charts repository and make your Helm client up to
-date with it:
+    date with it:
 
-```bash
-$ helm repo add percona https://percona.github.io/percona-helm-charts/
-$ helm repo update
-```
-
+    ```bash
+    $ helm repo add percona https://percona.github.io/percona-helm-charts/
+    $ helm repo update
+    ```
 
 2. Install Percona Operator for MongoDB:
 
-```bash
-$ helm install my-op percona/psmdb-operator
-```
+    ```bash
+    $ helm install my-op percona/psmdb-operator
+    ```
 
-The `my-op` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
-which is created for the Operator when you install its Helm chart (use any
-name you like).
+    The `my-op` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+    which is created for the Operator when you install its Helm chart (use any
+    name you like).
 
-!!! note
+    !!! note
+
     If nothing explicitly specified, `helm install` command will work
     with `default` namespace. To use different namespace, provide it with
     the following additional parameter: `--namespace my-namespace`.
 
-
 3. Install Percona Server for MongoDB:
 
-```bash
-$ helm install my-db percona/psmdb-db
-```
+    ```bash
+    $ helm install my-db percona/psmdb-db
+    ```
 
-The `my-db` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
-which is created for the Percona Server for MongoDB when you install its Helm
-chart (use any name you like).
+    The `my-db` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+    which is created for the Percona Server for MongoDB when you install its Helm
+    chart (use any name you like).
 
 ## Installing Percona Server for MongoDB with customized parameters
 
@@ -55,6 +55,7 @@ Custom options can be passed to a `helm install` command as a
 any of the Operator’s [Custom Resource options](operator.md#operator-custom-resource-options).
 
 !!! note
+
     Parameters from the [Replica Set section](operator.md#operator-replsets-section)
     are treated differently: if you specify *any* parameter from replsets<operator.replsets-section>,
     the Operator *will not* use default values for this Replica Set.
