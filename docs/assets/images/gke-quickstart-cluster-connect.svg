@@ -4,9 +4,9 @@
 <svg
    version="1.1"
    id="svg10526"
-   width="1216.6447"
+   width="973.82141"
    height="138.88138"
-   viewBox="0 0 1216.6447 138.88137"
+   viewBox="0 0 973.82145 138.88137"
    sodipodi:docname="gke-quickstart-cluster-connect.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -1256,19 +1256,19 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="0.84085501"
-     inkscape:cx="701.66675"
-     inkscape:cy="-13.676555"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
+     inkscape:cx="807.51139"
+     inkscape:cy="80.870066"
+     inkscape:window-width="1918"
+     inkscape:window-height="460"
      inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g10534">
+     inkscape:window-y="519"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g10870">
     <inkscape:page
        x="0"
        y="0"
        id="page10532"
-       width="1216.6447"
+       width="973.82147"
        height="138.88136" />
   </sodipodi:namedview>
   <g
@@ -1280,8 +1280,8 @@
        id="g10536"
        transform="matrix(0.81214558,0,0,0.13450448,21.242318,527.16644)">
       <path
-         d="M 36,36 H 1155 V 806 H 36 Z"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         d="M 36,36 H 929.52619 V 806 H 36 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.893591"
          id="path10538" />
       <g
          id="g10542">
@@ -1412,7 +1412,7 @@
     </g>
     <g
        id="g10822"
-       transform="matrix(0.81311834,0,0,0.14193735,19.148851,520.64655)">
+       transform="matrix(0.65102963,0,0,0.14193735,24.984045,520.64655)">
       <path
          d="M 36,78.75 H 1155 V 806 H 36 Z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1437,24 +1437,24 @@
          id="g10852"
          clip-path="url(#clipPath10856)">
         <path
-           d="M 36,115.5 H 1155 V 734 H 36 Z"
-           style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           d="M 36,115.5 H 932.95672 V 734 H 36 Z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.895304"
            id="path10858" />
       </g>
     </g>
     <g
        id="g10870">
       <path
-         d="M 54,531.41602 H 960.04128 V 634.15336 H 54 Z"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.397854"
+         d="M 54,531.41602 H 777.5107 V 634.15336 H 54 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.355527"
          id="path10872" />
       <path
-         d="M 54,535.5 H 900.16098 V 536 H 54 Z"
-         style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.921143"
+         d="M 54,535.5 H 679.40293 V 536 H 54 Z"
+         style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.791918"
          id="path10946" />
       <path
-         d="m 54,557 h 846.16098 v 0.5 H 54 Z"
-         style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.921143"
+         d="m 54,557 h 625.40293 v 0.5 H 54 Z"
+         style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.791918"
          id="path10948" />
     </g>
     <g
@@ -1471,7 +1471,7 @@
     </g>
     <g
        id="g11242"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g11244"
          clip-path="url(#clipPath11248)">
@@ -1483,7 +1483,7 @@
     </g>
     <g
        id="g11296"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g11298"
          clip-path="url(#clipPath11302)">
@@ -1495,7 +1495,7 @@
     </g>
     <g
        id="g11368"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g11370"
          clip-path="url(#clipPath11374)">
@@ -1507,7 +1507,7 @@
     </g>
     <g
        id="g11440"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g11442"
          clip-path="url(#clipPath11446)">
@@ -1519,7 +1519,7 @@
     </g>
     <g
        id="g11862"
-       transform="translate(-36)">
+       transform="translate(-51)">
       <text
          xml:space="preserve"
          style="font-variant:normal;font-size:9.75px;font-family:CairoFont-0;-inkscape-font-specification:CairoFont-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:0.658824;fill-rule:nonzero;stroke:none"
@@ -1559,9 +1559,9 @@
          xml:space="preserve"
          style="font-variant:normal;font-size:9.75px;font-family:CairoFont-0;-inkscape-font-specification:CairoFont-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:0.658824;fill-rule:nonzero;stroke:none"
          id="text12000"
-         x="424.78751"
+         x="379.78751"
          y="550"><tspan
-           x="424.78751"
+           x="379.78751"
            y="550"
            id="tspan11998"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.75px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal">3</tspan></text>
@@ -1569,9 +1569,9 @@
          xml:space="preserve"
          style="font-variant:normal;font-size:9.75px;font-family:CairoFont-0;-inkscape-font-specification:CairoFont-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:0.658824;fill-rule:nonzero;stroke:none"
          id="text12004"
-         x="515.97498"
+         x="440.97498"
          y="550"><tspan
-           x="515.97498 521.4447"
+           x="440.97498 446.4447"
            y="550"
            sodipodi:role="line"
            id="tspan12002"
@@ -1580,9 +1580,9 @@
          xml:space="preserve"
          style="font-variant:normal;font-size:9.75px;font-family:CairoFont-0;-inkscape-font-specification:CairoFont-0-0;writing-mode:lr-tb;fill:#000000;fill-opacity:0.658824;fill-rule:nonzero;stroke:none"
          id="text12008"
-         x="604.15002"
+         x="499.15002"
          y="550"><tspan
-           x="604.15002 609.61975 615.08954 617.49774 624.13751"
+           x="499.15002 504.61975 510.08954 512.49774 519.13751"
            y="550"
            sodipodi:role="line"
            id="tspan12006"
@@ -1590,7 +1590,7 @@
     </g>
     <g
        id="g12020"
-       transform="translate(-154.5)">
+       transform="translate(-304.5)">
       <text
          xml:space="preserve"
          transform="translate(879.82501,550)"
@@ -1600,13 +1600,13 @@
            y="0"
            id="tspan12028">—</tspan></text>
       <path
-         d="m 1003,544 c 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 z m 0,1.5 c -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 z m 0,4.5 c -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 z"
+         d="m 943,544 c 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 z m 0,1.5 c -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 z m 0,4.5 c -0.824,0 -1.5,0.676 -1.5,1.5 0,0.824 0.676,1.5 1.5,1.5 0.824,0 1.5,-0.676 1.5,-1.5 0,-0.824 -0.676,-1.5 -1.5,-1.5 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
          id="path12032" />
     </g>
     <g
        id="g12034"
-       transform="translate(-154.5)">
+       transform="translate(-376.5)">
       <g
          id="g12036"
          clip-path="url(#clipPath12040)">
@@ -1618,7 +1618,7 @@
     </g>
     <g
        id="g12106"
-       transform="translate(-154.5)">
+       transform="translate(-376.5)">
       <g
          id="g12108"
          clip-path="url(#clipPath12112)">
@@ -1630,7 +1630,7 @@
     </g>
     <g
        id="g12196"
-       transform="translate(-154.5)">
+       transform="translate(-376.5)">
       <g
          id="g12198"
          clip-path="url(#clipPath12202)">
@@ -1642,7 +1642,7 @@
     </g>
     <g
        id="g12546"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <path
          d="m 1024.125,284.477 h 85.188 v 84 h -85.188 z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1650,7 +1650,7 @@
     </g>
     <g
        id="g12550"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12552"
          clip-path="url(#clipPath12556)">
@@ -1677,7 +1677,7 @@
     </g>
     <g
        id="g12574"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12576"
          clip-path="url(#clipPath12580)">
@@ -1704,7 +1704,7 @@
     </g>
     <g
        id="g12598"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12600"
          clip-path="url(#clipPath12604)">
@@ -1731,7 +1731,7 @@
     </g>
     <g
        id="g12622"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12624"
          clip-path="url(#clipPath12628)">
@@ -1758,7 +1758,7 @@
     </g>
     <g
        id="g12646"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12648"
          clip-path="url(#clipPath12652)">
@@ -1785,7 +1785,7 @@
     </g>
     <g
        id="g12670"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12672"
          clip-path="url(#clipPath12676)">
@@ -1812,7 +1812,7 @@
     </g>
     <g
        id="g12694"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12696"
          clip-path="url(#clipPath12700)">
@@ -1839,7 +1839,7 @@
     </g>
     <g
        id="g12718"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12720"
          clip-path="url(#clipPath12724)">
@@ -1866,7 +1866,7 @@
     </g>
     <g
        id="g12742"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12744"
          clip-path="url(#clipPath12748)">
@@ -1893,7 +1893,7 @@
     </g>
     <g
        id="g12766"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <g
          id="g12768"
          clip-path="url(#clipPath12772)">
@@ -1920,7 +1920,7 @@
     </g>
     <g
        id="g12790"
-       transform="translate(-154.5,258)">
+       transform="translate(-376.5,258)">
       <path
          d="m 1024.125,284.477 h 85.188 v 84 h -85.188 z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"

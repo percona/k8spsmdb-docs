@@ -287,7 +287,7 @@ The result should look as follows:
 
 Also, you can see the same information when browsing Pods of your cluster in Google Cloud console via the *Object Browser*:
 
-![image](assets/images/gke-quickstart-object-browser.png)
+![image](assets/images/gke-quickstart-object-browser.svg)
 
 If all nodes are up and running, you can try to connect to the cluster.
 
@@ -324,12 +324,12 @@ configuration. An example of a warning is as follows:
 Alternatively, you can examine your Pods via the *object browser*. Errors will
 look as follows:
 
-![image](assets/images/gke-quickstart-object-browser-error.png)
+![image](assets/images/gke-quickstart-object-browser-error.svg)
 
 Clicking the problematic Pod will bring you to the details page with the same
 warning:
 
-![image](assets/images/gke-quickstart-object-browser-details.png)
+![image](assets/images/gke-quickstart-object-browser-details.svg)
 
 ## Removing the cluster
 
