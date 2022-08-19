@@ -348,7 +348,19 @@ warning:
 
     ![image](assets/images/gke-quickstart-cluster-connect.svg)
 
-=== "Amazon Elastic Kubernetes Service (EKS)"
-    ToDo
+    The cluster deletion may take time.
 
-The cluster deletion may take time.
+=== "Amazon Elastic Kubernetes Service (EKS)"
+    To delete your cluster, you will need the following data:
+
+    * name of your EKS cluster,
+    * AWS region in which you have deployed your cluster.
+    
+    You can clean up the cluster with the `eksctl` command as follows (with
+    real names instead of `<region>` and `<cluster name>` placeholders):
+
+    ```bash
+    $ delete cluster --region=<region> --name="<cluster name>"
+    ```
+
+    The cluster deletion may take time.
