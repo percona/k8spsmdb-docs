@@ -3,7 +3,7 @@
 This quickstart shows you how to configure a Percona Operator for MongoDB with
 the following platforms:
 
-* Google Kubernetes Engine,
+* Google Kubernetes Engine (GKE),
 * Amazon Elastic Kubernetes Service (EKS).
 
  The document assumes some experience with the platform of your choice. For more
@@ -12,7 +12,7 @@ the following platforms:
 
 ## Prerequisites
 
-=== "Google Kubernetes Engine"
+=== "Google Kubernetes Engine (GKE)"
     All commands from this quickstart can be run either in the
     **Google Cloud shell** or in **your local shell**.
 
@@ -52,7 +52,7 @@ the following platforms:
 
 ## Create the cluster within the the cloud of your choice
 
-=== "Google Kubernetes Engine"
+=== "Google Kubernetes Engine (GKE)"
     You can configure the settings using the `gcloud` tool. You can run it
     either in the [Cloud Shell](https://cloud.google.com/shell/docs/quickstart)
     or in your local shell (if you have installed Google Cloud SDK locally on the previous step). The following command will create a cluster named `my-cluster-name`:
@@ -333,7 +333,7 @@ warning:
 
 ## Removing the cluster
 
-=== "Google Kubernetes Engine"
+=== "Google Kubernetes Engine (GKE)"
     There are several ways that you can delete the cluster.
 
     You can clean up the cluster with the `gcloud` command as follows:
