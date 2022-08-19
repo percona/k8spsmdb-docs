@@ -217,18 +217,13 @@ the following platforms:
     $ kubectl apply -f deploy/cr.yaml
     ```
 
-    The creation process may take some time. 
-    
     The return statement confirms the creation:
 
     ```text
     perconaservermongodb.psmdb.percona.com/my-cluster-name created
     ```
 
-    
-    
-    
-    The process is over when all Pods
+    The creation process may take some time. The process is over when all Pods
     have reached their Running status. You can check it with the following command:
 
     ```bash
