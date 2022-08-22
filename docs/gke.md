@@ -1,8 +1,4 @@
-# Install Percona Server for MongoDB on Google Kubernetes Engine (GKE)
-
-This quickstart shows you how to configure a Percona Operator for MongoDB with the Google Kubernetes Engine. The document assumes some experience with Google Kubernetes Engine (GKE). For more information on the GKE, see the [Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
-
-## Prerequisites
+## Prerequisites to install Percona Server for MongoDB on Google Kubernetes Engine (GKE)
 
 All commands from this quickstart can be run either in the **Google Cloud shell** or in **your local shell**.
 
@@ -34,7 +30,7 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
 
     You may wait a few minutes for the cluster to be generated, and then you will see it listed in the Google Cloud console (select *Kubernetes Engine* → *Clusters* in the left menu panel):
 
-    ![image](assets/images/gke-quickstart-cluster-connect.png)
+    ![image](assets/images/gke-quickstart-cluster-connect.svg)
 
     Now you should configure the command-line access to your newly created cluster to make `kubectl` be able to use it.
 
@@ -58,33 +54,10 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
     clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
     ```
 
-2. Create a namespace and set the context for the namespace. The resource names must be unique within the namespace and provide a way to divide cluster resources between users spread across multiple projects.
-
-    So, create the namespace and save it in the namespace context for subsequent commands as follows (replace the `<namespace name>` placeholder with some descriptive name):
+2. Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ```bash
-    $ kubectl create namespace <namespace name>
-    $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
-    ```
-
-    At success, you will see the message that *namespace/<namespace name>* was created, and the context (*gke_<project name>_<zone location>_<cluster name>*) was modified.
-
-3. Use the following `git clone` command to download the correct branch of the percona-server-mongodb-operator repository:
-
-    ```bash
-    $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-    ```
-
-    After the repository is downloaded, change the directory to run the rest of the commands in this document:
-
-    ```bash
-    $ cd percona-server-mongodb-operator
-    ```
-
-4. Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
-
-    ```bash
-    $ kubectl apply --server-side -f deploy/bundle.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
     The following confirmation is returned:
@@ -99,10 +72,21 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
     deployment.apps/percona-server-mongodb-operator created
     ```
 
-5. The operator has been started, and you can create the Percona Server for MongoDB:
+    !!! note
+
+        This deploys the Operator in `default` namespace. Alternatively, you can create a new namespace and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
+
+        ```bash
+        $ kubectl create namespace <namespace name>
+        $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
+        ```
+
+        At success, you will see the message that *namespace/<namespace name>* was created, and the context (*gke_<project name>_<zone location>_<cluster name>*) was modified.
+
+3. The operator has been started, and you can deploy MongoDB cluster:
 
     ```bash
-    $ kubectl apply -f deploy/cr.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
     ```
 
     The process could take some time.
@@ -112,7 +96,36 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
     perconaservermongodb.psmdb.percona.com/my-cluster-name created
     ```
 
-6. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
+    !!! note
+
+        This deploys default MongoDB cluster configuration,
+        one mongos node and one config server node. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        and [Custom Resource Options](operator.md#operator-custom-resource-options) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
+
+        ```bash
+        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```
+        
+        After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
+
+        ```bash
+        $ kubectl apply -f deploy/cr.yaml
+        ```
+
+    The creation process may take some time. When the process is over your cluster
+    will obtain the `ready` status. You can check it with the following command:
+
+    ```bash
+    $ kubectl get psmdb
+    ```
+
+    The result should look as follows:
+
+    ```text
+    NAME              ENDPOINT                                           STATUS   AGE
+    my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+    ```
+4. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
 
     Use `kubectl get secrets` command to see the list of Secrets objects (by default Secrets object you are interested in has `my-cluster-secrets` name). Then `kubectl get secret my-cluster-secrets -o yaml` will return the YAML file with generated secrets, including the `MONGODB_USER_ADMIN` and `MONGODB_USER_ADMIN_PASSWORD` strings, which should look as follows:
 
@@ -128,7 +141,7 @@ $ gcloud container clusters create my-cluster-name --project <project name> --zo
 
 ## Verifying the cluster operation
 
-It may take ten minutes to get the cluster started. You  can verify its creation with the `kubectl get pods` command:
+It may take ten minutes to get the cluster started. Beside checking the cluster status with `kubectl get psmdb`, you can also track the creation process with the `kubectl get pods` command:
 
 ```bash
 $ kubectl get pods
@@ -140,7 +153,7 @@ The result should look as follows:
 
 Also, you can see the same information when browsing Pods of your cluster in Google Cloud console via the *Object Browser*:
 
-![image](assets/images/gke-quickstart-object-browser.png)
+![image](assets/images/gke-quickstart-object-browser.svg)
 
 If all nodes are up and running, you can try to connect to the cluster.
 
@@ -150,7 +163,7 @@ First of all, run a container with a MongoDB client and connect its console outp
 $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
 ```
 
-Executing it may require some time to deploy the correspondent Pod. Now run `mongo` tool in the percona-client command shell using the login (which is `userAdmin`) with a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder:
+Executing it may require some time to deploy the correspondent Pod. Now run `mongo` tool in the percona-client command shell using the login (which is `userAdmin`) with a proper password obtained from the Secret, and a proper namespace name (just `default`, or some other namespace you have used) instead of the `<namespace name>` placeholder:
 
 ```bash
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
@@ -166,15 +179,15 @@ $ kubectl describe pod my-cluster-name-rs0-2
 
 Review the detailed information for `Warning` statements and then correct the configuration. An example of a warning is as follows:
 
-> Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.
+`Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.`
 
 Alternatively, you can examine your Pods via the *object browser*. Errors will look as follows:
 
-![image](assets/images/gke-quickstart-object-browser-error.png)
+![image](assets/images/gke-quickstart-object-browser-error.svg)
 
 Clicking the problematic Pod will bring you to the details page with the same warning:
 
-![image](assets/images/gke-quickstart-object-browser-details.png)
+![image](assets/images/gke-quickstart-object-browser-details.svg)
 
 ## Removing the GKE cluster
 
@@ -190,6 +203,6 @@ The return statement requests your confirmation of the deletion. Type `y` to con
 
 Also, you can delete your cluster via the GKE console. Just click the `Delete` popup menu item in the clusters list:
 
-![image](assets/images/gke-quickstart-cluster-connect.png)
+![image](assets/images/gke-quickstart-cluster-connect.svg)
 
 The cluster deletion may take time.
