@@ -1,4 +1,4 @@
-# Install Percona Server for MongoDB on Google Kubernetes Engine (GKE)
+# Install Percona Server for MongoDB on Google Kubernetes Engine (GKE) and Elastic Kubernetes Service (EKS)
 
 This quickstart shows you how to configure a Percona Operator for MongoDB with
 the following platforms:
