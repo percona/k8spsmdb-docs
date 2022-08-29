@@ -80,11 +80,11 @@ the following platforms:
     $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value core/account)
     ```
 
-    The return statement confirms the creation:
+    ??? Command output
 
-    ```text
-    clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
-    ```
+        ```text
+        clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
+        ```
 
     ## Installing the Operator
 
@@ -94,18 +94,17 @@ the following platforms:
         $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
-        The following confirmation is returned:
+        ??? Command output
 
-        ```text
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
-        role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
-        serviceaccount/percona-server-mongodb-operator serverside-applied
-        rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
-        deployment.apps/percona-server-mongodb-operator serverside-applied
-        ```
-
+            ```text
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
+            role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
+            serviceaccount/percona-server-mongodb-operator serverside-applied
+            rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
+            deployment.apps/percona-server-mongodb-operator serverside-applied
+            ```
 
         !!! note
 
@@ -124,11 +123,11 @@ the following platforms:
         $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
-        The return statement confirms the creation:
+        ??? Command output
 
-        ```text
-        perconaservermongodb.psmdb.percona.com/my-cluster-name created
-        ```
+            ```text
+            perconaservermongodb.psmdb.percona.com/my-cluster-name created
+            ```
 
         !!! note
 
@@ -146,7 +145,6 @@ the following platforms:
             $ kubectl apply -f deploy/cr.yaml
             ```
 
-
         The creation process may take some time. When the process is over your cluster
         will obtain the `ready` status. You can check it with the following command:
 
@@ -154,12 +152,12 @@ the following platforms:
         $ kubectl get psmdb
         ```
 
-        The result should look as follows:
+        ??? Command output
 
-        ```text
-        NAME              ENDPOINT                                           STATUS   AGE
-        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
-        ```
+            ```text
+            NAME              ENDPOINT                                           STATUS   AGE
+            my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+            ```
 
     3. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
 
@@ -189,9 +187,9 @@ the following platforms:
     $ kubectl get pods
     ```
 
-    The result should look as follows:
+    ??? Command output
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+        --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
     Also, you can see the same information when browsing Pods of your cluster in Google Cloud console via the *Object Browser*:
 
@@ -346,18 +344,17 @@ the following platforms:
         $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
-        The following confirmation is returned:
+        ??? Command output
 
-        ```text
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
-        role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
-        serviceaccount/percona-server-mongodb-operator serverside-applied
-        rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
-        deployment.apps/percona-server-mongodb-operator serverside-applied
-        ```
-
+            ```text
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
+            role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
+            serviceaccount/percona-server-mongodb-operator serverside-applied
+            rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
+            deployment.apps/percona-server-mongodb-operator serverside-applied
+            ```
 
         !!! note
 
@@ -376,11 +373,11 @@ the following platforms:
         $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
-        The return statement confirms the creation:
+        ??? Command output
 
-        ```text
-        perconaservermongodb.psmdb.percona.com/my-cluster-name created
-        ```
+            ```text
+            perconaservermongodb.psmdb.percona.com/my-cluster-name created
+            ```
 
         !!! note
 
@@ -406,12 +403,12 @@ the following platforms:
         $ kubectl get psmdb
         ```
 
-        The result should look as follows:
+        ??? Command output
 
-        ```text
-        NAME              ENDPOINT                                           STATUS   AGE
-        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
-        ```
+            ```text
+            NAME              ENDPOINT                                           STATUS   AGE
+            my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+            ```
 
     3. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
 
@@ -441,9 +438,9 @@ the following platforms:
     $ kubectl get pods
     ```
 
-    The result should look as follows:
+    ??? Command output
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+        --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
     If all nodes are up and running, you can try to connect to the cluster.
 

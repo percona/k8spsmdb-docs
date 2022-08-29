@@ -110,13 +110,13 @@ nav:
     - Quickstart guides:
           - "Install with Helm": helm.md
           - "Install on Minikube": minikube.md
-          - "Install on Google Kubernetes Engine (GKE)": gke.md
-          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           
     - Advanced Installation guide:
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           - "Use private registry": custom-registry.md
+          - "Install on Google Kubernetes Engine (GKE)": gke.md
+          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           
     - Configuration:
           - "Application and system users": users.md
