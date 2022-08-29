@@ -50,7 +50,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
        "spec": {
           "crVersion":"{{ release }}",
           "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
-          "backup": { "image": "percona/percona-server-mongodb-operator:{{ release }}-backup" },
+          "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
     ```
