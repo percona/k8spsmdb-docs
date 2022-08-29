@@ -80,7 +80,7 @@ the following platforms:
     $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value core/account)
     ```
 
-    ??? Command output
+    ??? example "Command output"
 
         ```text
         clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
@@ -94,7 +94,7 @@ the following platforms:
         $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
@@ -123,7 +123,7 @@ the following platforms:
         $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             perconaservermongodb.psmdb.percona.com/my-cluster-name created
@@ -152,7 +152,7 @@ the following platforms:
         $ kubectl get psmdb
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             NAME              ENDPOINT                                           STATUS   AGE
@@ -187,7 +187,7 @@ the following platforms:
     $ kubectl get pods
     ```
 
-    ??? Command output
+    ??? example "Command output"
 
         --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
@@ -344,7 +344,7 @@ the following platforms:
         $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
@@ -373,7 +373,7 @@ the following platforms:
         $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             perconaservermongodb.psmdb.percona.com/my-cluster-name created
@@ -403,7 +403,7 @@ the following platforms:
         $ kubectl get psmdb
         ```
 
-        ??? Command output
+        ??? example "Command output"
 
             ```text
             NAME              ENDPOINT                                           STATUS   AGE
@@ -438,7 +438,7 @@ the following platforms:
     $ kubectl get pods
     ```
 
-    ??? Command output
+    ??? example "Command output"
 
         --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
