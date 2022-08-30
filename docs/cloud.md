@@ -50,9 +50,9 @@ the following platforms:
         You must edit the following command and other command-line statements to
         replace the `<project name>` placeholder with your project name. You may
         also be required to edit the *zone location*, which is set to
-        `us-central1` in the above example. Other parameters specify that we are
-        creating a cluster with 3 nodes and with machine type of 4 vCPUs and
-        45 GB memory.
+        `us-central1` in the above example. Other parameters in the command
+        above specify that we are creating a cluster with 3 nodes and with
+        machine type of 4 vCPUs.
 
     You may wait a few minutes for the cluster to be generated, and then you
     will see it listed in the Google Cloud console
