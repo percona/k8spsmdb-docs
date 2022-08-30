@@ -262,3 +262,7 @@ The return statement requests your confirmation of the deletion. Type `y` to con
     ![image](assets/images/gke-quickstart-cluster-connect.svg)
 
 The cluster deletion may take time.
+
+!!! warning
+
+    After deleting the cluster, all data stored in it will be lost!

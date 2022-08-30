@@ -239,7 +239,11 @@ You can clean up the cluster with the `eksctl` command as follows (with
 real names instead of `<region>` and `<cluster name>` placeholders):
 
 ```bash
-$ delete cluster --region=<region> --name="<cluster name>"
+$ eksctl delete cluster --region=<region> --name="<cluster name>"
 ```
 
 The cluster deletion may take time.
+
+!!! warning
+
+    After deleting the cluster, all data stored in it will be lost!
