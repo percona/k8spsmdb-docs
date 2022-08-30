@@ -38,6 +38,6 @@ You can disable telemetry with a special option when installing the Operator:
   ```yaml
   ...
    - name: DISABLE_TELEMETRY
-     value: "false"
+     value: "true"
   ...
   ```
