@@ -30,7 +30,7 @@ dynamically assigned nodes.
     than the default Percona Server for MongoDB setup. The initial
     configuration contains default passwords for all needed user accounts,
     which should be changed in the production environment, as stated in
-    the  [installation instructions](openshift.html).
+    the  [installation instructions](index.md#advanced-installation-guides).
 
 ![image](assets/images/operator.png)
 

@@ -1,4 +1,4 @@
-# [Pause/resume Percona Server for MongoDB](pause.html#operator-pause)
+# <a name="operator-pause"></a>Pause/resume Percona Server for MongoDB
 
 There may be external situations when it is needed to shutdown the cluster
 for a while and then start it back up (some works related to the maintenance of
