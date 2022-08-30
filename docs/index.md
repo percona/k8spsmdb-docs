@@ -20,15 +20,15 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 # Advanced Installation Guides
 
+* [Install on Google Kubernetes Engine (GKE)](cloud.md)
+
+* [Install on Amazon Elastic Kubernetes Service (AWS EKS)](cloud.md)
+
 * [Generic Kubernetes installation](kubernetes.md)
 
 * [Install on OpenShift](openshift.md)
 
 * [Use private registry](custom-registry.md)
-
-* [Install on Google Kubernetes Engine (GKE)](quickstarts.md)
-
-* [Install on Amazon Elastic Kubernetes Service (AWS EKS)](quickstarts.md)
 
 # Configuration
 
