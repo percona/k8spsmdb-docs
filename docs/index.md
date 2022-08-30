@@ -20,9 +20,9 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 # Advanced Installation Guides
 
-* [Install on Google Kubernetes Engine (GKE)](cloud.md)
+* [Install on Google Kubernetes Engine (GKE)](gke.md)
 
-* [Install on Amazon Elastic Kubernetes Service (AWS EKS)](cloud.md)
+* [Install on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
 
 * [Generic Kubernetes installation](kubernetes.md)
 
