@@ -32,12 +32,13 @@ You can disable telemetry with a special option when installing the Operator:
 
 * if you don't use helm for installation, you have to edit the `operator.yaml`
   before applying it with the `kubectl apply -f deploy/operator.yaml` command.
-  Open the `operator.yaml` file with your text editor, find the
-  `DISABLE_TELEMETRY` option and set the value to `true`:
+  Open the `operator.yaml` file with your text editor, find the value of the
+  `DISABLE_TELEMETRY` environment variable and set it to `true`:
 
   ```yaml
-  ...
-   - name: DISABLE_TELEMETRY
-     value: "true"
-  ...
+  env:
+    ...
+    - name: DISABLE_TELEMETRY
+      value: "true"
+    ...
   ```
