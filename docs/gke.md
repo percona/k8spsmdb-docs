@@ -168,44 +168,7 @@ It may take ten minutes to get the cluster started. When `kubectl get psmdb`
 command finally shows you the cluster status as `ready`, you can try to connect
 to the cluster.
 
-During previous steps, the Operator has generated several [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/),
-including the password for the `root` user, which you will need to access the
-cluster.
-
-Use `kubectl get secrets` command to see the list of Secrets objects (by default
-Secrets object you are interested in has `my-cluster-secrets` name). Then
-`kubectl get secret my-cluster-secrets -o yaml` will return the YAML file with
-generated secrets, including the `MONGODB_USER_ADMIN` and
-`MONGODB_USER_ADMIN_PASSWORD` strings, which should look as follows:
-
-```yaml
-...
-data:
-  ...
-  MONGODB_USER_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
-  MONGODB_USER_ADMIN_USER: dXNlckFkbWlu
-```
-
-Here the actual password is base64-encoded, and
-`echo 'aDAzQ0pCY3NSWEZ2ZUIzS1I=' | base64 --decode` will bring it back to a
-human-readable form.
-
-Now you can run a container with a MongoDB client and connect its console
-output to your terminal. The following command will do this, naming the new Pod
-`percona-client`:
-
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-```
-
-Executing it may require some time to deploy the correspondent Pod. Now run
-`mongo` tool in the percona-client command shell using the login (which is
-`userAdmin`) with a proper password obtained from the Secret, and a proper
-namespace name instead of the `<namespace name>` placeholder:
-
-```bash
-$ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-```
+{% include 'assets/fragments/connectivity.md' %}
 
 ## Troubleshooting
 
