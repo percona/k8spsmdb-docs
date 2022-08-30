@@ -79,7 +79,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
     clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
     ```
 
-## Installing the Operator
+# Install the Operator and deploy your MongoDB cluster
 
 1. Deploy the Operator. By default deployment will be done in the `default`
     namespace. If that's not the desired one, you can create a new namespace
@@ -110,7 +110,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
         deployment.apps/percona-server-mongodb-operator serverside-applied
         ```
 
-2. The operator has been started, and you can deploy MongoDB cluster:
+2. The operator has been started, and you can deploy your MongoDB cluster:
 
     ```bash
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
@@ -164,9 +164,9 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
 ## Verifying the cluster operation
 
-It may take ten minutes to get the cluster started.
-When `kubectl get psmdb` command finally shows you the cluster status as
-`ready`, you can try to connect to the cluster.
+It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+command finally shows you the cluster status as `ready`, you can try to connect
+to the cluster.
 
 During previous steps, the Operator has generated several [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/),
 including the password for the `root` user, which you will need to access the
