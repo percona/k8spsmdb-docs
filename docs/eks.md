@@ -63,17 +63,7 @@ nodeGroups:
         spotInstancePools: 2
       tags:
         'iit-billing-tag': 'cloud'
-      preBootstrapCommands:
-          - "echo 'OPTIONS=\"--default-ulimit nofile=1048576:1048576\"' >> /etc/sysconfig/docker"
-          - "systemctl restart docker"
 ```
-
-!!! note
-
-    `preBootstrapCommands` section is used in the 
-    above example to increase the limits for the amount of opened files:
-    this is important and shouldn’t be omitted, taking into account the
-    default EKS soft limit of 65536 files.
 
 When the cluster configuration file is ready, you can actually create your
 cluster by the following command:
