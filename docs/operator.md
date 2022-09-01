@@ -30,15 +30,15 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | updateStrategy | string              | `SmartUpdate`| A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete) |
 | multiCluster.enabled      | boolean  | `false`      | [Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services) |
 | multiCluster.DNSSuffix    | string   | `svc.clusterset.local` | The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)) |
-| upgradeOptions  | subdoc             |                        | Upgrade configuration section |
-| secrets         | subdoc             |                        | Operator secrets section |
-| replsets        | subdoc             |                        | Operator MongoDB Replica Set section |
-| pmm             | subdoc             |                        | Percona Monitoring and Management section |
-| sharding        | subdoc             |                        | MongoDB sharding configuration section |
-| mongod          | subdoc             |                        | Operator MongoDB Mongod configuration section |
-| backup          | subdoc             |                        | Percona Server for MongoDB backups section |
+| upgradeOptions  | [subdoc](operator.md#operator-upgradeoptions-section) | | Upgrade configuration section |
+| secrets         | [subdoc](operator.md#operator-secrets-section)        | | Operator secrets section |
+| replsets        | [subdoc](operator.md#operator-replsets-section)       | | Operator MongoDB Replica Set section |
+| pmm             | [subdoc](operator.md#operator-pmm-section)            | | Percona Monitoring and Management section |
+| sharding        | [subdoc](operator.md#operator-sharding-section)       | | MongoDB sharding configuration section |
+| mongod          | [subdoc](operator.md#operator-mongod-section)         | | Operator MongoDB Mongod configuration section |
+| backup          | [subdoc](operator.md#operator-backup-section)         | | Percona Server for MongoDB backups section |
 
-## [Upgrade Options Section](operator.html#operator-upgradeoptions-section)
+## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
 The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to control Percona Server for MongoDB upgrades.
 
@@ -64,7 +64,7 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 | **Example**     | `false` |
 | **Description** | If enabled, [FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/) will be set to match the version during major version upgrade |
 
-## [Secrets section](operator.html#operator-secrets-section)
+## <a name="operator-secrets-section"></a>Secrets section
 
 Each spec in its turn may contain some key-value pairs. The secrets one
 has only two of them:
@@ -96,7 +96,7 @@ has only two of them:
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) |
 
-## [Replsets Section](operator.html#operator-replsets-section)
+## <a name="operator-replsets-section"></a>Replsets Section
 
 The replsets section controls the MongoDB Replica Set.
 
@@ -497,7 +497,7 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container |
 
-## [PMM Section](operator.html#operator-pmm-section)
+## <a name="operator-pmm-section"></a>PMM Section
 
 The `pmm` section in the deploy/cr.yaml file contains configuration
 options for Percona Monitoring and Management.
@@ -529,7 +529,7 @@ options for Percona Monitoring and Management.
 | **Example**     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 | **Description** | Additional parameters which will be passed to the [pmm-admin add mongodb](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongos` Pods |
 
-## [Sharding Section](operator.html#operator-sharding-section)
+## <a name="operator-sharding-section"></a>Sharding Section
 
 The `sharding` section in the deploy/cr.yaml file contains configuration
 options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding).
@@ -846,7 +846,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `{}` |
 | **Description** | Sets the [auditLog.filter option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** ||
 
-## [Mongod Section](operator.html#operator-mongod-section)
+## <a name="operator-mongod-section"></a>Mongod Section
 
 This section contains the Mongod configuration options.
 This section is **deprecated** in Percona Operator for MongoDB
@@ -860,7 +860,7 @@ replsets.configuration.
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) **Please note that this option is deprecated; use** spec.secrets.encryptionKey **instead** |
 
-## [Backup Section](operator.html#operator-backup-section)
+## <a name="operator-backup-section"></a>Backup Section
 
 The `backup` section in the
 [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)

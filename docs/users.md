@@ -9,7 +9,7 @@ MongoDB user accounts within the Cluster can be divided into two different group
 As these two groups of user accounts serve different purposes, they are
 considered separately in the following sections.
 
-## [Unprivileged users](users.html#unprivileged-users)
+## Unprivileged users
 
 There are no unprivileged (general purpose) user accounts created by
 default. If you need general purpose users, please run commands below:
@@ -40,7 +40,7 @@ rs0:PRIMARY> db.test.insert({ x: 1 })
 rs0:PRIMARY> db.test.findOne()
 ```
 
-## [System Users](users.html#system-users)
+## System Users
 
 To automate the deployment and management of the cluster components, 
 the Operator requires system-level MongoDB users.
@@ -147,7 +147,7 @@ changing the password.
     Please don’t change `secrets.users` option in CR, make changes
     inside the secrets object itself.
 
-## [Development Mode](users.html#development-mode)
+## Development Mode
 
 To make development and testing easier, `deploy/secrets.yaml` secrets file
 contains default passwords for MongoDB system users.
@@ -171,7 +171,7 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 
     Do not use the default MongoDB Users in production!
 
-## [MongoDB Internal Authentication Key (optional)](users.html#internal-authentication-key)
+## MongoDB Internal Authentication Key (optional)
 
 *Default Secret name:* `my-cluster-name-mongodb-key`
 

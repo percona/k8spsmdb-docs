@@ -18,11 +18,11 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install on Minikube](minikube.md)
 
+# Advanced Installation Guides
+
 * [Install on Google Kubernetes Engine (GKE)](gke.md)
 
 * [Install on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
-
-# Advanced Installation Guides
 
 * [Generic Kubernetes installation](kubernetes.md)
 

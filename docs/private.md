@@ -1,6 +1,6 @@
 # Creating a private S3-compatible cloud for backups
 
-As it is mentioned in [backups](backups.html), any cloud storage which
+As it is mentioned in [backups](backups.md), any cloud storage which
 implements the S3 API can be used for backups. The one way to setup and
 implement the S3 API storage on Kubernetes or OpenShift is
 [Minio](https://www.minio.io/) - the S3-compatible object storage server

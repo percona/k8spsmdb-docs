@@ -1,6 +1,8 @@
 # Install Percona Server for MongoDB on Amazon Elastic Kubernetes Service (EKS)
 
-This quickstart shows you how to deploy Percona Operator for MongoDB on Amazon Elastic Kubernetes Service (EKS). The document assumes some experience with Amazon EKS. For more information on the EKS, see the [Amazon EKS official documentation](https://aws.amazon.com/eks/).
+This guide shows you how to deploy Percona Operator for MongoDB on Amazon
+Elastic Kubernetes Service (EKS). The document assumes some experience with the
+platform. For more information on the EKS, see the [Amazon EKS official documentation](https://aws.amazon.com/eks/).
 
 ## Prerequisites
 
@@ -15,7 +17,8 @@ The following tools are used in this guide and therefore should be preinstalled:
 3. **kubectl**  to manage and deploy applications on Kubernetes. Install
     it [following the official installation instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-Also, you need to configure AWS CLI with your credentials according to the [official guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
+Also, you need to configure AWS CLI with your credentials according to the
+[official guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
 
 ## Create the EKS cluster
 
@@ -24,17 +27,21 @@ To create your cluster, you will need the following data:
 * name of your EKS cluster,
 * AWS region in which you wish to deploy your cluster,
 * the amount of nodes you would like tho have,
-* the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html) and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances in the total number of nodes.
+* the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)
+    and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+    instances in the total number of nodes.
 
 !!! note
 
-    [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances
-    are not recommended for production environment, but may be useful e.g. for testing purposes.
+    [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+    instances are not recommended for production environment, but may be useful
+    e.g. for testing purposes.
 
 The most easy and visually clear way is to describe the desired cluster in YAML
 and to pass this configuration to the `eksctl` command.
 
-The following example configures a EKS cluster with one [managed node group](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html):
+The following example configures a EKS cluster with one
+[managed node group](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html):
 
 ```yaml
 apiVersion: eksctl.io/v1alpha5
@@ -56,125 +63,140 @@ nodeGroups:
         spotInstancePools: 2
       tags:
         'iit-billing-tag': 'cloud'
-      preBootstrapCommands:
-          - "echo 'OPTIONS=\"--default-ulimit nofile=1048576:1048576\"' >> /etc/sysconfig/docker"
-          - "systemctl restart docker"
 ```
 
-!!! note
-
-    `preBootstrapCommands` section is used in the
-    above example to increase the limits for the amount of opened files:
-    this is important and shouldn’t be omitted, taking into account the
-    default EKS soft limit of 65536 files.
-
-When the cluster configuration file is ready, you can actually create your cluster
-by the following command:
+When the cluster configuration file is ready, you can actually create your
+cluster by the following command:
 
 ```bash
 $ eksctl create cluster -f ~/cluster.yaml
 ```
 
-## Install the Operator
+# Install the Operator and deploy your MongoDB cluster
 
-
-1. Create a namespace and set the context for the namespace. The resource names
-    must be unique within the namespace and provide a way to divide cluster
-    resources between users spread across multiple projects.
-
-    So, create the namespace and save it in the namespace context for subsequent
-    commands as follows (replace the `<namespace name>` placeholder with some
-    descriptive name):
+1. Deploy the Operator. By default deployment will be done in the `default`
+    namespace. If that's not the desired one, you can create a new namespace
+    and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
 
     ```bash
     $ kubectl create namespace <namespace name>
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
-At success, you will see the message that namespace/<namespace name> was created, and the context was modified.
+    At success, you will see the message that `namespace/<namespace name>` was created, and the context (`gke_<project name>_<zone location>_<cluster name>`) was modified.
 
-2. Use the following `git clone` command to download the correct branch of the percona-server-mongodb-operator repository:
-
-    ```bash
-    $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-    ```
-
-    After the repository is downloaded, change the directory to run the rest of the commands in this document:
+    Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ```bash
-    $ cd percona-server-mongodb-operator
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
-3. Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+    ??? example "Expected output"
+
+        ```text
+        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
+        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
+        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
+        role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
+        serviceaccount/percona-server-mongodb-operator serverside-applied
+        rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
+        deployment.apps/percona-server-mongodb-operator serverside-applied
+        ```
+
+2. The operator has been started, and you can deploy your MongoDB cluster:
 
     ```bash
-    $ kubectl apply --server-side -f deploy/bundle.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
     ```
 
-    The following confirmation is returned:
+    ??? example "Expected output"
 
-    ```text
-    customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com created
-    customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com created
-    customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com created
-    role.rbac.authorization.k8s.io/percona-server-mongodb-operator created
-    serviceaccount/percona-server-mongodb-operator created
-    rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator created
-    deployment.apps/percona-server-mongodb-operator created
-    ```
+        ```text
+        perconaservermongodb.psmdb.percona.com/my-cluster-name created
+        ```
 
-4. The Operator has been started, and you can create the Percona Server for MongoDB:
+    !!! note
+
+        This deploys default MongoDB cluster configuration, one mongos node and
+        one config server node. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        and [Custom Resource Options](operator.md#operator-custom-resource-options)
+        for the configuration options. You can clone the repository with all
+        manifests and source code by executing the following command:
+
+        ```bash
+        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```
+
+        After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
+
+        ```bash
+        $ kubectl apply -f deploy/cr.yaml
+        ```
+
+    The creation process may take some time. When the process is over your
+    cluster will obtain the `ready` status. You can check it with the following
+    command:
 
     ```bash
-    $ kubectl apply -f deploy/cr.yaml
+    $ kubectl get psmdb
     ```
 
-    The creation process may take some time. The process is over when all Pods
-    have reached their Running status. You can check it with the following command:
+    ??? example "Expected output"
 
-    ```bash
-    $ kubectl get pods
-    ```
+        ```text
+        NAME              ENDPOINT                                           STATUS   AGE
+        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+        ```
 
-    The result should look as follows:
+## Verifying the cluster operation
+
+It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+command finally shows you the cluster status as `ready`, you can try to connect
+to the cluster.
+
+{% include 'assets/fragments/connectivity.txt' %}
+
+## Troubleshooting
+
+If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
+check the creation process with the `kubectl get pods` command:
+
+```bash
+$ kubectl get pods
+```
+
+??? example "Expected output"
 
     --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
-5. During previous steps, the Operator has generated several [secrets](https://kubernetes.io/docs/concepts/configuration/secret/), including the password for the `root` user, which you will need to access the cluster.
+If the command output had shown some errors, you can examine the problematic
+Pod with the `kubectl describe <pod name>` command as follows:
 
-    Use `kubectl get secrets` command to see the list of Secrets objects (by
-    default Secrets object you are interested in has `my-cluster-secrets` name).
-    Then `kubectl get secret my-cluster-secrets -o yaml` will return the YAML
-    file with generated secrets, including the `MONGODB_USER_ADMIN` and
-    `MONGODB_USER_ADMIN_PASSWORD` strings, which should look as follows:
+```bash
+$ kubectl describe pod my-cluster-name-rs0-2
+```
 
-    ```yaml
-    ...
-    data:
-      ...
-      MONGODB_USER_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
-      MONGODB_USER_ADMIN_USER: dXNlckFkbWlu
-    ```
+Review the detailed information for `Warning` statements and then correct the
+configuration. An example of a warning is as follows:
 
-    Here the actual password is base64-encoded, and
-    `echo 'aDAzQ0pCY3NSWEZ2ZUIzS1I=' | base64 --decode` will bring it back to a
-    human-readable form.
+`Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.`
 
-6. Check connectivity to a newly created cluster.
+## Removing the EKS cluster
 
-    First of all, run a container with a MongoDB client and connect its console
-    output to your terminal. The following command will do this, naming the new
-    Pod `percona-client`:
+To delete your cluster, you will need the following data:
 
-    ```bash
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-    ```
+* name of your EKS cluster,
+* AWS region in which you have deployed your cluster.
 
-    Executing it may require some time to deploy the correspondent Pod. Now run
-    `mongo` tool in the percona-client command shell using the login (which is
-    `userAdmin`) with a proper password obtained from the Secret, and a proper
-    namespace name instead of the `<namespace name>` placeholder:
+You can clean up the cluster with the `eksctl` command as follows (with
+real names instead of `<region>` and `<cluster name>` placeholders):
 
-    ```bash
-    $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-    ```
+```bash
+$ eksctl delete cluster --region=<region> --name="<cluster name>"
+```
+
+The cluster deletion may take time.
+
+!!! warning
+
+    After deleting the cluster, all data stored in it will be lost!

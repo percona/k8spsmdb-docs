@@ -110,10 +110,10 @@ nav:
     - Quickstart guides:
           - "Install with Helm": helm.md
           - "Install on Minikube": minikube.md
-          - "Install on Google Kubernetes Engine (GKE)": gke.md
-          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           
     - Advanced Installation guide:
+          - "Install on Google Kubernetes Engine (GKE)": gke.md
+          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           - "Use private registry": custom-registry.md
@@ -163,4 +163,4 @@ nav:
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.3.0 (2019-12-11)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md)
+          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
