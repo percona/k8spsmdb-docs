@@ -50,6 +50,8 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Data at rest encryption](encryption.md)
 
+* [Telemetry](telemetry.md)
+
 # Management
 
 * [Backup and restore](backups.md)
