@@ -56,4 +56,4 @@ With sharding turned on, you have `mongos` service as an entry point to access
 your database. If you do not use sharding, you have to access `mongod`
 processes of your replica set.
 
-{% include 'assets/fragments/connectivity.md' %}
+{% include 'assets/fragments/connectivity.txt' %}
