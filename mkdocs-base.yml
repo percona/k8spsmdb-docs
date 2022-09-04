@@ -87,14 +87,15 @@ plugins:
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  release: '1.12.0'
-  apiversion: '1-12-0'
-  mongodb50recommended: '5.0.7-6'
-  mongodb44recommended: '4.4.13-13'
-  mongodb42recommended: '4.2.19-19'
+  release: '1.13.0'
+  apiversion: '1-13-0'
+  mongodb50recommended: '5.0.10-9'
+  mongodb44recommended: '4.4.16-16'
+  mongodb42recommended: '4.2.22-22'
   pmm2recommended: '2.27.0'
-  gkerecommended: '1.22'
+  gkerecommended: '1.23'
   certmanagerrecommended: '1.6.1'
+  pbmrecommended: '1.8.1'
   version:
     provider: mike
 

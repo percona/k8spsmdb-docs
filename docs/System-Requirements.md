@@ -16,10 +16,10 @@ and 5.0. Other options may also work but have not been tested.
 The following platforms were tested and are officially supported by the Operator
 {{ release }}:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.19 - {{ gkerecommended }}
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.19 - 1.22
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.7 - 4.10
-* [Minikube](https://minikube.sigs.k8s.io/docs/) 1.23
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - {{ gkerecommended }}
+* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.21 - 1.23
+* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
+* [Minikube](https://minikube.sigs.k8s.io/docs/) 1.26
 * [VMWare Tanzu](https://tanzu.vmware.com/)
 
 Other Kubernetes platforms may also work but have not been tested.
