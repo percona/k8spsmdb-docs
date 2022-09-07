@@ -62,18 +62,23 @@ before the Operator is started. The name of the required secrets can be set in
 | Backup/Restore  | MONGODB_BACKUP_USER          | MONGODB_BACKUP_PASSWORD          |
 | Cluster Admin   | MONGODB_CLUSTER_ADMIN_USER   | MONGODB_CLUSTER_ADMIN_PASSWORD   |
 | Cluster Monitor | MONGODB_CLUSTER_MONITOR_USER | MONGODB_CLUSTER_MONITOR_PASSWORD |
+| Database Admin  | MONGODB_DATABASE_ADMIN_USER  | MONGODB_DATABASE_ADMIN_PASSWORD  |
 | User Admin      | MONGODB_USER_ADMIN_USER      | MONGODB_USER_ADMIN_PASSWORD      |
 | PMM Server      | PMM_SERVER_USER              | PMM_SERVER_PASSWORD              |
 
-Backup/Restore - MongoDB Role: [backup](https://docs.mongodb.com/manual/reference/built-in-roles/#backup),
-[clusterMonitor](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterMonitor),
-[restore](https://docs.mongodb.com/manual/reference/built-in-roles/#restore)
+* Backup/Restore - MongoDB Role: [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
+[restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+[clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-Cluster Admin - MongoDB Role: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
+* Cluster Admin - MongoDB Roles: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
-Cluster Monitor - MongoDB Role: [clusterMonitor](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterMonitor)
+* Cluster Monitor - MongoDB Role: [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-User Admin - MongoDB Role: [userAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#userAdmin)
+* Database Admin - MongoDB Roles: [readWriteAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
+[restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+[clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+
+* User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
 
 !!! note
 
@@ -97,14 +102,16 @@ type: Opaque
 stringData:
   MONGODB_BACKUP_USER: backup
   MONGODB_BACKUP_PASSWORD: backup123456
+  MONGODB_DATABASE_ADMIN_USER: databaseAdmin
+  MONGODB_DATABASE_ADMIN_PASSWORD: databaseAdmin123456
   MONGODB_CLUSTER_ADMIN_USER: clusterAdmin
   MONGODB_CLUSTER_ADMIN_PASSWORD: clusterAdmin123456
   MONGODB_CLUSTER_MONITOR_USER: clusterMonitor
   MONGODB_CLUSTER_MONITOR_PASSWORD: clusterMonitor123456
   MONGODB_USER_ADMIN_USER: userAdmin
   MONGODB_USER_ADMIN_PASSWORD: userAdmin123456
-  PMM_SERVER_USER: pmm
-  PMM_SERVER_PASSWORD: supa|^|pazz
+  PMM_SERVER_USER: admin
+  PMM_SERVER_PASSWORD: admin
 ```
 
 The example above matches what is shipped in `deploy/secrets.yaml` which 
