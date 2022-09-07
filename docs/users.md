@@ -165,6 +165,8 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 |:---------------------------------|:---------------------|
 | MONGODB_BACKUP_USER              | backup               |
 | MONGODB_BACKUP_PASSWORD          | backup123456         |
+| MONGODB_DATABASE_ADMIN_USER      | databaseAdmin        |
+| MONGODB_DATABASE_ADMIN_PASSWORD  | databaseAdmin123456  |
 | MONGODB_CLUSTER_ADMIN_USER       | clusterAdmin         |
 | MONGODB_CLUSTER_ADMIN_PASSWORD   | clusterAdmin123456   |
 | MONGODB_CLUSTER_MONITOR_USER     | clusterMonitor       |
