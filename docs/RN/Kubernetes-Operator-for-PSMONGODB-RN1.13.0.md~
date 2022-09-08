@@ -23,11 +23,11 @@
 
 ## New Features
 
-* {{ k8spsmdbjira(203) }} Support for [cluster-wide operator mode](cluster-wide.md)
+* {{ k8spsmdbjira(203) }} Add support for cluster-wide operators
 
-* {{ k8spsmdbjira(287) }} Support for [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys is now supported
+* {{ k8spsmdbjira(287) }} Support hashicorp vault for PSMDB Operator
 
-* {{ k8spsmdbjira(704) }} Support for [Azure Kubernetes Service (AKS)](aks.md)
+* {{ k8spsmdbjira(704) }} Include support for Azure Kubernetes Service
 
 ## Improvements
 
