@@ -15,10 +15,10 @@
 2. The Custom Resource Definition for Percona Server for MongoDB should be
     created from the `deploy/crd.yaml` file. The Custom Resource Definition
     extends the standard set of resources which Kubernetes “knows” about with the
-    new items, in our case these items are the core of the operator. [Apply it](https://kubernetes.io/docs/reference/using-api/server-side-apply/) as follows:
+    new items, in our case these items are the core of the operator. Apply it as follows:
 
     ```bash
-    $ kubectl apply --server-side -f deploy/crd.yaml
+    $ kubectl apply -f deploy/crd.yaml
     ```
 
     This step should be done only once; the step does not need to be repeated
