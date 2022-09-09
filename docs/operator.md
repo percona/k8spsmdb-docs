@@ -51,8 +51,8 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.apply') }} |
 | **Value**       | string |
-| **Example**     | `4.4-recommended` |
-| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `4.4.2-4`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them). |
+| **Example**     | `disabled` |
+| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb50recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.schedule') }} |
 | **Value**       | string |
