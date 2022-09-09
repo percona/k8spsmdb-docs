@@ -95,6 +95,7 @@ extra: # Used in main.html template and can't be externalized
   pmm2recommended: '2.27.0'
   gkerecommended: '1.22'
   certmanagerrecommended: '1.6.1'
+  pbmrecommended: '1.7.0'
   version:
     provider: mike
 
