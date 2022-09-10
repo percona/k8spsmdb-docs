@@ -18,7 +18,7 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install on Minikube](minikube.md)
 
-# Advanced Installation Guides
+# Advanced installation guides
 
 * [Install on Google Kubernetes Engine (GKE)](gke.md)
 
@@ -34,19 +34,19 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Application and system users](users.md)
 
-* [Changing MongoDB Options](options.md)
+* [Changing MongoDB options](options.md)
 
 * [Anti-affinity and tolerations](constraints.md)
 
 * [Exposing the cluster](expose.md)
 
-* [Local Storage support](storage.md)
+* [Local storage support](storage.md)
 
 * [Arbiter and non-voting nodes](arbiter.md)
 
-* [MongoDB Sharding](sharding.md)
+* [MongoDB sharding](sharding.md)
 
-* [Transport Encryption (TLS/SSL)](TLS.md)
+* [Transport encryption (TLS/SSL)](TLS.md)
 
 * [Data at rest encryption](encryption.md)
 
@@ -84,6 +84,6 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Operator API](api.md)
 
-* [Frequently Asked Questions](faq.md)
+* [Frequently asked questions](faq.md)
 
-* [Release Notes](RN/index.md)
+* [Release notes](RN/index.md)

@@ -104,7 +104,7 @@ nav:
 
     - Welcome: index.md
     - Requirements:
-          - "System Requirements": System-Requirements.md
+          - "System requirements": System-Requirements.md
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
@@ -112,7 +112,7 @@ nav:
           - "Install with Helm": helm.md
           - "Install on Minikube": minikube.md
           
-    - Advanced Installation guide:
+    - Advanced installation guide:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Generic Kubernetes installation": kubernetes.md
@@ -121,13 +121,13 @@ nav:
           
     - Configuration:
           - "Application and system users": users.md
-          - "Changing MongoDB Options": options.md
+          - "Changing MongoDB options": options.md
           - "Anti-affinity and tolerations": constraints.md
           - "Exposing the cluster": expose.md
-          - "Local Storage support": storage.md
+          - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
-          - "MongoDB Sharding": sharding.md
-          - "Transport Encryption (TLS/SSL)": TLS.md
+          - "MongoDB sharding": sharding.md
+          - "Transport encryption (TLS/SSL)": TLS.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           
@@ -149,9 +149,9 @@ nav:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md
           - "Operator API": api.md
-          - "Frequently Asked Questions": faq.md
+          - "Frequently asked questions": faq.md
           
-    - Release Notes:
+    - Release notes:
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
           - "Percona Distribution for MongoDB Operator 1.10.0 (2021-09-30)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md

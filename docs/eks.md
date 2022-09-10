@@ -72,7 +72,7 @@ cluster by the following command:
 $ eksctl create cluster -f ~/cluster.yaml
 ```
 
-# Install the Operator and deploy your MongoDB cluster
+## Install the Operator and deploy your MongoDB cluster
 
 1. Deploy the Operator. By default deployment will be done in the `default`
     namespace. If that's not the desired one, you can create a new namespace
