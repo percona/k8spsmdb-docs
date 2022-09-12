@@ -169,7 +169,7 @@ real names instead of `<resource group>` and `<cluster name>` placeholders):
 $ az aks delete --name <cluster name> --resource-group <resource group> --yes --no-wait
 ```
 
-The cluster deletion may take time.
+It may take ten minutes to get the cluster actually deleted after executing this command.
 
 !!! warning
 
