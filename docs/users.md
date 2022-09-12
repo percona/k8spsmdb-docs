@@ -66,17 +66,19 @@ before the Operator is started. The name of the required secrets can be set in
 | User Admin      | MONGODB_USER_ADMIN_USER      | MONGODB_USER_ADMIN_PASSWORD      |
 | PMM Server      | PMM_SERVER_USER              | PMM_SERVER_PASSWORD              |
 
+**Password-based authorization method is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
+
 * Backup/Restore - MongoDB Role: [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-[restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-[clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
 * Cluster Admin - MongoDB Roles: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
 * Cluster Monitor - MongoDB Role: [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
 * Database Admin - MongoDB Roles: [readWriteAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-[restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-[clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
 * User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
 
