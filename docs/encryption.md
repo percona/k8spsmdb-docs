@@ -9,8 +9,8 @@ is supported by the Operator since version 1.1.0.
 
 ## Turning encryption on
 
-Following options the `mongod` section of the `deploy/cr.yaml` file should be
-edited to turn this feature on:
+Following options in the `deploy/cr.yaml` file should be edited to turn data at
+rest encryption on:
 
 1. The `security.enableEncryption` key should be set to `true` (the default
     value).
@@ -21,30 +21,31 @@ edited to turn this feature on:
         MongoDB)
     * `AES256-GCM`
 
-3. `security.encryptionKeySecret` should specify a secret object with the
+3. The `secrets.encryptionKey` key should specify a secret object with the
     encryption key:
 
     ```yaml
-    mongod:
+    secrets:
       ...
-      security:
-        ...
-        encryptionKeySecret: my-cluster-name-mongodb-encryption-key
+      encryptionKey: my-cluster-name-mongodb-encryption-key
     ```
 
 Encryption key secret will be created automatically if it doesn’t exist.
 If you would like to create it yourself, take into account that
 [the key must be a 32 character string encoded in base64](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
-## Using HashiCorp Vault storage for encryption keys
+## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
 
-To implement these features, the Operator uses `keyring_vault` plugin,
-which ships with Percona XtraDB Cluster, and utilizes [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys.
+Starting from the version 1.13.0 the Operator supports using [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+
+The Operator is triggered to use Vault if there is a `secrets.vault` key in the
+`deploy/cr.yaml` configuration file, equal to the name of a specially created
+secret. The Operator itself neither installs Vault, nor configures it; both
+operations should be done manually, as described in the following subsections.
 
 ### Installing Vault
 
 The following steps will deploy Vault on Kubernetes with the [Helm 3 package manager](https://helm.sh/). Other Vault installation methods should also work, so the instruction placed here is not obligatory and is for illustration purposes. Read more about installation in Vault’s [documentation](https://www.vaultproject.io/docs/platform/k8s).
-
 
 1. Add helm repo and install:
 
@@ -55,7 +56,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ helm install vault hashicorp/vault
     ```
 
-2. After the installation, Vault should be first initialized and then unsealed.
+2. After installation, Vault should be first initialized and then *unsealed*.
     Initializing Vault is done with the following commands:
 
     ```bash
@@ -72,9 +73,8 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
 ### Configuring Vault
 
-
 1. First, you should enable secrets within Vault. For this you will need a [Vault token](https://www.vaultproject.io/docs/concepts/tokens).
-    Percona XtraDB Cluster can use any regular token which allows all operations
+    Percona Server for MongoDB can use any regular token which allows all operations
     inside the secrets mount point. In the following example we are using the
     *root token* to be sure the permissions requirement is met, but actually
     there is no need in root permissions. We don’t recommend using the root token
@@ -90,12 +90,12 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
 
-    Now login to Vault with this token and enable the “pxc-secret” secrets path:
+    Now login to Vault with this token and enable the “psmdb-secret” secrets path:
 
     ```bash
     $ kubectl exec -it vault-service-0 -- /bin/sh
     $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
-    $ vault secrets enable --version=1 -path=pxc-secret kv
+    $ vault secrets enable --version=1 -path=psmdb-secret kv
     ```
 
     !!! note
@@ -106,7 +106,6 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         $ vault audit enable file file_path=/vault/vault-audit.log
         ```
 
-
 2. To enable Vault secret within Kubernetes, create and apply the YAML file,
     as described further.
 
@@ -116,41 +115,38 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         apiVersion: v1
         kind: Secret
         metadata:
-          name: some-name-vault
+          name: my-cluster-name-vault
         type: Opaque
         stringData:
           keyring_vault.conf: |-
              token = s.VgQvaXl8xGFO1RUxAPbPbsfN
              vault_url = vault-service.vault-service.svc.cluster.local
-             secret_mount_point = pxc-secret
+             secret_mount_point = psmdb-secret
         ```
 
         !!! note
 
             the `name` key in the above file should be equal to the
-            `spec.vaultSecretName` key from the `deploy/cr.yaml` configuration
+            `secrets.vault` key from the `deploy/cr.yaml` configuration
             file.
 
     2. To turn on TLS and access the Vault server via HTTPS, you should do two more things:
 
-        
-            * add one more item to the secret: the contents of the `ca.cert` file
-        with your certificate,
-
-
-            * store the path to this file in the `vault_ca` key.
+        * add one more item to the secret: the contents of the `ca.cert` file
+            with your certificate,
+        * store the path to this file in the `vault_ca` key.
 
         ```yaml
         apiVersion: v1
         kind: Secret
         metadata:
-          name: some-name-vault
+          name: my-cluster-name-vault
         type: Opaque
         stringData:
           keyring_vault.conf: |-
             token = = s.VgQvaXl8xGFO1RUxAPbPbsfN
             vault_url = https://vault-service.vault-service.svc.cluster.local
-            secret_mount_point = pxc-secret
+            secret_mount_point = psmdb-secret
             vault_ca = /etc/mysql/vault-keyring-secret/ca.cert
           ca.cert: |-
             -----BEGIN CERTIFICATE-----
@@ -163,8 +159,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         !!! note
 
             the `name` key in the above file should be equal to the
-            `spec.vaultSecretName` key from the `deploy/cr.yaml` configuration
-            file.
+            `secrets.vault` key from the `deploy/cr.yaml` configuration file.
 
         !!! note
 
