@@ -57,7 +57,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
-    At success, you will see the message that `namespace/<namespace name>` was created, and the context (`gke_<project name>_<zone location>_<cluster name>`) was modified.
+    At success, you will see the message that `namespace/<namespace name>` was created, and the context (`<cluster name>`) was modified.
 
     Deploy the Operator using the following command:
 
