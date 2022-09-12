@@ -47,10 +47,10 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
     This step should be done only once; it does not need to be repeated with other deployments.
 
-    [Apply it](https://kubernetes.io/docs/reference/using-api/server-side-apply/) as follows:
+    Apply it as follows:
 
     ```bash
-    $ oc apply --server-side -f deploy/crd.yaml
+    $ oc apply -f deploy/crd.yaml
     ```
 
     !!! note
