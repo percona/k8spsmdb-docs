@@ -38,11 +38,12 @@ If you would like to create it yourself, take into account that
 
 Starting from the version 1.13.0 the Operator supports using [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
-The Operator is triggered to use Vault if the `deploy/cr.yaml` configuration
-file contains the following parts:
+The Operator will use Vault if the `deploy/cr.yaml` configuration file contains
+the following items:
 
 * a `secrets.vault` key equal to the name of a specially created secret,
-* a `security.vault` subsection with a number of Vault-specific options.
+* `configuration` keys for mongod and config servers with a number of
+    Vault-specific options.
 
 The Operator itself neither installs Vault, nor configures it; both operations 
 should be done manually, as described in the following parts.
@@ -99,7 +100,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     ```bash
     $ kubectl exec -it vault-0 -- /bin/sh
     $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
-    $ vault secrets enable -version=2 kv
+    $ vault secrets enable -path secret kv-v2
     ```
 
     !!! note
@@ -117,35 +118,48 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
     ```
 
-3. Modify your `deploy/cr.yaml` putting this Secret into the `secrets.encryptionKey` key, and adding Vault-specific options under the `security.vault` subsection (don't forget to substitute the `<cluster name>` placeholder with your real cluster name):
+3. Modify your `deploy/cr.yaml`:
+
+    First set the `secrets.encryptionKey` key to the name of your secret created on
+    the previous step. Then Add Vault-specific options to the
+    `replsets.configuration`, `replsets.nonvoting.configuration`, and
+    `sharding.configsvrReplSet.configuration` keys, using the following
+    template:
 
     ```yaml
     ...
-    secrets:
-      vault: vault-secret
+    configuration: |
       ...
-      mongod:
-        security:
-          enableEncryption: true
-          vault:
-            serverName: vault
-            port: 8200
-            tokenFile: /etc/mongodb-vault/token
-            secret: secret/data/dc/<cluster name>/cfg
+      security:
+        enableEncryption: true
+        vault:
+          serverName: vault
+          port: 8200
+          tokenFile: /etc/mongodb-vault/token
+          secret: secret/data/dc/<cluster name>/<path>
+        ...
     ```
 
-    Apply your modified configuration as usual:
+    While adding options, modify this template as follows:
+    * substitute the `<cluster name>` placeholder with your real cluster name,
+    * substitute the <path> placeholder with `rs0` when adding options to
+        `replsets.configuration` and `replsets.nonvoting.configuration`,
+    * substitute the <path> placeholder with `cfg` when adding options to
+    `sharding.configsvrReplSet.configuration`.
+    
+    Finally, apply your modified `cr.yaml` as usual:
     
     ```bash
     $ kubectl deploy -f deploy/cr.yaml
     ```
 
-4. You can check that data-at-rest encryption with the following log filtering command, substituting the `<cluster name>` and `<namespace>` placeholders with your real cluster name and namespace:
+4. To verify that everything was configured properly, use the following log
+    filtering command (substitute the `<cluster name>` and `<namespace>`
+    placeholders with your real cluster name and namespace):
 
     ```bash
     $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
     ```
-
 
 More details on how to install and configure Vault can be found [in the official documentation](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
 
