@@ -117,7 +117,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
     ```
 
-3. Modify your `deploy/cr.yaml` putting this Secret into the `secrets.encryptionKey` key, and adding Vault-specific options under the `security.vault` subsection:
+3. Modify your `deploy/cr.yaml` putting this Secret into the `secrets.encryptionKey` key, and adding Vault-specific options under the `security.vault` subsection (don't forget to substitute the `<cluster name>` placeholder with your real cluster name):
 
     ```yaml
     ...
@@ -131,7 +131,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
             serverName: vault
             port: 8200
             tokenFile: /etc/mongodb-vault/token
-            secret: secret/data/dc/cluster1/cfg
+            secret: secret/data/dc/<cluster name>/cfg
     ```
 
     Apply your modified configuration as usual:
