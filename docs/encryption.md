@@ -38,10 +38,14 @@ If you would like to create it yourself, take into account that
 
 Starting from the version 1.13.0 the Operator supports using [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
-The Operator is triggered to use Vault if there is a `secrets.vault` key in the
-`deploy/cr.yaml` configuration file, equal to the name of a specially created
-secret. The Operator itself neither installs Vault, nor configures it; both
-operations should be done manually, as described in the following subsections.
+The Operator is triggered to use Vault if the `deploy/cr.yaml` configuration
+file contains the following parts:
+
+* a `secrets.vault` key equal to the name of a specially created secret,
+* a `security.vault` subsection with a number of Vault-specific options.
+
+The Operator itself neither installs Vault, nor configures it; both operations 
+should be done manually, as described in the following parts.
 
 ### Installing Vault
 
@@ -84,18 +88,18 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ cat /tmp/vault-init | jq -r ".root_token"
     ```
 
-    The output will be like follows:
+    The output will show you the token:
 
     ```text
     s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
 
-    Now login to Vault with this token and enable the “psmdb-secret” secrets path:
+    Now login to Vault with this token and enable the key-value secret engine:
 
     ```bash
     $ kubectl exec -it vault-service-0 -- /bin/sh
     $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
-    $ vault secrets enable --version=1 -path=psmdb-secret kv
+    $ vault secrets enable -version=2 kv
     ```
 
     !!! note
@@ -106,66 +110,42 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         $ vault audit enable file file_path=/vault/vault-audit.log
         ```
 
-2. To enable Vault secret within Kubernetes, create and apply the YAML file,
-    as described further.
+2. Now generate Secret with the Vault root token using `kubectl command` (don't
+    forget to substitute the token from this example with your real root token):
 
-    1. To access the Vault server via HTTP, follow the next YAML file example:
+    ```bash
+    $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
+    ```
 
-        ```yaml
-        apiVersion: v1
-        kind: Secret
-        metadata:
-          name: my-cluster-name-vault
-        type: Opaque
-        stringData:
-          keyring_vault.conf: |-
-             token = s.VgQvaXl8xGFO1RUxAPbPbsfN
-             vault_url = vault-service.vault-service.svc.cluster.local
-             secret_mount_point = psmdb-secret
-        ```
+3. Modify your `deploy/cr.yaml` putting this Secret into the `secrets.encryptionKey` key, and adding Vault-specific options under the `security.vault` subsection:
 
-        !!! note
+    ```yaml
+    ...
+    secrets:
+      vault: vault-secret
+      ...
+      mongod:
+        security:
+          enableEncryption: true
+          vault:
+            serverName: vault-service
+            port: 8200
+            tokenFile: /etc/mongodb-vault/token
+            secret: secret/data/dc/cluster1/cfg
+    ```
 
-            the `name` key in the above file should be equal to the
-            `secrets.vault` key from the `deploy/cr.yaml` configuration
-            file.
+    Apply your modified configuration as usual:
+    
+    ```bash
+    $ kubectl deploy -f deploy/cr.yaml
+    ```
 
-    2. To turn on TLS and access the Vault server via HTTPS, you should do two more things:
+4. You can check that data-at-rest encryption with the following log filtering command, substituting the `<cluster name>` and `<namespace>` placeholders with your real cluster name and namespace:
 
-        * add one more item to the secret: the contents of the `ca.cert` file
-            with your certificate,
-        * store the path to this file in the `vault_ca` key.
+    ```bash
+    $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
+    ```
 
-        ```yaml
-        apiVersion: v1
-        kind: Secret
-        metadata:
-          name: my-cluster-name-vault
-        type: Opaque
-        stringData:
-          keyring_vault.conf: |-
-            token = = s.VgQvaXl8xGFO1RUxAPbPbsfN
-            vault_url = https://vault-service.vault-service.svc.cluster.local
-            secret_mount_point = psmdb-secret
-            vault_ca = /etc/mysql/vault-keyring-secret/ca.cert
-          ca.cert: |-
-            -----BEGIN CERTIFICATE-----
-            MIIEczCCA1ugAwIBAgIBADANBgkqhkiG9w0BAQQFAD..AkGA1UEBhMCR0Ix
-            EzARBgNVBAgTClNvbWUtU3RhdGUxFDASBgNVBAoTC0..0EgTHRkMTcwNQYD
-            7vQMfXdGsRrXNGRGnX+vWDZ3/zWI0joDtCkNnqEpVn..HoX
-            -----END CERTIFICATE-----
-        ```
-
-        !!! note
-
-            the `name` key in the above file should be equal to the
-            `secrets.vault` key from the `deploy/cr.yaml` configuration file.
-
-        !!! note
-
-            For techincal reasons the `vault_ca` key should either exist
-            or not exist in the YAML file; commented option like
-            `#vault_ca = ...` is not acceptable.
 
 More details on how to install and configure Vault can be found [in the official documentation](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
 
