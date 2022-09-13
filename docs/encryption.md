@@ -7,22 +7,14 @@ is supported by the Operator since version 1.1.0.
 
     [Data at rest](https://en.wikipedia.org/wiki/Data_at_rest) means inactive data stored as files, database records, etc.
 
-## Turning encryption on
+Data at rest encryption is turned on by default. The Operator implements it by
+either using encryption key stored in a Secret, or obtaining encryption key
+from the HashiCorp Vault key storage.
 
-Following options in the `deploy/cr.yaml` file should be edited to turn data at
-rest encryption on:
+## Using encryption key Secret
 
-1. The `security.enableEncryption` key should be set to `true` (the default
-    value).
-
-2. The `security.encryptionCipherMode` key should specify proper cipher mode
-    for decryption. The value can be one of the following two variants:
-    * `AES256-CBC` (the default one for the Operator and Percona Server for
-        MongoDB)
-    * `AES256-GCM`
-
-3. The `secrets.encryptionKey` key should specify a secret object with the
-    encryption key:
+1. The `secrets.encryptionKey` key in the `deploy/cr.yaml` file should specify
+    the name of the encryption key Secret:
 
     ```yaml
     secrets:
@@ -30,18 +22,48 @@ rest encryption on:
       encryptionKey: my-cluster-name-mongodb-encryption-key
     ```
 
-Encryption key secret will be created automatically if it doesn’t exist.
-If you would like to create it yourself, take into account that
-[the key must be a 32 character string encoded in base64](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
+    Encryption key Secret will be created automatically by the Operator if it
+    doesn’t exist. If you would like to create it yourself, take into account
+    that [the key must be a 32 character string encoded in base64](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
+
+2. The `replsets.configuration`, `replsets.nonvoting.configuration`, and
+    `sharding.configsvrReplSet.configuration` keys should include the following
+    two MongoDB encryption-specific options:
+
+    ```yaml
+    ...
+    configuration: |
+      ...
+      security:
+        enableEncryption: true
+        encryptionCipherMode: "AES256-CBC"
+        ...
+    ```
+
+    The `enableEncryption` option should be set to `true` (the default value).
+    The `security.encryptionCipherMode` option should specify a proper cipher
+    mode for decryption: either `AES256-CBC` (the default value) or
+    `AES256-GCM`.
+
+Don't forget to apply the modified `cr.yaml` configuration file as usual:
+    
+    ```bash
+    $ kubectl deploy -f deploy/cr.yaml
+    ```
 
 ## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13.0 the Operator supports using [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+Starting from the version 1.13, the Operator supports using [HashiCorp Vault](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+
+!!! warning
+
+    Vault integration has technical preview status and is not yet recommended
+    for production environments.
 
 The Operator will use Vault if the `deploy/cr.yaml` configuration file contains
 the following items:
 
-* a `secrets.vault` key equal to the name of a specially created secret,
+* a `secrets.vault` key equal to the name of a specially created Secret,
 * `configuration` keys for mongod and config servers with a number of
     Vault-specific options.
 
@@ -120,7 +142,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
 3. Modify your `deploy/cr.yaml`:
 
-    First set the `secrets.encryptionKey` key to the name of your secret created on
+    First set the `secrets.encryptionKey` key to the name of your Secret created on
     the previous step. Then Add Vault-specific options to the
     `replsets.configuration`, `replsets.nonvoting.configuration`, and
     `sharding.configsvrReplSet.configuration` keys, using the following
