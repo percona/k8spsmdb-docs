@@ -29,7 +29,7 @@
 
 * {{ k8spsmdbjira(636) }} An additional `databaseAdmin` user was added to the list of system users which are automatically created by the Operator. This user is intended to provision databases, collections and perform data modifications
 
-* {{ k8spsmdbjira(699) }} Disable [automated upgrade](update.md#operator-update-smartupdates) by default prevent an unplanned downtimes for user applications and to provide defaults more focused on strict user’s control over the cluster
+* {{ k8spsmdbjira(699) }} Disable [automated upgrade](update.md#operator-update-smartupdates) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
 
 * {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](debug.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
 
@@ -52,13 +52,13 @@
 * {{ k8spsmdbjira(686) }} Fix a bug that prevented downscaling sharded MongoDB cluster to a non-sharded replica set variant
 
 * {{ k8spsmdbjira(691) }} Fix a bug that produced an error in the Operator log in case of the empty SSL Secret name in Custom Resource
-* 
-* {{ k8spsmdbjira(696) }} Fix a bug that prevented removing additional annotations previously added under the spec.replsets.annotations field
-* 
+ 
+* {{ k8spsmdbjira(696) }} Fix a bug that prevented removing additional annotations previously added under the `spec.replsets.annotations` field
+ 
 * {{ k8spsmdbjira(724) }} Fix a bug which caused the delete-backup finalizer not working causing backups being not deleted from buckets
-* 
+ 
 * {{ k8spsmdbjira(746) }} Fix a bug due to which the Operator was unable to initialize a three-member replica set with a primary-secondary-arbiter (PSA) architecture
-* 
+ 
 * {{ k8spsmdbjira(762) }} Fix a bug due to which the Operator was running the replSetReconfig MongoDB command at every reconciliation if arbiter was enabled
 
 ## Deprecation, Rename and Removal
