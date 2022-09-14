@@ -28,7 +28,7 @@ The Pod should be restarted to get the new image.
     When the Pod is continuously restarting, you may have to delete it
     to apply image changes.
     
-## Changing verbosity of logs
+## Changing logs representation
 
 You can also change the representation of logs: either use structured representation, which produces a parcing-friendly JSON, or use traditional console-frienldy logging with specific level. Changing representation of logs is possible by editing the `deploy/operator.yml` file, which sets the following environment variables with self-speaking names and values:
 
