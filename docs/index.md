@@ -24,6 +24,8 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
 
+* [Install on Microsoft Azure Kubernetes Service (AKS)](aks.md)
+
 * [Generic Kubernetes installation](kubernetes.md)
 
 * [Install on OpenShift](openshift.md)

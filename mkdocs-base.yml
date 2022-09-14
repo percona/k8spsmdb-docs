@@ -115,6 +115,7 @@ nav:
     - Advanced Installation guide:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
+          - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           - "Use private registry": custom-registry.md
