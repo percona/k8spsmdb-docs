@@ -147,6 +147,12 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ vault secrets enable -path secret kv-v2
     ```
 
+    ??? example "Expected output"
+
+        ```text
+        Success! Enabled the kv-v2 secrets engine at: secret/
+        ```
+
     !!! note
 
         You can also enable audit, which is not mandatory, but useful:
@@ -158,7 +164,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         ??? example "Expected output"
 
             ```text
-            Success! Enabled the kv-v2 secrets engine at: secret/
+            Success! Enabled the file audit device at: file/
             ```
         
 2. Now generate Secret with the Vault root token using `kubectl command` (don't
