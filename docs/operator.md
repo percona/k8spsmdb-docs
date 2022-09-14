@@ -95,6 +95,11 @@ has only two of them:
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) |
+|                 | |
+| **Key**         | {{ optionlink('secrets.vault') }} |
+| **Value**       | string |
+| **Example**     | `my-cluster-name-vault` |
+| **Description** | Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#using-vault) |
 
 ## <a name="operator-replsets-section"></a>Replsets Section
 
