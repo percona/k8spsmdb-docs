@@ -117,11 +117,33 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
 
-    Now login to Vault with this token and enable the key-value secret engine:
+    Now login to Vault with this token to enable the key-value secret engine:
 
     ```bash
     $ kubectl exec -it vault-0 -- /bin/sh
     $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
+    ```
+    
+    ??? example "Expected output"
+
+        ```text
+        Success! You are now authenticated. The token information displayed below
+        is already stored in the token helper. You do NOT need to run "vault login"
+        again. Future Vault requests will automatically use this token.
+
+        Key                  Value
+        ---                  -----
+        token                s.VgQvaXl8xGFO1RUxAPbPbsfN
+        token_accessor       iMGp477aReYkPBWrR42Z3L6R
+        token_duration       ∞
+        token_renewable      false
+        token_policies       ["root"]
+        identity_policies    []
+        policies             ["root"]`
+        ```
+    
+    Now enable the key-value secret engine with the following command:
+    
     $ vault secrets enable -path secret kv-v2
     ```
 
@@ -132,7 +154,13 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         ```bash
         $ vault audit enable file file_path=/vault/vault-audit.log
         ```
+        
+        ??? example "Expected output"
 
+            ```text
+            Success! Enabled the kv-v2 secrets engine at: secret/
+            ```
+        
 2. Now generate Secret with the Vault root token using `kubectl command` (don't
     forget to substitute the token from this example with your real root token):
 
