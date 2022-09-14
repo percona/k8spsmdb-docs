@@ -26,7 +26,7 @@ To create your cluster, you will need the following data:
 * the amount of nodes you would like tho have.
 
 You can create your cluster via command line using `az aks create` command.
-step). The following command will create a 3-node cluster named `my-cluster-name` within some [already existing](https://docs.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#create-a-resource-group) resource group named `my-resource-group`:
+The following command will create a 3-node cluster named `my-cluster-name` within some [already existing](https://docs.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#create-a-resource-group) resource group named `my-resource-group`:
 
 ```bash
 $ az aks create --resource-group my-resource-group --name my-cluster-name --enable-managed-identity --node-count 3 --node-vm-size Standard_B4ms --node-osdisk-size 30 --network-plugin kubenet  --generate-ssh-keys --outbound-type loadbalancer
