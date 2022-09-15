@@ -1,26 +1,33 @@
-# Exposing cluster nodes with dedicated IP addresses
+# Exposing cluster
 
-## Using single entry point vs. accessing MongoDB Instances
+The Operator provides entry points for accessing the database by client applications in several scenarios. In either way the cluster is exposed with regular Kubernetes [Service objects](https://kubernetes.io/docs/concepts/services-networking/service/), configured by the Operator.
 
-Percona Operator for MongoDB provides two scenarios for accessing the database.
+This document describes the usage of [Custom Resource manifest options](operator.md) to expose the clusters deployed with the Operator. 
 
+## Using single entry point in a sharded cluster
 
-1. If [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) mode
-    is turned **on** (default behavior), then database cluster runs special
-    `mongos` Pods - query routers, which acts as an entry point for client
-    applications,
+If [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) mode
+is turned **on** (default behavior), then database cluster runs special
+`mongos` Pods - query routers, which acts as an entry point for client
+applications,
 
-    ![image](assets/images/mongos_espose.png)
+![image](assets/images/mongos_espose.png)
 
-2. If [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) mode
-    is turned **off**, the application needs access to all MongoDB Pods of the
-    replica set:
+If this feature is enabled, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-    ![image](assets/images/mongod_espose.png)
+```bash
+$ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+```
 
 You can find more on sharding in the [official MongoDB documentation](https://docs.mongodb.com/manual/reference/glossary/#term-sharding).
 
-## Accessing the Pod
+## Accessing replica set Pods
+
+If [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) mode
+is turned **off**, the application needs access to all MongoDB Pods of the
+replica set:
+
+![image](assets/images/mongod_espose.png)
 
 When Kubernetes creates Pods, each Pod has an IP address in the internal virtual
 network of the cluster. Creating and destroying Pods is a dynamic process,
@@ -29,9 +36,18 @@ cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
 Percona Server for MongoDB via Kubernetes internal DNS names in URI
 (e.g. using `mongodb+srv://userAdmin:userAdmin123456@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false` to access one of the Replica Set Pods).
+
+In this case, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
+
+``bash
+$ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+```
+
+## Service per Pod
+
 URI-based access is strictly recommended.
 
-Sometimes you cannot communicate with the Pods using the Kubernetes internal DNS
+Still sometimes you cannot communicate with the Pods using the Kubernetes internal DNS
 names. To make Pods of the Replica Set accessible, Percona Operator for MongoDB
 can assign a [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/)
 to each Pod.
@@ -56,6 +72,6 @@ file:
         cloud provider’s load balancer. Both ClusterIP and NodePort
         services are automatically created in this variant.
 
-    If this feature is enabled, URI looks like
-    `mongodb://userAdmin:userAdmin123456@<ip1>:<port1>,<ip2>:<port2>,<ip3>:<port3>/admin?replicaSet=rs0&ssl=false`
-    All IP adresses should be *directly* reachable by application.
+If this feature is enabled, URI looks like
+`mongodb://databaseAdmin:databaseAdminPassword@<ip1>:<port1>,<ip2>:<port2>,<ip3>:<port3>/admin?replicaSet=rs0&ssl=false`
+All IP adresses should be *directly* reachable by application.
