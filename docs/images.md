@@ -5,7 +5,7 @@ Percona Operator for Percona Server for MongoDB:
 
 | Image                                          | Digest                                                           |
 |:-----------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb-operator:1.13.0 | 2944bd217f4da247a8dff01eedd0a08fd1bb397df81587a90ab432631a62f8b2 |
+| percona/percona-server-mongodb-operator:1.13.0 | 7137ee6ff918bd2366033f198f2919e7aa291ae3b76460e267896bf052251837 |
 | percona/pmm-client:2.30.0                      | de556410de32a49a8a6bc157536881e2baefc8549a1094d6c2c70242a3c792cb |
 | percona/percona-backup-mongodb:1.8.1           | 80aad4f71ee3ce721f019e0409cc5a21c07376169428bbd04b486da3bf515704 |
 | percona/percona-server-mongodb:5.0.11-10       | da3713525d76a354435e1ab8fda12a06407e7eca8b8e72b9ac0163a34c8eb735 |
