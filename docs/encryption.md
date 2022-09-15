@@ -193,6 +193,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
           port: 8200
           tokenFile: /etc/mongodb-vault/token
           secret: secret/data/dc/<cluster name>/<path>
+          disableTLSForTesting: true
         ...
     ```
 
