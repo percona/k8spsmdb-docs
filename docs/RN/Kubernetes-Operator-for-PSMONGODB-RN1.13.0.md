@@ -6,22 +6,22 @@
 
 * **Installation**
 
-    [Installing Percona Operator for MongoDB](index.md#quickstart-guides)
+    [Installing Percona Operator for MongoDB](../index.md#quickstart-guides)
 
 ## Release Highlights
 
-* [Azure Kubernetes Service (AKS)](aks.md) is now officially supported platform, so developers and vendors of the solutions based on the Azure platform can take advantage of the official support from Percona or just use officially certified Percona Operator for MongoDB images 
+* [Azure Kubernetes Service (AKS)](../aks.md) is now officially supported platform, so developers and vendors of the solutions based on the Azure platform can take advantage of the official support from Percona or just use officially certified Percona Operator for MongoDB images 
 
-* Starting from now, the Operator [can be installed in multi-namespace (so-called “cluster-wide”) mode](cluster-wide.md), when a single Operator can be given a list of namespaces in which to manage Percona Server for MongoDB clusters
+* Starting from now, the Operator [can be installed in multi-namespace (so-called “cluster-wide”) mode](../cluster-wide.md), when a single Operator can be given a list of namespaces in which to manage Percona Server for MongoDB clusters
 
 
 ## New Features
 
-* {{ k8spsmdbjira(203) }} Support for the [cluster-wide operator mode](cluster-wide.md) allowing one Operator to watch for Percona Server for MongoDB Custom Resources in several namespaces
+* {{ k8spsmdbjira(203) }} Support for the [cluster-wide operator mode](../cluster-wide.md) allowing one Operator to watch for Percona Server for MongoDB Custom Resources in several namespaces
 
-* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](encryption.md/#using-vault) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
+* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](../encryption.md/#using-vault) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
 
-* {{ k8spsmdbjira(704) }} Support for the [Azure Kubernetes Service (AKS)](aks.md)
+* {{ k8spsmdbjira(704) }} Support for the [Azure Kubernetes Service (AKS)](../aks.md)
 
 ## Improvements
 
@@ -29,15 +29,15 @@
 
 * {{ k8spsmdbjira(636) }} An additional `databaseAdmin` user was added to the list of system users which are automatically created by the Operator. This user is intended to provision databases, collections and perform data modifications
 
-* {{ k8spsmdbjira(699) }} Disable [automated upgrade](update.md#operator-update-smartupdates) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
+* {{ k8spsmdbjira(699) }} Disable [automated upgrade](../update.md#operator-update-smartupdates) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
 
-* {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](debug.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
+* {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](../debug.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
 
-* {{ k8spsmdbjira(719) }} Details about using sharding, Hashicorp Vault and cluster-wide mode were added to [telemetry](telemetry.md)
+* {{ k8spsmdbjira(719) }} Details about using sharding, Hashicorp Vault and cluster-wide mode were added to [telemetry](../telemetry.md)
 
 * {{ k8spsmdbjira(715) }} Starting from now, the Opearator changed its API version to v1 instead of having a separate API version for each release. Three last API version are supported in addition to `v1`, which substantially reduces the size of Custom Resource Definition to prevent reaching the etcd limit
 
-* {{ k8spsmdbjira(709) }} Make it possible [to use API Key](monitoring.md#operator-monitoring-client-token) to authorize within Percona Monitoring and Management Server as a more convenient and modern alternative password-based authentication
+* {{ k8spsmdbjira(709) }} Make it possible [to use API Key](../monitoring.md#operator-monitoring-client-token) to authorize within Percona Monitoring and Management Server as a more convenient and modern alternative password-based authentication
 
 * {{ k8spsmdbjira(707) }} Allow to set Service labels for replica set, config servers and mongos in Custom Resource to enable various integrations with cloud providers or service meshes
 
@@ -65,7 +65,7 @@
 
 * {{ k8spsmdbjira(690) }} CCustom Resource options under the sharding.mongos.auditLog subsection, deprecated since the Operator version 1.9.0 in favor of using replsets.configuration, were finally removed and cannot be used with the Operator
 
-* {{ k8spsmdbjira(709) }} Password-based authorization to Percona Monitoring and Management Server is now deprecated and will be removed in future releases in favor of a token-based one. Password-based authorization was used by the Operator before this release to provide MongoDB monitoring, but now using the API Key [is the recommended authorization method](monitoring.md#operator-monitoring-client-token)
+* {{ k8spsmdbjira(709) }} Password-based authorization to Percona Monitoring and Management Server is now deprecated and will be removed in future releases in favor of a token-based one. Password-based authorization was used by the Operator before this release to provide MongoDB monitoring, but now using the API Key [is the recommended authorization method](../monitoring.md#operator-monitoring-client-token)
 
 ## Supported Platforms
 
