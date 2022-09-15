@@ -78,6 +78,8 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Creating a private S3-compatible cloud for backups](private.md)
 
+* [Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode](cluster-wide.md)
+
 # Reference
 
 * [Custom Resource options](operator.md)
