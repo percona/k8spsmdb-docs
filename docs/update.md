@@ -29,7 +29,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     control:
 
     ```bash
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
@@ -55,6 +55,20 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
        }}'
     ```
 
+    !!! warning
+
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+    
+        ```bash
+        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+           "spec": {
+              "crVersion":"{{ release }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
+           }}'
+        ```
+    
+
 4. The deployment rollout will be automatically triggered by the applied patch.
     You can track the rollout process in real time using the
     `kubectl rollout status` command with the name of your cluster:
@@ -77,7 +91,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     control:
 
     ```bash
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
@@ -102,6 +116,19 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
     ```
+
+    !!! warning
+
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+    
+        ```bash
+        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+       "spec": {
+          "crVersion":"{{ release }}",
+          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+          "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
+           }}'
+        ```
 
 4. Pod with the newer Percona Server for MongoDB image will start after you
     delete it. Delete targeted Pods manually one by one to make them restart in
@@ -251,7 +278,7 @@ key in the `deploy/cr.yaml` configuration file:
 ```yaml
 spec:
   upgradeOptions:
-    apply: 4.4-recommended
+    apply: 5.0-recommended
 ```
 
 !!! note

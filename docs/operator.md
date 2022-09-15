@@ -25,7 +25,6 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
 | ClusterServiceDNSSuffix   | string   | `svc.cluster.local` | The (non-standard) cluster domain to be used as a suffix of the Service name |
 | clusterServiceDNSMode     | string   | `Internal`   | Can be either `internal` (exposed MongoDB instances will use ClusterIP addresses) or `ServiceMesh` (turns on  for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together. |
-| runUid         | int                 | 1001         | The (non-standard) user ID |
 | allowUnsafeConfigurations | boolean  | `false`      | Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults) |
 | updateStrategy | string              | `SmartUpdate`| A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete) |
 | multiCluster.enabled      | boolean  | `false`      | [Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services) |
@@ -51,8 +50,8 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.apply') }} |
 | **Value**       | string |
-| **Example**     | `4.4-recommended` |
-| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `4.4.2-4`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them). |
+| **Example**     | `disabled` |
+| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb50recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.schedule') }} |
 | **Value**       | string |
@@ -95,6 +94,11 @@ has only two of them:
 | **Value**       | string |
 | **Example**     | `my-cluster-name-mongodb-encryption-key` |
 | **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) |
+|                 | |
+| **Key**         | {{ optionlink('secrets.vault') }} |
+| **Value**       | string |
+| **Example**     | `my-cluster-name-vault` |
+| **Description** | Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#using-vault) |
 
 ## <a name="operator-replsets-section"></a>Replsets Section
 
@@ -114,7 +118,7 @@ The replsets section controls the MongoDB Replica Set.
 |                 | |
 | **Key**         | {{ optionlink('replsets.configuration') }} |
 | **Value**       | string |
-| **Example**     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
+| **Example**     | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 | **Description** | Custom configuration options for mongod. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html). |
 |                 | |
 | **Key**         | {{ optionlink('replsets.affinity.antiAffinityTopologyKey') }} |
@@ -326,6 +330,21 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `ClusterIP` |
 | **Description** | The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed |
+|                 | |
+| **Key**         | {{ optionlink('replsets.expose.loadBalancerSourceRanges') }} |
+| **Value**       | string |
+| **Example**     | `10.0.0.0/8` |
+| **Description** | The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.expose.serviceAnnotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongod daemon |
+|                 | |
+| **Key**         | {{ optionlink('replsets.expose.serviceLabels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB Replica Set Service |
 |                 | |
 | **Key**         | {{ optionlink('replsets.nonvoting.enabled') }} |
 | **Value**       | boolean |
@@ -626,6 +645,51 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `rs-sidecar-1` |
 | **Description** | Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.limits.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.limits.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.resources.requests.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.requests.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.expose.enabled') }} |
+| **Value**       | boolean |
+| **Example**     | `false` |
+| **Description** | Enable or disable exposing [Config Server](https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/) nodes with dedicated IP addresses |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.expose.exposeType') }} |
+| **Value**       | string |
+| **Example**     | `ClusterIP` |
+| **Description** | The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.expose.loadBalancerSourceRanges') }} |
+| **Value**       | string |
+| **Example**     | `10.0.0.0/8` |
+| **Description** | The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.expose.serviceAnnotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Config Server daemon |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.expose.serviceLabels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Config Server Service |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.emptyDir') }} |
 | **Value**       | string |
 | **Example**     | `{}` |
@@ -818,18 +882,23 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.expose.servicePerPod') }} |
 | **Value**       | boolean |
-| **Example**     | `false` |
+| **Example**     | `true` |
 | **Description** | If set to `true`, a separate ClusterIP Service is created for each mongos instance |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.expose.loadBalancerSourceRanges') }} |
 | **Value**       | string |
 | **Example**     | `10.0.0.0/8` |
-| **Description** | The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) |                                                     |
+| **Description** | The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.expose.serviceAnnotations') }} |
 | **Value**       | string |
 | **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 | **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.expose.serviceLabels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
 
 ## <a name="operator-mongod-section"></a>Mongod Section
 

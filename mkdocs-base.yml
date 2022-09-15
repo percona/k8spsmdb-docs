@@ -70,7 +70,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Documentation"
-    cover_subtitle: 1.3.0 (August 4, 2022)
+    cover_subtitle: 1.13.0 (September 15, 2022)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/Kubernetes-PG.png
     custom_template_path: _resources/templates
@@ -87,15 +87,15 @@ plugins:
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  release: '1.12.0'
-  apiversion: '1-12-0'
-  mongodb50recommended: '5.0.7-6'
-  mongodb44recommended: '4.4.13-13'
-  mongodb42recommended: '4.2.19-19'
-  pmm2recommended: '2.27.0'
-  gkerecommended: '1.22'
+  release: '1.13.0'
+  apiversion: '1'
+  mongodb50recommended: '5.0.11-10'
+  mongodb44recommended: '4.4.16-16'
+  mongodb42recommended: '4.2.22-22'
+  pmm2recommended: '2.30.0'
+  gkerecommended: '1.23'
   certmanagerrecommended: '1.6.1'
-  pbmrecommended: '1.7.0'
+  pbmrecommended: '1.8.1'
   version:
     provider: mike
 
@@ -115,6 +115,7 @@ nav:
     - Advanced installation guide:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
+          - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           - "Use private registry": custom-registry.md
@@ -144,6 +145,7 @@ nav:
     - HOWTOs:
           - "OpenLDAP integration": ldap.md
           - "Creating a private S3-compatible cloud for backups": private.md
+          - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           
     - Reference:
           - "Custom Resource options": operator.md
@@ -152,6 +154,7 @@ nav:
           - "Frequently asked questions": faq.md
           
     - Release notes:
+          - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
           - "Percona Distribution for MongoDB Operator 1.10.0 (2021-09-30)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md

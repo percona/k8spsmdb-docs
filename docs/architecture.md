@@ -4,7 +4,7 @@ The design of the Operator is tighly bound to the Percona Server for
 MongoDB replica set, which is briefly described in the following
 diagram.
 
-![image](assets/images/replication.png)
+![image](assets/images/replication.svg)
 
 A replica set consists of one primary server and several secondary ones
 (two in the picture), and the client application accesses the servers
@@ -32,7 +32,7 @@ dynamically assigned nodes.
     which should be changed in the production environment, as stated in
     the  [installation instructions](index.md#advanced-installation-guides).
 
-![image](assets/images/operator.png)
+![image](assets/images/operator.svg)
 
 To provide data storage for stateful applications, Kubernetes uses
 Persistent Volumes. A *PersistentVolumeClaim* (PVC) is used to implement
