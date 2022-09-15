@@ -168,34 +168,67 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
             ```
         
 2. Now generate Secret with the Vault root token using `kubectl command` (don't
-    forget to substitute the token from this example with your real root token):
+    forget to substitute the token from the example with your real root token)
+    and add necessary options to `configuration` keys in your `deploy/cr.yaml`:
+    
+    === "without TLS, to access the Vault server via HTTP"
+        Generate Secret:
+        ```bash
+        $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
+        ```
+        
+        Now modify your `deploy/cr.yaml`:
 
-    ```bash
-    $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
-    ```
+        First set the `secrets.encryptionKey` key to the name of your Secret created on
+        the previous step. Then Add Vault-specific options to the
+        `replsets.configuration`, `replsets.nonvoting.configuration`, and
+        `sharding.configsvrReplSet.configuration` keys, using the following
+        template:
 
-3. Modify your `deploy/cr.yaml`:
-
-    First set the `secrets.encryptionKey` key to the name of your Secret created on
-    the previous step. Then Add Vault-specific options to the
-    `replsets.configuration`, `replsets.nonvoting.configuration`, and
-    `sharding.configsvrReplSet.configuration` keys, using the following
-    template:
-
-    ```yaml
-    ...
-    configuration: |
-      ...
-      security:
-        enableEncryption: true
-        vault:
-          serverName: vault
-          port: 8200
-          tokenFile: /etc/mongodb-vault/token
-          secret: secret/data/dc/<cluster name>/<path>
-          disableTLSForTesting: true
+        ```yaml
         ...
-    ```
+        configuration: |
+          ...
+          security:
+            enableEncryption: true
+            vault:
+              serverName: vault
+              port: 8200
+              tokenFile: /etc/mongodb-vault/token
+              secret: secret/data/dc/<cluster name>/<path>
+              disableTLSForTesting: true
+            ...
+        ```
+
+    === "with TLS, to access the Vault server via HTTPS"
+        Generate Secret, using the path to your `ca.crt` certificate instead of the `<path to CA>` placeholder (see [the Operator TLS guide](TLS.md), if needed):
+        ```bash
+        kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN" --from-file=ca.crt=<path to CA>/ca.crt
+        ```
+        
+        Now modify your `deploy/cr.yaml`:
+
+        First set the `secrets.encryptionKey` key to the name of your Secret created on
+        the previous step. Then Add Vault-specific options to the
+        `replsets.configuration`, `replsets.nonvoting.configuration`, and
+        `sharding.configsvrReplSet.configuration` keys, using the following
+        template:
+
+        ```yaml
+        ...
+        configuration: |
+          ...
+          security:
+            enableEncryption: true
+            vault:
+              serverName: vault
+              port: 8200
+              tokenFile: /etc/mongodb-vault/token
+              secret: secret/data/dc/<cluster name>/<path>
+              tokenFile: /etc/mongodb-vault/token
+              serverCAFile: /etc/mongodb-vault/ca.crt
+            ...
+        ```
 
     While adding options, modify this template as follows:
     * substitute the `<cluster name>` placeholder with your real cluster name,
@@ -210,7 +243,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ kubectl deploy -f deploy/cr.yaml
     ```
 
-4. To verify that everything was configured properly, use the following log
+3. To verify that everything was configured properly, use the following log
     filtering command (substitute the `<cluster name>` and `<namespace>`
     placeholders with your real cluster name and namespace):
 
