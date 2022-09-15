@@ -66,7 +66,6 @@ before the Operator is started. The name of the required secrets can be set in
 | User Admin      | MONGODB_USER_ADMIN_USER      | MONGODB_USER_ADMIN_PASSWORD      |
 | PMM Server      | PMM_SERVER_USER              | PMM_SERVER_PASSWORD              |
 
-
 **Password-based authorization method for PMM is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
 
 * Backup/Restore - MongoDB Role: [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
@@ -115,12 +114,13 @@ stringData:
   MONGODB_USER_ADMIN_PASSWORD: userAdmin123456
   PMM_SERVER_USER: admin
   PMM_SERVER_PASSWORD: admin
+  PMM_SERVER_API_KEY: apikey
 ```
 
 The example above matches what is shipped in `deploy/secrets.yaml` which 
-contains default passwords. You should NOT use these in production, but they are
-present to assist in automated testing or simple use in a development
-environment.
+contains default passwords and default API key. You should NOT use these
+in production, but they are present to assist in automated testing or
+simple use in a development environment.
 
 As you can see, because we use the `stringData` type when creating the Secrets
 object, all values for each key/value pair are stated in plain text format
@@ -128,11 +128,11 @@ convenient from the user’s point of view. But the resulting Secrets object
 contains passwords stored as `data` - i.e., base64-encoded strings. If you want
 to update any field, you’ll need to encode the value into base64 format. To do
 this, you can run `echo -n "password" | base64` in your local shell to get valid
-values. For example, setting the PMM Server user’s password to `new_password` in
-the `my-cluster-name-secrets` object can be done with the following command:
+values. For example, setting the Database Admin user’s password to `new_password`
+in the `my-cluster-name-secrets` object can be done with the following command:
 
 ```bash
-kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_PASSWORD": "'$(echo -n new_password | base64)'"}}'
+kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
 ```
 
 !!! note
@@ -178,10 +178,11 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 | MONGODB_USER_ADMIN_PASSWORD      | userAdmin123456      |
 | PMM_SERVER_USER                  | admin                |
 | PMM_SERVER_PASSWORD              | admin                |
+| PMM_SERVER_API_KEY               | apikey               |
 
 !!! warning
 
-    Do not use the default MongoDB Users in production!
+    Do not use the default MongoDB Users and/or default PMM API key in production!
 
 ## MongoDB Internal Authentication Key (optional)
 
