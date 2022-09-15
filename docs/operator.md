@@ -899,21 +899,6 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | string |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
-|                 | |
-| **Key**         | {{ optionlink('sharding.mongos.auditLog.destination') }} |
-| **Value**       | string |
-| **Example**     | |
-| **Description** | Sets the [auditLog.destination option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** |
-|                 | |
-| **Key**         | {{ optionlink('sharding.mongos.auditLog.format') }} |
-| **Value**       | string |
-| **Example**     | `BSON` |
-| **Description** | Sets the [auditLog.format option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** |
-|                 | |
-| **Key**         | {{ optionlink('sharding.mongos.auditLog.filter') }} |
-| **Value**       | string |
-| **Example**     | `{}` |
-| **Description** | Sets the [auditLog.filter option](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) for the MongoDB mongos daemon. **Deprecated in the Operator version 1.9.0+, unavailable in v1.13.0+; use** sharding.mongos.configuration **instead** ||
 
 ## <a name="operator-mongod-section"></a>Mongod Section
 

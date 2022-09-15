@@ -89,10 +89,10 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   release: '1.13.0'
   apiversion: '1'
-  mongodb50recommended: '5.0.10-9'
+  mongodb50recommended: '5.0.11-10'
   mongodb44recommended: '4.4.16-16'
   mongodb42recommended: '4.2.22-22'
-  pmm2recommended: '2.27.0'
+  pmm2recommended: '2.30.0'
   gkerecommended: '1.23'
   certmanagerrecommended: '1.6.1'
   pbmrecommended: '1.8.1'
@@ -104,7 +104,7 @@ nav:
 
     - Welcome: index.md
     - Requirements:
-          - "System Requirements": System-Requirements.md
+          - "System requirements": System-Requirements.md
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
@@ -112,7 +112,7 @@ nav:
           - "Install with Helm": helm.md
           - "Install on Minikube": minikube.md
           
-    - Advanced Installation guide:
+    - Advanced installation guide:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
@@ -122,13 +122,13 @@ nav:
           
     - Configuration:
           - "Application and system users": users.md
-          - "Changing MongoDB Options": options.md
+          - "Changing MongoDB options": options.md
           - "Anti-affinity and tolerations": constraints.md
           - "Exposing the cluster": expose.md
-          - "Local Storage support": storage.md
+          - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
-          - "MongoDB Sharding": sharding.md
-          - "Transport Encryption (TLS/SSL)": TLS.md
+          - "MongoDB sharding": sharding.md
+          - "Transport encryption (TLS/SSL)": TLS.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           
@@ -151,9 +151,9 @@ nav:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md
           - "Operator API": api.md
-          - "Frequently Asked Questions": faq.md
+          - "Frequently asked questions": faq.md
           
-    - Release Notes:
+    - Release notes:
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
