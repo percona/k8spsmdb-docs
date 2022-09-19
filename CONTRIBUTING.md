@@ -1,6 +1,6 @@
 # Contributing to Percona Operator for MongoDB documentation
 
-This repository contains the source file for Percona Operator for PostgreSQL documentation and this document explains how you can contribute to it.
+This repository contains the source file for Percona Operator for MongoDB documentation and this document explains how you can contribute to it.
 
 If you'd like to submit a code patch, follow the [Contributing guide in the Operator code repository](https://github.com/percona/percona-server-mongodb-operator/blob/main/CONTRIBUTING.md).
 
