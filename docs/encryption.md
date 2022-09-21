@@ -46,10 +46,10 @@ from the HashiCorp Vault key storage.
     `AES256-GCM`.
 
 Don't forget to apply the modified `cr.yaml` configuration file as usual:
-    
-    ```bash
-    $ kubectl deploy -f deploy/cr.yaml
-    ```
+
+```bash
+$ kubectl deploy -f deploy/cr.yaml
+```
 
 ## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
 
