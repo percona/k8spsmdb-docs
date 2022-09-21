@@ -24,7 +24,7 @@ Install Helm following its [official installation instructions](https://docs.hel
 2. Install Percona Operator for MongoDB:
 
     ```bash
-    $ helm install my-op percona/psmdb-operator
+    $ helm install my-op percona/psmdb-operator --version {{ release }}
     ```
 
     The `my-op` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
@@ -40,7 +40,7 @@ Install Helm following its [official installation instructions](https://docs.hel
 3. Install Percona Server for MongoDB:
 
     ```bash
-    $ helm install my-db percona/psmdb-db
+    $ helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace
     ```
 
     The `my-db` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
@@ -52,7 +52,7 @@ Install Helm following its [official installation instructions](https://docs.hel
 The command above installs Percona Server for MongoDB with [default parameters](operator.md#operator-custom-resource-options).
 Custom options can be passed to a `helm install` command as a
 `--set key=value[,key=value]` argument. The options passed with a chart can be
-any of the Operator’s [Custom Resource options](operator.md#operator-custom-resource-options).
+any of the Operator’s [Custom Resource options](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart).
 
 !!! note
 
@@ -66,7 +66,7 @@ The following example will deploy a Percona Server for MongoDB Cluster in the
 `psmdb` namespace, with disabled backups and 20 Gi storage:
 
 ```bash
-$ helm install my-db percona/psmdb-db --namespace psmdb \
+$ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
   --set "replsets[0].name=rs0" --set "replsets[0].size=3" \
   --set "replsets[0].volumeSpec.pvc.resources.requests.storage=20Gi" \
   --set backup.enabled=false --set sharding.enabled=false
