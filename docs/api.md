@@ -9,30 +9,30 @@ The following subsections describe the Percona XtraDB Cluster API provided by th
 
 1. Create the namespace name you will use, if not exist:
 
-```bash
-$ kubectl create namespace my-namespace-name
-```
+    ```bash
+    $ kubectl create namespace my-namespace-name
+    ```
 
-Trying to create an already-existing namespace will show you a
-self-explanatory error message. Also, you can use the `defalut` namespace.
+    Trying to create an already-existing namespace will show you a
+    self-explanatory error message. Also, you can use the `defalut` namespace.
 
-!!! note
-    In this document `default` namespace is used in all examples.
-    Substitute `default` with your namespace name if you use a different
-    one.
+    !!! note
 
+        In this document `default` namespace is used in all examples.
+        Substitute `default` with your namespace name if you use a different
+        one.
 
 2. Prepare:
 
-```yaml
-# set correct API address
-KUBE_CLUSTER=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
-API_SERVER=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"$KUBE_CLUSTER\")].cluster.server}" | sed -e 's#https://##')
+    ```yaml
+    # set correct API address
+    KUBE_CLUSTER=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
+    API_SERVER=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"$KUBE_CLUSTER\")].cluster.server}" | sed -e 's#https://##')
 
-# create service account and get token
-kubectl apply --server-side -f deploy/crd.yaml -f deploy/rbac.yaml -n default
-KUBE_TOKEN=$(kubectl get secret $(kubectl get serviceaccount percona-server-mongodb-operator -o jsonpath='{.secrets[0].name}' -n default) -o jsonpath='{.data.token}' -n default | base64 --decode )
-```
+    # create service account and get token
+    kubectl apply --server-side -f deploy/crd.yaml -f deploy/rbac.yaml -n default
+    KUBE_TOKEN=$(kubectl get secret $(kubectl get serviceaccount percona-server-mongodb-operator -o jsonpath='{.secrets[0].name}' -n default) -o jsonpath='{.data.token}' -n default | base64 --decode )
+    ```
 
 ## Create new Percona Server for MongoDB cluster
 
