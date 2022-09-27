@@ -6,7 +6,7 @@ For more information on the GKE, see the [Kubernetes Engine Quickstart](https://
 
 ## Prerequisites
 
-All commands from this quickstart can be run either in the **Google Cloud shell** or in **your local shell**.
+All commands from this guide can be run either in the **Google Cloud shell** or in **your local shell**.
 
 To use *Google Cloud shell*, you need nothing but a modern web browser.
 
