@@ -144,6 +144,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     
     Now enable the key-value secret engine with the following command:
     
+    ```bash
     $ vault secrets enable -path secret kv-v2
     ```
 
