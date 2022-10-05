@@ -15,7 +15,8 @@ documentation.
 
 ## The OpenLDAP side
 
-You can add needed OpenLDAP settings will the following LDIF portions:
+You can add needed OpenLDAP settings will the following [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
+portions:
 
 ```yaml
 0-percona-ous.ldif: |-
@@ -57,13 +58,24 @@ $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=perco
 ```
 ## LDAP overlay
 
-A few words about the LDAP overlay feature and its potential influence on our setup. 
-Here we propose a decision on how the user privileges (role) are to be looked up in the first place: the participation in a particular user group makes certain privileges available for the user. Technically speaking, `Group DN` will be matched through MongoDB roles list and, if found, MongoDB authorizes role usage by the user logged in.
+You can get user privileges (MongoDB role) from the LDAP tree in several ways.
+Technically, `Group DN` should be matched through the MongoDB roles list and, if
+found, MongoDB will authorize role usage by the user logged in.
+The way to get such a Group DN from LDAP server as a simple User attribute
+proposed here is relying on the `memberOf` entity field.
 
-In order to get such a Group DN from LDAP server as a simple User attribute we may rely on the `memberOf` entity field. Basically it’s a product of the *overlay functionality*. Its particular setup may vary depending on LDAP server internals. In our case, there are a few ldif files, applied during the server startup, to make the `memberOf` available. The essential attributes for creating the reference between the user and the group are `objectClass: groupOfUniqueNames` and `uniqueMember` attributes of the group object.
+Basically it’s a product of the *overlay functionality*. Particular setup may
+vary depending on the LDAP server internals. Particularly, a number of LDIF
+files can be applied during the server startup, to make the `memberOf` available.
+In the following example the essential attributes for creating the reference
+between the user and the group are `objectClass: groupOfUniqueNames`, and
+`uniqueMember` attributes of the group object.
 
-It may not be true for your case though since the overlay may be ordered to use different `objectClass` for the group object alongside with the `uniqueMember` alternatives.
-You have to figure it out and here is one possible way how:
+It may not be true for every LDAP server though, since the overlay may be
+ordered to use different `objectClass` for the group object alongside with the
+`uniqueMember` alternatives.
+
+Here is the way to figure it out:
 
 ```bash
 $ ldapsearch -Y EXTERNAL -H ldapi:/// -b "cn=config" '(objectClass=*)' dn -LLL | grep -i memberof
@@ -87,55 +99,142 @@ olcMemberOfMemberAD: uniqueMember
 olcMemberOfMemberOfAD: memberOf
 ```
 
-The output provides us with `olcMemberOfGroupOC` and `olcMemberOfMemberAD` values, which should be put on the group entity. 
-`olcMemberOfMemberOfAD` value is a key for picking the group DN from the account object. 
+The output provides you with `olcMemberOfGroupOC` and `olcMemberOfMemberAD`
+values, which should be put on the group entity. The `olcMemberOfMemberOfAD`
+value is a key for picking the group DN from the account object. 
 
 ## The MongoDB and Operator side
 
 The following steps will look different depending on whether sharding 
 is on (the default behavior) or off.
 
-### If sharding is turned off
+=== "if sharding is on"
+    ```bash
+    $ mongo "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+    ```
 
-Let's consider a non-sharded (ReplicaSet) MongoDB cluster.
-In order to get MongoDB connected with OpenLDAP in this case we need to configure two things:
+=== "if sharding is off"
+    In order to get MongoDB connected with OpenLDAP in case of a a non-sharded (ReplicaSet) MongoDB cluster we need to configure two things:
 
-* Mongod
-* Internal mongodb role
+    * Mongod
+    * Internal mongodb role
 
-As for mongod you may use the following code snippet:
+    As for mongod you may use the following code snippet:
 
-```yaml
-security:
-  authorization: "enabled"
-  ldap:
-    authz:
-      queryTemplate: '{USER}?memberOf?base'
-    servers: "openldap"
-    transportSecurity: none
-    bind:
-      queryUser: "cn=readonly,dc=ldap,dc=local"
-      queryPassword: "password"
-    userToDNMapping:
-      '[
-          {
-            match : "(.+)",
-            ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
-          }
-   ]'
-setParameter:
-  authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
-```
+    ```yaml
+    security:
+      authorization: "enabled"
+      ldap:
+        authz:
+          queryTemplate: '{USER}?memberOf?base'
+        servers: "openldap"
+        transportSecurity: none
+        bind:
+          queryUser: "cn=readonly,dc=ldap,dc=local"
+          queryPassword: "password"
+        userToDNMapping:
+          '[
+              {
+                match : "(.+)",
+                ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+              }
+       ]'
+    setParameter:
+      authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+    ```
 
-This fragment provides mongod with LDAP-specific parameters, such as FQDN of the
-LDAP server (`server`), explicit lookup user, domain rules, etc.
+    This fragment provides mongod with LDAP-specific parameters, such as FQDN
+    of the LDAP server (`server`), explicit lookup user, domain rules, etc.
 
-Put the snippet on you local machine and create a Kubernetes Secret object named
-based on [your MongoDB cluster name](operator.md#cluster-name).
+    Put the snippet on you local machine and create a Kubernetes Secret object
+    named based on [your MongoDB cluster name](operator.md#cluster-name).
 
-```bash
-$ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=<path-to-mongod-ldap-configuration>
-```
+    ```bash
+    $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=<path-to-mongod-ldap-configuration>
+    ```
+
+=== "if sharding is on"
+    In order to get MongoDB connected with OpenLDAP in this case we need to
+    configure three things:
+
+    * Mongod
+    * Internal mongodb role
+    * Mongos
+
+    Both the routing interface (mongos) and the configuraion (mongod) have to be
+    configured to make the LDAP server a part of the Authentication/Authorization
+    chain. 
+    
+    !!! note
+
+        mongos is just a router between shards and underlying database instances,
+        and configuration ReplicaSet is responsible for keeping information
+        about database users and roles. Thus, the router can perform only
+        authentication, while authorization is the responsibility of the
+        configuration ReplicaSet.
+
+    Create configuration Secrets for the router and the configuration
+    ReplicaSet respectively.
+
+    Secret for the router should look as follows:
+    
+    ```yaml title="mongos.conf"
+    security:
+     ldap:
+       servers: "openldap"
+       transportSecurity: none
+       bind:
+         queryUser: "cn=readonly,dc=ldap,dc=local"
+         queryPassword: "password"
+       userToDNMapping:
+         '[
+             {
+               match : "(.+)",
+               ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+             }
+       ]'
+    setParameter:
+     authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+    ```
+    
+    Apply it in a usual way:
+
+    ```bash
+    $ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=mongos.conf
+    ```
+
+    Secret for the configuration ReplicaSet should look as follows:
+
+    ```yaml title="mongod.conf"
+    security:
+     authorization: "enabled"
+     ldap:
+       authz:
+         queryTemplate: '{USER}?memberOf?base'
+       servers: "openldap"
+       transportSecurity: none
+       bind:
+         queryUser: "cn=readonly,dc=ldap,dc=local"
+         queryPassword: "password"
+       userToDNMapping:
+         '[
+             {
+               match : "(.+)",
+               ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+             }
+       ]'
+    setParameter:
+     authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+    ```
+    
+    Apply it in a usual way:
+
+    ```bash
+    $ kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=mongod.conf
+    ```
+
+    Both files are pretty much the same except the `authz` subsection, which is
+    only present for the configuration ReplicaSet.
 
 !!! note
 
@@ -145,129 +244,22 @@ $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongo
 Next step is to start the MongoDB cluster up as it’s described in
 [Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
 On successful completion of the steps from this doc, we are to proceed with
-setting the LDAP user roles inside the MongoDB. For this, log into MongoDB as
-administrator and execute the following:
+setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
+For this, log into MongoDB as administrator:
 
-```bash
-var admin = db.getSiblingDB("admin")
-admin.createRole(
-  {
-    role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
-    privileges: [],
-    roles: [ "userAdminAnyDatabase" ]
-  }
-)
-```
+=== "if sharding is off"
+    ```bash
+    $ mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    ```
 
-Now the new `percona` user created inside OpenLDAP is able to login to MongoDB
-as administrator. Verify whether the user role has been identified correctly
-with the following command:
+=== "if sharding is on"
+    ```bash
+    $ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
+    ```
 
-```bash
-$ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
-rs0:PRIMARY> db.runCommand({connectionStatus:1})
-{
- "authInfo" : {
-   "authenticatedUsers" : [
-     {
-       "user" : "percona",
-       "db" : "$external"
-     }
-   ],
-   "authenticatedUserRoles" : [
-     {
-       "role" : "cn=admin,ou=perconadba,dc=ldap,dc=local",
-       "db" : "admin"
-     },
-     {
-       "role" : "userAdminAnyDatabase",
-       "db" : "admin"
-     }
-   ]
- },
- "ok" : 1,
- "$clusterTime" : {
-   "clusterTime" : Timestamp(1663059720, 597),
-   "signature" : {
-     "hash" : BinData(0,"yiO9alPB9CSh2hnW40UkFkdHKw4="),
-     "keyId" : NumberLong("7142492740226383874")
-   }
- },
- "operationTime" : Timestamp(1663059720, 597)
-}
-rs0:PRIMARY>
-```
+When logged in, execute the following:
 
-### If sharding is turned on
-
-Let's consider a sharded MongoDB cluster.
-In order to get MongoDB connected with OpenLDAP in this case we need to configure two things:
-
-* Mongod
-* Internal mongodb role
-* Mongos
-
-Sharding adds a routing interface (mongos) and configuration (mongod) replicaset in addition to the database by itself. Both of them have to be configured in a slightly different manner in order to make the LDAP server a part of the Authentication/Authorization chain. You may wonder why and here is the answer - mongos is just a router between shards and underlying database instances, whereas the configuration replicaset is responsible for keeping information about database users and roles. Thus the router is unable to perform both authentication and authorization, only the first one. The second one is the configuration replicaset responsibility.
-
-Enough of lecturing, let’s dive deeper into setting everything up. We assume that openldap internals remain unchanged. The server is up and running.
-As a preparation step create configuration secrets for router and configuration replicaset respectively.
-
-router:
-```bash
-$ cat mongos.conf
-security:
- ldap:
-   servers: "openldap"
-   transportSecurity: none
-   bind:
-     queryUser: "cn=readonly,dc=ldap,dc=local"
-     queryPassword: "password"
-   userToDNMapping:
-     '[
-         {
-           match : "(.+)",
-           ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
-         }
-   ]'
-setParameter:
- authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
- 
- 
-$ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=mongos.conf
-
-configuration replicaset
-# cat mongod.conf
-security:
- authorization: "enabled"
- ldap:
-   authz:
-     queryTemplate: '{USER}?memberOf?base'
-   servers: "openldap"
-   transportSecurity: none
-   bind:
-     queryUser: "cn=readonly,dc=ldap,dc=local"
-     queryPassword: "password"
-   userToDNMapping:
-     '[
-         {
-           match : "(.+)",
-           ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
-         }
-   ]'
-setParameter:
- authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
- 
-# kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=mongod.conf
-```
-
-Both files are pretty much the same except for the one section authz. It’s only needed by the configuration replicaset.
-
-Now we are ready to spin up our sharded cluster. You are free to use any sharding configuration supported by Percona Operator for MongoDB. Just verify that the cluster name is mentioned correctly inside the Kubernetes secret names. I will be referencing the default cluster CustomResource for the sake of simplicity. BTW, you may create secrets in addition to an already running cluster, secrets will be picked up by the operator anyway.
-
-Once your cluster becomes available please create the role for the ‘external’ (managed by LDAP) user just like we did in the ReplicaSet section above.
-
-```bash
-$ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
+```json
 mongos> db.getSiblingDB("admin").createRole(
 {
  role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
@@ -302,13 +294,34 @@ mongos> db.getSiblingDB("admin").createRole(
 )
 ```
 
-Don’t be puzzled by some extra roles listed in the output above. We just like to show more than one possible variant.
+!!! note
 
-At this very point the setup may be considered as complete. We can verify the external user just like we did in the ReplicaSet case.
+    Extra roles listed in the above example are just to show more than one
+    possible variant.
 
-```bash
-$ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <your_cluster_name>-mongos --port 27017
+Now the new `percona` user created inside OpenLDAP is able to login to MongoDB
+as administrator. Verify whether the user role has been identified correctly
+with the following command:
+
+=== "if sharding is off"
+    ```bash
+    $ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
+    ```
+
+=== "if sharding is on"
+    ```bash
+    $ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <your_cluster_name>-mongos --port 27017
+    ```
+
+When logged in, execute the following:
+
+```json
 mongos> db.runCommand({connectionStatus:1})
+```
+
+The output should be like follows:
+
+```json
 {
  "authInfo" : {
    "authenticatedUsers" : [
@@ -360,6 +373,3 @@ mongos> db.runCommand({connectionStatus:1})
 }
 mongos>
 ```
-
-As you may see, the role matched successfully. Nicely done!
-
