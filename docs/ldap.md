@@ -130,9 +130,9 @@ is on (the default behavior) or off.
     * Mongod
     * Internal mongodb role
 
-    As for mongod you may use the following code snippet:
+    Create configuration Secrets for mongod:
 
-    ```yaml
+    ```yaml title="my_mongod.conf"
     security:
       authorization: "enabled"
       ldap:
@@ -154,14 +154,16 @@ is on (the default behavior) or off.
       authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
 
-    This fragment provides mongod with LDAP-specific parameters, such as FQDN
-    of the LDAP server (`server`), explicit lookup user, domain rules, etc.
+    !!! note
+
+        This fragment provides mongod with LDAP-specific parameters, such as FQDN
+        of the LDAP server (`server`), explicit lookup user, domain rules, etc.
 
     Put the snippet on you local machine and create a Kubernetes Secret object
-    named based on [your MongoDB cluster name](operator.md#cluster-name).
+    named based on [your MongoDB cluster name](operator.md#cluster-name):
 
     ```bash
-    $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=<path-to-mongod-ldap-configuration>
+    $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
 === "if sharding is on"
@@ -189,7 +191,7 @@ is on (the default behavior) or off.
 
     Secret for the router should look as follows:
     
-    ```yaml title="mongos.conf"
+    ```yaml title="my_mongos.conf"
     security:
      ldap:
        servers: "openldap"
@@ -208,15 +210,16 @@ is on (the default behavior) or off.
      authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
     
-    Apply it in a usual way:
+    Put the snippet on you local machine and create a Kubernetes Secret object
+    named based on [your MongoDB cluster name](operator.md#cluster-name):
 
     ```bash
-    $ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=mongos.conf
+    $ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=my_mongos.conf
     ```
 
     Secret for the configuration ReplicaSet should look as follows:
 
-    ```yaml title="mongod.conf"
+    ```yaml title="my_mongod.conf"
     security:
      authorization: "enabled"
      ldap:
@@ -238,10 +241,11 @@ is on (the default behavior) or off.
      authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
     
-    Apply it in a usual way:
+    Put the snippet on you local machine and create a Kubernetes Secret object
+    named based on [your MongoDB cluster name](operator.md#cluster-name):
 
     ```bash
-    $ kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=mongod.conf
+    $ kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
     Both files are pretty much the same except the `authz` subsection, which is
