@@ -50,12 +50,14 @@ portions:
 
 ```
 
-Also a read-only user should be created for database-issued user lookups.
-If everything is done correctly, the following command should work, resetting the percona user password:
+Also a read-only user should be created for the database-issued user lookups.
+If everything is done correctly, the following command should work, resetting
+he percona user password:
 
 ```bash
 $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=percona,ou=perconadba,dc=ldap,dc=local"
 ```
+
 ## LDAP overlay
 
 You can get user privileges (MongoDB role) from the LDAP tree in several ways.
@@ -79,12 +81,26 @@ Here is the way to figure it out:
 
 ```bash
 $ ldapsearch -Y EXTERNAL -H ldapi:/// -b "cn=config" '(objectClass=*)' dn -LLL | grep -i memberof
+```
+
+The output should be like follows:
+
+```
 SASL/EXTERNAL authentication started
 SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
 SASL SSF: 0
 dn: olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config
+```
 
+Now run the following search command using the obtained `dn` value:
+
+```bash
 $ ldapsearch -Y EXTERNAL -H ldapi:/// -b "olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config" '(objectClass=*)' -LLL
+```
+
+The output should be like follows:
+
+```
 SASL/EXTERNAL authentication started
 SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
 SASL SSF: 0
@@ -99,19 +115,14 @@ olcMemberOfMemberAD: uniqueMember
 olcMemberOfMemberOfAD: memberOf
 ```
 
-The output provides you with `olcMemberOfGroupOC` and `olcMemberOfMemberAD`
+This output provides you with `olcMemberOfGroupOC` and `olcMemberOfMemberAD`
 values, which should be put on the group entity. The `olcMemberOfMemberOfAD`
-value is a key for picking the group DN from the account object. 
+value is a key for picking the group `DN` from the account object.
 
 ## The MongoDB and Operator side
 
 The following steps will look different depending on whether sharding 
 is on (the default behavior) or off.
-
-=== "if sharding is on"
-    ```bash
-    $ mongo "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-    ```
 
 === "if sharding is off"
     In order to get MongoDB connected with OpenLDAP in case of a a non-sharded (ReplicaSet) MongoDB cluster we need to configure two things:
@@ -236,11 +247,6 @@ is on (the default behavior) or off.
     Both files are pretty much the same except the `authz` subsection, which is
     only present for the configuration ReplicaSet.
 
-!!! note
-
-    [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html) is not yet
-    supproted by the Operator.
-
 Next step is to start the MongoDB cluster up as it’s described in
 [Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
 On successful completion of the steps from this doc, we are to proceed with
@@ -256,6 +262,11 @@ For this, log into MongoDB as administrator:
     ```bash
     $ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
     ```
+
+!!! note
+
+    [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html) is not yet
+    supproted by the Operator.
 
 When logged in, execute the following:
 
