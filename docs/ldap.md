@@ -166,11 +166,11 @@ is on (the default behavior) or off.
     $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
-Next step is to start the MongoDB cluster up as it’s described in
-[Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
-On successful completion of the steps from this doc, we are to proceed with
-setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
-For this, log into MongoDB as administrator:
+    Next step is to start the MongoDB cluster up as it’s described in
+    [Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
+    On successful completion of the steps from this doc, we are to proceed with
+    setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
+    For this, log into MongoDB as administrator:
 
     ```bash
     $ mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
@@ -239,7 +239,7 @@ For this, log into MongoDB as administrator:
     * Internal mongodb role
     * Mongos
 
-    Both the routing interface (mongos) and the configuraion (mongod) have to be
+    Both the routing interface (mongos) and the configuraion ReplicaSet (mongod) have to be
     configured to make the LDAP server a part of the Authentication/Authorization
     chain. 
     
