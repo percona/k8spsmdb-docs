@@ -58,7 +58,7 @@ $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=perco
 ```
 !!! note
 
-    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays](https://www.openldap.org/doc/admin24/overlays.html) is one of the possible ways to go.
+    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays](https://www.openldap.org/doc/admin24/overlays.html) provide one of the possible ways to go.
 
 ## The MongoDB and Operator side
 
