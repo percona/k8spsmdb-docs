@@ -47,7 +47,6 @@ portions:
   objectClass: top
   ou: perconadba
   uniqueMember: uid=percona,ou=perconadba,dc=ldap,dc=local
-
 ```
 
 Also a read-only user should be created for the database-issued user lookups.
@@ -57,67 +56,9 @@ he percona user password:
 ```bash
 $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=percona,ou=perconadba,dc=ldap,dc=local"
 ```
+!!! note
 
-## LDAP overlay
-
-You can get user privileges (MongoDB role) from the LDAP tree in several ways.
-Technically, `Group DN` should be matched through the MongoDB roles list and, if
-found, MongoDB will authorize role usage by the user logged in.
-The way to get such a Group DN from LDAP server as a simple User attribute
-proposed here is relying on the `memberOf` entity field.
-
-Basically it’s a product of the *overlay functionality*. Particular setup may
-vary depending on the LDAP server internals. Particularly, a number of LDIF
-files can be applied during the server startup, to make the `memberOf` available.
-In the following example the essential attributes for creating the reference
-between the user and the group are `objectClass: groupOfUniqueNames`, and
-`uniqueMember` attributes of the group object.
-
-It may not be true for every LDAP server though, since the overlay may be
-ordered to use different `objectClass` for the group object alongside with the
-`uniqueMember` alternatives.
-
-Here is the way to figure it out:
-
-```bash
-$ ldapsearch -Y EXTERNAL -H ldapi:/// -b "cn=config" '(objectClass=*)' dn -LLL | grep -i memberof
-```
-
-The output should be like follows:
-
-```
-SASL/EXTERNAL authentication started
-SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-SASL SSF: 0
-dn: olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config
-```
-
-Now run the following search command using the obtained `dn` value:
-
-```bash
-$ ldapsearch -Y EXTERNAL -H ldapi:/// -b "olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config" '(objectClass=*)' -LLL
-```
-
-The output should be like follows:
-
-```
-SASL/EXTERNAL authentication started
-SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-SASL SSF: 0
-dn: olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config
-objectClass: olcOverlayConfig
-objectClass: olcMemberOf
-olcOverlay: {0}memberof
-olcMemberOfDangling: ignore
-olcMemberOfRefInt: TRUE
-olcMemberOfGroupOC: groupOfUniqueNames
-olcMemberOfMemberAD: uniqueMember
-olcMemberOfMemberOfAD: memberOf
-```
-
-This output provides you with `olcMemberOfGroupOC` and `olcMemberOfMemberAD`
-values, which should be put on the group entity. The `olcMemberOfMemberOfAD`
-value is a key for picking the group `DN` from the account object.
+    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays](https://www.openldap.org/doc/admin24/overlays.html) is one of the possible ways to go.
 
 ## The MongoDB and Operator side
 
