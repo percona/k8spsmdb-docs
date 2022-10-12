@@ -32,6 +32,7 @@ Kubernetes-based environment:
     * set `pmm.enabled=true`
     * set the `pmm.serverHost` key to your PMM Server hostname.
     * authorize PMM Client within PMM Server in one of two ways:
+    
         === "with token-based authorization (recommended)"
             <a name="operator-monitoring-client-token"></a>
             [Acquire the API Key from your PMM Server](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication) and set ``PMM_SERVER_API_KEY`` in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file to this obtained API Key value.
