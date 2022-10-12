@@ -50,12 +50,12 @@ Kubernetes-based environment:
             as base64-encoded strings. If you want to *update* password field,
             you’ll need to encode the value into base64 format. To do this, you can
             run `echo -n "password" | base64` in your local shell to get valid
-            values. For example, setting the PMM Server user’s password to
-            `new_password` in the `my-cluster-name-secrets` object can be done
+            values. For example, setting the PMM Server API Key to
+            `new_key` in the `my-cluster-name-secrets` object can be done
             with the following command:
 
             ```bash
-            kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_PASSWORD": '$(echo -n new_password | base64)'}}'
+            kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64)'}}'
             ```
 
         Apply changes with the `kubectl apply -f deploy/secrets.yaml` command.
