@@ -144,9 +144,6 @@ following command:
     ```bash
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
     ```
-```bash
-
-```
 
 !!! note
 
