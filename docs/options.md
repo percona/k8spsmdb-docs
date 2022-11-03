@@ -142,9 +142,17 @@ systemLog:
 You can get a Base64 encoded string from your options via the command line as
 follows:
 
-```bash
-$ cat mongod.conf | base64
-```
+=== "in Linux"
+
+    ```bash
+    $ cat mongod.conf | base64 --wrap=0
+    ```
+
+=== "in macOS"
+
+    ```bash
+    $ cat mongod.conf | base64
+    ```
 
 !!! note
 

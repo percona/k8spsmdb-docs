@@ -147,7 +147,19 @@ data:
 !!! note
 
     The following command can be used to get a base64-encoded string from
-    a plain text one: `$ echo -n 'plain-text-string' | base64`
+    a plain text one:
+
+    === "in Linux"
+
+        ```bash
+        $ echo -n 'plain-text-string' | base64 --wrap=0
+        ```
+
+    === "in macOS"
+
+        ```bash
+        $ echo -n 'plain-text-string' | base64
+        ```
 
 The `name` value is the [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/)
 name which will be used further, and `AZURE_STORAGE_ACCOUNT_NAME` and
