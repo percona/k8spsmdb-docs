@@ -21,7 +21,6 @@ The following platforms were tested and are officially supported by the Operator
 * [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
 * [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
 * [Minikube](https://minikube.sigs.k8s.io/docs/) 1.26
-* [VMWare Tanzu](https://tanzu.vmware.com/)
 
 Other Kubernetes platforms may also work but have not been tested.
 
