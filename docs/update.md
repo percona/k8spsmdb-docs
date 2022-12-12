@@ -127,7 +127,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
-               }}'
+           }}'
         ```
 
 4. Pod with the newer Percona Server for MongoDB image will start after you
