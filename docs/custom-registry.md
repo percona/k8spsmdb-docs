@@ -18,7 +18,7 @@ OpenShift environment demonstrates the process:
         Username: admin
         Password:
         Login successful.
-        ````
+        ```
 
     ``` {.bash data-prompt="$" }
     $ oc new-project psmdb

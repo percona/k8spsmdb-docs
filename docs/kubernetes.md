@@ -121,5 +121,5 @@
     namespace name instead of the `<namespace name>` placeholder:
 
     ``` {.bash data-prompt="percona-client:/$" }
-    $ percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+    percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
     ```

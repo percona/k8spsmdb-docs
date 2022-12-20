@@ -39,7 +39,7 @@ Percona Server for MongoDB via Kubernetes internal DNS names in URI
 
 In this case, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-`` {.bash data-prompt="$" }
+``` {.bash data-prompt="$" }
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
@@ -57,8 +57,8 @@ and `sharding` (for mongos Pod) sections of the
 [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file:
 
-* set ‘expose.enabled’ option to ‘true’ to allow exposing Pods via services,
-* set ‘expose.exposeType’ option specifying the IP address type to be used:
+* set `expose.enabled` option to `true` to allow exposing Pods via services,
+* set `expose.exposeType` option specifying the IP address type to be used:
     * `ClusterIP` - expose the Pod’s service with an internal static
         IP address. This variant makes MongoDB Pod only reachable from
         within the Kubernetes cluster.
