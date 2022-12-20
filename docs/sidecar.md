@@ -31,44 +31,49 @@ spec:
 
 Apply your modifications as usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
 
 Running `kubectl describe` command for the appropriate Pod can bring you the
 information about the newly created container:
 
-```text
+``` {.bash data-prompt="$" }
 $ kubectl describe pod my-cluster-name-rs0-0
-....
-Containers:
-....
-rs-sidecar-0:
-  Container ID:  docker://f0c3437295d0ec819753c581aae174a0b8d062337f80897144eb8148249ba742
-  Image:         busybox
-  Image ID:      docker-pullable://busybox@sha256:139abcf41943b8bcd4bc5c42ee71ddc9402c7ad69ad9e177b0a9bc4541f14924
-  Port:          <none>
-  Host Port:     <none>
-  Command:
-    /bin/sh
-  Args:
-    -c
-    while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5; done
-  State:          Running
-    Started:      Thu, 11 Nov 2021 10:38:15 +0300
-  Ready:          True
-  Restart Count:  0
-  Environment:    <none>
-  Mounts:
-    /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-fbrbn (ro)
-....
 ```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    ....
+    Containers:
+    ....
+    rs-sidecar-0:
+      Container ID:  docker://f0c3437295d0ec819753c581aae174a0b8d062337f80897144eb8148249ba742
+      Image:         busybox
+      Image ID:      docker-pullable://busybox@sha256:139abcf41943b8bcd4bc5c42ee71ddc9402c7ad69ad9e177b0a9bc4541f14924
+      Port:          <none>
+      Host Port:     <none>
+      Command:
+        /bin/sh
+      Args:
+        -c
+        while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5; done
+      State:          Running
+        Started:      Thu, 11 Nov 2021 10:38:15 +0300
+      Ready:          True
+      Restart Count:  0
+      Environment:    <none>
+      Mounts:
+        /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-fbrbn (ro)
+    ....
+    ```
 
 ## Getting shell access to a sidecar container
 
 You can login to your sidecar container as follows:
 
-```bash
+``` {.bash data-prompt="$" data-prompt-second="/ #"}
 $ kubectl exec -it my-cluster-name-rs0-0 -c rs-sidecar-0 -- sh
 / #
 ```

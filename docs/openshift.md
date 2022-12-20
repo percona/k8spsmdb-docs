@@ -30,7 +30,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
 1. Clone the percona-server-mongodb-operator repository:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
     $ cd percona-server-mongodb-operator
     ```
@@ -49,7 +49,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
     Apply it as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc apply -f deploy/crd.yaml
     ```
 
@@ -62,21 +62,21 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     non-privileged user, the necessary permissions can be granted by applying the
     next clusterrole:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc create clusterrole psmdb-admin --verb="*" --resource=perconaservermongodbs.psmdb.percona.com,perconaservermongodbs.psmdb.percona.com/status,perconaservermongodbbackups.psmdb.percona.com,perconaservermongodbbackups.psmdb.percona.com/status,perconaservermongodbrestores.psmdb.percona.com,perconaservermongodbrestores.psmdb.percona.com/status
     $ oc adm policy add-cluster-role-to-user psmdb-admin <some-user>
     ```
 
     If you have a [cert-manager](https://docs.cert-manager.io/en/release-0.8/getting-started/install/openshift.html) installed, then you have to execute two more commands to be able to manage certificates with a non-privileged user:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc create clusterrole cert-admin --verb="*" --resource=iissuers.certmanager.k8s.io,certificates.certmanager.k8s.io
     $ oc adm policy add-cluster-role-to-user cert-admin <some-user>
     ```
 
 3. Create a new `psmdb` project:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc new-project psmdb
     ```
 
@@ -86,13 +86,13 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     actions are allowed on specific Kubernetes resources. The details about users
     and roles can be found in [OpenShift documentation](https://docs.openshift.com/enterprise/3.0/architecture/additional_concepts/authorization.html).
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc apply -f deploy/rbac.yaml
     ```
 
 5. Start the Operator within OpenShift:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc apply -f deploy/operator.yaml
     ```
 
@@ -108,7 +108,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     After editing the yaml file, the secrets should be created
     with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc create -f deploy/secrets.yaml
     ```
 
@@ -144,14 +144,14 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
     3. Create/apply the Custom Resource file:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ oc apply -f deploy/cr.yaml
         ```
 
         The creation process will take time. The process is complete when all Pods
         have reached their Running status. You can check it with the following command:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ oc get pods
         ```
 
@@ -165,7 +165,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     output to your terminal. The following command will do this, naming the new
     Pod `percona-client`:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
     ```
 
@@ -173,6 +173,6 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     `mongo` tool in the percona-client command shell using the login (which is
     `userAdmin`) with a proper password obtained from the Secret:
 
-    ```bash
+    ``` {.bash data-prompt="percona-client:/$" }
     percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
     ```

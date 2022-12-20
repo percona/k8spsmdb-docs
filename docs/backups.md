@@ -151,13 +151,13 @@ data:
 
     === "in Linux"
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ echo -n 'plain-text-string' | base64 --wrap=0
         ```
 
     === "in macOS"
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ echo -n 'plain-text-string' | base64
         ```
 
@@ -228,7 +228,7 @@ The example of such file is [deploy/backup/backup.yaml](https://github.com/perco
 When the backup destination is configured and applied with
 `kubectl apply -f deploy/cr.yaml` command, the actual backup command is executed:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/backup/backup.yaml
 ```
 
@@ -237,7 +237,7 @@ $ kubectl apply -f deploy/backup/backup.yaml
     Storing backup settings in a separate file can be replaced by passing its
     content to the `kubectl apply` command as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ cat <<EOF | kubectl apply -f-
     apiVersion: psmdb.percona.com/v1
     kind: PerconaServerMongoDBBackup
@@ -304,7 +304,7 @@ Following things are needed to restore a previously saved backup:
 * Find out correct names for the **backup** and the **cluster**. Available
     backups can be listed with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get psmdb-backup
     ```
 
@@ -315,7 +315,7 @@ Following things are needed to restore a previously saved backup:
 
     And the following command will list available clusters:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get psmdb
     ```
 
@@ -370,7 +370,7 @@ restoration can be done in the following way.
 
 2. After that, the actual restoration process can be started as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
     ```
 
@@ -447,7 +447,7 @@ Following steps are needed to roll back the cluster to a specific date and time:
 
 2. Run the actual restoration process:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
     ```
 
@@ -456,7 +456,7 @@ Following steps are needed to roll back the cluster to a specific date and time:
         Storing backup settings in a separate file can be replaced by
         passing its content to the `kubectl apply` command as follows:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ cat <<EOF | kubectl apply -f-
         apiVersion: psmdb.percona.com/v1
         kind: PerconaServerMongoDBRestore
@@ -483,12 +483,12 @@ Manual deleting of a previously saved backup requires not more than the backup
 name. This name can be taken from the list of available backups returned
 by the following command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get psmdb-backup
 ```
 
 When the name is known, backup can be deleted as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl delete psmdb-backup/<backup-name>
 ```

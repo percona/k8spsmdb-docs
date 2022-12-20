@@ -7,15 +7,28 @@ OpenShift environment demonstrates the process:
 
 1. Log into the OpenShift and create a project.
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc login
-    Authentication required for https://192.168.1.100:8443 (openshift)
-    Username: admin
-    Password:
-    Login successful.
-    $ oc new-project psmdb
-    Now using project "psmdb" on server "https://192.168.1.100:8443".
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        Authentication required for https://192.168.1.100:8443 (openshift)
+        Username: admin
+        Password:
+        Login successful.
+        ```
+
+    ``` {.bash data-prompt="$" }
+    $ oc new-project psmdb
+    ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        Now using project "psmdb" on server "https://192.168.1.100:8443".
+        ```
 
 2. You need obtain the following objects to configure your custom registry
     access:
@@ -25,35 +38,55 @@ OpenShift environment demonstrates the process:
 
     You can view the token with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc whoami -t
-    ADO8CqCDappWR4hxjfDqwijEHei31yXAvWg61Jg210s
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        ADO8CqCDappWR4hxjfDqwijEHei31yXAvWg61Jg210s
+        ```
 
     The following command returns the registry IP address:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get services/docker-registry -n default
-    NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-    docker-registry   ClusterIP   172.30.162.173   <none>        5000/TCP   1d
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+        docker-registry   ClusterIP   172.30.162.173   <none>        5000/TCP   1d
+        ```
 
 3. Use the user token and the registry IP address to login to the registry:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ docker login -u admin -p ADO8CqCDappWR4hxjfDqwijEHei31yXAvWg61Jg210s 172.30.162.173:5000
-    Login Succeeded
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        Login Succeeded
+        ```
 
 4. Use the Docker commands to pull the needed image by its SHA digest:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ docker pull docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
-    Trying to pull repository docker.io/perconalab/percona-server-mongodb ...
-    sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0: Pulling from docker.io/perconalab/percona-server-mongodb
-    Digest: sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
-    Status: Image is up to date for docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        Trying to pull repository docker.io/perconalab/percona-server-mongodb ...
+        sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0: Pulling from docker.io/perconalab/percona-server-mongodb
+        Digest: sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
+        Status: Image is up to date for docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
+        ```
 
     You can find correct names and SHA digests in the
     [current list of the Operator-related images officially certified by Percona](images.md#custom-registry-images).
@@ -61,7 +94,7 @@ OpenShift environment demonstrates the process:
 5. The following method can push an image to the custom registry for the example
     OpenShift `psmdb` project:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ docker tag \
         docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0 \
         172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
@@ -70,11 +103,16 @@ OpenShift environment demonstrates the process:
 
 6. Verify the image is available in the OpenShift registry with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ oc get is
-    NAME                              DOCKER REPO                                                             TAGS             UPDATED
-    percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb44recommended }}  2 hours ago
     ```
+
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        NAME                              DOCKER REPO                                                             TAGS             UPDATED
+        percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb44recommended }}  2 hours ago
+        ```
 
 7. When the custom registry image is available, edit the the `image:` option in
     `deploy/operator.yaml` configuration file with a Docker Repo + Tag string

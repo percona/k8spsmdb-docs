@@ -28,7 +28,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     the official repository on Github, and do the same for the Role-based access
     control:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
@@ -42,7 +42,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     tag. This is done with the `kubectl patch deployment` command. For example,
     updating to the `{{ release }}` version should look as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl patch deployment percona-server-mongodb-operator \
        -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
 
@@ -59,7 +59,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
 
         The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
@@ -73,7 +73,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     You can track the rollout process in real time using the
     `kubectl rollout status` command with the name of your cluster:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl rollout status sts my-cluster-name-rs0
     ```
 
@@ -90,7 +90,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     the official repository on Github, and do the same for the Role-based access
     control:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
@@ -104,7 +104,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     tag. This is done with the `kubectl patch deployment` command. For example,
     updating to the `{{ release }}` version should look as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl patch deployment percona-server-mongodb-operator \
        -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
 
@@ -121,7 +121,7 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
 
         The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
@@ -136,19 +136,19 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
 
     1. Delete the Pod using its name with the command like the following one:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl delete pod my-cluster-name-rs0-2
         ```
 
     2. Wait until Pod becomes ready:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl get pod my-cluster-name-rs0-2
         ```
 
         The output should be like this:
 
-        ```text
+        ``` {.text .no-copy}
         NAME                    READY   STATUS    RESTARTS   AGE
         my-cluster-name-rs0-2   1/1     Running   0          3m33s
         ```
@@ -226,7 +226,7 @@ updates:
     2. Alternatively, you can run Version Service inside your cluster. This
         can be done with the `kubectl` command as follows:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl run version-service --image=perconalab/version-service --env="SERVE_HTTP=true" --port 11000 --expose
         ```
 

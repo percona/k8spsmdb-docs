@@ -44,7 +44,7 @@ Kubernetes.
 
 1. First of all, clone the percona-server-mongodb-operator repository:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
     $ cd percona-server-mongodb-operator
     ```
@@ -52,14 +52,14 @@ Kubernetes.
 2. Let’s suppose that Operator’s namespace should be the `psmdb-operator` one.
     Create it as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace psmdb-operator
     ```
 
     Namespaces to be watched by the Operator should be created in the same way
     if not exist. Let’s say the Operator should watch the `psmdb` namespace:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace psmdb
     ```
 
@@ -81,7 +81,7 @@ Kubernetes.
 
 4. Apply the `deploy/cw-bundle.yaml` file with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/cw-bundle.yaml -n psmdb-operator
     ```
 
@@ -89,7 +89,7 @@ Kubernetes.
     any time by applying the `deploy/cr.yaml` configuration file, like in the
     case of normal installation:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/cr.yaml -n psmdb
     ```
 
@@ -97,13 +97,13 @@ Kubernetes.
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get psmdb
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         NAME              ENDPOINT                                         STATUS   AGE
         my-cluster-name   my-cluster-name-mongos.psmdb.svc.cluster.local   ready    5m26s
         ```
@@ -138,7 +138,7 @@ to the cluster.
     terminal. The following command will do this, naming the new Pod
     `percona-client`:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb50recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
     ```
 
@@ -150,11 +150,11 @@ to the cluster.
     is on (the default behavior) or off:
 
     === "if sharding is on"
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ mongo "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
         ```
 
     === "if sharding is off"
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ mongo "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```

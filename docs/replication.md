@@ -110,7 +110,7 @@ spec:
 
 The *Main* site will be ready for replication when you apply changes as usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
 
@@ -126,7 +126,7 @@ Names of the corresponding objects are set in the `users`, `ssl`, and
 If you can get Secrets from an existing cluster by executing the
 `kubectl get secret` command for *each* Secrets object you want to acquire:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get secret my-cluster-name-secrets -o yaml > my-cluster-secrets.yaml
 ```
 
@@ -177,14 +177,14 @@ Resource `secrets` subsection (`my-cluster-name-secrets`,
 Copy your secrets from an existing cluster and apply each of them on your
 *Replica* site as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $  kubectl apply -f my-cluster-secrets.yaml
 ```
 
 The *Replica* site will be ready for replication when you apply changes as
 usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
 
@@ -240,31 +240,43 @@ The initial ServiceExport creation and sync with the clusters of the fleet takes
 approximately five minutes. You can check the list of services for export and
 import with the following commands:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get serviceimport
-NAME                     TYPE           IP                  AGE
-my-cluster-name-cfg      Headless                           22m
-my-cluster-name-cfg-0    ClusterSetIP   ["10.73.200.89"]    22m
-my-cluster-name-cfg-1    ClusterSetIP   ["10.73.192.104"]   22m
-my-cluster-name-cfg-2    ClusterSetIP   ["10.73.207.254"]   22m
-my-cluster-name-mongos   ClusterSetIP   ["10.73.196.213"]   22m
-my-cluster-name-rs0      Headless                           22m
-my-cluster-name-rs0-0    ClusterSetIP   ["10.73.206.24"]    22m
-my-cluster-name-rs0-1    ClusterSetIP   ["10.73.207.20"]    22m
-my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
-
-$ kubectl get serviceexport
-NAME                     AGE
-my-cluster-name-cfg      22m
-my-cluster-name-cfg-0    22m
-my-cluster-name-cfg-1    22m
-my-cluster-name-cfg-2    22m
-my-cluster-name-mongos   22m
-my-cluster-name-rs0      22m
-my-cluster-name-rs0-0    22m
-my-cluster-name-rs0-1    22m
-my-cluster-name-rs0-2    22m
 ```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    NAME                     TYPE           IP                  AGE
+    my-cluster-name-cfg      Headless                           22m
+    my-cluster-name-cfg-0    ClusterSetIP   ["10.73.200.89"]    22m
+    my-cluster-name-cfg-1    ClusterSetIP   ["10.73.192.104"]   22m
+    my-cluster-name-cfg-2    ClusterSetIP   ["10.73.207.254"]   22m
+    my-cluster-name-mongos   ClusterSetIP   ["10.73.196.213"]   22m
+    my-cluster-name-rs0      Headless                           22m
+    my-cluster-name-rs0-0    ClusterSetIP   ["10.73.206.24"]    22m
+    my-cluster-name-rs0-1    ClusterSetIP   ["10.73.207.20"]    22m
+    my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
+    ```
+
+``` {.bash data-prompt="$" }
+$ kubectl get serviceexport
+```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    NAME                     AGE
+    my-cluster-name-cfg      22m
+    my-cluster-name-cfg-0    22m
+    my-cluster-name-cfg-1    22m
+    my-cluster-name-cfg-2    22m
+    my-cluster-name-mongos   22m
+    my-cluster-name-rs0      22m
+    my-cluster-name-rs0-0    22m
+    my-cluster-name-rs0-1    22m
+    my-cluster-name-rs0-2    22m
+    ```
 
 After ServiceExport object is created, exported Services can be resolved from
 any Pod in any fleet cluster as
@@ -292,7 +304,7 @@ Additional actions are needed to turn on MCS for the
     output of the `kubectl get pods` command (it will be something like
     `percona-server-mongodb-operator-d859b69b6-t44vk`) and delete it as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl delete percona-server-mongodb-operator-d859b69b6-t44vk
     ```
 

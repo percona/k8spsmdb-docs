@@ -78,20 +78,20 @@ systemLog:
 You can create a ConfigMap from the `mongod.conf` file with the
 `kubectl create configmap` command. It has the following syntax:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl create configmap <configmap-name> <resource-type=resource-name>
 ```
 
 The following example defines `my-cluster-name-rs0-mongod` as the ConfigMap name
 and the `mongod.conf` file as the data source:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl create configmap my-cluster-name-rs0-mongod --from-file=mongod.conf=mongod.conf
 ```
 
 To view the created ConfigMap, use the following command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl describe configmaps my-cluster-name-rs0-mongod
 ```
 
@@ -144,13 +144,13 @@ follows:
 
 === "in Linux"
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ cat mongod.conf | base64 --wrap=0
     ```
 
 === "in macOS"
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ cat mongod.conf | base64
     ```
 
@@ -159,7 +159,7 @@ follows:
     Similarly, you can read the list of options from a Base64 encoded
     string:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ echo "ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\
     AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==" | base64 --decode
     ```
@@ -179,7 +179,7 @@ data:
 
 When ready, apply it with the following command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl create -f deploy/my-mongod-secret.yaml
 ```
 

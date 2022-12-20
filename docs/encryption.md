@@ -47,7 +47,7 @@ from the HashiCorp Vault key storage.
 
 Don't forget to apply the modified `cr.yaml` configuration file as usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl deploy -f deploy/cr.yaml
 ```
 
@@ -76,7 +76,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
 1. Add helm repo and install:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ helm repo add hashicorp https://helm.releases.hashicorp.com
     "hashicorp" has been added to your repositories
 
@@ -86,7 +86,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 2. After installation, Vault should be first initialized and then *unsealed*.
     Initializing Vault is done with the following commands:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl exec -it pod/vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > /tmp/vault-init
     $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
     ```
@@ -94,7 +94,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     To unseal Vault, execute the following command **for each Pod** of Vault
     running:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl exec -it pod/vault-0 -- vault operator unseal "$unsealKey"
     ```
 
@@ -107,26 +107,26 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     there is no need in root permissions. We don’t recommend using the root token
     on the production system.
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ cat /tmp/vault-init | jq -r ".root_token"
     ```
 
     The output will show you the token:
 
-    ```text
+    ``` {.text .no-copy}
     s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
 
     Now login to Vault with this token to enable the key-value secret engine:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl exec -it vault-0 -- /bin/sh
     $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
     
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         Success! You are now authenticated. The token information displayed below
         is already stored in the token helper. You do NOT need to run "vault login"
         again. Future Vault requests will automatically use this token.
@@ -144,13 +144,13 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     
     Now enable the key-value secret engine with the following command:
     
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ vault secrets enable -path secret kv-v2
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         Success! Enabled the kv-v2 secrets engine at: secret/
         ```
 
@@ -158,13 +158,13 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
         You can also enable audit, which is not mandatory, but useful:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ vault audit enable file file_path=/vault/vault-audit.log
         ```
         
         ??? example "Expected output"
 
-            ```text
+            ``` {.text .no-copy}
             Success! Enabled the file audit device at: file/
             ```
         
@@ -174,7 +174,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     
     === "without TLS, to access the Vault server via HTTP"
         Generate Secret:
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
         ```
         
@@ -203,7 +203,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
     === "with TLS, to access the Vault server via HTTPS"
         Generate Secret, using the path to your `ca.crt` certificate instead of the `<path to CA>` placeholder (see [the Operator TLS guide](TLS.md), if needed):
-        ```bash
+        ``` {.bash data-prompt="$" }
         kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN" --from-file=ca.crt=<path to CA>/ca.crt
         ```
         
@@ -239,7 +239,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     
     Finally, apply your modified `cr.yaml` as usual:
     
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl deploy -f deploy/cr.yaml
     ```
 
@@ -247,7 +247,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     filtering command (substitute the `<cluster name>` and `<namespace>`
     placeholders with your real cluster name and namespace):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
     ```
 

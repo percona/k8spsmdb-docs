@@ -68,7 +68,7 @@ nodeGroups:
 When the cluster configuration file is ready, you can actually create your
 cluster by the following command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ eksctl create cluster -f ~/cluster.yaml
 ```
 
@@ -78,7 +78,7 @@ $ eksctl create cluster -f ~/cluster.yaml
     namespace. If that's not the desired one, you can create a new namespace
     and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace <namespace name>
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
@@ -87,13 +87,13 @@ $ eksctl create cluster -f ~/cluster.yaml
 
     Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
@@ -105,13 +105,13 @@ $ eksctl create cluster -f ~/cluster.yaml
 
 2. The operator has been started, and you can deploy your MongoDB cluster:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         perconaservermongodb.psmdb.percona.com/my-cluster-name created
         ```
 
@@ -123,13 +123,13 @@ $ eksctl create cluster -f ~/cluster.yaml
         for the configuration options. You can clone the repository with all
         manifests and source code by executing the following command:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
         After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
 
@@ -137,13 +137,13 @@ $ eksctl create cluster -f ~/cluster.yaml
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get psmdb
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         NAME              ENDPOINT                                           STATUS   AGE
         my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
         ```
@@ -161,7 +161,7 @@ to the cluster.
 If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
 check the creation process with the `kubectl get pods` command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get pods
 ```
 
@@ -172,7 +172,7 @@ $ kubectl get pods
 If the command output had shown some errors, you can examine the problematic
 Pod with the `kubectl describe <pod name>` command as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl describe pod my-cluster-name-rs0-2
 ```
 
@@ -191,7 +191,7 @@ To delete your cluster, you will need the following data:
 You can clean up the cluster with the `eksctl` command as follows (with
 real names instead of `<region>` and `<cluster name>` placeholders):
 
-```bash
+``` {.bash data-prompt="$" }
 $ eksctl delete cluster --region=<region> --name="<cluster name>"
 ```
 

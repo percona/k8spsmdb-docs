@@ -22,7 +22,7 @@
     terminal. The following command will do this, naming the new Pod
     `percona-client`:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
     ```
 
@@ -35,11 +35,11 @@
     is on (the default behavior) or off:
 
     === "if sharding is on"
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ mongo "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
         ```
 
     === "if sharding is off"
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ mongo "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```

@@ -28,13 +28,13 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 
 2. Deploy the operator using the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
 3. Deploy MongoDB cluster with:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
     ```
 
@@ -48,13 +48,13 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
         repository with all manifests and source code by executing the following
         command:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
         After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-        ```bash
+        ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
 
@@ -95,7 +95,7 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
     output to your terminal. The following command will do this, naming the new
     Pod `percona-client`:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
     ```
 
@@ -103,6 +103,6 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
     `mongo` tool in the percona-client command shell using the login (which is
     `userAdmin`) and password obtained from the secret:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ mongo "mongodb://userAdmin:userAdmin123456@minimal-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false"
     ```

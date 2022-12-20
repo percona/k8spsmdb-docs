@@ -21,7 +21,7 @@ If you would like to use *your local shell*, install the following:
     It is the Kubernetes command-line tool you will use to manage and deploy
     applications. To install the tool, run the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ gcloud auth login
     $ gcloud components install kubectl
     ```
@@ -33,7 +33,7 @@ the [Cloud Shell](https://cloud.google.com/shell/docs/quickstart) or in your
 local shell (if you have installed Google Cloud SDK locally on the previous
 step). The following command will create a cluster named `my-cluster-name`:
 
-```bash
+``` {.bash data-prompt="$" }
 $ gcloud container clusters create my-cluster-name --project <project name> --zone us-central1-a --cluster-version {{ gkerecommended }} --machine-type n1-standard-4 --num-nodes=3
 ```
 
@@ -61,7 +61,7 @@ shown on the above image. You will see the connect statement which configures
 the command-line access. After you have edited the statement, you may run the
 command in your local shell:
 
-```bash
+``` {.bash data-prompt="$" }
 $ gcloud container clusters get-credentials my-cluster-name --zone us-central1-a --project <project name>
 ```
 
@@ -69,13 +69,13 @@ Finally, use your [Cloud Identity and Access Management (Cloud IAM)](https://clo
 to control access to the cluster. The following command will give you the
 ability to create Roles and RoleBindings:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value core/account)
 ```
 
 ??? example "Expected output"
 
-    ```text
+    ``` {.text .no-copy}
     clusterrolebinding.rbac.authorization.k8s.io/cluster-admin-binding created
     ```
 
@@ -85,7 +85,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
     namespace. If that's not the desired one, you can create a new namespace
     and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace <namespace name>
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
@@ -94,13 +94,13 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
     Deploy the Operator using the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
         customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
@@ -112,13 +112,13 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
 2. The operator has been started, and you can deploy your MongoDB cluster:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         perconaservermongodb.psmdb.percona.com/my-cluster-name created
         ```
 
@@ -144,13 +144,13 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get psmdb
     ```
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         NAME              ENDPOINT                                           STATUS   AGE
         my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
         ```
@@ -175,7 +175,7 @@ to the cluster.
 If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
 check the creation process with the `kubectl get pods` command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get pods
 ```
 
@@ -186,7 +186,7 @@ $ kubectl get pods
 If the command output had shown some errors, you can examine the problematic
 Pod with the `kubectl describe <pod name>` command as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl describe pod my-cluster-name-rs0-2
 ```
 
@@ -212,7 +212,7 @@ There are several ways that you can delete the cluster.
 
 You can clean up the cluster with the `gcloud` command as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $ gcloud container clusters delete <cluster name>
 ```
 

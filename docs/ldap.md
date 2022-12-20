@@ -53,7 +53,7 @@ Also a read-only user should be created for the database-issued user lookups.
 If everything is done correctly, the following command should work, resetting
 he percona user password:
 
-```bash
+``` {.bash data-prompt="$" }
 $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=percona,ou=perconadba,dc=ldap,dc=local"
 ```
 !!! note
@@ -103,7 +103,7 @@ is on (the default behavior) or off.
     Put the snippet on you local machine and create a Kubernetes Secret object
     named based on [your MongoDB cluster name](operator.md#cluster-name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
@@ -113,7 +113,7 @@ is on (the default behavior) or off.
     setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
     For this, log into MongoDB as administrator:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
     ```
 
@@ -124,7 +124,7 @@ is on (the default behavior) or off.
 
     When logged in, execute the following:
 
-    ```json
+    ``` {.json data-prompt="mongos>" }
     mongos> db.getSiblingDB("admin").createRole(
     {
      role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
@@ -168,7 +168,7 @@ is on (the default behavior) or off.
     as administrator. Verify whether the user role has been identified correctly
     with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
     ```
 
@@ -219,7 +219,7 @@ is on (the default behavior) or off.
     Put the snippet on you local machine and create a Kubernetes Secret object
     named based on [your MongoDB cluster name](operator.md#cluster-name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=my_mongos.conf
     ```
 
@@ -250,7 +250,7 @@ is on (the default behavior) or off.
     Put the snippet on you local machine and create a Kubernetes Secret object
     named based on [your MongoDB cluster name](operator.md#cluster-name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
@@ -263,7 +263,7 @@ is on (the default behavior) or off.
     setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
     For this, log into MongoDB as administrator:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
     ```
 
@@ -274,7 +274,7 @@ is on (the default behavior) or off.
 
     When logged in, execute the following:
 
-    ```json
+    ``` {.json data-prompt="mongos>" }
     mongos> db.getSiblingDB("admin").createRole(
     {
      role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
@@ -318,19 +318,19 @@ is on (the default behavior) or off.
     as administrator. Verify whether the user role has been identified correctly
     with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <your_cluster_name>-mongos --port 27017
     ```
 
 When logged in, execute the following:
 
-```json
+``` {.json data-prompt="mongos>" }
 mongos> db.runCommand({connectionStatus:1})
 ```
 
 The output should be like follows:
 
-```json
+``` {.json data-prompt="mongos>" }
 {
  "authInfo" : {
    "authenticatedUsers" : [
