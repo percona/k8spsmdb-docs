@@ -110,7 +110,7 @@ spec:
 
 The *Main* site will be ready for replication when you apply changes as usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
 
@@ -126,7 +126,7 @@ Names of the corresponding objects are set in the `users`, `ssl`, and
 If you can get Secrets from an existing cluster by executing the
 `kubectl get secret` command for *each* Secrets object you want to acquire:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get secret my-cluster-name-secrets -o yaml > my-cluster-secrets.yaml
 ```
 
@@ -177,14 +177,14 @@ Resource `secrets` subsection (`my-cluster-name-secrets`,
 Copy your secrets from an existing cluster and apply each of them on your
 *Replica* site as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $  kubectl apply -f my-cluster-secrets.yaml
 ```
 
 The *Replica* site will be ready for replication when you apply changes as
 usual:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
 
@@ -240,7 +240,7 @@ The initial ServiceExport creation and sync with the clusters of the fleet takes
 approximately five minutes. You can check the list of services for export and
 import with the following commands:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get serviceimport
 NAME                     TYPE           IP                  AGE
 my-cluster-name-cfg      Headless                           22m
@@ -292,7 +292,7 @@ Additional actions are needed to turn on MCS for the
     output of the `kubectl get pods` command (it will be something like
     `percona-server-mongodb-operator-d859b69b6-t44vk`) and delete it as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl delete percona-server-mongodb-operator-d859b69b6-t44vk
     ```
 

@@ -15,7 +15,7 @@ applications,
 
 If this feature is enabled, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-```bash
+``` {.bash data-prompt="$" }
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
@@ -39,7 +39,7 @@ Percona Server for MongoDB via Kubernetes internal DNS names in URI
 
 In this case, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-``bash
+`` {.bash data-prompt="$" }
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 

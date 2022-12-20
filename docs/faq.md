@@ -107,7 +107,7 @@ the following steps:
 2. Delete the appropriate PVC and Pod. For example, wiping out the
     `my-cluster-name-rs0-2` Pod should look as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl delete pod/my-cluster-name-rs0-2 pvc/mongod-data-my-cluster-name-rs0-2
     ```
 

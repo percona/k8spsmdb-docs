@@ -50,20 +50,20 @@ The steps to install the *cert-manager* are the following:
 
 The following commands perform all the needed actions:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v{{ certmanagerrecommended }}/cert-manager.yaml --validate=false
 ```
 
 After the installation, you can verify the *cert-manager* by running the
 following command:
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get pods -n cert-manager
 ```
 
 The result should display the *cert-manager* and webhook active and running:
 
-```text
+``` {.text .no-copy}
 NAME                                       READY   STATUS    RESTARTS   AGE
 cert-manager-7d59dd4888-tmjqq              1/1     Running   0          3m8s
 cert-manager-cainjector-85899d45d9-8ncw9   1/1     Running   0          3m8s
@@ -97,7 +97,7 @@ certificate generated for internal communications must be added to the
 Supposing that your cluster name is `my-cluster-name`, the instructions to
 generate certificates manually are as follows:
 
-```bash
+``` {.bash data-prompt="$" }
 $ CLUSTER_NAME=my-cluster-name
 $ NAMESPACE=default
 $ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
@@ -184,13 +184,13 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
 1. First, check the necessary secrets names (`my-cluster-name-ssl` and
     `my-cluster-name-ssl-internal` by default):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get certificate
     ```
 
     You will have the following response:
 
-    ```text
+    ``` {.text .no-copy}
     NAME                           READY   SECRET                         AGE
     my-cluster-name-ssl            True    my-cluster-name-ssl            49m
     my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
@@ -198,13 +198,13 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
 
 2. Optionally you can also check that the certificates issuer is up and running:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get issuer
     ```
 
     The response should be as follows:
 
-    ```text
+    ``` {.text .no-copy}
     NAME                       READY   AGE
     my-cluster-name-psmdb-ca   True    61s
     ```
@@ -212,7 +212,7 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
 3. Now use the following command to find out the certificates validity dates,
     substituting Secrets names if necessary:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ {
       kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
       kubectl get secret/my-cluster-name-ssl -o jsonpath='{.data.ca\.crt}' | base64 --decode | openssl x509 -noout -dates
@@ -221,7 +221,7 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
 
     The resulting output will be self-explanatory:
 
-    ```text
+    ``` {.text .no-copy}
     notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
     notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
     ```

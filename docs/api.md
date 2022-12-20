@@ -9,7 +9,7 @@ The following subsections describe the Percona XtraDB Cluster API provided by th
 
 1. Create the namespace name you will use, if not exist:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace my-namespace-name
     ```
 
@@ -24,7 +24,7 @@ The following subsections describe the Percona XtraDB Cluster API provided by th
 
 2. Prepare:
 
-    ```yaml
+    ```bash
     # set correct API address
     KUBE_CLUSTER=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
     API_SERVER=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"$KUBE_CLUSTER\")].cluster.server}" | sed -e 's#https://##')
@@ -44,7 +44,7 @@ The command to create a new Percona Server for MongoDB cluster
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f percona-server-mongodb-operator/deploy/cr.yaml
 ```
 
@@ -62,7 +62,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/default/perconaservermongodbs" \
             -H "Content-Type: application/json" \
             -H "Accept: application/json" \
@@ -181,7 +181,7 @@ Lists all Percona Server for MongoDB clusters that exist in your kubernetes clus
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get psmdb
 ```
 
@@ -199,7 +199,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XGET "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbs?limit=500" \
             -H "Accept: application/json;as=Table;v=v1;g=meta.k8s.io,application/json;as=Table;v=v1beta1;g=meta.k8s.io,application/json" \
             -H "Authorization: Bearer $KUBE_TOKEN"
@@ -227,7 +227,7 @@ Gets all information about specified Percona Server for MongoDB cluster
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl get psmdb/my-cluster-name -o json
 ```
 
@@ -245,7 +245,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XGET "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbs/my-cluster-name" \
             -H "Accept: application/json" \
             -H "Authorization: Bearer $KUBE_TOKEN"
@@ -273,7 +273,7 @@ Increase or decrease the size of the Percona Server for MongoDB cluster nodes to
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
 "spec": {"replsets":{ "size": "5" }
 }}'
@@ -293,7 +293,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbs/my-cluster-name" \
             -H "Authorization: Bearer $KUBE_TOKEN" \
             -H "Content-Type: application/merge-patch+json"
@@ -334,7 +334,7 @@ Change the image of Percona Server for MongoDB containers inside the cluster
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
 "spec": {"psmdb":{ "image": "percona/percona-server-mongodb-operator:1.4.0-mongod4.2" }
 }}'
@@ -354,7 +354,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbs/my-cluster-name" \
             -H "Authorization: Bearer $KUBE_TOKEN" \
             -H "Accept: application/json" \
@@ -395,7 +395,7 @@ Takes a backup of the Percona Server for MongoDB cluster containers data to be a
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f percona-server-mongodb-operator/deploy/backup/backup.yaml
 ```
 
@@ -413,7 +413,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbbackups" \
             -H "Accept: application/json" \
             -H "Content-Type: application/json" \
@@ -458,7 +458,7 @@ Restores Percona Server for MongoDB cluster data to an earlier version to recove
 
 **Kubectl Command:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ kubectl apply -f percona-server-mongodb-operator/deploy/backup/restore.yaml
 ```
 
@@ -476,7 +476,7 @@ Authorization: Bearer $KUBE_TOKEN
 
 **cURL Request:**
 
-```bash
+``` {.bash data-prompt="$" }
 $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/default/perconaservermongodbrestores" \
             -H "Accept: application/json" \
             -H "Content-Type: application/json" \
