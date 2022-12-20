@@ -242,29 +242,41 @@ import with the following commands:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get serviceimport
-NAME                     TYPE           IP                  AGE
-my-cluster-name-cfg      Headless                           22m
-my-cluster-name-cfg-0    ClusterSetIP   ["10.73.200.89"]    22m
-my-cluster-name-cfg-1    ClusterSetIP   ["10.73.192.104"]   22m
-my-cluster-name-cfg-2    ClusterSetIP   ["10.73.207.254"]   22m
-my-cluster-name-mongos   ClusterSetIP   ["10.73.196.213"]   22m
-my-cluster-name-rs0      Headless                           22m
-my-cluster-name-rs0-0    ClusterSetIP   ["10.73.206.24"]    22m
-my-cluster-name-rs0-1    ClusterSetIP   ["10.73.207.20"]    22m
-my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
-
-$ kubectl get serviceexport
-NAME                     AGE
-my-cluster-name-cfg      22m
-my-cluster-name-cfg-0    22m
-my-cluster-name-cfg-1    22m
-my-cluster-name-cfg-2    22m
-my-cluster-name-mongos   22m
-my-cluster-name-rs0      22m
-my-cluster-name-rs0-0    22m
-my-cluster-name-rs0-1    22m
-my-cluster-name-rs0-2    22m
 ```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    NAME                     TYPE           IP                  AGE
+    my-cluster-name-cfg      Headless                           22m
+    my-cluster-name-cfg-0    ClusterSetIP   ["10.73.200.89"]    22m
+    my-cluster-name-cfg-1    ClusterSetIP   ["10.73.192.104"]   22m
+    my-cluster-name-cfg-2    ClusterSetIP   ["10.73.207.254"]   22m
+    my-cluster-name-mongos   ClusterSetIP   ["10.73.196.213"]   22m
+    my-cluster-name-rs0      Headless                           22m
+    my-cluster-name-rs0-0    ClusterSetIP   ["10.73.206.24"]    22m
+    my-cluster-name-rs0-1    ClusterSetIP   ["10.73.207.20"]    22m
+    my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
+    ```
+
+``` {.bash data-prompt="$" }
+$ kubectl get serviceexport
+```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    NAME                     AGE
+    my-cluster-name-cfg      22m
+    my-cluster-name-cfg-0    22m
+    my-cluster-name-cfg-1    22m
+    my-cluster-name-cfg-2    22m
+    my-cluster-name-mongos   22m
+    my-cluster-name-rs0      22m
+    my-cluster-name-rs0-0    22m
+    my-cluster-name-rs0-1    22m
+    my-cluster-name-rs0-2    22m
+    ```
 
 After ServiceExport object is created, exported Services can be resolved from
 any Pod in any fleet cluster as

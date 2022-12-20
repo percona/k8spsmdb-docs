@@ -2,7 +2,7 @@
 
 1. Clone the percona-server-mongodb-operator repository:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
     $ cd percona-server-mongodb-operator
     ```
@@ -17,7 +17,7 @@
     extends the standard set of resources which Kubernetes “knows” about with the
     new items, in our case these items are the core of the operator. Apply it as follows:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/crd.yaml
     ```
 
@@ -32,7 +32,7 @@
     commands as follows (replace the `<namespace name>` placeholder with some
     descriptive name):
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create namespace <namespace name>
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
@@ -46,7 +46,7 @@
     role and actions are defined for Kubernetes resources in the yaml file.
     Further details about users and roles can be found in [Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#default-roles-and-role-bindings).
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/rbac.yaml
     ```
 
@@ -62,7 +62,7 @@
 
 5. Start the operator within Kubernetes:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/operator.yaml
     ```
 
@@ -76,7 +76,7 @@
     After editing the yaml file, MongoDB Users secrets should be created
     using the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl create -f deploy/secrets.yaml
     ```
 
@@ -90,14 +90,14 @@
 8. After the operator is started, Percona Server for MongoDB cluster can
     be created with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/cr.yaml
     ```
 
     The creation process may take some time. The process is over when all Pods
     have reached their Running status. You can check it with the following command:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl get pods
     ```
 
@@ -111,7 +111,7 @@
     output to your terminal. The following command will do this, naming the new
     Pod `percona-client`:
 
-    ```bash
+    ``` {.bash data-prompt="$" }
     $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
     ```
 
@@ -120,6 +120,6 @@
     `userAdmin`) with a proper password obtained from the Secret, and a proper
     namespace name instead of the `<namespace name>` placeholder:
 
-    ```bash
+    ``` {.bash data-prompt="percona-client:/$" }
     $ percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
     ```

@@ -113,7 +113,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
     The output will show you the token:
 
-    ```text
+    ``` {.text .no-copy}
     s.VgQvaXl8xGFO1RUxAPbPbsfN
     ```
 
@@ -126,7 +126,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         Success! You are now authenticated. The token information displayed below
         is already stored in the token helper. You do NOT need to run "vault login"
         again. Future Vault requests will automatically use this token.
@@ -150,7 +150,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         Success! Enabled the kv-v2 secrets engine at: secret/
         ```
 
@@ -164,7 +164,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         
         ??? example "Expected output"
 
-            ```text
+            ``` {.text .no-copy}
             Success! Enabled the file audit device at: file/
             ```
         

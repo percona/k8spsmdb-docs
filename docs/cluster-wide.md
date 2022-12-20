@@ -103,7 +103,7 @@ Kubernetes.
 
     ??? example "Expected output"
 
-        ```text
+        ``` {.text .no-copy}
         NAME              ENDPOINT                                         STATUS   AGE
         my-cluster-name   my-cluster-name-mongos.psmdb.svc.cluster.local   ready    5m26s
         ```

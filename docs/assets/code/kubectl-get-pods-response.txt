@@ -1,4 +1,4 @@
-```text
+``` {.text .no-copy}
 NAME                                               READY   STATUS    RESTARTS   AGE
 my-cluster-name-cfg-0                              2/2     Running   0          11m
 my-cluster-name-cfg-1                              2/2     Running   1          10m
