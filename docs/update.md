@@ -45,8 +45,7 @@ The upgrade includes the following steps.
 2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
     to your deployment, supplying necessary image name with a newer version
     tag. You can find the proper
-    image name for the current Operator release [in the list of certified images](images.md#custom-registry-images)
-    (for older releases, please refer to the [old releases documentation archive](archive.md)).
+    image name for the current Operator release [in the list of certified images](images.md#custom-registry-images).
     updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
@@ -156,8 +155,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images)
-    (for older releases, please refer to the [old releases documentation archive](archive.md)).
+    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
     For example, updating `my-cluster-name` cluster to the `{{ release }}` version
     should look as follows:
 
@@ -254,9 +252,7 @@ configuration file as follows:
     * *version number* - specify the desired version explicitly
         (version numbers are specified as {{ mongodb44recommended }},
         {{ mongodb42recommended }}, etc.). Actual versions can be found
-        [in the list of certified images](images.md#custom-registry-images)
-        (for older releases, please refer to the
-        [old releases documentation archive](archive.md)).
+        [in the list of certified images](images.md#custom-registry-images).
 
 4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
     URL (otherwise Smart Updates will not occur).

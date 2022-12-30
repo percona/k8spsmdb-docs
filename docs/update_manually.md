@@ -45,8 +45,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images)
-    (for older releases, please refer to the [old releases documentation archive](archive.md)).
+    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
     For example, updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
@@ -97,8 +96,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images)
-    (for older releases, please refer to the [old releases documentation archive](archive.md)).
+    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
     For example, updating to the `{{ release }}` version should look as
     follows.
 
