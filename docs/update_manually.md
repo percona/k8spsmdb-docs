@@ -58,7 +58,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
        }}'
     ```
 
-   !!! warning
+    !!! warning
 
         The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
