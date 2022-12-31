@@ -148,7 +148,8 @@ nav:
           - "OpenLDAP integration": ldap.md
           - "Creating a private S3-compatible cloud for backups": private.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
-          
+          - "Upgrading Percona XtraDB Cluster manually": update_manually.md
+
     - Reference:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md

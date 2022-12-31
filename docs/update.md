@@ -1,51 +1,156 @@
-# Update Percona Operator for MongoDB
+# Update Database and Operator
 
 Starting from the version 1.1.0 the Percona Operator for MongoDB allows upgrades
-to newer versions. This includes upgrades of the Operator itself, and upgrades
-of the Percona Server for MongoDB.
+to newer versions. The upgradable components of the cluster are
+the following ones:
 
-## Upgrading the Operator
+* the Operator;
+* [Custom Resource Definition (CRD)](operator.md),
+* Database Management System (Percona Server for MongoDB).
 
-This upgrade can be done either in semi-automatic or in manual mode. **Manual**
-**update mode is the recommended way for a production cluster**.
+The list of recommended upgrade scenarios includes two variants:
 
-!!! note
+* Upgrade to the new versions of the Operator *and* Percona Server for MongoDB,
+* Minor Percona Server for MongoDB version upgrade *without* the Operator upgrade.
 
-    Operational support is provided for the last 3 minor versions of the
-    Operator. Customers will get complete support for the latest minor version.
-    Bug fixes and improvements are not backported to older minor versions.
-
-### Semi-automatic upgrade
+## Upgrading the Operator and CRD
 
 !!! note
 
-    Only the incremental update to a nearest minor version is supported
-    (for example, update from 1.5.0 to 1.6.0).
-    To update to a newer version, which differs from the current version by more
-    than one, make several incremental updates sequentially.
+    The Operator supports **last 3 versions of the CRD**, so it is technically
+    possible to skip upgrading the CRD and just upgrade the Operator. If the CRD
+    is older than the new Operator version *by no more than three releases*, you
+    will be able to continue using the old CRD and even carry on Percona Server
+    for MongoDB minor version upgrades with it. But the recommended way is to
+    update the Operator *and* CRD.
 
-1. Update the Custom Resource Definition file for the Operator, taking it from
-    the official repository on Github, and do the same for the Role-based access
-    control:
+Only the incremental update to a nearest version of the
+Operator is supported (for example, update from 1.5.0 to 1.6.0). To update
+to a newer version, which differs from the current version by more
+than one, make several incremental updates sequentially.
+
+### Manual upgrade
+
+The upgrade includes the following steps.
+
+1. Update the [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+    for the Operator, taking it from the official repository on Github, and do
+    the same for the Role-based access control:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
-2. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to
-    `RollingUpdate`, and apply changes with the
-    `kubectl apply -f deploy/cr.yaml` command.
-
-3. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
-    to your deployment, supplying necessary image names with a newer version
-    tag. This is done with the `kubectl patch deployment` command. For example,
+2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+    to your deployment, supplying necessary image name with a newer version
+    tag. You can find the proper
+    image name for the current Operator release [in the list of certified images](images.md#custom-registry-images).
     updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
     $ kubectl patch deployment percona-server-mongodb-operator \
        -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
+    ```   
 
+3. The deployment rollout will be automatically triggered by the applied patch.
+    You can track the rollout process in real time with the
+    `kubectl rollout status` command with the name of your cluster:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl rollout status deployments percona-server-mongodb-operator
+    ```
+
+    !!! note
+
+        Labels set on the Operator Pod will not be updated during upgrade.
+
+### Upgrade via helm
+
+If you have [installed the Operator using Helm](helm.md), you can upgrade the
+Operator with the `helm upgrade` command.
+
+1. In case if you installed the Operator with no [customized parameters](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), the upgrade can be done as follows: 
+
+    ``` {.bash data-prompt="$" }
+    $ helm upgrade my-op percona/psmdb-operator --version {{ release }}
+    ```
+
+    The `my-op` parameter in the above example is the name of a [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+    which which you have chosen for the Operator when installing its Helm chart.
+
+    If the Operator was installed with some [customized parameters](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), you should list these options in the upgrade command.
+    
+    
+    !!! note
+    
+        You can get list of used options in YAML format with the `helm get values my-op -a > my-values.yaml` command, and this file can be directly passed to the upgrade command as follows:
+
+        ``` {.bash data-prompt="$" }
+        $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
+        ```
+
+2. Update the [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+    for the Operator, taking it from the official repository on Github, and do
+    the same for the Role-based access control:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
+    ```
+
+!!! note
+
+    You can use `helm upgrade` to upgrade the Operator only. The Database (Percona Server for MongoDB) should be upgraded in the same way whether you used helm to install it or not.
+
+## Upgrading Percona Server for MongoDB
+
+The following section presumes that you are upgrading your cluster within the
+*Smart Update strategy*, when the Operator controls how the objects
+are updated. Smart Update strategy is on when the `updateStrategy` key in the
+[Custom Resource](operator.md) configuration file is set to `SmartUpdate`
+(this is the default value and the recommended way for upgrades).
+
+!!! note
+
+    As an alternative, the `updateStrategy` key can be used to turn off
+    *Smart Update strategy*. You can find out more on this in the
+    [appropriate section](update.md#more-on-upgrade-strategies).
+
+### Manual upgrade
+
+Manual update of Percona Server for MongoDB can be done as follows:
+
+1. Make sure that `spec.updateStrategy` option in the [Custom Resource](operator.md)
+    is set to `SmartUpdate`, `spec.upgradeOptions.apply` option is set to `Never`
+    or `Disabled` (this means that the Operator will not carry on upgrades
+    automatically).
+    
+    ```yaml
+    ...
+    spec:
+      updateStrategy: SmartUpdate
+      upgradeOptions:
+        apply: Disabled
+        ...
+    ```
+
+2. Now [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+    to your Custom Resource, setting necessary Custom Resource version and image
+    names with a newer version tag.
+
+    !!! note
+
+        Check the version of the Operator you have in your Kubernetes
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        to upgrade the Operator and CRD, if needed.
+
+    Patching Custom Resource is done with the `kubectl patch psmdb` command.
+    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    For example, updating `my-cluster-name` cluster to the `{{ release }}` version
+    should look as follows:
+
+    ``` {.bash data-prompt="$" }
     $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
        "spec": {
           "crVersion":"{{ release }}",
@@ -67,9 +172,8 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```
-    
 
-4. The deployment rollout will be automatically triggered by the applied patch.
+3. The deployment rollout will be automatically triggered by the applied patch.
     You can track the rollout process in real time using the
     `kubectl rollout status` command with the name of your cluster:
 
@@ -77,115 +181,46 @@ This upgrade can be done either in semi-automatic or in manual mode. **Manual**
     $ kubectl rollout status sts my-cluster-name-rs0
     ```
 
-### Manual upgrade
-
-!!! note
-
-    Only the incremental update to a nearest minor version of the Operator
-    is supported (for example, update from 1.5.0 to 1.6.0).
-    To update to a newer version, which differs from the current version by more
-    than one, make several incremental updates sequentially.
-
-1. Update the Custom Resource Definition file for the Operator, taking it from
-    the official repository on Github, and do the same for the Role-based access
-    control:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
-    ```
-
-2. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to
-    `OnDelete`, and apply changes with the `kubectl apply -f deploy/cr.yaml`
-    command.
-
-3. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
-    to your deployment, supplying necessary image names with a newer version
-    tag. This is done with the `kubectl patch deployment` command. For example,
-    updating to the `{{ release }}` version should look as follows:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl patch deployment percona-server-mongodb-operator \
-       -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
-
-    $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
-       "spec": {
-          "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
-          "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
-          "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
-       }}'
-    ```
-
-    !!! warning
-
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
-    
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
-           "spec": {
-              "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
-              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
-           }}'
-        ```
-
-4. Pod with the newer Percona Server for MongoDB image will start after you
-    delete it. Delete targeted Pods manually one by one to make them restart in
-    the desired order:
-
-    1. Delete the Pod using its name with the command like the following one:
-
-        ``` {.bash data-prompt="$" }
-        $ kubectl delete pod my-cluster-name-rs0-2
-        ```
-
-    2. Wait until Pod becomes ready:
-
-        ``` {.bash data-prompt="$" }
-        $ kubectl get pod my-cluster-name-rs0-2
-        ```
-
-        The output should be like this:
-
-        ``` {.text .no-copy}
-        NAME                    READY   STATUS    RESTARTS   AGE
-        my-cluster-name-rs0-2   1/1     Running   0          3m33s
-        ```
-
-5. The update process is successfully finished when all Pods have been restarted
+    The update process is successfully finished when all Pods have been restarted
     (including the mongos and Config Server nodes, if
     [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) is on).
 
-## Upgrading Percona Server for MongoDB
+### Automated upgrade
 
-Starting from version 1.5.0, the Operator can do fully automatic upgrades to
-the newer versions of Percona Server for MongoDB within the method named
-*Smart Updates*.
+*Smart Update strategy* allows you to automate upgrades even more. In this case
+the Operator can either detect the availability of the new Percona Server for
+MongoDB version, or rely on the user's choice of the version. To check the
+availability of the new version, the Operator will query a special
+*Version Service* server at scheduled times to obtain fresh information about
+version numbers and valid image paths.
 
-To have this upgrade method enabled, make sure that the `updateStrategy` key
-in the `deploy/cr.yaml` configuration file is set to `SmartUpdate`, and
-apply changes with the `kubectl apply -f deploy/cr.yaml` command.
+If the current version should be upgraded, the Operator updates the Custom
+Resource to reflect the new image paths and carries on sequential Pods deletion,
+allowing StatefulSet to redeploy the cluster Pods with the new image.
+You can configure Percona XtraDB Cluster upgrade via the `deploy/cr.yaml`
+configuration file as follows:
 
-When automatic updates are enabled, the Operator will carry on upgrades
-according to the following algorithm. It will query a special *Version Service*
-server at scheduled times to obtain fresh information about version numbers and
-valid image paths needed for the upgrade. If the current version should be
-upgraded, the Operator updates the CR to reflect the new image paths and carries
-on sequential Pods deletion in a safe order, allowing StatefulSet to redeploy
-the cluster Pods with the new image.
+1. Make sure that `spec.updateStrategy` option is set to `SmartUpdate`.
 
-!!! note
+2. Change `spec.crVersion` option to match the version of the Custom Resource
+    Definition upgrade [you have done](update.md#manual-upgrade) while upgrading
+    the Operator:
 
-    Being enabled, Smart Update will force the Operator to take MongoDB
-    version from Version Service and not from the `mongod.image` option during
-    the very first start of the cluster.
+    ```yaml
+    ...
+    spec:
+      crVersion: {{ release }}
+      ...
+    ```
+    
+    !!! note
 
-The upgrade details are set in the `upgradeOptions` section of the
-`deploy/cr.yaml` configuration file. Make the following edits to configure
-updates:
+        If you don't update crVersion, minor version upgrade is the only one to
+        occur. For example, the image `percona-server-mongodb:5.0.7-6` can
+        be upgraded to `percona-server-mongodb:5.0.11-10`.
 
-1. Set the `apply` option to one of the following values:
+3. Set the `upgradeOptions.apply` option from `Disabled` to one of the
+    following values:
 
     * `Recommended` - automatic upgrade will choose the most recent version
         of software flagged as Recommended (for clusters created from scratch,
@@ -208,22 +243,18 @@ updates:
         clusters (ex. 5.0 will not be automatically used instead of 4.4),
     * *version number* - specify the desired version explicitly
         (version numbers are specified as {{ mongodb44recommended }},
-        {{ mongodb42recommended }}, etc.),
-    * `Never` or `Disabled` - disable automatic upgrades.
+        {{ mongodb42recommended }}, etc.). Actual versions can be found
+        [in the list of certified images](images.md#custom-registry-images).
 
-    !!! note
-
-        When automatic upgrades are disabled by the `apply` option,
-        Smart Update functionality will continue working for changes triggered
-        by other events, such as rotating a password, or
-        changing resource values.
-
-2. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
+4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
     URL (otherwise Smart Updates will not occur).
 
-    1. You can use the URL of the official Percona’s Version Service (default).
-        Set `versionServiceEndpoint` to `https://check.percona.com`.
-    2. Alternatively, you can run Version Service inside your cluster. This
+    === "Percona’s Version Service (default)"
+        You can use the URL of the official Percona’s Version Service (default).
+        Set `upgradeOptions.versionServiceEndpoint` to `https://check.percona.com`.
+
+    === "Version Service inside your cluster"
+        Alternatively, you can run Version Service inside your cluster. This
         can be done with the `kubectl` command as follows:
 
         ``` {.bash data-prompt="$" }
@@ -232,77 +263,59 @@ updates:
 
     !!! note
 
-        Version Service is never checked if automatic updates are disabled.
-        If automatic updates are enabled, but Version Service URL can not be
-        reached, upgrades will not occur.
+        Version Service is never checked if automatic updates are disabled in 
+        the `upgradeOptions.apply` option. If automatic updates are enabled, but
+        the Version Service URL can not be reached, no updgrades will be
+        performed.
 
-3. Use the `schedule` option to specify the update checks time in CRON format.
+5. Use the `upgradeOptions.schedule` option to specify the update check time in CRON format.
 
-4. Don’t forget to apply changes with the `kubectl apply -f deploy/cr.yaml`
-    command.
+    The following example sets the midnight update checks with the official
+    Percona’s Version Service:
 
-The following example sets the midnight update checks with the official
-Percona’s Version Service:
+    ```yaml
+    spec:
+      updateStrategy: SmartUpdate
+      upgradeOptions:
+        apply: Recommended
+        versionServiceEndpoint: https://check.percona.com
+        schedule: "0 0 * * *"
+    ...
+    ```
 
-```yaml
-spec:
-  updateStrategy: SmartUpdate
-  upgradeOptions:
-    apply: Recommended
-    versionServiceEndpoint: https://check.percona.com
-    schedule: "0 0 * * *"
-...
-```
+    !!! note
 
-### Percona Server for MongoDB major version upgrades
+        You can force an immediate upgrade by changing the schedule to
+        `* * * * *` (continuously check and upgrade) and changing it back to
+        another more conservative schedule when the upgrade is complete.
 
-Normally automatic upgrade takes place within minor versions (for example,
-from `4.2.11-12` to `4.2.12-13`) of MongoDB. Major versions upgrade (for
-example moving from `4.2-recommended` to `4.4-recommended`) is more
-complicated task which might potentially affect how data is stored and how
-applications interacts with the database (in case of some API changes).
+6. Don't forget to apply your changes to the Custom Resource in the usual way:
 
-Such upgrade is supported by the Operator within one major version at a time:
-for example, to change Percona Server for MongoDB major version from 4.2 to 5.0,
-you should first upgrade it to 4.4, and later make a separate upgrade from 4.4
-to 5.0. The same is true for major version downgrades.
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f deploy/cr.yaml
+    ```
 
-!!! note
+    !!! note
 
-    It is recommended to take a backup before upgrade, as well as to
-    perform upgrade on staging environment.
+        When automatic upgrades are disabled by the `apply` option,
+        Smart Update functionality will continue working for changes triggered
+        by other events, such as rotating a password, or
+        changing resource values.
 
-Major version upgrade can be initiated using the [upgradeOptions.apply](operator.md#upgradeoptions-apply)
-key in the `deploy/cr.yaml` configuration file:
+## More on upgrade strategies
 
-```yaml
-spec:
-  upgradeOptions:
-    apply: 5.0-recommended
-```
+The recommended way to upgrade your cluster is to use the
+*Smart Update strategy*, when the Operator controls how the objects
+are updated. Smart Update strategy is on when the `updateStrategy` key in the
+[Custom Resource](operator.md) configuration file is set to `SmartUpdate`
+(this is the default value and the recommended way for upgrades).
 
-!!! note
-
-    When making downgrades (e.g. changing version from 4.4 to 4.2), make
-    sure to remove incompatible features that are persisted and/or update
-    incompatible configuration settings. Compatibility issues between major
-    MongoDB versions can be found in
-    [upstream documentation](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
-
-By default the Operator doesn’t set
-[FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
-to match the new version, thus making sure that backwards-incompatible features
-are not automatically enabled with the major version upgrade (which is
-recommended and safe behavior). You can turn this backward compatibility off at
-any moment (after the upgrade or even before it) by setting the
-[upgradeOptions.setFCV](operator.md#upgradeoptions-setfcv) flag in the
-`deploy/cr.yaml` configuration file to `true`.
-
-!!! note
-
-    With setFeatureCompatibilityVersion set major version rollback is not
-    currently supported by the Operator. Therefore it is recommended to stay
-    without enabling this flag for some time after the major upgrade to ensure
-    the likelihood of downgrade is minimal. Setting `setFCV` flag to `true`
-    simultaneously with the `apply` flag should be done only if the whole
-    procedure is tested on staging and you are 100% sure about it.
+Alternatively, you can set this key to `RollingUpdate` or `OnDelete`, which
+means that you will have to
+[follow the low-level Kubernetes way of database upgrades](update_manually.md).
+But take into account, that `SmartUpdate` strategy is not just for simplifying
+upgrades. Being turned on, it allows to disable automatic upgrades, and still
+controls restarting Pods in a proper order for changes triggered by other
+events, such as updating a ConfigMap, rotating a password, or changing resource
+values. That's why `SmartUpdate` strategy is useful even when you have no plans
+to automate upgrades at all.
