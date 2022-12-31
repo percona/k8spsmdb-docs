@@ -167,6 +167,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
           "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
+    ```
 
     !!! warning
 
