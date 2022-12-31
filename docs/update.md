@@ -51,16 +51,7 @@ The upgrade includes the following steps.
     ``` {.bash data-prompt="$" }
     $ kubectl patch deployment percona-server-mongodb-operator \
        -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
-    ```
-    
-    $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
-       "spec": {
-          "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
-          "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
-          "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
-       }}'
-    ```
+    ```   
 
 3. The deployment rollout will be automatically triggered by the applied patch.
     You can track the rollout process in real time with the
