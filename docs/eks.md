@@ -117,8 +117,8 @@ $ eksctl create cluster -f ~/cluster.yaml
 
     !!! note
 
-        This deploys default MongoDB cluster configuration, one mongos node and
-        one config server node. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        This deploys default MongoDB cluster configuration, three mongod, three mongos, and
+        three config server instances. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
         and [Custom Resource Options](operator.md#operator-custom-resource-options)
         for the configuration options. You can clone the repository with all
         manifests and source code by executing the following command:
