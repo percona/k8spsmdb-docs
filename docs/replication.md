@@ -10,6 +10,12 @@ This feature can be useful in several cases:
 - simplify the migration of the MongoDB cluster to and from Kubernetes
 - add remote nodes to the replica set for disaster recovery
 
+## Prerequisites
+
+- Every node in _Main_ and _Replica_ clusters need to be reachable through network.
+- User credentials should be the same in each cluster.
+- TLS certificates should be the same in each cluster.
+
 ## Glossary
 
 - **Main cluster**: The cluster which the primary node runs and accepts write
@@ -40,14 +46,37 @@ docs](https://www.mongodb.com/docs/manual/core/replica-set-members/#replica-set-
 
 If you want both _Main_ and _Replica_ clusters to run on Kubernetes, overall steps will look like:
 
-1. Deploy _Main_ cluster on a Kubernetes cluster
+1. Deploy _Main_ cluster on a Kubernetes cluster (or use an existing one)
 2. Get secrets from _Main_ cluster and apply them to namespace in Kubernetes cluster which you'll deploy the _Replica_ cluster
 3. Deploy _Replica_ cluster on a Kubernetes cluster
 4. Add nodes from _Replica_ cluster to _Main_ cluster as external nodes
 
 ### Main cluster on Kubernetes and Replica cluster outside of Kubernetes
 
+If you want _Main_ cluster to run on Kubernetes but _Replica_ cluster outside of Kubernetes, overall steps will look like:
+
+1. Deploy _Main_ cluster on a Kubernetes cluster (or use an existing one)
+2. Get TLS secrets from _Main_ cluster to configure _Replica_ cluster
+3. Deploy _Replica_ cluster on wherever you want
+4. Add nodes from _Replica_ cluster to _Main_ cluster as external nodes
+
 ### Main cluster outside of Kubernetes and Replica cluster on Kubernetes
+
+If you want _Main_ cluster to run outside of Kubernetes but _Replica_ cluster on Kubernetes, overall steps will look like:
+
+1. Deploy _Main_ cluster on wherever you want (or use an existing one)
+2. Get TLS certificates and create a Kubernetes secret with them
+3. Get user credentials and create a Kubernetes secret with them
+4. Deploy _Replica_ cluster on a Kubernetes cluster
+5. Add nodes from _Replica_ cluster to _Main_ cluster using Mongo client
+
+## Deploying _Main_ cluster on Kubernetes
+
+## Deploying _Replica_ cluster on Kubernetes
+
+## Preparing secrets for _Replica_ on Kubernetes
+
+## Preparing TLS certificates for _Replica_ outside of Kubernetes
 
 ## Exposing instances of the MongoDB cluster
 
