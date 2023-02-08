@@ -3,9 +3,19 @@ INHERIT: mkdocs-base.yml
 
 site_url: https://docs.percona.com/percona-operator-for-mongodb/
 
-plugins:
-  section-index: {}
-  
+theme:
+  name: material
+  custom_dir: _resource/overrides
+# Theme features
+  features:
+    - search.highlight
+    - navigation.top
+    - navigation.tracking
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+
 #Google Analytics configuration 
 extra:
   analytics:
