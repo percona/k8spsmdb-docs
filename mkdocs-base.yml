@@ -172,7 +172,7 @@ nav:
           - "Frequently asked questions": faq.md
           
     - Release notes:
-          - "Release notes index": RN/index.md
+          - 
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
