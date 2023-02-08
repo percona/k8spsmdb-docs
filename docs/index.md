@@ -80,7 +80,7 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode](cluster-wide.md)
 
-* [Upgrading Percona XtraDB Cluster manually](update_manually.md)
+* [Upgrading Percona Server for MongoDB manually](update_manually.md)
 
 # Reference
 
