@@ -14,6 +14,10 @@ theme:
   name: material
   logo: assets/images/percona-logo.svg
   favicon: assets/images/percona-favicon.ico
+  custom_dir: _resource/overrides/
+  font:
+    text: Chivo, Colfax, Franziska
+    text: Poppins
   palette:
     #    - media: "(prefers-color-scheme: light)"
     scheme: percona-light
@@ -59,7 +63,9 @@ markdown_extensions:
     linenums: false
 
 plugins:
-  search: {}
+  section-index: {}
+  search: 
+    separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   git-revision-date: {}
   macros:
     include_yaml:
@@ -75,7 +81,7 @@ plugins:
     cover_subtitle: 1.13.0 (September 15, 2022)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/Kubernetes-PG.png
-    custom_template_path: _resources/templates
+    custom_template_path: _resource/templates
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
@@ -87,6 +93,15 @@ plugins:
     canonical_version: null
 
 extra: # Used in main.html template and can't be externalized
+  homepage:
+    https://docs.percona.com
+  consent:
+    title: Cookie consent
+    description: >- 
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   release: '1.13.0'
@@ -157,6 +172,7 @@ nav:
           - "Frequently asked questions": faq.md
           
     - Release notes:
+          - "Release notes index": RN/index.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
