@@ -10,12 +10,11 @@ A replica set consists of one primary server and several secondary ones
 (two in the picture), and the client application accesses the servers
 via a driver.
 
-Sharded cluster looks as follows:
+In the case of a sharded cluster, each shard is a replica set which contains a
+subset of data stored in the database, and the `mongos` query router acts as an
+entry point for client applications. It looks as follows:
 
 ![image](assets/images/sharding.svg)
-
-In this case replica set contains a subset of data stored in the database, and
-mongos query router acts as an entry point for client applications.
 
 To provide high availability the Operator uses [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 to run MongoDB instances on separate worker nodes if possible, and the
