@@ -1,14 +1,21 @@
 # Design overview
 
 The design of the Operator is tighly bound to the Percona Server for
-MongoDB replica set, which is briefly described in the following
-diagram.
+MongoDB replica set or sharded cluster. Replica set cluster is briefly described
+in the following diagram.
 
 ![image](assets/images/replication.svg)
 
 A replica set consists of one primary server and several secondary ones
 (two in the picture), and the client application accesses the servers
 via a driver.
+
+Sharded cluster looks as follows:
+
+![image](assets/images/sharding.svg)
+
+In this case replica set contains a subset of data stored in the database, and
+mongos query router acts as an entry point for client applications.
 
 To provide high availability the Operator uses [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 to run MongoDB instances on separate worker nodes if possible, and the
