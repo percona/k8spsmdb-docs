@@ -12,7 +12,9 @@ via a driver.
 
 In the case of a sharded cluster, each shard is a replica set which contains a
 subset of data stored in the database, and the `mongos` query router acts as an
-entry point for client applications. It looks as follows:
+entry point for client applications. You can find out more details about sharding
+[on a dedicated documentation page](sharding.md), and a simplified diagram
+is as follows:
 
 ![image](assets/images/sharding.svg)
 
