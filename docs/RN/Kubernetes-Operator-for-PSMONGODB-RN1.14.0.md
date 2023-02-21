@@ -49,12 +49,6 @@
 
 * {{ k8spsmdbjira(784) }} Security enableEncryption is always activated when using psmdb-db Helm Chart  **open**
 
-766	
-767	
-770	
-	
-	
-800	
 * {{ k8spsmdbjira(786) }} When Changing to allowUnsafeConfigurations: true cluster goes to failures and mongos does not get to Ready state  **open**
 
 * {{ k8spsmdbjira(796) }} Fix a bug due to which backup failed if replset was exposed
@@ -95,7 +89,9 @@
 
 * {{ k8spsmdbjira(846) }} Scaling down results in node as Secondary
  
-* {{ k8spsmdbjira(866) }} Decrease the amount of operator logs
+* {{ k8spsmdbjira(866) }} Fix the bug due to which the Operator was continuously
+    flooding the log with error messages if the credentials of the PMM server
+    were missing
 
 ## Supported Platforms
 
