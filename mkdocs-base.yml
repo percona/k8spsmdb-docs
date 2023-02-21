@@ -150,7 +150,14 @@ nav:
           - "Telemetry": telemetry.md
           
     - Management:
-          - "Backup and restore": backups.md
+          - Backup and restore:
+              - "About backups": backups-about.md
+              - "Configure storage": backups-storage.md
+              - "Making scheduled backups": backups-scheduled.md
+              - "Making on-demand backup": backups-ondemand.md
+              - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Restore from a previously saved backup": backups-restore.md
+              - "Delete the unneeded backup": backups-delete.md
           - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment": replication.md
@@ -158,12 +165,13 @@ nav:
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
           - "Debug and troubleshoot": debug.md
-          
+
     - HOWTOs:
           - "OpenLDAP integration": ldap.md
           - "Creating a private S3-compatible cloud for backups": private.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Upgrading Percona Server for MongoDB manually": update_manually.md
+          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-a-new-cluster.md
 
     - Reference:
           - "Custom Resource options": operator.md
