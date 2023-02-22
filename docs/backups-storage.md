@@ -35,9 +35,19 @@ to access the storage.
 
         !!! note
 
-            --8<--
-            assets/fragments/base64encode.txt
-            --8<--
+            You can use the following command to get a base64-encoded string from a plain text one:
+
+            === "in Linux"
+
+                ``` {.bash data-prompt="$" }
+                $ echo -n 'plain-text-string' | base64 --wrap=0
+                ```
+
+            === "in macOS"
+
+                ``` {.bash data-prompt="$" }
+                $ echo -n 'plain-text-string' | base64
+                ```
 
         Once the editing is over, create the Kubernetes Secret object as follows:
 
@@ -134,9 +144,19 @@ to access the storage.
 
         !!! note
 
-            --8<--
-            assets/fragments/base64encode.txt
-            --8<--
+            You can use the following command to get a base64-encoded string from a plain text one:
+
+            === "in Linux"
+
+                ``` {.bash data-prompt="$" }
+                $ echo -n 'plain-text-string' | base64 --wrap=0
+                ```
+
+            === "in macOS"
+
+                ``` {.bash data-prompt="$" }
+                $ echo -n 'plain-text-string' | base64
+            so    ```
 
         Once the editing is over, create the Kubernetes Secret object as follows:
 
