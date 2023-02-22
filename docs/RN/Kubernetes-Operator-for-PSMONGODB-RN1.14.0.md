@@ -10,20 +10,20 @@
 
 ## Release Highlights
 
-* [Azure Kubernetes Service (AKS)](../aks.md) is now officially supported platform, so developers and vendors of the solutions based on the Azure platform can take advantage of the official support from Percona or just use officially certified Percona Operator for MongoDB images 
+* [Physical backups](backups-about.md#physical) are now officially supported by the Operator. Physical backups are much faster than logical backups, but need more storage, amd still have the **technical preview stauts**.
 
 * Starting from now, the Operator [can be installed in multi-namespace (so-called “cluster-wide”) mode](../cluster-wide.md), when a single Operator can be given a list of namespaces in which to manage Percona Server for MongoDB clusters
 
 
 ## New Features
 
-* {{ k8spsmdbjira(713) }} Support physical backups
+* {{ k8spsmdbjira(713) }} Support for [physical backups](backups-about.md#physical)
 
 * {{ k8spsmdbjira(737) }} Support for MongoDB 6.0
 
 * {{ k8spsmdbjira(824) }} New `ignoreAnnotations` and `ignoreLabels` Custom Resource options allow to list [specific annotations and labels](../annotations.md) for Kubernetes Service objects, which the Operator should ignore (useful with various Kubernetes flavors which add annotations to the objects managed by the Operator)
 
-* {{ k8spsmdbjira(853) }} Details about using backups, as well as the cluster size and the facts of using helm, PMM, and/or sidecar containers were added to [telemetry](../telemetry.md)
+* {{ k8spsmdbjira(853) }} [Telemetry](../telemetry.md) was expanded with details about using backups, as well as the cluster size and the facts of using helm, PMM, and/or sidecar containers
 
 ## Improvements
 
