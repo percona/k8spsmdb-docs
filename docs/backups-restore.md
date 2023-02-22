@@ -73,7 +73,7 @@ restoration can be done in the following way.
 
 === "With point-in-time recovery"
 
-        1. Set appropriate keys in the [deploy/backup/restore.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+    1. Set appropriate keys in the [deploy/backup/restore.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
         * set `spec.clusterName` key to the name of the target cluster to restore
             the backup on,
@@ -102,28 +102,28 @@ restoration can be done in the following way.
               destination: s3://S3-BUCKET-NAME/BACKUP-NAME
             ```
 
-        2. Run the actual restoration process:
+    2. Run the actual restoration process:
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply -f deploy/backup/restore.yaml
+        ```
+
+        !!! note
+
+            Storing backup settings in a separate file can be replaced by
+            passing its content to the `kubectl apply` command as follows:
 
             ``` {.bash data-prompt="$" }
-            $ kubectl apply -f deploy/backup/restore.yaml
+            $ cat <<EOF | kubectl apply -f-
+            apiVersion: psmdb.percona.com/v1
+            kind: PerconaServerMongoDBRestore
+            metadata:
+              name: restore1
+            spec:
+              clusterName: my-cluster-name
+              backupName: backup1
+              pitr:
+                type: date
+                date: YYYY-MM-DD hh:mm:ss
+            EOF
             ```
-
-            !!! note
-
-                Storing backup settings in a separate file can be replaced by
-                passing its content to the `kubectl apply` command as follows:
-
-                ``` {.bash data-prompt="$" }
-                $ cat <<EOF | kubectl apply -f-
-                apiVersion: psmdb.percona.com/v1
-                kind: PerconaServerMongoDBRestore
-                metadata:
-                  name: restore1
-                spec:
-                  clusterName: my-cluster-name
-                  backupName: backup1
-                  pitr:
-                    type: date
-                    date: YYYY-MM-DD hh:mm:ss
-                EOF
-                ```
