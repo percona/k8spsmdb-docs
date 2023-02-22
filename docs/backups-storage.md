@@ -106,9 +106,9 @@ to access the storage.
 
 === "Microsoft Azure Blob storage"
 
-        1. To store backups on the Azure Blob storage, you need to create a
-            Secret with the following values:
-    
+    1. To store backups on the Azure Blob storage, you need to create a
+        Secret with the following values:
+
         * the `metadata.name` key is the name which you wll further use to refer
             your Kubernetes Secret,
         * the `data.AZURE_STORAGE_ACCOUNT_NAME` and `data.AZURE_STORAGE_ACCOUNT_KEY`
@@ -159,7 +159,6 @@ to access the storage.
 
         The options within the `storages.<NAME>.azure` subsection are further explained
         in the [Operator Custom Resource options](operator.md#operator-backup-section).
-
 
         Here is an example
         of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)

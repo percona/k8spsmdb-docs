@@ -152,7 +152,7 @@ nav:
     - Management:
           - Backup and restore:
               - "About backups": backups-about.md
-              - "Configure storage": backups-storage.md
+              - "Configure storage for backups": backups-storage.md
               - "Making scheduled backups": backups-scheduled.md
               - "Making on-demand backup": backups-ondemand.md
               - "Storing operations logs for point-in-time recovery": backups-pitr.md
