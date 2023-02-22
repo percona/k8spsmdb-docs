@@ -1,5 +1,4 @@
-You can use the following command to get a base64-encoded string from
-a plain text one:
+You can use the following command to get a base64-encoded string from a plain text one:
 
 === "in Linux"
 

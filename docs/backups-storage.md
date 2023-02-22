@@ -35,7 +35,9 @@ to access the storage.
 
         !!! note
 
-            --8<-- "assets/fragments/base64encode.txt"
+            --8<--
+            assets/fragments/base64encode.txt
+            --8<--
 
         Once the editing is over, create the Kubernetes Secret object as follows:
 
@@ -132,7 +134,9 @@ to access the storage.
 
         !!! note
 
-            --8<-- "assets/fragments/base64encode.txt"
+            --8<--
+            assets/fragments/base64encode.txt
+            --8<--
 
         Once the editing is over, create the Kubernetes Secret object as follows:
 

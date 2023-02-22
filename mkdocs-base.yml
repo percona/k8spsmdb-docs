@@ -169,9 +169,9 @@ nav:
     - HOWTOs:
           - "OpenLDAP integration": ldap.md
           - "Creating a private S3-compatible cloud for backups": private.md
+          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Upgrading Percona Server for MongoDB manually": update_manually.md
-          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-a-new-cluster.md
 
     - Reference:
           - "Custom Resource options": operator.md
