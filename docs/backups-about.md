@@ -4,7 +4,7 @@ The Operator usually stores Server for MongoDB backups outside the Kubernetes
 cluster: on [Amazon S3 or S3-compatible storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
 or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
-![image](assets/images/backup-s3.svg)
+![image](assets/images/backup-cloud.svg)
 
 Backups are done by the Operator using the [Percona Backup for MongoDB](https://github.com/percona/percona-backup-mongodb) tool.
 
