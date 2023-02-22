@@ -156,7 +156,7 @@ to access the storage.
 
                 ``` {.bash data-prompt="$" }
                 $ echo -n 'plain-text-string' | base64
-            so    ```
+                ```
 
         Once the editing is over, create the Kubernetes Secret object as follows:
 
