@@ -12,9 +12,6 @@
 
 * [Physical backups](backups-about.md#physical) are now officially supported by the Operator. Physical backups are much faster than logical backups, but need more storage, amd still have the **technical preview stauts**.
 
-* Starting from now, the Operator [can be installed in multi-namespace (so-called “cluster-wide”) mode](../cluster-wide.md), when a single Operator can be given a list of namespaces in which to manage Percona Server for MongoDB clusters
-
-
 ## New Features
 
 * {{ k8spsmdbjira(713) }} Support for [physical backups](backups-about.md#physical)
@@ -27,7 +24,7 @@
 
 ## Improvements
 
-* {{ k8spsmdbjira(658) }} improve operator logs when pausing/unpausing the cluster
+* {{ k8spsmdbjira(658) }} Messages appearing in the Operator logs when pausing/unpausing the cluster were substantially improved to clearly indicate the event
 
 * {{ k8spsmdbjira(708) }} Add possibility to configure securityContext for init container
 
