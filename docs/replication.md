@@ -212,11 +212,33 @@ To set up MCS for a specific cloud provider you should follow official guides,
 for example ones [from Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
 or [from Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
 
+!!! warning
+
+    For EKS, you also need to create ClusterProperty objects prior to enabling multi-cluster services.
+
+    ```yaml
+    apiVersion: about.k8s.io/v1alpha1
+      kind: ClusterProperty
+    metadata:
+      name: cluster.clusterset.k8s.io
+    spec:
+      value: [Your Cluster identifier]
+    ---
+    apiVersion: about.k8s.io/v1alpha1
+    kind: ClusterProperty
+    metadata:
+      name: clusterset.k8s.io
+    spec:
+      value: [Your ClusterSet identifier]
+    ```
+
+    Check [AWS MCS controller repository](https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage) for more information.
+
 Setting up the Operator for MCS results in registering Services for export to
 other clusters [using the ServiceExport object](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
 and using ServiceImport one to import external services. Set the following
 options in the `multiCluster` subsection of the `deploy/cr.yaml` configuration
-file to make it happened:
+file to make it happen:
 
 * `multiCluster.enabled` should be set to `true`,
 * `multiCluster.DNSSuffix` string should be equal to the cluster domain suffix
@@ -236,9 +258,34 @@ multiCluster:
 
 Apply changes as usual with the `kubectl apply -f deploy/cr.yaml` command.
 
+!!! note
+
+    If you want to enable multi-cluster services in a new cluster, we
+    recommended deploying the cluster first with `multiCluster.enabled` set to
+    `false` and enable it after replset is initialized.
+
 The initial ServiceExport creation and sync with the clusters of the fleet takes
 approximately five minutes. You can check the list of services for export and
 import with the following commands:
+
+``` {.bash data-prompt="$" }
+$ kubectl get serviceexport
+```
+
+??? example "Expected output"
+
+    ``` {.text .no-copy}
+    NAME                     AGE
+    my-cluster-name-cfg      22m
+    my-cluster-name-cfg-0    22m
+    my-cluster-name-cfg-1    22m
+    my-cluster-name-cfg-2    22m
+    my-cluster-name-mongos   22m
+    my-cluster-name-rs0      22m
+    my-cluster-name-rs0-0    22m
+    my-cluster-name-rs0-1    22m
+    my-cluster-name-rs0-2    22m
+    ```
 
 ``` {.bash data-prompt="$" }
 $ kubectl get serviceimport
@@ -259,24 +306,12 @@ $ kubectl get serviceimport
     my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
     ```
 
-``` {.bash data-prompt="$" }
-$ kubectl get serviceexport
-```
+!!! note
 
-??? example "Expected output"
-
-    ``` {.text .no-copy}
-    NAME                     AGE
-    my-cluster-name-cfg      22m
-    my-cluster-name-cfg-0    22m
-    my-cluster-name-cfg-1    22m
-    my-cluster-name-cfg-2    22m
-    my-cluster-name-mongos   22m
-    my-cluster-name-rs0      22m
-    my-cluster-name-rs0-0    22m
-    my-cluster-name-rs0-1    22m
-    my-cluster-name-rs0-2    22m
-    ```
+    ServiceExport objects are created automatically by the Percona Server for
+    MongoDB Operator. ServiceImport objects, on the other hand, are not
+    controlled by the operator. If you need to troubleshoot ServiceImport
+    objects you must check the controller installed by your cloud provider.
 
 After ServiceExport object is created, exported Services can be resolved from
 any Pod in any fleet cluster as
