@@ -75,3 +75,27 @@ file:
 If this feature is enabled, URI looks like
 `mongodb://databaseAdmin:databaseAdminPassword@<ip1>:<port1>,<ip2>:<port2>,<ip3>:<port3>/admin?replicaSet=rs0&ssl=false`
 All IP adresses should be *directly* reachable by application.
+
+## Controlling hostnames in replset configuration
+
+Starting from v1.14, the operator configures replset members using local FQDNs
+which are resolvable and available only from inside of Kubernetes cluster. Even
+you expose the replset using the options described above, hostnames in replset
+configuration will not be changed.
+
+!!! note
+
+    Before v1.14, the operator was using exposed IP addresses in replset configuration if replset is exposed.
+
+You may want to restore the old behavior. For example for [multi-cluster
+deployments](replication.md), you may want to have the replset configured with
+external IPs. You can use `clusterServiceDNSMode` field to control operator
+behavior. You can set `clusterServiceDNSMode` to one of the following values:
+
+1. **`Internal`**: Use local FQDNs (i.e. `cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local`) in replset configuration even if the replset is exposed. **This is the default value.**
+2. **`ServiceMesh`**: Use a special FQDN using the pod name (i.e. `cluster1-rs0-0.psmdb.svc.cluster.local`) assuming it's resolvable and available in all clusters.
+3. **`External`**: Use exposed IP in replset configuration if replset is exposed. Otherwise use local FQDN. **This is basically the same with the behavior of v1.13.**
+
+!!! warning
+
+    You should be careful when using `External` for `clusterServiceDNSMode`. Using IP addresses instead of DNS hostnames are discouraged in MongoDB.
