@@ -24,7 +24,7 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
 | initImage                 | string   | `percona/percona-server-mongodb-operator:{{ release }}` | An alternative image for the initial Operator installation |
-| initContainerSecurityContext | subdoc| `{}`         | A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage be used instead of the default one while the initial Operator installation |
+| initContainerSecurityContext | subdoc| `{}`         | A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation) |
 | ClusterServiceDNSSuffix   | string   | `svc.cluster.local` | The (non-standard) cluster domain to be used as a suffix of the Service name |
 | clusterServiceDNSMode     | string   | `Internal`   | Can be either `internal` (exposed MongoDB instances will use ClusterIP addresses) or `ServiceMesh` (turns on  for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together. |
 | allowUnsafeConfigurations | boolean  | `false`      | Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults) |
@@ -989,6 +989,21 @@ Percona Server for MongoDB backups.
 | **Value**       | string |
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.uploadPartSize') }} |
+| **Value**       | int |
+| **Example**     | `10485760` |
+| **Description** | The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.maxUploadParts') }} |
+| **Value**       | int |
+| **Example**     | `10000` |
+| **Description** | The maximum number of data chunks to be uploaded to the storage bucket (10000 by default) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.storageClass') }} |
+| **Value**       | string |
+| **Example**     | `STANDARD` |
+| **Description** | The [storage class name](https://aws.amazon.com/s3/storage-classes) of the S3 storage |
 |                 | |
 | **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.region') }} |
 | **Value**       | string |
