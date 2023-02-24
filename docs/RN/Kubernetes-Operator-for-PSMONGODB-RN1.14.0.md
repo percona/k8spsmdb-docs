@@ -26,7 +26,7 @@
 
 * {{ k8spsmdbjira(658) }} Messages appearing in the Operator logs when pausing/unpausing the cluster were substantially improved to clearly indicate the event
 
-* {{ k8spsmdbjira(708) }} Add possibility to configure securityContext for init container
+* {{ k8spsmdbjira(708) }} Add possibility to configure securityContext for the init container, which can be used instead of the official image during the initial Operator installation
 
 * {{ k8spsmdbjira(721) }} Backup container failing takes down database pod
 
