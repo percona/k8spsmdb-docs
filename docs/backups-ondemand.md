@@ -24,7 +24,7 @@
 
     * optionally you can set the `spec.type` key to `physical` if you would like
        to make physical backups instead of logical ones (please see the
-       [physical backups limitations](backups-about.md#physical)). Otherwise set
+       [physical backups limitations](backups.md#physical)). Otherwise set
        this key to `logical`, or just omit it.
 
     You can find the example of such file in

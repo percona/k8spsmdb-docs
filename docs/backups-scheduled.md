@@ -27,7 +27,7 @@ file.
 
     * you can optionally set the `type` key to `physical` if you would like to
        make physical backups instead of logical ones (please see the
-       [physical backups limitations](backups-about.md#physical)). Otherwise set
+       [physical backups limitations](backups.md#physical)). Otherwise set
        this key to `logical`, or just omit it.
 
 Here is an example of the `deploy/cr.yaml` with a scheduled Saturday night
