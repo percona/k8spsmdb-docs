@@ -30,9 +30,9 @@
 
 * {{ k8spsmdbjira(721) }} The backup subsystem was improved to allow the database to work in case if the backup agent is not able to connect to MongoDB (e.g. due to misconfigured password) instead of taking down the database Pod
 
-* {{ k8spsmdbjira(758) }} Prioritize ServiceMesh fully qualified domain name FQDN for config servers if DNSMode is set to ServiceMesh (thanks to Jo Lyshoel for contribution)
+* {{ k8spsmdbjira(758) }} The ServiceMesh fully qualified domain names (FQDNs) for config servers are now prioritized if DNSMode is set to ServiceMesh (thanks to Jo Lyshoel for contribution)
 
-* {{ k8spsmdbjira(793) }} Add ability to set annotations and labels to Persistent Volume Claims
+* {{ k8spsmdbjira(793) }} It is now possible to set annotations and labels for Persistent Volume Claims
 
 * {{ k8spsmdbjira(803) }} The Operator now does not attempt to start Percona Monitoring and Management (PMM) client sidecar if the corresponding secret does not contain the `pmmserver` or `pmmserverkey` key
 
@@ -44,15 +44,13 @@
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(784) }} Security enableEncryption is always activated when using psmdb-db Helm Chart  **open**
-
-* {{ k8spsmdbjira(786) }} When Changing to allowUnsafeConfigurations: true cluster goes to failures and mongos does not get to Ready state  **open**
+* {{ k8spsmdbjira(784) }} Fix a bug due to which the `enableEncryption` MongoDB configuration option was always activated when using psmdb-db Helm Chart  **open**
 
 * {{ k8spsmdbjira(796) }} Fix a bug due to which backup failed if replset was exposed
 
 * {{ k8spsmdbjira(854) }} Fix a bug due to which backup stucked after cluster was exposed
 
-* {{ k8spsmdbjira(471) }} Scheduled backups with error status can't be deleted from k8s api
+* {{ k8spsmdbjira(471) }} Fix a bug due to which in case of scheduled backups with error status `delete-backup` finalizer didn't allow to delete the appropriate failed resources and Kubernetes namespace (thanks to Aliaksandr Karavai for reporting)
  
 * {{ k8spsmdbjira(576) }} Managed cluster does not delete the old node
  
