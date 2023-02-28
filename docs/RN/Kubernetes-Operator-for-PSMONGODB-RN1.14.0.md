@@ -42,6 +42,10 @@
 
 * {{ k8spsmdbjira(848) }} Remove formatted strings from log messages to avoid confronting with structured logging based on key-value pairs
 
+## Known Issues and Limitations
+
+* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on clusters with [non-voting members](../arbiter.md#adding-non-voting-nodes) in this release
+
 ## Bugs Fixed
 
 * {{ k8spsmdbjira(784) }} Fix a bug due to which the `enableEncryption` MongoDB configuration option was always activated when using psmdb-db Helm Chart  **open**
