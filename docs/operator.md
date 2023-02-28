@@ -408,6 +408,81 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes |
 |                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.podDisruptionBudget.maxUnavailable') }} |
+| **Value**       | int |
+| **Example**     | `1` |
+| **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among non-voting nodes |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.podDisruptionBudget.minAvailable') }} |
+| **Value**       | int |
+| **Example**     | `1` |
+| **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among non-voting nodes |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.limits.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.limits.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.requests.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.requests.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.emptyDir') }} |
+| **Value**       | string |
+| **Example**     | `{}` |
+| **Description** | The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.hostPath.path') }} |
+| **Value**       | string |
+| **Example**     | `/data` |
+| **Description** | [Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.hostPath.type') }} |
+| **Value**       | string |
+| **Example**     | `Directory` |
+| **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.storageClassName') }} |
+| **Value**       | string |
+| **Example**     | `standard` |
+| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the non-voting nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes') }} |
+| **Value**       | array |
+| **Example**     | `[ "ReadWriteOnce" ]` |
+| **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the non-voting nodes|
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage') }} |
+| **Value**       | string |
+| **Example**     | `3Gi` |
+| **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes |
+
+
+
+
+
+|                 | |
 | **Key**         | {{ optionlink('replsets.arbiter.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
@@ -480,12 +555,12 @@ The replsets section controls the MongoDB Replica Set.
 |                 | |
 | **Key**         | {{ optionlink('replsets.resources.requests.cpu') }} |
 | **Value**       | string |
-| **Example**     | |
+| **Example**     | `300m` |
 | **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
 | **Key**         | {{ optionlink('replsets.resources.requests.memory') }} |
 | **Value**       | string |
-| **Example**     | |
+| **Example**     | `0.5G` |
 | **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.emptyDir') }} |
@@ -502,6 +577,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
 |                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
@@ -706,6 +791,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | string |
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
