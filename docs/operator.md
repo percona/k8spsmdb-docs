@@ -1179,3 +1179,8 @@ Percona Server for MongoDB backups.
 | **Value**       | int |
 | **Example**     | `6` |
 | **Description** | The backup compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)) |
+|                 | |
+| **Key**         | {{ optionlink('backup.tasks.type') }} |
+| **Value**       | string |
+| **Example**     | `physical` |
+| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups-about.md#physical) for details |
