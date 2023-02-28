@@ -24,23 +24,23 @@
 
 ## Improvements
 
-* {{ k8spsmdbjira(658) }} Messages appearing in the Operator logs when pausing/unpausing the cluster were substantially improved to clearly indicate the event
+* {{ k8spsmdbjira(658) }} The Operator log messages appearing during the pause/unpause of the cluster were improved to more clearly indicate this event
 
-* {{ k8spsmdbjira(708) }} Add possibility to configure securityContext for the init container, which can be used instead of the official image during the initial Operator installation
+* {{ k8spsmdbjira(708) }} The new `initContainerSecurityContext` option allows to configure securityContext for the container which can be used instead of the official image during the initial Operator installation
 
-* {{ k8spsmdbjira(721) }} Backup container failing takes down database pod
+* {{ k8spsmdbjira(721) }} The backup subsystem was improved to allow the database to work in case if the backup agent is not able to connect to MongoDB (e.g. due to misconfigured password) instead of taking down the database Pod
 
-* {{ k8spsmdbjira(758) }} Prioritize ServiceMesh FQDN for config servers if DNSMode is set to ServiceMesh
+* {{ k8spsmdbjira(758) }} Prioritize ServiceMesh fully qualified domain name FQDN for config servers if DNSMode is set to ServiceMesh (thanks to Jo Lyshoel for contribution)
 
-* {{ k8spsmdbjira(793) }} Add ability to set annotations and labels for PVCs
+* {{ k8spsmdbjira(793) }} Add ability to set annotations and labels to Persistent Volume Claims
 
 * {{ k8spsmdbjira(803) }} The Operator now does not attempt to start Percona Monitoring and Management (PMM) client sidecar if the corresponding secret does not contain the `pmmserver` or `pmmserverkey` key
 
-* {{ k8spsmdbjira(817) }} Allow external nodes to be added even when the replicaset is not exposed
+* {{ k8spsmdbjira(817) }} Allow external nodes to be added to the cluster even when the replicaset is not exposed
 
-* {{ k8spsmdbjira(844) }} Update API for RuntimeClass
+* {{ k8spsmdbjira(844) }} Update the RuntimeClass API version to `v1` from the `v1beta1` already deprecated since Kubernetes 1.22
 
-* {{ k8spsmdbjira(848) }} Remove formatted strings from log messages
+* {{ k8spsmdbjira(848) }} Remove formatted strings from log messages to avoid confronting with structured logging based on key-value pairs
 
 ## Bugs Fixed
 
@@ -94,7 +94,7 @@
 
 The Operator was developed and tested with Percona Server for MongoDB 4.2.22, 4.4.8, 4.4.10, 4.4.13, 4.4.16, 5.0.2, 5.0.4, and 5.0.11. Other options may also work but have not been tested.
 
-The following platforms were tested and are officially supported by the Operator 1.13.0:
+The following platforms were tested and are officially supported by the Operator 1.14.0:
 
 * [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - 1.23
 
