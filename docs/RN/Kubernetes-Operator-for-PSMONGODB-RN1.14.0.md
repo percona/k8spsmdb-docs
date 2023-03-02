@@ -10,7 +10,7 @@
 
 ## Release Highlights
 
-* [Physical backups](backups-about.md#physical) are now officially supported by the Operator. Physical backups are much faster than logical backups, but need more storage, amd still have the **technical preview stauts**.
+* [Physical backups](backups-about.md#physical) are now officially supported by the Operator. Physical backups are much faster than logical backups, but need more storage, amd still have the **technical preview statuts**.
 
 ## New Features
 
