@@ -44,7 +44,7 @@
 
 ## Known Issues and Limitations
 
-* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on clusters with [non-voting members](../arbiter.md#adding-non-voting-nodes) in this release
+* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [non-voting members](../arbiter.md#adding-non-voting-nodes) in this release
 
 ## Bugs Fixed
 
@@ -55,42 +55,32 @@
 * {{ k8spsmdbjira(854) }} Fix a bug due to which backup stucked after cluster was exposed
 
 * {{ k8spsmdbjira(471) }} Fix a bug due to which in case of scheduled backups with error status `delete-backup` finalizer didn't allow to delete the appropriate failed resources and Kubernetes namespace (thanks to Aliaksandr Karavai for reporting)
+
+* {{ k8spsmdbjira(674) }} Fix a bug that caused the Operator not deleting unneeded Services after unexposing the replica set
+
+* {{ k8spsmdbjira(742) }} Fix a bug that caused the updates of the `sharding.mongos.expose.serviceAnnotations` option to be silently rejected
+
+* {{ k8spsmdbjira(766) }} and {{ k8spsmdbjira(767) }}  Fix a bug that the combination of `delete-psmdb-pods-in-order` and `delete-psmdb-pvc` finalizers not working
+
+* {{ k8spsmdbjira(770) }} Fix the uncertainty in logs for the cluster-wide mode caused by not mentioning the namespace in the log messages
+
+* {{ k8spsmdbjira(791) }} Fix a bug which prevented creating Services when the `replsets.expose.exposeType` was set to `Loadbalancer` and the `loadBalancerSourceRanges` option was set
+
+* {{ k8spsmdbjira(797) }} Fix the backup/restore documentation not clearly mentioning that user should specify the bucket for the S3 storage
+
+* {{ k8spsmdbjira(820) }} Fix a bug which prevented the parallel backup jobs execution for different MongoDB clusters in cluster-wide mode
  
-* {{ k8spsmdbjira(576) }} Managed cluster does not delete the old node
+* {{ k8spsmdbjira(823) }} Fix a bug which caused backups not working in case of ReplicaSet exposed with NodePort
  
-* {{ k8spsmdbjira(674) }} Services are not deleted after unexposing the replicaset
-
-* {{ k8spsmdbjira(742) }} Updating the spec.sharding.mongos.expose.serviceAnnotations get silently rejected
-
-* {{ k8spsmdbjira(766) }} failed to run finalizer delete-psmdb-pods-in-order
-
-* {{ k8spsmdbjira(767) }} Ucombination of delete-psmdb-pods-in-order and delete-psmdb-pvc finalizers doesn't work
-
-* {{ k8spsmdbjira(770) }} unclear logs in cluster wide mode
-
-* {{ k8spsmdbjira(791) }} Unable to set LoadBalancerSourceRanges when LoadBalancer is set has type in replsets
-
-* {{ k8spsmdbjira(797) }} Restore backup with S3 storage details in yaml in psmdb
-
-* {{ k8spsmdbjira(800) }} Operator crash due to etcd leader election: Arbiter pod deletion request causing operator crash on unstable k8s cluster
+* {{ k8spsmdbjira(836) }} Fix backups being incorrectly marked as error while still being in starting status
  
-* {{ k8spsmdbjira(820) }} Cluster-Wide mode does not support backups of multiple Mongo-Instances in v1.13.0
+* {{ k8spsmdbjira(841) }} Fix a bug which turned the cluster into unready status after switching from the LoadBalancer expose to ClusterIP
  
-* {{ k8spsmdbjira(823) }} ReplicaSet nodeport exposure breaks backups
- 
-* {{ k8spsmdbjira(836) }} backups in starting status are marked as error
- 
-* {{ k8spsmdbjira(841) }} Cluster unready after switching from expose LoadBalancer to ClusterIP
- 
-* {{ k8spsmdbjira(843) }} Cannot start the cluster after it was deleted
-
-* {{ k8spsmdbjira(845) }} elete backup finalizer fails with PBM v2 with old storage
+* {{ k8spsmdbjira(843) }} Fix a bug which made the cluster unable to start if it was recreated with the came Custom Resource after delete without deleting PVCs and Secrets
 
 * {{ k8spsmdbjira(846) }} Scaling down results in node as Secondary
  
-* {{ k8spsmdbjira(866) }} Fix the bug due to which the Operator was continuously
-    flooding the log with error messages if the credentials of the PMM server
-    were missing
+* {{ k8spsmdbjira(866) }} Fix the bug due to which the Operator was continuously flooding the log with error messages if the credentials of the PMM server were missing
 
 ## Supported Platforms
 
