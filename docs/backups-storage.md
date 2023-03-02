@@ -58,7 +58,7 @@ to access the storage.
     2. Put the data needed to access the S3-compatible cloud into the
         `backup.storages` subsection of the Custom Resource.
     
-        * `storages.<NAME>.type should be set to `s3` (substitute the <NAME> part
+        * `storages.<NAME>.type` should be set to `s3` (substitute the <NAME> part
            with some arbitrary name you will later use to refer this storage when
            making backups and restores).
     
