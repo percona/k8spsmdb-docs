@@ -98,4 +98,4 @@ behavior. You can set `clusterServiceDNSMode` to one of the following values:
 
 !!! warning
 
-    You should be careful when using `External` for `clusterServiceDNSMode`. Using IP addresses instead of DNS hostnames are discouraged in MongoDB.
+    You should be careful when using `External' for `clusterServiceDNSMode'. Using IP addresses instead of DNS host names is discouraged in MongoDB. IP addresses make configuration changes and recovery more difficult, and are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
