@@ -38,10 +38,10 @@ Install Helm following its [official installation instructions](https://docs.hel
         chart. 
         
         * To use different namespace, provide its name with
-        the following additional parameter: `--namespace my-namespace`.
+            the following additional parameter: `--namespace my-namespace`.
         
         * To use different Helm chart version, provide it as follows:
-        `--version {{ release }}`
+            `--version {{ release }}`
 
 3. Install Percona Server for MongoDB:
 
