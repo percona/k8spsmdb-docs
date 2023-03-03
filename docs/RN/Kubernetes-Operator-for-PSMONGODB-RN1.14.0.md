@@ -52,7 +52,7 @@
 
 * {{ k8spsmdbjira(796) }} Fix a bug due to which backup failed if replset was exposed
 
-* {{ k8spsmdbjira(854) }} Fix a bug due to which backup stucked after cluster was exposed
+* {{ k8spsmdbjira(854) }} Fix a bug due to which backup got stuck after the cluster was exposed
 
 * {{ k8spsmdbjira(471) }} Fix a bug due to which in case of scheduled backups with error status `delete-backup` finalizer didn't allow to delete the appropriate failed resources and Kubernetes namespace (thanks to Aliaksandr Karavai for reporting)
 
@@ -64,7 +64,7 @@
 
 * {{ k8spsmdbjira(770) }} Fix the uncertainty in logs for the cluster-wide mode caused by not mentioning the namespace in the log messages
 
-* {{ k8spsmdbjira(791) }} Fix a bug which prevented creating Services when the `replsets.expose.exposeType` was set to `Loadbalancer` and the `loadBalancerSourceRanges` option was set
+* {{ k8spsmdbjira(791) }} Fix a bug which prevented creating Services when the `replsets.expose.exposeType` was set to `LoadBalancer` and the `loadBalancerSourceRanges` option was set
 
 * {{ k8spsmdbjira(797) }} Fix the backup/restore documentation not clearly mentioning that user should specify the bucket for the S3 storage
 
