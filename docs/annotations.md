@@ -35,20 +35,27 @@ following example:
 $ kubectl get pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
 ```
 
-## <a name="annotations-ignore"></a>Specifying labels and annotations ignored by the Operator
+## <a name="annotations-ignore"></a>Using labels and annotations with objects created by the Operator
+
+You can assign labels and annotations to various objects created by the Operator
+(e.g. Services used to expose components of the cluster, Persistent Volume
+Claims, etc.) vith `labels` and `annotations` options in the appropriate
+subsections of the Custom Resource, as seen in the [Custom Resource options reference](operator.md) and the [deploy/cr.yaml configuration file](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
 
 Sometimes various Kubernetes flavors can add their own annotations to the
 objects managed by the Operator.
 
 The Operator keeps track of all changes to its objects and can remove
-annotations that appeared without its participation.
+annotations that appeared without its participation. 
 
-If there are no annotations or labels in the Custom Resource, the Operator does
-nothing if new label or annotation added to the object.
+If there are no annotations or labels in the Custom Resource `expose`
+subsections, the Operator does nothing if new label or annotation added to the
+object.
 
-If there is an annotation or a label specified in the Custom Resource, the
-Operator starts to manage annotations and labels. In this case it removes
-unknown annotations and labels.
+If there is an annotation or a label specified in the Custom Resource `expose`
+subsection, the Operator starts to manage annotations and labels for Services
+exposing objects in [Service per Pod](expose.md#service-per-pod) mode, if any:
+it removes unknown annotations and labels for them.
 
 Still, it is possible to specify which annotations and labels should be
 ignored by the Operator by listing them in the `spec.ignoreAnnotations` or
@@ -75,23 +82,4 @@ annotations:
 labels:
   some.custom.cloud.label/smth: somethinghere
 ```
-
-!!! note
-
-    The ignorance policy can be overturned by `expose.serviceAnnotations` and `expose.serviceLabels` fields.
-
-
-    spec.ignoreAnnotations and spec.ignoreLabels are idle when explicitly stated and populated with content (thanks to general annotations/labels ignorance policy)
-    Overall ignorance policy is being overturned by .expose.serviceAnnotations .expose.serviceLabels fields.
-    Only after permissive annotations/labels policy have been switched to restrictive (by .expose.serviceAnnotations ) spec.ignoreAnnotations and spec.ignoreLabels actually start to work
-
-Generic services like -cfg, -rs, -mongos only accumulate incoming annotations and labels no matter expose.enabled: true or false. The user is to remove obsolete data from service objects manually.
-The operator strictly controls annotation/labels only at explicit services like -cfg-N, -rs0-N. They would pop up only if  expose.enabled: true. In such a case the annotations/labels to preserve originate only from
-
-    spec.ignoreAnnotations
-    spec.ignoreLabels
-    ...expose.serviceAnnotations
-    ...expose.serviceLabels.
-
-
 
