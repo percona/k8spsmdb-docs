@@ -38,7 +38,6 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | replsets        | [subdoc](operator.md#operator-replsets-section)       | | Operator MongoDB Replica Set section |
 | pmm             | [subdoc](operator.md#operator-pmm-section)            | | Percona Monitoring and Management section |
 | sharding        | [subdoc](operator.md#operator-sharding-section)       | | MongoDB sharding configuration section |
-| mongod          | [subdoc](operator.md#operator-mongod-section)         | | Operator MongoDB Mongod configuration section |
 | backup          | [subdoc](operator.md#operator-backup-section)         | | Percona Server for MongoDB backups section |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
@@ -479,11 +478,6 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes |
-
-
-
-
-
 |                 | |
 | **Key**         | {{ optionlink('replsets.arbiter.enabled') }} |
 | **Value**       | boolean |
@@ -998,20 +992,6 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | string |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
-
-## <a name="operator-mongod-section"></a>Mongod Section
-
-This section contains the Mongod configuration options.
-This section is **deprecated** in Percona Operator for MongoDB
-v1.12.0+, **and will be unavailable** in v1.14.0+. Options were moved to
-replsets.configuration.
-
-|                 | |
-|-----------------|-|
-| **Key**         | {{ optionlink('mongod.security.encryptionKeySecret') }} |
-| **Value**       | string |
-| **Example**     | `my-cluster-name-mongodb-encryption-key` |
-| **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) **Please note that this option is deprecated; use** spec.secrets.encryptionKey **instead** |
 
 ## <a name="operator-backup-section"></a>Backup Section
 
