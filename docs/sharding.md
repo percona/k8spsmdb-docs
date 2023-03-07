@@ -50,6 +50,11 @@ You can add more replica sets with different names to the `replsets` section
 in a similar way. Please take into account that having more than one replica set
 is possible only with the sharding turned on.
 
+!!! note
+
+    To remove a shard with the Operator you must first delete all application
+    (non-system) collections from this shard.
+
 ## Checking connectivity to sharded and non-sharded cluster
 
 With sharding turned on, you have `mongos` service as an entry point to access
