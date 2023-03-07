@@ -2,7 +2,7 @@
 
 * **Date**
 
-    February 23, 2023
+    March 9, 2023
 
 * **Installation**
 
@@ -10,7 +10,8 @@
 
 ## Release Highlights
 
-* [Physical backups](backups-about.md#physical) are now officially supported by the Operator. Physical backups are much faster than logical backups, but need more storage, and still have the **technical preview status**.
+* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](backups-about.md#physical) support in the Operator. The feature is now in technical preview.
+* MongoDB 6.0 [comes with a variety](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported in the Operator.
 
 ## New Features
 
@@ -20,27 +21,27 @@
 
 * {{ k8spsmdbjira(824) }} New `ignoreAnnotations` and `ignoreLabels` Custom Resource options allow to list [specific annotations and labels](../annotations.md) for Kubernetes Service objects, which the Operator should ignore (useful with various Kubernetes flavors which add annotations to the objects managed by the Operator)
 
-* {{ k8spsmdbjira(853) }} [Telemetry](../telemetry.md) was expanded with details about using backups, as well as the cluster size and the facts of using helm, PMM, and/or sidecar containers
-
 ## Improvements
 
 * {{ k8spsmdbjira(658) }} The Operator log messages appearing during the pause/unpause of the cluster were improved to more clearly indicate this event
 
 * {{ k8spsmdbjira(708) }} The new `initContainerSecurityContext` option allows to configure securityContext for the container which can be used instead of the official image during the initial Operator installation
 
-* {{ k8spsmdbjira(721) }} The backup subsystem was improved to allow the database to work in case if the backup agent is not able to connect to MongoDB (e.g. due to misconfigured password) instead of taking down the database Pod
+* {{ k8spsmdbjira(721) }} The backup subsystem was improved so that database is not crashing in case if the backup agent is not able to connect to MongoDB (e.g. due to misconfigured password
 
 * {{ k8spsmdbjira(758) }} The ServiceMesh fully qualified domain names (FQDNs) for config servers are now prioritized if DNSMode is set to ServiceMesh (thanks to Jo Lyshoel for contribution)
 
-* {{ k8spsmdbjira(793) }} It is now possible to set annotations and labels for Persistent Volume Claims
+* {{ k8spsmdbjira(793) }} It is now possible to set [annotations and labels](../annotaions.md) for Persistent Volume Claims for better integration with Cloud Native tools
 
 * {{ k8spsmdbjira(803) }} The Operator now does not attempt to start Percona Monitoring and Management (PMM) client sidecar if the corresponding secret does not contain the `pmmserver` or `pmmserverkey` key
 
-* {{ k8spsmdbjira(817) }} Allow external nodes to be added to the cluster even when the replicaset is not exposed
+* {{ k8spsmdbjira(817) }} Allow external nodes to be added to the cluster even when the replica set is not exposed. This unblocks the creation of complex multi-cluster topologies
 
 * {{ k8spsmdbjira(844) }} Update the RuntimeClass API version to `v1` from the `v1beta1` already deprecated since Kubernetes 1.22
 
 * {{ k8spsmdbjira(848) }} Remove formatted strings from log messages to avoid confronting with structured logging based on key-value pairs
+
+* {{ k8spsmdbjira(853) }} To improve the operator we capture  anonymous telemetry and usage data. In this release we [add more data points](../telemetry.md) to it
 
 ## Known Issues and Limitations
 
@@ -50,7 +51,7 @@
 
 * {{ k8spsmdbjira(784) }} Fix a bug due to which the `enableEncryption` MongoDB configuration option was always activated when using psmdb-db Helm Chart  **open**
 
-* {{ k8spsmdbjira(796) }} Fix a bug due to which backup failed if replset was exposed
+* {{ k8spsmdbjira(796) }} Fix a bug due to which backup failed if replica set was exposed
 
 * {{ k8spsmdbjira(854) }} Fix a bug due to which backup got stuck after the cluster was exposed
 
@@ -60,9 +61,9 @@
 
 * {{ k8spsmdbjira(742) }} Fix a bug that caused the updates of the `sharding.mongos.expose.serviceAnnotations` option to be silently rejected
 
-* {{ k8spsmdbjira(766) }} and {{ k8spsmdbjira(767) }}  Fix a bug that the combination of `delete-psmdb-pods-in-order` and `delete-psmdb-pvc` finalizers not working
+* {{ k8spsmdbjira(766) }} and {{ k8spsmdbjira(767) }}  Fix a bug where the combination of `delete-psmdb-pods-in-order` and `delete-psmdb-pvc` finalizers were not working
 
-* {{ k8spsmdbjira(770) }} Fix the uncertainty in logs for the cluster-wide mode caused by not mentioning the namespace in the log messages
+* {{ k8spsmdbjira(770) }} We now mention the namespace name in the log message to ease debugging when cluster-wide mode is used
 
 * {{ k8spsmdbjira(791) }} Fix a bug which prevented creating Services when the `replsets.expose.exposeType` was set to `LoadBalancer` and the `loadBalancerSourceRanges` option was set
 
@@ -70,7 +71,7 @@
 
 * {{ k8spsmdbjira(820) }} Fix a bug which prevented the parallel backup jobs execution for different MongoDB clusters in cluster-wide mode
  
-* {{ k8spsmdbjira(823) }} Fix a bug which caused backups not working in case of ReplicaSet exposed with NodePort
+* {{ k8spsmdbjira(823) }} Fix a bug where backups were not working in case of ReplicaSet exposed with NodePort
  
 * {{ k8spsmdbjira(836) }} Fix backups being incorrectly marked as error while still being in starting status
  
