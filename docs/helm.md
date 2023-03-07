@@ -77,3 +77,30 @@ $ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb 
   --set "replsets[0].volumeSpec.pvc.resources.requests.storage=20Gi" \
   --set backup.enabled=false --set sharding.enabled=false
 ```
+
+Also it can be more convenient in some cases to specify customized options
+in a YAML file instead of using separate command line parameters. The resulting
+file similar to the above example looks as follows:
+
+``` yaml title="values.yaml"
+allowUnsafeConfigurations: true
+sharding:
+  enabled: false
+replsets:
+- name: rs0
+  size: 3
+  expose:
+    enabled: true
+    exposeType: LoadBalancer
+  volumeSpec:
+    pvc:
+      resources:
+        requests:
+          storage: 2Gi
+```
+
+Apply the resulting YAML file as follows:
+
+``` {.bash data-prompt="$" }
+$ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+```
