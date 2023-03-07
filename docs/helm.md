@@ -89,14 +89,13 @@ sharding:
 replsets:
 - name: rs0
   size: 3
-  expose:
-    enabled: true
-    exposeType: LoadBalancer
   volumeSpec:
     pvc:
       resources:
         requests:
           storage: 2Gi
+backup:
+  enabled: false
 ```
 
 Apply the resulting YAML file as follows:
