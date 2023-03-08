@@ -1,4 +1,4 @@
-#How to restore backup to a new Kubernetes-based environment
+# How to restore backup to a new Kubernetes-based environment
 
 The Operator allows restoring a backup not only on the Kubernetes cluster where
 it was made, but also on any Kubernetes-based environment with the installed
