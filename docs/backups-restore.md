@@ -42,10 +42,14 @@ restoration can be done in the following way.
             `backup.storages` subsection of the `deploy/cr.yaml` file):
 
             ```yaml
-            ...
-            storageName: s3-us-west
-            backupSource:
-              destination: s3://S3-BUCKET-NAME/BACKUP-NAME
+            apiVersion: psmdb.percona.com/v1
+            kind: PerconaServerMongoDBRestore
+            metadata:
+              name: restore1
+            spec:
+              clusterName: my-cluster-name
+              backupName: backup1
+              storageName: s3-us-west
             ```
 
     2. After that, the actual restoration process can be started as follows:
@@ -68,6 +72,7 @@ restoration can be done in the following way.
             spec:
               clusterName: my-cluster-name
               backupName: backup1
+              storageName: s3-us-west
             EOF
             ```
 

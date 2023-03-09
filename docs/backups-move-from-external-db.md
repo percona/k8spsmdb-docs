@@ -48,7 +48,7 @@ or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/bl
     ```
 
     After putting all needed details into the file (`AWS_ACCESS_KEY_ID`, 
-    `AWS_SECRET_ACCESS_KEY`, еру S3 bucket and region in the above example),
+    `AWS_SECRET_ACCESS_KEY`, the S3 bucket and region in the above example),
     provide the config file to the pbm-agent on all nodes as follows:
     
     ``` {.bash data-prompt="$" }

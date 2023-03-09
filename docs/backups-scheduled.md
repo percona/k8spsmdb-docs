@@ -49,6 +49,7 @@ backup:
      enabled: true
      schedule: "0 0 * * 6"
      keep: 3
+     type: logical
      storageName: s3-us-west
   ...
 ```

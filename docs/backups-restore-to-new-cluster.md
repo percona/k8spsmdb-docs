@@ -41,13 +41,15 @@ restoration can be done in the following way.
 
         * set `spec.backupSource` subsection instead of `spec.backupName` field
             to point on the appropriate S3-compatible storage. This
-            `backupSource` subsection should contain a `destination` key,
-            followed by necessary storage configuration keys, same as in
+            `backupSource` subsection should contain the [backup type](backups.md#physical)
+            (either `logical` or `physical`), and a `destination` key,
+            followed by necessary storage configuration keys, same as in the
             `deploy/cr.yaml` file:
 
             ```yaml
             ...
             backupSource:
+              type: logical
               destination: s3://S3-BUCKET-NAME/BACKUP-NAME
               s3:
                 credentialsSecret: my-cluster-name-backup-s3
