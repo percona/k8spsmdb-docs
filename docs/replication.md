@@ -26,6 +26,13 @@ like in a full mesh:
 
 ![image](assets/images/replication-mesh.svg)
 
+!!! note
+
+    Starting from v1.14, the operator configures the replset using local DNS
+    hostnames even if the replset is exposed. If you want to have IP addresses
+    in the replset configuration to achieve a multi-cluster deployment, you need
+    to set `clusterServiceDNSMode` to `External`.
+
 This is done through the `replsets.expose`, `sharding.configsvrReplSet.expose`,
 and `sharding.mongos.expose` sections in the `deploy/cr.yaml` configuration file
 as follows.
@@ -262,7 +269,8 @@ Apply changes as usual with the `kubectl apply -f deploy/cr.yaml` command.
 
     If you want to enable multi-cluster services in a new cluster, we
     recommended deploying the cluster first with `multiCluster.enabled` set to
-    `false` and enable it after replset is initialized.
+    `false` and enable it after replset is initialized. Having MCS enabled from
+    the start is prone to errors on replset initialization.
 
 The initial ServiceExport creation and sync with the clusters of the fleet takes
 approximately five minutes. You can check the list of services for export and
@@ -311,7 +319,7 @@ $ kubectl get serviceimport
     ServiceExport objects are created automatically by the Percona Server for
     MongoDB Operator. ServiceImport objects, on the other hand, are not
     controlled by the operator. If you need to troubleshoot ServiceImport
-    objects you must check the controller installed by your cloud provider.
+    objects you must check the MCS controller installed by your cloud provider.
 
 After ServiceExport object is created, exported Services can be resolved from
 any Pod in any fleet cluster as
