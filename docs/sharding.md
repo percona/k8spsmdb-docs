@@ -52,8 +52,8 @@ is possible only with the sharding turned on.
 
 !!! note
 
-    To remove a shard with the Operator you must first delete all application
-    (non-system) collections from this shard.
+    The Operator will be able to remove the shard which contains no application
+    (non-system) collections.
 
 ## Checking connectivity to sharded and non-sharded cluster
 
