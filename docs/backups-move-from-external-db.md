@@ -38,7 +38,7 @@ or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/bl
     following YAML file:
 
     ``` yaml title="pbm_config.yaml"
-    type:s3
+    type: s3
     s3:
       region: us-west-2
       bucket: pbm-test-bucket
