@@ -107,13 +107,12 @@ extra: # Used in main.html template and can't be externalized
   release: '1.14.0'
   apiversion: '1'  
   mongodb60recommended: '6.0.4-3'
-  mongodb50recommended: '5.0.11-10'
-  mongodb44recommended: '4.4.16-16'
-  mongodb42recommended: '4.2.22-22'
-  pmm2recommended: '2.30.0'
-  gkerecommended: '1.23'
-  certmanagerrecommended: '1.6.1'
-  pbmrecommended: '1.8.1'
+  mongodb50recommended: '5.0.14-12'
+  mongodb44recommended: '4.4.18-18'
+  pmm2recommended: '2.35.0'
+  gkerecommended: '1.25'
+  certmanagerrecommended: '1.8.0'
+  pbmrecommended: '2.0.4'
   version:
     provider: mike
 
