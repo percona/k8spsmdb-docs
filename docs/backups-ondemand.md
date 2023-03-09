@@ -40,6 +40,7 @@
     spec:
       clusterName: my-cluster-name
       storageName: s3-us-west
+      type: logical
     ```
 
 3. Run the actual backup command using this file:
