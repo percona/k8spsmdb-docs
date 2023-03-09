@@ -78,24 +78,18 @@ All IP adresses should be *directly* reachable by application.
 
 ## Controlling hostnames in replset configuration
 
-Starting from v1.14, the operator configures replset members using local FQDNs
-which are resolvable and available only from inside of Kubernetes cluster. Even
-you expose the replset using the options described above, hostnames in replset
-configuration will not be changed.
+Starting from v1.14, the Operator configures replica set members using local fully-qualified domain names (FQDN), which are resolvable and available only from inside the Kubernetes cluster. Exposing the replica set using the options described above will not affect hostname usage in the replica set configuration.
 
 !!! note
 
-    Before v1.14, the operator was using exposed IP addresses in replset configuration if replset is exposed.
+    Before v1.14, the Operator used the exposed IP addresses in the replica set configuration in the case of the exposed replica set.
 
-You may want to restore the old behavior. For example for [multi-cluster
-deployments](replication.md), you may want to have the replset configured with
-external IPs. You can use `clusterServiceDNSMode` field to control operator
-behavior. You can set `clusterServiceDNSMode` to one of the following values:
+It is still possible to restore the old behavior. For example, it may be useful to have the replica set configured with external IP addresses for [multi-cluster deployments](replication.md). The `clusterServiceDNSMode` field in the Custom Resource controls this Operator behavior. You can set `clusterServiceDNSMode` to one of the following values:
 
-1. **`Internal`**: Use local FQDNs (i.e. `cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local`) in replset configuration even if the replset is exposed. **This is the default value.**
-2. **`ServiceMesh`**: Use a special FQDN using the pod name (i.e. `cluster1-rs0-0.psmdb.svc.cluster.local`) assuming it's resolvable and available in all clusters.
-3. **`External`**: Use exposed IP in replset configuration if replset is exposed. Otherwise use local FQDN. **This is basically the same with the behavior of v1.13.**
+1. **`Internal`**: Use local FQDNs (i.e., `cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local`) in replica set configuration even if the replica set is exposed. **This is the default value.**
+2. **`ServiceMesh`**: Use a special FQDN using the Pod name (i.e., `cluster1-rs0-0.psmdb.svc.cluster.local`), assuming it's resolvable and available in all clusters.
+3. **`External`**: Use exposed IP in replica set configuration if replica set is exposed; else, use local FQDN. **This copies the behavior of the Operator v1.13.**
 
 !!! warning
 
-    You should be careful when using `External' for `clusterServiceDNSMode'. Using IP addresses instead of DNS host names is discouraged in MongoDB. IP addresses make configuration changes and recovery more difficult, and are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
+    You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make configuration changes and recovery more complicated. Also, they are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
