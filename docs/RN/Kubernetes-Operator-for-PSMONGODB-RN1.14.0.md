@@ -87,6 +87,8 @@
 
 * {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [arbiter](../arbiter.md#adding-arbiter-nodes), [non-voting](../arbiter.md#adding-non-voting-nodes), or [delayed](https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/) members due to current Percona Backup for MongoDB limitations
 
+* {{ k8spsmdbjira(846) }} After switching the cluster to unsafe mode by setting allowUnsafeConfig: true, it is not possible to switch back into safe mode. The user can still scale the cluster safely, but the flag is ignored
+
 ## Supported Platforms
 
 The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.
