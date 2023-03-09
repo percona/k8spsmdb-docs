@@ -224,26 +224,26 @@ configuration file as follows:
 
     * `Recommended` - automatic upgrade will choose the most recent version
         of software flagged as Recommended (for clusters created from scratch,
-        the Percona Server for MongoDB 5.0 version will be selected instead of the
-        Percona Server for MongoDB 4.4 or 4.2 version regardless of the image
-        path; for already existing clusters, the 5.0 vs. 4.4 or 4.2 branch
+        the Percona Server for MongoDB 6.0 version will be selected instead of the
+        Percona Server for MongoDB 5.0 or 4.4 version regardless of the image
+        path; for already existing clusters, the 6.0 vs. 5.0 or 4.4 branch
         choice will be preserved),
-    * `5.0-recommended`, `4.4-recommended`, `4.2-recommended` -
+    * `6.0-recommended`, `5.0-recommended`, `4.4-recommended` -
         same as above, but preserves specific major MongoDB
-        version for newly provisioned clusters (ex. 5.0 will not be automatically
-        used instead of 4.4),
+        version for newly provisioned clusters (ex. 6.0 will not be automatically
+        used instead of 5.0),
     * `Latest` - automatic upgrade will choose the most recent version of
         the software available (for clusters created from scratch,
-        the Percona Server for MongoDB 5.0 version will be selected instead of the
-        Percona Server for MongoDB 4.4 or 4.2 version regardless of the image
-        path; for already existing clusters, the 5.0 vs. 4.4 or 4.2 branch
+        the Percona Server for MongoDB 6.0 version will be selected instead of the
+        Percona Server for MongoDB 5.0 or 4.4 version regardless of the image
+        path; for already existing clusters, the 6.0 vs. 5.0 or 4.4 branch
         choice will be preserved),
-    * `5.0-latest`, `4.4-latest`, `4.2-latest` - same as
+    * `6.0-latest`, `5.0-latest`, `4.4-latest` - same as
         above, but preserves specific major MongoDB version for newly provisioned
-        clusters (ex. 5.0 will not be automatically used instead of 4.4),
+        clusters (ex. 6.0 will not be automatically used instead of 5.0),
     * *version number* - specify the desired version explicitly
-        (version numbers are specified as {{ mongodb44recommended }},
-        {{ mongodb42recommended }}, etc.). Actual versions can be found
+        (version numbers are specified as {{ mongodb60recommended }},
+        {{ mongodb50recommended }}, etc.). Actual versions can be found
         [in the list of certified images](images.md#custom-registry-images).
 
 4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
@@ -305,15 +305,15 @@ configuration file as follows:
 ### Major version automated upgrades
 
 Normally automatic upgrade takes place within minor versions (for example,
-from `4.2.11-12` to `4.2.12-13`) of MongoDB. Major versions upgrade (for
-example moving from `4.2-recommended` to `4.4-recommended`) is more
+from `4.4.16-16` to `4.4.18-18`) of MongoDB. Major versions upgrade (for
+example moving from `5.0-recommended` to `6.0-recommended`) is more
 complicated task which might potentially affect how data is stored and how
 applications interacts with the database (in case of some API changes).
 
 Such upgrade is supported by the Operator within one major version at a time:
-for example, to change Percona Server for MongoDB major version from 4.2 to 5.0,
-you should first upgrade it to 4.4, and later make a separate upgrade from 4.4
-to 5.0. The same is true for major version downgrades.
+for example, to change Percona Server for MongoDB major version from 4.4 to 6.0,
+you should first upgrade it to 5.0, and later make a separate upgrade from 5.0
+to 6.0. The same is true for major version downgrades.
 
 !!! note
 
@@ -332,7 +332,7 @@ spec:
 
 !!! note
 
-    When making downgrades (e.g. changing version from 4.4 to 4.2), make
+    When making downgrades (e.g. changing version from 5.0 to 4.4), make
     sure to remove incompatible features that are persisted and/or update
     incompatible configuration settings. Compatibility issues between major
     MongoDB versions can be found in

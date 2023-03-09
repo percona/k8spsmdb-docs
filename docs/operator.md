@@ -19,7 +19,7 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | pause           | boolean            | `false`      | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back. |
 | unmanaged       | boolean            | `false`      | Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates |
 | crVersion       | string             | `{{ release }}`     | Version of the Operator the Custom Resource belongs to |
-| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb44recommended }}` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
+| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
 | imagePullPolicy | string             | `Always`     | The [policy used to update images](https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
@@ -51,7 +51,7 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 | **Key**         | {{ optionlink('upgradeOptions.apply') }} |
 | **Value**       | string |
 | **Example**     | `disabled` |
-| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb50recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
+| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.schedule') }} |
 | **Value**       | string |
