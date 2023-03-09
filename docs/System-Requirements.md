@@ -1,7 +1,6 @@
 # System Requirements
 
-The Operator was developed and tested with Percona Server for MongoDB 4.2, 4.4,
-and 5.0. Other options may also work but have not been tested.
+The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.
 
 !!! note
 
@@ -16,11 +15,15 @@ and 5.0. Other options may also work but have not been tested.
 The following platforms were tested and are officially supported by the Operator
 {{ release }}:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - {{ gkerecommended }}
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.21 - 1.23
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
-* [Minikube](https://minikube.sigs.k8s.io/docs/) 1.26
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.22 - 1.25
+
+* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.22 - 1.24
+
+* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.12
+
+* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.23 - 1.25
+
+* [Minikube](https://github.com/kubernetes/minikube) 1.29
 
 Other Kubernetes platforms may also work but have not been tested.
 
