@@ -139,7 +139,7 @@ to the cluster.
     `percona-client`:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb50recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
     ```
 
     Executing it may require some time to deploy the correspondent Pod.
