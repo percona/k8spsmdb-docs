@@ -90,8 +90,8 @@ It is still possible to restore the old behavior. For example, it may be useful 
 2. **`ServiceMesh`**: Use a special FQDN using the Pod name (i.e., `cluster1-rs0-0.psmdb.svc.cluster.local`), assuming it's resolvable and available in all clusters.
 3. **`External`**: Use exposed IP in replica set configuration if replica set is exposed; else, use local FQDN. **This copies the behavior of the Operator v1.13.**
 
-You may need a statefulset and config servers restart after changing this option
-for the new value to take effect. It can be done manually with the
+You may need the statefulset and config servers restart after changing this
+option for the new value to take effect. It can be done manually with the
 `kubectl rollout restart sts <clusterName>-<replsetName>` command executed for
 each replica set in the `spec.replsets`; also, if sharding enabled, do the same
 for config servers with `kubectl rollout restart sts <clusterName>-cfg`.
