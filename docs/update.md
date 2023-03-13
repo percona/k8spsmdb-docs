@@ -29,6 +29,19 @@ Operator is supported (for example, update from 1.5.0 to 1.6.0). To update
 to a newer version, which differs from the current version by more
 than one, make several incremental updates sequentially.
 
+!!! note
+
+    Starting from version 1.14.0, the Operator configures replica set members
+    using local fully-qualified domain names (FQDN). Before this version, it
+    used exposed IP addresses in the replica set configuration in case of the
+    exposed replica set.
+    If you [have your replica set exposed](expose.md) and upgrade to 1.14.0, the
+    replica set configuration [will change to use FQDN](expose.md#controlling-hostnames-in-replset-configuration).
+    If you don't want such reconfiguration to happen, set
+    `clusterServiceDNSMode` Custom Resource option to `External` before the
+    upgrade.
+ 
+
 ### Manual upgrade
 
 The upgrade includes the following steps.
