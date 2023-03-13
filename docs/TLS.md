@@ -234,3 +234,12 @@ the TLS protocol enabled.
 To disable TLS protocol (e.g. for demonstration purposes) set the
 `spec.allowUnsafeConfigurations` key to `true` in the `deploy/cr.yaml`
 file and and make sure that there are no certificate secrets available.
+
+!!! warning
+
+    Normally, the Operator prevents users from configuring a cluster with unsafe
+    parameters (starting it with less than 3 replica set instances or without
+    TLS, etc.), automatically changing such unsafe parameters to safe defaults.
+    If you switch the cluster to the *unsafe configurations permissive mode*,
+    you will not be able to switch it back by setting
+    `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored.
