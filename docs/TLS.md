@@ -242,4 +242,4 @@ file and and make sure that there are no certificate secrets available.
     TLS, etc.), automatically changing such unsafe parameters to safe defaults.
     If you switch the cluster to the *unsafe configurations permissive mode*,
     you will not be able to switch it back by setting
-    `spec.allowUnsafeConfigurations` key to `false`!
+    `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored.
