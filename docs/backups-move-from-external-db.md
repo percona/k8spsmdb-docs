@@ -85,7 +85,7 @@ or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/bl
 
 5. The rest of operations will be carried out on your *destination* cluster in
     a Kubernetes-based environment of your choice. These actions are described
-    in the [How to restore backup to a new Kubernetes-based environment]:(backup-restore-to-new-cluster.md)
+    in the [How to restore backup to a new Kubernetes-based environment](backup-restore-to-new-cluster.md)
     guide. Just use the proper name of the backup (`2022-06-15T08:18:44Z`) in the
     above example, and proper parameters specific to your cloud storage (e.g. 
     the `pbm-test-bucket` bucket name we used above).
