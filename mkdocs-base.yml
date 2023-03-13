@@ -80,7 +80,7 @@ plugins:
     cover_title: "Percona Operator for MongoDB documentation"
     cover_subtitle: 1.14.0 (March 13, 2023)
     author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/percona_kubernetes_icon.pdf
+    cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly

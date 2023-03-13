@@ -1185,4 +1185,4 @@ Percona Server for MongoDB backups.
 | **Key**         | {{ optionlink('backup.tasks.type') }} |
 | **Value**       | string |
 | **Example**     | `physical` |
-| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups-about.md#physical) for details |
+| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#physical) for details |

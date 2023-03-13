@@ -28,7 +28,7 @@ Additionally, physical backups have the following two limitations:
 
 * physical backups can't be used in the cluster with [arbiter nodes](arbiter.md),
 
-* physical backups can't be restored on the clusters with [non-voting members](../arbiter.md#adding-non-voting-nodes),
+* physical backups can't be restored on the clusters with [non-voting members](arbiter.md#adding-non-voting-nodes),
 
 * physical backups are currently not compatible with [point-in-time recovery](backups-pitr.md).
 
