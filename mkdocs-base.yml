@@ -6,8 +6,8 @@ site_author: Percona LLC
 site_url: ""
 copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2023
 use_directory_urls: false
-repo_name: percona/percona-server-mongodb-operator
-repo_url: https://github.com/percona/percona-server-mongodb-operator
+repo_name: percona/k8spsmdb-docs
+repo_url: https://github.com/percona/k8spsmdb-docs
 edit_uri: edit/main/docs/
 
 theme:
