@@ -479,11 +479,6 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes |
-
-
-
-
-
 |                 | |
 | **Key**         | {{ optionlink('replsets.arbiter.enabled') }} |
 | **Value**       | boolean |
@@ -1185,4 +1180,4 @@ Percona Server for MongoDB backups.
 | **Key**         | {{ optionlink('backup.tasks.type') }} |
 | **Value**       | string |
 | **Example**     | `physical` |
-| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups-about.md#physical) for details |
+| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#physical) for details |

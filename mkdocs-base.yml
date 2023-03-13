@@ -77,10 +77,10 @@ plugins:
   # https://github.com/orzih/mkdocs-with-pdf
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Documentation"
-    cover_subtitle: 1.14.0 (March 9, 2023)
+    cover_title: "Percona Operator for MongoDB documentation"
+    cover_subtitle: 1.14.0 (March 13, 2023)
     author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/Kubernetes-PG.png
+    cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
@@ -129,7 +129,7 @@ nav:
           - "Install with Helm": helm.md
           - "Install with kubectl": kubectl.md
           
-    - Advanced installation guide:
+    - Advanced installation guides:
           - "Install on Minikube": minikube.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
@@ -172,9 +172,9 @@ nav:
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
           - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
+          - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Upgrading Percona Server for MongoDB manually": update_manually.md
-          - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
 
     - Reference:
           - "Custom Resource options": operator.md
@@ -185,7 +185,7 @@ nav:
           
     - Release notes:
           - "Release notes index": RN/index.md
-          - "Percona Operator for MongoDB 1.14.0 (2023-03-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
+          - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md

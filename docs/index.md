@@ -16,9 +16,11 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install with Helm](helm.md)
 
-* [Install on Minikube](minikube.md)
+* [Install with kubectl](kubectl.md)
 
 # Advanced installation guides
+
+* [Install on Minikube](minikube.md)
 
 * [Install on Google Kubernetes Engine (GKE)](gke.md)
 
@@ -30,8 +32,6 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install on OpenShift](openshift.md)
 
-* [Use private registry](custom-registry.md)
-
 # Configuration
 
 * [Application and system users](users.md)
@@ -39,6 +39,8 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 * [Changing MongoDB options](options.md)
 
 * [Anti-affinity and tolerations](constraints.md)
+
+* [Labels and annotations](annotations.md)
 
 * [Exposing the cluster](expose.md)
 
@@ -56,7 +58,21 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 # Management
 
-* [Backup and restore](backups.md)
+* Backup and restore
+
+    * [About backups](backups.md)
+    
+    * [Configure storage for backups](backups-storage.md)
+    
+    * [Making scheduled backups](backups-scheduled.md)
+    
+    * [Making on-demand backup](backups-ondemand.md)
+    
+    * [Storing operations logs for point-in-time recovery](backups-pitr.md)
+    
+    * [Restore from a previously saved backup](backups-restore.md)
+    
+    * [Delete the unneeded backup](backups-delete.md)
 
 * [Upgrade MongoDB and the Operator](update.md)
 
@@ -76,11 +92,18 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [OpenLDAP integration](ldap.md)
 
+* [How to use private registry](custom-registry.md)
+
 * [Creating a private S3-compatible cloud for backups](private.md)
+
+* [Restore backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md)
+
+* [How to use backups to move the external database to Kubernetes](backups-move-from-external-db.md)
 
 * [Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode](cluster-wide.md)
 
 * [Upgrading Percona Server for MongoDB manually](update_manually.md)
+
 
 # Reference
 

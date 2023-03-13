@@ -2,7 +2,7 @@
 
 * **Date**
 
-    March 9, 2023
+    March 13, 2023
 
 * **Installation**
 
@@ -10,12 +10,12 @@
 
 ## Release Highlights
 
-* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](backups-about.md#physical) support in the Operator. The feature is now in technical preview.
-* MongoDB 6.0 [comes with a variety](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.html#major-version-automated-upgrades) to learn how to upgrade.
+* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](../backups.md#physical) support in the Operator. The feature is now in technical preview.
+* MongoDB 6.0 [comes with a variety](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.md#major-version-automated-upgrades) to learn how to upgrade.
 
 ## New Features
 
-* {{ k8spsmdbjira(713) }} [Physical backups](backups-about.md#physical) are now supported by the Operator to recover big data sets faster
+* {{ k8spsmdbjira(713) }} [Physical backups](../backups.md#physical) are now supported by the Operator to recover big data sets faster
 
 * {{ k8spsmdbjira(737) }} MongoDB 6.0 is now officially supported in addition to 4.x and 5.x versions. Read more about version 6 in our [blog post](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/)
 
@@ -31,7 +31,7 @@
 
 * {{ k8spsmdbjira(758) }} The ServiceMesh fully qualified domain names (FQDNs) for config servers are now prioritized if DNSMode is set to ServiceMesh (thanks to Jo Lyshoel for contribution)
 
-* {{ k8spsmdbjira(793) }} It is now possible to set [annotations and labels](../annotaions.md) for Persistent Volume Claims for better integration with Cloud Native tools
+* {{ k8spsmdbjira(793) }} It is now possible to set [annotations and labels](../annotations.md) for Persistent Volume Claims for better integration with Cloud Native tools
 
 * {{ k8spsmdbjira(803) }} The Operator now does not attempt to start Percona Monitoring and Management (PMM) client sidecar if the corresponding secret does not contain the `pmmserver` or `pmmserverkey` key
 

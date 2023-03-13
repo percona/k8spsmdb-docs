@@ -1,6 +1,6 @@
 # Percona Operator for MongoDB Release Notes
 
-* [*Percona Operator for MongoDB* 1.14.0 (2023-02-23)](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md)
+* [*Percona Operator for MongoDB* 1.14.0 (2023-03-13)](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md)
 
 * [*Percona Operator for MongoDB* 1.13.0 (2022-09-08)](Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)
 
