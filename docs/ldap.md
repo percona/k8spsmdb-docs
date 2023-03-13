@@ -73,7 +73,7 @@ is on (the default behavior) or off.
 
     Create configuration Secrets for mongod:
 
-    ```yaml title="my_mongod.conf"
+    ``` yaml title="my_mongod.conf"
     security:
       authorization: "enabled"
       ldap:
