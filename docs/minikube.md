@@ -26,7 +26,7 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
     Executing `minikube dashboard` will start the dashboard and open it in your
     default web browser.
 
-2. Deploy the operator using the following command:
+2. Deploy the operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
@@ -35,7 +35,7 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 3. Deploy MongoDB cluster with:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
     ```
 
     !!! note
