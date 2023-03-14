@@ -20,7 +20,7 @@
     as follows:
 
     ``` {.bash data-prompt="$" }
-    kubectl apply --server-side -f deploy/crd.yaml
+    $ kubectl apply --server-side -f deploy/crd.yaml
     ```
 
     This step should be done only once; the step does not need to be repeated
