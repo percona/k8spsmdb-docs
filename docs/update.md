@@ -210,7 +210,7 @@ version numbers and valid image paths.
 If the current version should be upgraded, the Operator updates the Custom
 Resource to reflect the new image paths and carries on sequential Pods deletion,
 allowing StatefulSet to redeploy the cluster Pods with the new image.
-You can configure Percona XtraDB Cluster upgrade via the `deploy/cr.yaml`
+You can configure Percona Server for MongoDB upgrade via the `deploy/cr.yaml`
 configuration file as follows:
 
 1. Make sure that `spec.updateStrategy` option is set to `SmartUpdate`.
