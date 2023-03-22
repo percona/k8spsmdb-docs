@@ -25,8 +25,8 @@ Percona Server for MongoDB can be upgraded manually using one of the following
     Operator automatically in the order, which assures the primary instance to
     be updated last, preventing possible connection issues until the whole
     cluster is updated to the new settings. Kubernetes-controlled Rolling Update
-    can't guarantee that Pods update order is optimal from the Percona XtraDB
-    Cluster point of view.
+    can't guarantee that Pods update order is optimal from the Percona Server for
+    MongoDB point of view.
 
 ## Rolling Update strategy and semi-automatic updates
 
