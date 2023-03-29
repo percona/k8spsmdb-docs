@@ -35,7 +35,7 @@ Kubernetes-based environment:
     
         === "with token-based authorization (recommended)"
             <a name="operator-monitoring-client-token"></a>
-            [Acquire the API Key from your PMM Server](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication) and set ``PMM_SERVER_API_KEY`` in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file to this obtained API Key value. Keep in mind that you need an API Key with "Editor" role as PMM Client will push metrics to PMM Server. The API Key won't be rotated automatically.
+            [Acquire the API Key from your PMM Server](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication) and set ``PMM_SERVER_API_KEY`` in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file to this obtained API Key value. Keep in mind that you need an API Key with the "Admin" role. The API Key won't be rotated automatically.
 
         === "with password-based authorization"
             check that the `PMM_SERVER_USER` key in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file contains your PMM Server user name (`admin` by default), and make sure the `PMM_SERVER_PASSWORD` key in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file contains the password specified for the PMM Server during its installation.
