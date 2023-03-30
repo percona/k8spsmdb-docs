@@ -16,7 +16,7 @@ The Percona Kubernetes Operators are based on best practices for the configurati
 
 * [Install with kubectl](kubectl.md)
 
-# Installation guides
+# Installation
 
 * [System Requirements](System-Requirements.md)
 

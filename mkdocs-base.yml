@@ -128,7 +128,7 @@ nav:
           - "Install with Helm": helm.md
           - "Install with kubectl": kubectl.md
           
-    - Installation guides:
+    - Installation:
           - "System requirements": System-Requirements.md
           - "Install on Minikube": minikube.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
