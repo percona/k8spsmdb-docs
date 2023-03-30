@@ -29,13 +29,13 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 2. Deploy the operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
 3. Deploy MongoDB cluster with:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
     ```
 
     !!! note
