@@ -120,16 +120,16 @@ extra: # Used in main.html template and can't be externalized
 nav:
 
     - Welcome: index.md
-    - Requirements:
-          - "System requirements": System-Requirements.md
+    - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
-    - Quickstart guides:
+    - Quickstart:
           - "Install with Helm": helm.md
           - "Install with kubectl": kubectl.md
           
-    - Advanced installation guides:
+    - Installation guides:
+          - "System requirements": System-Requirements.md
           - "Install on Minikube": minikube.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
