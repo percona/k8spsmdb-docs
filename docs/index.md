@@ -4,21 +4,21 @@ The [Percona Operator for MongoDB](https://github.com/percona/percona-server-mon
 
 The Percona Kubernetes Operators are based on best practices for the configuration of a Percona Server for MongoDB replica set. The Operator provides many benefits but saving time, a consistent environment are the most important.
 
-# Requirements
-
-* [System Requirements](System-Requirements.md)
+# Features
 
 * [Design and architecture](architecture.md)
 
 * [Comparison with other solutions](compare.md)
 
-# Quickstart guides
+# Quickstart
 
 * [Install with Helm](helm.md)
 
 * [Install with kubectl](kubectl.md)
 
-# Advanced installation guides
+# Installation
+
+* [System Requirements](System-Requirements.md)
 
 * [Install on Minikube](minikube.md)
 
