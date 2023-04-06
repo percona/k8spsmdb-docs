@@ -20,9 +20,12 @@ by adding marketing-requested elements
 </div>
 {%- endmacro %}
 
+              {% block extrahead %}
+              {{ super() }}
+
               <html data-lt-installed="true">
                 <head>
-                    <meta property="og:title" content="Percona Operator for MySQL based on Percona XtraDB Cluster">
+                    <meta property="og:title" content="Percona Operator for MongoDB">
                     <meta property="og:description" content="Documentation">
                     <meta property="og:image" content="https://docs.percona.com/percona-operator-for-mongodb/assets/images/kubernetes-operators.png">
                     <meta property="og:url" content="https://docs.percona.com/percona-operator-for-mongodb/">
@@ -30,9 +33,6 @@ by adding marketing-requested elements
                 <body>
                 </body>
               </html>
-
-              {% block extrahead %}
-              {{ super() }}
 
               <script>
               (function (w, d, s, l, i) {
