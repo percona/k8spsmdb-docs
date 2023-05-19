@@ -29,8 +29,10 @@ Kubernetes-based environment:
 1. The PMM client installation is initiated by updating the `pmm` section in the
     [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
     file.
+
     * set `pmm.enabled=true`
-    * set the `pmm.serverHost` key to your PMM Server hostname.
+    * set the `pmm.serverHost` key to your PMM Server hostname or IP address
+        (it should be resolvable and reachable from within your cluster)
     * authorize PMM Client within PMM Server in one of two ways:
     
         === "with token-based authorization (recommended)"
