@@ -1,4 +1,4 @@
-# Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode
+# Install Percona Operator for MongoDB in multi-namespace (cluster-wide) mode
 
 By default, Percona Operator for MongoDB functions in a specific Kubernetes
 namespace. You can create one during installation (like it is shown in the
