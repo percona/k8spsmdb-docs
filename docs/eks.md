@@ -22,55 +22,24 @@ Also, you need to configure AWS CLI with your credentials according to the
 
 ## Create the EKS cluster
 
-To create your cluster, you will need the following data:
+1. To create your cluster, you will need the following data:
 
-* name of your EKS cluster,
-* AWS region in which you wish to deploy your cluster,
-* the amount of nodes you would like tho have,
-* the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)
-    and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
-    instances in the total number of nodes.
+    * name of your EKS cluster,
+    * AWS region in which you wish to deploy your cluster,
+    * the amount of nodes you would like tho have,
+    * the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)
+        and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+        instances in the total number of nodes.
 
-!!! note
+    !!! note
 
-    [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
-    instances are not recommended for production environment, but may be useful
-    e.g. for testing purposes.
+        [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+        instances are not recommended for production environment, but may be useful
+        e.g. for testing purposes.
 
-The most easy and visually clear way is to describe the desired cluster in YAML
-and to pass this configuration to the `eksctl` command.
+    After you have settled all the needed details, create your EKS cluster [following the official cluster creation instructions](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html).
 
-The following example configures a EKS cluster with one
-[managed node group](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html):
-
-```yaml
-apiVersion: eksctl.io/v1alpha5
-kind: ClusterConfig
-
-metadata:
-    name: test-cluster
-    region: eu-west-2
-
-nodeGroups:
-    - name: ng-1
-      minSize: 3
-      maxSize: 5
-      instancesDistribution:
-        maxPrice: 0.15
-        instanceTypes: ["m5.xlarge", "m5.2xlarge"] # At least two instance types should be specified
-        onDemandBaseCapacity: 0
-        onDemandPercentageAboveBaseCapacity: 50
-        spotInstancePools: 2
-      tags:
-        'iit-billing-tag': 'cloud'
-```
-
-When the cluster configuration file is ready, you can actually create your
-cluster by the following command:
-
-``` {.bash data-prompt="$" }
-$ eksctl create cluster -f ~/cluster.yaml
-```
+2. After you have created the EKS cluster, you also need to [install the Amazon EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on your cluster. See the [official documentation](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html) on adding it as an Amazon EKS add-on.
 
 ## Install the Operator and deploy your MongoDB cluster
 
