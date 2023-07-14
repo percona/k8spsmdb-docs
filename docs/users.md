@@ -47,7 +47,7 @@ the Operator requires system-level MongoDB users.
 
 Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
 The Operator requires Kubernetes Secret before the database cluster is
-started. It will either use existing Secret or create a new Secrets object with
+started. It will either use existing Secret or create a new Secret with
 randomly generated passwords if it didn’t exist.
 The name of the required Secret should be set in
 the `spec.secrets.users` option of the `deploy/cr.yaml`
