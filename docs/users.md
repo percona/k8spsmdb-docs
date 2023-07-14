@@ -45,9 +45,15 @@ rs0:PRIMARY> db.test.findOne()
 To automate the deployment and management of the cluster components, 
 the Operator requires system-level MongoDB users.
 
-During installation, the Operator requires Kubernetes Secrets to be deployed
-before the Operator is started. The name of the required secrets can be set in
+Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+The Operator requires Kubernetes Secrets before the database cluster is
+started. It will either use existing Secrets or create a new Secrets object with
+randomly generated passwords if it didn’t exist.
+The name of the required Secrets can be set in
 `deploy/cr.yaml` under the `spec.secrets` section.
+The name of the required Secrets (`cluster1` by default)
+should be set in the `spec.secrets.users` option of the `deploy/cr.yaml`
+configuration file.
 
 *Default Secret name:* `my-cluster-name-secrets`
 
