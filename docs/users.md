@@ -46,13 +46,11 @@ To automate the deployment and management of the cluster components,
 the Operator requires system-level MongoDB users.
 
 Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
-The Operator requires Kubernetes Secrets before the database cluster is
-started. It will either use existing Secrets or create a new Secrets object with
+The Operator requires Kubernetes Secret before the database cluster is
+started. It will either use existing Secret or create a new Secrets object with
 randomly generated passwords if it didn’t exist.
-The name of the required Secrets can be set in
-`deploy/cr.yaml` under the `spec.secrets` section.
-The name of the required Secrets (`cluster1` by default)
-should be set in the `spec.secrets.users` option of the `deploy/cr.yaml`
+The name of the required Secret should be set in
+the `spec.secrets.users` option of the `deploy/cr.yaml`
 configuration file.
 
 *Default Secret name:* `my-cluster-name-secrets`
