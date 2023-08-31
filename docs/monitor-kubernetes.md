@@ -4,7 +4,7 @@ Monitoring the state of the database is crucial to timely identify and react to 
 
 However, the database state also depends on the state of the Kubernetes cluster itself. Hence it’s important to have metrics that can depict the state of the Kubernetes cluster.
 
-This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server](https://docs.percona.com/percona-monitoring-and-management/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Operator as the statistics collector, though the steps should also apply to other monitoring applications. 
+This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server](https://docs.percona.com/percona-monitoring-and-management/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Operator as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
 
 ## Considerations
 
@@ -12,9 +12,9 @@ This document describes how to set up monitoring of the Kubernetes cluster healt
 
     * Since we use the PMM server for monitoring, there is no need to store the data in Victoria Metrics Operator. Therefore, set the `vmsngle.enabled` and `vmcuster.enabled` parameters in the Victoria Metrics Helm chart to `false`.
     * The Prometheus node exporter is not installed by default since it requires privileged containers with the access to the host file system. If you need the metrics for Nodes, enable the Prometheus node exporter by setting the `prometheus-node-exporter.enabled` flag in the Victoria Metrics Helm chart to `true`.
-    * [Check all the role-based access control rules provided by the charts](https://helm.sh/docs/topics/rbac/) and modify them based on your requirements. 
+    * [Check all the role-based access control (RBAC) rules](https://helm.sh/docs/topics/rbac/) of the `victoria-metrics-k8s-stack` chart and the dependencies chart, and modify them based on your requirements. 
 
-2. This setup is used for a 1:1 mapping from Kubernetes cluster to the PMM server. If you wish to monitor more than one Kubernetes cluster in a single PMM server, you need to configure the dashboard to filter a specific Kubernetes cluster. You also need to properly [relabel the metrics](https://docs.victoriametrics.com/vmagent.html#relabeling) from the backend.
+2. This setup is used for a 1:1 mapping from Kubernetes cluster to the PMM server. If you wish to monitor more than one Kubernetes cluster in a single PMM server, provide the unique cluster ID for the `victoria-metrics-k8s-stack` chart. The dashboard must support filtering per Kubernetes cluster. You also need to properly [relabel the metrics](https://docs.victoriametrics.com/vmagent.html#relabeling) from the backend.
 
 ## Pre-requisites
 
@@ -23,6 +23,7 @@ To set up monitoring of Kubernetes, you need the following:
 1. PMM Server up and running. You can run PMM Server as a Docker image, a virtual appliance, or on an AWS instance. Please refer to the [official PMM documentation](https://docs.percona.com/percona-monitoring-and-management/setting-up/server/index.html) for the installation instructions.
 
 2. [Helm v3](https://docs.helm.sh/using_helm/#installing-helm).
+3. [kubectl](https://kubernetes.io/docs/tasks/tools/).
 
 ## Procedure
 
@@ -62,7 +63,13 @@ To access the PMM Server resources and perform actions on the server, configure 
         $ echo -n <API-key> | base64 
         ```
 
-3. Create the YAML file for the [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the API key value within. In this example the Secrets file is named `pmm-api-vmoperator.yaml`.
+3. Create the Namespace where you want to set up monitoring. The following command creates the Namespace `monitoring-system`. You can specify a different name. In the latter steps, specify your namespace instead of the `<namespace>` placeholder.
+    
+    ```{.bash data-prompt="$" }
+    $ kubectl create namespace monitoring-system
+    ```
+
+4. Create the YAML file for the [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.
 
     ```yaml title="pmm-api-vmoperator.yaml"
     apiVersion: v1
@@ -75,16 +82,10 @@ To access the PMM Server resources and perform actions on the server, configure 
     type: Opaque
     ```
 
-4. Create the Namespace where you want to set up monitoring. The following command creates the Namespace `monitoring-system`. You can use another name.
-    
-    ```{.bash data-prompt="$" }
-    $ kubectl create namespace monitoring-system
-    ```
-
-5. Create the Secrets object using the secrets file. Replace the `<filename>` placeholder with your value.
+5. Create the Secrets object using the YAML file you created previously. Replace the `<filename>` placeholder with your value.
 
     ```{.bash data-prompt="$" }
-    $ kubectl apply -f <filename> -n <namespace>
+    $ kubectl apply -f pmm-api-vmoperator.yaml -n <namespace>
     ```
 
 6. Check that the secret is created. The following command checks the secret for the resource named `pmm-token-vmoperator` (as defined in the `metadata.name` option in the secrets file). If you defined another resource name, specify your value.  
@@ -93,18 +94,18 @@ To access the PMM Server resources and perform actions on the server, configure 
    $ kubectl get secret pmm-token-vmoperator -n <namespace>
    ```
 
-### Create a ConfigMap to mount for kube-state-metrics 
+### Create a ConfigMap to mount for `kube-state-metrics` 
 
-The `kube-state-metrics` (KSM) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources. 
+The [`kube-state-metrics` (KSM)](https://github.com/kubernetes/kube-state-metrics) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources. 
 
-To instruct the `kube-state-metrics` what metrics to capture, create the ConfigMap and mount it to a container. 
+To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container. 
 
-1. Edit the [example `configmap.yaml` configuration file](https://raw.githubusercontent.com/percona/percona-everest-cli/main/data/crds/victoriametrics/kube-state-metrics/configmap.yaml) and specify the `<namespace>`. The Namespace must match the Namespace where you created the Secret. 
+1. Edit the [example `configmap.yaml` configuration file](https://raw.githubusercontent.com/percona/percona-everest-cli/d411c8570076ba3ef6aced99b8d28f9616651979/data/crds/victoriametrics/kube-state-metrics/configmap.yaml) and specify the `<namespace>`. The Namespace must match the Namespace where you created the Secret. 
 
 2. Apply the configuration
 
     ```{.bash data-prompt="$" }
-    $ kubectl apply -f <path-to-configmap.yaml>
+    $ kubectl apply -f <github-link> -n <namespace>
     ```
 
     As a result, you have the `customresource-config-ksm` ConfigMap created. 
@@ -118,16 +119,16 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
     $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     ```
 
-2. Update the repositories.
-
-    ```{.bash data-prompt="$" }
-    $ helm repo update
-    ```
-
-3. Add the Victoria Metrics Operator repository.
+2. Add the Victoria Metrics Operator repository.
 
     ```{.bash data-prompt="$" }
     $ helm repo add vm https://victoriametrics.github.io/helm-charts/
+    $ helm repo update
+    ```
+
+3. Update the repositories.
+
+    ```{.bash data-prompt="$" }
     $ helm repo update
     ```
 
@@ -140,10 +141,9 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
 5. Edit the `values.yaml` file and specify the following:
 
     * the IP address / hostname of the PMM server in the `externalVM.write.url` option
-    * specify the unique name or an ID of the Kubernetes cluster in the ``vmagent.spec.externalLabels.cluster` option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server.
+    * specify the unique name or an ID of the Kubernetes cluster in the `vmagent.spec.externalLabels.k8s_cluster_id` option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server.
     * set the `vmsingle.enabled` and `vmcluster.enabled` to false
     * set the `alertmanager.enabled`, `vmalert.enabled` to false
-    * set the `defaultDashboardsEnabled` to true
     * specify the configuration for scraping Custom resources related to the Operator
 
     ```yaml title="values.yaml"
@@ -155,7 +155,7 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
         #   name: dbaas-read-access-token
         #   key: bearerToken
       write:
-        url: "http://<PMM-server-IP>//victoriametrics/api/v1/write"
+        url: "<PMM-server-IP>//victoriametrics/api/v1/write"
         bearerTokenSecret:
           name: pmm-token-vmoperator
           key: api_key
@@ -184,14 +184,12 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
           tag: v1.91.3
         scrapeInterval: 25s
         externalLabels:
-          cluster: <cluster-name>
+          k8s_cluster_id: <cluster-name>
     ....
 
-    defaultDashboardsEnabled: true
-
-    .....
-
     kube-state-metrics:
+      image:
+        tag: "v2.9.2"
       enabled: true
       ## all values for kube-state-metrics helm chart can be specified here  
       ## Customizaing kube-state-metrics installation for scraping Custom resources related to Percona Operators
@@ -235,7 +233,7 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
           - list
           - watch
         - apiGroups:
-          - pg.percona.com
+          - pgv2.percona.com
           resources:
           - perconapgbackups/status
           - perconapgclusters/status
@@ -258,7 +256,12 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
       enabled: false
     ```
 
-6. Install the Victoria Metrics Operator. The `vm-k8s` value in the following command is the Operator name. Replace the `<namespace>` placeholder with your value. The Namespace must be the same as the Namespace for the Secret and ConfigMap.
+    !!! note
+
+        The values above are taken from the `victoria-metrics-k8s-stack` version 0.17.5. The fields and default values may differ in newer releases of the `victoria-metrics-k8s-stack` helm chart. Please check them if you are using a different version of the `victoria-metrics-k8s-stack` helm chart.
+
+
+6. Install the Victoria Metrics Operator. The `vm-k8s` value in the following command is the Release name. You can use a different name. Replace the `<namespace>` placeholder with your value. The Namespace must be the same as the Namespace for the Secret and ConfigMap.
 
     ```{.bash data-prompt="$" }
     $ helm install vm-k8s vm/victoria-metrics-k8s-stack  -f values.yaml -n <namespace>
@@ -299,7 +302,7 @@ To instruct the `kube-state-metrics` what metrics to capture, create the ConfigM
 
        ![image](assets/images/kubelet.svg)
 
-    * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics/tree/main/docs) metrics that also include Custom resource metrics for the Operators deployed in your Kubernetes clusters:
+    * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics/tree/main/docs) metrics that also include Custom resource metrics for the Operator and database deployed in your Kubernetes cluster:
 
-      ![image]()
+      ![image](assets/images/pg_metric.svg)
 
