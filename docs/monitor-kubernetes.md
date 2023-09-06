@@ -187,5 +187,5 @@ To define what metrics the `kube-state-metrics` should capture, create the [Conf
 
     * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics/tree/main/docs) metrics that also include Custom resource metrics for the Operator and database deployed in your Kubernetes cluster:
 
-      ![image](assets/images/pg_metric.svg)
+      ![image](assets/images/psmdb_metric.svg)
 
