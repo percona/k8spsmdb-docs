@@ -106,7 +106,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/
 
 As a result, you have the `customresource-config-ksm` ConfigMap created. 
 
-### Install the Victoria Metrics kubernetes monitoring stack
+### Install the Victoria Metrics Kubernetes monitoring stack
 
 1. Add the dependency repositories of [victoria-metrics-k8s-stack](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart. 
 
