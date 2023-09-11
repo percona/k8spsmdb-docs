@@ -127,7 +127,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
     $ helm repo update
     ```
 
-4. Install the Victoria Metrics kubernetes monitoring stack helm chart. You need to specify the following configuration:
+4. Install the Victoria Metrics Kubernetes monitoring stack Helm chart. You need to specify the following configuration:
 
     * the URL to access the PMM server in the `externalVM.write.url` option in the format `<PMM-SERVER-URL>/victoriametrics/api/v1/write`. The URL can contain either the IP address or the hostname of the PMM server.
     * the unique name or an ID of the Kubernetes cluster in the `vmagent.spec.externalLabels.k8s_cluster_id` option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server. 
