@@ -115,7 +115,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
     $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     ```
 
-2. Add the Victoria Metrics kubernetes monitoring stack repository.
+2. Add the Victoria Metrics Kubernetes monitoring stack repository.
 
     ```{.bash data-prompt="$" }
     $ helm repo add vm https://victoriametrics.github.io/helm-charts/
