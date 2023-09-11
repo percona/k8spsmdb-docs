@@ -188,7 +188,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
 
         !!! note     
 
-            The example `values.yaml` file is taken from the `victoria-metrics-k8s-stack` version 0.17.5. The fields and default values may differ in newer releases of the `victoria-metrics-k8s-stack` helm chart. Please check them if you are using a different version of the `victoria-metrics-k8s-stack` helm chart.
+            The example `values.yaml` file is taken from the `victoria-metrics-k8s-stack` version 0.17.5. The fields and default values may differ in newer releases of the `victoria-metrics-k8s-stack` Helm chart. Please check them if you are using a different version of the `victoria-metrics-k8s-stack` Helm chart.
 
 5. Validate the successful installation by checking the Pods. 
 
