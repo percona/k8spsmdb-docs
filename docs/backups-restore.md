@@ -83,29 +83,35 @@ restoration can be done in the following way.
         * set `spec.clusterName` key to the name of the target cluster to restore
             the backup on,
 
+        * set `spec.backupName` key to the name of your backup,
+
         * put additional restoration parameters to the `pitr` section:
 
-            ```yaml
-            ...
-            spec:
-              clusterName: my-cluster-name
-              pitr:
-                type: date
-                date: YYYY-MM-DD hh:mm:ss
-            ```
+            * `type` key can be equal to one of the following options
 
-        * set `spec.backupName` key to the name of your backup,
+                * `date` - roll back to specific date
+                * `latest` - recover to the latest possible transaction
+
+            * `date` key is used with `type=date` option and contains value in
+                datetime format,
 
         * you can also use a `storageName` key to specify the exact name of the
             storage (the actual storage should be already defined in the
-            `backup.storages` subsection of the `deploy/cr.yaml` file):
+            `backup.storages` subsection of the `deploy/cr.yaml` file).
 
-            ```yaml
-            ...
+        The resulting `restore.yaml` file may look as follows:
+
+        ```yaml
+        ...
+        spec:
+          clusterName: my-cluster-name
+          pitr:
+            type: date
+            date: YYYY-MM-DD hh:mm:ss
             storageName: s3-us-west
-            backupSource:
-              destination: s3://S3-BUCKET-NAME/BACKUP-NAME
-            ```
+                backupSource:
+                  destination: s3://S3-BUCKET-NAME/BACKUP-NAME
+        ```
 
     2. Run the actual restoration process:
 
