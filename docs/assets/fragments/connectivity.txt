@@ -31,8 +31,9 @@
 3. Now run `mongo` tool in the percona-client command shell using the login
     (which is normally `databaseAdmin`), a proper password obtained from the
     Secret, and a proper namespace name instead of the `<namespace name>`
-    placeholder. The command will look different depending on whether sharding
-    is on (the default behavior) or off:
+    placeholder. If you chose to deploy in the default namespace, use `default` here.
+    The command will look different depending on whether sharding is on
+    (the default behavior) or off:
 
     === "if sharding is on"
         ``` {.bash data-prompt="$" }
