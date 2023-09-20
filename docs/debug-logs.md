@@ -12,70 +12,48 @@ logs with the `kubectl logs` command:
 | `--timestamps`                | Print timestamp in the logs (timezone is taken from the container)        |
 | `--previous`                  | Print previous instantiation of a container. This is extremely useful in case of container restart, where there is a need to check the logs on why the container restarted. Logs of previous instantiation might not be available in all the cases. |
 
-In the following examples we will access containers of the `cluster1-pxc-0` Pod.
+In the following examples we will access containers of the `my-cluster-name-rs0-0` Pod.
 
-* Check logs of the `pxc` container:
+* Check logs of the `mongod` container:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl logs cluster1-pxc-0 -c pxc
+    $ kubectl logs my-cluster-name-rs0-0 -c mongod
     ```
 
 * Check logs of the `pmm-client` container:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl logs cluster1-pxc-0 -c pmm-client
+    $ kubectl logs my-cluster-name-rs0-0 -c pmm-client
     ```
 
-* Filter logs of the `pxc` container which are not older than 600 seconds:
+* Filter logs of the `mongod` container which are not older than 600 seconds:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl logs cluster1-pxc-0 -c pxc --since=600s
+    $ kubectl logs my-cluster-name-rs0-0 -c mongod --since=600s
     ```
 
-* Check logs of a previous instantiation of the `pxc` container, if any:
+* Check logs of a previous instantiation of the `mongod` container, if any:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl logs cluster1-pxc-0 -c pxc --previous
+    $ kubectl logs my-cluster-name-rs0-0 -c mongod --previous
     ```
 
-* Check logs of the `pxc` container, parsing the output with [jq JSON processor](https://stedolan.github.io/jq/):
+* Check logs of the `mongod` container, parsing the output with [jq JSON processor](https://stedolan.github.io/jq/):
 
     ``` {.bash data-prompt="$" }
-    $ kubectl logs cluster1-pxc-0 -c pxc -f | jq -R 'fromjson?'
+    $ kubectl logs my-cluster-name-rs0-0 -c mongod -f | jq -R 'fromjson?'
     ```
 
-## Cluster-level logging
+## Changing logs representation
 
-Cluster-level logging involves collecting logs from all Percona XtraDB Cluster
-Pods in the cluster to some persistent storage. This feature gives the logs a
-lifecycle independent of nodes, Pods and containers in which they were
-collected. Particularly, it ensures that Pod logs from previous failures are
-available for later review.
+You can also change the representation of logs: either use structured representation, which produces a parcing-friendly JSON, or use traditional console-frienldy logging with specific level. Changing representation of logs is possible by editing the `deploy/operator.yml` file, which sets the following environment variables with self-speaking names and values:
 
-Log collector is turned on by the `logcollector.enabled` key in the
-`deploy/cr.yaml` configuration file (`true` by default).
-
-The Operator collects logs using [Fluent Bit Log Processor](https://fluentbit.io/),
-which supports many output plugins and has broad forwarding capabilities.
-If necessary, Fluent Bit filtering and advanced features can be configured via
-the `logcollector.configuration` key in the `deploy/cr.yaml` configuration
-file.
-
-Logs are stored for 7 days and then rotated.
-
-Collected logs can be examined using the following command:
-
-``` {.bash data-prompt="$" }
-$ kubectl logs cluster1-pxc-0 -c logs
+```yaml
+env:
+    ...
+    name: LOG_STRUCTURED
+    value: 'false'
+    name: LOG_LEVEL
+    value: INFO
+    ...
 ```
-
-!!! note
-
-    Technically, logs are stored on the same Persistent Volume, which is
-    used with the corresponding Percona XtraDB Cluster Pod. Therefore collected
-    logs can be found in `DATADIR` (`var/lib/mysql/`). Also, there is an additional
-    Secrets object for Fluent Bit passwords and other similar data, e.g. for
-    output plugins. The name of this Secrets object can be found in the
-    `logCollectorSecretName` option of the Custom Resource (it is set to
-    `my-log-collector-secrets` in the `deploy/cr.yaml` configuration file by
-    default).
