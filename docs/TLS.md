@@ -179,7 +179,29 @@ EOF
 $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
 ```
 
-## Check your certificates for expiration
+## Update certificates
+
+If a cert-manager is used, it should take care of
+updating the certificates. If you generate certificates manually,
+you should take care of updating them in proper time.
+
+TLS certificates issued by cert-manager are short-term ones, valid for 3 months.
+They are reissued automatically on schedule and without downtime.
+
+![image](assets/images/certificates.svg)
+
+Versions of the Operator prior 1.9.0 have used 3 month root certificate, which
+caused issues with the automatic TLS certificates update. If that’s your case,
+you can make the Operator update along with the [official instruction](update.md#operator-update).
+
+!!! note
+
+    If you use the cert-manager version earlier than 1.9.0, and you would
+    like to avoid downtime while updating the certificates after the Operator
+    update to 1.9.0 or newer version,
+    force the certificates regeneration by a cert-manager.
+
+### Check your certificates for expiration
 
 1. First, check the necessary secrets names (`my-cluster-name-ssl` and
     `my-cluster-name-ssl-internal` by default):
