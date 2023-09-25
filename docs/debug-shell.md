@@ -18,7 +18,7 @@ In the following examples we will access the container `mongod` of the `my-clust
 
     You will see an error if the command is not present in a container. For
     example, trying to run the `time` command, which is not present in the
-    container, by executing ``
+    container, by executing `kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- time`
     would show the following result:
     
     ``` {.text .no-copy}
