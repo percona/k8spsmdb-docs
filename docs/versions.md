@@ -4,16 +4,23 @@ Versions of the cluster components and platforms tested with different Operator 
 
 Cluster components:
 
-| Operator | [PostgreSQL](https://www.postgresql.org/) | [pgBackRest](https://pgbackrest.org/) | [pgBouncer](http://pgbouncer.github.io/) |
+| Operator | [MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|:-------|
-| [2.2.0](ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN2.2.0.md) | 12 - 15 | 2.43 | 1.18.0 |
-| [2.1.0](ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN2.1.0.md) | 12 - 15 | 2.43 | 1.18.0 |
-| [2.0.0](ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN2.0.0.md) | 12 - 14 | 2.41 | 1.17.0 |
-| [1.4.0](https://docs.percona.com/percona-operator-for-postgresql/1.0/ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN1.4.0.html) | 12 - 14 | 2.43 | 1.18.0 |
-| [1.3.0](https://docs.percona.com/percona-operator-for-postgresql/1.0/ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN1.3.0.html) | 12 - 14 | 2.38 | 1.17.0 |
-| [1.2.0](https://docs.percona.com/percona-operator-for-postgresql/1.0/ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN1.2.0.html) | 12 - 14 | 2.37 | 1.16.1 |
-| [1.1.0](https://docs.percona.com/percona-operator-for-postgresql/1.0/ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN1.1.0.html) | 12 - 14 | 2.34 | 1.16.0 for PostgreSQL 12, <br> 1.16.1 for other versions |
-| [1.0.0](https://docs.percona.com/percona-operator-for-postgresql/1.0/ReleaseNotes/Kubernetes-Operator-for-PostgreSQL-RN1.0.0.html) | 12 - 13 | 2.33 | 1.13.0 |
+| [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | | |
+| [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | | |
+| [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | | |
+| [1.11.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md) | | |
+| [1.10.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md) | | |
+| [1.9.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md) | | |
+| [1.8.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md) | | |
+| [1.7.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md) | | |
+| [1.6.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md) | | |
+| [1.5.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md) | | |
+| [1.4.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md) | | |
+| [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md) | | |
+| [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md) | | |
+| [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md) | | |
+| [1.0.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md) | | |
 
 Platforms:
 
