@@ -5,7 +5,7 @@ Versions of the cluster components and platforms tested with different Operator 
 Cluster components:
 
 | Operator | [MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
-|:--------|:--------|:-----|:-------|
+|:--------|:--------|:-----|
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | | |
 | [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | | |
 | [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | | |
