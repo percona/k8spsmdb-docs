@@ -17,9 +17,9 @@ Cluster components:
 | [1.6.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md)   | 3.6, 4.0, 4.2      | 1.3.4 |
 | [1.5.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md)   | 3.6, 4.0, 4.2      | 1.3.1 |
 | [1.4.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md)   | 3.6, 4.0, 4.2      | 1.1.0 |
-| [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md)   | 3.6, 4.0           | + |
-| [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | 3.6, 4.0           | + |
-| [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | 3.6, 4.0           | + |
+| [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md)   | 3.6, 4.0           | 0.4.0 |
+| [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | 3.6, 4.0           | 0.4.0 |
+| [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | 3.6, 4.0           | 0.4.0 |
 
 Platforms:
 
@@ -39,3 +39,5 @@ Platforms:
 | [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md)   | 1.11, 1.14  | -           | 3.11, 4.1   | - | 1.12 |
 | [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | -           | -           | 3.11, 4.0   | - | -    |
 | [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | -           | -           | 3.11, 4.0   | - | -    |
+
+More detailed information about the cluster components for the current version of the Operator can be found [in the system requirements](System-Requirements.md) and [in the list of certified images](images.md). For previous releases of the Operator, you can check the same pages [in the documentation archive](https://docs.percona.com/legacy-documentation/).
