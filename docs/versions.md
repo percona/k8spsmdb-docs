@@ -6,20 +6,20 @@ Cluster components:
 
 | Operator | [MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
-| [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 4.4 - 6.0 | |
-| [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | 4.2 - 5.0 | |
-| [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | 4.2 - 5.0 | |
-| [1.11.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md) | 4.0, 4.2, 4.4, 5.0 | |
-| [1.10.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md) | 4.0, 4.2, 4.4, 5.0 | |
-| [1.9.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md) | 4.0, 4.2, 4.4 | |
-| [1.8.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md) | 3.6, 4.0, 4.2, 4.4 | |
-| [1.7.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md) | 3.6, 4.0, 4.2, 4.4 | |
-| [1.6.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md) | 3.6, 4.0, 4.2 | |
-| [1.5.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md) | 3.6, 4.0, 4.2 | |
-| [1.4.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md) | 3.6, 4.0, 4.2 | |
-| [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md) | 3.6, 4.0 | |
-| [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md) | 3.6, 4.0 | |
-| [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md) | 3.6, 4.0 | |
+| [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 4.4 - 6.0          | 2.0.4, 2.0.5 |
+| [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | 4.2 - 5.0          | 1.8.1 |
+| [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | 4.2 - 5.0          | 1.7.0 |
+| [1.11.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md) | 4.0, 4.2, 4.4, 5.0 | 1.6.1 |
+| [1.10.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md) | 4.0, 4.2, 4.4, 5.0 | 1.6.0 |
+| [1.9.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md)   | 4.0, 4.2, 4.4      | 1.5.0 |
+| [1.8.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md)   | 3.6, 4.0, 4.2, 4.4 | 1.4.1 |
+| [1.7.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md)   | 3.6, 4.0, 4.2, 4.4 | 1.4.1 |
+| [1.6.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md)   | 3.6, 4.0, 4.2      | 1.3.4 |
+| [1.5.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md)   | 3.6, 4.0, 4.2      | 1.3.1 |
+| [1.4.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md)   | 3.6, 4.0, 4.2      | 1.1.0 |
+| [1.3.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md)   | 3.6, 4.0           | + |
+| [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | 3.6, 4.0           | + |
+| [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | 3.6, 4.0           | + |
 
 Platforms:
 
