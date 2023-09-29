@@ -57,41 +57,33 @@
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(913) }} restore recreates mongos pod which recreates load balancer
+* {{ k8spsmdbjira(913) }} Fix a bug due to which restoring a backup on a cluster with mongos exposed via LoabBalancer resulted in recreating mongos Service with a new IP address
 
-* {{ k8spsmdbjira(956) }} Certificate Rotation brought the Sharded MongoDB cluster down
+* {{ k8spsmdbjira(956) }} Fix a bug that certificate rotation was bringing the sharded MongoDB cluster down (thanks to Stiliyan for reporting)
 
 * {{ k8spsmdbjira(854) }} Backup stucks after cluster was exposed
 
-* {{ k8spsmdbjira(977) }} ERROR failed to reconcile cluster in the logs for no apparent reason
+* {{ k8spsmdbjira(977) }} The out of memory problem could cause cluster got stuck in the "initializing" state at reconciliation
 
-* {{ k8spsmdbjira(247) }} after restore from backup cluster passwords out of sync and operator cannot authenticate
+* {{ k8spsmdbjira(712) }} Want to create excess port in psmdb-db helm chart **STILL OPEN**
 
-* {{ k8spsmdbjira(712) }} Want to create excess port in psmdb-db helm chart
+* {{ k8spsmdbjira(778) }} Fix a bug due to which the Operator did not delete arbiter instances during replica set deletion
 
-* {{ k8spsmdbjira(778) }} Operator don't delete arbiter during replica set deletion
+* {{ k8spsmdbjira(791) }} Fix a bug which prevented setting `LoadBalancerSourceRanges` Custom Resource option when `replsets.expose.exposeType` is set to `Loadbalancer`
 
-* {{ k8spsmdbjira(791) }} Unable to set LoadBalancerSourceRanges when LoadBalancer is set as type in replsets
+* {{ k8spsmdbjira(813) }} Fix a bug due to which secure connection was not used for MongoDB Liveness check (thanks to t-yrka for contribution)
 
-* {{ k8spsmdbjira(813) }} mongodb-healthcheck never uses a secure connection
+* {{ k8spsmdbjira(818) }} Fix a bug where `clusterMonitor` user had not enough permissions for PMM monitoring with `--enable-all-collectors` flag turned on
 
-* {{ k8spsmdbjira(818) }} ClusterRole user does not have enough permissions
+* {{ k8spsmdbjira(872) }} The Operator didn't prevent attempts to restore a backup with "error" status, which could cause the cluster got stuck in the "initializing" state
 
-* {{ k8spsmdbjira(872) }} operator should not try to restore backup with error status
+* {{ k8spsmdbjira(876) }} Fix a bug due to which `delete-psmdb-pods-in-order` finalizer, intended to shutdown primary Pod last, affected only shards and did not affect config replica set 
 
-* {{ k8spsmdbjira(875) }} cannot run physical restores with non-voting/arbiter/delayed replica members
-
-* {{ k8spsmdbjira(876) }} delete-psmdb-pods-in-order finalizer doesn't affect config replica set
-
-* {{ k8spsmdbjira(885) }} E2E tests - start mongod major upgrade from the lowest version
-
-* {{ k8spsmdbjira(907) }} Implement custom MarshalJSON function for PITRestoreDate data type
-
-* {{ k8spsmdbjira(911) }} Fix credentials in backup-agent container logs
+* {{ k8spsmdbjira(911) }} Fix a bug where connection string with credentials was included in the backup-agent container logs
 
 * {{ k8spsmdbjira(929) }} Can't connect to MongoDB Replica Set via LoadBalancer
 
-* {{ k8spsmdbjira(930) }} Helm chart - watchNamespace doesn't work
+* {{ k8spsmdbjira(930) }} Helm chart - watchNamespace doesn't work **STILL OPEN**
 
 * {{ k8spsmdbjira(937) }} Deconding to an empty interface fails with official mongo driver
 
