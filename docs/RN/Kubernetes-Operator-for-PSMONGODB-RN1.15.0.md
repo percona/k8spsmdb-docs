@@ -85,29 +85,16 @@
 
 * {{ k8spsmdbjira(930) }} Helm chart - watchNamespace doesn't work **STILL OPEN**
 
-* {{ k8spsmdbjira(937) }} Deconding to an empty interface fails with official mongo driver
+* {{ k8spsmdbjira(958) }} Fix insufficient permissions issue that didn't allow to monitor mongos instances with Percona Monitoring and Management (PMM)
 
-* {{ k8spsmdbjira(958) }} PMM fails to monitor mongoS due to lack of permission
+* {{ k8spsmdbjira(962) }} Fix a memory leak due to which the Operator's Pod continually increased both CPU and memory usage in cluster-wide mode (with an unmanaged cluster)
 
-* {{ k8spsmdbjira(962) }} Percona Operator POD constantly increasing CPU and Memory usage
-
-* {{ k8spsmdbjira(963) }} votes and priority are mandatory when specifying external nodes
-
-* {{ k8spsmdbjira(965) }} PerconaServerMongoDB Failing in k8s 1.26.6 control plane version
-
-* {{ k8spsmdbjira(968) }} CR endpoint is wrong if replsets are exposed
-
-* {{ k8spsmdbjira(970) }} pkg/apis/psmdb/v1 module imported more than once
-
-* {{ k8spsmdbjira(971) }} demand-backup-physical fails on EKS v1.27
-
-* {{ k8spsmdbjira(980) }} cannot pause or delete cluster started from template cr.yaml
+* {{ k8spsmdbjira(968) }} Fix a bug due to which the endpoints list returned by `kubectl get psmdb` command contained fully qualified domain names (FQDN) instead of IP addresses when the replset was exposed as a LoadBalancer and the clusterServiceDNSMode was set to Internal
 
 ## Deprecation and removal
 
-* {{ k8spsmdbjira(883) }} Remove mongod section from CR
+* {{ k8spsmdbjira(883) }} The `spec.mongod` section deprecated in the Operator version 1.12.0 is finally removed from the Custom Resource configuration 
 
-* {{ k8spsmdbjira(906) }} Remove unnecessary LOG_VERBOSE env var
 ## Supported Platforms
 
 The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.
