@@ -10,8 +10,8 @@
 
 ## Release Highlights
 
-* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](../backups.md#physical) support in the Operator. The feature is now in technical preview.
-* MongoDB 6.0 [comes with a variety](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.md#major-version-automated-upgrades) to learn how to upgrade.
+* [Physical backups](../backups.md#physical) now support point-in-time restore (PITR), following the same PITR configuration options which were previously available for logical backups only
+*  The Operator now [supports](../backups-encryption.md) backups Server Side Encryption with AWS KMS
 
 ## New Features
 
@@ -19,11 +19,11 @@
 
 * {{ k8spsmdbjira(792) }} and {{ k8spsmdbjira(974) }} The new "sleep infinity" mode available for replset and config server containers allows [examining them without starting mongod](https://docs.percona.com/percona-operator-for-mongodb/debug-shell.html#sleep) 
 
-* {{ k8spsmdbjira(801) }} If point-in-time recovery (PITR) enabled, it's not possible to delete a backup with `delete-backup` finalizer is as opposite to previous behavior when PiTR files were not deleted during psmdb-backup deletion
+* {{ k8spsmdbjira(801) }} It is now possible to delete a backup with its PITR data on retention period or with `delete-backup` finalizer is as opposite to previous behavior when PiTR files were not deleted during the psmdb-backup deletion
 
-* {{ k8spsmdbjira(926) }} Add support for PITR with physical backups
+* {{ k8spsmdbjira(926) }} Point-in-time recovery is now supported with physical backups
 
-* {{ k8spsmdbjira(961) }} Balancer disable option with managed mode
+* {{ k8spsmdbjira(961) }} The new `sharding.balancer.enabled` Custom Resource option allows to disable Load Balancer on a managed cluster
 
 ## Improvements
 
@@ -31,25 +31,22 @@
 
 * {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../TLS.html#update-certificates)
 
-* {{ k8spsmdbjira(807) }} Allow to set custom name for Replica Set Config Server
+* {{ k8spsmdbjira(807) }} A custom name for a Replica Set Config Server instead of the default `cfg` one [can be set](../options.html) via the custom configuration, which can be useful for migration purposes
 
-* {{ k8spsmdbjira(814) }} Unclean shutdown when pausing the cluster
+* {{ k8spsmdbjira(814) }} and {{ k8spsmdbjira(927) }} The new `terminationGracePeriodSeconds` Custom Resource option allows to set termination period for Replica Set containers, useful to cleanly shutdown clusters with big data sets
 
 * {{ k8spsmdbjira(850) }} Add support for Server Side Encryption for backups
-
-* {{ k8spsmdbjira(864) }} Add the possibility of enabling and disabling debug mode for e2e tests
 
 * {{ k8spsmdbjira(903) }} Add bucket name to backup destination
 
 * {{ k8spsmdbjira(924) }} make cronjob less verbose
 
-* {{ k8spsmdbjira(927) }} Pass terminationGracePeriodSeconds to RS containers
+Pass  to RS containers
 
 * {{ k8spsmdbjira(938) }} Allow configuring hostAliases for pods
 
 * {{ k8spsmdbjira(946) }} Difficult backup failure troubleshooting
 
-* 
 * {{ k8spsmdbjira(976) }} Do not start backups if storages or credentials are not set
 
 
