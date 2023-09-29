@@ -95,7 +95,7 @@ Pass  to RS containers
 
 The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.
 
-The following platforms were tested and are officially supported by the Operator 1.14.0:
+The following platforms were tested and are officially supported by the Operator 1.15.0:
 
 * [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.22 - 1.25
 
