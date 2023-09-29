@@ -15,11 +15,11 @@
 
 ## New Features
 
-* {{ k8spsmdbjira(227) }} Add topologySpreadConstraints to the specs for even distribution of the pods
+* {{ k8spsmdbjira(227) }} The new `topologySpreadConstraints` Custom Resource option allows to use [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods) to achieve even distribution of Pods across the Kubernetes cluster
 
-* {{ k8spsmdbjira(792) }} Crash recovery infrastructure with ability to run --repair
+* {{ k8spsmdbjira(792) }} and {{ k8spsmdbjira(974) }} The new "sleep infinity" mode available for replset and config server containers allows [examining them without starting mongod](https://docs.percona.com/percona-operator-for-mongodb/debug-shell.html#sleep) 
 
-* {{ k8spsmdbjira(801) }} Add support for PITR retention
+* {{ k8spsmdbjira(801) }} If point-in-time recovery (PITR) enabled, it's not possible to delete a backup with `delete-backup` finalizer is as opposite to previous behavior when PiTR files were not deleted during psmdb-backup deletion
 
 * {{ k8spsmdbjira(926) }} Add support for PITR with physical backups
 
@@ -27,9 +27,9 @@
 
 ## Improvements
 
-* {{ k8spsmdbjira(662) }} add PITR option for restoring to latest position
+* {{ k8spsmdbjira(662) }} Restoring a backup with point-in-time recovery can now be easily done to a latest available position by setting `pitr.type` PerconaServerMongoDBRestore Custom Resource option to `latest`
 
-* {{ k8spsmdbjira(774) }} Add section about TLS/SSL certificates update into docs
+* {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../TLS.html#update-certificates)
 
 * {{ k8spsmdbjira(807) }} Allow to set custom name for Replica Set Config Server
 
@@ -49,8 +49,7 @@
 
 * {{ k8spsmdbjira(946) }} Difficult backup failure troubleshooting
 
-* {{ k8spsmdbjira(974) }} Allow "sleep infinity" for psmdb pods
-
+* 
 * {{ k8spsmdbjira(976) }} Do not start backups if storages or credentials are not set
 
 
