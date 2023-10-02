@@ -16,8 +16,8 @@ theme:
   favicon: assets/images/percona-favicon.ico
   custom_dir: _resource/overrides/
   font:
-    text: Chivo, Colfax, Franziska
-    text: Poppins
+    text: Roboto
+    code: Roboto Mono
   palette:
     #    - media: "(prefers-color-scheme: light)"
     scheme: percona-light
@@ -36,6 +36,7 @@ extra_css:
   - css/percona.css
   - css/lightgallery.min.css
   - css/nocopy.css
+  - css/design.css
 
 extra_javascript:
   - js/promptremover.js
@@ -61,6 +62,12 @@ markdown_extensions:
     alternate_style: true
   pymdownx.highlight:
     linenums: false
+  pymdownx.emoji:
+    emoji_index: !!python/name:materialx.emoji.twemoji
+    emoji_generator: !!python/name:materialx.emoji.to_svg
+    options:
+      custom_icons:
+        - _resource/overrides/.icons
 
 plugins:
   section-index: {}
@@ -130,9 +137,15 @@ nav:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
-    - Quickstart:
-          - "Install with Helm": helm.md
-          - "Install with kubectl": kubectl.md
+    - Quickstart guides:
+          - Overview: quickstart.md
+          - Quck install:
+            - "Install with Helm": helm.md
+            - "Install with kubectl": kubectl.md
+          - Connect to Percona Server for MongoDB: connect.md
+          - Insert data: data-insert.md
+          - Make a backup: backup-tutorial.md
+          - Monitor the database with PMM: monitoring-tutorial.md
           
     - Installation:
           - "System requirements": System-Requirements.md
@@ -180,6 +193,7 @@ nav:
           - "Special debug images": debug-images.md
 
     - HOWTOs:
+          - Install the database with customized parameters: custom-install.md 
           - "OpenLDAP integration": ldap.md
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
