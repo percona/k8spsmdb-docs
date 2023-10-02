@@ -191,6 +191,7 @@ nav:
     - Reference:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md
+          - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
           - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
