@@ -41,8 +41,6 @@
 
 * {{ k8spsmdbjira(924) }} make cronjob less verbose
 
-Pass  to RS containers
-
 * {{ k8spsmdbjira(938) }} Allow configuring hostAliases for pods
 
 * {{ k8spsmdbjira(946) }} Difficult backup failure troubleshooting
@@ -61,8 +59,6 @@ Pass  to RS containers
 
 * {{ k8spsmdbjira(977) }} The out of memory problem could cause cluster got stuck in the "initializing" state at reconciliation
 
-* {{ k8spsmdbjira(712) }} Want to create excess port in psmdb-db helm chart **STILL OPEN**
-
 * {{ k8spsmdbjira(778) }} Fix a bug due to which the Operator did not delete arbiter instances during replica set deletion
 
 * {{ k8spsmdbjira(791) }} Fix a bug which prevented setting `LoadBalancerSourceRanges` Custom Resource option when `replsets.expose.exposeType` is set to `Loadbalancer`
@@ -78,8 +74,6 @@ Pass  to RS containers
 * {{ k8spsmdbjira(911) }} Fix a bug where connection string with credentials was included in the backup-agent container logs
 
 * {{ k8spsmdbjira(929) }} Can't connect to MongoDB Replica Set via LoadBalancer
-
-* {{ k8spsmdbjira(930) }} Helm chart - watchNamespace doesn't work **STILL OPEN**
 
 * {{ k8spsmdbjira(958) }} Fix insufficient permissions issue that didn't allow to monitor mongos instances with Percona Monitoring and Management (PMM)
 
