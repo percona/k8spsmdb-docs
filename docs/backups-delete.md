@@ -19,3 +19,10 @@ When the name is known, backup can be deleted as follows:
 ``` {.bash data-prompt="$" }
 $ kubectl delete psmdb-backup/<backup-name>
 ```
+
+!!! note
+
+    Deleting a backup used [as a base for point-in-time recovery (PITR)](backups-pitr.md)
+    is possible only starting from the Operator version 1.15.0. Also, deleting
+    such a backup will delete the stored operations log updates based on this
+    backup.
