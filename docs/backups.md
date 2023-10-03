@@ -24,14 +24,6 @@ Logical backups use less storage, but are much slower than physical backup/resto
 Also, logical backups are stable, while physical backups are available since the
 Operator version 1.14.0 and still have the **technical preview stauts**.
 
-Additionally, physical backups have the following two limitations:
-
-* physical backups can't be used in the cluster with [arbiter nodes](arbiter.md),
-
-* physical backups can't be restored on the clusters with [non-voting members](arbiter.md#adding-non-voting-nodes),
-
-* physical backups are currently not compatible with [point-in-time recovery](backups-pitr.md).
-
 !!! warning
 
     Logical backups made with the Operator versions before 1.9.0 are
