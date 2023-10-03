@@ -47,8 +47,6 @@
 
 * {{ k8spsmdbjira(976) }} Do not start backups if storages or credentials are not set
 
-
-
 ## Bugs Fixed
 
 * {{ k8spsmdbjira(913) }} Fix a bug due to which restoring a backup on a cluster with mongos exposed via LoabBalancer resulted in recreating mongos Service with a new IP address
