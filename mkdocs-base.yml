@@ -112,13 +112,13 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   release: '1.15.0'
   apiversion: '1'  
-  mongodb60recommended: '6.0.4-3'
-  mongodb50recommended: '5.0.14-12'
-  mongodb44recommended: '4.4.18-18'
+  mongodb60recommended: '6.0.9-7'
+  mongodb50recommended: '5.0.20-17'
+  mongodb44recommended: '4.4.24-23'
   pmm2recommended: '2.35.0'
   gkerecommended: '1.25'
-  certmanagerrecommended: '1.8.0'
-  pbmrecommended: '2.0.4'
+  certmanagerrecommended: '1.12.4'
+  pbmrecommended: '2.3.0'
   version:
     provider: mike
 

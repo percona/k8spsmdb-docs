@@ -93,18 +93,21 @@ Pass  to RS containers
 
 ## Supported Platforms
 
-The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.
+The Operator was developed and tested with Percona Server for MongoDB 4.4.24,
+5.0.20, and 6.0.9. Other options may also work but have not been tested. The
+Operator also uses Percona Backup for MongoDB 2.3.0.
 
-The following platforms were tested and are officially supported by the Operator 1.15.0:
+The following platforms were tested and are officially supported by the Operator
+1.15.0:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.22 - 1.25
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.24-1.28
 
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.22 - 1.24
+* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.24-1.28
 
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.12
+* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
 
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.23 - 1.25
+* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
 
-* [Minikube](https://github.com/kubernetes/minikube) 1.29
+* [Minikube](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
