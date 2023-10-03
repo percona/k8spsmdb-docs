@@ -120,6 +120,26 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | 3 |
 | **Description** | The size of the MongoDB Replica Set, must be >= 3 for [High-Availability](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) |
 |                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
 | **Key**         | {{ optionlink('replsets.configuration') }} |
 | **Value**       | string |
 | **Example**     | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
@@ -649,6 +669,26 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `3` |
 | **Description** | The number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.configuration') }} |
 | **Value**       | string |
 | **Example**     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
@@ -818,6 +858,26 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.configuration') }} |
 | **Value**       | string |

@@ -113,6 +113,29 @@ affinity:
 See explanation of the advanced affinity options [in Kubernetes
 documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature).
 
+## Topology Spread Constraints
+
+*Topology Spread Constraints*  allow you to control how Pods are distributed
+across the cluster based on regions, zones, nodes, and other topology specifics.
+This can be useful for both high availability and resource efficiency.
+
+Pod topology spread constraints are controlled by the 
+`topologySpreadConstraints` subsection, which can be put into `replsets`,
+`sharding.configsvrReplSet`, and `sharding.mongos` sections of the
+`deploy/cr.yaml` configuration file as follows:
+
+```yaml
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: percona-server-mongodb
+    maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+```
+
+You can see the explanation of these affinity options [in Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+
 ## Tolerations
 
 *Tolerations* allow Pods having them to be able to land onto nodes with matching
