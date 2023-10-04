@@ -43,35 +43,6 @@ In this case, the URI looks like follows (taking into account the need in a prop
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
-If using internal DNS names is not an option, you can configure [split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) to provide different sets of DNS URI for internal and external usage.
-
-This can be done via the `replset.horizons` subsection in the Custom Resource options:
-
-``` yaml
-replsets:
-  - name: rs0
-    expose:
-      enabled: true
-      exposeType: LoadBalancer
-    horizons:
-      cluster1-rs0-0:
-        external: rs0-0.egedemo.xyz
-        external-2: rs0-0.egedemo2.xyz
-      cluster1-rs0-1:
-        external: rs0-1.egedemo.xyz
-        external-2: rs0-1.egedemo2.xyz
-      cluster1-rs0-2:
-        external: rs0-2.egedemo.xyz
-        external-2: rs0-2.egedemo2.xyz
-    ```
-
-Split horizon has following limitations:
-
-* Connecting with horizon domains is only supported if the client connects using TLS certificates.
-* Duplicate domain names in horizons is forbidden by MongoDB.
-* Using IP addresses in horizons is forbidden by MongoDB.
-* Horizons needs to be set for all the Pods or not set at all. You can't have horizons only for some Pods.
-
 ## Service per Pod
 
 URI-based access is strictly recommended.
@@ -134,3 +105,42 @@ Restart can be done manually with the `kubectl rollout restart sts
 !!! warning
 
     You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make configuration changes and recovery more complicated. Also, they are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
+
+## Exposing replica set with split-horizon DNS
+
+[Split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) provides
+each replica set Pod with a set of DNS URIs for external usage. This allows to
+communicate with replica set Pods both from inside the Kubernetes cluster and
+from outside of Kubernetes.
+
+Split-horizon can be configured via the `replset.horizons` subsection in the
+Custom Resource options. Set it in the `deploy/cr.yaml` configuration file as
+follows:
+
+``` yaml
+    ...
+    replsets:
+      - name: rs0
+        expose:
+          enabled: true
+          exposeType: LoadBalancer
+        horizons:
+          cluster1-rs0-0:
+            external: rs0-0.mycluster.xyz
+            external-2: rs0-0.mycluster2.xyz
+          cluster1-rs0-1:
+            external: rs0-1.mycluster.xyz
+            external-2: rs0-1.mycluster2.xyz
+          cluster1-rs0-2:
+            external: rs0-2.mycluster.xyz
+            external-2: rs0-2.mycluster2.xyz
+```
+
+Split horizon has following limitations:
+
+* connecting with horizon domains is only supported if client connects using TLS
+    certificates
+* duplicating domain names in horizons is not allowed by MongoDB
+* using IP addresses in horizons is not allowed by MongoDB
+* horizons should be set for *all Pods of a replica set* or not set at all
+
