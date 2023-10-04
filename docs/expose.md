@@ -43,6 +43,35 @@ In this case, the URI looks like follows (taking into account the need in a prop
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
+If using internal DNS names is not an option, you can configure [split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) to provide different sets of DNS URI for internal and external usage.
+
+This can be done via the `replset.horizons` subsection in the Custom Resource options:
+
+``` yaml
+replsets:
+  - name: rs0
+    expose:
+      enabled: true
+      exposeType: LoadBalancer
+    horizons:
+      cluster1-rs0-0:
+        external: rs0-0.egedemo.xyz
+        external-2: rs0-0.egedemo2.xyz
+      cluster1-rs0-1:
+        external: rs0-1.egedemo.xyz
+        external-2: rs0-1.egedemo2.xyz
+      cluster1-rs0-2:
+        external: rs0-2.egedemo.xyz
+        external-2: rs0-2.egedemo2.xyz
+    ```
+
+Split horizon has following limitations:
+
+* Connecting with horizon domains is only supported if the client connects using TLS certificates.
+* Duplicate domain names in horizons is forbidden by MongoDB.
+* Using IP addresses in horizons is forbidden by MongoDB.
+* Horizons needs to be set for all the Pods or not set at all. You can't have horizons only for some Pods.
+
 ## Service per Pod
 
 URI-based access is strictly recommended.
