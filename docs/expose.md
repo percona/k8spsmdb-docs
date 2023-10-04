@@ -136,6 +136,9 @@ follows:
             external-2: rs0-2.mycluster2.xyz
 ```
 
+URIs for external usage are specified as key-value pairs, where the key is an
+arbitrary name and the value is the actual URI.
+
 Split horizon has following limitations:
 
 * connecting with horizon domains is only supported if client connects using TLS
