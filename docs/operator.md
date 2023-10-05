@@ -628,6 +628,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.hostAliases.ip') }} |
+| **Value**       | string |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+|                 | |
+| **Key**         | {{ optionlink('replsets.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
 
 ## <a name="operator-pmm-section"></a>PMM Section
 
@@ -863,6 +873,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.ip') }} |
+| **Value**       | string |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods |
+|                 | |
 | **Key**         | {{ optionlink('sharding.mongos.size') }} |
 | **Value**       | int |
 | **Example**     | `3` |
@@ -1062,6 +1082,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | string |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.hostAliases.ip') }} |
+| **Value**       | string |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods |
 
 ## <a name="operator-backup-section"></a>Backup Section
 
