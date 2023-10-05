@@ -23,9 +23,9 @@
    inkscape:pageopacity="0.0"
    inkscape:pagecheckerboard="0"
    showgrid="false"
-   inkscape:zoom="0.050373329"
-   inkscape:cx="6838.9365"
-   inkscape:cy="6034.9396"
+   inkscape:zoom="0.04632484"
+   inkscape:cx="15639.558"
+   inkscape:cy="9606.0775"
    inkscape:window-width="1296"
    inkscape:window-height="982"
    inkscape:window-x="216"
@@ -451,7 +451,62 @@
    d="m 9162,11430 h 1 c -160,0 -317,42 -455,122 -138,79 -253,194 -332,332 -80,138 -122,295 -122,455 v 10013 0 c 0,160 42,317 122,455 79,138 194,253 332,332 138,80 295,122 455,122 l 12788,-1 v 1 c 160,0 317,-42 455,-122 138,-79 253,-194 332,-332 80,-138 122,-295 122,-455 v -10014 1 0 c 0,-160 -42,-317 -122,-455 -79,-138 -194,-253 -332,-332 -138,-80 -295,-122 -455,-122 z"
    id="path161" />
    </g>
-  </g>
+  </g><g
+   id="id16-7"
+   transform="translate(187.97958,80.915082)"><rect
+     class="BoundingBox"
+     stroke="none"
+     fill="none"
+     x="15402"
+     y="21607"
+     width="2488"
+     height="1295"
+     id="rect402-3" /><text
+     class="TextShape"
+     id="text414-6"
+     x="-1199.3027"
+     y="12.154049"><tspan
+       sodipodi:role="line"
+       id="tspan10113-6"
+       x="0"
+       y="0"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan412-2" /></tspan><tspan
+       sodipodi:role="line"
+       id="tspan10115-7"
+       x="0"
+       y="15"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan10117-9"><tspan
+           class="TextPosition"
+           x="14820.697"
+           y="22690.154"
+           id="tspan10119-2"><tspan
+             fill="#3465a4"
+             stroke="none"
+             id="tspan10121-7" /></tspan></tspan></tspan><tspan
+       sodipodi:role="line"
+       x="14820.697"
+       y="22690.154"
+       id="tspan20931"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan20933"><tspan
+           class="TextPosition"
+           x="14820.697"
+           y="22690.154"
+           id="tspan20935"><tspan
+             fill="#3465a4"
+             stroke="none"
+             id="tspan20937">Secret</tspan></tspan></tspan></tspan></text></g>
   <g
    class="com.sun.star.drawing.LineShape"
    id="g173"
@@ -1235,8 +1290,8 @@
            id="tspan408"></tspan></tspan></tspan></tspan><tspan
      sodipodi:role="line"
      id="tspan10115"
-     x="14820.697"
-     y="22690.154"><tspan
+     x="14345.697"
+     y="22183.154"><tspan
        class="TextParagraph"
        font-family="Arial, sans-serif"
        font-size="423px"
@@ -1248,9 +1303,12 @@
          id="tspan10119"><tspan
            fill="#3465a4"
            stroke="none"
-           id="tspan10121">              Secret</tspan></tspan></tspan></tspan></text>
+           id="tspan10121" /></tspan></tspan></tspan></text>
    </g>
-  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g417-2"
+   transform="translate(2576.845,-1887.7231)" /></g>
   <g
    class="Graphic"
    id="g448"
@@ -1407,7 +1465,7 @@
          id="tspan14140"><tspan
            fill="#3465a4"
            stroke="none"
-           id="tspan14142">                 Secret</tspan></tspan></tspan></tspan></text>
+           id="tspan14142">                 </tspan></tspan></tspan></tspan></text>
    </g>
   </g>
   <g
@@ -1727,5 +1785,60 @@
    id="path572" />
    </g>
   </g>
- </g>
+ <g
+   id="id16-7-2"
+   transform="translate(4936.1309,37.086016)"><rect
+     class="BoundingBox"
+     stroke="none"
+     fill="none"
+     x="15402"
+     y="21607"
+     width="2488"
+     height="1295"
+     id="rect402-3-8" /><text
+     class="TextShape"
+     id="text414-6-7"
+     x="-1199.3027"
+     y="12.154049"><tspan
+       sodipodi:role="line"
+       id="tspan10113-6-4"
+       x="0"
+       y="0"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan412-2-2" /></tspan><tspan
+       sodipodi:role="line"
+       id="tspan10115-7-9"
+       x="0"
+       y="15"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan10117-9-8"><tspan
+           class="TextPosition"
+           x="14820.697"
+           y="22690.154"
+           id="tspan10119-2-0"><tspan
+             fill="#3465a4"
+             stroke="none"
+             id="tspan10121-7-5" /></tspan></tspan></tspan><tspan
+       sodipodi:role="line"
+       x="14820.697"
+       y="22690.154"
+       id="tspan20931-3"><tspan
+         class="TextParagraph"
+         font-family="Arial, sans-serif"
+         font-size="423px"
+         font-weight="400"
+         id="tspan20933-5"><tspan
+           class="TextPosition"
+           x="14820.697"
+           y="22690.154"
+           id="tspan20935-9"><tspan
+             fill="#3465a4"
+             stroke="none"
+             id="tspan20937-9">Secret</tspan></tspan></tspan></tspan></text></g></g>
 </svg>
