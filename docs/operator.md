@@ -324,6 +324,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `1` |
 | **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods |
 |                 | |
+| **Key**         | {{ optionlink('replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external') }} |
+| **Value**       | string |
+| **Example**     | `rs0-0.mycluster.xyz` |
+| **Description** | External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster |
+|                 | |
+| **Key**         | {{ optionlink('replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external-2') }} |
+| **Value**       | string |
+| **Example**     | `rs0-0.mycluster2.xyz` |
+| **Description** | External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster |
+|                 | |
 | **Key**         | {{ optionlink('replsets.expose.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
