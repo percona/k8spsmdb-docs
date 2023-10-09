@@ -103,3 +103,4 @@ Apply the resulting YAML file as follows:
 ``` {.bash data-prompt="$" }
 $ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
 ```
+

@@ -63,7 +63,7 @@
 
         ``` {.text .no-copy}
         NAME      CLUSTER           STORAGE      DESTINATION            STATUS    COMPLETED   AGE
-        backup1   minimal-cluster   s3-us-west   2022-09-08T03:22:19Z   running               49s
+        backup1   my-cluster-name   s3-us-west   2022-09-08T03:22:19Z   running               49s
         ```
 
     It should show the status as `READY` when the backup process is over.
@@ -71,7 +71,7 @@
     If you have any issues with the backup, you can [view logs](debug-logs.md) from the backup-agent container of the appropriate Pod as follows:
     
     ``` {.bash data-prompt="$" }
-    $ kubectl logs pod/minimal-cluster-rs0 -c backup-agent
+    $ kubectl logs pod/my-cluster-name-rs0 -c backup-agent
     ```
     
     Alternatively, [getting ssh access](debug-shell.md) to the same container

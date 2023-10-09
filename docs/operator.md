@@ -622,7 +622,7 @@ The replsets section controls the MongoDB Replica Set.
 | **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
 | **Example**     | `standard` |
-| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb |
+| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) |
 |                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.accessModes') }} |
 | **Value**       | array |
@@ -637,12 +637,12 @@ The replsets section controls the MongoDB Replica Set.
 | **Key**         | {{ optionlink('replsets.hostAliases.ip') }} |
 | **Value**       | string |
 | **Example**     | `"10.10.0.2"` |
-| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
 |                 | |
 | **Key**         | {{ optionlink('replsets.hostAliases.hostnames') }} |
 | **Value**       | subdoc |
 | **Example**     | |
-| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
 
 ## <a name="operator-pmm-section"></a>PMM Section
 
@@ -886,12 +886,12 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.ip') }} |
 | **Value**       | string |
 | **Example**     | `"10.10.0.2"` |
-| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.hostnames') }} |
 | **Value**       | subdoc |
 | **Example**     | |
-| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.size') }} |
 | **Value**       | int |
@@ -1101,12 +1101,12 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Key**         | {{ optionlink('sharding.mongos.hostAliases.ip') }} |
 | **Value**       | string |
 | **Example**     | `"10.10.0.2"` |
-| **Description** | The IP address for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.hostAliases.hostnames') }} |
 | **Value**       | subdoc |
 | **Example**     | |
-| **Description** | Hostnames for [Kubernetes host aliases]([https://kubernetes.io/docs/concepts/storage/persistent-volumes/](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods |
 
 ## <a name="operator-backup-section"></a>Backup Section
 
