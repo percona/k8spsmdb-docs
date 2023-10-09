@@ -39,12 +39,12 @@ restoration can be done in the following way.
         * set `spec.clusterName` key to the name of the target cluster to restore
             the backup on,
 
-        * set `spec.backupSource` subsection instead of `spec.backupName` field
-            to point on the appropriate S3-compatible storage. This
-            `backupSource` subsection should contain the [backup type](backups.md#physical)
-            (either `logical` or `physical`), and a `destination` key,
-            followed by necessary storage configuration keys, same as in the
-            `deploy/cr.yaml` file:
+        * set `spec.backupSource` subsection to point on the appropriate
+            cloud storage. This `backupSource` subsection should contain the
+            [backup type](backups.md#physical) (either `logical` or `physical`),
+            and a `destination` key, followed by
+            [necessary storage configuration keys](backups-storage.md),
+            same as in the `deploy/cr.yaml` file:
 
             ```yaml
             ...
@@ -65,8 +65,8 @@ restoration can be done in the following way.
            your container name as an equivalent of a bucket.
 
         * you can also use a `storageName` key to specify the exact name of the
-           storage (the actual storage should be already defined in the
-           `backup.storages` subsection of the `deploy/cr.yaml` file):
+           storage (the actual storage should be [already defined](backups-storage.md)
+           in the `backup.storages` subsection of the `deploy/cr.yaml` file):
 
            ```yaml
            ...
@@ -86,27 +86,34 @@ restoration can be done in the following way.
     1. Set appropriate keys in the [deploy/backup/restore.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
         * set `spec.clusterName` key to the name of the target cluster to restore
-            the backup on,
+            the backup on
 
         * put additional restoration parameters to the `pitr` section:
 
+            * `type` key can be equal to one of the following options
+
+                * `date` - roll back to specific date
+                * `latest` - recover to the latest possible transaction
+
+            * `date` key is used with `type=date` option and contains value in
+                datetime format
+
+        * set `spec.backupSource` subsection to point on the appropriate cloud
+            storage. For S3-compatible storage this`backupSource` subsection
+            should contain a `destination` key equal to the s3 bucket with a
+            special `s3://` prefix, followed by necessary S3 configuration keys,
+            same as in `deploy/cr.yaml` file:
+
             ```yaml
-            ...
+            apiVersion: psmdb.percona.com/v1
+            kind: PerconaServerMongoDBRestore
+            metadata:
+              name: restore1
             spec:
               clusterName: my-cluster-name
               pitr:
                 type: date
                 date: YYYY-MM-DD hh:mm:ss
-            ```
-
-        * set `spec.backupSource` subsection instead of `spec.backupName` field
-            to point on the appropriate S3-compatible storage. This
-            `backupSource` subsection should contain a `destination` key equal
-            to the s3 bucket with a special `s3://` prefix, followed by
-            necessary S3 configuration keys, same as in `deploy/cr.yaml` file:
-
-            ```yaml
-            ...
             backupSource:
               destination: s3://S3-BUCKET-NAME/BACKUP-NAME
               s3:
@@ -116,8 +123,8 @@ restoration can be done in the following way.
             ```
 
         * you can also use a `storageName` key to specify the exact name of the
-            storage (the actual storage should be already defined in the
-            `backup.storages` subsection of the `deploy/cr.yaml` file):
+            storage (the actual storage [should be already defined](backups-storage.md)
+            in the `backup.storages` subsection of the `deploy/cr.yaml` file):
 
             ```yaml
             ...
