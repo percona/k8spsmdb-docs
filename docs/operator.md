@@ -1162,6 +1162,26 @@ Percona Server for MongoDB backups.
 | **Example**     | |
 | **Description** | The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud) |
 |                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.kmsKeyID') }} |
+| **Value**       | string |
+| **Example**     | `""` |
+| **Description** | The [ID of the key stored in the AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys) used by the Operator for [backups server-side encryption](backups-encryption.md)
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseAlgorithm') }} |
+| **Value**       | string |
+| **Example**     | `aws:kms` |
+| **Description** | The key management mode used for [backups server-side encryption](backups-encryption.md) with the encryption keys stored in [AWS KMS](https://aws.amazon.com/kms/) - `aws:kms` is the only supported value for now |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerAlgorithm') }} |
+| **Value**       | string |
+| **Example**     | `AES256` |
+| **Description** | The key management mode for [backups server-side encryption with customer-provided keys](backups-encryption.md) - `AES256` is the only supported value for now|
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerKey') }} |
+| **Value**       | string |
+| **Example**     | `""` |
+| **Description** | The locally-stored base64-encoded custom encryption key used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages |
+|                 | |
 | **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.credentialsSecret') }} |
 | **Value**       | string |
 | **Example**     | `my-cluster-azure-secret` |
@@ -1176,26 +1196,6 @@ Percona Server for MongoDB backups.
 | **Value**       | string |
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) |
-|                 | |
-| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.kmsKeyID') }} |
-| **Value**       | string |
-| **Example**     | `""` |
-| **Description** | The [Key ID](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys) used by the Operator for [backups server-side encryption](backups-encryption.md) on [AWS KMS](https://aws.amazon.com/kms/) |
-|                 | |
-| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseAlgorithm') }} |
-| **Value**       | string |
-| **Example**     | `aws:kms` |
-| **Description** | The algorythm by the Operator for [backups server-side encryption](backups-encryption.md) on [AWS KMS](https://aws.amazon.com/kms/) |
-|                 | |
-| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerAlgorithm') }} |
-| **Value**       | string |
-| **Example**     | `AES256` |
-| **Description** | The encryption algorythm used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages |
-|                 | |
-| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerKey') }} |
-| **Value**       | string |
-| **Example**     | `""` |
-| **Description** | The base64-encoded encryption key used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages |
 |                 | |
 | **Key**         | {{ optionlink('backup.pitr.enabled') }} |
 | **Value**       | boolean |
