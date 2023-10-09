@@ -27,13 +27,22 @@ backup:
           sseAlgorithm: aws:kms
 ```
 
-Here `<kms_key_ID>` should be substituted with the [ID of your customer-managed key](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html) stored in the AWS KMS.
+Here `<kms_key_ID>` should be substituted with the [ID of your customer-managed key](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html)
+stored in the AWS KMS. It should look similar to the following example value:
+`128887dd-d583-43f2-b3f9-d12036d32b12`.
 
 ## Encryption with localy-stored keys on any S3-compatible storage
 
-The Operator also supports server-side encryption with customer-provided keys that are stored on the client side. During the backup/restore process, encryption key will be provided by the Operator as part of the requests to the S3 storage, and the S3 storage will them to encrypt/decrypt the data using the AES-256 encryption algorithm. This allows to use server-side encryption on S3-compatible storages different from AWS. 
+The Operator also supports server-side encryption with customer-provided keys
+that are stored on the client side. During the backup/restore process,
+encryption key will be provided by the Operator as part of the requests to the
+S3 storage, and the S3 storage will them to encrypt/decrypt the data using the
+AES-256 encryption algorithm. This allows to use server-side encryption on
+S3-compatible storages different from AWS KMS (the feature was tested with the
+[AWS](https://aws.amazon.com/) and [MinIO](https://min.io/) storages).
 
-To use the server-side encryption wit locally-stored keys, specify the following Custom Resource options in the `deploy/cr.yaml` configuration file:
+To use the server-side encryption wit locally-stored keys, specify the following
+Custom Resource options in the `deploy/cr.yaml` configuration file:
 
 ```yaml
 backup:
@@ -45,11 +54,12 @@ backup:
         bucket: my-backup-bucket
         serverSideEncryption:
           sseCustomerAlgorithm: AES256
-          sseCustomerKey: <your_encryption_key>  
+          sseCustomerKey: <your_encryption_key_in_base64>  
     ...
 ```
 
-Here `<your_encryption_key>` should be substituted with the actual encryption key encoded in base64.
+Here `<your_encryption_key_in_base64>` should be substituted with the actual
+encryption key encoded in base64.
 
 !!! note
 
