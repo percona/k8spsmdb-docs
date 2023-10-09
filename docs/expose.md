@@ -146,4 +146,6 @@ Split horizon has following limitations:
 * duplicating domain names in horizons is not allowed by MongoDB
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
+* horizons should be configured on an existing cluster (creating a new
+    cluster with pre-configured horizons is currently not supported)
 
