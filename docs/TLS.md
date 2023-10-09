@@ -227,9 +227,19 @@ you can make the Operator update along with the [official instruction](update.md
     The response should be as follows:
 
     ``` {.text .no-copy}
-    NAME                       READY   AGE
-    my-cluster-name-psmdb-ca   True    61s
+    NAME                              READY   AGE
+    my-cluster-name-psmdb-issuer      True    61m
+    my-cluster-name-psmdb-ca-issuer   True    61m
     ```
+    
+    !!! note
+
+        The presence of two issuers has the following meaning. The
+        `my-cluster-name-psmdb-ca-issuer` issuer is used to create a self signed
+        CA certificate (`my-cluster-name-ca-cert`), and then the
+        `my-cluster-name-psmdb-issuer` issuer is used to create SSL certificates
+        (`my-cluster-name-ssl` and `my-cluster-name-ssl-internal`) signed by
+        the `my-cluster-name-ca-cert` CA certificate.
 
 3. Now use the following command to find out the certificates validity dates,
     substituting Secrets names if necessary:
@@ -338,7 +348,7 @@ Operator version prior to 1.9.0), you should move through the
 
     ``` {.bash data-prompt="$" }
     $ {
-      kubectl delete issuer/my-cluster-name-psmdb-ca
+      kubectl delete issuer/my-cluster-name-psmdb-ca-issuer issuer/my-cluster-name-psmdb-issuer 
       kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal
       }
     ```
