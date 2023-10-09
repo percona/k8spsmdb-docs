@@ -119,6 +119,11 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | 3 |
 | **Description** | The size of the MongoDB Replica Set, must be >= 3 for [High-Availability](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) |
 |                 | |
+| **Key**         | {{ optionlink('replsets.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean replica set Pods termination |
+|                 | |
 | **Key**         | {{ optionlink('replsets.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
 | **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
@@ -688,6 +693,11 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `3` |
 | **Description** | The number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean config server Pods termination |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
 | **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
@@ -887,6 +897,11 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean mongos Pods termination |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
