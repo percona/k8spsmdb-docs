@@ -94,6 +94,13 @@ be added to the `spec.secrets.ssl` key of the `deploy/cr.yaml` file. A
 certificate generated for internal communications must be added to the
 `spec.secrets.sslInternal` key of the `deploy/cr.yaml` file.
 
+
+!!! note
+
+    If you only create the external certificate, then the Operator will not
+    generate the internal one, but instead use certificate you have provided for
+    both external and internal communications.
+
 Supposing that your cluster name is `my-cluster-name`, the instructions to
 generate certificates manually are as follows:
 
@@ -371,7 +378,8 @@ the TLS protocol enabled.
 
 To disable TLS protocol (e.g. for demonstration purposes) set the
 `spec.allowUnsafeConfigurations` key to `true` in the `deploy/cr.yaml`
-file and and make sure that there are no certificate secrets available.
+file and and make sure that there are no certificate secrets available. This is
+the only condition under which the cluster will work without TLS.
 
 !!! warning
 
