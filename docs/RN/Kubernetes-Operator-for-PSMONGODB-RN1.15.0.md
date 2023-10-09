@@ -2,7 +2,7 @@
 
 * **Date**
 
-    October 5, 2023
+    October 9, 2023
 
 * **Installation**
 
@@ -10,20 +10,25 @@
 
 ## Release Highlights
 
-* [Physical backups](../backups.md#physical) now support point-in-time restore (PITR), following the same PITR configuration options which were previously available for logical backups only
-*  The Operator now [supports](../backups-encryption.md) backups Server Side Encryption with AWS KMS
+### Physical Backups now support Point-in-time Recovery (in tech preview)
+
+In the previous [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. But the problem with losing data between backups - in other words Recovery Point Objective (RPO) - for physical backups was not solved. With this release users can greatly reduce RPO by leveraging the Point-in-time Recovery feature in the Operators. Under the hood we store logical oplogs along with physical backups into the object storage. Read more about this feature in our [documentation](https://docs.percona.com/percona-operator-for-mongodb/backups.html).
+
+### Encrypted backups with Server Side Encryption (SSE)
+
+Backups stored on S3 compatible storage [can now be encrypted](../backups-encryption.md) with Server Side Encryption (SSE) to pass certain compliance or security requirements. Users can leverage integration with AWS KMS or just encrypt/decrypt backups with AES-256 encryption algorithm. It is important to remember that Operator does not store keys and users can choose which key storage to use.
 
 ## New Features
 
 * {{ k8spsmdbjira(227) }} The new `topologySpreadConstraints` Custom Resource option allows to use [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods) to achieve even distribution of Pods across the Kubernetes cluster
 
-* {{ k8spsmdbjira(792) }} and {{ k8spsmdbjira(974) }} The new "sleep infinity" mode available for replset and config server containers allows [examining them without starting mongod](https://docs.percona.com/percona-operator-for-mongodb/debug-shell.html#sleep) 
+* {{ k8spsmdbjira(792) }} and {{ k8spsmdbjira(974) }} The new "sleep infinity" mode available for replset and config server containers allows [running the Pod without starting mongod](../debug-shell.md#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) useful to examine a problematic Pod that is constantly restarting
 
-* {{ k8spsmdbjira(801) }} It is now possible to delete a backup with its PITR data on retention period or with `delete-backup` finalizer is as opposite to previous behavior when PiTR files were not deleted during the psmdb-backup deletion
+* {{ k8spsmdbjira(801) }} It is now possible to delete a backup with its PITR data on retention period or with `delete-backup` finalizer (there were no PITR files deletion in previous versions )
 
-* {{ k8spsmdbjira(926) }} Point-in-time recovery is now supported with physical backups
+* {{ k8spsmdbjira(926) }} Point-in-time recovery is now supported with physical backups to significantly reduce Recovery Point Objective (RPO)
 
-* {{ k8spsmdbjira(961) }} The new `sharding.balancer.enabled` Custom Resource option allows to disable Load Balancer on a managed cluster
+* {{ k8spsmdbjira(961) }} The new `sharding.balancer.enabled` Custom Resource option allows to disable Load Balancer on a cross-site replication managed cluster
 
 ## Improvements
 
@@ -31,21 +36,23 @@
 
 * {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../TLS.html#update-certificates)
 
-* {{ k8spsmdbjira(807) }} A custom name for a Replica Set Config Server instead of the default `cfg` one [can be set](../options.html) via the custom configuration, which can be useful for migration purposes
+* {{ k8spsmdbjira(807) }} A custom name for a Replica Set config server instead of the default `cfg` one [can be set](../sharding.md#turning-sharding-on-and-off) in the custom configuration, which can be useful for migration purposes
 
 * {{ k8spsmdbjira(814) }} and {{ k8spsmdbjira(927) }} The new `terminationGracePeriodSeconds` Custom Resource option allows to set termination period for Replica Set containers, useful to cleanly shutdown clusters with big data sets
 
-* {{ k8spsmdbjira(850) }} Add support for Server Side Encryption for backups
+* {{ k8spsmdbjira(850) }} [Server Side Encryption for backups](../backups-encryption.md) with for S3 and S3-compatible storage is now supported (thanks to Mert Gönül for contribution)
 
-* {{ k8spsmdbjira(903) }} Add bucket name to backup destination
+* {{ k8spsmdbjira(903) }} The [backup destination](../backups-restore.md) URI now includes bucket/container name, allowing the user to specify the full path to the backup as an easy to read string
 
-* {{ k8spsmdbjira(924) }} make cronjob less verbose
+* {{ k8spsmdbjira(924) }} The token associated with the operator's ServiceAccount is no longer printed in the log when a scheduled backup is running; this improves security and avoids logging uninformative elements
 
-* {{ k8spsmdbjira(938) }} Allow configuring hostAliases for pods
+* {{ k8spsmdbjira(938) }} Configuring [Kubernetes host aliases](../operator.md#replsets.hostaliases.hostnames) is now possible for replica set, config server, and mongos Pods
 
-* {{ k8spsmdbjira(946) }} Difficult backup failure troubleshooting
+* {{ k8spsmdbjira(946) }} The psmdb-backup object now includes the name of the Pod that made the backup, to save users from searching for the correct Pod to examine the Percona Backup for MongoDB logs (previously it was necessary to check replica set Pods one by one until logs were found)
 
-* {{ k8spsmdbjira(976) }} Do not start backups if storages or credentials are not set
+* {{ k8spsmdbjira(976) }} The Operator now does not start backups if storages or credentials are not set, avoiding fruitless attempts to configure Percona Backup for MongoDB and cluster state repeatedly changing between ready and error
+
+* {{ k8spsmdbjira(929) }} [Using split-horizon DNS](../expose.md#exposing-replica-set-with-split-horizon-dns) for the external access to MongoDB Replica Set Pods of the exposed cluster is now possible
 
 ## Bugs Fixed
 
@@ -70,8 +77,6 @@
 * {{ k8spsmdbjira(876) }} Fix a bug due to which `delete-psmdb-pods-in-order` finalizer, intended to shutdown primary Pod last, affected only shards and did not affect config replica set 
 
 * {{ k8spsmdbjira(911) }} Fix a bug where connection string with credentials was included in the backup-agent container logs
-
-* {{ k8spsmdbjira(929) }} Can't connect to MongoDB Replica Set via LoadBalancer
 
 * {{ k8spsmdbjira(958) }} Fix insufficient permissions issue that didn't allow to monitor mongos instances with Percona Monitoring and Management (PMM)
 
