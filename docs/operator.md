@@ -1212,6 +1212,11 @@ Percona Server for MongoDB backups.
 | **Example**     | `false` |
 | **Description** | Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog) |
 |                 | |
+| **Key**         | {{ optionlink('backup.pitr.oplogOnly') }} |
+| **Value**       | boolean |
+| **Example**     | false |
+| **Description** | If true, Percona Backup for MongoDB saves oplog chunks even without the base backup snapshot (oplog chunks without a base backup can't be used to restore a backup by the Operator, [but can still be useful for manual restore operations](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)) |
+|                 | |
 | **Key**         | {{ optionlink('backup.pitr.oplogSpanMin') }} |
 | **Value**       | int |
 | **Example**     | `10` |
