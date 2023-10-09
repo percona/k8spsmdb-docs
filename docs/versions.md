@@ -6,6 +6,7 @@ Cluster components:
 
 | Operator | [MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
+| [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 4.4 - 6.0          | 2.3.0 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 4.4 - 6.0          | 2.0.4, 2.0.5 |
 | [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | 4.2 - 5.0          | 1.8.1 |
 | [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | 4.2 - 5.0          | 1.7.0 |
@@ -25,6 +26,7 @@ Platforms:
 
 | Operator | [GKE](https://cloud.google.com/kubernetes-engine)         | [EKS](https://aws.amazon.com)         | [Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube](https://github.com/kubernetes/minikube)                          |
 |:--------|:------------|:------------|:------------|:------------|:----------------------------------|
+| [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 1.24 - 1.28 | 1.24 - 1.28 | 4.11 - 4.13 | 1.25 - 1.28 | 1.31.2 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 1.22 - 1.25 | 1.22 - 1.24 | 4.10 - 4.12 | 1.23 - 1.25 | 1.29 |
 | [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md) | 1.21 - 1.23 | 1.21 - 1.23 | 4.10 - 4.11 | 1.22 - 1.24 | 1.26 |
 | [1.12.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md) | 1.19 - 1.22 | 1.19 - 1.22 | 4.7 - 4.10  | - | 1.23 |
