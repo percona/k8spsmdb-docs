@@ -55,7 +55,8 @@ special approach is needed to make fixes.
 You can prevent such infinite boot loop by putting the Percona Server for MongoDB
 containers into the "infinite sleep" *without* starting mongod. This behavior
 of the container entry point is triggered by the presence of the
-`/data/db/sleep-forever` file.
+`/data/db/sleep-forever` file. The feature is available for both replica set and
+confg server Pods.
 
 For example, you can do it for the `mongod` container of an appropriate Percona
 Server for MongoDB Pod as follows:
@@ -73,5 +74,3 @@ $ kubectl exec -it my-cluster-name-cfg-0 -c backup-agent -- sh -c 'touch /data/d
 The instance will restart automatically and run in its usual way as soon as you
 remove this file (you can do it with a command similar to the one you have used
 to create the file, just substitute `touch` to `rm` in it).
-
-
