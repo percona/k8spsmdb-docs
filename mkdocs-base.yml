@@ -163,6 +163,7 @@ nav:
               - "Making scheduled backups": backups-scheduled.md
               - "Making on-demand backup": backups-ondemand.md
               - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Enable server-side encryption": backups-encryption.md
               - "Restore from a previously saved backup": backups-restore.md
               - "Delete the unneeded backup": backups-delete.md
           - "Upgrade MongoDB and the Operator": update.md
