@@ -45,3 +45,32 @@ In the following examples we will access the container `mongod` of the `my-clust
     $
     ```
 
+## Avoid the restart-on-fail loop for Percona Server for MongoDB containers
+
+The restart-on-fail loop takes place when the container entry point fails
+(e.g. `mongod` crashes). In such a situation, Pod is continuously restarting.
+Continuous restarts prevent to get console access to the container, and so a
+special approach is needed to make fixes.
+
+You can prevent such infinite boot loop by putting the Percona Server for MongoDB
+containers into the "infinite sleep" *without* starting mongod. This behavior
+of the container entry point is triggered by the presence of the
+`/data/db/sleep-forever` file. The feature is available for both replica set and
+confg server Pods.
+
+For example, you can do it for the `mongod` container of an appropriate Percona
+Server for MongoDB Pod as follows:
+
+``` {.bash data-prompt="$" }
+$ kubectl exec -it my-cluster-name-cfg-0 -c mongod -- sh -c 'touch /data/db/sleep-forever' 
+```
+
+If `mongod` container can’t start, you can use `backup-agent` container instead:
+
+``` {.bash data-prompt="$" }
+$ kubectl exec -it my-cluster-name-cfg-0 -c backup-agent -- sh -c 'touch /data/db/sleep-forever' 
+```
+
+The instance will restart automatically and run in its usual way as soon as you
+remove this file (you can do it with a command similar to the one you have used
+to create the file, just substitute `touch` to `rm` in it).
