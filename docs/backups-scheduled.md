@@ -53,3 +53,7 @@ backup:
      storageName: s3-us-west
   ...
 ```
+
+!!! note
+
+    If you plan to [restore backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md), make sure you will be able to create there a Secrets object with the same user passwords as in the original cluster. More details about secrets can be found in [System Users](users.md#users-system-users). The name of the current Secrets object you will need to recreate can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).

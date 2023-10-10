@@ -86,11 +86,53 @@ configuration file.
 
 * User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
 
+If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
+Pods will go into restart cycle, and the cluster can be not accessible through
+the `mongos` service until this cycle finishes.
+
 !!! note
 
-    If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the
-    cluster Pods will go into restart cycle, and the cluster can be not
-    accessible through the `mongos` service until this cycle finishes.
+    In some situations it can be needed to reproduce system users in a bare-bone
+    MongoDB. For example, that's a required step in the [migration scenarios](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
+    to move existing on-prem MongoDB database to Kubernetes-based MongoDB
+    cluster managed by the Operator. You can use the following example script
+    which produces a text file with mongo shell commands to create needed system
+    users with appropriate roles:
+    
+    ??? example "gen_users.sh"
+    
+        ``` bash
+        clusterAdminPass="clusterAdmin"
+        userAdminPass="userAdmin"
+        clusterMonitorPass="clusterMonitor"
+        backupPass="backup"
+        
+        # mongo shell
+        cat <<EOF > user-mongo-shell.txt
+        use admin
+        db.createRole(
+        {
+        "roles": [],
+        role: "pbmAnyAction",
+        "privileges" : [
+                        {
+                                "resource" : {
+                                        "anyResource" : true
+                                },
+                                "actions" : [
+                                        "anyAction"
+                                ]
+                        }
+                ],
+        
+        })
+        
+        db.createUser( { user: "clusterMonitor", pwd: "$clusterMonitorPass", roles: [ "clusterMonitor" ] } )
+        db.createUser( { user: "userAdmin", pwd: "$userAdminPass", roles: [ "userAdminAnyDatabase" ] } )
+        db.createUser( { user: "clusterAdmin", pwd: "$clusterAdminPass", roles: [ "clusterAdmin" ] } )
+        db.createUser( { user: "backup", pwd: "$backupPass", roles: [ "readWrite", "backup", "clusterMonitor", "restore", "pbmAnyAction" ] } )
+        EOF
+        ```
 
 ### YAML Object Format
 

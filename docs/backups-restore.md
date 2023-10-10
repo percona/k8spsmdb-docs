@@ -37,10 +37,6 @@ restoration can be done in the following way.
 
         * set `spec.backupName` key to the name of your backup,
 
-        * you can also use a `storageName` key to specify the exact name of the
-            storage (the actual storage should be already defined in the
-            `backup.storages` subsection of the `deploy/cr.yaml` file):
-
             ```yaml
             apiVersion: psmdb.percona.com/v1
             kind: PerconaServerMongoDBRestore
@@ -49,7 +45,6 @@ restoration can be done in the following way.
             spec:
               clusterName: my-cluster-name
               backupName: backup1
-              storageName: s3-us-west
             ```
 
     2. After that, the actual restoration process can be started as follows:
@@ -72,7 +67,6 @@ restoration can be done in the following way.
             spec:
               clusterName: my-cluster-name
               backupName: backup1
-              storageName: s3-us-west
             EOF
             ```
 
@@ -81,31 +75,34 @@ restoration can be done in the following way.
     1. Set appropriate keys in the [deploy/backup/restore.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
         * set `spec.clusterName` key to the name of the target cluster to restore
-            the backup on,
+            the backup on
+
+        * set `spec.backupName` key to the name of your backup
 
         * put additional restoration parameters to the `pitr` section:
 
-            ```yaml
-            ...
-            spec:
-              clusterName: my-cluster-name
-              pitr:
-                type: date
-                date: YYYY-MM-DD hh:mm:ss
-            ```
+            * `type` key can be equal to one of the following options
 
-        * set `spec.backupName` key to the name of your backup,
+                * `date` - roll back to specific date
+                * `latest` - recover to the latest possible transaction
 
-        * you can also use a `storageName` key to specify the exact name of the
-            storage (the actual storage should be already defined in the
-            `backup.storages` subsection of the `deploy/cr.yaml` file):
+            * `date` key is used with `type=date` option and contains value in
+                datetime format
 
-            ```yaml
-            ...
-            storageName: s3-us-west
-            backupSource:
-              destination: s3://S3-BUCKET-NAME/BACKUP-NAME
-            ```
+        The resulting `restore.yaml` file may look as follows:
+
+        ```yaml
+        apiVersion: psmdb.percona.com/v1
+        kind: PerconaServerMongoDBRestore
+        metadata:
+          name: restore1
+        spec:
+          clusterName: my-cluster-name
+          backupName: backup1
+          pitr:
+            type: date
+            date: YYYY-MM-DD hh:mm:ss
+        ```
 
     2. Run the actual restoration process:
 

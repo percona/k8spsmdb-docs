@@ -105,3 +105,47 @@ Restart can be done manually with the `kubectl rollout restart sts
 !!! warning
 
     You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make configuration changes and recovery more complicated. Also, they are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
+
+## Exposing replica set with split-horizon DNS
+
+[Split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) provides
+each replica set Pod with a set of DNS URIs for external usage. This allows to
+communicate with replica set Pods both from inside the Kubernetes cluster and
+from outside of Kubernetes.
+
+Split-horizon can be configured via the `replset.horizons` subsection in the
+Custom Resource options. Set it in the `deploy/cr.yaml` configuration file as
+follows:
+
+``` yaml
+    ...
+    replsets:
+      - name: rs0
+        expose:
+          enabled: true
+          exposeType: LoadBalancer
+        horizons:
+          cluster1-rs0-0:
+            external: rs0-0.mycluster.xyz
+            external-2: rs0-0.mycluster2.xyz
+          cluster1-rs0-1:
+            external: rs0-1.mycluster.xyz
+            external-2: rs0-1.mycluster2.xyz
+          cluster1-rs0-2:
+            external: rs0-2.mycluster.xyz
+            external-2: rs0-2.mycluster2.xyz
+```
+
+URIs for external usage are specified as key-value pairs, where the key is an
+arbitrary name and the value is the actual URI.
+
+Split horizon has following limitations:
+
+* connecting with horizon domains is only supported if client connects using TLS
+    certificates
+* duplicating domain names in horizons is not allowed by MongoDB
+* using IP addresses in horizons is not allowed by MongoDB
+* horizons should be set for *all Pods of a replica set* or not set at all
+* horizons should be configured on an existing cluster (creating a new
+    cluster with pre-configured horizons is currently not supported)
+

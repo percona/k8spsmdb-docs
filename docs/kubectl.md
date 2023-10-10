@@ -91,7 +91,7 @@ Here's a sequence of steps to follow:
 
 You have successfully installed and deployed the Operator with default parameters. 
 
-The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with enabled sharding.
+The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
 You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md#operator-custom-resource-options).
 

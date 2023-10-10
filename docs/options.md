@@ -5,13 +5,17 @@ configuring the database with a configuration file, as many other database
 management systems do. You can pass options to MongoDB instances in the cluster
 in one of the following ways:
 
-
 * edit the `deploy/cr.yaml` file,
 * use a ConfigMap,
 * use a Secret object.
 
 You can pass configuration settings separately for **mongod** Pods,
 **mongos** Pods, and **Config Server** Pods.
+
+Often there's no need to add custom options, as the Operator takes care of
+providing MongoDB with reasonable defaults. Also, attempt to change some
+MongoDB options will be ignored: you can't change TLS/SSL options, as it would
+break the behavior of the Operator.
 
 ## Edit the `deploy/cr.yaml` file
 

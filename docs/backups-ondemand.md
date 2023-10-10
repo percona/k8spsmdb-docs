@@ -49,3 +49,37 @@
     $ kubectl apply -f deploy/backup/backup.yaml
     ```
 
+!!! note
+
+    If you plan to [restore backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md), make sure you will be able to create there a Secrets object with the same user passwords as in the original cluster. More details about secrets can be found in [System Users](users.md#users-system-users). The name of the current Secrets object you will need to recreate can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).
+
+4. You can track the backup process with the `PerconaServerMongoDBBackup` [Custom Resource](debug.md) as follows:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl get psmdb-backup
+    ```
+    
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        NAME      CLUSTER           STORAGE      DESTINATION            STATUS    COMPLETED   AGE
+        backup1   my-cluster-name   s3-us-west   2022-09-08T03:22:19Z   running               49s
+        ```
+
+    It should show the status as `READY` when the backup process is over.
+    
+    If you have any issues with the backup, you can [view logs](debug-logs.md) from the backup-agent container of the appropriate Pod as follows:
+    
+    ``` {.bash data-prompt="$" }
+    $ kubectl logs pod/my-cluster-name-rs0 -c backup-agent
+    ```
+    
+    Alternatively, [getting ssh access](debug-shell.md) to the same container
+    will allow you to [carry on Percona Backup for MongoDB diagnostics](https://docs.percona.com/percona-backup-mongodb/manage/troubleshooting.html). 
+    
+    !!! note
+    
+        In both cases you will need the name of the Pod that made the backup.
+        You can find the `pbmPodName` field in the output of the
+        `kubectl get psmdb-backup <backup_name> -o yaml` command.
+    

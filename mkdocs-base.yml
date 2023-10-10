@@ -47,7 +47,8 @@ extra_javascript:
 markdown_extensions:
   attr_list: {}
   toc:
-    permalink: True
+    permalink: true
+  md_in_html: {}
   admonition: {}
   def_list: {}
   meta: {}
@@ -57,11 +58,16 @@ markdown_extensions:
   pymdownx.smartsymbols: {}
   pymdownx.tilde: {}
   pymdownx.superfences: {}
-  pymdownx.snippets: {}
   pymdownx.tabbed:
     alternate_style: true
+  pymdownx.tasklist:
+    custom_checkbox: true
+  pymdownx.snippets:
+      base_path: ["snippets"]
+      auto_append:
+        - services-banner.md
   pymdownx.highlight:
-    linenums: false
+    use_pygments: true
   pymdownx.emoji:
     emoji_index: !!python/name:materialx.emoji.twemoji
     emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -91,7 +97,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.14.0 (March 13, 2023)
+    cover_subtitle: 1.15.0 (October 09, 2023)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates
@@ -117,15 +123,15 @@ extra: # Used in main.html template and can't be externalized
       make our documentation better. Read more about <a class="reference external" href="https://www.percona.com/20180524-cookie-policy" target="_blank">Percona Cookie Policy</a>.
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  release: '1.14.0'
+  release: '1.15.0'
   apiversion: '1'  
-  mongodb60recommended: '6.0.4-3'
-  mongodb50recommended: '5.0.14-12'
-  mongodb44recommended: '4.4.18-18'
-  pmm2recommended: '2.35.0'
+  mongodb60recommended: '6.0.9-7'
+  mongodb50recommended: '5.0.20-17'
+  mongodb44recommended: '4.4.24-23'
+  pmm2recommended: '2.39.0'
   gkerecommended: '1.25'
-  certmanagerrecommended: '1.8.0'
-  pbmrecommended: '2.0.4'
+  certmanagerrecommended: '1.12.4'
+  pbmrecommended: '2.3.0'
   version:
     provider: mike
 
@@ -139,13 +145,14 @@ nav:
           
     - Quickstart guides:
           - Overview: quickstart.md
-          - Quck install:
+          - Quick install:
             - "Install with Helm": helm.md
             - "Install with kubectl": kubectl.md
           - Connect to Percona Server for MongoDB: connect.md
           - Insert data: data-insert.md
           - Make a backup: backup-tutorial.md
           - Monitor the database with PMM: monitoring-tutorial.md
+          - what-next.md
           
     - Installation:
           - "System requirements": System-Requirements.md
@@ -176,6 +183,7 @@ nav:
               - "Making scheduled backups": backups-scheduled.md
               - "Making on-demand backup": backups-ondemand.md
               - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Enable server-side encryption": backups-encryption.md
               - "Restore from a previously saved backup": backups-restore.md
               - "Delete the unneeded backup": backups-delete.md
           - "Upgrade MongoDB and the Operator": update.md
@@ -184,7 +192,6 @@ nav:
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
-          - "Debug and troubleshoot": debug.md
           
     - Troubleshooting:
           - "Initial troubleshooting": debug.md
@@ -202,10 +209,12 @@ nav:
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Upgrade Percona Server for MongoDB manually": update_manually.md
           - "Monitor Kubernetes": monitor-kubernetes.md
+          - "Delete the Operator": delete.md
 
     - Reference:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md
+          - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
           - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
@@ -213,6 +222,7 @@ nav:
           - "Trademark policy": trademark-policy.md
     - Release notes:
           - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
           - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
