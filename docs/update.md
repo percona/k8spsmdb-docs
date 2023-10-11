@@ -40,7 +40,22 @@ than one, make several incremental updates sequentially.
     If you don't want such reconfiguration to happen, set
     `clusterServiceDNSMode` Custom Resource option to `External` before the
     upgrade.
- 
+
+!!! warning
+
+    Starting from the Operator version 1.15.0 the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption disabled via the [custom configuration](options.md) before upgrade:
+
+    ```yaml
+    spec:
+      ...
+      replsets:
+        - name: rs0
+          ...
+          configuration: |
+            security:
+              enableEncryption: false
+            ...
+    ```
 
 ### Manual upgrade
 
