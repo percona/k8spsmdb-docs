@@ -88,17 +88,17 @@ Backups stored on S3 compatible storage [can now be encrypted](../backups-encryp
 
 * {{ k8spsmdbjira(883) }} The `spec.mongod` section deprecated in the Operator version 1.12.0 is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption disabled with [custom configuration](../options.md) before removing `mongod` section (and before upgrade):
 
-```yaml
-spec:
-  ...
-  replsets:
-    - name: rs0
+    ```yaml
+    spec:
       ...
-      configuration: |
-        security:
-          enableEncryption: false
-        ...
-```
+      replsets:
+        - name: rs0
+          ...
+          configuration: |
+            security:
+              enableEncryption: false
+            ...
+    ```
 
 ## Supported Platforms
 
