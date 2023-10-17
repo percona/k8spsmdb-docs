@@ -5,7 +5,7 @@ specific date and time. Technically, this feature involves saving operations log
 updates [to the cloud storage](backups-storage.md).
 
 Starting from the Operator version 1.15.0, point-in-time recovery functionality
-can be used as with logical backups, so with physical ones. Previous versions
+can be used with both logical and physical backups. Previous versions
 supported point-in-time recovery only with logical backups.
 
 To be used, it requires setting the [backup.pitr.enabled](operator.md#backup-pitr-enabled)
