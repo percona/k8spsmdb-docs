@@ -142,7 +142,7 @@ arbitrary name and the value is the actual URI.
 Split horizon has following limitations:
 
 * connecting with horizon domains is only supported if client connects using TLS
-    certificates
+    certificates, and these TLS certificates [need to be generated manually](TLS.md#generate-certificates-manually)
 * duplicating domain names in horizons is not allowed by MongoDB
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
