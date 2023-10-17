@@ -1250,7 +1250,7 @@ Percona Server for MongoDB backups.
 | **Key**         | {{ optionlink('backup.pitr.oplogOnly') }} |
 | **Value**       | boolean |
 | **Example**     | false |
-| **Description** | If true, Percona Backup for MongoDB saves oplog chunks even without the base backup snapshot (oplog chunks without a base backup can't be used to restore a backup by the Operator, [but can still be useful for manual restore operations](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)) |
+| **Description** | If true, Percona Backup for MongoDB saves oplog chunks even without the base logical backup snapshot (oplog chunks without a base backup can't be used with logical backups to restore a backup by the Operator, [but can still be useful for manual restore operations](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)) |
 |                 | |
 | **Key**         | {{ optionlink('backup.pitr.oplogSpanMin') }} |
 | **Value**       | int |
