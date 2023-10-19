@@ -15,7 +15,7 @@ here's how to do it:
 
     The Secrets object we target is named as
     `<cluster_name>-secrets`. The `<cluster_name>` value is
-    the [name of your Percona Distribution for PostgreSQL Cluster](operator.md#metadata-name). The default variant is:
+    the [name of your Percona Distribution for MongoDB](operator.md#metadata-name). The default variant is:
 
     === "via kubectl" 
 

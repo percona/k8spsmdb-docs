@@ -1,6 +1,6 @@
 # Delete Percona Operator for MongoDB
 
-To delete Percona Operator for PostgreSQL from Kubernetes environment means to delete the [CustomRecourceDefinitions (CRDs))](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to the Operator.
+To delete Percona Operator for MongoDB from Kubernetes environment means to delete the [CustomRecourceDefinitions (CRDs))](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to the Operator.
 
 Here's the sequence of steps to do it:
 
@@ -24,7 +24,6 @@ Here's the sequence of steps to do it:
         perconaservermongodbbackups.psmdb.percona.com                    2023-09-07T14:28:59Z
         perconaservermongodbrestores.psmdb.percona.com                   2023-09-07T14:29:02Z
         perconaservermongodbs.psmdb.percona.com                   2023-09-07T14:29:03Z
-        postgresclusters.postgres-operator.crunchydata.com   2023-09-07T14:29:06Z
         serviceattachments.networking.gke.io                 2023-09-07T14:15:44Z
         servicenetworkendpointgroups.networking.gke.io       2023-09-07T14:15:43Z
         storagestates.migration.k8s.io                       2023-09-07T14:15:53Z

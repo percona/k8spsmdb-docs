@@ -2,7 +2,7 @@
 
 A Kubernetes Operator is a special type of controller introduced to simplify complex deployments. The Operator extends the Kubernetes API with custom resources.
 
-The [Percona Operator for PostgreSQL](compare.md) is based on best practices for configuration and setup of a Percona Distribution for PostgreSQL cluster in a Kubernetes-based environment on-premises or in the cloud.
+The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Distribution for MongoDB](https://www.percona.com/mongodb/software/mongodb-distribution) in a Kubernetes-based environment on-premises or in the cloud.
 
 We recommend installing the Operator with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm](https://github.com/helm/helm) package manager.
 
@@ -10,7 +10,7 @@ We recommend installing the Operator with the [kubectl](https://kubernetes.io/do
 
 ## Prerequisites
 
-To install Percona Distribution for PostgreSQL, you need the following:
+To install Percona Distribution for MongoDB, you need the following:
 
 1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. Install not already installed, [follow its official installation instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 

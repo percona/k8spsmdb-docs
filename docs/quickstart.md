@@ -6,7 +6,7 @@ Ready to get started with the Percona Operator for MongoDB? In this section, you
 -	Connect to Percona Server for MongoDB 
 -	Insert sample data to the database
 -	Set up and make a logical backup
--	Monitor the database health with PMM
+-	Monitor the database health with Percona Monitoring and Management (PMM)
 
 ## Next steps
  
