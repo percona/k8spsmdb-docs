@@ -1,10 +1,18 @@
 # Delete Percona Operator for MongoDB
 
-To delete Percona Operator for MongoDB from Kubernetes environment means to delete the [CustomRecourceDefinitions (CRDs))](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to the Operator.
+To delete Percona Operator for MongoDB from Kubernetes environment means to delete the database Distribution cluster, then delete the [CustomRecourceDefinitions (CRDs))](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to the Operator. Afterwards you can clean up the resources such as [PersistentVolumeClaims (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) and Secrets.
 
 Here's the sequence of steps to do it:
 
-1. List the CRDs:
+1. Delete the Distribution cluster:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl delete psmdb <cluster_name> -n <namespace>
+    ```
+
+    It may take a while to stop and delete the cluster. 
+
+2. List the CRDs:
 
     ```{.bash data-prompt="$"}
     $ kubectl get crd 
@@ -78,3 +86,34 @@ Here's the sequence of steps to do it:
         ```{.text .no-copy}
         No resources found in <namespace> namespace.
         ```
+
+6. Clean up the resources. Get the list of PVCs:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl get pvc -n <namespace>
+    ```
+
+    ??? example "Sample output"
+
+    ```{.text .no-copy}
+    mongod-data-my-cluster-name-cfg-0   Bound    pvc-0bb5febf-ca01-4a02-89f2-655916cfb52e   3Gi        RWO            standard       38m
+    mongod-data-my-cluster-name-rs0-0   Bound    pvc-a094041a-969e-42a6-9327-a136778d1271   3Gi        RWO            standard       38m
+    ```
+
+7. Delete PVCs:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-rs0-0 -n <namespace>
+    ```
+
+8. Get Secrets:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl get secrets -n <namespace>
+    ```
+
+9. Delete the Secret:
+    
+    ```{.bash data-prompt="$"}
+    $ kubectl delete secret <secret_name> -n <namespace>
+    ```
