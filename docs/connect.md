@@ -4,7 +4,7 @@ In this tutorial, you will connect to the Percona Server for MongoDB cluster you
 
 To connect to Percona Server for MongoDB you need to construct the MongoDB connection URI string. It includes the credentials of the admin user, which are stored in the Secrets object. 
 
-here's how to do it:
+Here's how to do it:
 {.power-number}
 
 1. List the Secrets objects
