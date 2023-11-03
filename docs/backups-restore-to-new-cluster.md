@@ -114,12 +114,12 @@ restoration can be done in the following way.
               pitr:
                 type: date
                 date: YYYY-MM-DD hh:mm:ss
-            backupSource:
-              destination: s3://S3-BUCKET-NAME/BACKUP-NAME
-              s3:
-                credentialsSecret: my-cluster-name-backup-s3
-                region: us-west-2
-                endpointUrl: https://URL-OF-THE-S3-COMPATIBLE-STORAGE
+              backupSource:
+                destination: s3://S3-BUCKET-NAME/BACKUP-NAME
+                s3:
+                  credentialsSecret: my-cluster-name-backup-s3
+                  region: us-west-2
+                  endpointUrl: https://URL-OF-THE-S3-COMPATIBLE-STORAGE
             ```
 
         * you can also use a `storageName` key to specify the exact name of the
