@@ -138,7 +138,11 @@ nav:
           - "Backup and restore": backups.md
           - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
-          - "Multi-cluster and multi-region deployment": replication.md
+          - "Multi-cluster and multi-region deployment":
+              - "About Multi-cluster": replication.md
+              - "Configuring Main sie for replication": replication-main.md
+              - "Configuring Replica sie for replication": replication-replica.md
+              - "Enabling multi-cluster Services": replication-mcs.md
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
