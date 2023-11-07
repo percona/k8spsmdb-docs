@@ -16,6 +16,7 @@ the following steps:
     ``` {.bash data-prompt="$" }
     $ helm install \
       --name minio-service \
+      --version 8.0.5 \
       --set accessKey=some-access-key \
       --set secretKey=some-secret-key \
       --set service.type=ClusterIP \

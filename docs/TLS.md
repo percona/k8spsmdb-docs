@@ -94,6 +94,13 @@ be added to the `spec.secrets.ssl` key of the `deploy/cr.yaml` file. A
 certificate generated for internal communications must be added to the
 `spec.secrets.sslInternal` key of the `deploy/cr.yaml` file.
 
+
+!!! note
+
+    If you only create the external certificate, then the Operator will not
+    generate the internal one, but instead use certificate you have provided for
+    both external and internal communications.
+
 Supposing that your cluster name is `my-cluster-name`, the instructions to
 generate certificates manually are as follows:
 
@@ -179,7 +186,29 @@ EOF
 $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
 ```
 
-## Check your certificates for expiration
+## Update certificates
+
+If a cert-manager is used, it should take care of
+updating the certificates. If you generate certificates manually,
+you should take care of updating them in proper time.
+
+TLS certificates issued by cert-manager are short-term ones, valid for 3 months.
+They are reissued automatically on schedule and without downtime.
+
+![image](assets/images/certificates.svg)
+
+Versions of the Operator prior 1.9.0 have used 3 month root certificate, which
+caused issues with the automatic TLS certificates update. If that’s your case,
+you can make the Operator update along with the [official instruction](update.md#operator-update).
+
+!!! note
+
+    If you use the cert-manager version earlier than 1.9.0, and you would
+    like to avoid downtime while updating the certificates after the Operator
+    update to 1.9.0 or newer version,
+    force the certificates regeneration by a cert-manager.
+
+### Check your certificates for expiration
 
 1. First, check the necessary secrets names (`my-cluster-name-ssl` and
     `my-cluster-name-ssl-internal` by default):
@@ -205,9 +234,19 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
     The response should be as follows:
 
     ``` {.text .no-copy}
-    NAME                       READY   AGE
-    my-cluster-name-psmdb-ca   True    61s
+    NAME                              READY   AGE
+    my-cluster-name-psmdb-issuer      True    61m
+    my-cluster-name-psmdb-ca-issuer   True    61m
     ```
+    
+    !!! note
+
+        The presence of two issuers has the following meaning. The
+        `my-cluster-name-psmdb-ca-issuer` issuer is used to create a self signed
+        CA certificate (`my-cluster-name-ca-cert`), and then the
+        `my-cluster-name-psmdb-issuer` issuer is used to create SSL certificates
+        (`my-cluster-name-ssl` and `my-cluster-name-ssl-internal`) signed by
+        the `my-cluster-name-ca-cert` CA certificate.
 
 3. Now use the following command to find out the certificates validity dates,
     substituting Secrets names if necessary:
@@ -226,6 +265,112 @@ $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.p
     notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
     ```
 
+### Update certificates without downtime
+
+If you don’t use cert-manager and have *created certificates manually*,
+you can follow the next steps to perform a no-downtime update of these
+certificates *if they are still valid*.
+
+!!! note
+
+    For already expired certificates, follow the alternative way.
+
+Having non-expired certificates, you can roll out new certificates (both CA and TLS) with the Operator
+as follows.
+
+1. Generate a new CA certificate (`ca.pem`). Optionally you can also generate
+    a new TLS certificate and a key for it, but those can be generated later on
+    step 6.
+
+2. Get the current CA (`ca.pem.old`) and TLS (`tls.pem.old`) certificates
+    and the TLS certificate key (`tls.key.old`):
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.pem.old
+    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode > tls.pem.old
+    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.key}' | base64 --decode > tls.key.old
+    ```
+
+3. Combine new and current `ca.pem` into a `ca.pem.combined` file:
+
+    ``` {.bash data-prompt="$" }
+    $ cat ca.pem ca.pem.old >> ca.pem.combined
+    ```
+
+4. Create a new Secrets object with *old* TLS certificate (`tls.pem.old`)
+    and key (`tls.key.old`), but a *new combined* `ca.pem`
+    (`ca.pem.combined`):
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl delete secret/my-cluster-name-ssl-internal
+    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=tls.pem.old --from-file=tls.key=tls.key.old --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
+    ```
+
+5. The cluster will go through a rolling reconciliation, but it will do it
+    without problems, as every node has old TLS certificate/key, and both new
+    and old CA certificates.
+
+6. If new TLS certificate and key weren’t generated on step 1,
+    do that now.
+
+7. Create a new Secrets object for the second time: use new TLS certificate
+    (`server.pem` in the example) and its key (`server-key.pem`), and again
+    the combined CA certificate (`ca.pem.combined`):
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl delete secret/my-cluster-name-ssl-internal
+    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
+    ```
+
+8. The cluster will go through a rolling reconciliation, but it will do it
+    without problems, as every node already has a new CA certificate (as a part
+    of the combined CA certificate), and can successfully allow joiners with new
+    TLS certificate to join. Joiner node also has a combined CA certificate, so
+    it can authenticate against older TLS certificate.
+
+9. Create a final Secrets object: use new TLS certificate (`server.pmm`) and
+    its key (`server-key.pem`), and just the new CA certificate (`ca.pem`):
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl delete secret/my-cluster-name-ssl-internal
+    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    ```
+
+10. The cluster will go through a rolling reconciliation, but it will do it
+    without problems: the old CA certificate is removed, and every node is
+    already using new TLS certificate and no nodes rely on the old CA
+    certificate any more.
+
+### Update certificates with downtime
+
+If your certificates have been already expired (or if you continue to use the
+Operator version prior to 1.9.0), you should move through the
+*pause - update Secrets - unpause* route as follows.
+
+1. Pause the cluster [in a standard way](pause.md), and make
+    sure it has reached its paused state.
+
+2. If cert-manager is used, delete issuer
+    and TLS certificates:
+
+    ``` {.bash data-prompt="$" }
+    $ {
+      kubectl delete issuer/my-cluster-name-psmdb-ca-issuer issuer/my-cluster-name-psmdb-issuer 
+      kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal
+      }
+    ```
+
+3. Delete Secrets to force the SSL reconciliation:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl delete secret/my-cluster-name-ssl secret/my-cluster-name-ssl-internal
+    ```
+
+4. Check certificates to make sure reconciliation have succeeded.
+
+5. Unpause the cluster [in a standard way](pause.md), and make
+    sure it has reached its running state.
+
 ## Run Percona Server for MongoDB without TLS
 
 Omitting TLS is also possible, but we recommend that you run your cluster with
@@ -233,4 +378,14 @@ the TLS protocol enabled.
 
 To disable TLS protocol (e.g. for demonstration purposes) set the
 `spec.allowUnsafeConfigurations` key to `true` in the `deploy/cr.yaml`
-file and and make sure that there are no certificate secrets available.
+file and and make sure that there are no certificate secrets available. This is
+the only condition under which the cluster will work without TLS.
+
+!!! warning
+
+    Normally, the Operator prevents users from configuring a cluster with unsafe
+    parameters (starting it with less than 3 replica set instances or without
+    TLS, etc.), automatically changing such unsafe parameters to safe defaults.
+    If you switch the cluster to the *unsafe configurations permissive mode*,
+    you will not be able to switch it back by setting
+    `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored.

@@ -59,10 +59,10 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context (`<cluster name>`) was modified.
 
-    Deploy the Operator using the following command:
+    Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
     ??? example "Expected output"

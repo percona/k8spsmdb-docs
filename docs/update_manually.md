@@ -25,8 +25,8 @@ Percona Server for MongoDB can be upgraded manually using one of the following
     Operator automatically in the order, which assures the primary instance to
     be updated last, preventing possible connection issues until the whole
     cluster is updated to the new settings. Kubernetes-controlled Rolling Update
-    can't guarantee that Pods update order is optimal from the Percona XtraDB
-    Cluster point of view.
+    can't guarantee that Pods update order is optimal from the Percona Server for
+    MongoDB point of view.
 
 ## Rolling Update strategy and semi-automatic updates
 
@@ -110,10 +110,10 @@ Manual update of Percona Server for MongoDB can be done as follows:
        }}'
     ```
 
-   !!! warning
+    !!! warning
 
         The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
-    
+
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {

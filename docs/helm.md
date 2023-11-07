@@ -24,7 +24,7 @@ Install Helm following its [official installation instructions](https://docs.hel
 2. Install Percona Operator for MongoDB:
 
     ``` {.bash data-prompt="$" }
-    $ helm install my-op percona/psmdb-operator --version {{ release }}
+    $ helm install my-op percona/psmdb-operator
     ```
 
     The `my-op` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
@@ -34,13 +34,19 @@ Install Helm following its [official installation instructions](https://docs.hel
     !!! note
 
         If nothing explicitly specified, `helm install` command will work
-        with `default` namespace. To use different namespace, provide it with
-        the following additional parameter: `--namespace my-namespace`.
+        with the `default` namespace and the latest version of the Helm
+        chart. 
+        
+        * To use different namespace, provide its name with
+            the following additional parameter: `--namespace my-namespace`.
+        
+        * To use different Helm chart version, provide it as follows:
+            `--version {{ release }}`
 
 3. Install Percona Server for MongoDB:
 
     ``` {.bash data-prompt="$" }
-    $ helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace
+    $ helm install my-db percona/psmdb-db --namespace my-namespace
     ```
 
     The `my-db` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
@@ -71,3 +77,30 @@ $ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb 
   --set "replsets[0].volumeSpec.pvc.resources.requests.storage=20Gi" \
   --set backup.enabled=false --set sharding.enabled=false
 ```
+
+Also it can be more convenient in some cases to specify customized options
+in a YAML file instead of using separate command line parameters. The resulting
+file similar to the above example looks as follows:
+
+``` yaml title="values.yaml"
+allowUnsafeConfigurations: true
+sharding:
+  enabled: false
+replsets:
+- name: rs0
+  size: 3
+  volumeSpec:
+    pvc:
+      resources:
+        requests:
+          storage: 2Gi
+backup:
+  enabled: false
+```
+
+Apply the resulting YAML file as follows:
+
+``` {.bash data-prompt="$" }
+$ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+```
+

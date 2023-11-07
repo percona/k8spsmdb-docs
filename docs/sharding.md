@@ -39,6 +39,20 @@ When sharding is turned on, the Operator runs replica sets with config
 servers and mongos instances. Their number is controlled by
 `configsvrReplSet.size` and `mongos.size` keys, respectively.
 
+Config servers have `cfg` replica set name by default, which is used by the
+Operator in StatefulSet and Service names. If this name needs to be
+customized (for example when migrating MongoDB cluster from barebone
+installation to Kubernetes), you can override the default `cfg` variant using
+`replsets.configuration` Custom Resource option in `deploy/cr.yaml`  as follows:
+
+```
+...
+configuration: |
+  replication:
+    replSetName: customCfgRS
+    ...
+```
+
 !!! note
 
     Config servers for now can properly work only with WiredTiger engine,
@@ -49,6 +63,11 @@ By default [replsets section](operator.md#operator-replsets-section) of the
 You can add more replica sets with different names to the `replsets` section
 in a similar way. Please take into account that having more than one replica set
 is possible only with the sharding turned on.
+
+!!! note
+
+    The Operator will be able to remove a shard only when it contains no
+    application (non-system) collections.
 
 ## Checking connectivity to sharded and non-sharded cluster
 

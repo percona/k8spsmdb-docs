@@ -1,4 +1,4 @@
-# Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode
+# Install Percona Operator for MongoDB in multi-namespace (cluster-wide) mode
 
 By default, Percona Operator for MongoDB functions in a specific Kubernetes
 namespace. You can create one during installation (like it is shown in the
@@ -139,7 +139,7 @@ to the cluster.
     `percona-client`:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb50recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
     ```
 
     Executing it may require some time to deploy the correspondent Pod.

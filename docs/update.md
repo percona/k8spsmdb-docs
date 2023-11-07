@@ -29,6 +29,34 @@ Operator is supported (for example, update from 1.5.0 to 1.6.0). To update
 to a newer version, which differs from the current version by more
 than one, make several incremental updates sequentially.
 
+!!! note
+
+    Starting from version 1.14.0, the Operator configures replica set members
+    using local fully-qualified domain names (FQDN). Before this version, it
+    used exposed IP addresses in the replica set configuration in case of the
+    exposed replica set.
+    If you [have your replica set exposed](expose.md) and upgrade to 1.14.0, the
+    replica set configuration [will change to use FQDN](expose.md#controlling-hostnames-in-replset-configuration).
+    If you don't want such reconfiguration to happen, set
+    `clusterServiceDNSMode` Custom Resource option to `External` before the
+    upgrade.
+
+!!! warning
+
+    Starting from the Operator version 1.15.0 the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption disabled via the [custom configuration](options.md) before upgrade:
+
+    ```yaml
+    spec:
+      ...
+      replsets:
+        - name: rs0
+          ...
+          configuration: |
+            security:
+              enableEncryption: false
+            ...
+    ```
+
 ### Manual upgrade
 
 The upgrade includes the following steps.
@@ -38,7 +66,7 @@ The upgrade includes the following steps.
     the same for the Role-based access control:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
@@ -95,7 +123,7 @@ Operator with the `helm upgrade` command.
     the same for the Role-based access control:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
@@ -197,7 +225,7 @@ version numbers and valid image paths.
 If the current version should be upgraded, the Operator updates the Custom
 Resource to reflect the new image paths and carries on sequential Pods deletion,
 allowing StatefulSet to redeploy the cluster Pods with the new image.
-You can configure Percona XtraDB Cluster upgrade via the `deploy/cr.yaml`
+You can configure Percona Server for MongoDB upgrade via the `deploy/cr.yaml`
 configuration file as follows:
 
 1. Make sure that `spec.updateStrategy` option is set to `SmartUpdate`.
@@ -224,26 +252,26 @@ configuration file as follows:
 
     * `Recommended` - automatic upgrade will choose the most recent version
         of software flagged as Recommended (for clusters created from scratch,
-        the Percona Server for MongoDB 5.0 version will be selected instead of the
-        Percona Server for MongoDB 4.4 or 4.2 version regardless of the image
-        path; for already existing clusters, the 5.0 vs. 4.4 or 4.2 branch
+        the Percona Server for MongoDB 6.0 version will be selected instead of the
+        Percona Server for MongoDB 5.0 or 4.4 version regardless of the image
+        path; for already existing clusters, the 6.0 vs. 5.0 or 4.4 branch
         choice will be preserved),
-    * `5.0-recommended`, `4.4-recommended`, `4.2-recommended` -
+    * `6.0-recommended`, `5.0-recommended`, `4.4-recommended` -
         same as above, but preserves specific major MongoDB
-        version for newly provisioned clusters (ex. 5.0 will not be automatically
-        used instead of 4.4),
+        version for newly provisioned clusters (ex. 6.0 will not be automatically
+        used instead of 5.0),
     * `Latest` - automatic upgrade will choose the most recent version of
         the software available (for clusters created from scratch,
-        the Percona Server for MongoDB 5.0 version will be selected instead of the
-        Percona Server for MongoDB 4.4 or 4.2 version regardless of the image
-        path; for already existing clusters, the 5.0 vs. 4.4 or 4.2 branch
+        the Percona Server for MongoDB 6.0 version will be selected instead of the
+        Percona Server for MongoDB 5.0 or 4.4 version regardless of the image
+        path; for already existing clusters, the 6.0 vs. 5.0 or 4.4 branch
         choice will be preserved),
-    * `5.0-latest`, `4.4-latest`, `4.2-latest` - same as
+    * `6.0-latest`, `5.0-latest`, `4.4-latest` - same as
         above, but preserves specific major MongoDB version for newly provisioned
-        clusters (ex. 5.0 will not be automatically used instead of 4.4),
+        clusters (ex. 6.0 will not be automatically used instead of 5.0),
     * *version number* - specify the desired version explicitly
-        (version numbers are specified as {{ mongodb44recommended }},
-        {{ mongodb42recommended }}, etc.). Actual versions can be found
+        (version numbers are specified as {{ mongodb60recommended }},
+        {{ mongodb50recommended }}, etc.). Actual versions can be found
         [in the list of certified images](images.md#custom-registry-images).
 
 4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
@@ -301,6 +329,60 @@ configuration file as follows:
         Smart Update functionality will continue working for changes triggered
         by other events, such as rotating a password, or
         changing resource values.
+
+### Major version automated upgrades
+
+Normally automatic upgrade takes place within minor versions (for example,
+from `4.4.16-16` to `4.4.18-18`) of MongoDB. Major versions upgrade (for
+example moving from `5.0-recommended` to `6.0-recommended`) is more
+complicated task which might potentially affect how data is stored and how
+applications interacts with the database (in case of some API changes).
+
+Such upgrade is supported by the Operator within one major version at a time:
+for example, to change Percona Server for MongoDB major version from 4.4 to 6.0,
+you should first upgrade it to 5.0, and later make a separate upgrade from 5.0
+to 6.0. The same is true for major version downgrades.
+
+!!! note
+
+    It is recommended to take a backup before upgrade, as well as to
+    perform upgrade on staging environment.
+
+Major version upgrade can be initiated using the [upgradeOptions.apply](operator.md#upgradeoptions-apply)
+key in the `deploy/cr.yaml` configuration file:
+
+
+```yaml
+spec:
+  upgradeOptions:
+    apply: 5.0-recommended
+```
+
+!!! note
+
+    When making downgrades (e.g. changing version from 5.0 to 4.4), make
+    sure to remove incompatible features that are persisted and/or update
+    incompatible configuration settings. Compatibility issues between major
+    MongoDB versions can be found in
+    [upstream documentation](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
+
+By default the Operator doesn’t set
+[FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
+to match the new version, thus making sure that backwards-incompatible features
+are not automatically enabled with the major version upgrade (which is
+recommended and safe behavior). You can turn this backward compatibility off at
+any moment (after the upgrade or even before it) by setting the
+[upgradeOptions.setFCV](operator.md#upgradeoptions-setfcv) flag in the
+`deploy/cr.yaml` configuration file to `true`.
+
+!!! note
+
+    With setFeatureCompatibilityVersion set major version rollback is not
+    currently supported by the Operator. Therefore it is recommended to stay
+    without enabling this flag for some time after the major upgrade to ensure
+    the likelihood of downgrade is minimal. Setting `setFCV` flag to `true`
+    simultaneously with the `apply` flag should be done only if the whole
+    procedure is tested on staging and you are 100% sure about it.
 
 ## More on upgrade strategies
 

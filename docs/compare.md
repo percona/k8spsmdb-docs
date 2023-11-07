@@ -17,9 +17,9 @@ Here is the review of generic features, such as supported MongoDB versions, open
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Community Edtion Operator |
 |:------------------|:-----------------------------|:-------------------|:-------------------|:----------------------------------|
 | Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                         |
-| MongoDB versions  | PSMDB 4.2, 4.4, 5.0          | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0|
+| MongoDB versions  | PSMDB 4.4, 5.0, 6.0          | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0|
 | Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                      |
-| Cluster-wide mode | No                           | Not an operator    | Enterprise only    | Yes                               |
+| Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                               |
 | Network exposure  | Yes                          | Yes                | No, only through manual config | Enterprise only       |
 
 ## Maintenance
@@ -55,6 +55,8 @@ Here are the backup and restore capabilities of each solution.
 | Scheduled backups | Yes                          | No                 | Enterprise only    | Enterprise only                   |
 | Incremental backups | No                         | No                 | Enterprise only    | No                                |
 | Point-in-time recovery | Yes                     | No                 | No                 | Enterprise only                   |
+| Logical backups | Yes                            | No                 | No                 | Enterprise only                   |
+| Physical backups | Yes                           | No                 | No                 | Enterprise only                   |
 
 ## Monitoring
 

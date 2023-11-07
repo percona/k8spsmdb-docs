@@ -29,13 +29,15 @@ Kubernetes-based environment:
 1. The PMM client installation is initiated by updating the `pmm` section in the
     [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
     file.
+
     * set `pmm.enabled=true`
-    * set the `pmm.serverHost` key to your PMM Server hostname.
+    * set the `pmm.serverHost` key to your PMM Server hostname or IP address
+        (it should be resolvable and reachable from within your cluster)
     * authorize PMM Client within PMM Server in one of two ways:
     
         === "with token-based authorization (recommended)"
             <a name="operator-monitoring-client-token"></a>
-            [Acquire the API Key from your PMM Server](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication) and set ``PMM_SERVER_API_KEY`` in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file to this obtained API Key value.
+            [Acquire the API Key from your PMM Server](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication) and set ``PMM_SERVER_API_KEY`` in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file to this obtained API Key value. Keep in mind that you need an API Key with the "Admin" role. The API Key won't be rotated automatically.
 
         === "with password-based authorization"
             check that the `PMM_SERVER_USER` key in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file contains your PMM Server user name (`admin` by default), and make sure the `PMM_SERVER_PASSWORD` key in the [deploy/secrets.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/secrets.yaml) secrets file contains the password specified for the PMM Server during its installation.

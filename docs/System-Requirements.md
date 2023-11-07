@@ -1,26 +1,25 @@
 # System Requirements
 
-The Operator was developed and tested with Percona Server for MongoDB 4.2, 4.4,
-and 5.0. Other options may also work but have not been tested.
-
-!!! note
-
-    The [MMAPv1 storage engine](https://docs.mongodb.com/manual/core/storage-engines/)
-    is no longer supported for all MongoDB versions starting from the Operator
-    version 1.6. MMAPv1 was already deprecated by MongoDB for a long time.
-    WiredTiger is the default storage engine since MongoDB 3.2, and MMAPv1 was
-    completely removed in MongoDB 4.2.
+The Operator was developed and tested with Percona Server for MongoDB
+{{ mongodb44recommended }}, {{ mongodb50recommended }}, and
+{{ mongodb60recommended }}. Other options may also work but have not been
+tested. The Operator {{ release }} also uses Percona Backup for MongoDB
+{{ pbmrecommended }}.
 
 ## Officially supported platforms
 
 The following platforms were tested and are officially supported by the Operator
 {{ release }}:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - {{ gkerecommended }}
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.21 - 1.23
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
-* [Minikube](https://minikube.sigs.k8s.io/docs/) 1.26
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.24-1.28
+
+* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.24-1.28
+
+* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
+
+* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
+
+* [Minikube](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
 
 Other Kubernetes platforms may also work but have not been tested.
 

@@ -7,9 +7,9 @@ The metadata part of this file contains the following keys:
 
 
 * `name` (`my-cluster-name` by default) sets the name of your Percona Server
-for MongoDB Cluster; it should include only [URL-compatible characters](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character;
-
-* `finalizers.delete-psmdb-pvc`, if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default).
+for MongoDB Cluster; it should include only [URL-compatible characters](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
+* `finalizers.delete-psmdb-pods-in-order` if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
+* `finalizers.delete-psmdb-pvc` if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
 
 The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains the following sections:
 
@@ -19,14 +19,18 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | pause           | boolean            | `false`      | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back. |
 | unmanaged       | boolean            | `false`      | Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates |
 | crVersion       | string             | `{{ release }}`     | Version of the Operator the Custom Resource belongs to |
-| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb44recommended }}` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
+| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` | The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
 | imagePullPolicy | string             | `Always`     | The [policy used to update images](https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
+| initImage                 | string   | `percona/percona-server-mongodb-operator:{{ release }}` | An alternative image for the initial Operator installation |
+| initContainerSecurityContext | subdoc| `{}`         | A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation) |
 | ClusterServiceDNSSuffix   | string   | `svc.cluster.local` | The (non-standard) cluster domain to be used as a suffix of the Service name |
-| clusterServiceDNSMode     | string   | `Internal`   | Can be either `internal` (exposed MongoDB instances will use ClusterIP addresses) or `ServiceMesh` (turns on  for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together. |
-| allowUnsafeConfigurations | boolean  | `false`      | Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults) |
+| clusterServiceDNSMode     | string   | `Internal`   | Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together. |
+| allowUnsafeConfigurations | boolean  | `false`      | Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored** |
 | updateStrategy | string              | `SmartUpdate`| A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete) |
+|ignoreAnnotations| subdoc            | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` | The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator |
+| ignoreLabels    | subdoc            | `rack`                     | The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator |
 | multiCluster.enabled      | boolean  | `false`      | [Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services) |
 | multiCluster.DNSSuffix    | string   | `svc.clusterset.local` | The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)) |
 | upgradeOptions  | [subdoc](operator.md#operator-upgradeoptions-section) | | Upgrade configuration section |
@@ -34,7 +38,6 @@ The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-
 | replsets        | [subdoc](operator.md#operator-replsets-section)       | | Operator MongoDB Replica Set section |
 | pmm             | [subdoc](operator.md#operator-pmm-section)            | | Percona Monitoring and Management section |
 | sharding        | [subdoc](operator.md#operator-sharding-section)       | | MongoDB sharding configuration section |
-| mongod          | [subdoc](operator.md#operator-mongod-section)         | | Operator MongoDB Mongod configuration section |
 | backup          | [subdoc](operator.md#operator-backup-section)         | | Percona Server for MongoDB backups section |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
@@ -51,7 +54,7 @@ The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/
 | **Key**         | {{ optionlink('upgradeOptions.apply') }} |
 | **Value**       | string |
 | **Example**     | `disabled` |
-| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb50recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
+| **Description** | Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) |
 |                 | |
 | **Key**         | {{ optionlink('upgradeOptions.schedule') }} |
 | **Value**       | string |
@@ -115,6 +118,31 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | int |
 | **Example**     | 3 |
 | **Description** | The size of the MongoDB Replica Set, must be >= 3 for [High-Availability](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean replica set Pods termination |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
 |                 | |
 | **Key**         | {{ optionlink('replsets.configuration') }} |
 | **Value**       | string |
@@ -321,6 +349,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `1` |
 | **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods |
 |                 | |
+| **Key**         | {{ optionlink('replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external') }} |
+| **Value**       | string |
+| **Example**     | `rs0-0.mycluster.xyz` |
+| **Description** | External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster |
+|                 | |
+| **Key**         | {{ optionlink('replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external-2') }} |
+| **Value**       | string |
+| **Example**     | `rs0-0.mycluster2.xyz` |
+| **Description** | External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster |
+|                 | |
 | **Key**         | {{ optionlink('replsets.expose.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
@@ -406,6 +444,76 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `disktype: ssd` |
 | **Description** | The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes |
 |                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.podDisruptionBudget.maxUnavailable') }} |
+| **Value**       | int |
+| **Example**     | `1` |
+| **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among non-voting nodes |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.podDisruptionBudget.minAvailable') }} |
+| **Value**       | int |
+| **Example**     | `1` |
+| **Description** | The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among non-voting nodes |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.limits.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | [Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.limits.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | [Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.requests.cpu') }} |
+| **Value**       | string |
+| **Example**     | `300m` |
+| **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.resources.requests.memory') }} |
+| **Value**       | string |
+| **Example**     | `0.5G` |
+| **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.emptyDir') }} |
+| **Value**       | string |
+| **Example**     | `{}` |
+| **Description** | The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.hostPath.path') }} |
+| **Value**       | string |
+| **Example**     | `/data` |
+| **Description** | [Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.hostPath.type') }} |
+| **Value**       | string |
+| **Example**     | `Directory` |
+| **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.storageClassName') }} |
+| **Value**       | string |
+| **Example**     | `standard` |
+| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the non-voting nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb |
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes') }} |
+| **Value**       | array |
+| **Example**     | `[ "ReadWriteOnce" ]` |
+| **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the non-voting nodes|
+|                 | |
+| **Key**         | {{ optionlink('replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage') }} |
+| **Value**       | string |
+| **Example**     | `3Gi` |
+| **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes |
+|                 | |
 | **Key**         | {{ optionlink('replsets.arbiter.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
@@ -478,12 +586,12 @@ The replsets section controls the MongoDB Replica Set.
 |                 | |
 | **Key**         | {{ optionlink('replsets.resources.requests.cpu') }} |
 | **Value**       | string |
-| **Example**     | |
+| **Example**     | `300m` |
 | **Description** | The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
 | **Key**         | {{ optionlink('replsets.resources.requests.memory') }} |
 | **Value**       | string |
-| **Example**     | |
+| **Example**     | `0.5G` |
 | **Description** | The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container |
 |                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.emptyDir') }} |
@@ -501,10 +609,20 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
 |                 | |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
 | **Example**     | `standard` |
-| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb |
+| **Description** | The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) |
 |                 | |
 | **Key**         | {{ optionlink('replsets.volumeSpec.persistentVolumeClaim.accessModes') }} |
 | **Value**       | array |
@@ -515,6 +633,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Value**       | string |
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container |
+|                 | |
+| **Key**         | {{ optionlink('replsets.hostAliases.ip') }} |
+| **Value**       | string |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+|                 | |
+| **Key**         | {{ optionlink('replsets.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
 
 ## <a name="operator-pmm-section"></a>PMM Section
 
@@ -564,6 +692,31 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean config server Pods termination |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.configuration') }} |
 | **Value**       | string |
@@ -705,6 +858,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `Directory` |
 | **Description** | The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.annotations') }} |
+| **Value**       | string |
+| **Example**     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| **Description** | The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.labels') }} |
+| **Value**       | string |
+| **Example**     | `rack: rack-22` |
+| **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName') }} |
 | **Value**       | string |
 | **Example**     | `standard` |
@@ -720,10 +883,45 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `3Gi` |
 | **Description** | The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.ip') }} |
+| **Value**       | string |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods |
+|                 | |
 | **Key**         | {{ optionlink('sharding.mongos.size') }} |
 | **Value**       | int |
 | **Example**     | `3` |
 | **Description** | The number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.terminationGracePeriodSeconds') }} |
+| **Value**       | int |
+| **Example**     | 300 |
+| **Description** | The amount of seconds Kubernetes will wait for a clean mongos Pods termination |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels') }} |
+| **Value**       | label |
+| **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
+| **Description** | The Label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.maxSkew') }} |
+| **Value**       | int |
+| **Example**     | 1 |
+| **Description** | The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.topologyKey') }} |
+| **Value**       | string |
+| **Example**     | `kubernetes.io/hostname` |
+| **Description** | The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.whenUnsatisfiable') }} |
+| **Value**       | string |
+| **Example**     | `DoNotSchedule` |
+| **Description** | What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.configuration') }} |
 | **Value**       | string |
@@ -899,20 +1097,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | string |
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
-
-## <a name="operator-mongod-section"></a>Mongod Section
-
-This section contains the Mongod configuration options.
-This section is **deprecated** in Percona Operator for MongoDB
-v1.12.0+, **and will be unavailable** in v1.14.0+. Options were moved to
-replsets.configuration.
-
 |                 | |
-|-----------------|-|
-| **Key**         | {{ optionlink('mongod.security.encryptionKeySecret') }} |
+| **Key**         | {{ optionlink('sharding.mongos.hostAliases.ip') }} |
 | **Value**       | string |
-| **Example**     | `my-cluster-name-mongodb-encryption-key` |
-| **Description** | Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) **Please note that this option is deprecated; use** spec.secrets.encryptionKey **instead** |
+| **Example**     | `"10.10.0.2"` |
+| **Description** | The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.hostAliases.hostnames') }} |
+| **Value**       | subdoc |
+| **Example**     | |
+| **Description** | Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods |
 
 ## <a name="operator-backup-section"></a>Backup Section
 
@@ -988,6 +1182,21 @@ Percona Server for MongoDB backups.
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) |
 |                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.uploadPartSize') }} |
+| **Value**       | int |
+| **Example**     | `10485760` |
+| **Description** | The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.maxUploadParts') }} |
+| **Value**       | int |
+| **Example**     | `10000` |
+| **Description** | The maximum number of data chunks to be uploaded to the storage bucket (10000 by default) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.storageClass') }} |
+| **Value**       | string |
+| **Example**     | `STANDARD` |
+| **Description** | The [storage class name](https://aws.amazon.com/s3/storage-classes) of the S3 storage |
+|                 | |
 | **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.region') }} |
 | **Value**       | string |
 | **Example**     | `us-east-1` |
@@ -997,6 +1206,26 @@ Percona Server for MongoDB backups.
 | **Value**       | string |
 | **Example**     | |
 | **Description** | The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud) |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.kmsKeyID') }} |
+| **Value**       | string |
+| **Example**     | `""` |
+| **Description** | The [ID of the key stored in the AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys) used by the Operator for [backups server-side encryption](backups-encryption.md)
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseAlgorithm') }} |
+| **Value**       | string |
+| **Example**     | `aws:kms` |
+| **Description** | The key management mode used for [backups server-side encryption](backups-encryption.md) with the encryption keys stored in [AWS KMS](https://aws.amazon.com/kms/) - `aws:kms` is the only supported value for now |
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerAlgorithm') }} |
+| **Value**       | string |
+| **Example**     | `AES256` |
+| **Description** | The key management mode for [backups server-side encryption with customer-provided keys](backups-encryption.md) - `AES256` is the only supported value for now|
+|                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerKey') }} |
+| **Value**       | string |
+| **Example**     | `""` |
+| **Description** | The locally-stored base64-encoded custom encryption key used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages |
 |                 | |
 | **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.credentialsSecret') }} |
 | **Value**       | string |
@@ -1017,6 +1246,11 @@ Percona Server for MongoDB backups.
 | **Value**       | boolean |
 | **Example**     | `false` |
 | **Description** | Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog) |
+|                 | |
+| **Key**         | {{ optionlink('backup.pitr.oplogOnly') }} |
+| **Value**       | boolean |
+| **Example**     | false |
+| **Description** | If true, Percona Backup for MongoDB saves oplog chunks even without the base logical backup snapshot (oplog chunks without a base backup can't be used with logical backups to restore a backup by the Operator, [but can still be useful for manual restore operations](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)) |
 |                 | |
 | **Key**         | {{ optionlink('backup.pitr.oplogSpanMin') }} |
 | **Value**       | int |
@@ -1067,3 +1301,8 @@ Percona Server for MongoDB backups.
 | **Value**       | int |
 | **Example**     | `6` |
 | **Description** | The backup compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)) |
+|                 | |
+| **Key**         | {{ optionlink('backup.tasks.type') }} |
+| **Value**       | string |
+| **Example**     | `physical` |
+| **Description** | The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#physical) for details |

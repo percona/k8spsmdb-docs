@@ -86,6 +86,13 @@ like in a full mesh:
 
 ![image](assets/images/replication-mesh.svg)
 
+!!! note
+
+    Starting from v1.14, the operator configures the replset using local DNS
+    hostnames even if the replset is exposed. If you want to have IP addresses
+    in the replset configuration to achieve a multi-cluster deployment, you need
+    to set `clusterServiceDNSMode` to `External`.
+
 This is done through the `replsets.expose`, `sharding.configsvrReplSet.expose`,
 and `sharding.mongos.expose` sections in the `deploy/cr.yaml` configuration file
 as follows.

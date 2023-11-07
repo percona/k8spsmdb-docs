@@ -45,9 +45,13 @@ rs0:PRIMARY> db.test.findOne()
 To automate the deployment and management of the cluster components, 
 the Operator requires system-level MongoDB users.
 
-During installation, the Operator requires Kubernetes Secrets to be deployed
-before the Operator is started. The name of the required secrets can be set in
-`deploy/cr.yaml` under the `spec.secrets` section.
+Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+The Operator requires Kubernetes Secret before the database cluster is
+started. It will either use existing Secret or create a new Secret with
+randomly generated passwords if it didn’t exist.
+The name of the required Secret should be set in
+the `spec.secrets.users` option of the `deploy/cr.yaml`
+configuration file.
 
 *Default Secret name:* `my-cluster-name-secrets`
 
@@ -82,11 +86,53 @@ before the Operator is started. The name of the required secrets can be set in
 
 * User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
 
+If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
+Pods will go into restart cycle, and the cluster can be not accessible through
+the `mongos` service until this cycle finishes.
+
 !!! note
 
-    If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the
-    cluster Pods will go into restart cycle, and the cluster can be not
-    accessible through the `mongos` service until this cycle finishes.
+    In some situations it can be needed to reproduce system users in a bare-bone
+    MongoDB. For example, that's a required step in the [migration scenarios](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
+    to move existing on-prem MongoDB database to Kubernetes-based MongoDB
+    cluster managed by the Operator. You can use the following example script
+    which produces a text file with mongo shell commands to create needed system
+    users with appropriate roles:
+    
+    ??? example "gen_users.sh"
+    
+        ``` bash
+        clusterAdminPass="clusterAdmin"
+        userAdminPass="userAdmin"
+        clusterMonitorPass="clusterMonitor"
+        backupPass="backup"
+        
+        # mongo shell
+        cat <<EOF > user-mongo-shell.txt
+        use admin
+        db.createRole(
+        {
+        "roles": [],
+        role: "pbmAnyAction",
+        "privileges" : [
+                        {
+                                "resource" : {
+                                        "anyResource" : true
+                                },
+                                "actions" : [
+                                        "anyAction"
+                                ]
+                        }
+                ],
+        
+        })
+        
+        db.createUser( { user: "clusterMonitor", pwd: "$clusterMonitorPass", roles: [ "clusterMonitor" ] } )
+        db.createUser( { user: "userAdmin", pwd: "$userAdminPass", roles: [ "userAdminAnyDatabase" ] } )
+        db.createUser( { user: "clusterAdmin", pwd: "$clusterAdminPass", roles: [ "clusterAdmin" ] } )
+        db.createUser( { user: "backup", pwd: "$backupPass", roles: [ "readWrite", "backup", "clusterMonitor", "restore", "pbmAnyAction" ] } )
+        EOF
+        ```
 
 ### YAML Object Format
 

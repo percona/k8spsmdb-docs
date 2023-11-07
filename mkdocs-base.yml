@@ -4,7 +4,7 @@ site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
-copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2022
+copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2023
 use_directory_urls: false
 repo_name: percona/k8spsmdb-docs
 repo_url: https://github.com/percona/k8spsmdb-docs
@@ -14,6 +14,10 @@ theme:
   name: material
   logo: assets/images/percona-logo.svg
   favicon: assets/images/percona-favicon.ico
+  custom_dir: _resource/overrides/
+  font:
+    text: Chivo, Colfax, Franziska
+    text: Poppins
   palette:
     #    - media: "(prefers-color-scheme: light)"
     scheme: percona-light
@@ -59,8 +63,16 @@ markdown_extensions:
     linenums: false
 
 plugins:
-  search: {}
+  section-index: {}
+  search: 
+    separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   git-revision-date: {}
+  meta-descriptions:
+    export_csv: false
+    quiet: false
+    enable_checks: false
+    min_length: 50
+    max_length: 160
   macros:
     include_yaml:
       - "variables.yml"
@@ -71,11 +83,11 @@ plugins:
   # https://github.com/orzih/mkdocs-with-pdf
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Documentation"
-    cover_subtitle: 1.13.0 (September 15, 2022)
+    cover_title: "Percona Operator for MongoDB documentation"
+    cover_subtitle: 1.15.0 (October 09, 2023)
     author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/Kubernetes-PG.png
-    custom_template_path: _resources/templates
+    cover_logo: docs/assets/images/percona_kubernetes_icon.png
+    custom_template_path: _resource/templates
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
@@ -87,17 +99,26 @@ plugins:
     canonical_version: null
 
 extra: # Used in main.html template and can't be externalized
+  homepage:
+    https://docs.percona.com
+  consent:
+    title: Cookie consent
+    description: >- 
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better. Read more about <a class="reference external" href="https://www.percona.com/20180524-cookie-policy" target="_blank">Percona Cookie Policy</a>.
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  release: '1.13.0'
-  apiversion: '1'
-  mongodb50recommended: '5.0.11-10'
-  mongodb44recommended: '4.4.16-16'
-  mongodb42recommended: '4.2.22-22'
-  pmm2recommended: '2.30.0'
-  gkerecommended: '1.23'
-  certmanagerrecommended: '1.6.1'
-  pbmrecommended: '1.8.1'
+  release: '1.15.0'
+  apiversion: '1'  
+  mongodb60recommended: '6.0.9-7'
+  mongodb50recommended: '5.0.20-17'
+  mongodb44recommended: '4.4.24-23'
+  pmm2recommended: '2.39.0'
+  gkerecommended: '1.25'
+  certmanagerrecommended: '1.12.4'
+  pbmrecommended: '2.3.0'
   version:
     provider: mike
 
@@ -105,27 +126,28 @@ extra: # Used in main.html template and can't be externalized
 nav:
 
     - Welcome: index.md
-    - Requirements:
-          - "System requirements": System-Requirements.md
+    - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
-    - Quickstart guides:
+    - Quickstart:
           - "Install with Helm": helm.md
-          - "Install on Minikube": minikube.md
+          - "Install with kubectl": kubectl.md
           
-    - Advanced installation guide:
+    - Installation:
+          - "System requirements": System-Requirements.md
+          - "Install on Minikube": minikube.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
-          - "Use private registry": custom-registry.md
           
     - Configuration:
           - "Application and system users": users.md
           - "Changing MongoDB options": options.md
           - "Anti-affinity and tolerations": constraints.md
+          - "Labels and annotations": annotations.md
           - "Exposing the cluster": expose.md
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
@@ -135,7 +157,15 @@ nav:
           - "Telemetry": telemetry.md
           
     - Management:
-          - "Backup and restore": backups.md
+          - Backup and restore:
+              - "About backups": backups.md
+              - "Configure storage for backups": backups-storage.md
+              - "Making scheduled backups": backups-scheduled.md
+              - "Making on-demand backup": backups-ondemand.md
+              - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Enable server-side encryption": backups-encryption.md
+              - "Restore from a previously saved backup": backups-restore.md
+              - "Delete the unneeded backup": backups-delete.md
           - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
@@ -146,21 +176,36 @@ nav:
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
-          - "Debug and troubleshoot": debug.md
           
+    - Troubleshooting:
+          - "Initial troubleshooting": debug.md
+          - "Exec into the container": debug-shell.md
+          - "Check the logs": debug-logs.md
+          - "Special debug images": debug-images.md
+
     - HOWTOs:
           - "OpenLDAP integration": ldap.md
+          - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
+          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
+          - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
-          - "Upgrading Percona XtraDB Cluster manually": update_manually.md
+          - "Upgrade Percona Server for MongoDB manually": update_manually.md
+          - "Monitor Kubernetes": monitor-kubernetes.md
 
     - Reference:
           - "Custom Resource options": operator.md
           - "Percona certified images": images.md
+          - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          
+          - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
+          - "Copyright and licensing information": copyright.md
+          - "Trademark policy": trademark-policy.md
     - Release notes:
+          - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
+          - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
           - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
           - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
