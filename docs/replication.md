@@ -46,49 +46,41 @@ docs](https://www.mongodb.com/docs/manual/core/replica-set-members/#replica-set-
 
 If you want both _Main_ and _Replica_ clusters to run on Kubernetes, overall steps will look like:
 
-1. Deploy _Main_ cluster on a Kubernetes cluster (or use an existing one)
-2. Get secrets from _Main_ cluster and apply them to namespace in Kubernetes cluster which you'll deploy the _Replica_ cluster
+1. Deploy the _Main_ cluster on a Kubernetes cluster (or use an existing one)
+2. Get secrets from the _Main_ cluster and apply them to the namespace in Kubernetes cluster to which you'll deploy the _Replica_ cluster
 3. Deploy _Replica_ cluster on a Kubernetes cluster
-4. Add nodes from _Replica_ cluster to _Main_ cluster as external nodes
+4. Add nodes from the _Replica_ cluster to the _Main_ cluster as external nodes
 
 ### Main cluster on Kubernetes and Replica cluster outside of Kubernetes
 
-If you want _Main_ cluster to run on Kubernetes but _Replica_ cluster outside of Kubernetes, overall steps will look like:
+If you want _Main_ cluster to run on Kubernetes, but _Replica_ cluster outside of Kubernetes, overall steps will look like:
 
-1. Deploy _Main_ cluster on a Kubernetes cluster (or use an existing one)
-2. Get TLS secrets from _Main_ cluster to configure _Replica_ cluster
-3. Deploy _Replica_ cluster on wherever you want
-4. Add nodes from _Replica_ cluster to _Main_ cluster as external nodes
+1. Deploy the _Main_ cluster on a Kubernetes cluster (or use an existing one)
+2. Get TLS secrets from the _Main_ cluster to configure the _Replica_ cluster
+3. Deploy the _Replica_ cluster on wherever you want
+4. Add nodes from the _Replica_ cluster to the _Main_ cluster as external nodes
 
 ### Main cluster outside of Kubernetes and Replica cluster on Kubernetes
 
 If you want _Main_ cluster to run outside of Kubernetes but _Replica_ cluster on Kubernetes, overall steps will look like:
 
-1. Deploy _Main_ cluster on wherever you want (or use an existing one)
-2. Get TLS certificates and create a Kubernetes secret with them
-3. Get user credentials and create a Kubernetes secret with them
-4. Deploy _Replica_ cluster on a Kubernetes cluster
-5. Add nodes from _Replica_ cluster to _Main_ cluster using Mongo client
-
-## Deploying _Main_ cluster on Kubernetes
-
-## Deploying _Replica_ cluster on Kubernetes
-
-## Preparing secrets for _Replica_ on Kubernetes
-
-## Preparing TLS certificates for _Replica_ outside of Kubernetes
+1. Deploy the _Main_ cluster on wherever you want (or use an existing one)
+2. Get TLS certificates and create a Kubernetes Secret with them
+3. Get user credentials and create a Kubernetes Secret with them
+4. Deploy the _Replica_ cluster on a Kubernetes cluster
+5. Add nodes from the _Replica_ cluster to the _Main_ cluster using Mongo client
 
 ## Exposing instances of the MongoDB cluster
 
 You need to expose all Replica Set nodes (including Config Servers) through a
-dedicated service to ensure that _Main_ and _Replica_ can reach each other,
+dedicated Service to ensure that both the _Main_ and the _Replica_ can reach each other,
 like in a full mesh:
 
 ![image](assets/images/replication-mesh.svg)
 
 !!! note
 
-    Starting from v1.14, the operator configures the replset using local DNS
+    Starting from v1.14, the Operator configures the replset using local DNS
     hostnames even if the replset is exposed. If you want to have IP addresses
     in the replset configuration to achieve a multi-cluster deployment, you need
     to set `clusterServiceDNSMode` to `External`.
