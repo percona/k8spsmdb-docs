@@ -1,35 +1,108 @@
 # Delete Percona Operator for MongoDB
 
-To delete Percona Operator for MongoDB from Kubernetes environment means to delete the database Distribution cluster, then delete the [CustomRecourceDefinitions (CRDs))](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to the Operator. Afterwards you can clean up the resources such as [PersistentVolumeClaims (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) and Secrets.
+You may have different reasons to clean up your Kubernetes environment: moving from trial deployment to a production one, testing experimental configurations and the like. In either case, you need to remove some (or all) of these objects:
+
+* Percona Distribution for MongoDB cluster managed by the Operator
+* Percona Operator for MongoDB itself
+* Custom Resource Definition deployed with the Operator
+* Resources like PVCs and Secrets
+
+## Delete the database cluster
+
+To delete the database cluster means to delete the Custom Resource associated with it.
+
+!!! note
+
+    There are two [finalizers](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which define whether to delete or preserve  TLS-related objects and data volumes when the cluster is deleted.
+
+    * `finalizers.percona.com/delete-ssl`: if present, objects, created for SSL (Secret, certificate, and issuer) are deleted along with the cluster deletion.
+    * `finalizers.percona.com/delete-pvc`: if present, [Persistent Volume Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
+
+    Both finalizers are off by default in the `deploy/cr.yaml` configuration file, and this allows you to recreate the cluster without losing data, credentials for the system users, etc. You can always [delete TLS-related objects and PVCs manually](#clean-up-resources), if needed. 
+
+The steps are the following:
+{.power-number}
+
+1. List the Custom Resources. Replace the `<namespace>` placeholder with your value
+
+    ```{.bash data-prompt="$"}
+    $ kubectl get psmdb -n <namespace>
+    ```
+
+2. Delete the Custom Resource with the name of your cluster
+
+    ```{.bash data-prompt="$"}
+    $ kubectl delete psmdb <cluster_name> -n <namespace>
+    ```
+
+    It may take a while to stop and delete the cluster. 
+
+    ??? example "Sample output"
+
+    ```{.text .no-copy}
+    perconaservermongodb.psmdb.percona.com "my-cluster-name" deleted
+    ```
+
+3. Check that the cluster is deleted by listing the Custom Resources again:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl get psmdb -n <namespace>
+    ```
+
+    ??? example "Sample output"
+
+    ```{.text .no-copy}
+    No resources found in <namespace> namespace.
+    ```
+
+## Delete the Operator
 
 Choose the instructions relevant to the way you installed the Operator. 
 
 === "kubectl"
 
-    To delete the Operator, do the following:
+    To uninstall the Operator, delete the [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) related to it.
     {.power-number}
 
-    1. Delete the Distribution cluster:
+    1. List the deployments. Replace the `<namespace>` placeholder with your namespace.
 
         ```{.bash data-prompt="$"}
-        $ kubectl delete psmdb <cluster_name> -n <namespace>
+        $ kubectl get deploy -n <namespace>
         ```
 
-        It may take a while to stop and delete the cluster. 
+    2. Delete the `percona-*` deployment
 
+        ```{.bash data-prompt="$"}
+        $ kubectl delete deploy percona-server-mongodb-operator -n pmo
+        ```
+
+    3. Check that the Operator is deleted by listing the Pods. As a result you should have no Pods related to it.
+
+        ```{.bash data-prompt="$"}
+        $ kubectl get pods -n pmo
+        ```
+        
         ??? example "Sample output"
 
-            ```{.text .no-copy}
-            perconaservermongodb.psmdb.percona.com "my-cluster-name" deleted
-            ```
-
-    2. Delete the Operator
-
-        ```{.bash data-prompt="$"}
-        $ kubectl delete -f deploy/bundle.yaml -n pmo
+        ```{.text .no-copy}
+        No resources found in <namespace> namespace.
         ```
 
-        This deletes CRDs and the deployment of the Operator
+    4. If you are not just deleting the Operator and PostgreSQL cluster from a specific namespace, but want to clean up your entire Kubernetes environment, you can also delete the [CustomRecourceDefinitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
+
+        <i warning>:material-alert: Warning:</i> CRDs in Kubernetes are non-namespaced but are available to the whole environment. This means that you shouldn’t delete CRDs if you still have the Operator and database cluster in some namespace.
+
+        Get the list of CRDs. 
+
+        ```{.bash data-prompt="$"}
+        $ kubectl get crd
+        ```
+
+    5. Delete the `percona*.psmdb.percona.com` CRDs
+
+        ```{.bash data-prompt="$"}
+        $ kubectl delete crd perconaservermongodbbackups.psmdb.percona.com perconaservermongodbrestores.psmdb.percona.com perconaservermongodbs.psmdb.percona.com
+        ``` 
 
         ??? example "Sample output"
 
@@ -37,70 +110,14 @@ Choose the instructions relevant to the way you installed the Operator.
             customresourcedefinition.apiextensions.k8s.io "perconaservermongodbbackups.psmdb.percona.com" deleted
             customresourcedefinition.apiextensions.k8s.io "perconaservermongodbrestores.psmdb.percona.com" deleted
             customresourcedefinition.apiextensions.k8s.io "perconaservermongodbs.psmdb.percona.com" deleted
-            role.rbac.authorization.k8s.io "percona-server-mongodb-operator" deleted
-            serviceaccount "percona-server-mongodb-operator" deleted
-            rolebinding.rbac.authorization.k8s.io "service-account-percona-server-mongodb-operator" deleted
-            deployment.apps "percona-server-mongodb-operator" deleted
             ```
-
-    3. Clean up the resources. Get the list of PVCs:
-
-        ```{.bash data-prompt="$"}
-        $ kubectl get pvc -n <namespace>
-        ```    
-
-        ??? example "Sample output"    
-
-        ```{.text .no-copy}
-        NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-        mongod-data-my-cluster-name-cfg-0   Bound    pvc-245641fe-b172-439b-8c9c-cba5ea4ccd80   3Gi        RWO            standard-rwo   10m
-        mongod-data-my-cluster-name-cfg-1   Bound    pvc-4ff7c3c4-b91c-4938-a52e-591fd559f4a4   3Gi        RWO            standard-rwo   9m19s
-        mongod-data-my-cluster-name-cfg-2   Bound    pvc-acbff4a3-784a-48e7-ad4b-8b00239982d3   3Gi        RWO            standard-rwo   8m36s
-        mongod-data-my-cluster-name-rs0-0   Bound    pvc-0a56e9ab-e22b-47ce-95de-a55f2676456a   3Gi        RWO            standard-rwo   10m
-        mongod-data-my-cluster-name-rs0-1   Bound    pvc-cd075679-a7f5-4182-a8ce-341db1fb12d3   3Gi        RWO            standard-rwo   9m19s
-        mongod-data-my-cluster-name-rs0-2   Bound    pvc-9ff0d41d-c739-494d-a45c-576f3a1fb590   3Gi        RWO            standard-rwo   8m26s
-        ```
-
-    4. Delete PVCs:    
-
-        ```{.bash data-prompt="$"}
-        $ kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-cfg-1 mongod-data-my-cluster-name-cfg-2 mongod-data-my-cluster-name-rs0-0 mongod-data-my-cluster-name-rs0-1 mongod-data-my-cluster-name-rs0-2 -n <namespace>
-        ```    
-
-        ??? example "Sample output"    
-
-            ```{.text .no-copy}
-            persistentvolumeclaim "mongod-data-my-cluster-name-cfg-0" deleted persistentvolumeclaim "mongod-data-my-cluster-name-cfg-1" deleted
-            persistentvolumeclaim "mongod-data-my-cluster-name-cfg-2" deleted
-            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-0" deleted
-            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-1" deleted
-            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
-            ```    
-
-    5. Get Secrets:    
-
-        ```{.bash data-prompt="$"}
-        $ kubectl get secrets -n <namespace>
-        ```    
-
-    6. Delete the Secret:
-        
-        ```{.bash data-prompt="$"}
-        $ kubectl delete secret <secret_name> -n <namespace>
-        ```
 
 === "Helm"
 
     To delete the Operator, do the following:
     {.power-number}
 
-    1. Delete the deployed Percona Server for MongoDB cluster:
-
-        ```{.bash data-prompt="$"}
-        $ kubectl delete psmdb <cluster_name> --namespace <namespace>
-        ```
-
-    2. List the Helm charts:
+    1. List the Helm charts:
 
         ```{.bash data-prompt="$"}
         $ helm list -n <namespace>
@@ -113,82 +130,70 @@ Choose the instructions relevant to the way you installed the Operator.
             my-op       <namespace>         1           2023-10-31 10:15:18.41444 +0100 CET     deployed    psmdb-operator-1.14.3   {{release}}
             ```
 
-    3. Delete the [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for Percona Server for MongoDB 
+    2. Delete the [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for Percona Server for MongoDB 
 
         ```{.bash data-prompt="$"}
         $ helm uninstall cluster1 --namespace <namespace>
         ```
 
-    4. Delete the [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for the Operator 
+    3. Delete the [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for the Operator 
 
         ```{.bash data-prompt="$"}
         $ helm uninstall my-op --namespace <namespace>
         ```
-    
-    4. Clean up the resources. Get the list of PVCs:
+
+## Clean up resources
+ 
+By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. If you wish to delete them, do the following:
+{.power-number}
+
+1. Delete Persistent Volume Claims.
+
+    1. List PVCs. Replace the `<namespace>` placeholder with your namespace:
 
         ```{.bash data-prompt="$"}
         $ kubectl get pvc -n <namespace>
         ```    
 
-        ??? example "Sample output"
+        ??? example "Sample output"    
 
             ```{.text .no-copy}
-            mongod-data-cluster1-psmdb-db-cfg-0   Bound    pvc-bf769563-090f-4b44-a596-dcf6814f420f   3Gi        RWO            standard-rwo   4m13s
-            mongod-data-cluster1-psmdb-db-cfg-1   Bound    pvc-b81bad29-680d-40a4-a8ee-067a3a33f71f   3Gi        RWO            standard-rwo   3m38s
-            mongod-data-cluster1-psmdb-db-cfg-2   Bound    pvc-e9815354-ec45-4724-82b1-91f7c46e2760   3Gi        RWO            standard-rwo   2m59s
-            mongod-data-cluster1-psmdb-db-rs0-0   Bound    pvc-2d2b2d83-b425-41a6-97eb-1002ac249a77   3Gi        RWO            standard-rwo   4m13s
-            mongod-data-cluster1-psmdb-db-rs0-1   Bound    pvc-01526d26-a27e-4d38-966b-855425e51bad   3Gi        RWO            standard-rwo   3m31s
-            mongod-data-cluster1-psmdb-db-rs0-2   Bound    pvc-2139f09c-da61-4da6-9e8a-aed73407f5bb   3Gi        RWO            standard-rwo   3m3s
+            NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+            mongod-data-my-cluster-name-cfg-0   Bound    pvc-245641fe-b172-439b-8c9c-cba5ea4ccd80   3Gi        RWO            standard-rwo   10m
+            mongod-data-my-cluster-name-cfg-1   Bound    pvc-4ff7c3c4-b91c-4938-a52e-591fd559f4a4   3Gi        RWO            standard-rwo   9m19s
+            mongod-data-my-cluster-name-cfg-2   Bound    pvc-acbff4a3-784a-48e7-ad4b-8b00239982d3   3Gi        RWO            standard-rwo   8m36s
+            mongod-data-my-cluster-name-rs0-0   Bound    pvc-0a56e9ab-e22b-47ce-95de-a55f2676456a   3Gi        RWO            standard-rwo   10m
+            mongod-data-my-cluster-name-rs0-1   Bound    pvc-cd075679-a7f5-4182-a8ce-341db1fb12d3   3Gi        RWO            standard-rwo   9m19s
+            mongod-data-my-cluster-name-rs0-2   Bound    pvc-9ff0d41d-c739-494d-a45c-576f3a1fb590   3Gi        RWO            standard-rwo   8m26s
             ```
 
-    5. Get the list of labels associated with PVCs:
+    2. Delete PVCs related to your cluster. The following command deletes PVCs for the `my-cluster-name` cluster. :       
 
         ```{.bash data-prompt="$"}
-        $ kubectl describe pvc <pvc_name> -n <namespace>
-        ```
+        $ kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-cfg-1 mongod-data-my-cluster-name-cfg-2 mongod-data-my-cluster-name-rs0-0 mongod-data-my-cluster-name-rs0-1 mongod-data-my-cluster-name-rs0-2 -n <namespace>
+        ```    
 
-        ??? example "Sample output"
-
-            ```{.text .no-copy}
-            Name:          mongod-data-cluster1-psmdb-db-cfg-0
-            Namespace:     <namespace>
-            StorageClass:  standard-rwo
-            Status:        Bound
-            Volume:        pvc-fb5fc9ed-36fd-4805-b1b8-299bb0fd1cc8
-            Labels:        app.kubernetes.io/component=cfg
-                           app.kubernetes.io/instance=cluster1-psmdb-db
-                           app.kubernetes.io/managed-by=percona-server-mongodb-operator
-                           app.kubernetes.io/name=percona-server-mongodb
-                           app.kubernetes.io/part-of=percona-server-mongodb
-                           app.kubernetes.io/replset=cfg
-            ```
-
-    6. Delete PVCs. Replace the <label_name> placeholder with the label name. The `app.kubernetes.io/instance=cluster1-psmdb-db` from the previous example is associated with every PVC. 
-
-        ```{.bash data-prompt="$"}
-        $ delete pvc -l <label_name> -n <namespace>
-        ```
-
-        ??? example "Sample output"
+        ??? example "Sample output"       
 
             ```{.text .no-copy}
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-cfg-0" deleted
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-cfg-1" deleted
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-cfg-2" deleted
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-rs0-0" deleted
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-rs0-1" deleted
-            persistentvolumeclaim "mongod-data-cluster1-psmdb-db-rs0-2" deleted
-            ```
-    
-    5. Get Secrets:    
+            persistentvolumeclaim "mongod-data-my-cluster-name-cfg-0" deleted persistentvolumeclaim "mongod-data-my-cluster-name-cfg-1" deleted
+            persistentvolumeclaim "mongod-data-my-cluster-name-cfg-2" deleted
+            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-0" deleted
+            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-1" deleted
+            persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
+            ```    
+
+2. Delete the Secrets
+
+    1. List Secrets:    
 
         ```{.bash data-prompt="$"}
         $ kubectl get secrets -n <namespace>
         ```    
 
-    6. Delete the Secret:
+    2. Delete the Secret:
         
         ```{.bash data-prompt="$"}
         $ kubectl delete secret <secret_name> -n <namespace>
         ```
+

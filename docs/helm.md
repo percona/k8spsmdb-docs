@@ -85,3 +85,6 @@ You can check the rest of the Operator's parameters in the [Custom Resource opti
 
 [Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
 
+## Useful links
+
+[Install Percona Server for MongoDB with customized parameters](custom-install.md)
