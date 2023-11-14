@@ -171,7 +171,7 @@ nav:
           - "Multi-cluster and multi-region deployment":
               - "About Multi-cluster": replication.md
               - "Configuring Main sie for replication": replication-main.md
-              - "Configuring Replica sie for replication": replication-replica.md
+              - "Configuring Replica site for replication": replication-replica.md
               - "Enabling multi-cluster Services": replication-mcs.md
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
