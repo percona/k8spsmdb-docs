@@ -170,7 +170,7 @@ nav:
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
               - "About Multi-cluster": replication.md
-              - "Configuring Main sie for replication": replication-main.md
+              - "Configuring Main site for replication": replication-main.md
               - "Configuring Replica site for replication": replication-replica.md
               - "Enabling multi-cluster Services": replication-mcs.md
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
