@@ -9,13 +9,14 @@ In this tutorial we use the [AWS S3](https://aws.amazon.com/s3/) as the backup s
 * the name of the S3 storage
 * the name of the S3 bucket
 * the region - the location of the bucket
-* the S3 credentials such as the  used to access the storage. 
+* the S3 credentials to be used to access the storage. 
 
 If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-storage).
 
 ## Configure backup storage {.power-number}
 
 1. Encode S3 credentials, substituting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` with your real values:
+
     === "on Linux" 
 
         ```{.bash data-prompt="$"}
