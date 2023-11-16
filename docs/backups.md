@@ -1,19 +1,25 @@
 # About backups
 
-The Operator usually stores Server for MongoDB backups outside the Kubernetes
-cluster: on [Amazon S3 or S3-compatible storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
-or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
+You can backup your data in two ways:
+
+* *On-demand*. You can do them manually at any moment.
+* *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
+
+To make backups and restores, the Operator uses the [Percona Backup for MongoDB](https://github.com/percona/percona-backup-mongodb) tool.
+
+## Backup storage
+
+You can store Percona Server for MongoDB backups outside the Kubernetes
+cluster using the following remote backup storages: 
+
+* [Amazon S3 or S3-compatible storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
+* [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 ![image](assets/images/backup-cloud.svg)
 
-Backups are done by the Operator using the [Percona Backup for MongoDB](https://github.com/percona/percona-backup-mongodb) tool.
+## Backup types
 
-The Operator allows doing cluster backup in two ways. *Scheduled backups* are
-configured in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
-file to be executed automatically in proper time. *On-demand backups* can be
-done manually at any moment. 
-
- <a name="physical"></a> The Operator can do either *logical* or *physical* backups.
+<a name="physical"></a> The Operator can do either *logical* or *physical* backups.
 
 * *Logical backup* means querying the Percona Server for MongoDB for the database data and writing the retrieved data to the remote backup storage.
 

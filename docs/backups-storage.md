@@ -12,7 +12,7 @@ to access the storage.
     1. To store backups on the Amazon S3, you need to create a Secret with
         the following values:
     
-        * the `metadata.name` key is the name which you wll further use to refer
+        * the `metadata.name` key is the name which you will further use to refer
             your Kubernetes Secret,
         * the `data.AWS_ACCESS_KEY_ID` and `data.AWS_SECRET_ACCESS_KEY` keys are
             base64-encoded credentials used to access the storage (obviously these
