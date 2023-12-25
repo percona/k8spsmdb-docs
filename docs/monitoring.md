@@ -51,24 +51,15 @@ To encode a password or any other parameter, run the following command:
     ```
 
 For example, to set the new PMM API key in the `my-cluster-name-secrets` object, do the following:
-{.power-number}
 
-1. Pass the new value to the Secrets object:
-
-    === "in Linux"
-
-        ```{.bash data-prompt="$"}
-        $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64 --wrap=0)'}}'
-        ```
-
-    === "on macOS"
-
-        ```{.bash data-prompt="$"}
-        $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64)'}}'
-        ```
-
-2. Apply the changes:
+=== "in Linux"
 
     ```{.bash data-prompt="$"}
-    $ kubectl apply -f deploy/secrets.yaml
+    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64 --wrap=0)'}}'
+    ```
+
+=== "on macOS"
+
+    ```{.bash data-prompt="$"}
+    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64)'}}'
     ```
