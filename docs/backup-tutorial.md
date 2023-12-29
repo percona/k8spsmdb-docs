@@ -99,7 +99,7 @@ If you don’t have access to AWS, you can use any S3-compatible storage like [M
 
     * `metadata.name` - specify the backup name. You will use this name to restore from this backup
     * `spec.clusterName` - specify the name of your cluster. This is the name you specified when deploying Percona Server for MongoDB.
-    * `spec.storageName key1` - specify the name of your already configured storage.
+    * `spec.storageName` - specify the name of your already configured storage.
 
     ```yaml title="deploy/backup/backup.yaml"
     apiVersion: psmdb.percona.com/v1

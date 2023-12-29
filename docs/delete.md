@@ -73,13 +73,13 @@ Choose the instructions relevant to the way you installed the Operator.
     2. Delete the `percona-*` deployment
 
         ```{.bash data-prompt="$"}
-        $ kubectl delete deploy percona-server-mongodb-operator -n pmo
+        $ kubectl delete deploy percona-server-mongodb-operator -n <namespace>
         ```
 
     3. Check that the Operator is deleted by listing the Pods. As a result you should have no Pods related to it.
 
         ```{.bash data-prompt="$"}
-        $ kubectl get pods -n pmo
+        $ kubectl get pods -n <namespace>
         ```
         
         ??? example "Sample output"
@@ -88,7 +88,7 @@ Choose the instructions relevant to the way you installed the Operator.
         No resources found in <namespace> namespace.
         ```
 
-    4. If you are not just deleting the Operator and PostgreSQL cluster from a specific namespace, but want to clean up your entire Kubernetes environment, you can also delete the [CustomRecourceDefinitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
+    4. If you are not just deleting the Operator and MongoDB cluster from a specific namespace, but want to clean up your entire Kubernetes environment, you can also delete the [CustomRecourceDefinitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
 
         <i warning>:material-alert: Warning:</i> CRDs in Kubernetes are non-namespaced but are available to the whole environment. This means that you shouldn’t delete CRDs if you still have the Operator and database cluster in some namespace.
 
@@ -167,7 +167,7 @@ By default, TLS-related objects and data volumes remain in Kubernetes environmen
             mongod-data-my-cluster-name-rs0-2   Bound    pvc-9ff0d41d-c739-494d-a45c-576f3a1fb590   3Gi        RWO            standard-rwo   8m26s
             ```
 
-    2. Delete PVCs related to your cluster. The following command deletes PVCs for the `my-cluster-name` cluster. :       
+    2. Delete PVCs related to your cluster. The following command deletes PVCs for the `my-cluster-name` cluster:       
 
         ```{.bash data-prompt="$"}
         $ kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-cfg-1 mongod-data-my-cluster-name-cfg-2 mongod-data-my-cluster-name-rs0-0 mongod-data-my-cluster-name-rs0-1 mongod-data-my-cluster-name-rs0-2 -n <namespace>
