@@ -49,7 +49,7 @@ To set up monitoring of Kubernetes, you need the following:
 
         * `NAMESPACE` - The namespace where the Victoria metrics Kubernetes stack will be installed. If you haven't created the namespace before, it will be created during the command execution.         
 
-          We recommend to use a separate namespace like `monitoring-system` for the same.        
+          We recommend to use a separate namespace like `monitoring-system`.        
 
           ```{.bash data-prompt="$" }
           $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
