@@ -58,7 +58,7 @@ Here's how to do it:
     === "sharding is off"
 
         ```
-        mongosh  “mongodb://databaseAdmin:<databaseAdminPassword>@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false”
+        mongosh  "mongodb://databaseAdmin:<databaseAdminPassword>@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```
 
     If you run MongoDB 5.0 and earlier, use the old `mongo` client instead of `mongosh`.
