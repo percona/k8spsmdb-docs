@@ -2,7 +2,7 @@
 
 In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backups, see the [Backup and restore](backups.md) section.
 
-## Considerations
+## Considerations and prerequisites
 
 In this tutorial we use the [AWS S3](https://aws.amazon.com/s3/) as the backup storage. You need the following S3-related information:
    
@@ -12,6 +12,19 @@ In this tutorial we use the [AWS S3](https://aws.amazon.com/s3/) as the backup s
 * the S3 credentials to be used to access the storage. 
 
 If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-storage).
+
+Also, we will use some files from the Operator repository for setting up 
+backups. So, clone the percona-server-mongodb-operator repository:
+
+``` {.bash data-prompt="$" }
+$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+$ cd percona-server-mongodb-operator
+```
+
+!!! note
+
+    It is crucial to specify the right branch with `-b`
+    option while cloning the code on this step. Please be careful.
 
 ## Configure backup storage {.power-number}
 
