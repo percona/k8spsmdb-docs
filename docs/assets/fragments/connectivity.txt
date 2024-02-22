@@ -23,7 +23,7 @@
     `percona-client`:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never -- bash -il
     ```
 
     Executing it may require some time to deploy the correspondent Pod.
