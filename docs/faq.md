@@ -42,7 +42,7 @@ Generally, rely on the quickstart guide if you are a beginner user of the
 specific platform and/or you are new to the Percona Operator for MongoDB as a
 whole.
 
-## Which versions of MongoDB the Operator supports?
+## Which versions of MongoDB does the Operator support?
 
 Percona Operator for MongoDB provides a ready-to-use installation of the
 MongoDB-based database cluster inside your Kubernetes installation. It works
@@ -88,7 +88,7 @@ and `sharding.mongos` sections.
 
 Find more information on sidecar containers in the appropriate [documentation page](sidecar.md#operator-sidecar).
 
-## How to provoke the initial sync of a Pod
+## How to provoke the initial sync of a Pod?
 
 There are certain situations where it might be necessary to delete all MongoDB
 instance data to force the resync. For example, there may be the following
