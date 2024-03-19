@@ -118,6 +118,7 @@ extra: # Used in main.html template and can't be externalized
     https://docs.percona.com
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
+  commandName: 'kubectl'
   release: '1.15.0'
   apiversion: '1'  
   mongodb60recommended: '6.0.9-7'

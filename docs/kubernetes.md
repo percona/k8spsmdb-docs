@@ -107,21 +107,11 @@
 
     --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
-9. Check connectivity to a newly created cluster.
+## Verifying the cluster operation
 
-    First of all, run a container with a MongoDB client and connect its console
-    output to your terminal. The following command will do this, naming the new
-    Pod `percona-client`:
+It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+command finally shows you the cluster status as `ready`, you can try to connect
+to the cluster.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-    ```
+{% include 'assets/fragments/connectivity.txt' %}
 
-    Executing it may require some time to deploy the correspondent Pod. Now run
-    `mongo` tool in the percona-client command shell using the login (which is
-    `userAdmin`) with a proper password obtained from the Secret, and a proper
-    namespace name instead of the `<namespace name>` placeholder:
-
-    ``` {.bash data-prompt="percona-client:/$" }
-    percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-    ```

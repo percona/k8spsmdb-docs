@@ -1,5 +1,7 @@
 # Install Percona Server for MongoDB on OpenShift
 
+{%set commandName = 'oc' %}
+
 Percona Operator for Percona Server for MongoDB is a [Red Hat Certified Operator](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification). This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.
 
 Installing Percona Server for MongoDB on OpenShift includes two steps:
@@ -160,20 +162,10 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
         --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
 
-4. Check connectivity to newly created cluster.
+## Verifying the cluster operation
 
-    First of all, run a container with a MongoDB client and connect its console
-    output to your terminal. The following command will do this, naming the new
-    Pod `percona-client`:
+It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+command finally shows you the cluster status as `ready`, you can try to connect
+to the cluster.
 
-    ``` {.bash data-prompt="$" }
-    $ oc run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-    ```
-
-    Executing it may require some time to deploy the correspondent Pod. Now run
-    `mongo` tool in the percona-client command shell using the login (which is
-    `userAdmin`) with a proper password obtained from the Secret:
-
-    ``` {.bash data-prompt="percona-client:/$" }
-    percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
-    ```
+{% include 'assets/fragments/connectivity.txt' %}
