@@ -1,5 +1,7 @@
 # Install Percona Operator for MongoDB in multi-namespace (cluster-wide) mode
 
+## Difference between single-namespace and multi-namespace Operator deployment
+
 By default, Percona Operator for MongoDB functions in a specific Kubernetes
 namespace. You can create one during installation (like it is shown in the
 [installation instructions](kubernetes.md#install-kubernetes)) or just use the
@@ -22,6 +24,8 @@ limited to a specific namespace. But it is possible to run it in so-called
     Please take into account that if several Operators are configured to
     watch the same namespace, it is entirely unpredictable which one will get
     ownership of the Custom Resource in it, so this situation should be avoided.
+
+## Installing the Operator in cluster-wide mode
 
 To use the Operator in such *cluster-wide* mode, you should install it with a
 different set of configuration YAML files, which are available in the `deploy`

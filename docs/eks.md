@@ -136,7 +136,7 @@ $ kubectl get pods
 
 ??? example "Expected output"
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+    --8<-- "cli/kubectl-get-pods-response.md"
 
 If the command output had shown some errors, you can examine the problematic
 Pod with the `kubectl describe <pod name>` command as follows:

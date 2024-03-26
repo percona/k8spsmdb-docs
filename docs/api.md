@@ -74,7 +74,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-create-cluster-request-json.txt"
+    --8<-- "cli/api-create-cluster-request-json.md"
 
 **Inputs:**
 
@@ -169,7 +169,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-create-cluster-response-json.txt"
+    --8<-- "cli/api-create-cluster-response-json.md"
 
 ## List Percona Server for MongoDB clusters
 
@@ -215,7 +215,7 @@ None
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-list-cluster-response-json.txt"
+    --8<-- "cli/api-list-cluster-response-json.md"
 
 ## Get status of Percona Server for MongoDB cluster
 
@@ -261,7 +261,7 @@ None
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-get-status-of-cluster-response-json.txt"
+    --8<-- "cli/api-get-status-of-cluster-response-json.md"
 
 ## Scale up/down Percona Server for MongoDB cluster
 
@@ -307,7 +307,7 @@ $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/d
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-scale-cluster-request-json.txt"
+    --8<-- "cli/api-scale-cluster-request-json.md"
 
 **Input:**
 
@@ -322,7 +322,7 @@ $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/d
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-scale-cluster-response-json.txt"
+    --8<-- "cli/api-scale-cluster-response-json.md"
 
 ## Update Percona Server for MongoDB cluster image
 
@@ -368,7 +368,7 @@ $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/d
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-update-cluster-image-request-json.txt"
+    --8<-- "cli/api-update-cluster-image-request-json.md"
 
 **Input:**
 
@@ -383,7 +383,7 @@ $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/d
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-update-cluster-image-response-json.txt"
+    --8<-- "cli/api-update-cluster-image-response-json.md"
 
 ## Backup Percona Server for MongoDB cluster
 
@@ -424,7 +424,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/de
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-backup-cluster-request-json.txt"
+    --8<-- "cli/api-backup-cluster-request-json.md"
 
 **Input:**
 
@@ -446,7 +446,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/de
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-backup-cluster-response-json.txt"
+    --8<-- "cli/api-backup-cluster-response-json.md"
 
 ## Restore Percona Server for MongoDB cluster
 
@@ -488,7 +488,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/de
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-restore-cluster-request-json.txt"
+    --8<-- "cli/api-restore-cluster-request-json.md"
 
 **Input:**
 
@@ -510,4 +510,4 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/de
 
 ??? example
 
-    --8<-- "./docs/assets/code/api-restore-cluster-response-json.txt"
+    --8<-- "cli/api-restore-cluster-response-json.md"
