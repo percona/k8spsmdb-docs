@@ -158,7 +158,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
         The result should look as follows:
 
-        --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+        --8<-- "cli/kubectl-get-pods-response.md"
 
 4. Check connectivity to newly created cluster.
 

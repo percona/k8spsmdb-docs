@@ -49,7 +49,7 @@ $ kubectl get pods
 
 ???+ example "Expected output"
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+    --8<-- "cli/kubectl-get-pods-response.md"
 
 The above command provides the following insights:
 

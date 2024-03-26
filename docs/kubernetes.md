@@ -105,7 +105,7 @@
 
     The result should look as follows:
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+    --8<-- "cli/kubectl-get-pods-response.md"
 
 9. Check connectivity to a newly created cluster.
 
