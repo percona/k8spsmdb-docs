@@ -154,6 +154,7 @@ nav:
     - Installation:
           - "System requirements": System-Requirements.md
           - "Install on Minikube": minikube.md
+          - "Install with Everest": everest.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
