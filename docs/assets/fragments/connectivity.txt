@@ -7,7 +7,7 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     ```
     
     The Secrets object you are interested in has the
-    `my-cluster-name-secrets` name. 
+    `my-cluster-name-secrets` name by default.
     
 2. View the Secret contents to retrive the admin user credentials. 
 
