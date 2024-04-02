@@ -1,5 +1,7 @@
 # Install Percona Server for MongoDB on Minikube
 
+{%set clusterName = 'minimal-cluster' %}
+
 Installing the Percona Operator for MongoDB on [Minikube](https://github.com/kubernetes/minikube)
 is the easiest way to try it locally without a cloud provider. Minikube runs
 Kubernetes on GNU/Linux, Windows, or macOS system using a system-wide
@@ -72,8 +74,8 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 
 ## Verifying the cluster operation
 
-It may take ten minutes to get the cluster started. When `kubectl get psmdb`
-command finally shows you the cluster status as `ready`, you can try to connect
+It may take ten minutes to get the cluster started. When `kubectl get pods`
+command finally shows you the cluster is ready, you can try to connect
 to the cluster.
 
 {% include 'assets/fragments/connectivity.txt' %}

@@ -96,16 +96,20 @@
     $ kubectl apply -f deploy/cr.yaml
     ```
 
-    The creation process may take some time. The process is over when all Pods
-    have reached their Running status. You can check it with the following command:
+    The creation process may take some time. When the process is over your
+    cluster will obtain the `ready` status. You can check it with the following
+    command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get pods
+    $ kubectl get psmdb
     ```
 
-    The result should look as follows:
+    ??? example "Expected output"
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+        ``` {.text .no-copy}
+        NAME              ENDPOINT                                           STATUS   AGE
+        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+        ```
 
 ## Verifying the cluster operation
 

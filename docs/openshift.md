@@ -151,20 +151,24 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
         $ oc apply -f deploy/cr.yaml
         ```
 
-        The creation process will take time. The process is complete when all Pods
-        have reached their Running status. You can check it with the following command:
+        The creation process will take time. When the process is over your
+        cluster will obtain the `ready` status. You can check it with the 
+        following command:
 
         ``` {.bash data-prompt="$" }
-        $ oc get pods
+        $ oc get psmdb
         ```
 
-        The result should look as follows:
+        ??? example "Expected output"
 
-        --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+            ``` {.text .no-copy}
+            NAME              ENDPOINT                                           STATUS   AGE
+            my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+            ```
 
 ## Verifying the cluster operation
 
-It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+It may take ten minutes to get the cluster started. When `oc get psmdb`
 command finally shows you the cluster status as `ready`, you can try to connect
 to the cluster.
 
