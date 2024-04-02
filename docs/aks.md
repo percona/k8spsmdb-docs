@@ -46,7 +46,7 @@ to make `kubectl` be able to use it.
 az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 ```
 
-# Install the Operator and deploy your MongoDB cluster
+## Install the Operator and deploy your MongoDB cluster
 
 1. Deploy the Operator. By default deployment will be done in the `default`
     namespace. If that's not the desired one, you can create a new namespace
