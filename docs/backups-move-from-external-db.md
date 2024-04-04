@@ -2,18 +2,18 @@
 
 The Operator allows restoring a backup not only on the Kubernetes cluster where
 it was made, but also on any Kubernetes-based environment with the installed
-Operator, and the backup/restore tool actually used by the Operator is the [Percona Backup for MongoDB](https://github.com/percona/percona-backup-mongodb).
+Operator, and the backup/restore tool actually used by the Operator is the [Percona Backup for MongoDB :material-arrow-top-right:](https://github.com/percona/percona-backup-mongodb).
 That makes it possible to *move* external MongoDB Cluster to Kubernetes with
 Percona Backup for MongoDB.
 
 !!! note
 
     There are other scenarios for migrating MongoDB database to Kubernetes as
-    well. For example, [this blogpost](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
+    well. For example, [this blogpost :material-arrow-top-right:](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
     covers migration based on the regular MongoDB replication capabilities.
 
-Backups can be stored either locally, or remotely (on [Amazon S3 or S3-compatible storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
-or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)).
+Backups can be stored either locally, or remotely (on [Amazon S3 or S3-compatible storage :material-arrow-top-right:](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
+or on [Azure Blob Storage :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/storage/blobs/)).
  S3-compatible storage to be used for backups.
 
 1. Make sure the following prerequisite requirements are satisfied within your
@@ -21,19 +21,19 @@ or on [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/bl
 
     * Percona Backup for MongoDB packages are installed on the replica set nodes
         of the source cluster
-        [following the official installation instructions](https://docs.percona.com/percona-backup-mongodb/installation.html),
+        [following the official installation instructions :material-arrow-top-right:](https://docs.percona.com/percona-backup-mongodb/installation.html),
         and the authentication of the pbm-agent
-        [is configured](https://docs.percona.com/percona-backup-mongodb/initial-setup.html#configure-authentication-in-mongodb)
+        [is configured :material-arrow-top-right:](https://docs.percona.com/percona-backup-mongodb/initial-setup.html#configure-authentication-in-mongodb)
         to allow it accessing your database.
 
     * The Operator and the *destination* cluster should be
         [installed](index.md#quickstart-guides) in the Kuberentes-based
         environment. For simplicity, it's reasonable to have the same topology
         of the *source* and *destination* clusters, although Percona Backup for
-        MongoDB [allows replset-remapping](https://www.percona.com/blog/moving-mongodb-cluster-to-a-different-environment-with-percona-backup-for-mongodb/) as well.
+        MongoDB [allows replset-remapping :material-arrow-top-right:](https://www.percona.com/blog/moving-mongodb-cluster-to-a-different-environment-with-percona-backup-for-mongodb/) as well.
 
 2. Configure the cloud storage for backups on your *source* cluster following
-    the [official guide](https://docs.percona.com/percona-backup-mongodb/initial-setup.html#configure-remote-backup-storage).
+    the [official guide :material-arrow-top-right:](https://docs.percona.com/percona-backup-mongodb/initial-setup.html#configure-remote-backup-storage).
     For example, using the Amazon S3 storage can be configured with the
     following YAML file:
 

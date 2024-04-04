@@ -14,8 +14,8 @@ Operator version 1.5.0 or earlier), and you have to carry on upgrades manually.
 Percona Server for MongoDB can be upgraded manually using one of the following
 *upgrade strategies*:
 
-* *Rolling Update*, initiated manually and [controlled by Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies),
-* *On Delete*, [done by Kubernetes on per-Pod basis](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) when Pods are manually deleted.
+* *Rolling Update*, initiated manually and [controlled by Kubernetes :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies),
+* *On Delete*, [done by Kubernetes on per-Pod basis :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) when Pods are manually deleted.
 
 !!! warning
 
@@ -35,7 +35,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
 1. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to 
     `RollingUpdate`.
 
-2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
+2. Now you should [apply a patch :material-arrow-top-right:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
     Custom Resource, setting necessary image names with a newer version tag.
 
     !!! note
@@ -60,7 +60,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
@@ -86,7 +86,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
 1. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to
     `OnDelete`.
 
-2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
+2. Now you should [apply a patch :material-arrow-top-right:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
     Custom Resource, setting necessary image names with a newer version tag.
 
     !!! note
@@ -112,7 +112,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
 
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{

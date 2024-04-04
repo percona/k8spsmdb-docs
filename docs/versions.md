@@ -4,7 +4,7 @@ Versions of the cluster components and platforms tested with different Operator 
 
 Cluster components:
 
-| Operator | [MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
+| Operator | [MongoDB :material-arrow-top-right:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB :material-arrow-top-right:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
 | [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 4.4 - 6.0          | 2.3.0 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 4.4 - 6.0          | 2.0.4, 2.0.5 |
@@ -24,7 +24,7 @@ Cluster components:
 
 Platforms:
 
-| Operator | [GKE](https://cloud.google.com/kubernetes-engine)         | [EKS](https://aws.amazon.com)         | [Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube](https://github.com/kubernetes/minikube)                          |
+| Operator | [GKE :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine)         | [EKS :material-arrow-top-right:](https://aws.amazon.com)         | [Openshift :material-arrow-top-right:](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube :material-arrow-top-right:](https://github.com/kubernetes/minikube)                          |
 |:--------|:------------|:------------|:------------|:------------|:----------------------------------|
 | [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 1.24 - 1.28 | 1.24 - 1.28 | 4.11 - 4.13 | 1.25 - 1.28 | 1.31.2 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 1.22 - 1.25 | 1.22 - 1.24 | 4.10 - 4.12 | 1.23 - 1.25 | 1.29 |
@@ -42,4 +42,4 @@ Platforms:
 | [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | -           | -           | 3.11, 4.0   | - | -    |
 | [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | -           | -           | 3.11, 4.0   | - | -    |
 
-More detailed information about the cluster components for the current version of the Operator can be found [in the system requirements](System-Requirements.md) and [in the list of certified images](images.md). For previous releases of the Operator, you can check the same pages [in the documentation archive](https://docs.percona.com/legacy-documentation/).
+More detailed information about the cluster components for the current version of the Operator can be found [in the system requirements](System-Requirements.md) and [in the list of certified images](images.md). For previous releases of the Operator, you can check the same pages [in the documentation archive :material-arrow-top-right:](https://docs.percona.com/legacy-documentation/).

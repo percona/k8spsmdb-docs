@@ -2,40 +2,40 @@
 
 This guide shows you how to deploy Percona Operator for MongoDB on Microsoft
 Azure Kubernetes Service (AKS). The document assumes some experience with the
-platform. For more information on the AKS, see the [Microsoft AKS official documentation](https://azure.microsoft.com/en-us/services/kubernetes-service/).
+platform. For more information on the AKS, see the [Microsoft AKS official documentation :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/kubernetes-service/).
 
 ## Prerequisites
 
 The following tools are used in this guide and therefore should be preinstalled:
 
 1. **Azure Command Line Interface (Azure CLI)** for interacting with the different
-    parts of AKS. You can install it following the [official installation instructions for your system](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+    parts of AKS. You can install it following the [official installation instructions for your system :material-arrow-top-right:](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 
 2. **kubectl**  to manage and deploy applications on Kubernetes. Install
-    it [following the official installation instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+    it [following the official installation instructions :material-arrow-top-right:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
 Also, you need to sign in with Azure CLI using your credentials according to the
-[official guide](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli).
+[official guide :material-arrow-top-right:](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli).
 
 ## Create and configure the AKS cluster
 
 To create your cluster, you will need the following data:
 
 * name of your AKS cluster,
-* an [Azure resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview), in which resources of your cluster will be deployed and managed.
+* an [Azure resource group :material-arrow-top-right:](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview), in which resources of your cluster will be deployed and managed.
 * the amount of nodes you would like tho have.
 
 You can create your cluster via command line using `az aks create` command.
-The following command will create a 3-node cluster named `my-cluster-name` within some [already existing](https://docs.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#create-a-resource-group) resource group named `my-resource-group`:
+The following command will create a 3-node cluster named `my-cluster-name` within some [already existing :material-arrow-top-right:](https://docs.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#create-a-resource-group) resource group named `my-resource-group`:
 
 ``` {.bash data-prompt="$" }
 $ az aks create --resource-group my-resource-group --name my-cluster-name --enable-managed-identity --node-count 3 --node-vm-size Standard_B4ms --node-osdisk-size 30 --network-plugin kubenet  --generate-ssh-keys --outbound-type loadbalancer
 ```
 
 Other parameters in the above example specify that we are creating a cluster
-with machine type of [Standard_B4ms](https://azureprice.net/vm/Standard_B4ms)
+with machine type of [Standard_B4ms :material-arrow-top-right:](https://azureprice.net/vm/Standard_B4ms)
 and OS disk size reduced to 30 GiB. You can see detailed information about
-cluster creation options in the [AKS official documentation](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest).
+cluster creation options in the [AKS official documentation :material-arrow-top-right:](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest).
 
 You may wait a few minutes for the cluster to be generated.
 
@@ -59,7 +59,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context (`<cluster name>`) was modified.
 
-    Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+    Deploy the Operator [using :material-arrow-top-right:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
@@ -92,7 +92,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     !!! note
 
         This deploys default MongoDB cluster configuration, three mongod, three mongos, and
-        three config server instances. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        three config server instances. Please see [deploy/cr.yaml :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
         and [Custom Resource Options](operator.md#operator-custom-resource-options)
         for the configuration options. You can clone the repository with all
         manifests and source code by executing the following command:

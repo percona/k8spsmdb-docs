@@ -1,10 +1,10 @@
 # Configure storage for backups
 
 You can configure storage for backups in the `backup.storages` subsection of the
-Custom Resource, using the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+Custom Resource, using the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 configuration file.
 
-You should also create the [Kubernetes Secret](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials needed
+You should also create the [Kubernetes Secret :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials needed
 to access the storage.
 
 === "Amazon S3 or S3-compatible storage"
@@ -19,7 +19,7 @@ to access the storage.
             keys should contain proper values to make the access possible).
 
         Create the Secrets file with these base64-encoded keys following the
-        [deploy/backup-s3.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml)
+        [deploy/backup-s3.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml)
         example:
 
         ```yaml
@@ -72,11 +72,11 @@ to access the storage.
            bucket. If prefix is not set, backups are stored in the root directory.
     
         * if you use some S3-compatible storage instead of the original Amazon S3,
-            add the [endpointURL](https://docs.min.io/docs/aws-cli-with-minio.html)
+            add the [endpointURL :material-arrow-top-right:](https://docs.min.io/docs/aws-cli-with-minio.html)
             key in the `s3` subsection, which should point to the actual cloud used
             for backups. This value and is specific to the cloud provider. For
-            example, using [Google Cloud](https://cloud.google.com) involves the
-            [following](https://storage.googleapis.com) endpointUrl:
+            example, using [Google Cloud :material-arrow-top-right:](https://cloud.google.com) involves the
+            [following :material-arrow-top-right:](https://storage.googleapis.com) endpointUrl:
 
             ```yaml
             endpointUrl: https://storage.googleapis.com
@@ -87,7 +87,7 @@ to access the storage.
 
 
         Here is an example
-        of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+        of the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
         configuration file which configures Amazon S3 storage for backups:
 
         ```yaml
@@ -104,11 +104,11 @@ to access the storage.
           ...
         ```
         
-        ??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
+        ??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles :material-arrow-top-right:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
 
             Following steps are needed to turn this feature on:
 
-            * Create the [IAM instance profile](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
+            * Create the [IAM instance profile :material-arrow-top-right:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
                 and the permission policy within where you specify the access level that
                 grants the access to S3 buckets.
             * Attach the IAM profile to an EC2 instance.
@@ -185,7 +185,7 @@ to access the storage.
         in the [Operator Custom Resource options](operator.md#operator-backup-section).
 
         Here is an example
-        of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+        of the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
         configuration file which configures Azure Blob storage for backups:
 
         ```yaml

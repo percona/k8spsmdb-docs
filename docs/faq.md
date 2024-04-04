@@ -7,7 +7,7 @@ applications but provides ways to store state (in Persistent Volumes, etc.) if
 the application needs it. Generally, a stateless mode of operation is supposed
 to provide better safety, sustainability, and scalability, it makes the
 already-deployed components interchangeable. You can find more about substantial
-benefits brought by Kubernetes to databases in [this blog post](https://www.percona.com/blog/2020/10/08/the-criticality-of-a-kubernetes-operator-for-databases/).
+benefits brought by Kubernetes to databases in [this blog post :material-arrow-top-right:](https://www.percona.com/blog/2020/10/08/the-criticality-of-a-kubernetes-operator-for-databases/).
 
 The architecture of state-centric applications (like databases) should be
 composed in a right way to avoid crashes, data loss, or data inconsistencies
@@ -18,10 +18,10 @@ management of highly available MongoDB database clusters on Kubernetes.
 ## How can I contact the developers?
 
 The best place to discuss Percona Operator for MongoDB with developers and other
-community members is the [community forum](https://forums.percona.com/categories/kubernetes-operator-percona-server-mongodb).
+community members is the [community forum :material-arrow-top-right:](https://forums.percona.com/categories/kubernetes-operator-percona-server-mongodb).
 
 If you would like to report a bug, use the Percona Operator for MongoDB
-[project in JIRA](https://jira.percona.com/projects/K8SPSMDB).
+[project in JIRA :material-arrow-top-right:](https://jira.percona.com/projects/K8SPSMDB).
 
 ## What is the difference between the Operator quickstart and advanced installation ways?
 
@@ -49,13 +49,13 @@ MongoDB-based database cluster inside your Kubernetes installation. It works
 with Percona Server for MongoDB 4.2, and 4.4, and the exact version is
 determined by the Docker image in use.
 
-Percona-certified Docker images used by the Operator are listed [here](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/images.html).
+Percona-certified Docker images used by the Operator are listed [here :material-arrow-top-right:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/images.html).
 For example, Percona Server for MongoDB 4.4 is supported with the following
 recommended version: {{ mongodb44recommended }}. More details on the exact
 Percona Server for MongoDB version can be found in the release notes
-([5.0](https://docs.percona.com/percona-server-for-mongodb/5.0/release_notes/index.html),
-[4.4](https://www.percona.com/doc/percona-server-for-mongodb/4.4/release_notes/index.html),
-and [4.2](https://www.percona.com/doc/percona-server-for-mongodb/4.2/release_notes/index.html)).
+([5.0 :material-arrow-top-right:](https://docs.percona.com/percona-server-for-mongodb/5.0/release_notes/index.html),
+[4.4 :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/4.4/release_notes/index.html),
+and [4.2 :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/4.2/release_notes/index.html)).
 
 ## How can I add custom sidecar containers to my cluster?
 
@@ -83,7 +83,7 @@ and `sharding.mongos` sections.
 
 !!! note
 
-    Custom sidecar containers [can easily access other components of your cluster](https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication). Therefore
+    Custom sidecar containers [can easily access other components of your cluster :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication). Therefore
     they should be used carefully and by experienced users only.
 
 Find more information on sidecar containers in the appropriate [documentation page](sidecar.md#operator-sidecar).

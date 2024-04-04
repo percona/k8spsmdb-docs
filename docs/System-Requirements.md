@@ -11,15 +11,15 @@ tested. The Operator {{ release }} also uses Percona Backup for MongoDB
 The following platforms were tested and are officially supported by the Operator
 {{ release }}:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.24-1.28
+* [Google Kubernetes Engine (GKE) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine) 1.24-1.28
 
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.24-1.28
+* [Amazon Elastic Container Service for Kubernetes (EKS) :material-arrow-top-right:](https://aws.amazon.com) 1.24-1.28
 
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
+* [OpenShift Container Platform :material-arrow-top-right:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
 
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
+* [Azure Kubernetes Service (AKS) :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
 
-* [Minikube](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
+* [Minikube :material-arrow-top-right:](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
 
 Other Kubernetes platforms may also work but have not been tested.
 
@@ -42,4 +42,4 @@ is not enabled.
 !!! note
 
     Use Storage Class with XFS as the default filesystem if possible
-    [to achieve better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
+    [to achieve better MongoDB performance :material-arrow-top-right:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).

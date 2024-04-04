@@ -2,7 +2,7 @@
 
 In this tutorial you will learn to insert sample data to Percona Server for MongoDB.
 
-MongoDB provides [multiple methods for data insert](https://www.mongodb.com/docs/v7.0/reference/insert-methods/). We will use a `For` loop to insert some sample documents.
+MongoDB provides [multiple methods for data insert :material-arrow-top-right:](https://www.mongodb.com/docs/v7.0/reference/insert-methods/). We will use a `For` loop to insert some sample documents.
 {.power-number}
 
 1. Run the following command: 

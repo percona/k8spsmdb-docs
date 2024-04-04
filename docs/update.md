@@ -61,7 +61,7 @@ than one, make several incremental updates sequentially.
 
 The upgrade includes the following steps.
 
-1. Update the [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+1. Update the [Custom Resource Definition :material-arrow-top-right:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator, taking it from the official repository on Github, and do
     the same for the Role-based access control:
 
@@ -70,7 +70,7 @@ The upgrade includes the following steps.
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
-2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+2. Now you should [apply a patch :material-arrow-top-right:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
     to your deployment, supplying necessary image name with a newer version
     tag. You can find the proper
     image name for the current Operator release [in the list of certified images](images.md#custom-registry-images).
@@ -98,16 +98,16 @@ The upgrade includes the following steps.
 If you have [installed the Operator using Helm](helm.md), you can upgrade the
 Operator with the `helm upgrade` command.
 
-1. In case if you installed the Operator with no [customized parameters](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), the upgrade can be done as follows: 
+1. In case if you installed the Operator with no [customized parameters :material-arrow-top-right:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), the upgrade can be done as follows: 
 
     ``` {.bash data-prompt="$" }
     $ helm upgrade my-op percona/psmdb-operator --version {{ release }}
     ```
 
-    The `my-op` parameter in the above example is the name of a [release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+    The `my-op` parameter in the above example is the name of a [release object :material-arrow-top-right:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
     which which you have chosen for the Operator when installing its Helm chart.
 
-    If the Operator was installed with some [customized parameters](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), you should list these options in the upgrade command.
+    If the Operator was installed with some [customized parameters :material-arrow-top-right:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), you should list these options in the upgrade command.
     
     
     !!! note
@@ -118,7 +118,7 @@ Operator with the `helm upgrade` command.
         $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
         ```
 
-2. Update the [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+2. Update the [Custom Resource Definition :material-arrow-top-right:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator, taking it from the official repository on Github, and do
     the same for the Role-based access control:
 
@@ -163,7 +163,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
         ...
     ```
 
-2. Now [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+2. Now [apply a patch :material-arrow-top-right:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
     to your Custom Resource, setting necessary Custom Resource version and image
     names with a newer version tag.
 
@@ -190,7 +190,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
@@ -364,10 +364,10 @@ spec:
     sure to remove incompatible features that are persisted and/or update
     incompatible configuration settings. Compatibility issues between major
     MongoDB versions can be found in
-    [upstream documentation](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
+    [upstream documentation :material-arrow-top-right:](https://docs.mongodb.com/manual/release-notes/4.4-downgrade-standalone/#prerequisites).
 
 By default the Operator doesn’t set
-[FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
+[FeatureCompatibilityVersion (FCV) :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
 to match the new version, thus making sure that backwards-incompatible features
 are not automatically enabled with the major version upgrade (which is
 recommended and safe behavior). You can turn this backward compatibility off at

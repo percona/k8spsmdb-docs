@@ -2,7 +2,7 @@
 
 You can customize the configuration of Percona Server for MongoDB and install it with customized parameters.
 
-To check available configuration options, see [`deploy/cr.yaml`](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md).
+To check available configuration options, see [`deploy/cr.yaml` :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md).
 
 === "`kubectl`"
 
@@ -29,7 +29,7 @@ To check available configuration options, see [`deploy/cr.yaml`](https://raw.git
     $ helm install --set key=value
     ```
 
-    You can pass any of the Operator’s [Custom Resource options](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
+    You can pass any of the Operator’s [Custom Resource options :material-arrow-top-right:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
     `--set key=value[,key=value]` argument.    
 
     !!! note

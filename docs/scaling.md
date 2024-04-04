@@ -18,7 +18,7 @@ failures.
 There are multiple components that Operator deploys and manages: MongoDB replica
 set instances, mongos and config server instances, etc. To add or reduce CPU or
 Memory you need to edit corresponding sections in the Custom Resource. We follow
-the structure for requests and limits that Kubernetes [provides](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+the structure for requests and limits that Kubernetes [provides :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
 
 To add more resources to your MongoDB replica set instances, edit the following
 section in the Custom Resource:
@@ -50,7 +50,7 @@ PVC object. The user cannot shrink the size of an existing PVC object.
 
 Certain volume types support PVCs expansion (exact details about
 PVCs and the supported volume types can be found in [Kubernetes
-documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims)).
+documentation :material-arrow-top-right:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims)).
 
 You can run the following command to check if your storage supports the expansion capability:
 
@@ -269,9 +269,9 @@ setting this option in the appropriate subsections:
 * [replsets.arbiter.size](operator.md#replsets-arbiter-size) allows to set the
     number of [Replica Set Arbiter instances](arbiter.md#arbiter),
 * [sharding.configsvrReplSet.size](operator.md#sharding-configsvrreplset-size)
-    allows to set the number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/),
+    allows to set the number of [Config Server instances :material-arrow-top-right:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/),
 * [sharding.mongos.size](operator.md#sharding-mongos-size) allows to set the
-    number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/)
+    number of [mongos :material-arrow-top-right:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/)
     instances.
 
 For example, the following update in `deploy/cr.yaml` will set the size of the

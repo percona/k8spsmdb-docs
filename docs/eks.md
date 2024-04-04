@@ -2,23 +2,23 @@
 
 This guide shows you how to deploy Percona Operator for MongoDB on Amazon
 Elastic Kubernetes Service (EKS). The document assumes some experience with the
-platform. For more information on the EKS, see the [Amazon EKS official documentation](https://aws.amazon.com/eks/).
+platform. For more information on the EKS, see the [Amazon EKS official documentation :material-arrow-top-right:](https://aws.amazon.com/eks/).
 
 ## Prerequisites
 
 The following tools are used in this guide and therefore should be preinstalled:
 
 1. **AWS Command Line Interface (AWS CLI)** for interacting with the different
-    parts of AWS. You can install it following the [official installation instructions for your system](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+    parts of AWS. You can install it following the [official installation instructions for your system :material-arrow-top-right:](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 
 2. **eksctl** to simplify cluster creation on EKS. It can be installed
-    along its [installation notes on GitHub](https://github.com/weaveworks/eksctl#installation).
+    along its [installation notes on GitHub :material-arrow-top-right:](https://github.com/weaveworks/eksctl#installation).
 
 3. **kubectl**  to manage and deploy applications on Kubernetes. Install
-    it [following the official installation instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+    it [following the official installation instructions :material-arrow-top-right:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
 Also, you need to configure AWS CLI with your credentials according to the
-[official guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
+[official guide :material-arrow-top-right:](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
 
 ## Create the EKS cluster
 
@@ -27,19 +27,19 @@ Also, you need to configure AWS CLI with your credentials according to the
     * name of your EKS cluster,
     * AWS region in which you wish to deploy your cluster,
     * the amount of nodes you would like tho have,
-    * the desired ratio between [on-demand](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)
-        and [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+    * the desired ratio between [on-demand :material-arrow-top-right:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html)
+        and [spot :material-arrow-top-right:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
         instances in the total number of nodes.
 
     !!! note
 
-        [spot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+        [spot :material-arrow-top-right:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
         instances are not recommended for production environment, but may be useful
         e.g. for testing purposes.
 
-    After you have settled all the needed details, create your EKS cluster [following the official cluster creation instructions](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html).
+    After you have settled all the needed details, create your EKS cluster [following the official cluster creation instructions :material-arrow-top-right:](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html).
 
-2. After you have created the EKS cluster, you also need to [install the Amazon EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on your cluster. See the [official documentation](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html) on adding it as an Amazon EKS add-on.
+2. After you have created the EKS cluster, you also need to [install the Amazon EBS CSI driver :material-arrow-top-right:](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on your cluster. See the [official documentation :material-arrow-top-right:](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html) on adding it as an Amazon EKS add-on.
 
 ## Install the Operator and deploy your MongoDB cluster
 
@@ -54,7 +54,7 @@ Also, you need to configure AWS CLI with your credentials according to the
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context was modified.
 
-    Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+    Deploy the Operator [using :material-arrow-top-right:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
@@ -87,7 +87,7 @@ Also, you need to configure AWS CLI with your credentials according to the
     !!! note
 
         This deploys default MongoDB cluster configuration, three mongod, three mongos, and
-        three config server instances. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        three config server instances. Please see [deploy/cr.yaml :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
         and [Custom Resource Options](operator.md#operator-custom-resource-options)
         for the configuration options. You can clone the repository with all
         manifests and source code by executing the following command:

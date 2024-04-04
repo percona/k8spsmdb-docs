@@ -2,7 +2,7 @@
 
 This guide shows you how to deploy Percona Operator for MongoDB on Google
 Kubernetes Engine (GKE). The document assumes some experience with the platform.
-For more information on the GKE, see the [Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
+For more information on the GKE, see the [Kubernetes Engine Quickstart :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/quickstart).
 
 ## Prerequisites
 
@@ -12,12 +12,12 @@ To use *Google Cloud shell*, you need nothing but a modern web browser.
 
 If you would like to use *your local shell*, install the following:
 
-1. [gcloud](https://cloud.google.com/sdk/docs/quickstarts). This tool is
+1. [gcloud :material-arrow-top-right:](https://cloud.google.com/sdk/docs/quickstarts). This tool is
     part of the Google Cloud SDK. To install it, select your operating
-    system on the [official Google Cloud SDK documentation page](https://cloud.google.com/sdk/docs)
+    system on the [official Google Cloud SDK documentation page :material-arrow-top-right:](https://cloud.google.com/sdk/docs)
     and then follow the instructions.
 
-2. [kubectl](https://cloud.google.com/kubernetes-engine/docs/quickstart#choosing_a_shell).
+2. [kubectl :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/quickstart#choosing_a_shell).
     It is the Kubernetes command-line tool you will use to manage and deploy
     applications. To install the tool, run the following command:
 
@@ -29,7 +29,7 @@ If you would like to use *your local shell*, install the following:
 ## Create and configure the GKE cluster
 
 You can configure the settings using the `gcloud` tool. You can run it either in
-the [Cloud Shell](https://cloud.google.com/shell/docs/quickstart) or in your
+the [Cloud Shell :material-arrow-top-right:](https://cloud.google.com/shell/docs/quickstart) or in your
 local shell (if you have installed Google Cloud SDK locally on the previous
 step). The following command will create a cluster named `my-cluster-name`:
 
@@ -65,7 +65,7 @@ command in your local shell:
 $ gcloud container clusters get-credentials my-cluster-name --zone us-central1-a --project <project name>
 ```
 
-Finally, use your [Cloud Identity and Access Management (Cloud IAM)](https://cloud.google.com/iam)
+Finally, use your [Cloud Identity and Access Management (Cloud IAM) :material-arrow-top-right:](https://cloud.google.com/iam)
 to control access to the cluster. The following command will give you the
 ability to create Roles and RoleBindings:
 
@@ -92,7 +92,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context (`gke_<project name>_<zone location>_<cluster name>`) was modified.
 
-    Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+    Deploy the Operator [using :material-arrow-top-right:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
@@ -125,7 +125,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
     !!! note
 
         This deploys default MongoDB cluster configuration, three mongod, three mongos, and
-        three config server instances. Please see [deploy/cr.yaml](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
+        three config server instances. Please see [deploy/cr.yaml :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
         and [Custom Resource Options](operator.md#operator-custom-resource-options)
         for the configuration options. You can clone the repository with all
         manifests and source code by executing the following command:

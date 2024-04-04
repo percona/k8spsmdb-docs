@@ -7,7 +7,7 @@ speed on an SSD-equipped machine, or reduce costs by choosing nodes in the same
 availability zone.
 
 The appropriate (sub)sections (`replsets`, `replsets.arbiter`, `backup`, etc.)
-of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+of the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file contain the keys which can be used to do assign pods to nodes.
 
 ## Node selector
@@ -64,7 +64,7 @@ affinity:
 The previous method can be used without special knowledge of the Kubernetes way
 of assigning Pods to specific nodes. Still, in some cases, more complex
 tuning may be needed. In this case, the `advanced` option placed in the
-[deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+[deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file turns off the effect of the `antiAffinityTopologyKey` and allows
 the use of the standard Kubernetes affinity constraints of any complexity:
 
@@ -111,7 +111,7 @@ affinity:
 ```
 
 See explanation of the advanced affinity options [in Kubernetes
-documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature).
+documentation :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature).
 
 ## Topology Spread Constraints
 
@@ -134,7 +134,7 @@ topologySpreadConstraints:
     whenUnsatisfiable: DoNotSchedule
 ```
 
-You can see the explanation of these affinity options [in Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+You can see the explanation of these affinity options [in Kubernetes documentation :material-arrow-top-right:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 ## Tolerations
 
@@ -162,7 +162,7 @@ tolerations:
   tolerationSeconds: 6000
 ```
 
-The [Kubernetes Taints and Toleratins](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
+The [Kubernetes Taints and Toleratins :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
 contains more examples on this topic.
 
 ## Priority Classes
@@ -172,25 +172,25 @@ scheduler to distinguish more and less important Pods when needed, such as the
 situation when a higher priority Pod cannot be scheduled without evicting a
 lower priority one. This ability can be accomplished by adding one or more
 PriorityClasses in your Kubernetes cluster, and specifying the
-`PriorityClassName` in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+`PriorityClassName` in the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file:
 
 ```yaml
 priorityClassName: high-priority
 ```
 
-See the [Kubernetes Pods Priority and Preemption documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption)
+See the [Kubernetes Pods Priority and Preemption documentation :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption)
 to find out how to define and use priority classes in your cluster.
 
 ## Pod Disruption Budgets
 
-Creating the [Pod Disruption Budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
+Creating the [Pod Disruption Budget :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
 is the Kubernetes method to limit the number of Pods of an application that can
 go down simultaneously due to  *voluntary disruptions* such as the cluster
 administrator’s actions during a deployment update. Distribution Budgets allow
 large applications to retain their high availability during maintenance and
 other administrative activities. The `maxUnavailable` and `minAvailable` options
-in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+in the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file can be used to set these limits. The recommended variant is the following:
 
 ```yaml

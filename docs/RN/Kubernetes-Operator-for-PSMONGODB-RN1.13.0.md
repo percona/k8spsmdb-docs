@@ -73,14 +73,14 @@ The Operator was developed and tested with Percona Server for MongoDB 4.2.22, 4.
 
 The following platforms were tested and are officially supported by the Operator 1.13.0:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - 1.23
+* [Google Kubernetes Engine (GKE) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine) 1.21 - 1.23
 
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.21 - 1.23
+* [Amazon Elastic Container Service for Kubernetes (EKS) :material-arrow-top-right:](https://aws.amazon.com) 1.21 - 1.23
 
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
+* [OpenShift Container Platform :material-arrow-top-right:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
 
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
+* [Azure Kubernetes Service (AKS) :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
 
-* [Minikube](https://github.com/kubernetes/minikube) 1.26
+* [Minikube :material-arrow-top-right:](https://github.com/kubernetes/minikube) 1.26
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.

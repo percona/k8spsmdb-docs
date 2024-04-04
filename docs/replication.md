@@ -24,11 +24,11 @@ This feature can be useful in several cases:
   cluster**. It's the **unmanaged cluster** if it's running on Kubernetes.
 - **Managed cluster**: The cluster controlled by operator. The operator controls
   everything from [Replica Set
-  configuration](https://www.mongodb.com/docs/manual/reference/replica-configuration/)
+  configuration :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/replica-configuration/)
   to users credentials. It's the default deployment of the operator.
 - **Unmanaged cluster**: The cluster controlled by operator but the operator
   isn't responsible for managing [Replica Set
-  configuration](https://www.mongodb.com/docs/manual/reference/replica-configuration/).
+  configuration :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/replica-configuration/).
 
 ## Topologies
 
@@ -40,7 +40,7 @@ control.
 You need to have a single _Main_ cluster but you can have multiple _Replica_
 clusters as long as you don't have more than 50 members in Replica Set. This
 limitation comes from MongoDB itself, for more information please check [MongoDB
-docs](https://www.mongodb.com/docs/manual/core/replica-set-members/#replica-set-members).
+docs :material-arrow-top-right:](https://www.mongodb.com/docs/manual/core/replica-set-members/#replica-set-members).
 
 ### Main and Replica clusters on Kubernetes
 

@@ -4,23 +4,23 @@ Monitoring the state of the database is crucial to timely identify and react to 
 
 However, the database state also depends on the state of the Kubernetes cluster itself. Hence it’s important to have metrics that can depict the state of the Kubernetes cluster.
 
-This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server](https://docs.percona.com/percona-monitoring-and-management/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
+This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
 
 ## Pre-requisites
 
 To set up monitoring of Kubernetes, you need the following:
 
-1. PMM Server up and running. You can run PMM Server as a Docker image, a virtual appliance, or on an AWS instance. Please refer to the [official PMM documentation](https://docs.percona.com/percona-monitoring-and-management/setting-up/server/index.html) for the installation instructions.
+1. PMM Server up and running. You can run PMM Server as a Docker image, a virtual appliance, or on an AWS instance. Please refer to the [official PMM documentation :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/setting-up/server/index.html) for the installation instructions.
 
-2. [Helm v3](https://docs.helm.sh/using_helm/#installing-helm).
-3. [kubectl](https://kubernetes.io/docs/tasks/tools/).
+2. [Helm v3 :material-arrow-top-right:](https://docs.helm.sh/using_helm/#installing-helm).
+3. [kubectl :material-arrow-top-right:](https://kubernetes.io/docs/tasks/tools/).
 4. The PMM Server API key. The key must have the role "Admin".
 
     Get the PMM API key: 
 
     === ":material-view-dashboard-variant: From PMM UI" 
 
-        [Generate the PMM API key](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication){.md-button} 
+        [Generate the PMM API key :material-arrow-top-right:](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication){.md-button} 
 
     === ":material-console: From command line"
 
@@ -68,7 +68,7 @@ To set up monitoring of Kubernetes, you need the following:
     You may need to customize the default parameters of the Victoria metrics Kubernetes stack.     
 
     * Since we use the PMM Server for monitoring, there is no need to store the data in Victoria Metrics Operator. Therefore, the Victoria Metrics Helm chart is installed with the `vmsingle.enabled` and `vmcluster.enabled` parameters set to `false` in this setup.
-    * [Check all the role-based access control (RBAC) rules](https://helm.sh/docs/topics/rbac/) of the `victoria-metrics-k8s-stack` chart and the dependencies chart, and modify them based on your requirements.     
+    * [Check all the role-based access control (RBAC) rules :material-arrow-top-right:](https://helm.sh/docs/topics/rbac/) of the `victoria-metrics-k8s-stack` chart and the dependencies chart, and modify them based on your requirements.     
 
     #### Configure authentication in PMM    
 
@@ -93,7 +93,7 @@ To set up monitoring of Kubernetes, you need the following:
         $ kubectl create namespace monitoring-system
         ```    
 
-    3. Create the YAML file for the [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.    
+    3. Create the YAML file for the [Kubernetes Secrets :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.    
 
         ```yaml title="pmm-api-vmoperator.yaml"
         apiVersion: v1
@@ -120,11 +120,11 @@ To set up monitoring of Kubernetes, you need the following:
 
     #### Create a ConfigMap to mount for `kube-state-metrics`     
 
-    The [`kube-state-metrics` (KSM)](https://github.com/kubernetes/kube-state-metrics) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources.     
+    The [`kube-state-metrics` (KSM) :material-arrow-top-right:](https://github.com/kubernetes/kube-state-metrics) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources.     
 
-    To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container.     
+    To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap :material-arrow-top-right:](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container.     
 
-    Use the [example `configmap.yaml` configuration file](https://github.com/Percona-Lab/k8s-monitoring/blob/main/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.    
+    Use the [example `configmap.yaml` configuration file :material-arrow-top-right:](https://github.com/Percona-Lab/k8s-monitoring/blob/main/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.    
 
     ```{.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
@@ -134,7 +134,7 @@ To set up monitoring of Kubernetes, you need the following:
 
     #### Install the Victoria Metrics Kubernetes monitoring stack    
 
-    1. Add the dependency repositories of [victoria-metrics-k8s-stack](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart.     
+    1. Add the dependency repositories of [victoria-metrics-k8s-stack :material-arrow-top-right:](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart.     
 
         ```{.bash data-prompt="$" }
         $ helm repo add grafana https://grafana.github.io/helm-charts
@@ -200,7 +200,7 @@ What Pods are running depends on the configuration chosen in values used while i
 2. Click **Explore** and switch to the **Code** mode.
 3. Check that the required metrics are captured, type the following in the Metrics browser dropdown:
 
-    * [cadvisor](https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md):
+    * [cadvisor :material-arrow-top-right:](https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md):
 
        ![image](assets/images/cadvisor.svg)
 
@@ -208,13 +208,13 @@ What Pods are running depends on the configuration chosen in values used while i
 
        ![image](assets/images/kubelet.svg)
 
-    * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics/tree/main/docs) metrics that also include Custom resource metrics for the Operator and database deployed in your Kubernetes cluster:
+    * [kube-state-metrics :material-arrow-top-right:](https://github.com/kubernetes/kube-state-metrics/tree/main/docs) metrics that also include Custom resource metrics for the Operator and database deployed in your Kubernetes cluster:
 
       ![image](assets/images/psmdb_metric.svg)
 
 ## Uninstall Victoria metrics Kubernetes stack
 
-To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitoring, use the cleanup script. By default, the script removes all the [Custom Resource Definitions(CRD)](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/) and Secrets associated with the Victoria metrics Kubernetes stack. To keep the CRDs, run the script with the `--keep-crd` flag.
+To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitoring, use the cleanup script. By default, the script removes all the [Custom Resource Definitions(CRD) :material-arrow-top-right:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/) and Secrets associated with the Victoria metrics Kubernetes stack. To keep the CRDs, run the script with the `--keep-crd` flag.
 
 === ":material-file-remove-outline: Remove CRDs"
 

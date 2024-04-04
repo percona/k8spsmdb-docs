@@ -1,7 +1,7 @@
 # Enabling multi-cluster Services
 
 
-Kubernetes [multi-cluster Services (MCS)](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services)
+Kubernetes [multi-cluster Services (MCS) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services)
 is a cross-cluster discovery and invocation of Services. MCS-enabled Services
 become discoverable and accessible across clusters with a virtual IP address.
 
@@ -11,8 +11,8 @@ one *fleet*, which can be useful to separate logically standalone parts
 requirements, etc.
 
 Multi-cluster Services should be supported by the cloud provider. It is 
-supported [by Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services),
-and [by Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
+supported [by Google Kubernetes Engine (GKE) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services),
+and [by Amazon Elastic Kubernetes Service (EKS) :material-arrow-top-right:](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
 
 Configuring your cluster for multi-cluster Services includes two parts:
 
@@ -20,8 +20,8 @@ Configuring your cluster for multi-cluster Services includes two parts:
 - make needed preparations with the Operator.
 
 To set up MCS for a specific cloud provider you should follow official guides,
-for example ones [from Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
-or [from Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
+for example ones [from Google Kubernetes Engine (GKE) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
+or [from Amazon Elastic Kubernetes Service (EKS) :material-arrow-top-right:](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
 
 !!! warning
 
@@ -43,10 +43,10 @@ or [from Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/blogs/o
       value: [Your ClusterSet identifier]
     ```
 
-    Check [AWS MCS controller repository](https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage) for more information.
+    Check [AWS MCS controller repository :material-arrow-top-right:](https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage) for more information.
 
 Setting up the Operator for MCS results in registering Services for export to
-other clusters [using the ServiceExport object](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
+other clusters [using the ServiceExport object :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
 and using ServiceImport one to import external services. Set the following
 options in the `multiCluster` subsection of the `deploy/cr.yaml` configuration
 file to make it happen:
@@ -54,7 +54,7 @@ file to make it happen:
 - `multiCluster.enabled` should be set to `true`,
 - `multiCluster.DNSSuffix` string should be equal to the cluster domain suffix
     for multi-cluster Services used by Kubernetes (`svc.clusterset.local`
-    [by default](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
+    [by default :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
 
 The following example in the `deploy/cr.yaml` configuration file is rather
 straightforward:
@@ -136,9 +136,9 @@ any Pod in any fleet cluster as
 
 MCS can charge cross-site replication with additional limitations specific to
 the cloud provider. For example, GKE demands all participating Pods to be in the
-same [project](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+same [project :material-arrow-top-right:](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 Also, `default` Namespace should be used with caution: your cloud provider
-[may not allow](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)
+[may not allow :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)
 exporting Services from it to other clusters.
 
 ## Applying MCS to an existing cluster

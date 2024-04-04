@@ -39,17 +39,17 @@ spec:
       ...
 ```
 
-See the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/)
+See the [official manual :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/configuration-options/)
 for the complete list of options, as well as
-[specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html)
-[Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html)
-[Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html)
-[for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html)
-[documentation pages](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
+[specific :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html)
+[Percona :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html)
+[Server :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html)
+[for MongoDB :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html)
+[documentation pages :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
 
 ## Use a ConfigMap
 
-You can use a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
+You can use a [ConfigMap :material-arrow-top-right:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 and the cluster restart to reset configuration options. A ConfigMap allows
 Kubernetes to pass or update configuration data inside a containerized
 application.
@@ -108,7 +108,7 @@ $ kubectl describe configmaps my-cluster-name-rs0-mongod
 
 ## Use a Secret Object
 
-The Operator can also store configuration options in [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
+The Operator can also store configuration options in [Kubernetes Secrets :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/secret/).
 This can be useful if you need additional protection for some sensitive data.
 
 You should create a Secret object with a specific name, composed of your cluster
@@ -131,7 +131,7 @@ Configuration options should be put inside a specific key:
 * `data.mongod` key for Replica Set (mongod) and Config Server Pods,
 * `data.mongos` key for mongos Pods.
 
-Actual options should be encoded with [Base64](https://en.wikipedia.org/wiki/Base64).
+Actual options should be encoded with [Base64 :material-arrow-top-right:](https://en.wikipedia.org/wiki/Base64).
 
 For example, let’s define a `mongod.conf` configuration file and put there
 several MongoDB options we used in the previous example:

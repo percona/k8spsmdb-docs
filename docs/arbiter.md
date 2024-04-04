@@ -1,7 +1,7 @@
 # Using Replica Set Arbiter nodes and non-voting nodes
 
-Percona Server for MongoDB [replication model](https://www.percona.com/blog/2018/05/17/mongodb-replica-set-transport-encryption-part-1/)
-is based on elections, when nodes of the Replica Set [choose which node](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections)
+Percona Server for MongoDB [replication model :material-arrow-top-right:](https://www.percona.com/blog/2018/05/17/mongodb-replica-set-transport-encryption-part-1/)
+is based on elections, when nodes of the Replica Set [choose which node :material-arrow-top-right:](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections)
 becomes the primary node.
 
 The need for elections influences the choice of the number of nodes in the cluster.
@@ -19,14 +19,14 @@ contradiction in two ways:
 
 Normally, each node stores a complete copy of the data,
 but there is also a possibility, to reduce disk IO and space used by the
-database, to add an [arbiter node](https://docs.mongodb.com/manual/core/replica-set-arbiter/).
+database, to add an [arbiter node :material-arrow-top-right:](https://docs.mongodb.com/manual/core/replica-set-arbiter/).
 An arbiter cannot become a primary and does not have a complete copy of the
 data. The arbiter does have one election vote and can be the odd number for
 elections. The arbiter does not demand a persistent volume.
 
 Percona Operator for MongoDB has the ability to create Replica Set Arbiter nodes
 if needed. This feature can be configured in the Replica Set section of the
-[deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+[deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file:
 
 * set `arbiter.enabled` option to `true` to allow Arbiter instances,
@@ -55,10 +55,10 @@ replsets:
 
 ## Adding non-voting nodes
 
-[Non-voting member](https://docs.mongodb.com/manual/tutorial/configure-a-non-voting-replica-set-member/)
+[Non-voting member :material-arrow-top-right:](https://docs.mongodb.com/manual/tutorial/configure-a-non-voting-replica-set-member/)
 is a Replica Set node which does not participate in the primary election
 process. This feature is required to have more than 7 nodes, or if there is a
-[node in the edge location](https://en.wikipedia.org/wiki/Edge_computing), which
+[node in the edge location :material-arrow-top-right:](https://en.wikipedia.org/wiki/Edge_computing), which
 obviously should not participate in the voting process.
 
 !!! note
@@ -73,7 +73,7 @@ obviously should not participate in the voting process.
     for details.
 
 Percona Operator for MongoDB has the ability to configure non-voting nodes in
-the Replica Set section of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+the Replica Set section of the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file:
 
 * set `nonvoting.enabled` option to `true` to allow non-voting instances,

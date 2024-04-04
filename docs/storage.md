@@ -6,24 +6,24 @@ on the node the *emptyDir* and *hostPath*.
 
 ## emptyDir
 
-A Pod [emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)
+A Pod [emptyDir volume :material-arrow-top-right:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)
 is created when the Pod is assigned to a Node. The volume is initially empty and
 is erased when the Pod is removed from the Node. The containers in the Pod can
 read and write the files in the emptyDir volume.
 
-The `emptyDir` options in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+The `emptyDir` options in the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file can be used to turn the emptyDir volume on by setting the directory name.
 
-The `emptyDir` is useful when you use [Percona Memory Engine](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html).
+The `emptyDir` is useful when you use [Percona Memory Engine :material-arrow-top-right:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html).
 
 ## hostPath
 
-A [hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath)
+A [hostPath volume :material-arrow-top-right:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath)
 mounts an existing file or directory from the host node’s filesystem into
 the Pod. If the pod is removed, the data persists in the host node’s filesystem.
 
 The `volumeSpec.hostPath` subsection in the
-[deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+[deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file may include `path` and `type` keys to set the node’s filesystem object
 path and to specify whether it is a file, a directory, or something else (e.g.
 a socket):
@@ -47,4 +47,4 @@ during the first run and require improved disk performance.
 Consider using the tolerations settings to avoid a cluster migration to
 different hardware in case of a reboot or a hardware failure.
 
-More details can be found in the [official hostPath Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
+More details can be found in the [official hostPath Kubernetes documentation :material-arrow-top-right:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).

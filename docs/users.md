@@ -45,7 +45,7 @@ rs0:PRIMARY> db.test.findOne()
 To automate the deployment and management of the cluster components, 
 the Operator requires system-level MongoDB users.
 
-Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+Credentials for these users are stored as a [Kubernetes Secrets :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/secret/) object.
 The Operator requires Kubernetes Secret before the database cluster is
 started. It will either use existing Secret or create a new Secret with
 randomly generated passwords if it didn’t exist.
@@ -72,19 +72,19 @@ configuration file.
 
 **Password-based authorization method for PMM is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
 
-* Backup/Restore - MongoDB Role: [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Backup/Restore - MongoDB Role: [backup :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
+    [restore :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+    [clusterMonitor :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* Cluster Admin - MongoDB Roles: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
+* Cluster Admin - MongoDB Roles: [clusterAdmin :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
-* Cluster Monitor - MongoDB Role: [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Cluster Monitor - MongoDB Role: [clusterMonitor :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* Database Admin - MongoDB Roles: [readWriteAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Database Admin - MongoDB Roles: [readWriteAnyDatabase :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
+    [restore :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+    [clusterMonitor :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
+* User Admin - MongoDB Role: [userAdmin :material-arrow-top-right:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
 
 If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
 Pods will go into restart cycle, and the cluster can be not accessible through
@@ -93,7 +93,7 @@ the `mongos` service until this cycle finishes.
 !!! note
 
     In some situations it can be needed to reproduce system users in a bare-bone
-    MongoDB. For example, that's a required step in the [migration scenarios](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
+    MongoDB. For example, that's a required step in the [migration scenarios :material-arrow-top-right:](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
     to move existing on-prem MongoDB database to Kubernetes-based MongoDB
     cluster managed by the Operator. You can use the following example script
     which produces a text file with mongo shell commands to create needed system
@@ -247,6 +247,6 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 *Secret name field:* `spec.secrets.key`
 
 By default, the operator will create a random, 1024-byte key for
-[MongoDB Internal Authentication](https://docs.mongodb.com/manual/core/security-internal-authentication/)
+[MongoDB Internal Authentication :material-arrow-top-right:](https://docs.mongodb.com/manual/core/security-internal-authentication/)
 if it does not already exist. If you would like to deploy a different
 key, create the secret manually before starting the operator.

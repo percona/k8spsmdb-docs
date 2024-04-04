@@ -38,7 +38,7 @@ In the following examples we will access containers of the `my-cluster-name-rs0-
     $ kubectl logs my-cluster-name-rs0-0 -c mongod --previous
     ```
 
-* Check logs of the `mongod` container, parsing the output with [jq JSON processor](https://stedolan.github.io/jq/):
+* Check logs of the `mongod` container, parsing the output with [jq JSON processor :material-arrow-top-right:](https://stedolan.github.io/jq/):
 
     ``` {.bash data-prompt="$" }
     $ kubectl logs my-cluster-name-rs0-0 -c mongod -f | jq -R 'fromjson?'
