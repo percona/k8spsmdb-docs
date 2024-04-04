@@ -4,14 +4,14 @@ In this tutorial you will learn how to make a logical backup of your data manual
 
 ## Considerations and prerequisites
 
-In this tutorial we use the [AWS S3 :material-arrow-top-right:](https://aws.amazon.com/s3/) as the backup storage. You need the following S3-related information:
+In this tutorial we use the [AWS S3  :octicons-link-external-16:](https://aws.amazon.com/s3/) as the backup storage. You need the following S3-related information:
    
 * the name of the S3 storage
 * the name of the S3 bucket
 * the region - the location of the bucket
 * the S3 credentials to be used to access the storage. 
 
-If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO :material-arrow-top-right:](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-storage).
+If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO  :octicons-link-external-16:](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-storage).
 
 Also, we will use some files from the Operator repository for setting up 
 backups. So, clone the percona-server-mongodb-operator repository:
@@ -44,7 +44,7 @@ $ cd percona-server-mongodb-operator
         $ echo -n 'AWS_SECRET_ACCESS_KEY' | base64 
         ```
 
-2. Edit the [`deploy/backup-s3.yaml` :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml) example Secrets configuration file and specify the following:
+2. Edit the [`deploy/backup-s3.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml) example Secrets configuration file and specify the following:
 
     * the `metadata.name` key is the name which you use to refer your Kubernetes Secret
     * the base64-encoded S3 credentials
@@ -108,7 +108,7 @@ $ cd percona-server-mongodb-operator
     * the `backup.enabled` key is set to `true`
     * the `backup.storages` subsection contains the [configured storage](#configure-backup-storage).
 
-2. To make a backup, you need the configuration file. Edit the sample [`deploy/backup/backup.yaml` :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/backup.yaml) configuration file and specify the following:
+2. To make a backup, you need the configuration file. Edit the sample [`deploy/backup/backup.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/backup.yaml) configuration file and specify the following:
 
     * `metadata.name` - specify the backup name. You will use this name to restore from this backup
     * `spec.clusterName` - specify the name of your cluster. This is the name you specified when deploying Percona Server for MongoDB.

@@ -18,7 +18,7 @@ is as follows:
 
 ![image](assets/images/sharding.svg)
 
-<a name="high-availability"></a>To provide high availability the Operator uses [node affinity :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
+<a name="high-availability"></a>To provide high availability the Operator uses [node affinity  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 to run MongoDB instances on separate worker nodes if possible, and the
 database cluster is deployed as a single Replica Set with at least three
 nodes. If a node fails, the pod with the mongod process is automatically

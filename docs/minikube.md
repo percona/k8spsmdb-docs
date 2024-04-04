@@ -2,7 +2,7 @@
 
 {%set clusterName = 'minimal-cluster' %}
 
-Installing the Percona Operator for MongoDB on [Minikube :material-arrow-top-right:](https://github.com/kubernetes/minikube)
+Installing the Percona Operator for MongoDB on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)
 is the easiest way to try it locally without a cloud provider. Minikube runs
 Kubernetes on GNU/Linux, Windows, or macOS system using a system-wide
 hypervisor, such as VirtualBox, KVM/QEMU, VMware Fusion or Hyper-V. Using it is
@@ -11,7 +11,7 @@ cloud.
 
 The following steps are needed to run Percona Operator for MongoDB on minikube:
 
-1. [Install minikube :material-arrow-top-right:](https://kubernetes.io/docs/tasks/tools/install-minikube/), using a way recommended for your system. This includes the installation of the following three components:
+1. [Install minikube  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-minikube/), using a way recommended for your system. This includes the installation of the following three components:
 
     1. kubectl tool,
 
@@ -28,7 +28,7 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
     Executing `minikube dashboard` will start the dashboard and open it in your
     default web browser.
 
-2. Deploy the operator [using :material-arrow-top-right:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+2. Deploy the operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
@@ -44,9 +44,9 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 
         This deploys a one-shard MongoDB cluster with one replica set with one
         node, one mongos node and one config server node. The
-        [deploy/cr-minimal.yaml :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml) is for minimal non-production deployment.
+        [deploy/cr-minimal.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml) is for minimal non-production deployment.
         For more configuration options please see
-        [deploy/cr.yaml :material-arrow-top-right:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md). You can clone the
+        [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md). You can clone the
         repository with all manifests and source code by executing the following
         command:
 

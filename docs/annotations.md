@@ -1,7 +1,7 @@
 # Labels and annotations
 
-[Labels :material-arrow-top-right:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
-and [annotations :material-arrow-top-right:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)
+[Labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+and [annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)
 are used to attach additional metadata information to Kubernetes resources.
 
 Labels and annotations are rather similar. The difference between them is that
@@ -41,7 +41,7 @@ You can assign labels and annotations to various objects created by the Operator
 (e.g. Services used to expose components of the cluster, Persistent Volume
 Claims, etc.) with labels and annotations options in the appropriate subsections
 of the Custom Resource, as seen in the [Custom Resource options reference](operator.md)
-and the [deploy/cr.yaml configuration file :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+and the [deploy/cr.yaml configuration file  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
 
 Sometimes various Kubernetes flavors can add their own annotations to the
 objects managed by the Operator.

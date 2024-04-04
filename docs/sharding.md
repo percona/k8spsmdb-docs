@@ -2,7 +2,7 @@
 
 ## About sharding
 
-[Sharding :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/glossary/#term-sharding)
+[Sharding  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/glossary/#term-sharding)
 provides horizontal database scaling, distributing data across multiple MongoDB
 Pods. It is useful for large data sets when a single machine’s overall
 processing speed or storage capacity turns out to be not enough.
@@ -23,8 +23,8 @@ A MongoDB Sharding involves the following components:
     a MongoDB cluster; still, this limited sharding support allowed using
     `mongos` as an entry point instead of provisioning a load-balancer per
     replica set node. Multiple shards are supported starting from the Operator
-    1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-    object, and starting from 1.12.0 they are deployed by the [StatefulSet :material-arrow-top-right:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
+    1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+    object, and starting from 1.12.0 they are deployed by the [StatefulSet  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
 
 ## Turning sharding on and off
 

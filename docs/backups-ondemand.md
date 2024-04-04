@@ -28,7 +28,7 @@
        this key to `logical`, or just omit it.
 
     You can find the example of such file in
-    [deploy/backup/backup.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/backup.yaml):
+    [deploy/backup/backup.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/backup.yaml):
 
     ```yaml
     apiVersion: psmdb.percona.com/v1
@@ -75,7 +75,7 @@
     ```
     
     Alternatively, [getting ssh access](debug-shell.md) to the same container
-    will allow you to [carry on Percona Backup for MongoDB diagnostics :material-arrow-top-right:](https://docs.percona.com/percona-backup-mongodb/manage/troubleshooting.html). 
+    will allow you to [carry on Percona Backup for MongoDB diagnostics  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/manage/troubleshooting.html). 
     
     !!! note
     

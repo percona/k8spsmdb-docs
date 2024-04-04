@@ -3,7 +3,7 @@
 As it is mentioned in [backups](backups.md), any cloud storage which
 implements the S3 API can be used for backups. The one way to setup and
 implement the S3 API storage on Kubernetes or OpenShift is
-[Minio :material-arrow-top-right:](https://www.minio.io/) - the S3-compatible object storage server
+[Minio  :octicons-link-external-16:](https://www.minio.io/) - the S3-compatible object storage server
 deployed via Docker on your own infrastructure.
 
 Setting up Minio to be used with Percona Operator for MongoDB backups involves
@@ -29,7 +29,7 @@ the following steps:
     Don’t forget to substitute default `some-access-key` and `some-secret-key`
     strings in this command with actual unique key values. The values can be
     used later for access control. The `storageClass` option is needed if you
-    are using the special [Kubernetes Storage Class :material-arrow-top-right:](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+    are using the special [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/)
     for backups. Otherwise, this setting may be omitted. You may also notice the
     `MINIO_REGION` value which is may not be used within a private cloud. Use
     the same region value here and on later steps (`us-east-1` is a good default
@@ -51,7 +51,7 @@ the following steps:
     the selected access and secret keys (substitute `some-access-key`
     and `some-secret-key` with the values used on the previous step).
 
-3. Now edit the backup section of the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+3. Now edit the backup section of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
     file to set proper values for the `bucket` (the S3 bucket for backups
     created on the previous step), `region`, `credentialsSecret` and the
     `endpointUrl` (which should point to the previously created Minio Service).
@@ -74,8 +74,8 @@ the following steps:
     ```
 
     The option which should be specially mentioned is `credentialsSecret` which
-    is a [Kubernetes secret :material-arrow-top-right:](https://kubernetes.io/docs/concepts/configuration/secret/)
-    for backups. Sample [backup-s3.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml)
+    is a [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/)
+    for backups. Sample [backup-s3.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml)
     can be used to create this secret object. Check that the object contains the
     proper `name` value and is equal to the one specified for
     `credentialsSecret`, i.e. `my-cluster-name-backup-minio` in the backup to
@@ -101,9 +101,9 @@ the following steps:
 
     Don’t forget to specify the name of your cluster instead of the 
     `<cluster-name>` part of the Backup Coordinator URL (the cluster name is
-    specified in the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+    specified in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
     file). Also substitute `<storage>` with the actual storage name located in
-    a subsection inside of the `backups` in the [deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+    a subsection inside of the `backups` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
     file. In the earlier example this value is `minio`.
 
 5. To restore a previously saved backup you must specify the backup name. With

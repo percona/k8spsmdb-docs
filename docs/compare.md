@@ -2,13 +2,13 @@
 
 There are multiple ways to deploy and manage MongoDB in Kubernetes. Here we will focus on comparing the following open source solutions:
 
-* [Bitnami Helm chart :material-arrow-top-right:](https://github.com/bitnami/charts/tree/master/bitnami/mongodb)
+* [Bitnami Helm chart  :octicons-link-external-16:](https://github.com/bitnami/charts/tree/master/bitnami/mongodb)
 
-* [KubeDB :material-arrow-top-right:](https://github.com/kubedb)
+* [KubeDB  :octicons-link-external-16:](https://github.com/kubedb)
 
-* [MongoDB Community Operator :material-arrow-top-right:](https://github.com/mongodb/mongodb-kubernetes-operator)
+* [MongoDB Community Operator  :octicons-link-external-16:](https://github.com/mongodb/mongodb-kubernetes-operator)
 
-* [Percona Operator for MongoDB :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/)
+* [Percona Operator for MongoDB  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/)
 
 ## Generic
 

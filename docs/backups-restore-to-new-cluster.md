@@ -34,7 +34,7 @@ restoration can be done in the following way.
 
 === "Without point-in-time recovery"
 
-    1. Set appropriate keys in the [deploy/backup/restore.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+    1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
         * set `spec.clusterName` key to the name of the target cluster to restore
             the backup on,
@@ -83,7 +83,7 @@ restoration can be done in the following way.
 
 === "With point-in-time recovery"
 
-    1. Set appropriate keys in the [deploy/backup/restore.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+    1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
         * set `spec.clusterName` key to the name of the target cluster to restore
             the backup on

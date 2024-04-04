@@ -1,11 +1,11 @@
 # Data at rest encryption
 
-[Data at rest encryption in Percona Server for MongoDB :material-arrow-top-right:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html)
+[Data at rest encryption in Percona Server for MongoDB  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html)
 is supported by the Operator since version 1.1.0.
 
 !!! note
 
-    [Data at rest :material-arrow-top-right:](https://en.wikipedia.org/wiki/Data_at_rest) means inactive data stored as files, database records, etc.
+    [Data at rest  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Data_at_rest) means inactive data stored as files, database records, etc.
 
 Data at rest encryption is turned on by default. The Operator implements it by
 either using encryption key stored in a Secret, or obtaining encryption key
@@ -24,7 +24,7 @@ from the HashiCorp Vault key storage.
 
     Encryption key Secret will be created automatically by the Operator if it
     doesn’t exist. If you would like to create it yourself, take into account
-    that [the key must be a 32 character string encoded in base64 :material-arrow-top-right:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
+    that [the key must be a 32 character string encoded in base64  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
 2. The `replsets.configuration`, `replsets.nonvoting.configuration`, and
     `sharding.configsvrReplSet.configuration` keys should include the following
@@ -53,7 +53,7 @@ $ kubectl deploy -f deploy/cr.yaml
 
 ## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13, the Operator supports using [HashiCorp Vault :material-arrow-top-right:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+Starting from the version 1.13, the Operator supports using [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
 !!! warning
 
@@ -72,7 +72,7 @@ should be done manually, as described in the following parts.
 
 ### Installing Vault
 
-The following steps will deploy Vault on Kubernetes with the [Helm 3 package manager :material-arrow-top-right:](https://helm.sh/). Other Vault installation methods should also work, so the instruction placed here is not obligatory and is for illustration purposes. Read more about installation in Vault’s [documentation :material-arrow-top-right:](https://www.vaultproject.io/docs/platform/k8s).
+The following steps will deploy Vault on Kubernetes with the [Helm 3 package manager  :octicons-link-external-16:](https://helm.sh/). Other Vault installation methods should also work, so the instruction placed here is not obligatory and is for illustration purposes. Read more about installation in Vault’s [documentation  :octicons-link-external-16:](https://www.vaultproject.io/docs/platform/k8s).
 
 1. Add helm repo and install:
 
@@ -100,7 +100,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
 ### Configuring Vault
 
-1. First, you should enable secrets within Vault. For this you will need a [Vault token :material-arrow-top-right:](https://www.vaultproject.io/docs/concepts/tokens).
+1. First, you should enable secrets within Vault. For this you will need a [Vault token  :octicons-link-external-16:](https://www.vaultproject.io/docs/concepts/tokens).
     Percona Server for MongoDB can use any regular token which allows all operations
     inside the secrets mount point. In the following example we are using the
     *root token* to be sure the permissions requirement is met, but actually
@@ -251,5 +251,5 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
     ```
 
-More details on how to install and configure Vault can be found [in the official documentation :material-arrow-top-right:](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
+More details on how to install and configure Vault can be found [in the official documentation  :octicons-link-external-16:](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
 

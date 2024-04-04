@@ -10,11 +10,11 @@ Server instances:
 - set `host` to URL or IP address of the external replset instance,
 - set `port` to the port number of the external node (or rely on the `27017`
   default value),
-- set `priority` to define the [priority :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
+- set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
     of the external node (`2` is default for all local members of the cluster;
     external nodes should have lower priority to avoid unmanaged node being elected
     as a primary; `0` adds the node as a [non-voting member](arbiter.md#arbiter-nonvoting)),
-- set `votes` to the number of [votes :material-arrow-top-right:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
+- set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
     an external node can cast in a replica set election (`0` is default and
     should be used for non-voting members of the cluster).
 

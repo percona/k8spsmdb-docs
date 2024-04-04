@@ -11,13 +11,13 @@
 ## Release Highlights
 
 * Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](../backups.md#physical) support in the Operator. The feature is now in technical preview.
-* MongoDB 6.0 [comes with a variety :material-arrow-top-right:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.md#major-version-automated-upgrades) to learn how to upgrade.
+* MongoDB 6.0 [comes with a variety  :octicons-link-external-16:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.md#major-version-automated-upgrades) to learn how to upgrade.
 
 ## New Features
 
 * {{ k8spsmdbjira(713) }} [Physical backups](../backups.md#physical) are now supported by the Operator to recover big data sets faster
 
-* {{ k8spsmdbjira(737) }} MongoDB 6.0 is now officially supported in addition to 4.x and 5.x versions. Read more about version 6 in our [blog post :material-arrow-top-right:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/)
+* {{ k8spsmdbjira(737) }} MongoDB 6.0 is now officially supported in addition to 4.x and 5.x versions. Read more about version 6 in our [blog post  :octicons-link-external-16:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/)
 
 * {{ k8spsmdbjira(824) }} New `ignoreAnnotations` and `ignoreLabels` Custom Resource options allow to list [specific annotations and labels](../annotations.md) for Kubernetes Service objects, which the Operator should ignore (useful with various Kubernetes flavors which add annotations to the objects managed by the Operator)
 
@@ -85,7 +85,7 @@
 
 ## Known Issues and Limitations
 
-* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [arbiter](../arbiter.md#adding-arbiter-nodes), [non-voting](../arbiter.md#adding-non-voting-nodes), or [delayed :material-arrow-top-right:](https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/) members due to current Percona Backup for MongoDB limitations
+* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [arbiter](../arbiter.md#adding-arbiter-nodes), [non-voting](../arbiter.md#adding-non-voting-nodes), or [delayed  :octicons-link-external-16:](https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/) members due to current Percona Backup for MongoDB limitations
 
 * {{ k8spsmdbjira(846) }} After switching the cluster to unsafe mode by setting allowUnsafeConfig: true, it is not possible to switch back into safe mode. The user can still scale the cluster safely, but the flag is ignored
 
@@ -95,14 +95,14 @@ The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.
 
 The following platforms were tested and are officially supported by the Operator 1.14.0:
 
-* [Google Kubernetes Engine (GKE) :material-arrow-top-right:](https://cloud.google.com/kubernetes-engine) 1.22 - 1.25
+* [Google Kubernetes Engine (GKE)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.22 - 1.25
 
-* [Amazon Elastic Container Service for Kubernetes (EKS) :material-arrow-top-right:](https://aws.amazon.com) 1.22 - 1.24
+* [Amazon Elastic Container Service for Kubernetes (EKS)  :octicons-link-external-16:](https://aws.amazon.com) 1.22 - 1.24
 
-* [OpenShift Container Platform :material-arrow-top-right:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.12
+* [OpenShift Container Platform  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.12
 
-* [Azure Kubernetes Service (AKS) :material-arrow-top-right:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.23 - 1.25
+* [Azure Kubernetes Service (AKS)  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.23 - 1.25
 
-* [Minikube :material-arrow-top-right:](https://github.com/kubernetes/minikube) 1.29
+* [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.29
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.

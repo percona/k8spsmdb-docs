@@ -26,7 +26,7 @@ Operator yourself, as well as how to temporarily disable it if needed.
 
 ### About the *cert-manager*
 
-The [cert-manager :material-arrow-top-right:](https://cert-manager.io/docs/) is a Kubernetes certificate
+The [cert-manager  :octicons-link-external-16:](https://cert-manager.io/docs/) is a Kubernetes certificate
 management controller which widely used to automate the management and issuance
 of TLS certificates. It is community-driven, and open source.
 

@@ -2,7 +2,7 @@
 
 Backups schedule is defined in the `backup` section of the Custom
 Resource and can be configured via the
-[deploy/cr.yaml :material-arrow-top-right:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file.
 
 1. The `backup.enabled` key should be set to `true`,
@@ -15,7 +15,7 @@ file.
         later to [restore the bakup](backups-restore.md)).
 
     * specify the `schedule` option with the desired backup schedule 
-    in [crontab format :material-arrow-top-right:](https://en.wikipedia.org/wiki/Cron)).
+    in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
 
     * set the `enabled` key to `true` (this enables making the `<backup name>`
         backup along with the specified schedule.

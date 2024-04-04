@@ -9,7 +9,7 @@
 
 * **Installation**
 
-    For installation please refer to [the documentation page :material-arrow-top-right:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation)
+    For installation please refer to [the documentation page  :octicons-link-external-16:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation)
 
 
 ## Release Highlights
@@ -19,7 +19,7 @@
 **Percona Distribution for MongoDB Operator**. This new name emphasizes
 graduate changes which incorporated a collection of Percona’s solutions to run
 and operate MongoDB Server, available separately as
-[Percona Distribution for MongoDB :material-arrow-top-right:](https://www.percona.com/doc/percona-distribution-for-mongodb/4.2/index.html).
+[Percona Distribution for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-distribution-for-mongodb/4.2/index.html).
 
 
 * It is now possible to restore backups from S3-compatible storage
@@ -34,85 +34,85 @@ mongos, and Config Server instances in ConfigMaps or in Secrets
 ## New Features
 
 
-* [K8SPSMDB-276 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-276): Restore backups
+* [K8SPSMDB-276  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-276): Restore backups
 to a new Kubernetes-based environment <backups-restore> with no existing
 Backup Custom Resource
 
 
-* [K8SPSMDB-444 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-444), [K8SPSMDB-445 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-445): Allow storing custom
+* [K8SPSMDB-444  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-444), [K8SPSMDB-445  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-445): Allow storing custom
 configuration in ConfigMaps and Secrets
 
 ## Improvements
 
 
-* [K8SPSMDB-365 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-365): Unblock backups even if just a single Replica Set
+* [K8SPSMDB-365  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-365): Unblock backups even if just a single Replica Set
 node is available by setting `allowUnsafeConfigurations` flag to true
 
 
-* [K8SPSMDB-453 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-453): It is now possible to see the overall progress of the
+* [K8SPSMDB-453  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-453): It is now possible to see the overall progress of the
 provisioning of MongoDB cluster resources and dependent components in Custom
 Resource status
 
 
-* [K8SPSMDB-451 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-451), [K8SPSMDB-398 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-398): MongoDB cluster resource
+* [K8SPSMDB-451  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-451), [K8SPSMDB-398  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-398): MongoDB cluster resource
 statuses in Custom Resource output (e.g. returned by `kubectl get psmdb`
 command) have been improved and now provide more precise reporting
 
 
-* [K8SPSMDB-425 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-425): Remove `mongos.expose.enabled` option from Custom
+* [K8SPSMDB-425  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-425): Remove `mongos.expose.enabled` option from Custom
 Resource and always expose mongos (with the ClusterIP exposeType by default)
 
 
-* [K8SPSMDB-421 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-421): Secret object containing system users passwords is
+* [K8SPSMDB-421  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-421): Secret object containing system users passwords is
 now deleted along with the Cluster if delete-psmdb-pvc finalizer is enabled
 
 
-* [K8SPSMDB-411 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-411): Added options to specify custom memory and CPU
+* [K8SPSMDB-411  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-411): Added options to specify custom memory and CPU
 requirements for Arbiter instances
 
 
-* [K8SPSMDB-329 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-329): Reduced the number of various etcd and k8s object
+* [K8SPSMDB-329  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-329): Reduced the number of various etcd and k8s object
 updates from the operator to minimize the pressure on the Kubernetes cluster
 
 ## Bugs Fixed
 
 
-* [K8SPSMDB-437 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-437): Fixed a bug where Labels were not set on Persistent
+* [K8SPSMDB-437  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-437): Fixed a bug where Labels were not set on Persistent
 Volume Claim objects when set on the respective Pods
 
 
-* [K8SPSMDB-435 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-435): Fixed a bug that prevented adding custom Labels to
+* [K8SPSMDB-435  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-435): Fixed a bug that prevented adding custom Labels to
 mongos Pods
 
 
-* [K8SPSMDB-423 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-423): Fixed a bug where unpause of a cluster did not work
+* [K8SPSMDB-423  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-423): Fixed a bug where unpause of a cluster did not work
 when `replsets.expose = LoadBalancer` because of provisioning new Load
 Balancers with different names (Thanks to Aliaksandr Karavai for reporting
 this issue)
 
 
-* [K8SPSMDB-494 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-494): When upgrading MongoDB clusters with Smart Update,
+* [K8SPSMDB-494  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-494): When upgrading MongoDB clusters with Smart Update,
 the statuses reported in Custom Resource are now reflecting the real state
 
 
-* [K8SPSMDB-489 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-489): Fixed a bug where the status of successful backups
+* [K8SPSMDB-489  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-489): Fixed a bug where the status of successful backups
 could be set to error in case of a cluster crash
 
 
-* [K8SPSMDB-462 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-462): Fixed a bug where psmdb-backup object could not be
+* [K8SPSMDB-462  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-462): Fixed a bug where psmdb-backup object could not be
 deleted if the backup was not successful
 
 
-* [K8SPSMDB-456 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-456): Fixed a bug where Smart Update was not upgrading a
+* [K8SPSMDB-456  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-456): Fixed a bug where Smart Update was not upgrading a
 MongoDB deployment with a replica set consisting of one node
 
 
-* [K8SPSMDB-455 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-455): Fixed a bug that prevented major version downgrade to
+* [K8SPSMDB-455  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-455): Fixed a bug that prevented major version downgrade to
 a specific version number when `upgradeOptions.setFCV` Custom Resource
 option was not updated to the new version
 
 
-* [K8SPSMDB-485 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-485): Fixed TLS documentation that referenced incorrect
+* [K8SPSMDB-485  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-485): Fixed TLS documentation that referenced incorrect
 Secrets names from the cr.yaml configuration file
 
 ## Deprecation and Removal

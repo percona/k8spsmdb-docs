@@ -9,7 +9,7 @@
 
 * **Installation**
 
-    For installation please refer to [the documentation page :material-arrow-top-right:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation)
+    For installation please refer to [the documentation page  :octicons-link-external-16:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation)
 
 
 ## Release Highlights
@@ -23,44 +23,44 @@
 ## New Features
 
 
-* [K8SPSMDB-513 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-513): Add support of Microsoft Azure Blob storage for backups
+* [K8SPSMDB-513  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-513): Add support of Microsoft Azure Blob storage for backups
 
 ## Improvements
 
 
-* [K8SPSMDB-422 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-422): It is now possible to set annotations to backup cron jobs (Thanks to Aliaksandr Karavai for contribution)
+* [K8SPSMDB-422  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-422): It is now possible to set annotations to backup cron jobs (Thanks to Aliaksandr Karavai for contribution)
 
 
-* [K8SPSMDB-534 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-534): mongos readiness probe now avoids running listDatabases command for all databases in the cluster to avoid unneeded delays on clusters with an extremely large amount of databases
+* [K8SPSMDB-534  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-534): mongos readiness probe now avoids running listDatabases command for all databases in the cluster to avoid unneeded delays on clusters with an extremely large amount of databases
 
 
-* [K8SPSMDB-527 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-527): Timeout parameters for liveness and readiness probes can be customized to avoid false-positives for heavy-loaded clusters
+* [K8SPSMDB-527  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-527): Timeout parameters for liveness and readiness probes can be customized to avoid false-positives for heavy-loaded clusters
 
 
-* [K8SPSMDB-520 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-520): Mount volumes into sidecar containers to enable customization
+* [K8SPSMDB-520  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-520): Mount volumes into sidecar containers to enable customization
 
 
-* [K8SPSMDB-463 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-463): Update backup status as error if it’s not started for a long time
+* [K8SPSMDB-463  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-463): Update backup status as error if it’s not started for a long time
 
 
-* [K8SPSMDB-388 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-388): New `backup.pitr.oplogSpanMin` option controls how often oplogs are uploaded to the cloud storage
+* [K8SPSMDB-388  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-388): New `backup.pitr.oplogSpanMin` option controls how often oplogs are uploaded to the cloud storage
 
 ## Bugs Fixed
 
 
-* [K8SPSMDB-603 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-603): Fixed a bug where the Operator checked the presence of CPU limit and not memory limit when deciding whether to set the size of cache memory for WiredTiger
+* [K8SPSMDB-603  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-603): Fixed a bug where the Operator checked the presence of CPU limit and not memory limit when deciding whether to set the size of cache memory for WiredTiger
 
 
-* [K8SPSMDB-511 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-511) and [K8SPSMDB-558 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-558): Fixed a bug where Operator changed NodePort port every 20 seconds for a Replica Set service (Thanks to Rajshekar Reddy for reporting this issue)
+* [K8SPSMDB-511  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-511) and [K8SPSMDB-558  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-558): Fixed a bug where Operator changed NodePort port every 20 seconds for a Replica Set service (Thanks to Rajshekar Reddy for reporting this issue)
 
 
-* [K8SPSMDB-608 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-608): Fix a bug that resulted in printing the password of backup user the in backup agent logs (Thanks to Antoine Ozenne for reporting this issue)
+* [K8SPSMDB-608  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-608): Fix a bug that resulted in printing the password of backup user the in backup agent logs (Thanks to Antoine Ozenne for reporting this issue)
 
 
-* [K8SPSMDB-592 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-592): Fixed a bug where helm chart was incorrectly setting the `serviceAnnotations` and `loadBalancerSourceRanges` for mongos exposure
+* [K8SPSMDB-592  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-592): Fixed a bug where helm chart was incorrectly setting the `serviceAnnotations` and `loadBalancerSourceRanges` for mongos exposure
 
 
-* [K8SPSMDB-568 :material-arrow-top-right:](https://jira.percona.com/browse/K8SPSMDB-568): Fixed a bug where upgrading to MongoDB 5.0 failed when using the `upgradeOptions:apply` option
+* [K8SPSMDB-568  :octicons-link-external-16:](https://jira.percona.com/browse/K8SPSMDB-568): Fixed a bug where upgrading to MongoDB 5.0 failed when using the `upgradeOptions:apply` option
 
 ## Supported Platforms
 
