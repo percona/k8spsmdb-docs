@@ -12,7 +12,7 @@
 
 ### Physical Backups now support Point-in-time Recovery (in tech preview)
 
-In the previous [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO  :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. But the problem with losing data between backups - in other words Recovery Point Objective (RPO) - for physical backups was not solved. With this release users can greatly reduce RPO by leveraging the Point-in-time Recovery feature in the Operators. Under the hood we store logical oplogs along with physical backups into the object storage. Read more about this feature in our [documentation  :octicons-link-external-16:](https://docs.percona.com/percona-operator-for-mongodb/backups.html).
+In the previous [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. But the problem with losing data between backups - in other words Recovery Point Objective (RPO) - for physical backups was not solved. With this release users can greatly reduce RPO by leveraging the Point-in-time Recovery feature in the Operators. Under the hood we store logical oplogs along with physical backups into the object storage. Read more about this feature in our [documentation](../backups.md).
 
 ### Encrypted backups with Server Side Encryption (SSE)
 
@@ -20,7 +20,7 @@ Backups stored on S3 compatible storage [can now be encrypted](../backups-encryp
 
 ## New Features
 
-* {{ k8spsmdbjira(227) }} The new `topologySpreadConstraints` Custom Resource option allows to use [Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods) to achieve even distribution of Pods across the Kubernetes cluster
+* {{ k8spsmdbjira(227) }} The new `topologySpreadConstraints` Custom Resource option allows to use [Pod Topology Spread Constraints :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods) to achieve even distribution of Pods across the Kubernetes cluster
 
 * {{ k8spsmdbjira(792) }} and {{ k8spsmdbjira(974) }} The new "sleep infinity" mode available for replset and config server containers allows [running the Pod without starting mongod](../debug-shell.md#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) useful to examine a problematic Pod that is constantly restarting
 
@@ -109,14 +109,14 @@ Operator also uses Percona Backup for MongoDB 2.3.0.
 The following platforms were tested and are officially supported by the Operator
 1.15.0:
 
-* [Google Kubernetes Engine (GKE)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.24-1.28
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.24-1.28
 
-* [Amazon Elastic Container Service for Kubernetes (EKS)  :octicons-link-external-16:](https://aws.amazon.com) 1.24-1.28
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.24-1.28
 
-* [OpenShift Container Platform  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
 
-* [Azure Kubernetes Service (AKS)  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
 
-* [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
