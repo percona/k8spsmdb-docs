@@ -49,7 +49,7 @@ MongoDB-based database cluster inside your Kubernetes installation. It works
 with Percona Server for MongoDB 4.2, and 4.4, and the exact version is
 determined by the Docker image in use.
 
-Percona-certified Docker images used by the Operator are listed [here  :octicons-link-external-16:](https://www.percona.com/doc/kubernetes-operator-for-psmongodb/images.html).
+Percona-certified Docker images used by the Operator are listed [here](../images.md).
 For example, Percona Server for MongoDB 4.4 is supported with the following
 recommended version: {{ mongodb44recommended }}. More details on the exact
 Percona Server for MongoDB version can be found in the release notes
