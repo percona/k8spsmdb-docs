@@ -1,6 +1,6 @@
 # Initial troubleshooting
 
-Percona Operator for MongoDB uses [Custom Resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to manage options for the various components of the cluster.
+Percona Operator for MongoDB uses [Custom Resources  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to manage options for the various components of the cluster.
 
 * `PerconaServerMongoDB` Custom Resource with Percona Server for MongoDB options (it has handy `psmdb` shortname also),
 
@@ -59,9 +59,9 @@ The above command provides the following insights:
     of the Pod should be ready.
 * `STATUS` indicates the current status of the Pod. The Pod should be in a
     `Running` state to confirm that the application is working as expected. You
-    can find out other possible states in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase).
+    can find out other possible states in the [official Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase).
 * `RESTARTS` indicates how many times containers of Pod were restarted. This is
-    impacted by the [Container Restart Policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
+    impacted by the [Container Restart Policy  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
     In an ideal world, the restart count would be zero, meaning no issues from
     the beginning. If the restart count exceeds zero, it may be reasonable to
     check why it happens.

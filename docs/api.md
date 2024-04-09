@@ -1,7 +1,7 @@
 # Percona Operator for MongoDB API Documentation
 
-Percona Operator for MongoDB provides an [aggregation-layer extension for the Kubernetes API](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/). Please refer to the
-[official Kubernetes API documentation](https://kubernetes.io/docs/reference/) on the API access and usage details.
+Percona Operator for MongoDB provides an [aggregation-layer extension for the Kubernetes API  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/). Please refer to the
+[official Kubernetes API documentation  :octicons-link-external-16:](https://kubernetes.io/docs/reference/) on the API access and usage details.
 The following subsections describe the Percona XtraDB Cluster API provided by the Operator.
 
 ## Prerequisites

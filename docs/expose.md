@@ -1,6 +1,6 @@
 # Exposing cluster
 
-The Operator provides entry points for accessing the database by client applications in several scenarios. In either way the cluster is exposed with regular Kubernetes [Service objects](https://kubernetes.io/docs/concepts/services-networking/service/), configured by the Operator.
+The Operator provides entry points for accessing the database by client applications in several scenarios. In either way the cluster is exposed with regular Kubernetes [Service objects  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/), configured by the Operator.
 
 This document describes the usage of [Custom Resource manifest options](operator.md) to expose the clusters deployed with the Operator. 
 
@@ -19,7 +19,7 @@ If this feature is enabled, the URI looks like follows (taking into account the 
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
-You can find more on sharding in the [official MongoDB documentation](https://docs.mongodb.com/manual/reference/glossary/#term-sharding).
+You can find more on sharding in the [official MongoDB documentation  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/glossary/#term-sharding).
 
 ## Accessing replica set Pods
 
@@ -49,12 +49,12 @@ URI-based access is strictly recommended.
 
 Still sometimes you cannot communicate with the Pods using the Kubernetes internal DNS
 names. To make Pods of the Replica Set accessible, Percona Operator for MongoDB
-can assign a [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/)
 to each Pod.
 
 This feature can be configured in the `replsets` (for MondgoDB instances Pod)
 and `sharding` (for mongos Pod) sections of the
-[deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
+[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file:
 
 * set `expose.enabled` option to `true` to allow exposing Pods via services,
@@ -108,7 +108,7 @@ Restart can be done manually with the `kubectl rollout restart sts
 
 ## Exposing replica set with split-horizon DNS
 
-[Split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) provides
+[Split-horizon DNS  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Split-horizon_DNS) provides
 each replica set Pod with a set of DNS URIs for external usage. This allows to
 communicate with replica set Pods both from inside the Kubernetes cluster and
 from outside of Kubernetes.

@@ -7,15 +7,15 @@ authentication/authorization process in a centralized way.
 
 The following guide covers a simple integration of the already-installed
 OpenLDAP server with Percona Distribution for MongoDB and the Operator. You can
-know more about LDAP concepts and [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
+know more about LDAP concepts and [LDIF  :octicons-link-external-16:](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
 files used to configure it, and find how to install and configure OpenLDAP in
-the official [OpenLDAP](https://www.openldap.org/doc/admin26/) and
-[Percona Server for MongoDB](https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html)
+the official [OpenLDAP  :octicons-link-external-16:](https://www.openldap.org/doc/admin26/) and
+[Percona Server for MongoDB  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html)
 documentation.
 
 ## The OpenLDAP side
 
-You can add needed OpenLDAP settings will the following [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
+You can add needed OpenLDAP settings will the following [LDIF  :octicons-link-external-16:](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
 portions:
 
 ```yaml
@@ -58,7 +58,7 @@ $ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=perco
 ```
 !!! note
 
-    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays](https://www.openldap.org/doc/admin24/overlays.html) provide one of the possible ways to go.
+    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays  :octicons-link-external-16:](https://www.openldap.org/doc/admin24/overlays.html) provide one of the possible ways to go.
 
 ## The MongoDB and Operator side
 
@@ -119,7 +119,7 @@ is on (the default behavior) or off.
 
     !!! note
 
-        [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html) is not yet
+        [LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) is not yet
         supproted by the Operator.
 
     When logged in, execute the following:
@@ -269,7 +269,7 @@ is on (the default behavior) or off.
 
     !!! note
 
-        [LDAP over TLS](https://www.openldap.org/faq/data/cache/185.html) is not yet
+        [LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) is not yet
         supproted by the Operator.
 
     When logged in, execute the following:

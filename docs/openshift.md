@@ -2,7 +2,7 @@
 
 {%set commandName = 'oc' %}
 
-Percona Operator for Percona Server for MongoDB is a [Red Hat Certified Operator](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification). This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.
+Percona Operator for Percona Server for MongoDB is a [Red Hat Certified Operator  :octicons-link-external-16:](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification). This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.
 
 Installing Percona Server for MongoDB on OpenShift includes two steps:
 
@@ -11,12 +11,12 @@ Installing Percona Server for MongoDB on OpenShift includes two steps:
 
 ## Install the Operator
 
-You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Marketplace](https://marketplace.redhat.com) web interface or using the command line interface.
+You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Marketplace  :octicons-link-external-16:](https://marketplace.redhat.com) web interface or using the command line interface.
 
 ### Install the Operator via the Red Hat Marketplace
 
-1. login to the Red Hat Marketplace and register your cluster [following the official instructions](https://marketplace.redhat.com/en-us/workspace/clusters/add/register).
-2. Go to the Percona Operator for MongoDB [page](https://marketplace.redhat.com/en-us/products/percona-server-for-mongodb) and click the Free trial button:
+1. login to the Red Hat Marketplace and register your cluster [following the official instructions  :octicons-link-external-16:](https://marketplace.redhat.com/en-us/workspace/clusters/add/register).
+2. Go to the Percona Operator for MongoDB [page  :octicons-link-external-16:](https://marketplace.redhat.com/en-us/products/percona-server-for-mongodb) and click the Free trial button:
 
     ![image](assets/images/marketplace-operator-page.png)
 
@@ -49,7 +49,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
 
     This step should be done only once; it does not need to be repeated with other deployments.
 
-    [Apply it](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
+    [Apply it  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
     as follows:
 
     ``` {.bash data-prompt="$" }
@@ -70,7 +70,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     $ oc adm policy add-cluster-role-to-user psmdb-admin <some-user>
     ```
 
-    If you have a [cert-manager](https://docs.cert-manager.io/en/release-0.8/getting-started/install/openshift.html) installed, then you have to execute two more commands to be able to manage certificates with a non-privileged user:
+    If you have a [cert-manager  :octicons-link-external-16:](https://docs.cert-manager.io/en/release-0.8/getting-started/install/openshift.html) installed, then you have to execute two more commands to be able to manage certificates with a non-privileged user:
 
     ``` {.bash data-prompt="$" }
     $ oc create clusterrole cert-admin --verb="*" --resource=iissuers.certmanager.k8s.io,certificates.certmanager.k8s.io
@@ -87,7 +87,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     configured with the `deploy/rbac.yaml` file. RBAC is
     based on clearly defined roles and corresponding allowed actions. These
     actions are allowed on specific Kubernetes resources. The details about users
-    and roles can be found in [OpenShift documentation](https://docs.openshift.com/enterprise/3.0/architecture/additional_concepts/authorization.html).
+    and roles can be found in [OpenShift documentation  :octicons-link-external-16:](https://docs.openshift.com/enterprise/3.0/architecture/additional_concepts/authorization.html).
 
     ``` {.bash data-prompt="$" }
     $ oc apply -f deploy/rbac.yaml
@@ -105,7 +105,7 @@ You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Mar
     should be placed as plain text in the stringData section of the
     `deploy/secrets.yaml` file as login name and
     passwords for the user accounts (see [Kubernetes
-    documentation](https://kubernetes.io/docs/concepts/configuration/secret/)
+    documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/)
     for details).
 
     After editing the yaml file, the secrets should be created

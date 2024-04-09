@@ -6,7 +6,7 @@ monitoring solutions, etc.
 
 !!! note
 
-    Custom sidecar containers [can easily access other components of your cluster](https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication).
+    Custom sidecar containers [can easily access other components of your cluster  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication).
     Therefore they should be used carefully and by experienced users only.
 
 ## Adding a sidecar container
@@ -82,15 +82,15 @@ $ kubectl exec -it my-cluster-name-rs0-0 -c rs-sidecar-0 -- sh
 
 It is possible to mount volumes into sidecar containers.
 
-Following subsections describe different [volume types](https://kubernetes.io/docs/concepts/storage/volumes/#volume-types),
+Following subsections describe different [volume types  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#volume-types),
 which were tested with sidecar containers and are known to work.
 
 ### Persistent Volume
 
-You can use [Persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+You can use [Persistent volumes  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 when you need dynamically provisioned storage which doesn’t depend on the Pod
 lifecycle. To use such volume, you should *claim* durable storage with
-[persistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/volumes/#persistentvolumeclaim)
+[persistentVolumeClaim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#persistentvolumeclaim)
 without specifying any non-important details.
 
 The following example requests 1G storage with `sidecar-volume-claim`
@@ -130,7 +130,7 @@ sidecarPVCs:
 
 ### Secret
 
-You can use a [secret volume](https://kubernetes.io/docs/concepts/storage/volumes/#secret)
+You can use a [secret volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#secret)
 to pass the information which needs additional protection (e.g. passwords), to
 the container. Secrets are stored with the Kubernetes API and mounted to the
 container as RAM-stored files.
@@ -154,17 +154,17 @@ sidecarVolumes:
 ```
 
 The above example creates a `sidecar-secret` volume (based on already existing
-`mysecret` [Secret object](https://kubernetes.io/docs/concepts/configuration/secret/))
+`mysecret` [Secret object  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/))
 and mounts it to the `rs-sidecar-0` container’s filesystem under the
 `/secret` directory.
 
 !!! note
 
-    Don’t forget you need to [create a Secret Object](https://kubernetes.io/docs/concepts/configuration/secret/) before you can use it.
+    Don’t forget you need to [create a Secret Object  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) before you can use it.
 
 ### configMap
 
-You can use a [configMap volume](https://kubernetes.io/docs/concepts/storage/volumes/#configmap)
+You can use a [configMap volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#configmap)
 to pass some configuration data to the container. Secrets are stored with the
 Kubernetes API and mounted to the container as RAM-stored files.
 
@@ -187,11 +187,11 @@ sidecarVolumes:
 ```
 
 The above example creates a `sidecar-config` volume (based on already existing
-`myconfigmap` [configMap object](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/))
+`myconfigmap` [configMap object  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/))
 and mounts it to the `rs-sidecar-0` container’s filesystem under the `/config`
 directory.
 
 !!! note
 
-    Don’t forget you need to [create a configMap Object](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap)
+    Don’t forget you need to [create a configMap Object  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#create-a-configmap)
     before you can use it.

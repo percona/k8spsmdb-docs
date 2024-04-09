@@ -1,4 +1,4 @@
-To connect to Percona Server for MongoDB you need to construct the MongoDB connection URI string. It includes the credentials of the admin user, which are stored in the [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+To connect to Percona Server for MongoDB you need to construct the MongoDB connection URI string. It includes the credentials of the admin user, which are stored in the [Secrets :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object.
 
 1. List the Secrets objects
 

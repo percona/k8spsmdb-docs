@@ -47,4 +47,4 @@ was added to the list of the officially supported platforms
 * [K8SPSMDB-174](https://jira.percona.com/browse/K8SPSMDB-174): The inability to update or delete existing CRD was possible because of too large records in etcd, resulting in “request is too large” errors. Only 20 last status changes are now stored in etcd to avoid this problem.
 
 Help us improve our software quality by reporting any bugs you encounter using
-[our bug tracking system](https://jira.percona.com/secure/Dashboard.jspa).
+[our bug tracking system :octicons-link-external-16:](https://jira.percona.com/secure/Dashboard.jspa).

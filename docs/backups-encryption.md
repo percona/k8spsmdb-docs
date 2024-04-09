@@ -4,8 +4,8 @@ Encrypting database backups is done separately for [physical and logical backups
 Physical backups are encrypted if [data-at-rest encryption is turned on](TLS.md).
 Logical backups need to be encrypted on the cloud.
 
-There is a possibility to enable [server-side encryption](https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html#server-side-encryption) for backups stored on S3.
-Starting from the version 1.15.0, the Operator supports Server Side Encryption either with [AWS Key Management Service (KMS)](https://aws.amazon.com/kms/), or just encrypt/decrypt backups with AES-256 encryption algorithm with any S3-compatible storage.
+There is a possibility to enable [server-side encryption  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html#server-side-encryption) for backups stored on S3.
+Starting from the version 1.15.0, the Operator supports Server Side Encryption either with [AWS Key Management Service (KMS)  :octicons-link-external-16:](https://aws.amazon.com/kms/), or just encrypt/decrypt backups with AES-256 encryption algorithm with any S3-compatible storage.
 
 To enable server-side encryption for backups, use [backup.storages.backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption section](operator.md#backup-storages-s3--serversideencryption-kmskeyid) in the `deploy/cr.yaml` configuration file.
 
@@ -27,7 +27,7 @@ backup:
           sseAlgorithm: aws:kms
 ```
 
-Here `<kms_key_ID>` should be substituted with the [ID of your customer-managed key](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html)
+Here `<kms_key_ID>` should be substituted with the [ID of your customer-managed key  :octicons-link-external-16:](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html)
 stored in the AWS KMS. It should look similar to the following example value:
 `128887dd-d583-43f2-b3f9-d12036d32b12`.
 
@@ -39,7 +39,7 @@ encryption key will be provided by the Operator as part of the requests to the
 S3 storage, and the S3 storage will them to encrypt/decrypt the data using the
 AES-256 encryption algorithm. This allows to use server-side encryption on
 S3-compatible storages different from AWS KMS (the feature was tested with the
-[AWS](https://aws.amazon.com/) and [MinIO](https://min.io/) storages).
+[AWS  :octicons-link-external-16:](https://aws.amazon.com/) and [MinIO  :octicons-link-external-16:](https://min.io/) storages).
 
 To use the server-side encryption wit locally-stored keys, specify the following
 Custom Resource options in the `deploy/cr.yaml` configuration file:
