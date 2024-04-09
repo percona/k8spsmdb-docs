@@ -43,3 +43,16 @@ is not enabled.
 
     Use Storage Class with XFS as the default filesystem if possible
     [to achieve better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
+
+## Installation guidelines
+
+Choose how you wish to install the Operator:
+
+* [with Helm](helm.md)
+* [with `kubectl`](kubectl.md)
+* [on Minikube](minikube.md)
+* [on Google Kubernetes Engine (GKE)](gke.md)
+* [on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
+* [on Microsoft Azure Kubernetes Service (AKS)](aks.md)
+* [on Openshift](openshift.md)
+* [in a Kubernetes-based environment](kubernetes.md)
