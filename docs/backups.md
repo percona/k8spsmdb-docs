@@ -27,9 +27,6 @@ cluster using the following remote backup storages:
 
 Logical backups use less storage, but are much slower than physical backup/restore.
 
-Also, logical backups are stable, while physical backups are available since the
-Operator version 1.14.0 and still have the **technical preview status**.
-
 !!! warning
 
     Logical backups made with the Operator versions before 1.9.0 are
