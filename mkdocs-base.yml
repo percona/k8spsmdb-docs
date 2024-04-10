@@ -19,16 +19,38 @@ theme:
     text: Roboto
     code: Roboto Mono
   palette:
-    #    - media: "(prefers-color-scheme: light)"
-    scheme: percona-light
-#      toggle:
-#        icon: material/toggle-switch-off-outline
-#        name: Switch to night mode
-#    - media: "(prefers-color-scheme: dark)"
-#      scheme: slate
-#      toggle:
-#        icon: material/toggle-switch
-#        name: Switch to day mode
+    # Light mode
+    - media: "(prefers-color-scheme: percona-light)"
+      scheme: percona-light
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
+
+    # Dark mode 
+    - media: "(prefers-color-scheme: percona-dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+
+# Theme features
+
+  features:
+    - search.highlight
+    - navigation.top
+    #- navigation.tabs
+    #- navigation.tabs.sticky
+    #- navigation.sections
+    - navigation.tracking
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+
 
 extra_css:
   - https://unicons.iconscout.com/release/v3.0.3/css/line.css
