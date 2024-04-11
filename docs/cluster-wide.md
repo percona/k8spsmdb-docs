@@ -83,10 +83,10 @@ Kubernetes.
     ...
     ```
 
-4. Apply the `deploy/cw-bundle.yaml` file with the following command:
+4. [Apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the `deploy/cw-bundle.yaml` file with the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cw-bundle.yaml -n psmdb-operator
+    $ kubectl apply -f deploy/cw-bundle.yaml --server-side -n psmdb-operator
     ```
 
 5. After the Operator is started, Percona Server for MongoDB can be created at
