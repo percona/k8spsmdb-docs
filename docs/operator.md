@@ -1098,6 +1098,11 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `rack: rack-22` |
 | **Description** | The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service |
 |                 | |
+| **Key**         | {{ optionlink('sharding.mongos.expose.nodePort') }} |
+| **Value**       | int |
+| **Example**     | `32017` |
+| **Description** | The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the  `sharding.mongos.expose.exposeType` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on. |
+|                 | |
 | **Key**         | {{ optionlink('sharding.mongos.hostAliases.ip') }} |
 | **Value**       | string |
 | **Example**     | `"10.10.0.2"` |
