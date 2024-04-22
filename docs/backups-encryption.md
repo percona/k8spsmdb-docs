@@ -1,7 +1,7 @@
 # Enable server-side encryption for backups
 
 Encrypting database backups is done separately for [physical and logical backups](backups.md).
-Physical backups are encrypted if [data-at-rest encryption is turned on](TLS.md).
+Physical backups are encrypted if [data-at-rest encryption is turned on](encryption.md).
 Logical backups need to be encrypted on the cloud.
 
 There is a possibility to enable [server-side encryption  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html#server-side-encryption) for backups stored on S3.
