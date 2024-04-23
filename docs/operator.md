@@ -284,6 +284,16 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
+| **Key**         | {{ optionlink('replsets.containerSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | `privileged: false` |
+| **Description** | A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
+| **Key**         | {{ optionlink('replsets.podSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+| **Description** | A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
 | **Key**         | {{ optionlink('replsets.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
@@ -773,6 +783,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.containerSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | `privileged: false` |
+| **Description** | A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.podSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+| **Description** | A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
@@ -1028,6 +1048,16 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | `2` |
 | **Description** | Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out |
 |                 | |
+| **Key**         | {{ optionlink('sharding.mongos.containerSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | `privileged: false` |
+| **Description** | A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.podSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+| **Description** | A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
+|                 | |
 | **Key**         | {{ optionlink('sharding.mongos.runtimeClassName') }} |
 | **Value**       | string |
 | **Example**     | `image-rc` |
@@ -1156,6 +1186,11 @@ Percona Server for MongoDB backups.
 | **Value**       | string |
 | **Example**     | `0.1G` |
 | **Description** | The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups |
+|                 | |
+| **Key**         | {{ optionlink('backup.containerSecurityContext') }} |
+| **Value**       | subdoc |
+| **Example**     | `privileged: false` |
+| **Description** | A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one |
 |                 | |
 | **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.type') }} |
 | **Value**       | string |
