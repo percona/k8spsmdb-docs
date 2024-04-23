@@ -12,30 +12,31 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: assets/images/percona-logo.svg
-  favicon: assets/images/percona-favicon.ico
+  logo: assets/operators-mark.svg
+  favicon: assets/operators-fav.svg
   custom_dir: _resource/overrides/
   font:
     text: Roboto
     code: Roboto Mono
   palette:
-    # Light mode
-    - media: "(prefers-color-scheme: percona-light)"
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Color theme set to Automatic. Click to change
+    - media: "(prefers-color-scheme: light)"
       scheme: percona-light
       primary: custom
       accent: custom
       toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to light mode
-
-    # Dark mode 
-    - media: "(prefers-color-scheme: percona-dark)"
-      scheme: slate
+        icon: material/brightness-7
+        name: Color theme set to Light Mode. Click to change
+    - media: "(prefers-color-scheme: dark)"
+      scheme: percona-dark
       primary: custom
       accent: custom
       toggle:
-        icon: material/toggle-switch
-        name: Switch to dark mode
+        icon: material/brightness-4
+        name: Color theme set to Dark Mode. Click to change
 
 # Theme features
 
@@ -60,6 +61,7 @@ extra_css:
   - css/nocopy.css
   - css/design.css
   - css/osano.css
+  - css/operators.css
 
 extra_javascript:
   - js/promptremover.js
@@ -136,8 +138,6 @@ plugins:
     canonical_version: null
 
 extra: # Used in main.html template and can't be externalized
-  homepage:
-    https://docs.percona.com
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
