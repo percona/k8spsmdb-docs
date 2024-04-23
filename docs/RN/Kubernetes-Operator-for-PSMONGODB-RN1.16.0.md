@@ -10,9 +10,9 @@
 
 ## Release Highlights
 
-### Physical Backups now support Point-in-time Recovery (in tech preview)
+### General availability of Physical Backups
 
-In the [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. .
+Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. Until not this feature was a technical preview, but within this release Percona announces the general availability of physical backups and restores for MongoDB with the Operator.
 
 ### Automated volume resizing
 
