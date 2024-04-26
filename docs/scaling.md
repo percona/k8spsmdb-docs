@@ -101,7 +101,7 @@ $ kubectl apply -f cr.yaml
 
 #### Manual scaling without Volume Expansion capability
 
-Manual scaling is the way to go if you version of the Operator is older than
+Manual scaling is the way to go if your version of the Operator is older than
 1.16.0, your volumes have type which does not support Volume Expansion, or you
 just do not rely on automated scaling.
 
