@@ -117,11 +117,6 @@ is on (the default behavior) or off.
     $ mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
     ```
 
-    !!! note
-
-        [LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) is not yet
-        supproted by the Operator.
-
     When logged in, execute the following:
 
     ``` {.json data-prompt="mongos>" }
@@ -199,21 +194,21 @@ is on (the default behavior) or off.
     
     ```yaml title="my_mongos.conf"
     security:
-     ldap:
-       servers: "openldap"
-       transportSecurity: none
-       bind:
-         queryUser: "cn=readonly,dc=ldap,dc=local"
-         queryPassword: "password"
-       userToDNMapping:
-         '[
-             {
-               match : "(.+)",
-               ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
-             }
-       ]'
+      ldap:
+        servers: "openldap"
+        transportSecurity: none
+        bind:
+          queryUser: "cn=readonly,dc=ldap,dc=local"
+          queryPassword: "password"
+        userToDNMapping:
+          '[
+              {
+                match : "(.+)",
+                ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+              }
+        ]'
     setParameter:
-     authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+      authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
     
     Put the snippet on you local machine and create a Kubernetes Secret object
@@ -227,24 +222,24 @@ is on (the default behavior) or off.
 
     ```yaml title="my_mongod.conf"
     security:
-     authorization: "enabled"
-     ldap:
-       authz:
-         queryTemplate: '{USER}?memberOf?base'
-       servers: "openldap"
-       transportSecurity: none
-       bind:
-         queryUser: "cn=readonly,dc=ldap,dc=local"
-         queryPassword: "password"
-       userToDNMapping:
-         '[
-             {
-               match : "(.+)",
-               ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
-             }
-       ]'
+      authorization: "enabled"
+      ldap:
+        authz:
+          queryTemplate: '{USER}?memberOf?base'
+        servers: "openldap"
+        transportSecurity: none
+        bind:
+          queryUser: "cn=readonly,dc=ldap,dc=local"
+          queryPassword: "password"
+        userToDNMapping:
+          '[
+              {
+                match : "(.+)",
+                ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+              }
+        ]'
     setParameter:
-     authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+      authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
     
     Put the snippet on you local machine and create a Kubernetes Secret object
@@ -266,11 +261,6 @@ is on (the default behavior) or off.
     ``` {.bash data-prompt="$" }
     $ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
     ```
-
-    !!! note
-
-        [LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) is not yet
-        supproted by the Operator.
 
     When logged in, execute the following:
 
@@ -382,3 +372,66 @@ The output should be like follows:
 }
 mongos>
 ```
+
+## Using LDAP over TLS connection
+
+[LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) allows you to use Transport Layer Security, encrypting your communication between MongoDB and OpenLDAP server. 
+
+Here are the needed modifications to [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection which will enable it:
+
+1. Add a path to the CA certificate in `/etc/openldap/ldap.conf` if the `secrets.ldapSecret`  Custom Resource option. Your modified `deploy/cr.yaml` may look as follows:
+
+    ```yaml
+    ...
+      secrets:
+        ...
+        ldapSecret: my-ldap-secret
+    ```
+
+2. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection:
+
+    === "if sharding is off"
+
+        ``` yaml title="my_mongod.conf"  hl_lines="7"
+        security:
+          authorization: "enabled"
+          ldap:
+            authz:
+              queryTemplate: '{USER}?memberOf?base'
+            servers: "openldap"
+            transportSecurity: tls
+            bind:
+              queryUser: "cn=readonly,dc=ldap,dc=local"
+              queryPassword: "password"
+            userToDNMapping:
+              '[
+                  {
+                    match : "(.+)",
+                    ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+                  }
+           ]'
+        setParameter:
+          authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+        ```
+
+    === "if sharding is on"
+    
+        ```yaml title="my_mongos.conf" hl_lines="4"
+        security:
+          ldap:
+            servers: "openldap"
+            transportSecurity: tls
+            bind:
+              queryUser: "cn=readonly,dc=ldap,dc=local"
+              queryPassword: "password"
+            userToDNMapping:
+              '[
+                  {
+                    match : "(.+)",
+                    ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+                  }
+            ]'
+        setParameter:
+          authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+        ```
+    
