@@ -124,6 +124,11 @@ The replsets section controls the MongoDB Replica Set.
 | **Example**     | 300 |
 | **Description** | The amount of seconds Kubernetes will wait for a clean replica set Pods termination |
 |                 | |
+| **Key**         | {{ optionlink('replsets.serviceAccountName') }} |
+| **Value**       | string |
+| **Example**     | `default` |
+| **Description** | Name of the separate privileged service account used by the Operator for Replica Set Pods |
+|                 | |
 | **Key**         | {{ optionlink('replsets.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
 | **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
@@ -698,6 +703,11 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Example**     | 300 |
 | **Description** | The amount of seconds Kubernetes will wait for a clean config server Pods termination |
 |                 | |
+| **Key**         | {{ optionlink('sharding.configsvrReplSet.serviceAccountName') }} |
+| **Value**       | string |
+| **Example**     | `default` |
+| **Description** | Name of the separate privileged service account used by the Operator for Config Server Pods |
+|                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
 | **Example**     | `app.kubernetes.io/name: percona-server-mongodb` |
@@ -902,6 +912,11 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Value**       | int |
 | **Example**     | 300 |
 | **Description** | The amount of seconds Kubernetes will wait for a clean mongos Pods termination |
+|                 | |
+| **Key**         | {{ optionlink('sharding.mongos.serviceAccountName') }} |
+| **Value**       | string |
+| **Example**     | `default` |
+| **Description** | Name of the separate privileged service account used by the Operator for mongos Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
