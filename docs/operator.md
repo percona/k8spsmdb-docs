@@ -127,7 +127,7 @@ The replsets section controls the MongoDB Replica Set.
 | **Key**         | {{ optionlink('replsets.serviceAccountName') }} |
 | **Value**       | string |
 | **Example**     | `default` |
-| **Description** | Name of the separate privileged service account used by the Operator for Replica Set Pods |
+| **Description** | Name of the separate privileged service account for Replica Set Pods |
 |                 | |
 | **Key**         | {{ optionlink('replsets.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
@@ -706,7 +706,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.serviceAccountName') }} |
 | **Value**       | string |
 | **Example**     | `default` |
-| **Description** | Name of the separate privileged service account used by the Operator for Config Server Pods |
+| **Description** | Name of the separate privileged service account for Config Server Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
@@ -916,7 +916,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | **Key**         | {{ optionlink('sharding.mongos.serviceAccountName') }} |
 | **Value**       | string |
 | **Example**     | `default` |
-| **Description** | Name of the separate privileged service account used by the Operator for mongos Pods |
+| **Description** | Name of the separate privileged service account for mongos Pods |
 |                 | |
 | **Key**         | {{ optionlink('sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels') }} |
 | **Value**       | label |
