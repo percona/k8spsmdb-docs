@@ -165,7 +165,7 @@ nav:
     - Quickstart guides:
           - Overview: quickstart.md
           - 1. Quick install:
-            - "with Helm": helm.md
+            - "With Helm": helm.md
             - "With kubectl": kubectl.md
           - 2. Connect to Percona Server for MongoDB: connect.md
           - 3. Insert data: data-insert.md
