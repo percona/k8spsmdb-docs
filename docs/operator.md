@@ -1130,7 +1130,7 @@ Percona Server for MongoDB backups.
 | **Key**         | {{ optionlink('backup.serviceAccountName') }} |
 | **Value**       | string |
 | **Example**     | `percona-server-mongodb-operator` |
-| **Description** | Name of the separate privileged service account used by the Operator for backups; **service account for backups is not used by the Operator any more, and is deprecated since the Operator version 1.16.0** |
+| **Description** | Name of the separate privileged service account for backups; **service account for backups is not used by the Operator any more, and the option is deprecated since the Operator version 1.16.0** |
 |                 | |
 | **Key**         | {{ optionlink('backup.annotations') }} |
 | **Value**       | string |
