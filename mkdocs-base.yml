@@ -164,13 +164,13 @@ nav:
           
     - Quickstart guides:
           - Overview: quickstart.md
-          - Quick install:
-            - "Install with Helm": helm.md
-            - "Install with kubectl": kubectl.md
-          - Connect to Percona Server for MongoDB: connect.md
-          - Insert data: data-insert.md
-          - Make a backup: backup-tutorial.md
-          - Monitor the database with PMM: monitoring-tutorial.md
+          - 1. Quick install:
+            - "With Helm": helm.md
+            - "With kubectl": kubectl.md
+          - 2. Connect to Percona Server for MongoDB: connect.md
+          - 3. Insert data: data-insert.md
+          - 4. Make a backup: backup-tutorial.md
+          - 5. Monitor the database with PMM: monitoring-tutorial.md
           - what-next.md
           
     - Installation:

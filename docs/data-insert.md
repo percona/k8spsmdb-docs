@@ -1,4 +1,4 @@
-# Insert sample data 
+# 3. Insert sample data 
 
 In this tutorial you will learn to insert sample data to Percona Server for MongoDB.
 
