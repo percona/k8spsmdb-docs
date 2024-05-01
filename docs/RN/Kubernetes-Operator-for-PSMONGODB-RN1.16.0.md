@@ -20,7 +20,7 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 
 ## New Features
 
-* {{ k8spsmdbjira(1000) }} Add support for Private Azure Blob Storage endpoints
+* {{ k8spsmdbjira(1000) }} It is now possible to use Azure Blob Storage for backups with [private endpoint](../operator.html#backup-storages-azure-endpointurl)
 * {{ k8spsmdbjira(1055) }} The `kubectl get psmdb-backup` command now shows Latest restorable time to make it easier to pick a point-in-time recovery target
 * {{ k8spsmdbjira(491) }} Ability to specify an existing cert-manager issuer to be used by the operator
 * {{ k8spsmdbjira(733) }} It is now possible to resize Persistent Volume Claims by patching the PerconaServerMongoDB custom resource. Change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
