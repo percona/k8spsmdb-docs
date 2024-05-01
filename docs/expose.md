@@ -104,7 +104,7 @@ Restart can be done manually with the `kubectl rollout restart sts
 
 !!! warning
 
-    You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make configuration changes and recovery more complicated. Also, they are particularly problematic in scenarios where IP addresses change (i.e., deleting and recreating the cluster).
+    You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make reconfiguration and recovery more complicated, and are **generally problematic in scenarios where IP addresses change**. In particular, if you delete and recreate the cluster with `clusterServiceDNSMode=External` without deleting its volumes (having `delete-psmdb-pvc` finalizer unset), your cluster will crash and there will be no straightforward way to recover it.
 
 ## Exposing replica set with split-horizon DNS
 
