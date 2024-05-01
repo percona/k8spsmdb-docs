@@ -1242,6 +1242,11 @@ Percona Server for MongoDB backups.
 | **Example**     | `""` |
 | **Description** | The path (sub-folder) to the backups inside the [container  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) |
 |                 | |
+| **Key**         | {{ optionlink('backup.storages.&lt;storage-name&gt;.azure.endpointUrl') }} |
+| **Value**       | string |
+| **Example**     | `https://accountName.blob.core.windows.net` |
+| **Description** | The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) that should be used instead of the public endpoint |
+|                 | |
 | **Key**         | {{ optionlink('backup.pitr.enabled') }} |
 | **Value**       | boolean |
 | **Example**     | `false` |
