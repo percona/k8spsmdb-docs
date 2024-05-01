@@ -20,10 +20,11 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 
 ## New Features
 
-* {{ k8spsmdbjira(1000) }} It is now possible to use Azure Blob Storage for backups with [private endpoint](../operator.html#backup-storages-azure-endpointurl)
+* {{ k8spsmdbjira(1000) }} Azure Blob Storage [private endpoints](../operator.html#backup-storages-azure-endpointurl) are now supported for backups
 * {{ k8spsmdbjira(1055) }} The `kubectl get psmdb-backup` command now shows Latest restorable time to make it easier to pick a point-in-time recovery target
-* {{ k8spsmdbjira(491) }} Ability to specify an existing cert-manager issuer to be used by the operator
-* {{ k8spsmdbjira(733) }} It is now possible to resize Persistent Volume Claims by patching the PerconaServerMongoDB custom resource. Change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
+* {{ k8spsmdbjira(491) }} It is now possible to specify the [existing cert-manager issuer](../operator.md#tls-issuerconf-name) which should be used by the Operator
+* {{ k8spsmdbjira(733) }} It is now possible to [resize Persistent Volume Claims](../operator.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
+
 ## Improvements
 
 * {{ k8spsmdbjira(1004) }} SplitHorizon should have configurable port numbers to worked with exposed service type
