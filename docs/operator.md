@@ -21,7 +21,6 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 | crVersion       | string             | `{{ release }}`     | Version of the Operator the Custom Resource belongs to |
 | image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` | The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
 | imagePullPolicy | string             | `Always`     | The [policy used to update images  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
-| tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
 | imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
 | initImage                 | string   | `percona/percona-server-mongodb-operator:{{ release }}` | An alternative image for the initial Operator installation |
 | initContainerSecurityContext | subdoc| `{}`         | A custom [Kubernetes Security Context for a Container  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation) |
@@ -39,6 +38,32 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 | pmm             | [subdoc](operator.md#operator-pmm-section)            | | Percona Monitoring and Management section |
 | sharding        | [subdoc](operator.md#operator-sharding-section)       | | MongoDB sharding configuration section |
 | backup          | [subdoc](operator.md#operator-backup-section)         | | Percona Server for MongoDB backups section |
+
+### <a name="operator-issuerconf-section"></a>TLS (extended cert-manager configuration section)
+
+The `tls` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options for additional customization of the [TLS cert-manager](TLS.md#tls-certs-certmanager).
+
+|                 | |
+|-----------------|-|
+| **Key**         | {{ optionlink('tls.certValidityDuration') }} |
+| **Value**       | string |
+| **Example**     | `2160h` |
+| **Description** | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
+|                 | |
+| **Key**         | {{ optionlink('tls.issuerConf.name') }} |
+| **Value**       | string |
+| **Example**     | `special-selfsigned-issuer` |
+| **Description** | A [cert-manager issuer name](https://cert-manager.io/docs/concepts/issuer/) |
+|                 | |
+| **Key**         | {{ optionlink('tls.issuerConf.kind') }} |
+| **Value**       | string |
+| **Example**     | `ClusterIssuer` |
+| **Description** | A [cert-manager issuer type](https://cert-manager.io/docs/configuration/) |
+|                 | |
+| **Key**         | {{ optionlink('tls.issuerConf.group') }} |
+| **Value**       | string |
+| **Example**     | `cert-manager.io` |
+| **Description** | A [cert-manager issuer group](https://cert-manager.io/docs/configuration/). Should be `cert-manager.io` for built-in cert-manager certificate issuers |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
