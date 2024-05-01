@@ -2,7 +2,7 @@
 
 * **Date**
 
-    April XX, 2024
+    May 08, 2024
 
 * **Installation**
 
