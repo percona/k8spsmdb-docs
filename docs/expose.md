@@ -137,7 +137,8 @@ follows:
 ```
 
 URIs for external usage are specified as key-value pairs, where the key is an
-arbitrary name and the value is the actual URI.
+arbitrary name and the value is the actual URI. The URI may include a port
+number. If nothing is set, the default MongoDB port will be used.
 
 Split horizon has following limitations:
 
