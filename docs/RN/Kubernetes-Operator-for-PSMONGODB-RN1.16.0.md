@@ -43,9 +43,9 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(1011) }}: MongoDB Secret Rotation Broken
-* {{ k8spsmdbjira(1014) }}: Certificate Rotation brought the Sharded MongoDB cluster down
-* {{ k8spsmdbjira(1018) }}: Running MongoDB container fails if the image provides numactl command
+* {{ k8spsmdbjira(1011) }}: Fix a bug where custom logins for system users stopped working after deleting and recreating back the users Secret (thanks for Patrick Wolleb for report)
+* {{ k8spsmdbjira(1014) }}: Fix a bug that certificate rotation was bringing the sharded MongoDB cluster down for clusters originally created with the Operator version prior to 1.15.0 (thanks to Stiliyan Stefanov for reporting)
+* {{ k8spsmdbjira(1018) }}: Fix a bug where MongoDB container startup would fail if the MongoDB image being used contained the numactl package
 * {{ k8spsmdbjira(1024) }}: Fix variable scope for pbm-entry script
 * {{ k8spsmdbjira(1030) }}: clusterServiceDNSMode: "External" makes impossble to re-create cluster with kubectl delete + apply cr.yaml
 * {{ k8spsmdbjira(1035) }}: Allow empty secretName for backup jobs
