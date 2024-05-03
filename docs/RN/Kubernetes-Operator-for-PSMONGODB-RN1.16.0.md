@@ -20,52 +20,50 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 
 ## New Features
 
-* {{ k8spsmdbjira(1000) }} Azure Blob Storage [private endpoints](../operator.html#backup-storages-azure-endpointurl) are now supported for backups
-* {{ k8spsmdbjira(1055) }} The `kubectl get psmdb-backup` command now shows Latest restorable time to make it easier to pick a point-in-time recovery target
-* {{ k8spsmdbjira(491) }} It is now possible to specify the [existing cert-manager issuer](../operator.md#tls-issuerconf-name) which should be used by the Operator
-* {{ k8spsmdbjira(733) }} It is now possible to [resize Persistent Volume Claims](../operator.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
+* {{ k8spsmdbjira(1000) }}: Azure Blob Storage [private endpoints](../operator.html#backup-storages-azure-endpointurl) are now supported for backups
+* {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows Latest restorable time to make it easier to pick a point-in-time recovery target
+* {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tls-issuerconf-name) which should be used by the Operator
+* {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../operator.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
 
 ## Improvements
 
-* {{ k8spsmdbjira(1004) }} SplitHorizon should have configurable port numbers to worked with exposed service type
-* {{ k8spsmdbjira(1013) }} Add support for MongoDB 7.0
-* {{ k8spsmdbjira(1015) }} Operator doesn't log anything about backup operations
-* {{ k8spsmdbjira(1021) }} Backup cant start in 33 sec time limit
-* {{ k8spsmdbjira(1029) }} Decreasing default log level for mongo
-* {{ k8spsmdbjira(1032) }} Ad possibility to specify nodeport for mongos
-* {{ k8spsmdbjira(1061) }} Refactor "reconcileStatefulSet"
-* {{ k8spsmdbjira(1062) }} Setting appProtocol for service objects
-* {{ k8spsmdbjira(732) }} Support for LDAP with TLS
-* {{ k8spsmdbjira(752) }} Autoscaling - support for horizontal scaling capabilities
-* {{ k8spsmdbjira(755) }} Enable usage of --sslAllowInvalidCertificates=false
-* {{ k8spsmdbjira(948) }} Support ARM for operator and percona replicas
-* {{ k8spsmdbjira(951) }} Provide customization for backup using PBM
-* {{ k8spsmdbjira(993) }} investigate test failures for physical sharded restore
-* {{ k8spsmdbjira(995) }} Allow users to store sseCustomerKey in a secret
+* {{ k8spsmdbjira(1004) }}: [Exposing replica set with split-horizon DNS](../expose.md#exposing-replica-set-with-split-horizon-dns) allows to specify URIs with non-standard port numbers, which are particularly useful with the NodePort service type
+* {{ k8spsmdbjira(1013) }}: MongoDB 7.0 is now supported
+* {{ k8spsmdbjira(1015) }}: Information about backup and restore operations is now included in the Operator's logs
+* {{ k8spsmdbjira(951) }} and {{ k8spsmdbjira(1021) }}: The Operator now allows setting custom configuration for Percona Backup for MongoDB
+* {{ k8spsmdbjira(1029) }}: Mongod is now run in [quiet mode  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/program/mongod/#std-option-mongod.--quiet) to limit the amount of log messages
+* {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#sharding-mongos-expose-nodeport) to specify nodePort for mongos Service (thanks to Mike Devresse for contribution)
+* {{ k8spsmdbjira(1062) }}: The Operator now sets [appProtocol :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol) to `mongo` for Service objects, which is useful for service mesh implementations (thanks to Søren Mathiasen for contribution)
+* {{ k8spsmdbjira(732) }}: [Integration of the Operator with OpenLDAP](../ldap.md#using-ldap-over-tls-connection) can now be secured by using TLS connections
+* {{ k8spsmdbjira(755) }}: Enable usage of --sslAllowInvalidCertificates=false
+* {{ k8spsmdbjira(948) }}: Support ARM for operator and percona replicas
+* : 
+* {{ k8spsmdbjira(993) }}: investigate test failures for physical sharded restore
+* {{ k8spsmdbjira(995) }}: Allow users to store sseCustomerKey in a secret
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(1011) }} MongoDB Secret Rotation Broken
-* {{ k8spsmdbjira(1014) }} Certificate Rotation brought the Sharded MongoDB cluster down
-* {{ k8spsmdbjira(1018) }} Running MongoDB container fails if the image provides numactl command
-* {{ k8spsmdbjira(1024) }} Fix variable scope for pbm-entry script
-* {{ k8spsmdbjira(1030) }} clusterServiceDNSMode: "External" makes impossble to re-create cluster with kubectl delete + apply cr.yaml
-* {{ k8spsmdbjira(1035) }} Allow empty secretName for backup jobs
-* {{ k8spsmdbjira(1036) }} Restore to new cluster fails
-* {{ k8spsmdbjira(1038) }} Do not delete mongos services if cluster is in pause state
-* {{ k8spsmdbjira(1039) }} pmm agent is not deleted from server inventory on pod termination
-* {{ k8spsmdbjira(1053) }} Restoring a physical backup to different clusters in same namespace fails
-* {{ k8spsmdbjira(1056) }} delete-backup finalizer doesn't work with IAM Roles for Service Accounts
-* {{ k8spsmdbjira(1058) }} Checking authorization failed errors in Mongo Logs
-* {{ k8spsmdbjira(1065) }} Fix pitr-sharded test on EKS
-* {{ k8spsmdbjira(1070) }} Panic in delete-psmdb-pods-in-order finalizer
-* {{ k8spsmdbjira(780) }} Failed to downscale/upscale cluster to unsafe configuration
-* {{ k8spsmdbjira(786) }} When Changing to allowUnsafeConfigurations: true cluster goes to failures and mongos does not get to Ready state
-* {{ k8spsmdbjira(865) }} Arbiter nodeAntiaffinity allows to run it on the same worker as mongo-rs data nodes
-* {{ k8spsmdbjira(935) }} Get backup status command should be changed
-* {{ k8spsmdbjira(940) }} Operator doesn't set serviceAccountName in mongos statefulset
-* {{ k8spsmdbjira(979) }} expose restore variables for PBM (possible OOM/failure with defaults)
-* {{ k8spsmdbjira(985) }} pbmPod key in backup object only shows one replica/pod
+* {{ k8spsmdbjira(1011) }}: MongoDB Secret Rotation Broken
+* {{ k8spsmdbjira(1014) }}: Certificate Rotation brought the Sharded MongoDB cluster down
+* {{ k8spsmdbjira(1018) }}: Running MongoDB container fails if the image provides numactl command
+* {{ k8spsmdbjira(1024) }}: Fix variable scope for pbm-entry script
+* {{ k8spsmdbjira(1030) }}: clusterServiceDNSMode: "External" makes impossble to re-create cluster with kubectl delete + apply cr.yaml
+* {{ k8spsmdbjira(1035) }}: Allow empty secretName for backup jobs
+* {{ k8spsmdbjira(1036) }}: Restore to new cluster fails
+* {{ k8spsmdbjira(1038) }}: Do not delete mongos services if cluster is in pause state
+* {{ k8spsmdbjira(1039) }}: pmm agent is not deleted from server inventory on pod termination
+* {{ k8spsmdbjira(1053) }}: Restoring a physical backup to different clusters in same namespace fails
+* {{ k8spsmdbjira(1056) }}: delete-backup finalizer doesn't work with IAM Roles for Service Accounts
+* {{ k8spsmdbjira(1058) }}: Checking authorization failed errors in Mongo Logs
+* {{ k8spsmdbjira(1065) }}: Fix pitr-sharded test on EKS
+* {{ k8spsmdbjira(1070) }}: Panic in delete-psmdb-pods-in-order finalizer
+* {{ k8spsmdbjira(780) }}: Failed to downscale/upscale cluster to unsafe configuration
+* {{ k8spsmdbjira(786) }}: When Changing to allowUnsafeConfigurations: true cluster goes to failures and mongos does not get to Ready state
+* {{ k8spsmdbjira(865) }}: Arbiter nodeAntiaffinity allows to run it on the same worker as mongo-rs data nodes
+* {{ k8spsmdbjira(935) }}: Get backup status command should be changed
+* {{ k8spsmdbjira(940) }}: Operator doesn't set serviceAccountName in mongos statefulset
+* {{ k8spsmdbjira(979) }}: expose restore variables for PBM (possible OOM/failure with defaults)
+* {{ k8spsmdbjira(985) }}: pbmPod key in backup object only shows one replica/pod
 
 ## Deprecation and removal
 
