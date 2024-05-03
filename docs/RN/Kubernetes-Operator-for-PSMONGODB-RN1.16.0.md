@@ -35,11 +35,11 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 * {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#sharding-mongos-expose-nodeport) to specify nodePort for mongos Service (thanks to Mike Devresse for contribution)
 * {{ k8spsmdbjira(1062) }}: The Operator now sets [appProtocol :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol) to `mongo` for Service objects, which is useful for service mesh implementations (thanks to Søren Mathiasen for contribution)
 * {{ k8spsmdbjira(732) }}: [Integration of the Operator with OpenLDAP](../ldap.md#using-ldap-over-tls-connection) can now be secured by using TLS connections
-* {{ k8spsmdbjira(755) }}: Enable usage of --sslAllowInvalidCertificates=false
-* {{ k8spsmdbjira(948) }}: Support ARM for operator and percona replicas
+* {{ k8spsmdbjira(755) }}: New `allowInvalidCertificates` option allows to [enable or disable](../operator.md#tls-allowinvalidcertificates) bypassing MongoDB Shell checks for the certificates presented by the mongod/mongos instance, useful for self-signed certificates
+* {{ k8spsmdbjira(948) }}: ARM  support was added for the Operator image, making it possible to deploy MongoDB cluster on ARM when the database images become available
 * : 
-* {{ k8spsmdbjira(993) }}: investigate test failures for physical sharded restore
-* {{ k8spsmdbjira(995) }}: Allow users to store sseCustomerKey in a secret
+* {{ k8spsmdbjira(993) }}: To avoid backup fail on clusters where Percona Backup for MongoDB resync process takes too long, the Operator now checks if there is still a resync operation working with exponentially increasing interval and total wait time until failure equal to 8715 seconds
+* {{ k8spsmdbjira(995) }}: The Operator now allows storing key for [backups server-side AWS KMS encryption](../backups-encryption.md) in a Secret configurable with the  `secrets.sse` Custom Resource option
 
 ## Bugs Fixed
 
