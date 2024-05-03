@@ -12,7 +12,7 @@
 
 ### General availability of Physical Backups
 
-Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. Until not this feature was a technical preview, but within this release Percona announces the general availability of physical backups and restores for MongoDB with the Operator.
+Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. Until now this feature was a technical preview, but within this release Percona announces the general availability of physical backups and restores for MongoDB with the Operator.
 
 ### Automated volume resizing
 
@@ -20,10 +20,10 @@ Kubernetes supports the Persistent Volume expansion as a stable feature since v1
 
 ### Fixing the overloaded allowUnsafeConfigurations flag
 
-In the previous Operator versions `allowUnsafeConfigurations` Custom Resource option was used to allow configuring a cluster with unsafe parameters, such as starting it with less than 3 replica set instances. In fact, setting this option to `true` resulted in a wide range of reduced safety features without user's explicit
+In the previous Operator versions `allowUnsafeConfigurations` Custom Resource option was used to allow configuring a cluster with unsafe parameters, such as starting it with less than 3 replica set instances. In fact, setting this option to `true` resulted in a wide range of reduced safety features without the user's explicit
 intent: disabling TLS, allowing backups in unhealthy clusters, etc.
 
-With thise release, a separate `unsafeFlags` Custom Resource section is introduced for the fine-grained control of the safety loosening features:
+With this release, a separate `unsafeFlags` Custom Resource section is introduced for the fine-grained control of the safety loosening features:
 
 ```yaml
 unsafeFlags:
