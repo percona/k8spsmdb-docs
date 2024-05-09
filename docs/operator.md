@@ -57,7 +57,7 @@ The Version Service URL used to check versions compatibility for upgrade
 <label>Your cluster name: <input data-input-for="CLUSTER_NAME"></label>
 
 ``` {.bash data-prompt="$" }
-$ kubectl patch psmdb iCLUSTER_NAMEi --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "https://check.percona.com" }}}'
+$ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "https://check.percona.com" }}}'
 ```
 
 ### `upgradeOptions.apply`
