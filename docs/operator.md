@@ -54,10 +54,10 @@ The `upgradeOptions` section in the [deploy/cr.yaml  :octicons-link-external-16:
 
 The Version Service URL used to check versions compatibility for upgrade 
 
-{{{user-defined-values}}}
+<label>Your cluster name: <input data-input-for="CLUSTER_NAME"></label>
 
 ``` {.bash data-prompt="$" }
-$ kubectl patch psmdb CLUSTER_NAME --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "https://check.percona.com" }}}'
+$ kubectl patch psmdb xCLUSTER_NAMEx --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "https://check.percona.com" }}}'
 ```
 
 ### `upgradeOptions.apply`

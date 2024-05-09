@@ -11,4 +11,5 @@ mkdocs-section-index
 mkdocs-htmlproofer-plugin
 mkdocs-meta-descriptions-plugin
 mkdocs-user-defined-values
+mkdocs-placeholder-plugin
 mike

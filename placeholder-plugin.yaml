@@ -1,0 +1,5 @@
+settings:
+  auto_placeholder_tables: false
+placeholders:
+  CLUSTER_NAME: my-cluster-name
+  NAMESPACE_NAME: psmdb_db
