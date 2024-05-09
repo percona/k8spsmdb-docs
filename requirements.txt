@@ -10,4 +10,5 @@ mkdocs-bootstrap-tables-plugin
 mkdocs-section-index
 mkdocs-htmlproofer-plugin
 mkdocs-meta-descriptions-plugin
+mkdocs-user-defined-values
 mike
