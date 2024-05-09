@@ -136,7 +136,7 @@ plugins:
     css_dir: css
     javascript_dir: js
     canonical_version: null
-  placeholder
+  placeholder:
     enabled: True
     js_output_dir: assets/javascripts/
     placeholder_css: assets/javascripts/placeholder-plugin.css
