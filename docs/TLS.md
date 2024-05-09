@@ -360,6 +360,71 @@ Operator version prior to 1.9.0), you should move through the
 5. Unpause the cluster [in a standard way](pause.md), and make
     sure it has reached its running state.
 
+### Modify certificates generation
+
+For example, in order to increase CA duration with cert-manager:
+Delete psmdb resource:
+kubectl -n psmdb delete psmdb cluster1
+
+Wait until all pods disappear and delete certificate related resources:
+kubectl -n psmdb delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
+
+Create own custom CA:
+apiVersion: cert-manager.io/v1
+
+kind: Issuer
+
+metadata:
+
+  name: cluster1-psmdb-ca-issuer
+
+spec:
+
+  selfSigned: {}
+
+---
+
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+
+metadata:
+
+  name: cluster1-ca-cert
+
+spec:
+
+  commonName: cluster1-ca
+
+  duration: 10000h0m0s
+
+  isCA: true
+
+  issuerRef:
+
+    kind: Issuer
+
+    name: cluster1-psmdb-ca-issuer
+
+  renewBefore: 730h0m0s
+
+  secretName: cluster1-ca-cert
+
+Create the cluster from the same cr.yaml
+
+Verify certificate duration:
+kubectl -n psmdb get secret/cluster1-ca-cert -o go-template='{{index .data "tls.crt" | base64decode}}'|openssl x509 -noout -text
+
+...
+
+        Validity
+
+            Not Before: Nov 24 10:32:58 2023 GMT
+
+            Not After : Jan 14 02:32:58 2025 GMT
+
+...
+
 ## Run Percona Server for MongoDB without TLS
 
 Omitting TLS is also possible, but we recommend that you run your cluster with
