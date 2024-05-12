@@ -3,48 +3,179 @@
 The operator is configured via the spec section of the
 [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
-The metadata part of this file contains the following keys:
+## `metadata` 
 
+The metadata part of this file contains the following keys:
 
 * `name` (`my-cluster-name` by default) sets the name of your Percona Server
 for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
 * `finalizers.delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
 * `finalizers.delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
 
-The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains the following sections:
+## Toplevel `spec` elements
 
-| Key             | Value type         | Default      | Description |
-| --------------- | ------------------ | ------------ | ----------- |
-| platform        | string             | `kubernetes` | Override/set the Kubernetes platform: *kubernetes* or *openshift* |
-| pause           | boolean            | `false`      | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back. |
-| unmanaged       | boolean            | `false`      | Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates |
-| crVersion       | string             | `{{ release }}`     | Version of the Operator the Custom Resource belongs to |
-| image           | string             | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` | The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)) |
-| imagePullPolicy | string             | `Always`     | The [policy used to update images  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
-| tls.certValidityDuration  | string   | `2160h`      | The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters |
-| imagePullSecrets.name     | string   | `private`-`registry`-`credentials` | The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry) |
-| initImage                 | string   | `percona/percona-server-mongodb-operator:{{ release }}` | An alternative image for the initial Operator installation |
-| initContainerSecurityContext | subdoc| `{}`         | A custom [Kubernetes Security Context for a Container  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation) |
-| ClusterServiceDNSSuffix   | string   | `svc.cluster.local` | The (non-standard) cluster domain to be used as a suffix of the Service name |
-| clusterServiceDNSMode     | string   | `Internal`   | Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together. |
-| allowUnsafeConfigurations | boolean  | `false`      | Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored** |
-| updateStrategy | string              | `SmartUpdate`| A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete) |
-|ignoreAnnotations| subdoc            | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` | The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator |
-| ignoreLabels    | subdoc            | `rack`                     | The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator |
-| multiCluster.enabled      | boolean  | `false`      | [Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services) |
-| multiCluster.DNSSuffix    | string   | `svc.clusterset.local` | The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)) |
-| upgradeOptions  | [subdoc](operator.md#operator-upgradeoptions-section) | | Upgrade configuration section |
-| secrets         | [subdoc](operator.md#operator-secrets-section)        | | Operator secrets section |
-| replsets        | [subdoc](operator.md#operator-replsets-section)       | | Operator MongoDB Replica Set section |
-| pmm             | [subdoc](operator.md#operator-pmm-section)            | | Percona Monitoring and Management section |
-| sharding        | [subdoc](operator.md#operator-sharding-section)       | | MongoDB sharding configuration section |
-| backup          | [subdoc](operator.md#operator-backup-section)         | | Percona Server for MongoDB backups section 
+The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains the following keys and sections:
+
+
+### `platform`
+
+> **Value**: string 
+
+> **Example**:  `kubernetes`
+
+Override/set the Kubernetes platform: *kubernetes* or *openshift*
+
+### `pause`
+
+> **Value**: boolean 
+
+> **Example**:  `false`
+
+Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back.
+
+### `unmanaged`
+
+> **Value**: boolean 
+
+> **Example**:  `false`
+
+Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates
+
+### `crVersion`
+
+> **Value**: string 
+
+> **Example**:  `{{ release }}`
+
+Version of the Operator the Custom Resource belongs to
+
+### `image`
+
+> **Value**: string 
+
+> **Example**:  `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}`
+
+The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images))
+
+### `imagePullPolicy`
+
+> **Value**: string 
+
+> **Example**:  `Always`
+
+The [policy used to update images  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+
+### `tls.certValidityDuration`
+
+> **Value**: string
+
+> **Example**:  `2160h`
+
+The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters
+
+### `imagePullSecrets.name`
+
+> **Value**: string 
+
+> **Example**:  `private`-`registry`-`credentials`
+
+The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry)
+
+### `initImage`
+
+> **Value**: string 
+
+> **Example**:  `percona/percona-server-mongodb-operator:{{ release }}`
+
+An alternative image for the initial Operator installation
+
+### `initContainerSecurityContext`
+
+> **Value**: subdoc 
+
+> **Example**:  `{}`
+
+A custom [Kubernetes Security Context for a Container  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation)
+
+### `ClusterServiceDNSSuffix`
+
+> **Value**: string 
+
+> **Example**:  `svc.cluster.local`
+
+The (non-standard) cluster domain to be used as a suffix of the Service name
+
+### `clusterServiceDNSMode`
+
+> **Value**: string 
+
+> **Example**:  `Internal`
+
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
+
+### `allowUnsafeConfigurations`
+
+> **Value**: boolean 
+
+> **Example**:  `false`
+
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored**
+
+### `updateStrategy`
+
+> **Value**: string 
+
+> **Example**:  `SmartUpdate`
+
+A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete)
+
+
+### `ignoreAnnotations`
+
+> **Value**: subdoc 
+
+> **Example**:  `service.beta.kubernetes.io/aws-load-balancer-backend-protocol`
+
+The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator
+
+### `ignoreLabels`
+
+> **Value**: subdoc 
+
+> **Example**:  `rack`
+
+The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator
+
+### `multiCluster.enabled`
+
+> **Value**: boolean 
+
+> **Example**:  `false`
+
+[Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services)
+
+### `multiCluster.DNSSuffix`
+
+> **Value**: string 
+
+> **Example**:  `svc.clusterset.local`
+
+The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services))
+
+Also there is a number of sections explained below:
+
+| Section                                                       | Description                                |
+| ------------------------------------------------------------- | ------------------------------------------ |
+| [upgradeOptions](operator.md#operator-upgradeoptions-section) | Upgrade configuration section              |
+| [secrets](operator.md#operator-secrets-section)               | Operator secrets section                   |
+| [replsets](operator.md#operator-replsets-section)             | Operator MongoDB Replica Set section       |
+| [pmm](operator.md#operator-pmm-section)                       | Percona Monitoring and Management section  |
+| [sharding](operator.md#operator-sharding-section)             | MongoDB sharding configuration section     |
+| [backup](operator.md#operator-backup-section)                 | Percona Server for MongoDB backups section |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
 The `upgradeOptions` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to control Percona Server for MongoDB upgrades.
-
-
 
 ### `upgradeOptions.versionServiceEndpoint`
 
@@ -62,12 +193,17 @@ $ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeO
 
 ### `upgradeOptions.apply`
 
-> **Value**: string 
-
-> **Example**:  `disabled` 
-
 Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them) 
 
+| Value  | Example    |
+| ------ | ---------- |
+| string | `disabled` |
+
+<label>Your cluster name: <input data-input-for="CLUSTER_NAME"></label>
+
+``` {.bash data-prompt="$" }
+$ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "apply": "disabled" }}}'
+```
 
 ### `upgradeOptions.schedule`
 
