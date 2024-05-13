@@ -3,3 +3,7 @@ settings:
 placeholders:
   CLUSTER_NAME: my-cluster-name
   NAMESPACE_NAME: psmdb_db
+  UPGRADEOPTIONS_VERSIONSERVICEENDPOINT: https://check.percona.com
+  UPGRADEOPTIONS_APPLY: disabled
+  UPGRADEOPTIONS_SCHEDULE: 0 2 \* \* \*
+  UPGRADEOPTIONS.SETFCV: false
