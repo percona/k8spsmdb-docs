@@ -77,7 +77,10 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 ## Deprecation and removal
 
-* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any affect.
+* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect.
+
+* MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Also, this change influences the [database upgrade scenario](../update.md#automated-upgrade): users of Smart Updates with existing clusters based on Percona Server for MongoDB 4.4 should explicitly change to newer database versions to have database upgrades, for example setting `upgradeOptions.apply=7.0-recommended` in the Custom Resource.
+
 
 ## Supported Platforms
 
