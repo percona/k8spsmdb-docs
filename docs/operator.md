@@ -249,9 +249,7 @@ has only two of them:
 
 ### `secrets.key`
 
-> **Value**: string 
-
-> **Example**:  `my-cluster-name-mongodb-key` 
+**Value type**: string &emsp; &emsp; **Example**:  `my-cluster-name-mongodb-key` 
 
 The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist. 
 
