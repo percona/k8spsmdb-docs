@@ -179,7 +179,6 @@ The `upgradeOptions` section in the [deploy/cr.yaml  :octicons-link-external-16:
 
 ### `upgradeOptions.versionServiceEndpoint`
 
-|                 |                             |
 | --------------- | --------------------------- |
 | **Value type:** | string                      |
 | **Example:**    | `https://check.percona.com` |
@@ -196,7 +195,6 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-|                 |                             |
 | --------------- | --------------------------- |
 | **Value type:** | string                      |
 | **Example:**    | `disabled`                  |
