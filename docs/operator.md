@@ -185,13 +185,13 @@ The `upgradeOptions` section in the [deploy/cr.yaml  :octicons-link-external-16:
 
 The Version Service URL used to check versions compatibility for upgrade.
 
-    ??? example "Usage example"
+??? example "Usage example"
 
-        You can set this option for the already running <label>cluster <input data-input-for="CLUSTER_NAME"></label> to the <label>value <input data-input-for="UPGRADEOPTIONS_VERSIONSERVICEENDPOINT"></label> as follows:
+    You can set this option for the already running <label>cluster <input data-input-for="CLUSTER_NAME"></label> to the <label>value <input data-input-for="UPGRADEOPTIONS_VERSIONSERVICEENDPOINT"></label> as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "dUPGRADEOPTIONS_VERSIONSERVICEENDPOINTd" }}}'
-        ```
+    ``` {.bash data-prompt="$" }
+    $ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "versionServiceEndpoint": "dUPGRADEOPTIONS_VERSIONSERVICEENDPOINTd" }}}'
+    ```
 
 ### `upgradeOptions.apply`
 
@@ -201,13 +201,13 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
-    ???+ example "Usage example"
+???+ example "Usage example"
 
-        You can set this option for the already running <label>cluster <input data-input-for="CLUSTER_NAME"></label> to the <label>value <input data-input-for="UPGRADEOPTIONS_APPLY"></label> as follows:
+    You can set this option for the already running <label>cluster <input data-input-for="CLUSTER_NAME"></label> to the <label>value <input data-input-for="UPGRADEOPTIONS_APPLY"></label> as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "apply": "dUPGRADEOPTIONS_APPLYd" }}}'
-        ```
+    ``` {.bash data-prompt="$" }
+    $ kubectl patch psmdb dCLUSTER_NAMEd --type=merge --patch '{ "spec": { "upgradeOptions": { "apply": "dUPGRADEOPTIONS_APPLYd" }}}'
+    ```
 
 ### `upgradeOptions.schedule`
 
