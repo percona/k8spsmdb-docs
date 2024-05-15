@@ -57,6 +57,14 @@ than one, make several incremental updates sequentially.
             ...
     ```
 
+!!! warning
+
+    Starting from the Operator version 1.16.0 MongoDB 4.4 support in the
+    Operator has reached its end-of-life. Make sure that you have a supported
+    MongoDB version before upgrading the Operator to 1.16.0 (you can use
+    [major version upgrade functionality](update.md#major-version-automated-upgrades)
+    to fix it.
+
 ### Manual upgrade
 
 The upgrade includes the following steps.
@@ -274,14 +282,14 @@ configuration file as follows:
         {{ mongodb70recommended }}, etc.). Actual versions can be found
         [in the list of certified images](images.md#custom-registry-images).
 
-    !!! note prior to the Operator version 1.16.0 Percona Server for MongoDB
+    !!! note
 
-        4.4 could be used with setting `upgradeOptions.apply` to
-        `4.4-recommended` or `4.4-latest`. MongoDB 4.4 support has reached its
-        end-of-life in the Operator version 1.16.0. Users of existing clusters
-        based on Percona Server for MongoDB 4.4 should explicitly change to
-        newer database versions to have database upgrades, for example setting
-        `upgradeOptions.apply=7.0-recommended`.
+        prior to the Operator version 1.16.0 Percona Server for MongoDB 4.4
+        could be used with `upgradeOptions.apply` set to `4.4-recommended`
+        or `4.4-latest`. MongoDB 4.4 support has reached its end-of-life in the
+        Operator version 1.16.0. Users of existing clusters based on Percona
+        Server for MongoDB 4.4 should explicitly switch to newer database
+        versions before upgrading the Operator to 1.16.0.
 
 4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
     URL (otherwise Smart Updates will not occur).
