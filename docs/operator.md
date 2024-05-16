@@ -19,146 +19,147 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 
 ### `platform`
 
+Override/set the Kubernetes platform: `kubernetes` or `openshift`.
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `kubernetes` |
-| | Override/set the Kubernetes platform: `kubernetes` or `openshift` |
 
 ### `pause`
 
+Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back.
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
-| | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back |
 
 ### `unmanaged`
 
+Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates.
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates.
-
 ### `crVersion`
+
+Version of the Operator the Custom Resource belongs to.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `{{ release }}` |
 
-Version of the Operator the Custom Resource belongs to.
-
 ### `image`
+
+The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
 
-The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)).
-
 ### `imagePullPolicy`
+
+The [policy used to update images  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `Always`   |
 
-The [policy used to update images  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images).
-
 ### `tls.certValidityDuration`
+
+The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `2160h`    |
 
-The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters.
-
 ### `imagePullSecrets.name`
+
+The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `private`-`registry`-`credentials` |
 
-The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry).
-
 ### `initImage`
+
+An alternative image for the initial Operator installation.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `percona/percona-server-mongodb-operator:{{ release }}` |
 
-An alternative image for the initial Operator installation.
-
 ### `initContainerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | subdoc      | `{}`       |
 
-A custom [Kubernetes Security Context for a Container  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation).
-
 ### `ClusterServiceDNSSuffix`
+
+The (non-standard) cluster domain to be used as a suffix of the Service name.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `svc.cluster.local` |
 
-The (non-standard) cluster domain to be used as a suffix of the Service name.
-
 ### `clusterServiceDNSMode`
+
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `Internal` |
 
-Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
-
 ### `allowUnsafeConfigurations`
+
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored**.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored**.
-
 ### `updateStrategy`
+
+A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `SmartUpdate` |
 
-A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
-
-
 ### `ignoreAnnotations`
+
+The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | subdoc      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` |
 
-The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator.
-
 ### `ignoreLabels`
+
+The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | subdoc      | `rack`     |
 
-The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator.
-
 ### `multiCluster.enabled`
+
+[Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-[Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services).
-
 ### `multiCluster.DNSSuffix`
+
+The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `svc.clusterset.local` |
-
-The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
 
 Also there is a number of sections explained below:
 
@@ -212,15 +213,13 @@ If enabled, [FeatureCompatibilityVersion (FCV)  :octicons-link-external-16:](htt
 Each spec in its turn may contain some key-value pairs. The secrets one
 has only two of them:
 
-
-
 ### `secrets.key`
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `my-cluster-name-mongodb-key` |
 
-The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist. 
+The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist.
 
 
 ### `secrets.users` |
@@ -229,7 +228,7 @@ The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:]
 | ----------- | ---------- |
 | string      | `my-cluster-name-mongodb-users` |
 
-The name of the Secrets object for the MongoDB users **required to run the operator.** 
+The name of the Secrets object for the MongoDB users **required to run the operator.**
 
 
 ### `secrets.ssl`
@@ -238,7 +237,7 @@ The name of the Secrets object for the MongoDB users **required to run the opera
 | ----------- | ---------- |
 | string      | `my-custom-ssl` |
 
-A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details 
+A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details.
 
 
 ### `secrets.sslInternal`
@@ -247,7 +246,7 @@ A secret with TLS certificate generated for *external* communications, see [Tran
 | ----------- | ---------- |
 | string      | `my-custom-ssl-internal` |
 
-A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details 
+A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details.
 
 
 ### `secrets.encryptionKey`
@@ -256,7 +255,7 @@ A secret with TLS certificate generated for *internal* communications, see [Tran
 | ----------- | ---------- |
 | string      | `my-cluster-name-mongodb-encryption-key` |
 
-Specifies a secret object with the [encryption key  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) 
+Specifies a secret object with the [encryption key  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
 
 ### `secrets.vault`
@@ -265,7 +264,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 | ----------- | ---------- |
 | string      | `my-cluster-name-vault` |
 
-Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#using-vault) 
+Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#using-vault).
 
 ## <a name="operator-replsets-section"></a>Replsets Section
 
@@ -279,7 +278,7 @@ The replsets section controls the MongoDB Replica Set.
 | ----------- | ---------- |
 | string      | `rs 0`     |
 
-The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/) 
+The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/).
 
 
 ### `replsets.size`
@@ -288,7 +287,7 @@ The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.
 | ----------- | ---------- |
 | int         | `3`        |
 
-The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) 
+The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability).
 
 
 ### `replsets.terminationGracePeriodSeconds`
@@ -297,7 +296,7 @@ The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octic
 | ----------- | ---------- |
 | int         | `300`      |
 
-The amount of seconds Kubernetes will wait for a clean replica set Pods termination 
+The amount of seconds Kubernetes will wait for a clean replica set Pods termination.
 
 
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
@@ -306,7 +305,7 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 | ----------- | ---------- |
 | label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `replsets.topologySpreadConstraints.maxSkew`
@@ -315,7 +314,7 @@ The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicon
 | ----------- | ---------- |
 | int         | `1`        |
 
-The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `replsets.topologySpreadConstraints.topologyKey`
@@ -324,7 +323,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `replsets.topologySpreadConstraints.whenUnsatisfiable`
@@ -333,7 +332,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 | ----------- | ---------- |
 | string      | `DoNotSchedule` |
 
-What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `replsets.configuration`
@@ -342,7 +341,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | ----------- | ---------- |
 | string      | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 
-Custom configuration options for mongod. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html). 
+Custom configuration options for mongod. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
 
 
 ### `replsets.affinity.antiAffinityTopologyKey`
@@ -351,7 +350,7 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes 
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes.
 
 
 ### `replsets.affinity.advanced`
@@ -360,7 +359,7 @@ The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | subdoc      |            |
 
-In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used 
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
 
 
 ### `replsets.tolerations.key`
@@ -369,7 +368,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 | ----------- | ---------- |
 | string      | `node.alpha.kubernetes.io/unreachable` |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Replica Set nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Replica Set nodes.
 
 
 ### `replsets.tolerations.operator`
@@ -378,7 +377,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Exists`   |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Replica Set nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Replica Set nodes.
 
 
 ### `replsets.tolerations.effect`
@@ -387,7 +386,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `NoExecute` |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Replica Set nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Replica Set nodes.
 
 
 ### `replsets.tolerations.tolerationSeconds`
@@ -396,7 +395,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | int         | `6000`     |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit  for the Replica Set nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit  for the Replica Set nodes.
 
 
 ### `replsets.priorityClassName`
@@ -405,7 +404,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `high priority` |
 
-The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass)  for the Replica Set nodes 
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass)  for the Replica Set nodes.
 
 
 ### `replsets.annotations`
@@ -414,7 +413,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | string      | `iam.amazonaws.com/role: role-arn` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Replica Set nodes 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Replica Set nodes.
 
 
 ### `replsets.labels`
@@ -423,7 +422,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | label       | `rack: rack-22` |
 
-The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Replica Set nodes 
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Replica Set nodes.
 
 
 ### `replsets.nodeSelector`
@@ -432,7 +431,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | label       | `disktype: ssd` |
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint  for the Replica Set nodes 
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint  for the Replica Set nodes.
 
 
 ### `replsets.storage.engine`
@@ -441,7 +440,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `wiredTiger` |
 
-Sets the storage.engine option <https://docs.mongodb.com/manual/reference/configuration-options/#storage.engine>\`_ for the Replica Set nodes 
+Sets the storage.engine option <https://docs.mongodb.com/manual/reference/configuration-options/#storage.engine>\`_ for the Replica Set nodes.
 
 
 ### `replsets.storage.wiredTiger.engineConfig.cacheSizeRatio`
@@ -450,7 +449,7 @@ Sets the storage.engine option <https://docs.mongodb.com/manual/reference/config
 | ----------- | ---------- |
 | float       | `0.5`      |
 
-The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.cacheSizeGB) for the Replica Set nodes 
+The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.cacheSizeGB) for the Replica Set nodes.
 
 
 ### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
@@ -459,7 +458,7 @@ The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB optio
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes 
+Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes.
 
 
 ### `replsets.storage.wiredTiger.engineConfig.journalCompressor`
@@ -468,7 +467,7 @@ Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-
 | ----------- | ---------- |
 | string      | `snappy`   |
 
-Sets the [storage.wiredTiger.engineConfig.journalCompressor option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.journalCompressor) for the Replica Set nodes 
+Sets the [storage.wiredTiger.engineConfig.journalCompressor option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.journalCompressor) for the Replica Set nodes.
 
 
 ### `replsets.storage.wiredTiger.collectionConfig.blockCompressor`
@@ -477,7 +476,7 @@ Sets the [storage.wiredTiger.engineConfig.journalCompressor option  :octicons-li
 | ----------- | ---------- |
 | string      | `snappy`   |
 
-Sets the [storage.wiredTiger.collectionConfig.blockCompressor option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.collectionConfig.blockCompressor) for the Replica Set nodes 
+Sets the [storage.wiredTiger.collectionConfig.blockCompressor option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.collectionConfig.blockCompressor) for the Replica Set nodes.
 
 
 ### `replsets.storage.wiredTiger.indexConfig.prefixCompression`
@@ -486,7 +485,7 @@ Sets the [storage.wiredTiger.collectionConfig.blockCompressor option  :octicons-
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-Sets the [storage.wiredTiger.indexConfig.prefixCompression option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.indexConfig.prefixCompression) for the Replica Set nodes 
+Sets the [storage.wiredTiger.indexConfig.prefixCompression option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.indexConfig.prefixCompression) for the Replica Set nodes.
 
 
 ### `replsets.storage.inMemory.engineConfig.inMemorySizeRatio`
@@ -495,7 +494,7 @@ Sets the [storage.wiredTiger.indexConfig.prefixCompression option  :octicons-lin
 | ----------- | ---------- |
 | float       |  `0.9`     |
 
-The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.inMemory.engineConfig.inMemorySizeGB) for the Replica Set nodes 
+The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.inMemory.engineConfig.inMemorySizeGB) for the Replica Set nodes.
 
 
 ### `replsets.livenessProbe.failureThreshold`
@@ -504,7 +503,7 @@ The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :o
 | ----------- | ---------- |
 | int         | `4`        |
 
-Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `replsets.livenessProbe.initialDelaySeconds`
@@ -513,7 +512,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 | ----------- | ---------- |
 | int         | `60`       |
 
-Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). 
+Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `replsets.livenessProbe.periodSeconds`
@@ -522,7 +521,7 @@ Number of seconds to wait after the container start before initiating the [liven
 | ----------- | ---------- |
 | int         | `30`       |
 
-How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `replsets.livenessProbe.timeoutSeconds`
@@ -531,7 +530,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `replsets.livenessProbe.startupDelaySeconds`
@@ -540,7 +539,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 | ----------- | ---------- |
 | int         | `7200`     |
 
-Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet 
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
 
 
 ### `replsets.readinessProbe.failureThreshold`
@@ -549,7 +548,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 | ----------- | ---------- |
 | int         | `8`        |
 
-Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `replsets.readinessProbe.initialDelaySeconds`
@@ -558,7 +557,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) 
+Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `replsets.readinessProbe.periodSeconds`
@@ -567,7 +566,7 @@ Number of seconds to wait after the container start before initiating the [readi
 | ----------- | ---------- |
 | int         | `3`        |
 
-How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `replsets.readinessProbe.successThreshold`
@@ -576,7 +575,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | int         | `1`        |
 
-Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed 
+Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
 
 
 ### `replsets.readinessProbe.timeoutSeconds`
@@ -585,7 +584,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 | ----------- | ---------- |
 | int         | `2`        |
 
-Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `replsets.runtimeClassName`
@@ -594,7 +593,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | string      | `image-rc` |
 
-Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Replica Set Pods 
+Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Replica Set Pods.
 
 
 ### `replsets.sidecars.image`
@@ -603,7 +602,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | string      | `busybox`  |
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods 
+Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 
 ### `replsets.sidecars.command`
@@ -612,7 +611,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pod
 | ----------- | ---------- |
 | array       | `["/bin/sh"]` |
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods 
+Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 
 ### `replsets.sidecars.args`
@@ -621,7 +620,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set P
 | ----------- | ---------- |
 | array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods 
+Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 
 ### `replsets.sidecars.name`
@@ -630,7 +629,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Rep
 | ----------- | ---------- |
 | string      | `rs-sidecar-1` |
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods 
+Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 
 ### `replsets.sidecars.volumeMounts.mountPath`
@@ -639,7 +638,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods
 | ----------- | ---------- |
 | string      | `/volume1` |
 
-Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.sidecars.volumeMounts.name`
@@ -648,7 +647,7 @@ Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Repl
 | ----------- | ---------- |
 | string      | `sidecar-volume-claim` |
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.sidecarVolumes.name`
@@ -657,7 +656,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 | ----------- | ---------- |
 | string      | `sidecar-config` |
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.sidecarVolumes.configMap.name`
@@ -666,7 +665,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 | ----------- | ---------- |
 | string      | `myconfigmap` |
 
-Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.sidecarVolumes.secret.secretName`
@@ -675,7 +674,7 @@ Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `sidecar-secret` |
 
-Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.sidecarPVCs`
@@ -684,7 +683,7 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 | ----------- | ---------- |
 | subdoc      |            |
 
-[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods 
+[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
 
 
 ### `replsets.podDisruptionBudget.maxUnavailable`
@@ -693,7 +692,7 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 | ----------- | ---------- |
 | int         | `1`        |
 
-The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods 
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods.
 
 
 ### `replsets.podDisruptionBudget.minAvailable`
@@ -702,7 +701,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | int         | `1`        |
 
-The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods 
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods.
 
 
 ### `replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external`
@@ -711,7 +710,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | string      | `rs0-0.mycluster.xyz` |
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster 
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
 
 
 ### `replsets.splitHorizons.&lt;replicaset-pod-name&gt;.external-2`
@@ -720,7 +719,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 | ----------- | ---------- |
 | string      | `rs0-0.mycluster2.xyz` |
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster 
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
 
 
 ### `replsets.expose.enabled`
@@ -729,7 +728,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enable or disable exposing [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/) nodes with dedicated IP addresses 
+Enable or disable exposing [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/) nodes with dedicated IP addresses.
 
 
 ### `replsets.expose.exposeType`
@@ -738,7 +737,7 @@ Enable or disable exposing [MongoDB Replica Set  :octicons-link-external-16:](ht
 | ----------- | ---------- |
 | string      | `ClusterIP`|
 
-The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed 
+The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
 
 ### `replsets.expose.loadBalancerSourceRanges`
@@ -747,7 +746,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | string      | `10.0.0.0/8` |
 
-The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) 
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
 
 
 ### `replsets.expose.serviceAnnotations`
@@ -756,7 +755,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongod daemon 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongod daemon.
 
 
 ### `replsets.expose.serviceLabels`
@@ -765,7 +764,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB Replica Set Service 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB Replica Set Service.
 
 
 ### `replsets.nonvoting.enabled`
@@ -774,7 +773,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster 
+Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster.
 
 
 ### `replsets.nonvoting.size`
@@ -783,7 +782,7 @@ Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbi
 | ----------- | ---------- |
 | int         | `1`        |
 
-The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster 
+The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster.
 
 
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
@@ -792,7 +791,7 @@ The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) w
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes 
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
 
 
 ### `replsets.nonvoting.affinity.advanced`
@@ -801,7 +800,7 @@ The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | subdoc      |            |
 
-In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used 
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
 
 
 ### `replsets.nonvoting.tolerations.key`
@@ -810,7 +809,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 | ----------- | ---------- |
 | string      | `node.alpha.kubernetes.io/unreachable` |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the non-voting nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the non-voting nodes.
 
 
 ### `replsets.nonvoting.tolerations.operator`
@@ -819,7 +818,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Exists`   |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the non-voting nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the non-voting nodes.
 
 
 ### `replsets.nonvoting.tolerations.effect`
@@ -828,7 +827,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `NoExecute`|
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the non-voting nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the non-voting nodes.
 
 
 ### `replsets.nonvoting.tolerations.tolerationSeconds`
@@ -837,7 +836,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | int         | `6000`     |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the non-voting nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the non-voting nodes.
 
 
 ### `replsets.nonvoting.priorityClassName`
@@ -846,7 +845,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `high priority` |
 
-The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the non-voting nodes 
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the non-voting nodes.
 
 
 ### `replsets.nonvoting.annotations`
@@ -855,7 +854,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | string      | `iam.amazonaws.com/role: role-arn` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the non-voting nodes 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the non-voting nodes.
 
 
 ### `replsets.nonvoting.labels`
@@ -864,7 +863,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | label       | `rack: rack-22` |
 
-The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the non-voting nodes 
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the non-voting nodes.
 
 
 ### `replsets.nonvoting.nodeSelector`
@@ -873,7 +872,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | label       | `disktype: ssd` |
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes 
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes.
 
 
 ### `replsets.nonvoting.podDisruptionBudget.maxUnavailable`
@@ -882,7 +881,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | int         | `1`        |
 
-The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among non-voting nodes 
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among non-voting nodes.
 
 
 ### `replsets.nonvoting.podDisruptionBudget.minAvailable`
@@ -891,7 +890,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | int         | `1`        |
 
-The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among non-voting nodes 
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among non-voting nodes.
 
 
 ### `replsets.nonvoting.resources.limits.cpu`
@@ -900,7 +899,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | string      | `300m`     |
 
-[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.nonvoting.resources.limits.memory`
@@ -909,7 +908,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.nonvoting.resources.requests.cpu`
@@ -918,7 +917,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | string      | `300m`     |
 
-The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.nonvoting.resources.requests.memory`
@@ -927,7 +926,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.nonvoting.volumeSpec.emptyDir`
@@ -936,7 +935,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `{}`       |
 
-The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers 
+The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
 
 
 ### `replsets.nonvoting.volumeSpec.hostPath.path`
@@ -945,7 +944,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `/data`    |
 
-[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers 
+[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
 
 
 ### `replsets.nonvoting.volumeSpec.hostPath.type`
@@ -954,7 +953,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Directory`|
 
-The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) 
+The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
 
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.annotations`
@@ -963,7 +962,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.labels`
@@ -972,7 +971,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.storageClassName`
@@ -981,7 +980,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `standard` |
 
-The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the non-voting nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb 
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the non-voting nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb.
 
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes`
@@ -999,7 +998,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | string      | `3Gi`      |
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes 
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes.
 
 
 ### `replsets.arbiter.enabled`
@@ -1008,7 +1007,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enable or disable creation of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-arbiter/) nodes within the cluster 
+Enable or disable creation of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-arbiter/) nodes within the cluster.
 
 
 ### `replsets.arbiter.size`
@@ -1017,7 +1016,7 @@ Enable or disable creation of [Replica Set Arbiter  :octicons-link-external-16:]
 | ----------- | ---------- |
 | int         | `1`        |
 
-The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-arbiter/) instances within the cluster 
+The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-arbiter/) instances within the cluster.
 
 
 ### `replsets.arbiter.afinity.antiAffinityTopologyKey`
@@ -1026,7 +1025,7 @@ The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mo
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter 
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter.
 
 
 ### `replsets.arbiter.affinity.advanced`
@@ -1035,7 +1034,7 @@ The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | subdoc      |            |
 
-In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used 
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
 
 
 ### `replsets.arbiter.tolerations.key`
@@ -1044,7 +1043,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 | ----------- | ---------- |
 | string      | `node.alpha.kubernetes.io/unreachable` |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Arbiter nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Arbiter nodes.
 
 
 ### `replsets.arbiter.tolerations.operator`
@@ -1053,7 +1052,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Exists`   |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Arbiter nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Arbiter nodes.
 
 
 ### `replsets.arbiter.tolerations.effect`
@@ -1062,7 +1061,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `NoExecute`|
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Arbiter nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Arbiter nodes.
 
 
 ### `replsets.arbiter.tolerations.tolerationSeconds`
@@ -1071,7 +1070,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | int         | `6000`     |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the Arbiter nodes 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the Arbiter nodes.
 
 
 ### `replsets.arbiter.priorityClassName`
@@ -1080,7 +1079,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `high priority` |
 
-The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the Arbiter nodes 
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the Arbiter nodes.
 
 
 ### `replsets.arbiter.annotations`
@@ -1089,7 +1088,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | string      | `iam.amazonaws.com/role: role-arn` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Arbiter nodes 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Arbiter nodes.
 
 
 ### `replsets.arbiter.labels`
@@ -1098,7 +1097,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | label       | `rack: rack-22` |
 
-The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Arbiter nodes 
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Arbiter nodes.
 
 
 ### `replsets.arbiter.nodeSelector`
@@ -1107,7 +1106,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | label       | `disktype: ssd` |
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes 
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes.
 
 
 ### `replsets.resources.limits.cpu`
@@ -1116,7 +1115,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `300m`     |
 
-[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.resources.limits.memory`
@@ -1125,7 +1124,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.resources.requests.cpu`
@@ -1134,7 +1133,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `300m`     |
 
-The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.resources.requests.memory`
@@ -1143,7 +1142,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container 
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
 
 
 ### `replsets.volumeSpec.emptyDir`
@@ -1152,7 +1151,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `{}`       |
 
-The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers 
+The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
 
 
 ### `replsets.volumeSpec.hostPath.path`
@@ -1161,7 +1160,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `/data`    |
 
-[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers 
+[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
 
 
 ### `replsets.volumeSpec.hostPath.type`
@@ -1170,7 +1169,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Directory`|
 
-The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) 
+The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
 
 
 ### `replsets.volumeSpec.persistentVolumeClaim.annotations`
@@ -1179,7 +1178,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `replsets.volumeSpec.persistentVolumeClaim.labels`
@@ -1188,7 +1187,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `replsets.volumeSpec.persistentVolumeClaim.storageClassName`
@@ -1197,7 +1196,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `standard` |
 
-The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) 
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
 
 
 ### `replsets.volumeSpec.persistentVolumeClaim.accessModes`
@@ -1206,7 +1205,7 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | array       | `[ "ReadWriteOnce" ]` |
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container 
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container.
 
 
 ### `replsets.volumeSpec.persistentVolumeClaim.resources.requests.storage`
@@ -1215,7 +1214,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | string      | `3Gi`      |
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container 
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container.
 
 
 ### `replsets.hostAliases.ip`
@@ -1224,7 +1223,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | string      | `"10.10.0.2"` |
 
-The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods 
+The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
 
 
 ### `replsets.hostAliases.hostnames`
@@ -1233,7 +1232,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 | ----------- | ---------- |
 | subdoc      |            |
 
-Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods 
+Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
 
 ## <a name="operator-pmm-section"></a>PMM Section
 
@@ -1248,7 +1247,7 @@ options for Percona Monitoring and Management.
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-managementindex.metrics-monitor.dashboard.html) 
+Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-managementindex.metrics-monitor.dashboard.html).
 
 
 ### `pmm.image`
@@ -1257,7 +1256,7 @@ Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-l
 | ----------- | ---------- |
 | string      | `percona/pmm-client:{{ pmm2recommended }}` |
 
-PMM Client docker image to use 
+PMM Client docker image to use.
 
 
 ### `pmm.serverHost`
@@ -1266,7 +1265,7 @@ PMM Client docker image to use
 | ----------- | ---------- |
 | string      | `monitoring-service` |
 
-Address of the PMM Server to collect data from the Cluster 
+Address of the PMM Server to collect data from the Cluster.
 
 
 ### `pmm.mongodParams`
@@ -1275,7 +1274,7 @@ Address of the PMM Server to collect data from the Cluster
 | ----------- | ---------- |
 | string      | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` Pods 
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` Pods.
 
 
 ### `pmm.mongosParams`
@@ -1284,7 +1283,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 | ----------- | ---------- |
 | string      | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongos` Pods 
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongos` Pods.
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
@@ -1299,7 +1298,7 @@ options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding)
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-Enables or disables [Percona Server for MondoDB sharding  :octicons-link-external-16:](https://docs.mongodb.com/manual/sharding/) 
+Enables or disables [Percona Server for MondoDB sharding  :octicons-link-external-16:](https://docs.mongodb.com/manual/sharding/).
 
 
 ### `sharding.configsvrReplSet.size`
@@ -1308,7 +1307,7 @@ Enables or disables [Percona Server for MondoDB sharding  :octicons-link-externa
 | ----------- | ---------- |
 | int         | `3`        |
 
-The number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster 
+The number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster.
 
 
 ### `sharding.configsvrReplSet.terminationGracePeriodSeconds`
@@ -1317,7 +1316,7 @@ The number of [Config Server instances  :octicons-link-external-16:](https://doc
 | ----------- | ---------- |
 | int         | `300`      |
 
-The amount of seconds Kubernetes will wait for a clean config server Pods termination 
+The amount of seconds Kubernetes will wait for a clean config server Pods termination.
 
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
@@ -1326,7 +1325,7 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 | ----------- | ---------- |
 | label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.maxSkew`
@@ -1335,7 +1334,7 @@ The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicon
 | ----------- | ---------- |
 | int         | `1`        |
 
-The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.topologyKey`
@@ -1344,7 +1343,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.whenUnsatisfiable`
@@ -1353,7 +1352,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 | ----------- | ---------- |
 | string      | `DoNotSchedule` |
 
-What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.configsvrReplSet.configuration`
@@ -1362,7 +1361,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | ----------- | ---------- |
 | string      | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 
-Custom configuration options for Config Servers. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options 
+Custom configuration options for Config Servers. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options.
 
 
 ### `sharding.configsvrReplSet.livenessProbe.failureThreshold`
@@ -1371,7 +1370,7 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | ----------- | ---------- |
 | int         | `4`        |
 
-Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `sharding.configsvrReplSet.livenessProbe.initialDelaySeconds`
@@ -1380,7 +1379,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 | ----------- | ---------- |
 | int         | `60`       |
 
-Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) 
+Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `sharding.configsvrReplSet.livenessProbe.periodSeconds`
@@ -1389,7 +1388,7 @@ Number of seconds to wait after the container start before initiating the [liven
 | ----------- | ---------- |
 | int         | `30`       |
 
-How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `sharding.configsvrReplSet.livenessProbe.timeoutSeconds`
@@ -1398,7 +1397,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `sharding.configsvrReplSet.livenessProbe.startupDelaySeconds`
@@ -1407,7 +1406,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 | ----------- | ---------- |
 | int         | `7200`     |
 
-Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet 
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
 
 
 ### `sharding.configsvrReplSet.readinessProbe.failureThreshold`
@@ -1416,7 +1415,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 | ----------- | ---------- |
 | int         | `3`        |
 
-Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `sharding.configsvrReplSet.readinessProbe.initialDelaySeconds`
@@ -1425,7 +1424,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) 
+Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `sharding.configsvrReplSet.readinessProbe.periodSeconds`
@@ -1434,7 +1433,7 @@ Number of seconds to wait after the container start before initiating the [readi
 | ----------- | ---------- |
 | int         | `3`        |
 
-How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `sharding.configsvrReplSet.readinessProbe.successThreshold`
@@ -1443,7 +1442,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | int         | `1`        |
 
-Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed 
+Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
 
 
 ### `sharding.configsvrReplSet.readinessProbe.timeoutSeconds`
@@ -1452,7 +1451,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 | ----------- | ---------- |
 | int         | `2`        |
 
-Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `sharding.configsvrReplSet.runtimeClassName`
@@ -1461,7 +1460,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | string      | `image-rc` |
 
-Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Config Server Pods 
+Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Config Server Pods.
 
 
 ### `sharding.configsvrReplSet.sidecars.image`
@@ -1470,7 +1469,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | string      | `busybox`  |
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods 
+Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
 
 
 ### `sharding.configsvrReplSet.sidecars.command`
@@ -1479,7 +1478,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server P
 | ----------- | ---------- |
 | array       | `["/bin/sh"]` |
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods 
+Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
 
 
 ### `sharding.configsvrReplSet.sidecars.args`
@@ -1488,7 +1487,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server
 | ----------- | ---------- |
 | array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods 
+Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
 
 
 ### `sharding.configsvrReplSet.sidecars.name`
@@ -1497,7 +1496,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Con
 | ----------- | ---------- |
 | string      | `rs-sidecar-1` |
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods 
+Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
 
 
 ### `sharding.configsvrReplSet.limits.cpu`
@@ -1506,7 +1505,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 | ----------- | ---------- |
 | string      | `300m`     |
 
-[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container 
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
 
 ### `sharding.configsvrReplSet.limits.memory`
@@ -1515,7 +1514,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container 
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
 
 ### `sharding.configsvrReplSet.resources.requests.cpu`
@@ -1524,7 +1523,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 | ----------- | ---------- |
 | string      | `300m`     |
 
-The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container 
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
 
 ### `sharding.configsvrReplSet.requests.memory`
@@ -1533,7 +1532,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container 
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
 
 ### `sharding.configsvrReplSet.expose.enabled`
@@ -1542,7 +1541,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enable or disable exposing [Config Server  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/) nodes with dedicated IP addresses 
+Enable or disable exposing [Config Server  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/) nodes with dedicated IP addresses.
 
 
 ### `sharding.configsvrReplSet.expose.exposeType`
@@ -1551,7 +1550,7 @@ Enable or disable exposing [Config Server  :octicons-link-external-16:](https://
 | ----------- | ---------- |
 | string      | `ClusterIP`|
 
-The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed 
+The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
 
 ### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
@@ -1560,7 +1559,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | string      | `10.0.0.0/8` |
 
-The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) 
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
 
 
 ### `sharding.configsvrReplSet.expose.serviceAnnotations`
@@ -1569,7 +1568,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Config Server daemon 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Config Server daemon.
 
 
 ### `sharding.configsvrReplSet.expose.serviceLabels`
@@ -1578,7 +1577,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Config Server Service 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Config Server Service.
 
 
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
@@ -1587,7 +1586,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `{}`       |
 
-The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers 
+The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
 
 
 ### `sharding.configsvrReplSet.volumeSpec.hostPath.path`
@@ -1596,7 +1595,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `/data`    |
 
-[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the Config Server Pod containers 
+[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the Config Server Pod containers.
 
 
 ### `sharding.configsvrReplSet.volumeSpec.hostPath.type`
@@ -1605,7 +1604,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Directory`|
 
-The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) 
+The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
 
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.annotations`
@@ -1614,7 +1613,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.labels`
@@ -1623,7 +1622,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName`
@@ -1632,7 +1631,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `standard` |
 
-The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the Config Server container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) 
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the Config Server container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims). Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
 
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes`
@@ -1641,7 +1640,7 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | array       | `[ "ReadWriteOnce" ]` |
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the Config Server container 
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the Config Server container.
 
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
@@ -1650,7 +1649,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | string      | `3Gi`      |
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container 
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container.
 
 
 ### `sharding.configsvrReplSet.hostAliases.ip`
@@ -1659,7 +1658,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 | ----------- | ---------- |
 | string      | `"10.10.0.2"` |
 
-The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods 
+The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
 
 
 ### `sharding.configsvrReplSet.hostAliases.hostnames`
@@ -1668,7 +1667,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 | ----------- | ---------- |
 | subdoc      |            |
 
-Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods 
+Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods.
 
 
 ### `sharding.mongos.size`
@@ -1677,7 +1676,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | int         | `3`        |
 
-The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster 
+The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster.
 
 
 ### `sharding.mongos.terminationGracePeriodSeconds`
@@ -1686,7 +1685,7 @@ The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/man
 | ----------- | ---------- |
 | int         | `300`      |
 
-The amount of seconds Kubernetes will wait for a clean mongos Pods termination 
+The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 
 
 ### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
@@ -1695,7 +1694,7 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination
 | ----------- | ---------- |
 | label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.mongos.topologySpreadConstraints.maxSkew`
@@ -1704,7 +1703,7 @@ The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicon
 | ----------- | ---------- |
 | int         | `1`        |
 
-The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.mongos.topologySpreadConstraints.topologyKey`
@@ -1713,7 +1712,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.mongos.topologySpreadConstraints.whenUnsatisfiable`
@@ -1722,7 +1721,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 | ----------- | ---------- |
 | string      | `DoNotSchedule` |
 
-What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) 
+What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 
 ### `sharding.mongos.configuration`
@@ -1731,7 +1730,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | ----------- | ---------- |
 | string      | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
 
-Custom configuration options for mongos. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options 
+Custom configuration options for mongos. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options.
 
 
 ### `sharding.mongos.afinity.antiAffinityTopologyKey`
@@ -1740,7 +1739,7 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 | ----------- | ---------- |
 | string      | `kubernetes.io/hostname` |
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos 
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos.
 
 
 ### `sharding.mongos.affinity.advanced`
@@ -1749,7 +1748,7 @@ The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | subdoc      |            |
 
-In cases where the Pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used 
+In cases where the Pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
 
 
 ### `sharding.mongos.tolerations.key`
@@ -1758,7 +1757,7 @@ In cases where the Pods require complex tuning the advanced option turns off the
 | ----------- | ---------- |
 | string      | `node.alpha.kubernetes.io/unreachable` |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for mongos instances 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for mongos instances.
 
 
 ### `sharding.mongos.tolerations.operator`
@@ -1767,7 +1766,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `Exists`   |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for mongos instances 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for mongos instances.
 
 
 ### `sharding.mongos.tolerations.effect`
@@ -1776,7 +1775,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `NoExecute`|
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for mongos instances 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for mongos instances.
 
 
 ### `sharding.mongos.tolerations.tolerationSeconds`
@@ -1785,7 +1784,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | int         | `6000`     |
 
-The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for mongos instances 
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for mongos instances.
 
 
 ### `sharding.mongos.priorityClassName`
@@ -1794,7 +1793,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `high priority` |
 
-The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for mongos instances 
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for mongos instances.
 
 
 ### `sharding.mongos.annotations`
@@ -1803,7 +1802,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | string      | `iam.amazonaws.com/role: role-arn` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the mongos instances 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the mongos instances.
 
 
 ### `sharding.mongos.labels`
@@ -1812,7 +1811,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | label       | `rack: rack-22` |
 
-The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for mongos instances 
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for mongos instances.
 
 
 ### `sharding.mongos.nodeSelector`
@@ -1821,7 +1820,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | label       | `disktype: ssd` |
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances 
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances.
 
 
 ### `sharding.mongos.livenessProbe.failureThreshold`
@@ -1830,7 +1829,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | int         | `4`        |
 
-Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `sharding.mongos.livenessProbe.initialDelaySeconds`
@@ -1839,7 +1838,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 | ----------- | ---------- |
 | int         | `60`       |
 
-Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) 
+Number of seconds to wait after the container start before initiating the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `sharding.mongos.livenessProbe.periodSeconds`
@@ -1848,7 +1847,7 @@ Number of seconds to wait after the container start before initiating the [liven
 | ----------- | ---------- |
 | int         | `30`       |
 
-How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `sharding.mongos.livenessProbe.timeoutSeconds`
@@ -1857,7 +1856,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `sharding.mongos.livenessProbe.startupDelaySeconds`
@@ -1866,7 +1865,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 | ----------- | ---------- |
 | int         | `7200`     |
 
-Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet 
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
 
 
 ### `sharding.mongos.readinessProbe.failureThreshold`
@@ -1875,7 +1874,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 | ----------- | ---------- |
 | int         | `3`        |
 
-Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up 
+Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
 
 
 ### `sharding.mongos.readinessProbe.initialDelaySeconds`
@@ -1884,7 +1883,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) 
+Number of seconds to wait after the container start before initiating the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
 
 
 ### `sharding.mongos.readinessProbe.periodSeconds`
@@ -1893,7 +1892,7 @@ Number of seconds to wait after the container start before initiating the [readi
 | ----------- | ---------- |
 | int         | `3`        |
 
-How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds) 
+How often to perform a [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
 
 
 ### `sharding.mongos.readinessProbe.successThreshold`
@@ -1902,7 +1901,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | int         | `1`        |
 
-Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed 
+Minimum consecutive successes for the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
 
 
 ### `sharding.mongos.readinessProbe.timeoutSeconds`
@@ -1911,7 +1910,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 | ----------- | ---------- |
 | int         | `2`        |
 
-Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out 
+Number of seconds after which the [readiness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
 
 
 ### `sharding.mongos.runtimeClassName`
@@ -1920,7 +1919,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | string      | `image-rc` |
 
-Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for mongos Pods 
+Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for mongos Pods.
 
 
 ### `sharding.mongos.sidecars.image`
@@ -1929,7 +1928,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | string      | `busybox`  |
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods 
+Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 
 ### `sharding.mongos.sidecars.command`
@@ -1938,7 +1937,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods
 | ----------- | ---------- |
 | array       | `["/bin/sh"]` |
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods 
+Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 
 ### `sharding.mongos.sidecars.args`
@@ -1947,7 +1946,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods
 | ----------- | ---------- |
 | array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods 
+Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 
 ### `sharding.mongos.sidecars.name`
@@ -1956,7 +1955,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mon
 | ----------- | ---------- |
 | string      | `rs-sidecar-1` |
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods 
+Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 
 ### `sharding.mongos.limits.cpu`
@@ -1965,7 +1964,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods
 | ----------- | ---------- |
 | string      | `300m`     |
 
-[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container 
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
 
 ### `sharding.mongos.limits.memory`
@@ -1974,7 +1973,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container 
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
 
 ### `sharding.mongos.resources.requests.cpu`
@@ -1983,7 +1982,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods
 | ----------- | ---------- |
 | string      | `300m`     |
 
-The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container 
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
 
 ### `sharding.mongos.requests.memory`
@@ -1992,7 +1991,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.5G`     |
 
-The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container 
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
 
 ### `sharding.mongos.expose.exposeType`
@@ -2001,7 +2000,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `ClusterIP`|
 
-The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed 
+The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
 
 ### `sharding.mongos.expose.servicePerPod`
@@ -2010,7 +2009,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-If set to `true`, a separate ClusterIP Service is created for each mongos instance 
+If set to `true`, a separate ClusterIP Service is created for each mongos instance.
 
 
 ### `sharding.mongos.expose.loadBalancerSourceRanges`
@@ -2019,7 +2018,7 @@ If set to `true`, a separate ClusterIP Service is created for each mongos instan
 | ----------- | ---------- |
 | string      | `10.0.0.0/8` |
 
-The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations) 
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
 
 
 ### `sharding.mongos.expose.serviceAnnotations`
@@ -2028,7 +2027,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon.
 
 
 ### `sharding.mongos.expose.serviceLabels`
@@ -2037,7 +2036,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `rack: rack-22` |
 
-The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service 
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service.
 
 
 ### `sharding.mongos.hostAliases.ip`
@@ -2046,7 +2045,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `"10.10.0.2"` |
 
-The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods 
+The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods.
 
 
 ### `sharding.mongos.hostAliases.hostnames`
@@ -2055,7 +2054,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 | ----------- | ---------- |
 | subdoc      |            |
 
-Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods 
+Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos   Pods.
 
 ## <a name="operator-backup-section"></a>Backup Section
 
@@ -2072,7 +2071,7 @@ Percona Server for MongoDB backups.
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-Enables or disables making backups 
+Enables or disables making backups.
 
 
 ### `backup.image`
@@ -2081,7 +2080,7 @@ Enables or disables making backups
 | ----------- | ---------- |
 | string      | `percona/percona-server-mongodb-operator:{{ release }}-backup` |
 
-The Percona Server for MongoDB Docker image to use for the backup 
+The Percona Server for MongoDB Docker image to use for the backup.
 
 
 ### `backup.serviceAccountName`
@@ -2090,7 +2089,7 @@ The Percona Server for MongoDB Docker image to use for the backup
 | ----------- | ---------- |
 | string      | `percona-server-mongodb-operator` |
 
-Name of the separate privileged service account used by the Operator 
+Name of the separate privileged service account used by the Operator.
 
 
 ### `backup.annotations`
@@ -2099,7 +2098,7 @@ Name of the separate privileged service account used by the Operator
 | ----------- | ---------- |
 | string      | `sidecar.istio.io/inject: "false"` |
 
-The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the backup job 
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the backup job.
 
 
 ### `backup.resources.limits.cpu`
@@ -2108,7 +2107,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `100m`     |
 
-[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups 
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
 
 
 ### `backup.resources.limits.memory`
@@ -2117,7 +2116,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `0.2G`     |
 
-[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups 
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
 
 
 ### `backup.resources.requests.cpu`
@@ -2126,7 +2125,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | string      | `100m`     |
 
-The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups 
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
 
 
 ### `backup.resources.requests.memory`
@@ -2135,7 +2134,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | string      | `0.1G`     |
 
-The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups 
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
 
 
 ### `backup.storages.&lt;storage-name&gt;.type`
@@ -2144,7 +2143,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | string      | `s3`       |
 
-The cloud storage type used for backups. Only `s3` type is currently supported 
+The cloud storage type used for backups. Only `s3` type is currently supported.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.insecureSkipTLSVerify`
@@ -2153,7 +2152,7 @@ The cloud storage type used for backups. Only `s3` type is currently supported
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-Enable or disable verification of the storage server TLS certificate. Disabling it may be useful e.g. to skip TLS verification for private S3-compatible storage with a self-issued certificate 
+Enable or disable verification of the storage server TLS certificate. Disabling it may be useful e.g. to skip TLS verification for private S3-compatible storage with a self-issued certificate.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.credentialsSecret`
@@ -2162,7 +2161,7 @@ Enable or disable verification of the storage server TLS certificate. Disabling 
 | ----------- | ---------- |
 | string      | `my-cluster-name-backup-s3` |
 
-The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. 
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.bucket`
@@ -2171,7 +2170,7 @@ The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      |            |
 
-The [Amazon S3 bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) name for backups 
+The [Amazon S3 bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) name for backups.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.prefix`
@@ -2180,7 +2179,7 @@ The [Amazon S3 bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/
 | ----------- | ---------- |
 | string      | `""`       |
 
-The path (sub-folder) to the backups inside the [bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) 
+The path (sub-folder) to the backups inside the [bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html).
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.uploadPartSize`
@@ -2189,7 +2188,7 @@ The path (sub-folder) to the backups inside the [bucket  :octicons-link-external
 | ----------- | ---------- |
 | int         | `10485760` |
 
-The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default) 
+The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default).
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.maxUploadParts`
@@ -2198,7 +2197,7 @@ The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by
 | ----------- | ---------- |
 | int         | `10000`    |
 
-The maximum number of data chunks to be uploaded to the storage bucket (10000 by default) 
+The maximum number of data chunks to be uploaded to the storage bucket (10000 by default).
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.storageClass`
@@ -2207,7 +2206,7 @@ The maximum number of data chunks to be uploaded to the storage bucket (10000 by
 | ----------- | ---------- |
 | string      | `STANDARD` |
 
-The [storage class name  :octicons-link-external-16:](https://aws.amazon.com/s3/storage-classes) of the S3 storage 
+The [storage class name  :octicons-link-external-16:](https://aws.amazon.com/s3/storage-classes) of the S3 storage.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.region`
@@ -2216,7 +2215,7 @@ The [storage class name  :octicons-link-external-16:](https://aws.amazon.com/s3/
 | ----------- | ---------- |
 | string      | `us-east-1`|
 
-The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages 
+The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.endpointUrl`
@@ -2225,7 +2224,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 | ----------- | ---------- |
 | string      |            |
 
-The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud) 
+The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.kmsKeyID`
@@ -2243,7 +2242,7 @@ The [ID of the key stored in the AWS KMS  :octicons-link-external-16:](https://d
 | ----------- | ---------- |
 | string      | `aws:kms`  |
 
-The key management mode used for [backups server-side encryption](backups-encryption.md) with the encryption keys stored in [AWS KMS  :octicons-link-external-16:](https://aws.amazon.com/kms/) - `aws:kms` is the only supported value for now 
+The key management mode used for [backups server-side encryption](backups-encryption.md) with the encryption keys stored in [AWS KMS  :octicons-link-external-16:](https://aws.amazon.com/kms/) - `aws:kms` is the only supported value for now.
 
 
 ### `backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption.sseCustomerAlgorithm`
@@ -2261,7 +2260,7 @@ The key management mode for [backups server-side encryption with customer-provid
 | ----------- | ---------- |
 | string      | `""`       |
 
-The locally-stored base64-encoded custom encryption key used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages 
+The locally-stored base64-encoded custom encryption key used by the Operator for [backups server-side encryption](backups-encryption.md) on S3-compatible storages.
 
 
 ### `backup.storages.&lt;storage-name&gt;.azure.credentialsSecret`
@@ -2279,7 +2278,7 @@ The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | string      | `my-container` |
 
-Name of the [container  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) for backups 
+Name of the [container  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) for backups.
 
 
 ### `backup.storages.&lt;storage-name&gt;.azure.prefix`
@@ -2288,7 +2287,7 @@ Name of the [container  :octicons-link-external-16:](https://docs.microsoft.com/
 | ----------- | ---------- |
 | string      | `""`       |
 
-The path (sub-folder) to the backups inside the [container  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) 
+The path (sub-folder) to the backups inside the [container  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers).
 
 
 ### `backup.pitr.enabled`
@@ -2297,7 +2296,7 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 | ----------- | ---------- |
 | boolean     | `false`    |
 
-Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog) 
+Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog).
 
 
 ### `backup.pitr.oplogOnly`
@@ -2306,7 +2305,7 @@ Enables or disables [point-in-time-recovery functionality](backups.md#backups-pi
 | ----------- | ---------- |
 | boolean     | false      |
 
-If true, Percona Backup for MongoDB saves oplog chunks even without the base logical backup snapshot (oplog chunks without a base backup can't be used with logical backups to restore a backup by the Operator, [but can still be useful for manual restore operations  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)) 
+If true, Percona Backup for MongoDB saves oplog chunks even without the base logical backup snapshot (oplog chunks without a base backup can't be used with logical backups to restore a backup by the Operator, [but can still be useful for manual restore operations  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html)).
 
 
 ### `backup.pitr.oplogSpanMin`
@@ -2315,7 +2314,7 @@ If true, Percona Backup for MongoDB saves oplog chunks even without the base log
 | ----------- | ---------- |
 | int         | `10`       |
 
-Number of minutes between the uploads of oplogs 
+Number of minutes between the uploads of oplogs.
 
 
 ### `backup.pitr.compressionType`
@@ -2324,7 +2323,7 @@ Number of minutes between the uploads of oplogs
 | ----------- | ---------- |
 | string      | `gzip`     |
 
-The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups) 
+The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups).
 
 
 ### `backup.pitr.compressionLevel`
@@ -2333,7 +2332,7 @@ The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4,
 | ----------- | ---------- |
 | int         | `6`        |
 
-The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups)) 
+The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups)).
 
 
 ### `backup.tasks.name`
@@ -2342,7 +2341,7 @@ The point-in-time-recovery chunks compression level ([higher values result in be
 | ----------- | ---------- |
 | string      |            |
 
-The name of the backup 
+The name of the backup.
 
 
 ### `backup.tasks.enabled`
@@ -2351,7 +2350,7 @@ The name of the backup
 | ----------- | ---------- |
 | boolean     | `true`     |
 
-Enables or disables this exact backup 
+Enables or disables this exact backup.
 
 
 ### `backup.tasks.schedule`
@@ -2360,7 +2359,7 @@ Enables or disables this exact backup
 | ----------- | ---------- |
 | string      | `0 0 \* \* 6` |
 
-The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron) 
+The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron).
 
 
 ### `backup.tasks.keep`
@@ -2369,7 +2368,7 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 | ----------- | ---------- |
 | int         | `3`        |
 
-The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups 
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.
 
 
 ### `backup.tasks.storageName`
@@ -2378,7 +2377,7 @@ The amount of most recent backups to store. Older backups are automatically dele
 | ----------- | ---------- |
 | string      | `st-us-west` |
 
-The name of the S3-compatible storage for backups, configured in the storages subsection 
+The name of the S3-compatible storage for backups, configured in the storages subsection.
 
 
 ### `backup.tasks.compressionType`
@@ -2387,7 +2386,7 @@ The name of the S3-compatible storage for backups, configured in the storages su
 | ----------- | ---------- |
 | string      | `gzip`     |
 
-The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup) 
+The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup).
 
 
 ### `backup.tasks.compressionLevel`
@@ -2396,7 +2395,7 @@ The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or no
 | ----------- | ---------- |
 | int         | `6`        |
 
-The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)) 
+The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)).
 
 
 ### `backup.tasks.type`
