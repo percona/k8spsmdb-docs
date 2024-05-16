@@ -28,22 +28,22 @@ To install Percona Distribution for MongoDB, you need the following:
 Here's a sequence of steps to follow:
 {.power-number}
 
-1. Create the Kubernetes namespace for your cluster. It is a good practice to isolate workloads in Kubernetes by installing the Operator in a custom namespace. For example, you can create  <label>namespace <input data-input-for="NAMESPACE_NAME"></label> with the following command:
+1. Create the Kubernetes namespace for your cluster. It is a good practice to isolate workloads in Kubernetes by installing the Operator in a custom namespace. Replace the `<namespace>` placeholder with your value.
 
     ``` {.bash data-prompt="$" }
-    $ kubectl create namespace dNAMESPACE_NAMEd
+    $ kubectl create namespace <namespace>
     ```
 
     ??? example "Expected output"
 
         ``` {.text .no-copy}
-        namespace/dNAMESPACE_NAMEd was created
+        namespace/<namespace> was created
         ```
 
-2. Deploy the Operator in the <label>namespace <input data-input-for="NAMESPACE_NAME"></label> [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+2. Deploy the Operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml -n dNAMESPACE_NAMEd
+    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml -n <namespace>
     ```
 
     ??? example "Expected output"
@@ -58,12 +58,12 @@ Here's a sequence of steps to follow:
         deployment.apps/percona-server-mongodb-operator serverside-applied
         ```
 
-    As the result you will have the Operator Pod up and running.
+    As the result you will have the Operator Pod up and running. 
 
-3. Deploy Percona Server for MongoDB in the <label>namespace <input data-input-for="NAMESPACE_NAME"></label>:
+3. Deploy Percona Server for MongoDB:
 
     ```{.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml -n dNAMESPACE_NAMEd
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml -n <namespace>
     ```
 
     ??? example "Expected output"
@@ -72,10 +72,11 @@ Here's a sequence of steps to follow:
         perconaservermongodb.psmdb.percona.com/my-cluster-name created
         ```
 
-4. Check the status of Operator and the Percona Server for MongoDB Pods in the <label>namespace <input data-input-for="NAMESPACE_NAME"></label>
+
+4. Check the Operator and the Percona Server for MongoDB Pods status.
 
     ```{.bash data-prompt="$" }
-    $ kubectl get psmdb -n dNAMESPACE_NAMEd
+    $ kubectl get psmdb -n <namespace>
     ```
 
     The creation process may take some time. When the process is over your
@@ -85,10 +86,10 @@ Here's a sequence of steps to follow:
 
         ```{.text .no-copy}
         NAME              ENDPOINT                                           STATUS   AGE
-        my-cluster-name   my-cluster-name-mongos.dNAMESPACE_NAMEd.svc.cluster.local   ready    5m26s
+        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
         ```
 
-You have successfully installed and deployed the Operator with default parameters.
+You have successfully installed and deployed the Operator with default parameters. 
 
 The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
