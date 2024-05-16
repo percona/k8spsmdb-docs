@@ -22,8 +22,7 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `kubernetes` |
-
-Override/set the Kubernetes platform: `kubernetes` or `openshift`.
+| <td colspan=2> Override/set the Kubernetes platform: `kubernetes` or `openshift` |
 
 ### `pause`
 
