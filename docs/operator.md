@@ -29,8 +29,7 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
-
-Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back.
+<td colspan=2> Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back |
 
 ### `unmanaged`
 
