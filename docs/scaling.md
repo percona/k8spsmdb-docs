@@ -53,6 +53,11 @@ option, if the volume type supports PVCs expansion.
 
 #### Automated scaling with Volume Expansion capability
 
+!!! warning
+
+    Automated storage scaling by the Operator is in a technical preview stage
+    and is not recommended for production environments.
+
 Certain volume types support PVCs expansion (exact details about
 PVCs and the supported volume types can be found in [Kubernetes
 documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims)).
@@ -71,13 +76,9 @@ $ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
 
 The Operator versions 1.16.0 and higher will automatically expand such storage
 for you when you change the
-`replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage` option in the
-Custom Resource.
-
-!!! warning
-
-    Automated storage scaling by the Operator is in a technical preview stage
-    and is not recommended for production environments.
+`replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+options in the Custom Resource.
 
 For example, you can do it by editing and applying the `deploy/cr.yaml` file:
 
