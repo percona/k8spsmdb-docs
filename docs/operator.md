@@ -22,14 +22,14 @@ The spec part of the [deploy/cr.yaml  :octicons-link-external-16:](https://githu
 | Value type  | Example    |
 | ----------- | ---------- |
 | string      | `kubernetes` |
-| <td colspan=2> Override/set the Kubernetes platform: `kubernetes` or `openshift` |
+| | Override/set the Kubernetes platform: `kubernetes` or `openshift` |
 
 ### `pause`
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | boolean     | `false`    |
-| {:colspan=2} Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back |
+| | Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back |
 
 ### `unmanaged`
 
