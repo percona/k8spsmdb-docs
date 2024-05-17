@@ -2046,7 +2046,7 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
-### 'backup.storages.&lt;storage-name&gt;.azure.endpointUrl'
+### 'backup.storages.STORAGE-NAME.azure.endpointUrl'
 
 The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) that should be used instead of the public endpoint.
 
