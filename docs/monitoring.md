@@ -1,5 +1,6 @@
---8<-- "monitor-db.md"
+# Monitor database with Percona Monitoring and Management (PMM)
 
+--8<-- "monitor-db.md"
 
 ## Enable profiling
 

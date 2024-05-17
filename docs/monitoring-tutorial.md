@@ -1,6 +1,6 @@
+# 5. Monitor database with Percona Monitoring and Management (PMM)
+
 --8<-- "monitor-db.md"
-
-
 
 ## Next steps
 
