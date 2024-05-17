@@ -253,6 +253,22 @@ Specifies a secret object [to provide integration with HashiCorp Vault](encrypti
 
 The replsets section controls the MongoDB Replica Set.
 
+## `replsets.name`
+
+The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `rs 0`     |
+
+### `replsets.size`
+
+The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `3`        |
+
 ### `replsets.terminationGracePeriodSeconds`
 
 The amount of seconds Kubernetes will wait for a clean replica set Pods termination.
