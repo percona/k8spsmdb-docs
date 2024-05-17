@@ -57,7 +57,6 @@ Percona Server for MongoDB version can be found in the release notes
 [6.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/6.0/release_notes/index.html),
 and [7.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/7.0/release_notes/index.html)).
 
-
 ## How can I add custom sidecar containers to my cluster?
 
 The Operator allows you to deploy additional (so-called *sidecar*) containers to
