@@ -5,7 +5,6 @@ The operator is configured via the spec section of the
 
 The metadata part of this file contains the following keys:
 
-
 * `name` (`my-cluster-name` by default) sets the name of your Percona Server
 for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
 * `finalizers.delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
