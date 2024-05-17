@@ -94,7 +94,7 @@ A custom [Kubernetes Security Context for a Container  :octicons-link-external-1
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      | `{}`       |
+| :material-text-long: subdoc      | `{}`       |
 
 ### `ClusterServiceDNSSuffix`
 
@@ -134,7 +134,7 @@ The list of annotations [to be ignored](annotations.md#annotations-ignore) by th
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` |
+| :material-text-long: subdoc      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` |
 
 ### `ignoreLabels`
 
@@ -142,7 +142,7 @@ The list of labels [to be ignored](annotations.md#annotations-ignore) by the Ope
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      | `rack`     |
+| :material-text-long: subdoc      | `rack`     |
 
 ### `multiCluster.enabled`
 
@@ -279,7 +279,7 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
 
-The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -331,7 +331,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `replsets.tolerations.key`
 
@@ -619,7 +619,7 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `replsets.podDisruptionBudget.maxUnavailable`
 
@@ -723,7 +723,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `replsets.nonvoting.tolerations.key`
 
@@ -931,7 +931,7 @@ In cases where the pods require complex tuning the advanced option turns off the
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `replsets.arbiter.tolerations.key`
 
@@ -1107,7 +1107,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ## <a name="operator-pmm-section"></a>PMM Section
 
@@ -1185,7 +1185,7 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
 
-The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1493,7 +1493,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `sharding.mongos.size`
 
@@ -1513,7 +1513,7 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 
 ### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
 
-The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1565,7 +1565,7 @@ In cases where the Pods require complex tuning the advanced option turns off the
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ### `sharding.mongos.tolerations.key`
 
@@ -1837,7 +1837,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| subdoc      |            |
+| :material-text-long: subdoc      |            |
 
 ## <a name="operator-backup-section"></a>Backup Section
 
