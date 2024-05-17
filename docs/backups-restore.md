@@ -106,7 +106,7 @@ restoration can be done in the following way.
 
         !!! note
 
-            Full backup objects available with the `kubectl get psmdb-backup` command
+            <a name="backups-latest-restorable-time"></a> Full backup objects available with the `kubectl get psmdb-backup` command
             have a "Latest restorable time" information field handy when selecting
             a backup to restore. You can easily
             query the backup for this information as follows:
