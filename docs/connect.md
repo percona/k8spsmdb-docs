@@ -1,4 +1,4 @@
-# Connect to Percona Server for MongoDB
+# 2. Connect to Percona Server for MongoDB
 
 In this tutorial, you will connect to the Percona Server for MongoDB cluster you deployed previously.
 
