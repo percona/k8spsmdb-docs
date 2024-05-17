@@ -39,7 +39,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 ## New Features
 
 * {{ k8spsmdbjira(1000) }}: Azure Blob Storage [private endpoints](../operator.html#backup-storages-azure-endpointurl) are now supported for backups
-* {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows Latest restorable time to make it easier to pick a point-in-time recovery target
+* {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows [latest restorable time](../backups-restore.md#backups-latest-restorable-time) to make it easier to pick a point-in-time recovery target
 * {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tls-issuerconf-name) which should be used by the Operator
 * {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../operator.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
 
@@ -67,7 +67,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 * {{ k8spsmdbjira(1018) }}: Fix a bug where MongoDB container startup would fail if the MongoDB image being used contained the numactl package
 * {{ k8spsmdbjira(1024) }}: Fix a bug where environment variable wasn't properly updated in the Percona Backup for MongoDB container entry script (thanks to Rockawear for contribution) **ToDo**
 * {{ k8spsmdbjira(1035) }}: Fixed a bug where the empty `secretName` field was not allowed for backup jobs that might not need it when accessing AWS S3 buckets based on IAM roles. (thanks to Sergey Zelenov for contribution)
-* {{ k8spsmdbjira(1036) }}: Fix a bug due to which restoring backup to a new cluster was broken
+* {{ k8spsmdbjira(1036) }}: Fix a bug due to which restoring backup to a new cluster was broken due to incompatibility with Percona Backup for MongoDB 2.3.0
 * {{ k8spsmdbjira(1038) }}: Fix a bug where mongos Services were deleted if the cluster was set to paused state
 * {{ k8spsmdbjira(1039) }}: Fix a bug which prevented deleting PMM agent from the PMM Server inventory on Pod termination
 * {{ k8spsmdbjira(1058) }}: A minor missing privileges issue caused flooding MongoDB logs with "Checking authorization failed" errors
@@ -79,26 +79,22 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 * Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect.
 
-* MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Also, this change influences the [database upgrade scenario](../update.md#automated-upgrade): users of Smart Updates with existing clusters based on Percona Server for MongoDB 4.4 should explicitly change to newer database versions to have database upgrades, for example setting `upgradeOptions.apply=7.0-recommended` in the Custom Resource.
+* MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use [major version upgrade functionality](../update.md#automated-upgrade).
 
 
 ## Supported Platforms
 
-The Operator was developed and tested with Percona Server for MongoDB 4.4.24,
-5.0.20, and 6.0.9. Other options may also work but have not been tested. The
-Operator also uses Percona Backup for MongoDB 2.3.0.
+The Operator was developed and tested with Percona Server for MongoDB 5.0.26,
+6.0.15, and 7.0.8. Other options may also work but have not been tested. The
+Operator also uses Percona Backup for MongoDB 2.4.1.
 
 The following platforms were tested and are officially supported by the Operator
-1.15.0:
+1.16.0:
 
-* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.24-1.28
-
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.24-1.28
-
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.11 - 4.13
-
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.25-1.28
-
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.31.2 (based on Kubernetes 1.28)
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.26-1.29
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.26-1.29
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.12 - 4.15.11
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.27-1.29
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.33
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
