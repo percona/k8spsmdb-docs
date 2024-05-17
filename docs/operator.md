@@ -451,7 +451,7 @@ The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :o
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-decimal: :material-decimal: float       |  `0.9`     |
+| :material-decimal: float       |  `0.9`     |
 
 ### `replsets.livenessProbe.failureThreshold`
 
@@ -459,7 +459,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `4`        |
+| :material-numeric-1-box: int         | `4`        |
 
 ### `replsets.livenessProbe.initialDelaySeconds`
 
@@ -467,7 +467,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `60`       |
+| :material-numeric-1-box: int         | `60`       |
 
 ### `replsets.livenessProbe.periodSeconds`
 
@@ -475,7 +475,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `30`       |
+| :material-numeric-1-box: int         | `30`       |
 
 ### `replsets.livenessProbe.timeoutSeconds`
 
@@ -483,7 +483,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `replsets.livenessProbe.startupDelaySeconds`
 
@@ -491,7 +491,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `7200`     |
+| :material-numeric-1-box: int         | `7200`     |
 
 ### `replsets.readinessProbe.failureThreshold`
 
@@ -499,7 +499,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `8`        |
+| :material-numeric-1-box: int         | `8`        |
 
 ### `replsets.readinessProbe.initialDelaySeconds`
 
@@ -507,7 +507,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `replsets.readinessProbe.periodSeconds`
 
@@ -515,7 +515,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `replsets.readinessProbe.successThreshold`
 
@@ -523,7 +523,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.readinessProbe.timeoutSeconds`
 
@@ -531,7 +531,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `2`        |
+| :material-numeric-1-box: int         | `2`        |
 
 ### `replsets.runtimeClassName`
 
@@ -555,7 +555,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set P
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-application-array-outline: :material-application-array-outline: array       | `["/bin/sh"]` |
+| :material-application-array-outline: array       | `["/bin/sh"]` |
 
 ### `replsets.sidecars.args`
 
@@ -635,7 +635,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
 
@@ -707,7 +707,7 @@ The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) w
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
 
@@ -755,7 +755,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6000`     |
+| :material-numeric-1-box: int         | `6000`     |
 
 ### `replsets.nonvoting.priorityClassName`
 
@@ -795,7 +795,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.nonvoting.podDisruptionBudget.minAvailable`
 
@@ -803,7 +803,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.nonvoting.resources.limits.cpu`
 
@@ -915,7 +915,7 @@ The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mo
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.arbiter.afinity.antiAffinityTopologyKey`
 
@@ -963,7 +963,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6000`     |
+| :material-numeric-1-box: int         | `6000`     |
 
 ### `replsets.arbiter.priorityClassName`
 
@@ -1173,7 +1173,7 @@ The number of [Config Server instances  :octicons-link-external-16:](https://doc
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.configsvrReplSet.terminationGracePeriodSeconds`
 
@@ -1181,7 +1181,7 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `300`      |
+| :material-numeric-1-box: int         | `300`      |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
 
@@ -1197,7 +1197,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.topologyKey`
 
@@ -1229,7 +1229,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `4`        |
+| :material-numeric-1-box: int         | `4`        |
 
 ### `sharding.configsvrReplSet.livenessProbe.initialDelaySeconds`
 
@@ -1237,7 +1237,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `60`       |
+| :material-numeric-1-box: int         | `60`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.periodSeconds`
 
@@ -1245,7 +1245,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `30`       |
+| :material-numeric-1-box: int         | `30`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.timeoutSeconds`
 
@@ -1253,7 +1253,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.startupDelaySeconds`
 
@@ -1261,7 +1261,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `7200`     |
+| :material-numeric-1-box: int         | `7200`     |
 
 ### `sharding.configsvrReplSet.readinessProbe.failureThreshold`
 
@@ -1269,7 +1269,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.initialDelaySeconds`
 
@@ -1277,7 +1277,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `sharding.configsvrReplSet.readinessProbe.periodSeconds`
 
@@ -1285,7 +1285,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.successThreshold`
 
@@ -1293,7 +1293,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.timeoutSeconds`
 
@@ -1301,7 +1301,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `2`        |
+| :material-numeric-1-box: int         | `2`        |
 
 ### `sharding.configsvrReplSet.runtimeClassName`
 
@@ -1501,7 +1501,7 @@ The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/man
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.mongos.terminationGracePeriodSeconds`
 
@@ -1509,7 +1509,7 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `300`      |
+| :material-numeric-1-box: int         | `300`      |
 
 ### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
 
@@ -1525,7 +1525,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `sharding.mongos.topologySpreadConstraints.topologyKey`
 
@@ -1597,7 +1597,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6000`     |
+| :material-numeric-1-box: int         | `6000`     |
 
 ### `sharding.mongos.priorityClassName`
 
@@ -1637,7 +1637,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `4`        |
+| :material-numeric-1-box: int         | `4`        |
 
 ### `sharding.mongos.livenessProbe.initialDelaySeconds`
 
@@ -1645,7 +1645,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `60`       |
+| :material-numeric-1-box: int         | `60`       |
 
 ### `sharding.mongos.livenessProbe.periodSeconds`
 
@@ -1653,7 +1653,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `30`       |
+| :material-numeric-1-box: int         | `30`       |
 
 ### `sharding.mongos.livenessProbe.timeoutSeconds`
 
@@ -1661,7 +1661,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `sharding.mongos.livenessProbe.startupDelaySeconds`
 
@@ -1669,7 +1669,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `7200`     |
+| :material-numeric-1-box: int         | `7200`     |
 
 ### `sharding.mongos.readinessProbe.failureThreshold`
 
@@ -1677,7 +1677,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.mongos.readinessProbe.initialDelaySeconds`
 
@@ -1685,7 +1685,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `sharding.mongos.readinessProbe.periodSeconds`
 
@@ -1693,7 +1693,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `sharding.mongos.readinessProbe.successThreshold`
 
@@ -1701,7 +1701,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `sharding.mongos.readinessProbe.timeoutSeconds`
 
@@ -1709,7 +1709,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `2`        |
+| :material-numeric-1-box: int         | `2`        |
 
 ### `sharding.mongos.runtimeClassName`
 
@@ -1956,7 +1956,7 @@ The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10485760` |
+| :material-numeric-1-box: int         | `10485760` |
 
 ### `backup.storages.STORAGE-NAME.s3.maxUploadParts`
 
@@ -1964,7 +1964,7 @@ The maximum number of data chunks to be uploaded to the storage bucket (10000 by
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10000`    |
+| :material-numeric-1-box: int         | `10000`    |
 
 ### `backup.storages.STORAGE-NAME.s3.storageClass`
 
@@ -2068,7 +2068,7 @@ Number of minutes between the uploads of oplogs.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `10`       |
+| :material-numeric-1-box: int         | `10`       |
 
 ### `backup.pitr.compressionType`
 
@@ -2084,7 +2084,7 @@ The point-in-time-recovery chunks compression level ([higher values result in be
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6`        |
+| :material-numeric-1-box: int         | `6`        |
 
 ### `backup.tasks.name`
 
@@ -2116,7 +2116,7 @@ The amount of most recent backups to store. Older backups are automatically dele
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `backup.tasks.storageName`
 
