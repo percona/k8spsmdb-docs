@@ -275,7 +275,7 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `300`      |
+| :material-numeric-1-box-outline: int         | `300`      |
 
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
 
@@ -291,7 +291,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box-outline: int         | `1`        |
 
 ### `replsets.topologySpreadConstraints.topologyKey`
 
@@ -319,7 +319,7 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 
 ### `replsets.affinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the Replica Set nodes.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -363,7 +363,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6000`     |
+| :material-numeric-1-box-outline: int         | `6000`     |
 
 ### `replsets.priorityClassName`
 
@@ -391,7 +391,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 ### `replsets.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int  for the Replica Set nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint  for the Replica Set nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -711,7 +711,7 @@ The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) w
 
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the non-voting nodes.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -783,7 +783,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 ### `replsets.nonvoting.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for the non-voting nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -919,7 +919,7 @@ The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mo
 
 ### `replsets.arbiter.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the Arbiter.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -991,7 +991,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 ### `replsets.arbiter.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for the Arbiter nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1553,7 +1553,7 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 
 ### `sharding.mongos.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for mongos.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1625,7 +1625,7 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 ### `sharding.mongos.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for mongos instances.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1984,7 +1984,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 
 ### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
-The endpo:octicons-number-24: int URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
 | Value type  | Example    |
 | ----------- | ---------- |
