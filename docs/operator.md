@@ -253,7 +253,7 @@ Specifies a secret object [to provide integration with HashiCorp Vault](encrypti
 
 The replsets section controls the MongoDB Replica Set.
 
-## `replsets.name`
+#№# `replsets.name`
 
 The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/).
 
