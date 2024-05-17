@@ -1527,7 +1527,7 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
-### 'sharding.configsvrReplSet.serviceAccountName'
+### 'sharding.mongos.serviceAccountName'
 
 Name of the separate privileged service account for mongos Pods.
 
