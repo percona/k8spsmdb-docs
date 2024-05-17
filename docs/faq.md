@@ -44,18 +44,9 @@ whole.
 
 ## Which versions of MongoDB does the Operator support?
 
-Percona Operator for MongoDB provides a ready-to-use installation of the
-MongoDB-based database cluster inside your Kubernetes installation. It works
-with Percona Server for MongoDB 4.2, and 4.4, and the exact version is
-determined by the Docker image in use.
-
-Percona-certified Docker images used by the Operator are listed [here](images.md).
-For example, Percona Server for MongoDB 4.4 is supported with the following
-recommended version: {{ mongodb44recommended }}. More details on the exact
-Percona Server for MongoDB version can be found in the release notes
-([5.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/5.0/release_notes/index.html),
-[4.4  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/4.4/release_notes/index.html),
-and [4.2  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/4.2/release_notes/index.html)).
+Percona-certified Docker images that can be used by the Operator are listed [here](images.md).
+For example, Percona Server for MongoDB 6.0 is supported with the following
+recommended version: {{ mongodb60recommended }}. 
 
 ## How can I add custom sidecar containers to my cluster?
 
