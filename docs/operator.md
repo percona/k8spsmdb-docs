@@ -22,7 +22,7 @@ Override/set the Kubernetes platform: `kubernetes` or `openshift`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes` |
+| :material-code-string: string     | `kubernetes` |
 
 ### `pause`
 
@@ -30,7 +30,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `unmanaged`
 
@@ -38,7 +38,7 @@ Unmanaged site in [cross-site replication](replication.md#operator-replication):
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `crVersion`
 
@@ -46,7 +46,7 @@ Version of the Operator the Custom Resource belongs to.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `{{ release }}` |
+| :material-code-string: string     | `{{ release }}` |
 
 ### `image`
 
@@ -54,7 +54,7 @@ The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](ht
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
+| :material-code-string: string     | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
 
 ### `imagePullPolicy`
 
@@ -62,7 +62,7 @@ The [policy used to update images  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Always`   |
+| :material-code-string: string     | `Always`   |
 
 ### `tls.certValidityDuration`
 
@@ -70,7 +70,7 @@ The validity duration of the external certificate for cert manager (90 days by d
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `2160h`    |
+| :material-code-string: string     | `2160h`    |
 
 ### `imagePullSecrets.name`
 
@@ -78,7 +78,7 @@ The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `private`-`registry`-`credentials` |
+| :material-code-string: string     | `private`-`registry`-`credentials` |
 
 ### `initImage`
 
@@ -86,7 +86,7 @@ An alternative image for the initial Operator installation.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `percona/percona-server-mongodb-operator:{{ release }}` |
+| :material-code-string: string     | `percona/percona-server-mongodb-operator:{{ release }}` |
 
 ### `initContainerSecurityContext`
 
@@ -102,7 +102,7 @@ The (non-standard) cluster domain to be used as a suffix of the Service name.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `svc.cluster.local` |
+| :material-code-string: string     | `svc.cluster.local` |
 
 ### `clusterServiceDNSMode`
 
@@ -110,7 +110,7 @@ Can be `internal` (local fully-qualified domain names will be used in replset co
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Internal` |
+| :material-code-string: string     | `Internal` |
 
 ### `allowUnsafeConfigurations`
 
@@ -118,7 +118,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `updateStrategy`
 
@@ -126,7 +126,7 @@ A strategy the Operator uses for [upgrades](update.md#operator-update). Possible
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `SmartUpdate` |
+| :material-code-string: string     | `SmartUpdate` |
 
 ### `ignoreAnnotations`
 
@@ -150,7 +150,7 @@ The list of labels [to be ignored](annotations.md#annotations-ignore) by the Ope
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `multiCluster.DNSSuffix`
 
@@ -158,7 +158,7 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `svc.clusterset.local` |
+| :material-code-string: string     | `svc.clusterset.local` |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
@@ -170,15 +170,15 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      |`https://check.percona.com` |
+| :material-code-string: string     |`https://check.percona.com` |
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version string of Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      |`disabled`  |
+| :material-code-string: string     |`disabled`  |
 
 ### `upgradeOptions.schedule`
 
@@ -186,7 +186,7 @@ Scheduled time to check for updates, specified in the [crontab format  :octicons
 
 | Value type  | Example        |
 | ----------- | -------------- |
-| string      | `0 2 \* \* \*` |
+| :material-code-string: string     | `0 2 \* \* \*` |
 
 ### `upgradeOptions.setFCV`
 
@@ -194,7 +194,7 @@ If enabled, [FeatureCompatibilityVersion (FCV)  :octicons-link-external-16:](htt
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `false`    |
+| :material-code-string: string     | `false`    |
 
 ## <a name="operator-secrets-section"></a>Secrets section
 
@@ -207,7 +207,7 @@ The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-name-mongodb-key` |
+| :material-code-string: string     | `my-cluster-name-mongodb-key` |
 
 ### `secrets.users` |
 
@@ -215,7 +215,7 @@ The name of the Secrets object for the MongoDB users **required to run the opera
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-name-mongodb-users` |
+| :material-code-string: string     | `my-cluster-name-mongodb-users` |
 
 ### `secrets.ssl`
 
@@ -223,7 +223,7 @@ A secret with TLS certificate generated for *external* communications, see [Tran
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-custom-ssl` |
+| :material-code-string: string     | `my-custom-ssl` |
 
 ### `secrets.sslInternal`
 
@@ -231,7 +231,7 @@ A secret with TLS certificate generated for *internal* communications, see [Tran
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-custom-ssl-internal` |
+| :material-code-string: string     | `my-custom-ssl-internal` |
 
 ### `secrets.encryptionKey`
 
@@ -239,7 +239,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-name-mongodb-encryption-key` |
+| :material-code-string: string     | `my-cluster-name-mongodb-encryption-key` |
 
 ### `secrets.vault`
 
@@ -247,7 +247,7 @@ Specifies a secret object [to provide integration with HashiCorp Vault](encrypti
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-name-vault` |
+| :material-code-string: string     | `my-cluster-name-vault` |
 
 ## <a name="operator-replsets-section"></a>Replsets Section
 
@@ -259,7 +259,7 @@ The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs 0`     |
+| :material-code-string: string     | `rs 0`     |
 
 ### `replsets.size`
 
@@ -267,7 +267,7 @@ The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octic
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `replsets.terminationGracePeriodSeconds`
 
@@ -275,15 +275,15 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `300`      |
+| :octicons-number-24: int         | `300`      |
 
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `app.kubernetes.io/name: percona-server-mongodb` |
+| :material-label-outline: label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
 ### `replsets.topologySpreadConstraints.maxSkew`
 
@@ -291,7 +291,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.topologySpreadConstraints.topologyKey`
 
@@ -299,7 +299,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `replsets.topologySpreadConstraints.whenUnsatisfiable`
 
@@ -307,7 +307,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `DoNotSchedule` |
+| :material-code-string: string     | `DoNotSchedule` |
 
 ### `replsets.configuration`
 
@@ -315,15 +315,15 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
+| :material-code-string: string     | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 
 ### `replsets.affinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the Replica Set nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `replsets.affinity.advanced`
 
@@ -339,7 +339,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `node.alpha.kubernetes.io/unreachable` |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
 
 ### `replsets.tolerations.operator`
 
@@ -347,7 +347,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Exists`   |
+| :material-code-string: string     | `Exists`   |
 
 ### `replsets.tolerations.effect`
 
@@ -355,7 +355,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `NoExecute` |
+| :material-code-string: string     | `NoExecute` |
 
 ### `replsets.tolerations.tolerationSeconds`
 
@@ -363,7 +363,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6000`     |
+| :octicons-number-24: int         | `6000`     |
 
 ### `replsets.priorityClassName`
 
@@ -371,7 +371,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `high priority` |
+| :material-code-string: string     | `high priority` |
 
 ### `replsets.annotations`
 
@@ -379,7 +379,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `iam.amazonaws.com/role: role-arn` |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
 
 ### `replsets.labels`
 
@@ -387,15 +387,15 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `rack: rack-22` |
+| :material-label-outline: label       | `rack: rack-22` |
 
 ### `replsets.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint  for the Replica Set nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int  for the Replica Set nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `disktype: ssd` |
+| :material-label-outline: label       | `disktype: ssd` |
 
 ### `replsets.storage.engine`
 
@@ -403,7 +403,7 @@ Sets the storage.engine option <https://docs.mongodb.com/manual/reference/config
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `wiredTiger` |
+| :material-code-string: string     | `wiredTiger` |
 
 ### `replsets.storage.wiredTiger.engineConfig.cacheSizeRatio`
 
@@ -411,7 +411,7 @@ The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB optio
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| float       | `0.5`      |
+| :material-decimal: :material-decimal: float       | `0.5`      |
 
 ### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
 
@@ -419,7 +419,7 @@ Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `replsets.storage.wiredTiger.engineConfig.journalCompressor`
 
@@ -427,7 +427,7 @@ Sets the [storage.wiredTiger.engineConfig.journalCompressor option  :octicons-li
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `snappy`   |
+| :material-code-string: string     | `snappy`   |
 
 ### `replsets.storage.wiredTiger.collectionConfig.blockCompressor`
 
@@ -435,7 +435,7 @@ Sets the [storage.wiredTiger.collectionConfig.blockCompressor option  :octicons-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `snappy`   |
+| :material-code-string: string     | `snappy`   |
 
 ### `replsets.storage.wiredTiger.indexConfig.prefixCompression`
 
@@ -443,7 +443,7 @@ Sets the [storage.wiredTiger.indexConfig.prefixCompression option  :octicons-lin
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `replsets.storage.inMemory.engineConfig.inMemorySizeRatio`
 
@@ -451,7 +451,7 @@ The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :o
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| float       |  `0.9`     |
+| :material-decimal: :material-decimal: float       |  `0.9`     |
 
 ### `replsets.livenessProbe.failureThreshold`
 
@@ -459,7 +459,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `4`        |
+| :octicons-number-24: int         | `4`        |
 
 ### `replsets.livenessProbe.initialDelaySeconds`
 
@@ -467,7 +467,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `60`       |
+| :octicons-number-24: int         | `60`       |
 
 ### `replsets.livenessProbe.periodSeconds`
 
@@ -475,7 +475,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `30`       |
+| :octicons-number-24: int         | `30`       |
 
 ### `replsets.livenessProbe.timeoutSeconds`
 
@@ -483,7 +483,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `replsets.livenessProbe.startupDelaySeconds`
 
@@ -491,7 +491,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `7200`     |
+| :octicons-number-24: int         | `7200`     |
 
 ### `replsets.readinessProbe.failureThreshold`
 
@@ -499,7 +499,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `8`        |
+| :octicons-number-24: int         | `8`        |
 
 ### `replsets.readinessProbe.initialDelaySeconds`
 
@@ -507,7 +507,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `replsets.readinessProbe.periodSeconds`
 
@@ -515,7 +515,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `replsets.readinessProbe.successThreshold`
 
@@ -523,7 +523,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.readinessProbe.timeoutSeconds`
 
@@ -531,7 +531,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `2`        |
+| :octicons-number-24: int         | `2`        |
 
 ### `replsets.runtimeClassName`
 
@@ -539,7 +539,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `image-rc` |
+| :material-code-string: string     | `image-rc` |
 
 ### `replsets.sidecars.image`
 
@@ -547,7 +547,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pod
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `busybox`  |
+| :material-code-string: string     | `busybox`  |
 
 ### `replsets.sidecars.command`
 
@@ -555,7 +555,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set P
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["/bin/sh"]` |
+| :material-application-array-outline: :material-application-array-outline: array       | `["/bin/sh"]` |
 
 ### `replsets.sidecars.args`
 
@@ -563,7 +563,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Rep
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+| :material-application-array-outline: array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
 ### `replsets.sidecars.name`
 
@@ -571,7 +571,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs-sidecar-1` |
+| :material-code-string: string     | `rs-sidecar-1` |
 
 ### `replsets.sidecars.volumeMounts.mountPath`
 
@@ -579,7 +579,7 @@ Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Repl
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `/volume1` |
+| :material-code-string: string     | `/volume1` |
 
 ### `replsets.sidecars.volumeMounts.name`
 
@@ -587,7 +587,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `sidecar-volume-claim` |
+| :material-code-string: string     | `sidecar-volume-claim` |
 
 ### `replsets.sidecarVolumes.name`
 
@@ -595,7 +595,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `sidecar-config` |
+| :material-code-string: string     | `sidecar-config` |
 
 ### `replsets.sidecarVolumes.configMap.name`
 
@@ -603,7 +603,7 @@ Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `myconfigmap` |
+| :material-code-string: string     | `myconfigmap` |
 
 ### `replsets.sidecarVolumes.secret.secretName`
 
@@ -611,7 +611,7 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `sidecar-secret` |
+| :material-code-string: string     | `sidecar-secret` |
 
 ### `replsets.sidecarPVCs`
 
@@ -627,7 +627,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.podDisruptionBudget.minAvailable`
 
@@ -635,7 +635,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
 
@@ -643,7 +643,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs0-0.mycluster.xyz` |
+| :material-code-string: string     | `rs0-0.mycluster.xyz` |
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external-2`
 
@@ -651,7 +651,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs0-0.mycluster2.xyz` |
+| :material-code-string: string     | `rs0-0.mycluster2.xyz` |
 
 ### `replsets.expose.enabled`
 
@@ -659,7 +659,7 @@ Enable or disable exposing [MongoDB Replica Set  :octicons-link-external-16:](ht
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `replsets.expose.exposeType`
 
@@ -667,7 +667,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `ClusterIP`|
+| :material-code-string: string     | `ClusterIP`|
 
 ### `replsets.expose.loadBalancerSourceRanges`
 
@@ -675,7 +675,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `10.0.0.0/8` |
+| :material-code-string: string     | `10.0.0.0/8` |
 
 ### `replsets.expose.serviceAnnotations`
 
@@ -683,7 +683,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `replsets.expose.serviceLabels`
 
@@ -691,7 +691,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `replsets.nonvoting.enabled`
 
@@ -699,7 +699,7 @@ Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `replsets.nonvoting.size`
 
@@ -707,15 +707,15 @@ The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) w
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the non-voting nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `replsets.nonvoting.affinity.advanced`
 
@@ -731,7 +731,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `node.alpha.kubernetes.io/unreachable` |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
 
 ### `replsets.nonvoting.tolerations.operator`
 
@@ -739,7 +739,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Exists`   |
+| :material-code-string: string     | `Exists`   |
 
 ### `replsets.nonvoting.tolerations.effect`
 
@@ -747,7 +747,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `NoExecute`|
+| :material-code-string: string     | `NoExecute`|
 
 ### `replsets.nonvoting.tolerations.tolerationSeconds`
 
@@ -755,7 +755,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6000`     |
+| :octicons-number-24: int         | `6000`     |
 
 ### `replsets.nonvoting.priorityClassName`
 
@@ -763,7 +763,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `high priority` |
+| :material-code-string: string     | `high priority` |
 
 ### `replsets.nonvoting.annotations`
 
@@ -771,7 +771,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `iam.amazonaws.com/role: role-arn` |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
 
 ### `replsets.nonvoting.labels`
 
@@ -779,15 +779,15 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `rack: rack-22` |
+| :material-label-outline: label       | `rack: rack-22` |
 
 ### `replsets.nonvoting.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for the non-voting nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `disktype: ssd` |
+| :material-label-outline: label       | `disktype: ssd` |
 
 ### `replsets.nonvoting.podDisruptionBudget.maxUnavailable`
 
@@ -795,7 +795,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.nonvoting.podDisruptionBudget.minAvailable`
 
@@ -803,7 +803,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.nonvoting.resources.limits.cpu`
 
@@ -811,7 +811,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `replsets.nonvoting.resources.limits.memory`
 
@@ -819,7 +819,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `replsets.nonvoting.resources.requests.cpu`
 
@@ -827,7 +827,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `replsets.nonvoting.resources.requests.memory`
 
@@ -835,7 +835,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `replsets.nonvoting.volumeSpec.emptyDir`
 
@@ -843,7 +843,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `{}`       |
+| :material-code-string: string     | `{}`       |
 
 ### `replsets.nonvoting.volumeSpec.hostPath.path`
 
@@ -851,7 +851,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `/data`    |
+| :material-code-string: string     | `/data`    |
 
 ### `replsets.nonvoting.volumeSpec.hostPath.type`
 
@@ -859,7 +859,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Directory`|
+| :material-code-string: string     | `Directory`|
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.annotations`
 
@@ -867,7 +867,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.labels`
 
@@ -875,7 +875,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.storageClassName`
 
@@ -883,7 +883,7 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `standard` |
+| :material-code-string: string     | `standard` |
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -891,7 +891,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `[ "ReadWriteOnce" ]` |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
 
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 
@@ -899,7 +899,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `3Gi`      |
+| :material-code-string: string     | `3Gi`      |
 
 ### `replsets.arbiter.enabled`
 
@@ -907,7 +907,7 @@ Enable or disable creation of [Replica Set Arbiter  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `replsets.arbiter.size`
 
@@ -915,15 +915,15 @@ The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mo
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.arbiter.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for the Arbiter.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `replsets.arbiter.affinity.advanced`
 
@@ -939,7 +939,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `node.alpha.kubernetes.io/unreachable` |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
 
 ### `replsets.arbiter.tolerations.operator`
 
@@ -947,7 +947,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Exists`   |
+| :material-code-string: string     | `Exists`   |
 
 ### `replsets.arbiter.tolerations.effect`
 
@@ -955,7 +955,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `NoExecute`|
+| :material-code-string: string     | `NoExecute`|
 
 ### `replsets.arbiter.tolerations.tolerationSeconds`
 
@@ -963,7 +963,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6000`     |
+| :octicons-number-24: int         | `6000`     |
 
 ### `replsets.arbiter.priorityClassName`
 
@@ -971,7 +971,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `high priority` |
+| :material-code-string: string     | `high priority` |
 
 ### `replsets.arbiter.annotations`
 
@@ -979,7 +979,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `iam.amazonaws.com/role: role-arn` |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
 
 ### `replsets.arbiter.labels`
 
@@ -987,15 +987,15 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `rack: rack-22` |
+| :material-label-outline: label       | `rack: rack-22` |
 
 ### `replsets.arbiter.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for the Arbiter nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `disktype: ssd` |
+| :material-label-outline: label       | `disktype: ssd` |
 
 ### `replsets.resources.limits.cpu`
 
@@ -1003,7 +1003,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `replsets.resources.limits.memory`
 
@@ -1011,7 +1011,7 @@ The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `replsets.resources.requests.cpu`
 
@@ -1019,7 +1019,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `replsets.resources.requests.memory`
 
@@ -1027,7 +1027,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `replsets.volumeSpec.emptyDir`
 
@@ -1035,7 +1035,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `{}`       |
+| :material-code-string: string     | `{}`       |
 
 ### `replsets.volumeSpec.hostPath.path`
 
@@ -1043,7 +1043,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `/data`    |
+| :material-code-string: string     | `/data`    |
 
 ### `replsets.volumeSpec.hostPath.type`
 
@@ -1051,7 +1051,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Directory`|
+| :material-code-string: string     | `Directory`|
 
 ### `replsets.volumeSpec.persistentVolumeClaim.annotations`
 
@@ -1059,7 +1059,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.labels`
 
@@ -1067,7 +1067,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.storageClassName`
 
@@ -1075,7 +1075,7 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `standard` |
+| :material-code-string: string     | `standard` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -1083,7 +1083,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `[ "ReadWriteOnce" ]` |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 
@@ -1091,7 +1091,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `3Gi`      |
+| :material-code-string: string     | `3Gi`      |
 
 ### `replsets.hostAliases.ip`
 
@@ -1099,7 +1099,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `"10.10.0.2"` |
+| :material-code-string: string     | `"10.10.0.2"` |
 
 ### `replsets.hostAliases.hostnames`
 
@@ -1120,7 +1120,7 @@ Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-l
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `pmm.image`
 
@@ -1128,7 +1128,7 @@ PMM Client docker image to use.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `percona/pmm-client:{{ pmm2recommended }}` |
+| :material-code-string: string     | `percona/pmm-client:{{ pmm2recommended }}` |
 
 ### `pmm.serverHost`
 
@@ -1136,7 +1136,7 @@ Address of the PMM Server to collect data from the Cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `monitoring-service` |
+| :material-code-string: string     | `monitoring-service` |
 
 ### `pmm.mongodParams`
 
@@ -1144,7 +1144,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+| :material-code-string: string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 
 ### `pmm.mongosParams`
 
@@ -1152,7 +1152,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+| :material-code-string: string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
@@ -1165,7 +1165,7 @@ Enables or disables [Percona Server for MondoDB sharding  :octicons-link-externa
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `sharding.configsvrReplSet.size`
 
@@ -1173,7 +1173,7 @@ The number of [Config Server instances  :octicons-link-external-16:](https://doc
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.configsvrReplSet.terminationGracePeriodSeconds`
 
@@ -1181,15 +1181,15 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `300`      |
+| :octicons-number-24: int         | `300`      |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `app.kubernetes.io/name: percona-server-mongodb` |
+| :material-label-outline: label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.maxSkew`
 
@@ -1197,7 +1197,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.topologyKey`
 
@@ -1205,7 +1205,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `sharding.configsvrReplSet.topologySpreadConstraints.whenUnsatisfiable`
 
@@ -1213,7 +1213,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `DoNotSchedule` |
+| :material-code-string: string     | `DoNotSchedule` |
 
 ### `sharding.configsvrReplSet.configuration`
 
@@ -1221,7 +1221,7 @@ Custom configuration options for Config Servers. Please refer to the [official m
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
+| :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 
 ### `sharding.configsvrReplSet.livenessProbe.failureThreshold`
 
@@ -1229,7 +1229,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `4`        |
+| :octicons-number-24: int         | `4`        |
 
 ### `sharding.configsvrReplSet.livenessProbe.initialDelaySeconds`
 
@@ -1237,7 +1237,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `60`       |
+| :octicons-number-24: int         | `60`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.periodSeconds`
 
@@ -1245,7 +1245,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `30`       |
+| :octicons-number-24: int         | `30`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.timeoutSeconds`
 
@@ -1253,7 +1253,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `sharding.configsvrReplSet.livenessProbe.startupDelaySeconds`
 
@@ -1261,7 +1261,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `7200`     |
+| :octicons-number-24: int         | `7200`     |
 
 ### `sharding.configsvrReplSet.readinessProbe.failureThreshold`
 
@@ -1269,7 +1269,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.initialDelaySeconds`
 
@@ -1277,7 +1277,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `sharding.configsvrReplSet.readinessProbe.periodSeconds`
 
@@ -1285,7 +1285,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.successThreshold`
 
@@ -1293,7 +1293,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `sharding.configsvrReplSet.readinessProbe.timeoutSeconds`
 
@@ -1301,7 +1301,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `2`        |
+| :octicons-number-24: int         | `2`        |
 
 ### `sharding.configsvrReplSet.runtimeClassName`
 
@@ -1309,7 +1309,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `image-rc` |
+| :material-code-string: string     | `image-rc` |
 
 ### `sharding.configsvrReplSet.sidecars.image`
 
@@ -1317,7 +1317,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server P
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `busybox`  |
+| :material-code-string: string     | `busybox`  |
 
 ### `sharding.configsvrReplSet.sidecars.command`
 
@@ -1325,7 +1325,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["/bin/sh"]` |
+| :material-application-array-outline: array       | `["/bin/sh"]` |
 
 ### `sharding.configsvrReplSet.sidecars.args`
 
@@ -1333,7 +1333,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Con
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+| :material-application-array-outline: array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
 ### `sharding.configsvrReplSet.sidecars.name`
 
@@ -1341,7 +1341,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs-sidecar-1` |
+| :material-code-string: string     | `rs-sidecar-1` |
 
 ### `sharding.configsvrReplSet.limits.cpu`
 
@@ -1349,7 +1349,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `sharding.configsvrReplSet.limits.memory`
 
@@ -1357,7 +1357,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pod
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `sharding.configsvrReplSet.resources.requests.cpu`
 
@@ -1365,7 +1365,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `sharding.configsvrReplSet.requests.memory`
 
@@ -1373,7 +1373,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `sharding.configsvrReplSet.expose.enabled`
 
@@ -1381,7 +1381,7 @@ Enable or disable exposing [Config Server  :octicons-link-external-16:](https://
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `sharding.configsvrReplSet.expose.exposeType`
 
@@ -1389,7 +1389,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `ClusterIP`|
+| :material-code-string: string     | `ClusterIP`|
 
 ### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
 
@@ -1397,7 +1397,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `10.0.0.0/8` |
+| :material-code-string: string     | `10.0.0.0/8` |
 
 ### `sharding.configsvrReplSet.expose.serviceAnnotations`
 
@@ -1405,7 +1405,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `sharding.configsvrReplSet.expose.serviceLabels`
 
@@ -1413,7 +1413,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
@@ -1421,7 +1421,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `{}`       |
+| :material-code-string: string     | `{}`       |
 
 ### `sharding.configsvrReplSet.volumeSpec.hostPath.path`
 
@@ -1429,7 +1429,7 @@ The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `/data`    |
+| :material-code-string: string     | `/data`    |
 
 ### `sharding.configsvrReplSet.volumeSpec.hostPath.type`
 
@@ -1437,7 +1437,7 @@ The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kuber
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Directory`|
+| :material-code-string: string     | `Directory`|
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.annotations`
 
@@ -1445,7 +1445,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.labels`
 
@@ -1453,7 +1453,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName`
 
@@ -1461,7 +1461,7 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `standard` |
+| :material-code-string: string     | `standard` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -1469,7 +1469,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `[ "ReadWriteOnce" ]` |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 
@@ -1477,7 +1477,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `3Gi`      |
+| :material-code-string: string     | `3Gi`      |
 
 ### `sharding.configsvrReplSet.hostAliases.ip`
 
@@ -1485,7 +1485,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `"10.10.0.2"` |
+| :material-code-string: string     | `"10.10.0.2"` |
 
 ### `sharding.configsvrReplSet.hostAliases.hostnames`
 
@@ -1501,7 +1501,7 @@ The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/man
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.mongos.terminationGracePeriodSeconds`
 
@@ -1509,15 +1509,15 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `300`      |
+| :octicons-number-24: int         | `300`      |
 
 ### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
 
-The Label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+The :material-label-outline: label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `app.kubernetes.io/name: percona-server-mongodb` |
+| :material-label-outline: label       | `app.kubernetes.io/name: percona-server-mongodb` |
 
 ### `sharding.mongos.topologySpreadConstraints.maxSkew`
 
@@ -1525,7 +1525,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `sharding.mongos.topologySpreadConstraints.topologyKey`
 
@@ -1533,7 +1533,7 @@ The key of node labels for the [Kubernetes Pod Topology Spread Constraints  :oct
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `sharding.mongos.topologySpreadConstraints.whenUnsatisfiable`
 
@@ -1541,7 +1541,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `DoNotSchedule` |
+| :material-code-string: string     | `DoNotSchedule` |
 
 ### `sharding.mongos.configuration`
 
@@ -1549,15 +1549,15 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
+| :material-code-string: string     | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
 
 ### `sharding.mongos.afinity.antiAffinityTopologyKey`
 
-The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos.
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constra:octicons-number-24: int for mongos.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `kubernetes.io/hostname` |
+| :material-code-string: string     | `kubernetes.io/hostname` |
 
 ### `sharding.mongos.affinity.advanced`
 
@@ -1573,7 +1573,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `node.alpha.kubernetes.io/unreachable` |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
 
 ### `sharding.mongos.tolerations.operator`
 
@@ -1581,7 +1581,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `Exists`   |
+| :material-code-string: string     | `Exists`   |
 
 ### `sharding.mongos.tolerations.effect`
 
@@ -1589,7 +1589,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `NoExecute`|
+| :material-code-string: string     | `NoExecute`|
 
 ### `sharding.mongos.tolerations.tolerationSeconds`
 
@@ -1597,7 +1597,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6000`     |
+| :octicons-number-24: int         | `6000`     |
 
 ### `sharding.mongos.priorityClassName`
 
@@ -1605,7 +1605,7 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `high priority` |
+| :material-code-string: string     | `high priority` |
 
 ### `sharding.mongos.annotations`
 
@@ -1613,7 +1613,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `iam.amazonaws.com/role: role-arn` |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
 
 ### `sharding.mongos.labels`
 
@@ -1621,15 +1621,15 @@ The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `rack: rack-22` |
+| :material-label-outline: label       | `rack: rack-22` |
 
 ### `sharding.mongos.nodeSelector`
 
-The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances.
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constra:octicons-number-24: int for mongos instances.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| label       | `disktype: ssd` |
+| :material-label-outline: label       | `disktype: ssd` |
 
 ### `sharding.mongos.livenessProbe.failureThreshold`
 
@@ -1637,7 +1637,7 @@ Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `4`        |
+| :octicons-number-24: int         | `4`        |
 
 ### `sharding.mongos.livenessProbe.initialDelaySeconds`
 
@@ -1645,7 +1645,7 @@ Number of seconds to wait after the container start before initiating the [liven
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `60`       |
+| :octicons-number-24: int         | `60`       |
 
 ### `sharding.mongos.livenessProbe.periodSeconds`
 
@@ -1653,7 +1653,7 @@ How often to perform a [liveness probe  :octicons-link-external-16:](https://kub
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `30`       |
+| :octicons-number-24: int         | `30`       |
 
 ### `sharding.mongos.livenessProbe.timeoutSeconds`
 
@@ -1661,7 +1661,7 @@ Number of seconds after which the [liveness probe  :octicons-link-external-16:](
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `sharding.mongos.livenessProbe.startupDelaySeconds`
 
@@ -1669,7 +1669,7 @@ Time after which the liveness probe is failed if the MongoDB instance didn’t f
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `7200`     |
+| :octicons-number-24: int         | `7200`     |
 
 ### `sharding.mongos.readinessProbe.failureThreshold`
 
@@ -1677,7 +1677,7 @@ Number of consecutive unsuccessful tries of the [readiness probe  :octicons-link
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.mongos.readinessProbe.initialDelaySeconds`
 
@@ -1685,7 +1685,7 @@ Number of seconds to wait after the container start before initiating the [readi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `sharding.mongos.readinessProbe.periodSeconds`
 
@@ -1693,7 +1693,7 @@ How often to perform a [readiness probe  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `sharding.mongos.readinessProbe.successThreshold`
 
@@ -1701,7 +1701,7 @@ Minimum consecutive successes for the [readiness probe  :octicons-link-external-
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `sharding.mongos.readinessProbe.timeoutSeconds`
 
@@ -1709,7 +1709,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `2`        |
+| :octicons-number-24: int         | `2`        |
 
 ### `sharding.mongos.runtimeClassName`
 
@@ -1717,7 +1717,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `image-rc` |
+| :material-code-string: string     | `image-rc` |
 
 ### `sharding.mongos.sidecars.image`
 
@@ -1725,7 +1725,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `busybox`  |
+| :material-code-string: string     | `busybox`  |
 
 ### `sharding.mongos.sidecars.command`
 
@@ -1733,7 +1733,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["/bin/sh"]` |
+| :material-application-array-outline: array       | `["/bin/sh"]` |
 
 ### `sharding.mongos.sidecars.args`
 
@@ -1741,7 +1741,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mon
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+| :material-application-array-outline: array       | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
 
 ### `sharding.mongos.sidecars.name`
 
@@ -1749,7 +1749,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rs-sidecar-1` |
+| :material-code-string: string     | `rs-sidecar-1` |
 
 ### `sharding.mongos.limits.cpu`
 
@@ -1757,7 +1757,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `sharding.mongos.limits.memory`
 
@@ -1765,7 +1765,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `sharding.mongos.resources.requests.cpu`
 
@@ -1773,7 +1773,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `300m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `sharding.mongos.requests.memory`
 
@@ -1781,7 +1781,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.5G`     |
+| :material-code-string: string     | `0.5G`     |
 
 ### `sharding.mongos.expose.exposeType`
 
@@ -1789,7 +1789,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `ClusterIP`|
+| :material-code-string: string     | `ClusterIP`|
 
 ### `sharding.mongos.expose.servicePerPod`
 
@@ -1797,7 +1797,7 @@ If set to `true`, a separate ClusterIP Service is created for each mongos instan
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `sharding.mongos.expose.loadBalancerSourceRanges`
 
@@ -1805,7 +1805,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `10.0.0.0/8` |
+| :material-code-string: string     | `10.0.0.0/8` |
 
 ### `sharding.mongos.expose.serviceAnnotations`
 
@@ -1813,7 +1813,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
 ### `sharding.mongos.expose.serviceLabels`
 
@@ -1821,7 +1821,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `rack: rack-22` |
+| :material-code-string: string     | `rack: rack-22` |
 
 ### `sharding.mongos.hostAliases.ip`
 
@@ -1829,7 +1829,7 @@ The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https:
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `"10.10.0.2"` |
+| :material-code-string: string     | `"10.10.0.2"` |
 
 ### `sharding.mongos.hostAliases.hostnames`
 
@@ -1852,7 +1852,7 @@ Enables or disables making backups.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `backup.image`
 
@@ -1860,7 +1860,7 @@ The Percona Server for MongoDB Docker image to use for the backup.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `percona/percona-server-mongodb-operator:{{ release }}-backup` |
+| :material-code-string: string     | `percona/percona-server-mongodb-operator:{{ release }}-backup` |
 
 ### `backup.serviceAccountName`
 
@@ -1868,7 +1868,7 @@ Name of the separate privileged service account used by the Operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `percona-server-mongodb-operator` |
+| :material-code-string: string     | `percona-server-mongodb-operator` |
 
 ### `backup.annotations`
 
@@ -1876,7 +1876,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `sidecar.istio.io/inject: "false"` |
+| :material-code-string: string     | `sidecar.istio.io/inject: "false"` |
 
 ### `backup.resources.limits.cpu`
 
@@ -1884,7 +1884,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `100m`     |
+| :material-code-string: string     | `100m`     |
 
 ### `backup.resources.limits.memory`
 
@@ -1892,7 +1892,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.2G`     |
+| :material-code-string: string     | `0.2G`     |
 
 ### `backup.resources.requests.cpu`
 
@@ -1900,7 +1900,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `100m`     |
+| :material-code-string: string     | `100m`     |
 
 ### `backup.resources.requests.memory`
 
@@ -1908,7 +1908,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0.1G`     |
+| :material-code-string: string     | `0.1G`     |
 
 ### `backup.storages.STORAGE-NAME.type`
 
@@ -1916,7 +1916,7 @@ The cloud storage type used for backups. Only `s3` type is currently supported.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `s3`       |
+| :material-code-string: string     | `s3`       |
 
 ### `backup.storages.STORAGE-NAME.s3.insecureSkipTLSVerify`
 
@@ -1924,7 +1924,7 @@ Enable or disable verification of the storage server TLS certificate. Disabling 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `backup.storages.STORAGE-NAME.s3.credentialsSecret`
 
@@ -1932,7 +1932,7 @@ The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-name-backup-s3` |
+| :material-code-string: string     | `my-cluster-name-backup-s3` |
 
 ### `backup.storages.STORAGE-NAME.s3.bucket`
 
@@ -1940,7 +1940,7 @@ The [Amazon S3 bucket  :octicons-link-external-16:](https://docs.aws.amazon.com/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      |            |
+| :material-code-string: string     |            |
 
 ### `backup.storages.STORAGE-NAME.s3.prefix`
 
@@ -1948,7 +1948,7 @@ The path (sub-folder) to the backups inside the [bucket  :octicons-link-external
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `""`       |
+| :material-code-string: string     | `""`       |
 
 ### `backup.storages.STORAGE-NAME.s3.uploadPartSize`
 
@@ -1956,7 +1956,7 @@ The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10485760` |
+| :octicons-number-24: int         | `10485760` |
 
 ### `backup.storages.STORAGE-NAME.s3.maxUploadParts`
 
@@ -1964,7 +1964,7 @@ The maximum number of data chunks to be uploaded to the storage bucket (10000 by
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10000`    |
+| :octicons-number-24: int         | `10000`    |
 
 ### `backup.storages.STORAGE-NAME.s3.storageClass`
 
@@ -1972,7 +1972,7 @@ The [storage class name  :octicons-link-external-16:](https://aws.amazon.com/s3/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `STANDARD` |
+| :material-code-string: string     | `STANDARD` |
 
 ### `backup.storages.STORAGE-NAME.s3.region`
 
@@ -1980,15 +1980,15 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `us-east-1`|
+| :material-code-string: string     | `us-east-1`|
 
 ### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
-The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+The endpo:octicons-number-24: int URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      |            |
+| :material-code-string: string     |            |
 
 ### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.kmsKeyID`
 
@@ -1996,7 +1996,7 @@ The [ID of the key stored in the AWS KMS  :octicons-link-external-16:](https://d
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `""`       |
+| :material-code-string: string     | `""`       |
 
 ### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseAlgorithm`
 
@@ -2004,7 +2004,7 @@ The key management mode used for [backups server-side encryption](backups-encryp
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `aws:kms`  |
+| :material-code-string: string     | `aws:kms`  |
 
 ### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseCustomerAlgorithm`
 
@@ -2012,7 +2012,7 @@ The key management mode for [backups server-side encryption with customer-provid
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `AES256`   |
+| :material-code-string: string     | `AES256`   |
 
 ### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseCustomerKey`
 
@@ -2020,7 +2020,7 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `""`       |
+| :material-code-string: string     | `""`       |
 
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
@@ -2028,7 +2028,7 @@ The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-cluster-azure-secret` |
+| :material-code-string: string     | `my-cluster-azure-secret` |
 
 ### `backup.storages.STORAGE-NAME.azure.container`
 
@@ -2036,7 +2036,7 @@ Name of the [container  :octicons-link-external-16:](https://docs.microsoft.com/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `my-container` |
+| :material-code-string: string     | `my-container` |
 
 ### `backup.storages.STORAGE-NAME.azure.prefix`
 
@@ -2044,7 +2044,7 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `""`       |
+| :material-code-string: string     | `""`       |
 
 ### `backup.pitr.enabled`
 
@@ -2052,7 +2052,7 @@ Enables or disables [point-in-time-recovery functionality](backups.md#backups-pi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ### `backup.pitr.oplogOnly`
 
@@ -2060,7 +2060,7 @@ If true, Percona Backup for MongoDB saves oplog chunks even without the base log
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | false      |
+| :material-toggle-switch-outline: boolean     | false      |
 
 ### `backup.pitr.oplogSpanMin`
 
@@ -2068,7 +2068,7 @@ Number of minutes between the uploads of oplogs.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `10`       |
+| :octicons-number-24: int         | `10`       |
 
 ### `backup.pitr.compressionType`
 
@@ -2076,7 +2076,7 @@ The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4,
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `gzip`     |
+| :material-code-string: string     | `gzip`     |
 
 ### `backup.pitr.compressionLevel`
 
@@ -2084,7 +2084,7 @@ The point-in-time-recovery chunks compression level ([higher values result in be
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6`        |
+| :octicons-number-24: int         | `6`        |
 
 ### `backup.tasks.name`
 
@@ -2092,7 +2092,7 @@ The name of the backup.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      |            |
+| :material-code-string: string     |            |
 
 ### `backup.tasks.enabled`
 
@@ -2100,7 +2100,7 @@ Enables or disables this exact backup.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| boolean     | `true`     |
+| :material-toggle-switch-outline: boolean     | `true`     |
 
 ### `backup.tasks.schedule`
 
@@ -2108,7 +2108,7 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `0 0 \* \* 6` |
+| :material-code-string: string     | `0 0 \* \* 6` |
 
 ### `backup.tasks.keep`
 
@@ -2116,7 +2116,7 @@ The amount of most recent backups to store. Older backups are automatically dele
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `3`        |
+| :octicons-number-24: int         | `3`        |
 
 ### `backup.tasks.storageName`
 
@@ -2124,7 +2124,7 @@ The name of the S3-compatible storage for backups, configured in the storages su
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `st-us-west` |
+| :material-code-string: string     | `st-us-west` |
 
 ### `backup.tasks.compressionType`
 
@@ -2132,7 +2132,7 @@ The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or no
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `gzip`     |
+| :material-code-string: string     | `gzip`     |
 
 ### `backup.tasks.compressionLevel`
 
@@ -2140,7 +2140,7 @@ The backup compression level ([higher values result in better but slower compres
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| int         | `6`        |
+| :octicons-number-24: int         | `6`        |
 
 ### `backup.tasks.type`
 
@@ -2148,5 +2148,5 @@ The backup type: (can be either `logical` (default) or `physical`; see [the Oper
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| string      | `physical` |
+| :material-code-string: string     | `physical` |
 
