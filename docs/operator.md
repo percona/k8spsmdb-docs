@@ -194,7 +194,7 @@ If enabled, [FeatureCompatibilityVersion (FCV)  :octicons-link-external-16:](htt
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `false`    |
+| :material-toggle-switch-outline: boolean     | `false`    |
 
 ## <a name="operator-secrets-section"></a>Secrets section
 
@@ -267,7 +267,7 @@ The size of the MongoDB Replica Set, must be >= 3 for [High-Availability  :octic
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `3`        |
+| :material-numeric-1-box: int         | `3`        |
 
 ### `replsets.terminationGracePeriodSeconds`
 
@@ -291,7 +291,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.topologySpreadConstraints.topologyKey`
 
@@ -363,7 +363,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `6000`     |
+| :material-numeric-1-box: int         | `6000`     |
 
 ### `replsets.priorityClassName`
 
@@ -411,7 +411,7 @@ The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB optio
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-decimal: :material-decimal: float       | `0.5`      |
+| :material-decimal: float       | `0.5`      |
 
 ### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
 
