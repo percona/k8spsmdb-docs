@@ -627,7 +627,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :octicons-number-24: int         | `1`        |
+| :material-numeric-1-box: int         | `1`        |
 
 ### `replsets.podDisruptionBudget.minAvailable`
 
