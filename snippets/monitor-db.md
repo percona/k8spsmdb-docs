@@ -1,5 +1,3 @@
-# Monitor database with Percona Monitoring and Management (PMM)
-
 In this section you will learn how to monitor Percona Server for MongoDB with [Percona Monitoring and Management (PMM) :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html).
 
 !!! note

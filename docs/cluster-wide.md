@@ -98,11 +98,12 @@ Kubernetes.
     ```
 
     The creation process may take some time. When the process is over your
-    cluster will obtain the `ready` status. You can check it with the following
-    command:
+    cluster will obtain the `ready` status. You can check it by quering the
+    `PerconaServerMongoDB` Custom Resource (it has handy `psmdb` shortname
+    also) with the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    $ kubectl get psmdb -n psmdb
     ```
 
     ??? example "Expected output"
