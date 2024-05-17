@@ -209,7 +209,7 @@ The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster-name-mongodb-key` |
 
-### `secrets.users` |
+### `secrets.users`
 
 The name of the Secrets object for the MongoDB users **required to run the operator.**
 
@@ -275,7 +275,7 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-numeric-1-box-outline: int         | `300`      |
+| :material-numeric-1-box: int         | `300`      |
 
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
 
@@ -291,7 +291,7 @@ The degree to which Pods may be unevenly distributed under the [Kubernetes Pod T
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-numeric-1-box-outline: int         | `1`        |
+| :octicons-number-24: int         | `1`        |
 
 ### `replsets.topologySpreadConstraints.topologyKey`
 
@@ -363,7 +363,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-numeric-1-box-outline: int         | `6000`     |
+| :octicons-number-24: int         | `6000`     |
 
 ### `replsets.priorityClassName`
 
