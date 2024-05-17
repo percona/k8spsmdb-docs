@@ -12,7 +12,7 @@
 
 ### General availability of Physical Backups
 
-Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. Until now this feature was in a technical preview, but with this release Percona announces the general availability of physical backups and restores for MongoDB with the Operator.
+Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. With this release Percona announces the general availability of physical backups and restores for Percona Server for MongoDB with the Operator.
 
 ### Automated volume expansion
 
@@ -51,7 +51,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 * {{ k8spsmdbjira(1015) }}: Information about backup and restore operations is now included in the Operator's logs
 * {{ k8spsmdbjira(951) }}, {{ k8spsmdbjira(979) }} and {{ k8spsmdbjira(1021) }}: The Operator now allows setting custom configuration for Percona Backup for MongoDB through the set of new Custom Resource options under `backup.backup`, `backup.restore`, and `backup.storages.s3.retryer` subsections
 * {{ k8spsmdbjira(1029) }}: Mongod is now run in [quiet mode  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/program/mongod/#std-option-mongod.--quiet) by default to reduce the amount of log messages
-* {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#sharding-mongos-expose-nodeport) define TCP port for  mongos Service when it is exposed through a NodePort (thanks to Mike Devresse for contribution)
+* {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#sharding-mongos-expose-nodeport) define TCP port for mongos Service when it is exposed through a NodePort (thanks to Mike Devresse for contribution)
 * {{ k8spsmdbjira(1062) }}: The Operator now sets [appProtocol :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol) to `mongo` for Service objects, which is useful for service mesh implementations (thanks to Søren Mathiasen for contribution)
 * {{ k8spsmdbjira(732) }}: [Integration of the Operator with OpenLDAP](../ldap.md#using-ldap-over-tls-connection) can now be secured by using TLS connections
 * {{ k8spsmdbjira(755) }}: New `allowInvalidCertificates` option allows to [enable or disable](../operator.md#tls-allowinvalidcertificates) bypassing MongoDB Shell checks for the certificates presented by the mongod/mongos instance, useful for self-signed certificates
