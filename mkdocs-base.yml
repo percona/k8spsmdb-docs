@@ -56,7 +56,6 @@ theme:
 extra_css:
   - https://unicons.iconscout.com/release/v3.0.3/css/line.css
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css
-  - css/percona.css
   - css/lightgallery.min.css
   - css/nocopy.css
   - css/design.css
@@ -95,8 +94,8 @@ markdown_extensions:
   pymdownx.highlight:
     use_pygments: true
   pymdownx.emoji:
-    emoji_index: !!python/name:materialx.emoji.twemoji
-    emoji_generator: !!python/name:materialx.emoji.to_svg
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
     options:
       custom_icons:
         - _resource/overrides/.icons
@@ -126,14 +125,14 @@ plugins:
     glob:
       - "setting-up/client/docker.md"
   # https://github.com/orzih/mkdocs-with-pdf
-  with-pdf:
-    output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.15.0 (October 09, 2023)
-    author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/percona_kubernetes_icon.png
-    custom_template_path: _resource/templates
-    enabled_if_env: ENABLE_PDF_EXPORT
+  # with-pdf:
+  #   output_path: "_pdf/PerconaOperatorMongoDB.pdf"
+  #   cover_title: "Percona Operator for MongoDB documentation"
+  #   cover_subtitle: 1.15.0 (October 09, 2023)
+  #   author: "Percona Technical Documentation Team"
+  #   cover_logo: docs/assets/images/percona_kubernetes_icon.png
+  #   custom_template_path: _resource/templates
+  #   enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
