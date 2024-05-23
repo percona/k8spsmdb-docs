@@ -52,6 +52,14 @@ names. To make Pods of the Replica Set accessible, Percona Operator for MongoDB
 can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/)
 to each Pod.
 
+!!! note
+
+    Particularly, Service per Pod will allow application to take care of
+    Cursor tracking instead of relying on a single service. This solves the
+    problem of CursorNotFound errors when the Serivce transparently cycles
+    between the mongos instances while client is still iterating the cursor
+    on some large collection.
+
 This feature can be configured in the `replsets` (for MondgoDB instances Pod)
 and `sharding` (for mongos Pod) sections of the
 [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
