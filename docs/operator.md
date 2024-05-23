@@ -66,32 +66,14 @@ The [policy used to update images  :octicons-link-external-16:](https://kubernet
 
 ### `tls.mode`
 
-The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters.
+Controls if the [TLS encryption](TLS.md) should be used and/or inforced. Can be
+ `disabled`, `allowTLS`, `preferTLS`, or `requireTLS`. If user sets mode to
+ `disabled`,  `spec.unsafeFlags.tls` should be also set to `true` or the
+ Operator will throw an error.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `disabled`    |
-
- `disabled`, `allowTLS`, `preferTLS`, and `requireTLS`.
-
-If user sets mode to disabled, the operator will throw an error: TLS must be enabled. Set spec.unsafeFlags.tls to true to disable this check.
-
-Since the use of TLS flags and reconciling TLS secrets depends on
-tls.mode field, we need to block users to set net.tls.mode in custom
-MongoDB configuration. If user sets a custom configuration like:
-
-spec:
-  replsets:
-  - name: rs0
-    size: 3
-    configuration: |
-      net:
-        tls:
-          mode: allowTLS
-
-the operator will throw an error: tlsMode must be set using spec.tls.mode.
-
-
+| :material-code-string: string     | `preferTLS`    |
 
 ### `tls.certValidityDuration`
 
