@@ -16,11 +16,13 @@ Here is the review of generic features, such as supported MongoDB versions, open
 
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Community Edtion Operator |
 |:------------------|:-----------------------------|:-------------------|:-------------------|:----------------------------------|
-| Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                         |
-| MongoDB versions  | PSMDB 4.4, 5.0, 6.0          | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0|
+| Open source model | Apache 2.0                   | Apache 2.0         | Source Available   | Open core                         |
+| MongoDB versions  | MongoDB 4.4, 5.0, 6.0 \*     | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0|
 | Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                      |
 | Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                               |
 | Network exposure  | Yes                          | Yes                | No, only through manual config | Enterprise only       |
+
+\* Percona Operator relies on [Percona Server for MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) - a free, enhanced, fully compatible MongoDB software alternative for MongoDB Community Server with enterprise-grade features.
 
 ## Maintenance
 
@@ -45,6 +47,7 @@ The next comparison is focused on replica sets, arbiters, sharding and other nod
 | Non-voting nodes  | Yes                          | No                 | No                 | No                                |
 | Hidden nodes      | No                           | Yes                | Yes                | Yes                               |
 | Network exposure  | Yes                          | Yes                | Manual             | Enterprise only                   |
+| Split Horizon     | Yes                          | No                 | No                 | Yes                               |
 
 ## Backups
 
