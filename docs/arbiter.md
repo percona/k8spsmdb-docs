@@ -53,6 +53,36 @@ replsets:
     [replsets.arbiter section](operator.md#replsets-arbiter-enabled) of the
     [Custom Resource options reference](operator.md#operator-custom-resource-options).
 
+### Preventing Arbiter instances to share Kubernetes Nodes with Replica Set
+
+By default Arbiter instances are allowed to run on the same host as regular
+Replica Set instances. This may be reasonable in terms of the number of
+Kubernetes Nodes required for the cluster. But as a result it increases
+possibility to have 50/50 votes division in case of network partitioning.
+You can use [anti-affinity constraints](constraints.md#affinity-and-anti-affinity)
+to avoid such Pod alocation as follows:
+
+```yaml
+....
+arbiter:
+  enabled: true
+  size: 1
+  affinity:
+    antiAffinityTopologyKey: "kubernetes.io/hostname"
+    advanced:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: mongod
+              app.kubernetes.io/instance: cluster1
+              app.kubernetes.io/managed-by: percona-server-mongodb-operator
+              app.kubernetes.io/name: percona-server-mongodb
+              app.kubernetes.io/part-of: percona-server-mongodb
+              app.kubernetes.io/replset: rs0
+          topologyKey: kubernetes.io/hostname
+```
+
 ## Adding non-voting nodes
 
 [Non-voting member  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-a-non-voting-replica-set-member/)
