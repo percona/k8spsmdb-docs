@@ -2116,7 +2116,7 @@ The list of mongod nodes and their priority for making backups.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-text-long: subdoc      | `<pre>&#124;localhost:28019&#124;: 2.5<br>&#124;localhost:27018&#124;: 2.5</pre>` |
+| :material-text-long: subdoc      | <pre>&#124;localhost:28019&#124;: 2.5<br>&#124;localhost:27018&#124;: 2.5</pre> |
 
 ### `backup.configuration.backupOptions.timeouts.startingStatus`
 
@@ -2188,7 +2188,7 @@ The list of custom paths to mongod binaries on every node, which Percona Backup 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-text-long: subdoc     | ` <pre>&#124;node01:2017&#124;: /usr/bin/mongo<br>systemLog:<br>&#124;node03:27017&#124;: /usr/bin/mongo</pre>`     |
+| :material-text-long: subdoc     | <pre>&#124;node01:2017&#124;: /usr/bin/mongo<br>systemLog:<br>&#124;node03:27017&#124;: /usr/bin/mongo</pre>     |
 
 ### `backup.tasks.name`
 
