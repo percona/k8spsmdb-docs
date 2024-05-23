@@ -7,7 +7,7 @@ The Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptograph
 
 The internal certificate is also used as an authorization method.
 
-Using and/or enforcing TLS is controlled by the `tls.mode` Custom Resource
+TLS usage is controlled by the `tls.mode` Custom Resource
 option, which can be set to `allowTLS`, `preferTLS` (default choice),
 `requireTLS`, or `disabled`:
 
