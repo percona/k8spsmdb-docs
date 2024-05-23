@@ -178,7 +178,7 @@ Prevents users from configuring a cluster without TLS/SSL certificates (if `fals
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.replsetSize`
 
@@ -186,7 +186,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.mongosSize`
 
@@ -194,7 +194,7 @@ Prevents users from configuring a sharded cluster with less than 3 config server
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.terminationGracePeriod`
 
@@ -202,7 +202,7 @@ Prevents users from configuring a sharded cluster without termination grace peri
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.backupIfUnhealthy`
 
@@ -210,7 +210,7 @@ Prevents running backup on a cluster with [failed health checks :octicons-link-e
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
