@@ -7,6 +7,18 @@ The Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptograph
 
 The internal certificate is also used as an authorization method.
 
+Using and/or enforcing TLS is controlled by the `tls.mode` Custom Resource
+option, which can be set to `allowTLS`, `preferTLS` (default choice),
+`requireTLS`, or `disabled`:
+
+```yaml
+...
+spec:
+  ...
+  tls:
+    mode: preferTLS
+```
+
 Certificates for TLS security can be generated in several ways. By default, the
 Operator generates long-term certificates automatically if there are no
 certificate secrets available. Other options are the following ones:
@@ -366,15 +378,18 @@ Omitting TLS is also possible, but we recommend that you run your cluster with
 the TLS protocol enabled.
 
 To disable TLS protocol (e.g. for demonstration purposes) set the
-`spec.allowUnsafeConfigurations` key to `true` in the `deploy/cr.yaml`
-file and and make sure that there are no certificate secrets available. This is
-the only condition under which the cluster will work without TLS.
+`tls.mode` key to `disabled` and set `unsafeFlags.tls`
+to `true` in the `deploy/cr.yaml`:
+file.
 
-!!! warning
+```yaml
+...
+spec:
+  ...
+  unsafeFlags
+    tls: true
+    ...
+  tls:
+    mode: disabled
+```
 
-    Normally, the Operator prevents users from configuring a cluster with unsafe
-    parameters (starting it with less than 3 replica set instances or without
-    TLS, etc.), automatically changing such unsafe parameters to safe defaults.
-    If you switch the cluster to the *unsafe configurations permissive mode*,
-    you will not be able to switch it back by setting
-    `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored.
