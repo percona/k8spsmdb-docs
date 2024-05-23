@@ -415,7 +415,29 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
         ```
 
     === "if sharding is on"
-    
+
+        ``` yaml title="my_mongod.conf"  hl_lines="7"
+        security:
+          authorization: "enabled"
+          ldap:
+            authz:
+              queryTemplate: '{USER}?memberOf?base'
+            servers: "openldap"
+            transportSecurity: tls
+            bind:
+              queryUser: "cn=readonly,dc=ldap,dc=local"
+              queryPassword: "password"
+            userToDNMapping:
+              '[
+                  {
+                    match : "(.+)",
+                    ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
+                  }
+           ]'
+        setParameter:
+          authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
+        ```
+
         ```yaml title="my_mongos.conf" hl_lines="4"
         security:
           ldap:
