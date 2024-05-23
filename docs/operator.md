@@ -2188,7 +2188,7 @@ The list of custom paths to mongod binaries on every node, which Percona Backup 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-text-long: subdoc     | <pre>"node01:2017": /usr/bin/mongo<br>systemLog:<br>"node03:27017": /usr/bin/mongo</pre>     |
+| :material-text-long: subdoc     | <pre>"node01:2017": /usr/bin/mongo<br>"node03:27017": /usr/bin/mongo</pre>     |
 
 ### `backup.tasks.name`
 
