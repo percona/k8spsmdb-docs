@@ -66,10 +66,9 @@ The [policy used to update images  :octicons-link-external-16:](https://kubernet
 
 ### `tls.mode`
 
-Controls if the [TLS encryption](TLS.md) should be used and/or inforced. Can be
- `disabled`, `allowTLS`, `preferTLS`, or `requireTLS`. If user sets mode to
- `disabled`,  `spec.unsafeFlags.tls` should be also set to `true` or the
- Operator will throw an error.
+Controls if the [TLS encryption](TLS.md) should be used and/or enforced. Can be
+ `disabled`, `allowTLS`, `preferTLS`, or `requireTLS`. If set to `disabled`,
+ it also requires setting `unsafeFlags.tls option to `true`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -181,7 +180,7 @@ Prevents users from configuring a cluster without TLS/SSL certificates (if `fals
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.replsetSize`
 
@@ -189,7 +188,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.mongosSize`
 
@@ -197,7 +196,7 @@ Prevents users from configuring a sharded cluster with less than 3 config server
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.terminationGracePeriod`
 
@@ -205,7 +204,7 @@ Prevents users from configuring a sharded cluster without termination grace peri
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ### `unsafeFlags.backupIfUnhealthy`
 
@@ -213,7 +212,7 @@ Prevents running backup on a cluster with [failed health checks :octicons-link-e
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: boolean     |`false` |
+| :material-toggle-switch-outline: boolean     |`false` |
 
 ## <a name="operator-upgradeoptions-section"></a>Upgrade Options Section
 
