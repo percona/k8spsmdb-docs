@@ -41,7 +41,7 @@ To use the server-side AWS KMS encryption, specify the [ID of your customer-mana
     dedicated Secrets object. Define your secret in YAML as follows:
     
     
-    ```yaml "title=deploy/sse-secret.yaml"
+    ```yaml title="deploy/sse-secret.yaml"
     
     apiVersion: v1
     kind: Secret
@@ -120,7 +120,7 @@ encryption key and other needed options:
     into a dedicated Secrets object. Define your secret in YAML as follows:
     
     
-    ```yaml "title=deploy/sse-secret.yaml"
+    ```yaml title="deploy/sse-secret.yaml"
     
     apiVersion: v1
     kind: Secret
