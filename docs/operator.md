@@ -106,7 +106,7 @@ The (non-standard) cluster domain to be used as a suffix of the Service name.
 
 ### `clusterServiceDNSMode`
 
-Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses), or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](expose.md#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (turned on for the exposed Services). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
 
 | Value type  | Example    |
 | ----------- | ---------- |
