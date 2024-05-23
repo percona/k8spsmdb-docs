@@ -360,6 +360,71 @@ Operator version prior to 1.9.0), you should move through the
 5. Unpause the cluster [in a standard way](pause.md), and make
     sure it has reached its running state.
 
+### Modify certificates generation
+
+There may be reasons to tweak the certificates generation, making it better fit some needs.
+Of course, maximum flexibility can be obtained with manual certificates generation,
+but sometimes slight tweaking the already automated job may be enough.
+
+The following example shows how to increase CA duration with cert-manager for
+a cluster named `cluster1`:
+
+1. Delete the `psmdb` Custom Resource in the proper namespace (this will cause
+    deletion of all Pods of the cluster, but later you will recreate the cluster
+    using the same `deploy/cr.yaml` flie from which it was originally created).
+
+    !!! note
+
+        you may need to make sure that [`finalizers.delete-psmdb-pvc` is not set](operator.md)
+        if you want to preserver Persistent Volumes with the data.
+
+    Deletion command should look as follows:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl -n <namespace_name> delete psmdb cluster1
+
+2. Deletion takes time. Check that all Pods disappear with `kubectl -n <namespace_name> get pods`
+    command, and delete certificate related resources:
+    
+     ``` {.bash data-prompt="$" }
+    $ kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
+    ```
+
+3. Create your own custom CA:
+
+    ```yaml  title="my_new_ca.yml"
+    apiVersion: cert-manager.io/v1
+    kind: Issuer
+    metadata:
+      name: cluster1-psmdb-ca-issuer
+    spec:
+      selfSigned: {}
+    ---
+    apiVersion: cert-manager.io/v1
+    kind: Certificate
+    metadata:
+      name: cluster1-ca-cert
+    spec:
+      commonName: cluster1-ca
+      duration: 10000h0m0s
+      isCA: true
+      issuerRef:
+        kind: Issuer
+        name: cluster1-psmdb-ca-issuer
+      renewBefore: 730h0m0s
+      secretName: cluster1-ca-cert
+    ```
+
+    Apply it as usual, with the `kubectl -n <namespace_name> apply -f my_new_ca.yml` command.
+
+4. Recreate the cluster from the original `deploy/cr.yaml` configuration file:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl -n <namespace_name> apply -f deploy/cr.yaml
+    ```
+
+5. Verify certificate duration [in usual way](TLS.md#check-your-certificates-for-expiration).
+
 ## Run Percona Server for MongoDB without TLS
 
 Omitting TLS is also possible, but we recommend that you run your cluster with
