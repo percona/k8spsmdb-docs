@@ -1974,6 +1974,30 @@ The [storage class name  :octicons-link-external-16:](https://aws.amazon.com/s3/
 | ----------- | ---------- |
 | :material-code-string: string     | `STANDARD` |
 
+### `backup.storages.STORAGE-NAME.s3.retryer.numMaxRetries`
+
+The maximum number of retries to upload data to S3 storage.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `3`|
+
+### `backup.storages.STORAGE-NAME.s3.retryer.minRetryDelay`
+
+The minimum time in milliseconds to wait till the next retry.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `10`|
+
+### `backup.storages.STORAGE-NAME.s3.retryer.maxRetryDelay`
+
+The maximum time in minutes to wait till the next retry.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5`|
+
 ### `backup.storages.STORAGE-NAME.s3.region`
 
 The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages.
@@ -2085,6 +2109,86 @@ The point-in-time-recovery chunks compression level ([higher values result in be
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `6`        |
+
+### `backup.configuration.backupOptions.priority`
+
+The list of mongod nodes and their priority for making backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `<pre>&#124;localhost:28019&#124;: 2.5<br>&#124;localhost:27018&#124;: 2.5</pre>` |
+
+### `backup.configuration.backupOptions.timeouts.startingStatus`
+
+The wait time in seconds Percona Backup for MongoDB should use to start physical backups on all shards. The 0 (zero) value resets the timeout to the default 33 seconds. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `33` |
+
+### `backup.configuration.backupOptions.oplogSpanMin`
+
+The duration (in minutes) of oplog slices saved by Percona Backup for MongoDB with the logical backup snapshot.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10` |
+
+### `backup.configuration.restoreOptions.batchSize`
+
+The number of documents Percona Backup for MongoDB should buffer.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `500` |
+
+### `backup.configuration.restoreOptions.numInsertionWorkers`
+
+The number of workers that Percona Backup for MongoDB should use to add the documents to buffer.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10` |
+
+### `backup.configuration.restoreOptions.numDownloadWorkers`
+
+The number of workers that Percona Backup for MongoDB should use to request data chunks from the storage during the restore.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `4` |
+
+### `backup.configuration.restoreOptions.maxDownloadBufferMb`
+
+The maximum size of the in-memory buffer that Percona Backup for MongoDB should use use when downloading files from the S3 storage.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `0` |
+
+### `backup.configuration.restoreOptions.downloadChunkMb`
+
+The size of the data chunk in MB, that Percona Backup for MongoDB should use when downloading from the S3 storage.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `32` |
+
+### `backup.configuration.restoreOptions.mongodLocation`
+
+The custom path to mongod binaries which Percona Backup for MongoDB should use during restore.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/usr/bin/mongo`     |
+
+### `backup.configuration.restoreOptions.mongodLocationMap`
+
+The list of custom paths to mongod binaries on every node, which Percona Backup for MongoDB should use during restore. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | ` <pre>&#124;node01:2017&#124;: /usr/bin/mongo<br>systemLog:<br>&#124;node03:27017&#124;: /usr/bin/mongo</pre>`     |
 
 ### `backup.tasks.name`
 
