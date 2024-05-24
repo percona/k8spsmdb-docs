@@ -2134,6 +2134,14 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
+### 'backup.storages.STORAGE-NAME.azure.endpointUrl'
+
+The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) that should be used instead of the public endpoint.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `https://accountName.blob.core.windows.net` |
+
 ### `backup.pitr.enabled`
 
 Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog).
