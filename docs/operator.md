@@ -1823,6 +1823,14 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | :material-code-string: string     | `rack: rack-22` |
 
+### 'sharding.mongos.expose.nodePort'
+
+The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the  `sharding.mongos.expose.exposeType` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `32017`        |
+
 ### `sharding.mongos.hostAliases.ip`
 
 The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods.
