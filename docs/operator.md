@@ -304,6 +304,15 @@ The name of the Secrets object for the MongoDB users **required to run the opera
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster-name-mongodb-users` |
 
+### `secrets.sse`
+
+The name of the Secrets object for [server side encryption credentials](backups-encryption.md)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-sse` |
+
+
 ### `secrets.ssl`
 
 A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details.
