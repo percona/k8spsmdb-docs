@@ -191,5 +191,5 @@ $ kubectl create -f deploy/my-mongod-secret.yaml
 
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
-    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md)
     page).

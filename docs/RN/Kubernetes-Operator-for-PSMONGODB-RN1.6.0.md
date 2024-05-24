@@ -16,12 +16,12 @@
 
 
 * [K8SPSMDB-273](https://jira.percona.com/browse/K8SPSMDB-273): Add support for `mongos` service to expose a single
-[shard](../sharding.md#operator-sharding) of a MongoDB cluster through one entry point instead of
+[shard](../sharding.md) of a MongoDB cluster through one entry point instead of
 provisioning a load-balancer per replica set node. In the following release,
 we will add support for multiple shards.
 
 
-* [K8SPSMDB-282](https://jira.percona.com/browse/K8SPSMDB-282): Official support for [Percona Monitoring and Management (PMM) v.2](../monitoring.md#operator-monitoring)
+* [K8SPSMDB-282](https://jira.percona.com/browse/K8SPSMDB-282): Official support for [Percona Monitoring and Management (PMM) v.2](../monitoring.md)
 
 !!! note
     Monitoring with PMM v.1 configured according to the [unofficial instruction :octicons-link-external-16:](https://www.percona.com/blog/2020/07/23/using-percona-kubernetes-operators-with-percona-monitoring-and-management/)
@@ -39,7 +39,7 @@ we will add support for multiple shards.
 * [K8SPSMDB-257](https://jira.percona.com/browse/K8SPSMDB-257): Store the Operator version as a `crVersion` field in the `deploy/cr.yaml` configuration file
 
 
-* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../users.md#users-system-users) secrets for simplicity
+* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../users.md#system-users) secrets for simplicity
 
 ## Bugs Fixed
 

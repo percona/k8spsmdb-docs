@@ -45,7 +45,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 ## New Features
 
-* {{ k8spsmdbjira(1000) }}: Users who store backups on Azure Blob Storage can now use [private endpoints](../operator.md#backup-storages-azure-endpointurl)
+* {{ k8spsmdbjira(1000) }}: Users who store backups on Azure Blob Storage can now use [private endpoints](../operator.md#backupstoragesstorage-nameazureendpointurl)
 * {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows [latest restorable time](../backups-restore.md#backups-latest-restorable-time) to make it easier to pick a point-in-time recovery target
 * {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tlsissuerconfname) which should be used by the Operator
 * {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../scaling.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
@@ -84,7 +84,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 ## Deprecation and removal
 
-* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect; upgrading existing clusters with `allowUnsafeConfigurations=true` will cause everything under [unsafeFlags](../operator.md#unsafeflags-section) set to true and [TLS funuctionality disabled](../TLS.md#run-percona-server-for-mongodb-without-tls)
+* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect; upgrading existing clusters with `allowUnsafeConfigurations=true` will cause everything under [unsafeFlags](../operator.md#operator-unsafeflags-section) set to true and [TLS funuctionality disabled](../TLS.md#run-percona-server-for-mongodb-without-tls)
 
 * MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use [major version upgrade functionality](../update.md#automated-upgrade).
 

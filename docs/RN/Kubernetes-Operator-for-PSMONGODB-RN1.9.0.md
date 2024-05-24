@@ -23,12 +23,12 @@ and operate MongoDB Server, available separately as
 
 
 * It is now possible to restore backups from S3-compatible storage
-[to a new Kubernetes-based environment](../backups.md#backups-restore) with no existing
+[to a new Kubernetes-based environment](../backups-restore.md) with no existing
 Backup Custom Resources
 
 
 * You can now customize Percona Server for MongoDB by
-[storing custom configuration](../options.md#operator-configmaps) for Replica Set,
+[storing custom configuration](../options.md) for Replica Set,
 mongos, and Config Server instances in ConfigMaps or in Secrets
 
 ## New Features
@@ -119,7 +119,7 @@ Secrets names from the cr.yaml configuration file
 
 
 * We are simplifying the way the user can customize MongoDB components such as
-mongod and mongos. [It is now possible](../options.md#operator-configmaps)
+mongod and mongos. [It is now possible](../options.md)
 to set custom configuration through ConfigMaps and Secrets Kubernetes
 resources. The following options will be deprecated in Percona Distribution
 for MongoDB Operator v1.9.0+, and completely removed in v1.12.0+:

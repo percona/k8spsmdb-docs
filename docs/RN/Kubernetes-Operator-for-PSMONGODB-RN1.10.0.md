@@ -29,10 +29,10 @@
 ## New Features
 
 
-* [K8SPSMDB-479](https://jira.percona.com/browse/K8SPSMDB-479): Allow users to add [non-voting members](../arbiter.md#arbiter-nonvoting) to MongoDB replica, needed to have more than 7 nodes or to create a node in the edge location
+* [K8SPSMDB-479](https://jira.percona.com/browse/K8SPSMDB-479): Allow users to add [non-voting members](../arbiter.md#adding-non-voting-nodes) to MongoDB replica, needed to have more than 7 nodes or to create a node in the edge location
 
 
-* [K8SPSMDB-265](https://jira.percona.com/browse/K8SPSMDB-265): [Cross region replication](../replication.md#operator-replication) feature simplifies the migrations and enables Disaster Recovery capabilities for MongoDB on Kubernetes
+* [K8SPSMDB-265](https://jira.percona.com/browse/K8SPSMDB-265): [Cross region replication](../replication.md) feature simplifies the migrations and enables Disaster Recovery capabilities for MongoDB on Kubernetes
 
 ## Improvements
 

@@ -182,7 +182,7 @@ Prevents users from configuring a sharded cluster with less than 3 config server
 
 ### `unsafeFlags.terminationGracePeriod`
 
-Prevents users from configuring a sharded cluster without termination grace period for [replica set](operator.md#replsetsterminationgraceperiodseconds), [config servers](operator.md#shardingconfigsvrreplset-terminationgraceperiodseconds) and [mongos](operator.md#shardingmongosterminationgraceperiodseconds) Pods.
+Prevents users from configuring a sharded cluster without termination grace period for [replica set](operator.md#replsetsterminationgraceperiodseconds), [config servers](operator.md#shardingconfigsvrreplsetterminationgraceperiodseconds) and [mongos](operator.md#shardingmongosterminationgraceperiodseconds) Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |

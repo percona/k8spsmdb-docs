@@ -57,7 +57,7 @@ contribution)
 ## Improvements
 
 
-* [K8SPSMDB-473](https://jira.percona.com/browse/K8SPSMDB-473): Allow to [skip TLS verification for backup storage](../operator.md#backupstoragesverifytls),
+* [K8SPSMDB-473](https://jira.percona.com/browse/K8SPSMDB-473): Allow to skip TLS verification for backup storage,
 useful for self-hosted S3-compatible storage with a self-issued certificate
 
 
