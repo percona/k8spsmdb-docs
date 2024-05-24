@@ -90,7 +90,7 @@ AES-256 encryption algorithm. This allows to use server-side encryption on
 S3-compatible storages different from AWS KMS (the feature was tested with the
 [AWS  :octicons-link-external-16:](https://aws.amazon.com/) and [MinIO  :octicons-link-external-16:](https://min.io/) storages).
 
-To use the server-side encryption wit locally-stored keys, specify your
+To use the server-side encryption with locally-stored keys, specify your
 encryption key and other needed options:
 
 === "with encryption key in Custom Resource"
