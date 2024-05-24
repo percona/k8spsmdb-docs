@@ -147,15 +147,15 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.15.0'
+  release: '1.16.0'
   apiversion: '1'  
-  mongodb60recommended: '6.0.9-7'
-  mongodb50recommended: '5.0.20-17'
-  mongodb44recommended: '4.4.24-23'
-  pmm2recommended: '2.39.0'
-  gkerecommended: '1.25'
-  certmanagerrecommended: '1.12.4'
-  pbmrecommended: '2.3.0'
+  mongodb70recommended: '7.0.8-5'
+  mongodb60recommended: '6.0.15-12'
+  mongodb50recommended: '5.0.26-22'
+  pmm2recommended: '2.41.2'
+  gkerecommended: '1.29'
+  certmanagerrecommended: '1.14.5'
+  pbmrecommended: '2.4.1'
   version:
     provider: mike
 
@@ -251,6 +251,7 @@ nav:
           - "Trademark policy": trademark-policy.md
     - Release notes:
           - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.16.0 (2024-05-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
           - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
           - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md

@@ -118,13 +118,11 @@ Operator with the `helm upgrade` command.
     If the Operator was installed with some [customized parameters  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), you should list these options in the upgrade command.
     
     
-    !!! note
-    
-        You can get list of used options in YAML format with the `helm get values my-op -a > my-values.yaml` command, and this file can be directly passed to the upgrade command as follows:
+    You can get list of used options in YAML format with the `helm get values my-op -a > my-values.yaml` command, and this file can be directly passed to the upgrade command as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
-        ```
+    ``` {.bash data-prompt="$" }
+    $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
+    ```
 
 2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator, taking it from the official repository on Github, and do
