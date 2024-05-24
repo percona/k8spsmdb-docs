@@ -49,7 +49,7 @@ To use the server-side AWS KMS encryption, specify the [ID of your customer-mana
       name: my-cluster-name-sse
     type: Opaque
     stringData:
-      kmsKeyID: <kms_key_ID>
+      KMS_KEY_ID: <kms_key_ID>
     ```
 
     Here `<kms_key_ID>` should be substituted with the [ID of your customer-managed key  :octicons-link-external-16:](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html)
@@ -128,7 +128,7 @@ encryption key and other needed options:
       name: my-cluster-name-sse
     type: Opaque
     stringData:
-      sseCustomerKey: <your_encryption_key_in_base64>
+      SSE_CUSTOMER_KEY: <your_encryption_key_in_base64>
     ```
 
     Here `<your_encryption_key_in_base64>` should be substituted with the actual
