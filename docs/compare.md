@@ -15,12 +15,12 @@ There are multiple ways to deploy and manage MongoDB in Kubernetes. Here we will
 Here is the review of generic features, such as supported MongoDB versions, open source models and more.
 
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Community Edition Operator |
-|:------------------|:-----------------------------|:-------------------|:-------------------|:----------------------------------|
-| Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                         |
-| MongoDB versions  | PSMDB 4.4, 5.0, 6.0          | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0, 6.0, 7.0|
-| Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                      |
-| Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                               |
-| Network exposure  | Yes                          | Yes                | No, only through manual config | Enterprise only       |
+|:------------------|:-----------------------------|:-------------------|:-------------------|:-----------------------------------|
+| Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                          |
+| MongoDB versions  | MongoDB 5.0, 6.0, 7.0        | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0, 6.0, 7.0|
+| Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                       |
+| Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                                |
+| Network exposure  | Yes                          | Yes                | No, only through manual config | Enterprise only        |
 
 ## Maintenance
 
@@ -31,7 +31,7 @@ Upgrade and scaling are the two most common maintenance tasks that are executed 
 | Operator upgrade  | Yes                          | Helm upgrade       | Image change       | Yes                               |
 | Database upgrade  | Automated minor, manual major| No                 | Manual minor       | Manual mintor and major           |
 | Compute scaling   | Horizontal and vertical      | Horizontal and vertical | Enterprise only | Horizontal only                 |
-| Storage scaling   | Manual                       | Manual             | Enterprise only    | Enterprise only                   |
+| Storage scaling   | Yes                          | Manual             | Enterprise only    | Enterprise only                   |
 
 ## MongoDB topologies
 
