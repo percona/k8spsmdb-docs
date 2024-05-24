@@ -97,8 +97,8 @@ OpenShift environment demonstrates the process:
     ``` {.bash data-prompt="$" }
     $ docker tag \
         docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0 \
-        172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
-    $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
+        172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
+    $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
     ```
 
 6. Verify the image is available in the OpenShift registry with the following command:
@@ -111,12 +111,12 @@ OpenShift environment demonstrates the process:
 
         ``` {.text .no-copy}
         NAME                              DOCKER REPO                                                             TAGS             UPDATED
-        percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb44recommended }}  2 hours ago
+        percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb70recommended }}  2 hours ago
         ```
 
 7. When the custom registry image is available, edit the the `image:` option in
     `deploy/operator.yaml` configuration file with a Docker Repo + Tag string
-    (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}`)
+    (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}`)
 
     !!! note
 

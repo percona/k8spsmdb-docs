@@ -181,8 +181,8 @@ to access the storage.
            container. If prefix is not set, backups are stored in the root directory
            of the container.
 
-        The options within the `storages.<NAME>.azure` subsection are further explained
-        in the [Operator Custom Resource options](operator.md#operator-backup-section).
+        These and other options within the `storages.<NAME>.azure` subsection are
+        further described in the [Operator Custom Resource options](operator.md#operator-backup-section).
 
         Here is an example
         of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)

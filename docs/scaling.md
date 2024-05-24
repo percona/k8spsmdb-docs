@@ -44,9 +44,19 @@ Kubernetes manages storage with a PersistentVolume (PV), a segment of
 storage supplied by the administrator, and a PersistentVolumeClaim
 (PVC), a request for storage from a user. In Kubernetes v1.11 the
 feature was added to allow a user to increase the size of an existing
-PVC object. The user cannot shrink the size of an existing PVC object.
+PVC object (considered stable since Kubernetes v1.24).
+The user cannot shrink the size of an existing PVC object.
 
-#### Volume Expansion capability
+Starting from the version 1.16.0, the Operator allows to scale Percona Server
+for MongoDB storage automatically by changing the appropriate Custom Resource
+option, if the volume type supports PVCs expansion.
+
+#### Automated scaling with Volume Expansion capability
+
+!!! warning
+
+    Automated storage scaling by the Operator is in a technical preview stage
+    and is not recommended for production environments.
 
 Certain volume types support PVCs expansion (exact details about
 PVCs and the supported volume types can be found in [Kubernetes
@@ -64,105 +74,43 @@ $ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
     AllowVolumeExpansion: true
     ```
 
-1. Get the list of volumes for you MongoDB cluster:
+The Operator versions 1.16.0 and higher will automatically expand such storage
+for you when you change the
+`replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+options in the Custom Resource.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get pvc -l app.kubernetes.io/instance=<CLUSTER_NAME>
-    ```
+For example, you can do it by editing and applying the `deploy/cr.yaml` file:
 
-    ??? example "Expected output"
+``` {.text .no-copy}
+spec:
+  ...
+  replsets:
+    ...
+    volumeSpec:
+      persistentVolumeClaim:
+        resources:
+          requests:
+            storage: <NEW STORAGE SIZE>
+```
 
-        ``` {.text .no-copy}
-        NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-        mongod-data-my-cluster-name-cfg-0   Bound    pvc-a2b37f4d-6f11-443c-8670-de82ce9fc335   3Gi        RWO            standard       13m
-        mongod-data-my-cluster-name-cfg-1   Bound    pvc-ded949e5-0f93-4f57-ab2c-7c5fd9528fa0   3Gi        RWO            standard       12m
-        mongod-data-my-cluster-name-cfg-2   Bound    pvc-f3a441dd-94b6-4dc0-b96c-58b7851dfaa0   3Gi        RWO            standard       12m
-        mongod-data-my-cluster-name-rs0-0   Bound    pvc-b183c40b-c165-445a-aacd-9a34b8fff227   3Gi        RWO            standard       13m
-        mongod-data-my-cluster-name-rs0-1   Bound    pvc-f186426b-cbbe-4c31-860e-97a4dfca3de0   3Gi        RWO            standard       12m
-        mongod-data-my-cluster-name-rs0-2   Bound    pvc-6beb6ccd-8b3a-4580-b3ef-a2345a2c21d6   3Gi        RWO            standard       12m
-        ```
+Apply changes as usual:
 
-2. Patch the volume to increase the size
+``` {.bash data-prompt="$" }
+$ kubectl apply -f cr.yaml
+```
 
-    You can either edit the pvc or run the patch command:
+#### Manual scaling without Volume Expansion capability
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl patch pvc <pvc-name> -p '{ "spec": { "resources": { "requests": { "storage": "NEW STORAGE SIZE" }}}}'
-    ```
+Manual scaling is the way to go if your version of the Operator is older than
+1.16.0, your volumes have type which does not support Volume Expansion, or you
+just do not rely on automated scaling.
 
-    ??? example "Expected output"
+You will need to delete Pods one by one and their persistent volumes to resync 
+the data to the new volumes. **This can also be used to shrink the storage.**
 
-        ``` {.text .no-copy}
-        persistentvolumeclaim/mongod-data-my-cluster-name-rs0-0 patched
-        ```
-
-3. Check if expansion is successful by running describe:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl describe pvc <pvc-name>
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        ...
-        Normal  ExternalExpanding           3m52s              volume_expand                                                                                     CSI migration enabled for kubernetes.io/gce-pd; waiting for external resizer to expand the pvc
-        Normal  Resizing                    3m52s              external-resizer pd.csi.storage.gke.io                                                            External resizer is resizing volume pvc-b183c40b-c165-445a-aacd-9a34b8fff227
-        Normal  FileSystemResizeRequired    3m44s              external-resizer pd.csi.storage.gke.io                                                            Require file system resize of volume on node
-        Normal  FileSystemResizeSuccessful  3m10s              kubelet                                                                                           MountVolume.NodeExpandVolume succeeded for volume "pvc-b183c40b-c165-445a-aacd-9a34b8fff227"
-        ```
-
-    Repeat step 2 for all the volumes of your cluster.
-
-4. Now we have increased storage, but our StatefulSet 
-    and Custom Resource are not in sync. Edit your Custom
-    Resource with new storage settings and apply:
-
-    ``` {.text .no-copy}
-    spec:
-      ...
-      replsets:
-        ...
-        volumeSpec:
-          persistentVolumeClaim:
-            resources:
-              requests:
-                storage: <NEW STORAGE SIZE>
-    ```
-
-    Apply the Custom Resource:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f cr.yaml
-    ```
-
-5. Delete the StatefulSet to syncronize it with Custom
-    Resource:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete sts <statefulset-name> --cascade=orphan
-    ```
-
-    The Pods will not go down and Operator is going to recreate
-    the StatefulSet:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl get sts <statefulset-name>
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        my-cluster-name-rs0       3/3     39s
-        ```
-
-#### No Volume Expansion capability
-
-Scaling the storage without Volume Expansion is also possible. We will
-need to delete Pods one by one and their persistent volumes to resync 
-the data to the new volumes. This can also be used to shrink the storage.
-
-1. Edit the Custom Resource with the new storage size as follows:
+1. Update the Custom Resource with the new storage size by editing and applying
+    the `deploy/cr.yaml` file:
 
     ``` {.text .no-copy}
     spec:

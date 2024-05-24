@@ -52,7 +52,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
     $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
        "spec": {
           "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+          "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
           "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
@@ -66,7 +66,7 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```
@@ -104,7 +104,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
     $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
        "spec": {
           "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+          "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
           "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
@@ -118,7 +118,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```

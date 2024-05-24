@@ -12,33 +12,63 @@ considered separately in the following sections.
 ## Unprivileged users
 
 There are no unprivileged (general purpose) user accounts created by
-default. If you need general purpose users, please run commands below:
+default. If you need general purpose users, please run commands below,
+substituting the `<namespace name>` placeholder with the real namespace
+of your database cluster:
 
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-mongodb@percona-client:/$ mongo "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-rs0:PRIMARY> db.createUser({
-    user: "myApp",
-    pwd: "myAppPassword",
-    roles: [
-      { db: "myApp", role: "readWrite" }
-    ],
-    mechanisms: [
-       "SCRAM-SHA-1"
-    ]
+=== "if sharding is on"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
 
-})
-```
+    Now check the newly created user:
 
-Now check the newly created user:
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
 
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-mongodb@percona-client:/$ mongo "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-rs0:PRIMARY> use myApp
-rs0:PRIMARY> db.test.insert({ x: 1 })
-rs0:PRIMARY> db.test.findOne()
-```
+=== "if sharding is off"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
+
+    Now check the newly created user:
+
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
 
 ## System Users
 
