@@ -1864,7 +1864,7 @@ The Percona Server for MongoDB Docker image to use for the backup.
 
 ### `backup.serviceAccountName`
 
-Name of the separate privileged service account used by the Operator.
+Name of the separate privileged service account for backups; **service account for backups is not used by the Operator any more, and the option is deprecated since the Operator version 1.16.0**.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2149,4 +2149,3 @@ The backup type: (can be either `logical` (default) or `physical`; see [the Oper
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
-
