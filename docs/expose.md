@@ -56,7 +56,7 @@ to each Pod.
 
     Particularly, Service per Pod will allow application to take care of
     Cursor tracking instead of relying on a single service. This solves the
-    problem of CursorNotFound errors when the Serivce transparently cycles
+    problem of CursorNotFound errors when the Service transparently cycles
     between the mongos instances while client is still iterating the cursor
     on some large collection.
 
