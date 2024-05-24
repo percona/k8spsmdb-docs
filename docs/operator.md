@@ -533,6 +533,22 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
+### 'replsets.containerSecurityContext'
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `privileged: false`          |
+
+### 'replsets.podSecurityContext'
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+
 ### `replsets.runtimeClassName`
 
 Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Replica Set Pods.
@@ -1303,6 +1319,22 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
+### 'sharding.configsvrReplSet.containerSecurityContext'
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `privileged: false`          |
+
+### 'sharding.configsvrReplSet.podSecurityContext'
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+
 ### `sharding.configsvrReplSet.runtimeClassName`
 
 Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Config Server Pods.
@@ -1711,6 +1743,22 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
+### 'sharding.mongos.containerSecurityContext'
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `privileged: false`          |
+
+### 'sharding.mongos.podSecurityContext'
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | <pre>runAsUser: 1001<br>runAsGroup: 1001<br>supplementalGroups: [1001]</pre> |
+
 ### `sharding.mongos.runtimeClassName`
 
 Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for mongos Pods.
@@ -1917,6 +1965,14 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0.1G`     |
+
+### 'backup.containerSecurityContext'
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `privileged: false`          |
 
 ### `backup.storages.STORAGE-NAME.type`
 
