@@ -40,7 +40,7 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     `percona-client`:
 
     ``` {.bash data-prompt="$" }
-    $ {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never -- bash -il
+    $ {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
     ```
 
     Executing it may require some time to deploy the corresponding Pod.
@@ -63,6 +63,6 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     !!! note
     
         If you are using MongoDB versions earler than 6.x (such as
-        {{ mongodb44recommended}} or {{ mongodb50recommended }} instead of the
-        default {{ mongodb60recommended }} variant), substitute
+        {{ mongodb50recommended }} instead of the
+        default {{ mongodb70recommended }} variant), substitute
         `mongosh` command with `mongo` in the above examples.
