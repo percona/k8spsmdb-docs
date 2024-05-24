@@ -345,6 +345,14 @@ Specifies a secret object [to provide integration with HashiCorp Vault](encrypti
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster-name-vault` |
 
+### `secrets.ldapSecret`
+
+Specifies a secret object for [LDAP over TLS](ldap.md#using-ldap-over-tls-connection) connection between MongoDB and OpenLDAP server.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-ldap-secret` |
+
 ## <a name="operator-replsets-section"></a>Replsets Section
 
 The replsets section controls the MongoDB Replica Set.
