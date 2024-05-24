@@ -277,6 +277,14 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
+### 'replsets.serviceAccountName'
+
+Name of the separate privileged service account for Replica Set Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `default` |
+
 ### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
 
 The label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
@@ -1199,6 +1207,14 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
+### 'sharding.configsvrReplSet.serviceAccountName'
+
+Name of the separate privileged service account for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `default` |
+
 ### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
 
 The label selector for the [Kubernetes Pod Topology Spread Constraints  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
@@ -1542,6 +1558,14 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
+
+### 'sharding.mongos.serviceAccountName'
+
+Name of the separate privileged service account for mongos Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `default` |
 
 ### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
 
