@@ -2070,9 +2070,9 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 | ----------- | ---------- |
 | :material-code-string: string     | `us-east-1`|
 
-### `backup.storages.STORAGE-NAME.s3.endpointUrl`
+### `backup.storages.STORAGE-NAME.s3.Url`
 
-The endpoint URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2136,7 +2136,7 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 
 ### 'backup.storages.STORAGE-NAME.azure.endpointUrl'
 
-The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) that should be used instead of the public endpoint.
+The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to use instead of the public endpoint.
 
 | Value type  | Example    |
 | ----------- | ---------- |
