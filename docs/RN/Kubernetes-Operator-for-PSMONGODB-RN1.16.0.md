@@ -65,6 +65,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 * {{ k8spsmdbjira(993) }}: To avoid backup fail on clusters where Percona Backup for MongoDB resync process takes too long, the Operator now checks, if there is still a resync operation working, with exponentially increasing interval and total wait time until failure equal to 8715 seconds
 * {{ k8spsmdbjira(995) }}: The Operator now allows storing key for [backups server-side AWS KMS encryption](../backups-encryption.md) in a Secret configurable with the `secrets.sse` Custom Resource option
 * {{ k8spsmdbjira(780) }}: Removing `allowUnsafeConfigurations` Custom Resource option in favor of fine-grained safety control in the `unsafeFlags` subsection
+* {{ k8spsmdbjira(1042) }}: Helm chart for Percona Server for MongoDB now accepts replica set options as the map argument instead of the array one used in previous releases; this simplifies [how arguments are specified in the command line](../custom-install.md#__tabbed_2_1) and allows to specify only part of the replica set parameters, relying on the default values for the other part. **Take this change into account** if you are installing database via helm and want to use set of custom options from previous releases
 
 ## Bugs Fixed
 
