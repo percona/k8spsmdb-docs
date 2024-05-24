@@ -142,15 +142,15 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.15.0'
+  release: '1.16.0'
   apiversion: '1'  
-  mongodb60recommended: '6.0.9-7'
-  mongodb50recommended: '5.0.20-17'
-  mongodb44recommended: '4.4.24-23'
-  pmm2recommended: '2.39.0'
-  gkerecommended: '1.25'
-  certmanagerrecommended: '1.12.4'
-  pbmrecommended: '2.3.0'
+  mongodb70recommended: '7.0.8-5'
+  mongodb60recommended: '6.0.15-12'
+  mongodb50recommended: '5.0.26-22'
+  pmm2recommended: '2.41.2'
+  gkerecommended: '1.29'
+  certmanagerrecommended: '1.14.5'
+  pbmrecommended: '2.4.1'
   version:
     provider: mike
 
