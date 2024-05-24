@@ -15,10 +15,10 @@
 ## Release Highlights
 
 
-* Starting from this release, the Operator implements as a technical preview the possibility to [include non-voting replica set members](../arbiter.md#arbiter-nonvoting) into the cluster, which do not participate in the primary election process. This feature enables users to deploy non-voting members with the Operator through a Custom Resource object without manual configuration.
+* Starting from this release, the Operator implements as a technical preview the possibility to [include non-voting replica set members](../arbiter.md#adding-non-voting-nodes) into the cluster, which do not participate in the primary election process. This feature enables users to deploy non-voting members with the Operator through a Custom Resource object without manual configuration.
 
 
-* The technical preview of the [cross-site replication](../replication.md#operator-replication) feature allows users to add external replica set nodes into the cluster managed by the Operator, including scenarios when one of the clusters is outside of the Kubernetes environment. External nodes can be run by another Operator or can be regular MongoDB deployment. The feature is intended for the following use cases:
+* The technical preview of the [cross-site replication](../replication.md) feature allows users to add external replica set nodes into the cluster managed by the Operator, including scenarios when one of the clusters is outside of the Kubernetes environment. External nodes can be run by another Operator or can be regular MongoDB deployment. The feature is intended for the following use cases:
 
 
     * provide migrations of your regular MongoDB database to the Percona Server for MongoDB cluster under the Operator control, or carry on backward migration,

@@ -89,7 +89,7 @@ OpenShift environment demonstrates the process:
         ```
 
     You can find correct names and SHA digests in the
-    [current list of the Operator-related images officially certified by Percona](images.md#custom-registry-images).
+    [current list of the Operator-related images officially certified by Percona](images.md).
 
 5. The following method can push an image to the custom registry for the example
     OpenShift `psmdb` project:
@@ -127,9 +127,9 @@ OpenShift environment demonstrates the process:
 
     !!! note
 
-        Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptions-apply)
-        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#operator-update-smartupdates)
+        Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptionsapply)
+        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#automated-upgrade)
         will try using the image recommended by the Version Service instead of the
         custom one.
 
-9. Now follow the standard Percona Operator for MongoDB [installation instruction](./index.md/#advanced-installation-guides).
+9. Now follow the standard Percona Operator for MongoDB [installation instruction](System-Requirements.md#installation-guidelines).

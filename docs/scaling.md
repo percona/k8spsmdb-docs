@@ -35,7 +35,7 @@ spec:
         cpu: 2
 ```
 
-Use our reference documentation for the [Custom Resource options](operator.md#operator-custom-resource-options) 
+Use our reference documentation for the [Custom Resource options](operator.md) 
 for more details about other components.
 
 ### Scale storage
@@ -200,7 +200,7 @@ the data to the new volumes. **This can also be used to shrink the storage.**
 ## Horizontal scaling
 
 The size of the cluster is controlled by the `size` key in the
-[Custom Resource options](operator.md#operator-custom-resource-options)
+[Custom Resource options](operator.md)
 configuration.
 
 !!! note
@@ -212,13 +212,13 @@ configuration.
 You can change size separately for different components of your cluster by
 setting this option in the appropriate subsections:
 
-* [replsets.size](operator.md#replsets-size) allows to set the size of the
+* [replsets.size](operator.md#replsetssize) allows to set the size of the
     MongoDB Replica Set,
-* [replsets.arbiter.size](operator.md#replsets-arbiter-size) allows to set the
-    number of [Replica Set Arbiter instances](arbiter.md#arbiter),
-* [sharding.configsvrReplSet.size](operator.md#sharding-configsvrreplset-size)
+* [replsets.arbiter.size](operator.md#replsetsarbitersize) allows to set the
+    number of [Replica Set Arbiter instances](arbiter.md),
+* [sharding.configsvrReplSet.size](operator.md#shardingconfigsvrreplsetsize)
     allows to set the number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/),
-* [sharding.mongos.size](operator.md#sharding-mongos-size) allows to set the
+* [sharding.mongos.size](operator.md#shardingmongossize) allows to set the
     number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/)
     instances.
 

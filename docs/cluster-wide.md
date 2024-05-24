@@ -4,7 +4,7 @@
 
 By default, Percona Operator for MongoDB functions in a specific Kubernetes
 namespace. You can create one during installation (like it is shown in the
-[installation instructions](kubernetes.md#install-kubernetes)) or just use the
+[installation instructions](kubernetes.md)) or just use the
 `default` namespace. This approach allows several Operators to co-exist in one
 Kubernetes-based environment, being separated in different namespaces:
 

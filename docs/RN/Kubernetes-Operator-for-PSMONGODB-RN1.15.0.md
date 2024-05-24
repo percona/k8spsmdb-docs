@@ -6,7 +6,7 @@
 
 * **Installation**
 
-    [Installing Percona Operator for MongoDB](../index.md#quickstart-guides)
+    [Installing Percona Operator for MongoDB](../quickstart.md)
 
 ## Release Highlights
 
@@ -46,7 +46,7 @@ Backups stored on S3 compatible storage [can now be encrypted](../backups-encryp
 
 * {{ k8spsmdbjira(924) }} The token associated with the operator's ServiceAccount is no longer printed in the log when a scheduled backup is running; this improves security and avoids logging uninformative elements
 
-* {{ k8spsmdbjira(938) }} Configuring [Kubernetes host aliases](../operator.md#replsets.hostaliases.hostnames) is now possible for replica set, config server, and mongos Pods
+* {{ k8spsmdbjira(938) }} Configuring [Kubernetes host aliases](../operator.md#replsetshostaliaseshostnames) is now possible for replica set, config server, and mongos Pods
 
 * {{ k8spsmdbjira(946) }} The psmdb-backup object now includes the name of the Pod that made the backup, to save users from searching for the correct Pod to examine the Percona Backup for MongoDB logs (previously it was necessary to check replica set Pods one by one until logs were found)
 

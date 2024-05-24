@@ -13,7 +13,7 @@ Server instances:
 - set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
     of the external node (`2` is default for all local members of the cluster;
     external nodes should have lower priority to avoid unmanaged node being elected
-    as a primary; `0` adds the node as a [non-voting member](arbiter.md#arbiter-nonvoting)),
+    as a primary; `0` adds the node as a [non-voting member](arbiter.md#adding-non-voting-nodes)),
 - set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
     an external node can cast in a replica set election (`0` is default and
     should be used for non-voting members of the cluster).

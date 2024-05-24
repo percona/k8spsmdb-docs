@@ -6,7 +6,7 @@ should not happen if we want the Operator to run the _Replica_ site, so first
 of all the cluster should be put into unmanaged state by setting the
 `unmanaged` key in the `deploy/cr.yaml` configuration file to true. Also you
 should set `updateStrategy` key to `OnDelete` and `backup.enabled` to
-`false`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) and [backups](backups.md#backups) are not allowed on unmanaged clusters.
+`false`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) and [backups](backups.md) are not allowed on unmanaged clusters.
 
 !!! note
 

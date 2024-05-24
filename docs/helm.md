@@ -15,10 +15,10 @@ To install and deploy the Operator, you need the following:
 
     !!! note "See also"
 
-        * [Set up Minikube](minikube.md#set-up-minikube)
+        * [Set up Minikube](minikube.md)
         * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
-        * [Set up Amazon Elastic Kubernetes Service](eks.md#software-installation)
-        * [Create and configure the AKS cluster](/aks.md#create-and-configure-the-aks-cluster)
+        * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
+        * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
 
 ## Installation 
 
@@ -79,7 +79,7 @@ You have successfully installed and deployed the Operator with default parameter
 
 The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
-You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md#operator-custom-resource-options).
+You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
 
 ## Next steps
 

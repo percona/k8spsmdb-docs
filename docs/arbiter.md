@@ -50,8 +50,8 @@ replsets:
 !!! note
 
     You can find description of other possible options in the
-    [replsets.arbiter section](operator.md#replsets-arbiter-enabled) of the
-    [Custom Resource options reference](operator.md#operator-custom-resource-options).
+    [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the
+    [Custom Resource options reference](operator.md).
 
 ### Preventing Arbiter instances to share Kubernetes Nodes with Replica Set
 
@@ -99,7 +99,7 @@ obviously should not participate in the voting process.
 !!! note
 
     It is possible to add a non-voting node in the edge location through the
-    `externalNodes` option. Please see [cross-site replication documentation](replication.md#operator-replication)
+    `externalNodes` option. Please see [cross-site replication documentation](replication.md)
     for details.
 
 Percona Operator for MongoDB has the ability to configure non-voting nodes in
@@ -126,5 +126,5 @@ replsets:
 
 !!! note
 
-    You can find description of other possible options in the [replsets.nonvoting section](operator.md#replsets-nonvoting-enabled)
-    of the [Custom Resource options reference](operator.md#operator-custom-resource-options).
+    You can find description of other possible options in the [replsets.nonvoting section](operator.md#replsetsnonvotingenabled)
+    of the [Custom Resource options reference](operator.md).

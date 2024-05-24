@@ -20,9 +20,9 @@ break the behavior of the Operator.
 ## Edit the `deploy/cr.yaml` file
 
 You can add MongoDB configuration options to the
-[replsets.configuration](operator.md#replsets-configuration),
-[sharding.mongos.configuration](operator.md#sharding-mongos-configuration), and
-[sharding-configsvrreplset-configuration](operator.md#sharding-configsvrreplset-configuration)
+[replsets.configuration](operator.md#replsetsconfiguration),
+[sharding.mongos.configuration](operator.md#shardingmongosconfiguration), and
+[sharding-configsvrreplset-configuration](operator.md#shardingconfigsvrreplsetconfiguration)
 keys of the `deploy/cr.yaml`. Here is an example:
 
 ```yaml
@@ -103,7 +103,7 @@ $ kubectl describe configmaps my-cluster-name-rs0-mongod
 
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
-    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md)
     page).
 
 ## Use a Secret Object

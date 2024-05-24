@@ -17,7 +17,7 @@ All of Percona’s software is open-source and free.
 ## New Features and Improvements
 
 
-* [A Service Broker was implemented](../broker.md)
+* A Service Broker was implemented
 for the Operator, allowing a user to deploy Percona XtraDB Cluster on the
 OpenShift Platform, configuring it with a standard GUI, following the Open
 Service Broker API.

@@ -7,7 +7,7 @@ Logical backups need to be encrypted on the cloud.
 There is a possibility to enable [server-side encryption  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html#server-side-encryption) for backups stored on S3.
 Starting from the version 1.15.0, the Operator supports Server Side Encryption either with [AWS Key Management Service (KMS)  :octicons-link-external-16:](https://aws.amazon.com/kms/), or just encrypt/decrypt backups with AES-256 encryption algorithm with any S3-compatible storage.
 
-To enable server-side encryption for backups, use [backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption section](operator.md#backup-storages-s3-serversideencryption-kmskeyid) in the `deploy/cr.yaml` configuration file.
+To enable server-side encryption for backups, use [backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption section](operator.md#backupstoragesstoragenames3serversideencryptionkmskeyid) in the `deploy/cr.yaml` configuration file.
 
 
 ## Encryption with keys stored in AWS KMS

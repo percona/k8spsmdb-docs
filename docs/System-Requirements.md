@@ -22,17 +22,17 @@ Other Kubernetes platforms may also work but have not been tested.
 ## Resource Limits
 
 A cluster running an officially supported platform contains at least 3 Nodes
-and the following resources (if [sharding](sharding.md#operator-sharding) is
+and the following resources (if [sharding](sharding.md) is
 turned off):
 
 * 2GB of RAM,
 * 2 CPU threads per Node for Pods provisioning,
 * at least 60GB of available storage for Private Volumes provisioning.
 
-Consider using 4 CPU and 6 GB of RAM if [sharding](sharding.md#operator-sharding)
+Consider using 4 CPU and 6 GB of RAM if [sharding](sharding.md)
 is turned on (the default behavior).
 
-Also, the number of Replica Set Nodes should not be odd if [Arbiter](arbiter.md#arbiter)
+Also, the number of Replica Set Nodes should not be odd if [Arbiter](arbiter.md)
 is not enabled.
 
 !!! note

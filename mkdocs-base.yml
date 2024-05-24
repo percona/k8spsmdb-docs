@@ -4,7 +4,7 @@ site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
-copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2023
+copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2024
 use_directory_urls: false
 repo_name: percona/k8spsmdb-docs
 repo_url: https://github.com/percona/k8spsmdb-docs
@@ -128,7 +128,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.15.0 (October 09, 2023)
+    cover_subtitle: 1.16.0 (May 24, 2024)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates

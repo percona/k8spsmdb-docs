@@ -39,61 +39,61 @@ To set up monitoring of Kubernetes, you need the following:
 
 === ":material-run-fast: Quick install"
 
-    1. To install the Victoria Metrics Kubernetes monitoring stack with the default parameters, use the quick install command. Replace the following placeholders with your values:    
+    1. To install the Victoria Metrics Kubernetes monitoring stack with the default parameters, use the quick install command. Replace the following placeholders with your values:
 
         * `API-KEY` - The [API key of your PMM Server](#get-the-pmm-server-api-key)
         * `PMM-SERVER-URL` - The URL to access the PMM Server 
-        * `UNIQUE-K8s-CLUSTER-IDENTIFIER` - Identifier for the Kubernetes cluster. It can be the name you defined during the cluster creation.        
+        * `UNIQUE-K8s-CLUSTER-IDENTIFIER` - Identifier for the Kubernetes cluster. It can be the name you defined during the cluster creation.
 
-           You should use a unique identifier for each Kubernetes cluster. The use of the same identifer for more than one Kubernetes cluster will result in the conflicts during the metrics collection.        
+           You should use a unique identifier for each Kubernetes cluster. The use of the same identifer for more than one Kubernetes cluster will result in the conflicts during the metrics collection.
 
-        * `NAMESPACE` - The namespace where the Victoria metrics Kubernetes stack will be installed. If you haven't created the namespace before, it will be created during the command execution.         
+        * `NAMESPACE` - The namespace where the Victoria metrics Kubernetes stack will be installed. If you haven't created the namespace before, it will be created during the command execution.
 
-          We recommend to use a separate namespace like `monitoring-system`.        
+          We recommend to use a separate namespace like `monitoring-system`.
 
           ```{.bash data-prompt="$" }
           $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
-          ```        
+          ```
 
-        !!! note        
+        !!! note
 
             The Prometheus node exporter is not installed by default since it requires privileged containers with the access to the host file system. If you need the metrics for Nodes, add the `--node-exporter-enabled` flag as follows:    
 
             ```{.bash data-prompt="$" }
             $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> --node-exporter-enabled
-            ```    
+            ```
 
 === ":fontawesome-solid-user-gear: Install manually"
 
-    You may need to customize the default parameters of the Victoria metrics Kubernetes stack.     
+    You may need to customize the default parameters of the Victoria metrics Kubernetes stack.
 
     * Since we use the PMM Server for monitoring, there is no need to store the data in Victoria Metrics Operator. Therefore, the Victoria Metrics Helm chart is installed with the `vmsingle.enabled` and `vmcluster.enabled` parameters set to `false` in this setup.
-    * [Check all the role-based access control (RBAC) rules  :octicons-link-external-16:](https://helm.sh/docs/topics/rbac/) of the `victoria-metrics-k8s-stack` chart and the dependencies chart, and modify them based on your requirements.     
+    * [Check all the role-based access control (RBAC) rules  :octicons-link-external-16:](https://helm.sh/docs/topics/rbac/) of the `victoria-metrics-k8s-stack` chart and the dependencies chart, and modify them based on your requirements.
 
-    #### Configure authentication in PMM    
+    #### Configure authentication in PMM
 
-    To access the PMM Server resources and perform actions on the server, configure authentication.    
+    To access the PMM Server resources and perform actions on the server, configure authentication.
 
-    1. Encode the PMM Server API key with base64.    
+    1. Encode the PMM Server API key with base64.
 
-        === ":simple-linux: Linux"     
+        === ":simple-linux: Linux"
 
             ````{.bash data-prompt="$" }
             $ echo -n <API-key> | base64 --wrap=0
-            ````    
+            ````
 
         === ":simple-apple: macOS"   
             ```{.bash data-prompt="$" }
-            $ echo -n <API-key> | base64 
-            ```    
+            $ echo -n <API-key> | base64
+            ```
 
     2. Create the Namespace where you want to set up monitoring. The following command creates the Namespace `monitoring-system`. You can specify a different name. In the latter steps, specify your namespace instead of the `<namespace>` placeholder.
         
         ```{.bash data-prompt="$" }
         $ kubectl create namespace monitoring-system
-        ```    
+        ```
 
-    3. Create the YAML file for the [Kubernetes Secrets  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.    
+    3. Create the YAML file for the [Kubernetes Secrets  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.
 
         ```yaml title="pmm-api-vmoperator.yaml"
         apiVersion: v1
@@ -104,56 +104,56 @@ To set up monitoring of Kubernetes, you need the following:
           name: pmm-token-vmoperator
           #namespace: default
         type: Opaque
-        ```    
+        ```
 
-    4. Create the Secrets object using the YAML file you created previously. Replace the `<filename>` placeholder with your value.    
+    4. Create the Secrets object using the YAML file you created previously. Replace the `<filename>` placeholder with your value.
 
         ```{.bash data-prompt="$" }
         $ kubectl apply -f pmm-api-vmoperator.yaml -n <namespace>
-        ```    
+        ```
 
-    5. Check that the secret is created. The following command checks the secret for the resource named `pmm-token-vmoperator` (as defined in the `metadata.name` option in the secrets file). If you defined another resource name, specify your value.      
+    5. Check that the secret is created. The following command checks the secret for the resource named `pmm-token-vmoperator` (as defined in the `metadata.name` option in the secrets file). If you defined another resource name, specify your value.
 
        ```{.bash data-prompt="$" }
        $ kubectl get secret pmm-token-vmoperator -n <namespace>
-       ```    
+       ```
 
-    #### Create a ConfigMap to mount for `kube-state-metrics`     
+    #### Create a ConfigMap to mount for `kube-state-metrics`
 
-    The [`kube-state-metrics` (KSM)  :octicons-link-external-16:](https://github.com/kubernetes/kube-state-metrics) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources.     
+    The [`kube-state-metrics` (KSM)  :octicons-link-external-16:](https://github.com/kubernetes/kube-state-metrics) is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources.
 
-    To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap  :octicons-link-external-16:](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container.     
+    To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap  :octicons-link-external-16:](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container.
 
-    Use the [example `configmap.yaml` configuration file  :octicons-link-external-16:](https://github.com/Percona-Lab/k8s-monitoring/blob/main/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.    
+    Use the [example `configmap.yaml` configuration file  :octicons-link-external-16:](https://github.com/Percona-Lab/k8s-monitoring/blob/main/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.
 
     ```{.bash data-prompt="$" }
     $ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
-    ```    
+    ```
 
-    As a result, you have the `customresource-config-ksm` ConfigMap created.     
+    As a result, you have the `customresource-config-ksm` ConfigMap created.
 
-    #### Install the Victoria Metrics Kubernetes monitoring stack    
+    #### Install the Victoria Metrics Kubernetes monitoring stack
 
-    1. Add the dependency repositories of [victoria-metrics-k8s-stack  :octicons-link-external-16:](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart.     
+    1. Add the dependency repositories of [victoria-metrics-k8s-stack  :octicons-link-external-16:](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart.
 
         ```{.bash data-prompt="$" }
         $ helm repo add grafana https://grafana.github.io/helm-charts
         $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-        ```    
+        ```
 
-    2. Add the Victoria Metrics Kubernetes monitoring stack repository.    
+    2. Add the Victoria Metrics Kubernetes monitoring stack repository.
 
         ```{.bash data-prompt="$" }
         $ helm repo add vm https://victoriametrics.github.io/helm-charts/
-        ```    
+        ```
 
-    3. Update the repositories.    
+    3. Update the repositories.
 
         ```{.bash data-prompt="$" }
         $ helm repo update
         ```    
 
-    4. Install the Victoria Metrics Kubernetes monitoring stack Helm chart. You need to specify the following configuration:    
+    4. Install the Victoria Metrics Kubernetes monitoring stack Helm chart. You need to specify the following configuration:
 
         * the URL to access the PMM server in the `externalVM.write.url` option in the format `<PMM-SERVER-URL>/victoriametrics/api/v1/write`. The URL can contain either the IP address or the hostname of the PMM server.
         * the unique name or an ID of the Kubernetes cluster in the `vmagent.spec.externalLabels.k8s_cluster_id` option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server. 
@@ -165,9 +165,9 @@ To set up monitoring of Kubernetes, you need the following:
         --set externalVM.write.url=<PMM-SERVER-URL>/victoriametrics/api/v1/write \
         --set vmagent.spec.externalLabels.k8s_cluster_id=<UNIQUE-CLUSTER-IDENTIFER/NAME> \
         -n <namespace>
-        ```    
+        ```
 
-        To illustrate, say your PMM Server URL is `https://pmm-example.com`, the cluster ID is `test-cluster` and the Namespace is `monitoring-system`. Then the command would look like this:    
+        To illustrate, say your PMM Server URL is `https://pmm-example.com`, the cluster ID is `test-cluster` and the Namespace is `monitoring-system`. Then the command would look like this:
 
         ```{.bash .no-copy }
         $ helm install vm-k8s vm/victoria-metrics-k8s-stack \
@@ -175,16 +175,16 @@ To set up monitoring of Kubernetes, you need the following:
         --set externalVM.write.url=https://pmm-example.com/victoriametrics/api/v1/write \
         --set vmagent.spec.externalLabels.k8s_cluster_id=test-cluster \
         -n monitoring-system
-        ```    
+        ```
 
 
-## Validate the successful installation   
+## Validate the successful installation
 
 ```{.bash data-prompt="$" }
 $ kubectl get pods -n <namespace>
-```        
+```
 
-??? example "Sample output"        
+??? example "Sample output"
 
     ```{.text .no-copy}
     vm-k8s-stack-kube-state-metrics-d9d85978d-9pzbs                   1/1     Running   0          28m

@@ -1,6 +1,6 @@
 # Delete the unneeded backup
 
-The maximum amount of stored backups is controlled by the [backup.tasks.keep](operator.md#backup-tasks-keep)
+The maximum amount of stored backups is controlled by the [backup.tasks.keep](operator.md#backuptaskskeep)
 option (only successful backups are counted). Older backups are automatically
 deleted, so that amount of stored backups do not exceed this number. Setting
 `keep=0` or removing this option from `deploy/cr.yaml` disables automatic

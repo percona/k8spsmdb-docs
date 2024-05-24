@@ -6,7 +6,7 @@
 
 * **Installation**
 
-    [Installing Percona Operator for MongoDB](../index.md#quickstart-guides)
+    [Installing Percona Operator for MongoDB](../quickstart.md)
 
 ## Release Highlights
 

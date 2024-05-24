@@ -34,7 +34,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `unmanaged`
 
-Unmanaged site in [cross-site replication](replication.md#operator-replication): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates.
+Unmanaged site in [cross-site replication](replication.md): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -50,7 +50,7 @@ Version of the Operator the Custom Resource belongs to.
 
 ### `image`
 
-The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md#custom-registry-images)).
+The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](images.md)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -66,7 +66,7 @@ The [policy used to update images  :octicons-link-external-16:](https://kubernet
 
 ### `imagePullSecrets.name`
 
-The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md#custom-registry).
+The [Kubernetes ImagePullSecret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](custom-registry.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -106,7 +106,7 @@ Can be `internal` (local fully-qualified domain names will be used in replset co
 
 ### `allowUnsafeConfigurations`
 
-Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored*. **This option is deprecated and will be removed in future releases**. Use `unsafeFlags` subsection instead 
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored*. **This option is deprecated and will be removed in future releases**. Use `unsafeFlags` subsection instead 
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -114,7 +114,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 ### `updateStrategy`
 
-A strategy the Operator uses for [upgrades](update.md#operator-update). Possible values are [SmartUpdate](update.md#operator-update-smartupdates), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
+A strategy the Operator uses for [upgrades](update.md). Possible values are [SmartUpdate](update.md#automated-upgrade), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -138,7 +138,7 @@ The list of labels [to be ignored](annotations.md#annotations-ignore) by the Ope
 
 ### `multiCluster.enabled`
 
-[Multi-cluster Services (MCS)](replication.md#operator-replication-mcs): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services).
+[Multi-cluster Services (MCS)](replication-mcs.md): setting it to `true` enables [MCS cluster mode  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -146,7 +146,7 @@ The list of labels [to be ignored](annotations.md#annotations-ignore) by the Ope
 
 ### `multiCluster.DNSSuffix`
 
-The cluster domain to be used as a suffix for [multi-cluster Services](replication.md#operator-replication-mcs) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
+The cluster domain to be used as a suffix for [multi-cluster Services](replication-mcs.md) used by Kubernetes (`svc.clusterset.local` [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -166,7 +166,7 @@ Prevents users from configuring a cluster without TLS/SSL certificates (if `fals
 
 ### `unsafeFlags.replsetSize`
 
-Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances or with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter) (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances or with an [even number of replica set instances without additional arbiter](arbiter.md) (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -182,7 +182,7 @@ Prevents users from configuring a sharded cluster with less than 3 config server
 
 ### `unsafeFlags.terminationGracePeriod`
 
-Prevents users from configuring a sharded cluster without termination grace period for [replica set](operator.md#replsets-terminationgraceperiodseconds), [config servers](operator.md#sharding-configsvrreplset-terminationgraceperiodseconds) and [mongos](operator.md#sharding-mongos-terminationgraceperiodseconds) Pods.
+Prevents users from configuring a sharded cluster without termination grace period for [replica set](operator.md#replsetsterminationgraceperiodseconds), [config servers](operator.md#shardingconfigsvrreplset-terminationgraceperiodseconds) and [mongos](operator.md#shardingmongosterminationgraceperiodseconds) Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -261,7 +261,7 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](update.md#operator-update-smartupdates) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](update.md#automated-upgrade) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -315,7 +315,7 @@ The name of the Secrets object for [server side encryption credentials](backups-
 
 ### `secrets.ssl`
 
-A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details.
+A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -323,7 +323,7 @@ A secret with TLS certificate generated for *external* communications, see [Tran
 
 ### `secrets.sslInternal`
 
-A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md#tls) for details.
+A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -671,7 +671,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 ### `replsets.sidecars.image`
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
+Image for the [custom sidecar container](sidecar.md) for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -679,7 +679,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pod
 
 ### `replsets.sidecars.command`
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
+Command for the [custom sidecar container](sidecar.md) for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -687,7 +687,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set P
 
 ### `replsets.sidecars.args`
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
+Command arguments for the [custom sidecar container](sidecar.md) for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -695,7 +695,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Rep
 
 ### `replsets.sidecars.name`
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
+Name of the [custom sidecar container](sidecar.md) for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -703,7 +703,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) for Replica Set Pods.
 
 ### `replsets.sidecars.volumeMounts.mountPath`
 
-Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+Mount path of the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -711,7 +711,7 @@ Mount path of the [custom sidecar container](faq.md#faq-sidecar) volume for Repl
 
 ### `replsets.sidecars.volumeMounts.name`
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+Name of the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -719,7 +719,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 
 ### `replsets.sidecarVolumes.name`
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+Name of the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -727,7 +727,7 @@ Name of the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Se
 
 ### `replsets.sidecarVolumes.configMap.name`
 
-Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -735,7 +735,7 @@ Name of the [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 ### `replsets.sidecarVolumes.secret.secretName`
 
-Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -743,7 +743,7 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 
 ### `replsets.sidecarPVCs`
 
-[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](faq.md#faq-sidecar) volume for Replica Set Pods.
+[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -823,7 +823,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 ### `replsets.nonvoting.enabled`
 
-Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster.
+Enable or disable creation of [Replica Set non-voting instances](arbiter.md#adding-non-voting-nodes) within the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -831,7 +831,7 @@ Enable or disable creation of [Replica Set non-voting instances](arbiter.md#arbi
 
 ### `replsets.nonvoting.size`
 
-The number of [Replica Set non-voting instances](arbiter.md#arbiter-nonvoting) within the cluster.
+The number of [Replica Set non-voting instances](arbiter.md#adding-non-voting-nodes) within the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1285,7 +1285,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 ## <a name="operator-sharding-section"></a>Sharding Section
 
 The `sharding` section in the deploy/cr.yaml file contains configuration
-options for Percona Server for MondoDB [sharding](sharding.md#operator-sharding).
+options for Percona Server for MondoDB [sharding](sharding.md).
 
 ### `sharding.enabled`
 
@@ -1465,7 +1465,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 ### `sharding.configsvrReplSet.sidecars.image`
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
+Image for the [custom sidecar container](sidecar.md) for Config Server Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1473,7 +1473,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for Config Server P
 
 ### `sharding.configsvrReplSet.sidecars.command`
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
+Command for the [custom sidecar container](sidecar.md) for Config Server Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1481,7 +1481,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for Config Server
 
 ### `sharding.configsvrReplSet.sidecars.args`
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
+Command arguments for the [custom sidecar container](sidecar.md) for Config Server Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1489,7 +1489,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for Con
 
 ### `sharding.configsvrReplSet.sidecars.name`
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for Config Server Pods.
+Name of the [custom sidecar container](sidecar.md) for Config Server Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1897,7 +1897,7 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 
 ### `sharding.mongos.sidecars.image`
 
-Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
+Image for the [custom sidecar container](sidecar.md) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1905,7 +1905,7 @@ Image for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 ### `sharding.mongos.sidecars.command`
 
-Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
+Command for the [custom sidecar container](sidecar.md) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1913,7 +1913,7 @@ Command for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
 
 ### `sharding.mongos.sidecars.args`
 
-Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
+Command arguments for the [custom sidecar container](sidecar.md) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1921,7 +1921,7 @@ Command arguments for the [custom sidecar container](faq.md#faq-sidecar) for mon
 
 ### `sharding.mongos.sidecars.name`
 
-Name of the [custom sidecar container](faq.md#faq-sidecar) for mongos Pods.
+Name of the [custom sidecar container](sidecar.md) for mongos Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2272,7 +2272,7 @@ The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.c
 
 ### `backup.pitr.enabled`
 
-Enables or disables [point-in-time-recovery functionality](backups.md#backups-pitr-oplog).
+Enables or disables [point-in-time-recovery functionality](backups-pitr.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |

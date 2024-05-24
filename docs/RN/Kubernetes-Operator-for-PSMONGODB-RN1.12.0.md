@@ -21,12 +21,12 @@ changes its official name to **Percona Operator for MongoDB**
 
 * The Operator is able now to use the Amazon Web Services feature of
 authenticating applications running on EC2 instances based on
-[Identity and Access Management (IAM) roles assigned to the instance](../backups.md#backups-scheduled-s3-iam);
+[Identity and Access Management (IAM) roles assigned to the instance](../backups.md#__tabbed_1_1);
 this  makes it possible to configure S3 backup on AWS without using IAM keys
 saved in Secrets
 
 
-* This release brings [support for the Multi Cluster Services (MCS)](../replication.md#operator-replication-mcs).
+* This release brings [support for the Multi Cluster Services (MCS)](../replication-mcs.md).
 This allows users to deploy MongoDB with Percona Operator across multiple
 Kubernetes clusters using MCS, which extends the reach of the Service object
 beyond one cluster, so one Service can be used across multiple clusters. It
@@ -57,7 +57,7 @@ contribution)
 ## Improvements
 
 
-* [K8SPSMDB-473](https://jira.percona.com/browse/K8SPSMDB-473): Allow to [skip TLS verification for backup storage](../operator.md#backup-storages-verifytls),
+* [K8SPSMDB-473](https://jira.percona.com/browse/K8SPSMDB-473): Allow to [skip TLS verification for backup storage](../operator.md#backupstoragesverifytls),
 useful for self-hosted S3-compatible storage with a self-issued certificate
 
 
@@ -66,16 +66,16 @@ custom value in psmdb-db-1.11.0 helm chart (Thanks to Richard CARRE for
 reporting this issue)
 
 
-* [K8SPSMDB-574](https://jira.percona.com/browse/K8SPSMDB-574): Allow user to [choose the validity duration of the external certificate](../operator.md#tls-certvalidityduration)
+* [K8SPSMDB-574](https://jira.percona.com/browse/K8SPSMDB-574): Allow user to [choose the validity duration of the external certificate](../operator.md#tlscertvalidityduration)
 for cert manager
 
 
-* [K8SPSMDB-634](https://jira.percona.com/browse/K8SPSMDB-634): Support [point-in-time recovery compression levels](../operator.md#backup-pitr-compressiontype)
+* [K8SPSMDB-634](https://jira.percona.com/browse/K8SPSMDB-634): Support [point-in-time recovery compression levels](../operator.md#backuppitrcompressiontype)
 for backups (Thanks to Damiano Albani for reporting this issue)
 
 
 * [K8SPSMDB-570](https://jira.percona.com/browse/K8SPSMDB-570): The Operator documentation now includes a How-To on
-[using Percona Server for MongoDB with LDAP authentication and authorization](../ldap.md#howto-ldap)
+[using Percona Server for MongoDB with LDAP authentication and authorization](../ldap.md)
 
 
 * [K8SPSMDB-537](https://jira.percona.com/browse/K8SPSMDB-537): PMM container does not cause the crash of the whole
@@ -111,7 +111,7 @@ was printed in backup agent logs (Thanks to Antoine Ozenne for reporting this
 issue)
 
 
-* [K8SPSMDB-599](https://jira.percona.com/browse/K8SPSMDB-599): A new [mongos.expose.servicePerPod](../operator.md#sharding-mongos-expose-serviceperpod)
+* [K8SPSMDB-599](https://jira.percona.com/browse/K8SPSMDB-599): A new [mongos.expose.servicePerPod](../operator.md#shardingmongosexposeserviceperpod)
 option allows deploying a separate ClusterIP Service for each mongos instance,
 which prevents the failure of a multi-threaded transaction executed with the
 same driver instance and ended up on a different mongos. Starting from this

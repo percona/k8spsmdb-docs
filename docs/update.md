@@ -81,7 +81,7 @@ The upgrade includes the following steps.
 2. Now you should [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
     to your deployment, supplying necessary image name with a newer version
     tag. You can find the proper
-    image name for the current Operator release [in the list of certified images](images.md#custom-registry-images).
+    image name for the current Operator release [in the list of certified images](images.md).
     updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
@@ -176,11 +176,11 @@ Manual update of Percona Server for MongoDB can be done as follows:
     !!! note
 
         Check the version of the Operator you have in your Kubernetes
-        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd)
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    Actual image names can be found [in the list of certified images](images.md).
     For example, updating `my-cluster-name` cluster to the `{{ release }}` version
     should look as follows:
 
@@ -216,7 +216,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
     The update process is successfully finished when all Pods have been restarted
     (including the mongos and Config Server nodes, if
-    [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) is on).
+    [Percona Server for MongoDB Sharding](sharding.md) is on).
 
 ### Automated upgrade
 
@@ -277,7 +277,7 @@ configuration file as follows:
     * *version number* - specify the desired version explicitly
         (version numbers are specified as {{ mongodb60recommended }},
         {{ mongodb70recommended }}, etc.). Actual versions can be found
-        [in the list of certified images](images.md#custom-registry-images).
+        [in the list of certified images](images.md).
 
     !!! note
 
@@ -362,7 +362,7 @@ to 7.0. The same is true for major version downgrades.
     It is recommended to take a backup before upgrade, as well as to
     perform upgrade on staging environment.
 
-Major version upgrade can be initiated using the [upgradeOptions.apply](operator.md#upgradeoptions-apply)
+Major version upgrade can be initiated using the [upgradeOptions.apply](operator.md#upgradeoptionsapply)
 key in the `deploy/cr.yaml` configuration file:
 
 
@@ -386,7 +386,7 @@ to match the new version, thus making sure that backwards-incompatible features
 are not automatically enabled with the major version upgrade (which is
 recommended and safe behavior). You can turn this backward compatibility off at
 any moment (after the upgrade or even before it) by setting the
-[upgradeOptions.setFCV](operator.md#upgradeoptions-setfcv) flag in the
+[upgradeOptions.setFCV](operator.md#upgradeoptionssetfcv) flag in the
 `deploy/cr.yaml` configuration file to `true`.
 
 !!! note

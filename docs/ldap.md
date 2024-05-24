@@ -101,14 +101,14 @@ is on (the default behavior) or off.
         of the LDAP server (`server`), explicit lookup user, domain rules, etc.
 
     Put the snippet on you local machine and create a Kubernetes Secret object
-    named based on [your MongoDB cluster name](operator.md#cluster-name):
+    named based on [your MongoDB cluster name](operator.md#metadata):
 
     ``` {.bash data-prompt="$" }
     $ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
     ```
 
     Next step is to start the MongoDB cluster up as it’s described in
-    [Install Percona server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes).
+    [Install Percona server for MongoDB on Kubernetes](kubernetes.md).
     On successful completion of the steps from this doc, we are to proceed with
     setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB.
     For this, log into MongoDB as administrator:

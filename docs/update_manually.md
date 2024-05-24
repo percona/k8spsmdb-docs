@@ -19,7 +19,7 @@ Percona Server for MongoDB can be upgraded manually using one of the following
 
 !!! warning
 
-    In case of [Smart Updates](update.md#automatic-upgrade), the Operator can
+    In case of [Smart Updates](update.md#automated-upgrade), the Operator can
     either detect the availability of the Percona Server for MongoDB version or rely
     on the user's choice of the version. In both cases Pods are restarted by the
     Operator automatically in the order, which assures the primary instance to
@@ -41,11 +41,11 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
     !!! note
 
         Check the version of the Operator you have in your Kubernetes
-        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd)
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    Actual image names can be found [in the list of certified images](images.md).
     For example, updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
@@ -92,11 +92,11 @@ Manual update of Percona Server for MongoDB can be done as follows:
     !!! note
 
         Check the version of the Operator you have in your Kubernetes
-        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd)
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    Actual image names can be found [in the list of certified images](images.md).
     For example, updating to the `{{ release }}` version should look as
     follows.
 
@@ -148,5 +148,5 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
 4. The update process is successfully finished when all Pods have been
     restarted (including the mongos and Config Server nodes, if
-    [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) is on).
+    [Percona Server for MongoDB Sharding](sharding.md) is on).
 

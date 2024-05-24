@@ -45,9 +45,9 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 ## New Features
 
-* {{ k8spsmdbjira(1000) }}: Users who store backups on Azure Blob Storage can now use [private endpoints](../operator.html#backup-storages-azure-endpointurl)
+* {{ k8spsmdbjira(1000) }}: Users who store backups on Azure Blob Storage can now use [private endpoints](../operator.md#backup-storages-azure-endpointurl)
 * {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows [latest restorable time](../backups-restore.md#backups-latest-restorable-time) to make it easier to pick a point-in-time recovery target
-* {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tls-issuerconf-name) which should be used by the Operator
+* {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tlsissuerconfname) which should be used by the Operator
 * {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../scaling.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
 
 ## Improvements
@@ -57,10 +57,10 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 * {{ k8spsmdbjira(1015) }}: Information about backup and restore operations is now included in the Operator's logs
 * {{ k8spsmdbjira(951) }}, {{ k8spsmdbjira(979) }} and {{ k8spsmdbjira(1021) }}: The Operator now allows setting custom configuration for Percona Backup for MongoDB through the set of new Custom Resource options under `backup.configuration.backupOptions`, `backup.configuration.restoreOptions`, and `backup.storages.s3.retryer` subsections
 * {{ k8spsmdbjira(1029) }}: Mongod is now run in [quiet mode  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/program/mongod/#std-option-mongod.--quiet) by default to reduce the amount of log messages
-* {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#sharding-mongos-expose-nodeport) to define TCP port for mongos Service when it is exposed through a NodePort (thanks to Mike Devresse for contribution)
+* {{ k8spsmdbjira(1032) }}: It is now [possible](../operator.md#shardingmongosexposenodeport) to define TCP port for mongos Service when it is exposed through a NodePort (thanks to Mike Devresse for contribution)
 * {{ k8spsmdbjira(1062) }}: The Operator now sets [appProtocol :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol) to `mongo` for Service objects, which is useful for service mesh implementations (thanks to Søren Mathiasen for contribution)
 * {{ k8spsmdbjira(732) }}: [Integration of the Operator with OpenLDAP](../ldap.md#using-ldap-over-tls-connection) can now be secured by using TLS connections
-* {{ k8spsmdbjira(755) }}: New `allowInvalidCertificates` option allows to [enable or disable](../operator.md#tls-allowinvalidcertificates) bypassing MongoDB Shell checks for the certificates presented by the mongod/mongos instance, useful for self-signed certificates
+* {{ k8spsmdbjira(755) }}: New `allowInvalidCertificates` option allows to [enable or disable](../operator.md#tlsallowinvalidcertificates) bypassing MongoDB Shell checks for the certificates presented by the mongod/mongos instance, useful for self-signed certificates
 * {{ k8spsmdbjira(948) }}: Officially certified images for ARM architecture are now available for the Operator, as well as Percona Server for MongoDB and Percona Backup for MongoDB
 * {{ k8spsmdbjira(993) }}: To avoid backup fail on clusters where Percona Backup for MongoDB resync process takes too long, the Operator now checks, if there is still a resync operation working, with exponentially increasing interval and total wait time until failure equal to 8715 seconds
 * {{ k8spsmdbjira(995) }}: The Operator now allows storing key for [backups server-side AWS KMS encryption](../backups-encryption.md) in a Secret configurable with the `secrets.sse` Custom Resource option
@@ -84,7 +84,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 ## Deprecation and removal
 
-* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect; upgrading existing clusters with `allowUnsafeConfigurations=true` will cause everything under [unsafeFlags](../operator.md#unsafeFlags-section) set to true and [TLS funuctionality disabled](../TLS.md#run-percona-server-for-mongodb-without-tls)
+* Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect; upgrading existing clusters with `allowUnsafeConfigurations=true` will cause everything under [unsafeFlags](../operator.md#unsafeflags-section) set to true and [TLS funuctionality disabled](../TLS.md#run-percona-server-for-mongodb-without-tls)
 
 * MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use [major version upgrade functionality](../update.md#automated-upgrade).
 
