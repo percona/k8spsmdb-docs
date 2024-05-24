@@ -106,7 +106,7 @@ Can be `internal` (local fully-qualified domain names will be used in replset co
 
 ### `allowUnsafeConfigurations`
 
-Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). **After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored**.
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored*. **This option is deprecated and will be removed in future releases**. Use `unsafeFlags` subsection instead 
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -152,9 +152,63 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 | ----------- | ---------- |
 | :material-code-string: string     | `svc.clusterset.local` |
 
+## <a name="operator-unsafeflags-section"></a>Unsafe flags section
+
+The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting same keys to `false`, the flags will be ignored*.
+
+### `unsafeFlags.tls`
+
+Prevents users from configuring a cluster without TLS/SSL certificates (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     |`false` |
+
+### `unsafeFlags.replsetSize`
+
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances or with an [even number of replica set instances without additional arbiter](arbiter.md#arbiter) (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     |`false` |
+
+### `unsafeFlags.mongosSize`
+
+Prevents users from configuring a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     |`false` |
+
+### `unsafeFlags.terminationGracePeriod`
+
+Prevents users from configuring a sharded cluster without termination grace period for [replica set](operator.md#replsets-terminationgraceperiodseconds), [config servers](operator.md#sharding-configsvrreplset-terminationgraceperiodseconds) and [mongos](operator.md#sharding-mongos-terminationgraceperiodseconds) Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     |`false` |
+
+### `unsafeFlags.backupIfUnhealthy`
+
+Prevents running backup on a cluster with [failed health checks :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     |`false` |
+
 ### <a name="operator-issuerconf-section"></a>TLS (extended cert-manager configuration section)
 
 The `tls` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options for additional customization of the [Transport Layer Security](TLS.md).
+
+### `tls.mode`
+
+Controls if the [TLS encryption](TLS.md) should be used and/or enforced. Can be
+ `disabled`, `allowTLS`, `preferTLS`, or `requireTLS`. If set to `disabled`,
+ it also requires setting `unsafeFlags.tls option to `true`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `preferTLS`    |
 
 ### `tls.certValidityDuration`
 
@@ -166,7 +220,8 @@ The validity duration of the external certificate for cert manager (90 days by d
 
 ### `tls.allowInvalidCertificates`
 
-If enabled, `--tlsAllowInvalidCertificates` MongoDB Shell option will be set to true, [bypassing checks for the certificates presented by the mongod/mongos instance :octicons-link-external-16:](https://www.mongodb.com/docs/mongodb-shell/reference/options/#std-option-mongosh.--tlsAllowInvalidCertificates) (`true` by default to allow self-signed certificates generated by the Operator).
+If `true`, the mongo shell will not attempt to validate the server certificates.
+**Should be true (default variant) to use self-signed certificates generated by the Operator when there is no cert-manager.**
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -355,7 +410,7 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | <pre>&#124;<br>net:<br>  tls:<br>    mode: preferTLS<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
+| :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 
 ### `replsets.affinity.antiAffinityTopologyKey`
 
