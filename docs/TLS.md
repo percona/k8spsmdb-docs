@@ -97,6 +97,10 @@ you will find that they are valid and short-term.
 
 ## Generate certificates manually
 
+!!! warning
+
+    Manual certificates generation doesn't work in the Operator version 1.16.0.
+
 To generate certificates manually, follow these steps:
 
 1. Provision a Certificate Authority (CA) to generate TLS certificates,
