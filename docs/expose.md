@@ -1,36 +1,43 @@
-# Exposing cluster
+# Exposing the cluster
 
 The Operator provides entry points for accessing the database by client applications in several scenarios. In either way the cluster is exposed with regular Kubernetes [Service objects  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/), configured by the Operator.
 
 This document describes the usage of [Custom Resource manifest options](operator.md) to expose the clusters deployed with the Operator. 
 
-## Using single entry point in a sharded cluster
+## Sharded clusters
 
-If Percona Server for MongoDB [Sharding mode](sharding.md)
-is turned **on** (default behavior), then database cluster runs special
-`mongos` Pods - query routers, which acts as an entry point for client
-applications,
+If Percona Server for MongoDB [Sharding mode](sharding.md) is turned **on** (default behavior), then `mongos` Pods act as entry points for client applications:
 
 ![image](assets/images/mongos_espose.png)
 
-The URI looks like follows (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
+By default, a ClusterIP service is created (this is controlled by [sharding.mongos.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#shardingmongosexposeexposetype)). The service works in a round-robin fashion between all the mongos pods.
+
+The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
 ``` {.bash data-prompt="$" }
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
+You can get the actual service endpoints by running the following command:
+
+``` {.bash data-prompt="$" }
+$ kubectl get psmdb
+```
+
+??? example "Expected output"
+```
+NAME              ENDPOINT                                             STATUS   AGE
+my-cluster-name   my-cluster-name-mongos.test.svc.cluster.local        ready    85m
+```
+
 !!! warning
 
-    This service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, expose the mongos pods by using NodePort or Load Balancer service types.
-    See the "Service per Pod" section for details.
+    A ClusterIP service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos pods by using the NodePort or Load Balancer service types.
+    See the "Connecting from outside Kubernetes" section below for details.
     
-You can find more on sharding in the [official MongoDB documentation  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/glossary/#term-sharding).
+## Replica Sets
 
-## Accessing replica set Pods
-
-If [Percona Server for MongoDB Sharding](sharding.md) mode
-is turned **off**, the application needs access to all MongoDB Pods of the
-replica set:
+If Percona Server for MongoDB [Sharding mode](sharding.md) mode is turned **off**, the application needs to connect to all the MongoDB Pods of the replica set:
 
 ![image](assets/images/mongod_espose.png)
 
@@ -39,34 +46,38 @@ network of the cluster. Creating and destroying Pods is a dynamic process,
 therefore binding communication between Pods to specific IP addresses would
 cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
-Percona Server for MongoDB via Kubernetes internal DNS names in URI
-(e.g. using `mongodb+srv://userAdmin:userAdmin123456@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false` to access one of the Replica Set Pods).
+Percona Server for MongoDB by using Kubernetes internal DNS names in the URI.
 
-In this case, the URI looks like follows (taking into account the need in a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
+By default, a ClusterIP service is created (this is controlled by [replsets.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsetsexposeexposetype)). The service works in a round-robin fashion between all the mongod pods of the replica set.
+
+In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
 ``` {.bash data-prompt="$" }
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
-## Service per Pod
+You can get the actual service endpoints by running the following command:
 
-URI-based access is strictly recommended. Still sometimes you cannot communicate with the Pods using the Kubernetes internal DNS
-names. To make Pods of the Replica Set accessible, Percona Operator for MongoDB
+``` {.bash data-prompt="$" }
+$ kubectl get psmdb
+```
+
+??? example "Expected output"
+```
+NAME              ENDPOINT                                             STATUS   AGE
+minimal-cluster   my-cluster-name-rs0.test.svc.cluster.local           ready    2m19s
+```
+!!! warning
+
+    A ClusterIP service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongod pods by using the NodePort or Load Balancer service types.
+    See the "Connecting from outside Kubernetes" section below for details.
+    
+## Connecting from outside Kubernetes
+
+If connecting to a cluster from outside Kubernetes, you cannot reach the Pods using the Kubernetes internal DNS
+names. To make Pods accessible, Percona Operator for MongoDB
 can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/)
 to each Pod.
-
-!!! note
-
-    Particularly, Service per Pod will allow application to take care of
-    Cursor tracking instead of relying on a single service. This solves the
-    problem of CursorNotFound errors when the Service transparently cycles
-    between the mongos instances while client is still iterating the cursor
-    on some large collection.
-
-This feature can be configured in the `replsets` (for mongod Pods)
-and `sharding` (for mongos Pods) sections of the
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
-file:
 
 * set `expose.enabled` option to `true` to allow exposing Pods via services,
 * set `expose.exposeType` option specifying the IP address type to be used:
@@ -83,9 +94,30 @@ file:
         cloud provider’s load balancer. Both [ClusterIP and NodePort
         services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
 
-If the NodePort feature is enabled, the URI looks like
-`mongodb://databaseAdmin:databaseAdminPassword@<ip1>:<port1>,<ip2>:<port2>,<ip3>:<port3>/admin?replicaSet=rs0&ssl=false`
-All IP adresses should be *directly* reachable by the application.
+If the NodePort feature is enabled, the URI looks like:
+
+```mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false```
+
+All node adresses should be *directly* reachable by the application.
+
+## Service per Pod
+
+The Service per Pod option is available to allow the application to take care of Cursor tracking instead of relying on a single service. This solves the
+problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
+on some large collection.
+
+This feature can be configured in the [sharding.mongos.expose.servicePerPod](https://docs.percona.com/percona-operator-for-mongodb/operator.html#shardingmongosexposeserviceperpod) (for mongos Pods) sections of the
+[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+
+If this feature is enabled with the exposeType: NodePort, the created services look like this:
+
+``` {.bash data-prompt="$" }
+$ kubectl get svc
+NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
+my-cluster-name-mongos-0   NodePort       10.38.158.103   <none>         27017:31689/TCP              12s
+my-cluster-name-mongos-1   NodePort       10.38.155.250   <none>         27017:31389/TCP              12s
+...
+```
 
 ## Controlling hostnames in replset configuration
 
