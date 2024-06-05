@@ -81,7 +81,7 @@ file:
         bound to a specific Kubernetes node.
     * `LoadBalancer` - expose the Pod’s service externally using a
         cloud provider’s load balancer. Both [ClusterIP and NodePort
-        services are automatically created](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
+        services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
 
 If the NodePort feature is enabled, the URI looks like
 `mongodb://databaseAdmin:databaseAdminPassword@<ip1>:<port1>,<ip2>:<port2>,<ip3>:<port3>/admin?replicaSet=rs0&ssl=false`
