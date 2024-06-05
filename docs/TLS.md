@@ -99,7 +99,7 @@ you will find that they are valid and short-term.
 
 !!! warning
 
-    Manual certificates generation doesn't work in the Operator version 1.16.0.
+    Using manually generated certificates doesn't work in the Operator version 1.16.0. Check the [bug K8SPSMDB-1101](https://perconadev.atlassian.net/browse/K8SPSMDB-1101) for updates.
 
 To generate certificates manually, follow these steps:
 
