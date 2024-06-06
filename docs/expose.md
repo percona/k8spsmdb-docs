@@ -38,7 +38,7 @@ my-cluster-name   my-cluster-name-mongos.test.svc.cluster.local        ready    
     
 ## Accessing replica set Pods
 
-If Percona Server for MongoDB [Sharding mode](sharding.md) mode is turned **off**, the application needs to connect to all the MongoDB Pods of the replica set:
+If Percona Server for MongoDB [sharding mode](sharding.md) mode is turned **off**, the application needs to connect to all the MongoDB Pods of the replica set:
 
 ![image](assets/images/mongod_espose.png)
 
