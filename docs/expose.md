@@ -89,7 +89,7 @@ can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes
         port will be routed, is automatically created in this variant. As
         an advantage, the Service will be reachable from outside the
         cluster by Node address and port number, however the address will be
-        bound to a specific Kubernetes node.
+        bound to a specific Kubernetes Node.
     * `LoadBalancer` - expose the Pod externally using a
         cloud provider’s load balancer. Both [ClusterIP and NodePort
         Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
