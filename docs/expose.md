@@ -85,7 +85,7 @@ can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes
         IP address. This variant makes the Service reachable only from
         within the Kubernetes cluster.
     * `NodePort` - expose the Pod on each Kubernetes Node’s
-        IP address at a static port. A ClusterIP Service, to which the node
+        IP address at a static port. A ClusterIP Service, to which the Node
         port will be routed, is automatically created in this variant. As
         an advantage, the service will be reachable from outside the
         cluster by node address and port number, however the address will be
