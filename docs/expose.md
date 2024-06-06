@@ -49,7 +49,7 @@ cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
 Percona Server for MongoDB by using Kubernetes internal DNS names in the URI.
 
-By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsetsexposeexposetype)). The service works in a round-robin fashion between all the mongod Pods of the replica set.
+By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.exposeType](operator.md#replsets-expose-exposetype)). The Service works in a round-robin fashion between all the mongod Pods of the replica set.
 
 In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
