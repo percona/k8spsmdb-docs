@@ -77,25 +77,24 @@ my-cluster-name   my-cluster-name-rs0.default.svc.cluster.local        ready    
 
 If connecting to a cluster from outside Kubernetes, you cannot reach the Pods using the Kubernetes internal DNS
 names. To make the Pods accessible, Percona Operator for MongoDB
-can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/)
-to each Pod.
+can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-* set `expose.enabled` option to `true` to allow exposing Pods via services,
-* set `expose.exposeType` option specifying the IP address type to be used:
-    * `ClusterIP` - expose the Pod’s service with an internal static
-        IP address. This variant makes the service reachable only from
+* set `expose.enabled` option to `true` to allow exposing the Pods via services,
+* set `expose.exposeType` option specifying the type of Service to be used:
+    * `ClusterIP` - expose the Pod with an internal static
+        IP address. This variant makes the Service reachable only from
         within the Kubernetes cluster.
-    * `NodePort` - expose the Pod’s service on each Kubernetes node’s
-        IP address at a static port. A ClusterIP service, to which the node
+    * `NodePort` - expose the Pod on each Kubernetes node’s
+        IP address at a static port. A ClusterIP Service, to which the node
         port will be routed, is automatically created in this variant. As
         an advantage, the service will be reachable from outside the
-        cluster by node address and port number, but the address will be
+        cluster by node address and port number, however the address will be
         bound to a specific Kubernetes node.
-    * `LoadBalancer` - expose the Pod’s service externally using a
+    * `LoadBalancer` - expose the Pod externally using a
         cloud provider’s load balancer. Both [ClusterIP and NodePort
-        services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
+        Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
 
-If the NodePort feature is enabled, the URI looks like:
+If the NodePort type is used, the URI looks like this:
 
 ```mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false```
 
@@ -103,6 +102,7 @@ All node adresses should be *directly* reachable by the application.
 
 ## Service per Pod
 
+To make the Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod.
 The Service per Pod option is available to allow the application to take care of Cursor tracking instead of relying on a single Service. This solves the
 problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
 on some large collection.
