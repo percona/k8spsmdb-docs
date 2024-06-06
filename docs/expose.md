@@ -2,15 +2,16 @@
 
 The Operator provides entry points for accessing the database by client applications in several scenarios. In either way the cluster is exposed with regular Kubernetes [Service objects  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/), configured by the Operator.
 
-This document describes the usage of [Custom Resource manifest options](operator.md) to expose the clusters deployed with the Operator. 
+This document describes the usage of [Custom Resource manifest options](operator.md) to expose clusters deployed with the Operator. 
 
-## Sharded clusters
+## Using single entry point in a sharded cluster
 
-If Percona Server for MongoDB [Sharding mode](sharding.md) is turned **on** (default behavior), then `mongos` Pods act as entry points for client applications:
+If Percona Server for MongoDB [Sharding mode](sharding.md) is turned **on** (default behavior), then database cluster runs special
+`mongos` Pods - query routers, which acts as an entry point for client applications:
 
 ![image](assets/images/mongos_espose.png)
 
-By default, a ClusterIP service is created (this is controlled by [sharding.mongos.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#shardingmongosexposeexposetype)). The service works in a round-robin fashion between all the mongos pods.
+By default, a ClusterIP service is created (this is controlled by [sharding.mongos.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#shardingmongosexposeexposetype)). The service works in a round-robin fashion between all the `mongos` Pods.
 
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
@@ -18,7 +19,7 @@ The URI looks like this (taking into account the need for a proper password obta
 $ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
-You can get the actual service endpoints by running the following command:
+You can get the actual Service endpoints by running the following command:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get psmdb
@@ -32,10 +33,10 @@ my-cluster-name   my-cluster-name-mongos.test.svc.cluster.local        ready    
 
 !!! warning
 
-    A ClusterIP service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos pods by using the NodePort or Load Balancer service types.
+    A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos Pods by using the NodePort or Load Balancer service types.
     See the "Connecting from outside Kubernetes" section below for details.
     
-## Replica Sets
+## Accessing replica set Pods
 
 If Percona Server for MongoDB [Sharding mode](sharding.md) mode is turned **off**, the application needs to connect to all the MongoDB Pods of the replica set:
 
@@ -48,7 +49,7 @@ cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
 Percona Server for MongoDB by using Kubernetes internal DNS names in the URI.
 
-By default, a ClusterIP service is created (this is controlled by [replsets.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsetsexposeexposetype)). The service works in a round-robin fashion between all the mongod pods of the replica set.
+By default, a ClusterIP Service is created (this is controlled by [replsets.expose.exposeType](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsetsexposeexposetype)). The service works in a round-robin fashion between all the mongod Pods of the replica set.
 
 In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
@@ -56,7 +57,7 @@ In this case, the URI looks like this (taking into account the need for a proper
 $ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
-You can get the actual service endpoints by running the following command:
+You can get the actual Service endpoints by running the following command:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get psmdb
@@ -75,7 +76,7 @@ minimal-cluster   my-cluster-name-rs0.test.svc.cluster.local           ready    
 ## Connecting from outside Kubernetes
 
 If connecting to a cluster from outside Kubernetes, you cannot reach the Pods using the Kubernetes internal DNS
-names. To make Pods accessible, Percona Operator for MongoDB
+names. To make the Pods accessible, Percona Operator for MongoDB
 can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/)
 to each Pod.
 
@@ -102,7 +103,7 @@ All node adresses should be *directly* reachable by the application.
 
 ## Service per Pod
 
-The Service per Pod option is available to allow the application to take care of Cursor tracking instead of relying on a single service. This solves the
+The Service per Pod option is available to allow the application to take care of Cursor tracking instead of relying on a single Service. This solves the
 problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
 on some large collection.
 
