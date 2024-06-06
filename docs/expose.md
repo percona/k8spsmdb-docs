@@ -11,7 +11,7 @@ If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (def
 
 ![image](assets/images/mongos_espose.png)
 
-By default, a ClusterIP service is created (this is controlled by [sharding.mongos.expose.exposeType](operator.md#sharding-mongos-expose-exposetype)). The service works in a round-robin fashion between all the `mongos` Pods.
+By default, a ClusterIP type Service is created (this is controlled by [sharding.mongos.expose.exposeType](operator.md#sharding-mongos-expose-exposetype)). The Service works in a round-robin fashion between all the `mongos` Pods.
 
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
