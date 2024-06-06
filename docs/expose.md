@@ -110,7 +110,7 @@ on some large collection.
 This feature can be configured in the [sharding.mongos.expose.servicePerPod](operator.md#sharding-mongos-expose-serviceperpod) (for mongos Pods) sections of the
 [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
-If this feature is enabled with the exposeType: NodePort, the created services look like this:
+If this feature is enabled with the `exposeType: NodePort`, the created Services look like this:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get svc
