@@ -28,7 +28,7 @@ $ kubectl get psmdb
 ??? example "Expected output"
 ```
 NAME              ENDPOINT                                             STATUS   AGE
-my-cluster-name   my-cluster-name-mongos.test.svc.cluster.local        ready    85m
+my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local        ready    85m
 ```
 
 !!! warning
