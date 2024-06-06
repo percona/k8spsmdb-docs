@@ -6,7 +6,7 @@ This document describes the usage of [Custom Resource manifest options](operator
 
 ## Using single entry point in a sharded cluster
 
-If Percona Server for MongoDB [Sharding mode](sharding.md) is turned **on** (default behavior), then database cluster runs special
+If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (default behavior), then database cluster runs special
 `mongos` Pods - query routers, which acts as an entry point for client applications:
 
 ![image](assets/images/mongos_espose.png)
