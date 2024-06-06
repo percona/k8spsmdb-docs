@@ -88,7 +88,7 @@ can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes
         IP address at a static port. A ClusterIP Service, to which the Node
         port will be routed, is automatically created in this variant. As
         an advantage, the Service will be reachable from outside the
-        cluster by node address and port number, however the address will be
+        cluster by Node address and port number, however the address will be
         bound to a specific Kubernetes node.
     * `LoadBalancer` - expose the Pod externally using a
         cloud provider’s load balancer. Both [ClusterIP and NodePort
