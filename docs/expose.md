@@ -107,7 +107,7 @@ The Service per Pod option is available to allow the application to take care of
 problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
 on some large collection.
 
-This feature can be configured in the [sharding.mongos.expose.servicePerPod](https://docs.percona.com/percona-operator-for-mongodb/operator.html#shardingmongosexposeserviceperpod) (for mongos Pods) sections of the
+This feature can be configured in the [sharding.mongos.expose.servicePerPod](operator.md#sharding-mongos-expose-serviceperpod) (for mongos Pods) sections of the
 [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
 If this feature is enabled with the exposeType: NodePort, the created services look like this:
