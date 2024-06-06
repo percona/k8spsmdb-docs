@@ -33,7 +33,7 @@ my-cluster-name   my-cluster-name-mongos.test.svc.cluster.local        ready    
 
 !!! warning
 
-    A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos Pods by using the NodePort or Load Balancer service types.
+    A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos Pods by using the NodePort or Load Balancer Service types.
     See the "Connecting from outside Kubernetes" section below for details.
     
 ## Accessing replica set Pods
