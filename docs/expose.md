@@ -98,7 +98,7 @@ If the NodePort type is used, the URI looks like this:
 
 ```mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false```
 
-All node adresses should be *directly* reachable by the application.
+All Node addresses should be *directly* reachable by the application.
 
 ## Service per Pod
 
