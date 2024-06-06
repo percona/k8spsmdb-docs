@@ -79,7 +79,7 @@ If connecting to a cluster from outside Kubernetes, you cannot reach the Pods us
 names. To make the Pods accessible, Percona Operator for MongoDB
 can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-* set `expose.enabled` option to `true` to allow exposing the Pods via services,
+* set `expose.enabled` option to `true` to allow exposing the Pods via Services,
 * set `expose.exposeType` option specifying the type of Service to be used:
     * `ClusterIP` - expose the Pod with an internal static
         IP address. This variant makes the Service reachable only from
