@@ -102,7 +102,7 @@ All Node addresses should be *directly* reachable by the application.
 
 ## Service per Pod
 
-To make the Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod.
+To make all database Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod.
 Particularly, the Service per Pod option allows the application to take care of Cursor tracking instead of relying on a single Service. This solves the
 problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
 on some large collection.
