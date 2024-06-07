@@ -11,7 +11,7 @@ If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (def
 
 ![image](assets/images/mongos_espose.png)
 
-By default, a ClusterIP type Service is created (this is controlled by [sharding.mongos.expose.exposeType](operator.md#sharding-mongos-expose-exposetype)). The Service works in a round-robin fashion between all the `mongos` Pods.
+By default, a ClusterIP type Service is created (this is controlled by [sharding.mongos.expose.exposeType](operator.md#shardingmongosexposeexposetype)). The Service works in a round-robin fashion between all the `mongos` Pods.
 
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
@@ -49,7 +49,7 @@ cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
 Percona Server for MongoDB by using Kubernetes internal DNS names in the URI.
 
-By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.exposeType](operator.md#replsets-expose-exposetype)). The Service works in a round-robin fashion between all the mongod Pods of the replica set.
+By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.exposeType](operator.md#replsetsexposeexposetype)). The Service works in a round-robin fashion between all the mongod Pods of the replica set.
 
 In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
@@ -107,8 +107,7 @@ Particularly, the Service per Pod option allows the application to take care of 
 problem of CursorNotFound errors when the Service transparently cycles between the mongos instances while client is still iterating the cursor
 on some large collection.
 
-This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](operator.md#sharding-mongos-expose-serviceperpod) Custom Resource option to `true`.
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](operator.md#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
 If this feature is enabled with the `exposeType: NodePort`, the created Services look like this:
 
