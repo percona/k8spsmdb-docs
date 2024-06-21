@@ -1,8 +1,8 @@
-# *Percona Operator for MongoDB* 1.16.0
+# *Percona Operator for MongoDB* 1.16.1
 
 * **Date**
 
-    May 24, 2024
+    June 24, 2024
 
 * **Installation**
 
