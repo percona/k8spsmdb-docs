@@ -39,9 +39,9 @@ The steps are the following:
 
     ??? example "Sample output"
 
-    ```{.text .no-copy}
-    perconaservermongodb.psmdb.percona.com "my-cluster-name" deleted
-    ```
+        ```{.text .no-copy}
+        perconaservermongodb.psmdb.percona.com "my-cluster-name" deleted
+        ```
 
 3. Check that the cluster is deleted by listing the Custom Resources again:
 
@@ -51,9 +51,9 @@ The steps are the following:
 
     ??? example "Sample output"
 
-    ```{.text .no-copy}
-    No resources found in <namespace> namespace.
-    ```
+        ```{.text .no-copy}
+        No resources found in <namespace> namespace.
+        ```
 
 ## Delete the Operator
 
