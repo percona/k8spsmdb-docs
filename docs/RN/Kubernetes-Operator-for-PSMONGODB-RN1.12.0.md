@@ -21,7 +21,7 @@ changes its official name to **Percona Operator for MongoDB**
 
 * The Operator is able now to use the Amazon Web Services feature of
 authenticating applications running on EC2 instances based on
-[Identity and Access Management (IAM) roles assigned to the instance](../backups.md#__tabbed_1_1);
+[Identity and Access Management (IAM) roles assigned to the instance](../backups-storage.md#amazon-s3-or-s3-compatible-storage);
 this  makes it possible to configure S3 backup on AWS without using IAM keys
 saved in Secrets
 

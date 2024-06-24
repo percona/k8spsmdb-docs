@@ -83,8 +83,7 @@ markdown_extensions:
   pymdownx.smartsymbols: {}
   pymdownx.tilde: {}
   pymdownx.superfences: {}
-  pymdownx.tabbed:
-    alternate_style: true
+  pymdownx.tabbed: {}
   pymdownx.tasklist:
     custom_checkbox: true
   pymdownx.snippets:
@@ -128,7 +127,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.16.0 (June 24, 2024)
+    cover_subtitle: 1.16.1 (June 24, 2024)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates
@@ -147,7 +146,7 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.16.0'
+  release: '1.16.1'
   apiversion: '1'  
   mongodb70recommended: '7.0.8-5'
   mongodb60recommended: '6.0.15-12'
