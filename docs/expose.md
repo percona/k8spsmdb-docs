@@ -26,10 +26,11 @@ $ kubectl get psmdb
 ```
 
 ??? example "Expected output"
-```
-NAME              ENDPOINT                                             STATUS   AGE
-my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
-```
+
+    ```
+    NAME              ENDPOINT                                             STATUS   AGE
+    my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
+    ```
 
 !!! warning
 
@@ -64,10 +65,12 @@ $ kubectl get psmdb
 ```
 
 ??? example "Expected output"
-```
-NAME              ENDPOINT                                             STATUS   AGE
-my-cluster-name   my-cluster-name-rs0.default.svc.cluster.local        ready    2m19s
-```
+
+    ```
+    NAME              ENDPOINT                                             STATUS   AGE
+    my-cluster-name   my-cluster-name-rs0.default.svc.cluster.local        ready    2m19s
+    ```
+
 !!! warning
 
     A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongod Pods by using the NodePort or Load Balancer Service types.
