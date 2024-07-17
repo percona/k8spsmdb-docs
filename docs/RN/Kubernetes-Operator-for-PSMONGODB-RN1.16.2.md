@@ -10,7 +10,7 @@
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(1117) }}: Fix a bug where the Operator issued error when the unit of the storage size was specified as `G` instead of `Gi`
+* {{ k8spsmdbjira(1117) }}: Fix a bug where the Operator incorrectly compares `G` with `Gi` and and tries to downscale PVC size after upgrade
 
 ## Supported Platforms
 
