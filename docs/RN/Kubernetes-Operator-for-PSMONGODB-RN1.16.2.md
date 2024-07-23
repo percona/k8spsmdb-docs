@@ -2,7 +2,7 @@
 
 * **Date**
 
-    July 19, 2024
+    July 23, 2024
 
 * **Installation**
 
