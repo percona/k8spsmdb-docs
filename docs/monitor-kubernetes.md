@@ -16,6 +16,7 @@ To set up monitoring of Kubernetes, you need the following:
 3. [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/).
 4. The PMM Server API key. The key must have the role "Admin".
 
+    <a name="get-the-pmm-server-api-key"></a>
     Get the PMM API key: 
 
     === ":material-view-dashboard-variant: From PMM UI" 

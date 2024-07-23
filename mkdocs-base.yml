@@ -127,7 +127,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.16.1 (June 24, 2024)
+    cover_subtitle: 1.16.2 (July 23, 2024)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/percona_kubernetes_icon.png
     custom_template_path: _resource/templates
@@ -146,7 +146,7 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.16.1'
+  release: '1.16.2'
   apiversion: '1'  
   mongodb70recommended: '7.0.8-5'
   mongodb60recommended: '6.0.15-12'
@@ -250,6 +250,7 @@ nav:
           - "Trademark policy": trademark-policy.md
     - Release notes:
           - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.16.2 (2024-07-23)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
           - "Percona Operator for MongoDB 1.16.1 (2024-06-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
           - "Percona Operator for MongoDB 1.16.0 (2024-05-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
           - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md

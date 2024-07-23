@@ -6,6 +6,8 @@ Cluster components:
 
 | Operator | [MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
+| [1.16.2](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md) | 5.0 - 7.0          | 2.4.1 |
+| [1.16.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md) | 5.0 - 7.0          | 2.4.1 |
 | [1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md) | 5.0 - 7.0          | 2.4.1 |
 | [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 4.4 - 6.0          | 2.3.0 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 4.4 - 6.0          | 2.0.4, 2.0.5 |
@@ -27,6 +29,8 @@ Platforms:
 
 | Operator | [GKE  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine)         | [EKS  :octicons-link-external-16:](https://aws.amazon.com)         | [Openshift  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)                          |
 |:--------|:------------|:------------|:------------|:------------|:----------------------------------|
+| [1.16.2](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
+| [1.16.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
 | [1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
 | [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md) | 1.24 - 1.28 | 1.24 - 1.28 | 4.11 - 4.13 | 1.25 - 1.28 | 1.31.2 |
 | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | 1.22 - 1.25 | 1.22 - 1.24 | 4.10 - 4.12 | 1.23 - 1.25 | 1.29 |
