@@ -249,7 +249,7 @@ nav:
           - "Trademark policy": trademark-policy.md
     - Release notes:
           - "Release notes index": RN/index.md
-          - "Percona Operator for MongoDB 1.16.2 (2024-07-19)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
+          - "Percona Operator for MongoDB 1.16.2 (2024-07-23)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
           - "Percona Operator for MongoDB 1.16.1 (2024-06-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
           - "Percona Operator for MongoDB 1.16.0 (2024-05-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
           - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
