@@ -45,9 +45,9 @@ Percona Operator for MongoDB provides an `antiAffinityTopologyKey` option, which
 may have one of the following values:
 
 * `kubernetes.io/hostname` - Pods will avoid residing within the same host,
-* `failure-domain.beta.kubernetes.io/zone` - Pods will avoid residing within the
+* `topology.kubernetes.io/zone` - Pods will avoid residing within the
     same zone,
-* `failure-domain.beta.kubernetes.io/region` - Pods will avoid residing within
+* `topology.kubernetes.io/region` - Pods will avoid residing within
     the same region,
 * `none` - no constraints are applied.
 
