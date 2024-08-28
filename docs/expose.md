@@ -156,7 +156,7 @@ each replica set Pod with a set of DNS URIs for external usage. This allows to
 communicate with replica set Pods both from inside the Kubernetes cluster and
 from outside of Kubernetes.
 
-Split-horizon can be configured via the `replset.horizons` subsection in the
+Split-horizon can be configured via the `replset.splitHorizons` subsection in the
 Custom Resource options. Set it in the `deploy/cr.yaml` configuration file as
 follows:
 
@@ -167,7 +167,7 @@ follows:
         expose:
           enabled: true
           exposeType: LoadBalancer
-        horizons:
+        splitHorizons:
           cluster1-rs0-0:
             external: rs0-0.mycluster.xyz
             external-2: rs0-0.mycluster2.xyz
