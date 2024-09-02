@@ -36,10 +36,10 @@ Log archives older than 24 hours are automatically deleted.
 * {{ k8spsmdbjira(994) }}: Fix a bug where it wasn't possible to create a new cluster with splitHorizon enabled, leaving the only way to enable it later on the running cluster
 * {{ k8spsmdbjira(1105) }}: The memory requests and limits for backups were increased in the `deploy/cr.yaml` configuration file exapmle to reflect the Percona Backup for MongoDB minimal pbm-agents requirement of 1 Gb RAM needed for stable operation
 * {{ k8spsmdbjira(1074) }}: Fix a bug where MongoDB Cluster could not failover in case of all Pods downtime and `exposeType` Custom Resource option set to either `NodePort` or `LoadBalancer`
-* {{ k8spsmdbjira(1089) }}: Fix a bug where it was impossible to delet a cluster in error state with finalizers present
+* {{ k8spsmdbjira(1089) }}: Fix a bug where it was impossible to delete a cluster in error state with finalizers present
 * {{ k8spsmdbjira(1092) }}: Big databases restore is not easy to investigate and causing OOM for big chunks
-* {{ k8spsmdbjira(1094) }}: operator tries to set FCV even if not doing major upgrade
-* {{ k8spsmdbjira(1103) }}: Broken MongoDB cluster after scaling down if Pods are deleted before memberships are updated
+* {{ k8spsmdbjira(1094) }}: Fix a bug where it wasn't possible to create a new cluster with `upgradeOptions.setFCV` Custom Resource option set to `true`
+* {{ k8spsmdbjira(1103) }}: Broken MongoDB cluster after scaling down if Pods are deleted before memberships are updated **CHECK WHAT'S DONE**
 * {{ k8spsmdbjira(1108) }}: The new Custom Resource option allows setting custom containerSecurityContext for PMM containers **IMPROVEMENT**
 * {{ k8spsmdbjira(1110) }}: Fix a bug where nil Custom Resource annotations were causing the Operator panic
 
