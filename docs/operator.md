@@ -1266,6 +1266,15 @@ Address of the PMM Server to collect data from the Cluster.
 | ----------- | ---------- |
 | :material-code-string: string     | `monitoring-service` |
 
+### `pmm.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+
 ### `pmm.mongodParams`
 
 Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` Pods.
