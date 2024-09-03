@@ -10,6 +10,10 @@
 
 ## Release Highlights
 
+### User management in Custom Resource
+
+**ToDo**
+
 ### Liveness check improvements
 
 Several improvements in logging were made related to the liveness checks, to allow getting more information for debug, and to make these logs persist on failures to allow further examination.
