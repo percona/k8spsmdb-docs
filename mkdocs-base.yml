@@ -147,14 +147,14 @@ extra: # Used in main.html template and can't be externalized
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
   release: '1.17.0'
-  apiversion: '1'  
-  mongodb70recommended: '7.0.8-5'
-  mongodb60recommended: '6.0.15-12'
-  mongodb50recommended: '5.0.26-22'
-  pmm2recommended: '2.41.2'
+  apiversion: '1'
+  mongodb70recommended: '7.0.12-7'
+  mongodb60recommended: '6.0.16-13'
+  mongodb50recommended: '5.0.28-24'
+  pmm2recommended: '2.42.0'
   gkerecommended: '1.29'
-  certmanagerrecommended: '1.14.5'
-  pbmrecommended: '2.4.1'
+  certmanagerrecommended: '1.15.3'
+  pbmrecommended: '2.5.0'
   version:
     provider: mike
 
