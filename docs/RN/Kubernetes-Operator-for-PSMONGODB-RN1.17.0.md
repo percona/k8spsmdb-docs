@@ -1,8 +1,8 @@
-# *Percona Operator for MongoDB* 1.16.2
+# *Percona Operator for MongoDB* 1.17.0
 
 * **Date**
 
-    September XX, 2024
+    September 09, 2024
 
 * **Installation**
 
@@ -30,7 +30,7 @@ users:
       db: admin
 ```
 
-Se [documentation](users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
+See [documentation](users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
 !!! note
 
@@ -47,20 +47,20 @@ Log archives older than 24 hours are automatically deleted.
 
 ## New Features
 
-* {{ k8spsmdbjira(919) }}:  The Operator now checks if the needed Secrets exist and connects to the storage to check the validify of credentials and the existence of a backup before starting the restore process
+* {{ k8spsmdbjira(919) }}:  The Operator now checks if the needed Secrets exist and connects to the storage to check the validity of credentials and the existence of a backup before starting the restore process
 
 ## Improvements
 
 * {{ k8spsmdbjira(253) }}: Creating users in Percona Operator for MongoDB
 * {{ k8spsmdbjira(899) }}: Add Labels for all Kubernetes objects created by Operator (backups/restores, Secrets, Volumes, etc.) to make them clearly distinguishable
-* {{ k8spsmdbjira(934) }}: Liveness checks are providing more debug infromation and keep separate log archives for each failure with the 24 hours retention
+* {{ k8spsmdbjira(934) }}: Liveness checks are providing more debug information and keep separate log archives for each failure with the 24 hours retention
 * {{ k8spsmdbjira(1057) }}: Finalizers were renamed to contain fully qualified domain names (FQDNs), avoiding potential conflicts with other finalizer names in the same Kubernetes environmentAdd domain-qualified finalizer names
 
 ## Bugs Fixed
 
 * {{ k8spsmdbjira(925) }}: Fix a bug where the Operator generated "failed to start balancer" and "failed to get mongos connection" log messages when using Mongos with servicePerPod and LoadBalancer services, while the cluster was operating properly
 * {{ k8spsmdbjira(994) }}: Fix a bug where it wasn't possible to create a new cluster with splitHorizon enabled, leaving the only way to enable it later on the running cluster
-* {{ k8spsmdbjira(1105) }}: The memory requests and limits for backups were increased in the `deploy/cr.yaml` configuration file exapmle to reflect the Percona Backup for MongoDB minimal pbm-agents requirement of 1 Gb RAM needed for stable operation
+* {{ k8spsmdbjira(1105) }}: The memory requests and limits for backups were increased in the `deploy/cr.yaml` configuration file example to reflect the Percona Backup for MongoDB minimal pbm-agents requirement of 1 Gb RAM needed for stable operation
 * {{ k8spsmdbjira(1074) }}: Fix a bug where MongoDB Cluster could not failover in case of all Pods downtime and `exposeType` Custom Resource option set to either `NodePort` or `LoadBalancer`
 * {{ k8spsmdbjira(1089) }}: Fix a bug where it was impossible to delete a cluster in error state with finalizers present
 * {{ k8spsmdbjira(1092) }}: Big databases restore is not easy to investigate and causing OOM for big chunks
