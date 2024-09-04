@@ -12,63 +12,20 @@ considered separately in the following sections.
 ## Unprivileged users
 
 There are no unprivileged (general purpose) user accounts created by
-default. If you need general purpose users, please run commands below,
-substituting the `<namespace name>` placeholder with the real namespace
-of your database cluster:
+default.
 
-=== "if sharding is on"
-    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
-    mongodb@percona-client:/$
-    $ mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-    rs0:PRIMARY> db.createUser({
-        user: "myApp",
-        pwd: "myAppPassword",
-        roles: [
-          { db: "myApp", role: "readWrite" }
-        ],
-        mechanisms: [
-           "SCRAM-SHA-1"
-        ]
-    })
-    ```
+Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource. With previous versions custom users [had to be created manually](users_create_manually.md).
 
-    Now check the newly created user:
+Users can be customized in `spec.users` section in the Custom Resource. Section can be changed at the cluster creation time and adjusted over time. Note the following:
 
-    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
-    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-    rs0:PRIMARY> use myApp
-    rs0:PRIMARY> db.test.insert({ x: 1 })
-    rs0:PRIMARY> db.test.findOne()
-    ```
-
-=== "if sharding is off"
-    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
-    mongodb@percona-client:/$
-    $ mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-    rs0:PRIMARY> db.createUser({
-        user: "myApp",
-        pwd: "myAppPassword",
-        roles: [
-          { db: "myApp", role: "readWrite" }
-        ],
-        mechanisms: [
-           "SCRAM-SHA-1"
-        ]
-    })
-    ```
-
-    Now check the newly created user:
-
-    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
-    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-    rs0:PRIMARY> use myApp
-    rs0:PRIMARY> db.test.insert({ x: 1 })
-    rs0:PRIMARY> db.test.findOne()
-    ```
+- If `spec.users` is set during the cluster creation, the Operator will not create any default users. If you want additional databases, you will need to specify them.
+- For each user added in `spec.users`, the Operator will create a Secret of the `<clusterName>-pguser-<userName>` format (such default Secret naming can be altered for the user with the `spec.users.secretName` option). This Secret will contain the user credentials.
+- If no databases are specified, `dbname` and `uri` will not be present in the Secret.
+- If at least one option under the `spec.users.databases` is specified, the first database in the list will be populated into the connection credentials.
+- The Operator does not automatically drop users in case of removed Custom Resource options to prevent accidental data loss.
+- Similarly, to prevent accidental data loss Operator does not automatically drop databases (see how to actually drop a database [here](users.md#deleting-users-and-databases)).
+- Role attributes are not automatically dropped if you remove them. You need to set the inverse attribute to actually drop them (e.g. `NOSUPERUSER`).
+- The special `postgres` user can be added as one of the custom users; however, the privileges of this user cannot be adjusted.
 
 ## System Users
 
@@ -131,7 +88,7 @@ the `mongos` service until this cycle finishes.
     
     ??? example "gen_users.sh"
     
-        ``` bash
+        ``` {.bash data-prompt="$"}
         clusterAdminPass="clusterAdmin"
         userAdminPass="userAdmin"
         clusterMonitorPass="clusterMonitor"
@@ -211,13 +168,13 @@ following command:
 
 === "in Linux"
 
-    ```bash
+    ``` {.bash data-prompt="$"}
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
     ```
 
 === "in macOS"
 
-    ```bash
+    ``` {.bash data-prompt="$"}
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
     ```
 
@@ -262,9 +219,9 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 | MONGODB_CLUSTER_MONITOR_PASSWORD | clusterMonitor123456 |
 | MONGODB_USER_ADMIN_USER          | userAdmin            |
 | MONGODB_USER_ADMIN_PASSWORD      | userAdmin123456      |
+| PMM_SERVER_API_KEY               | apikey               |
 | PMM_SERVER_USER                  | admin                |
 | PMM_SERVER_PASSWORD              | admin                |
-| PMM_SERVER_API_KEY               | apikey               |
 
 !!! warning
 

@@ -4,6 +4,7 @@ mkdocs-exclude
 markdown-include
 mkdocs-material
 mkdocs-with-pdf
+mkdocs-print-site-plugin
 mkdocs-git-revision-date-plugin
 mkdocs-material-extensions
 mkdocs-bootstrap-tables-plugin
