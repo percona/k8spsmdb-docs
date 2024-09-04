@@ -13,7 +13,7 @@
 ### User management in Custom Resource
 
 Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](users.md#unprivileged-users) via the `users` subsection in the Custom Resource. 
-You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user's password) and as well as MongoDB roles on various databases which should be assigned to this user: 
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user's password), as well as MongoDB roles on various databases which should be assigned to this user: 
 
 ``` {.bash data-prompt="$"}
 ...
