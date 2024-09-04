@@ -12,7 +12,29 @@
 
 ### User management in Custom Resource
 
-**ToDo**
+Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](users.md#unprivileged-users) via the `users` subsection in the Custom Resource. 
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user's password) and as well as MongoDB roles on various databases which should be assigned to this user: 
+
+``` {.bash data-prompt="$"}
+...
+users:
+- name: my-user
+  db: admin
+  passwordSecretRef: 
+    name: my-user-password
+    key: my-user-password-key
+  roles:
+    - name: clusterAdmin
+      db: admin
+    - name: userAdminAnyDatabase
+      db: admin
+```
+
+Se [documentation](users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
+
+!!! note
+
+    Declarative user management has technical preview status and is not yet recommended for production environments.
 
 ### Liveness check improvements
 
