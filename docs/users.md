@@ -11,10 +11,61 @@ considered separately in the following sections.
 
 ## Unprivileged users
 
-There are no unprivileged (general purpose) user accounts created by
-default. If you need general purpose users, please run commands below,
-substituting the `<namespace name>` placeholder with the real namespace
-of your database cluster:
+The Operator does not create unprivileged (general purpose) user accounts by default.
+There are two ways to create general purpose users:
+
+* manual creation of custom MongoDB users,
+* automated users creation via Custom Resource (Operator versions 1.17.0 and newer).
+
+### Create users in the Custom Resource
+
+Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource.
+
+!!! warning
+
+    Declarative user management has technical preview status and is not yet recommended for production environments.
+
+You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
+
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, a reference to a key in a Secret resource containing user's password, as well as MongoDB roles on various databases which should be assigned to this user. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+
+``` {.bash data-prompt="$"}
+...
+users:
+  - name: my-user
+    db: admin
+    passwordSecretRef: 
+      name: my-user-password
+    roles:
+      - name: clusterAdmin
+        db: admin
+      - name: userAdminAnyDatabase
+        db: admin
+```
+
+The Secret mentioned in the `users.passwordSecretRef.name` option should look as follows:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-user-password
+type: Opaque
+stringData:
+  password: mypassword
+```
+
+Note the following limitations of the current declarative user management implementation:
+
+* The user is not automatically updated after `users.user.roles` are changed,
+* The new user is not created when the `users.user.db` is updated,
+* If the user created using Custom Resource is manually deleted in the database, it is not recreated (neither automatically, nor after Custom Resource manifest re-apply).
+* If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
+* If the user was created via Custom Resource and then manually updated directly in the database, Custom Resource config prevails, and the user is updated according to the Custom Resource.
+
+### Create users manually
+
+You can create unprivileged users manually. Please run commands below, substituting the `<namespace name>` placeholder with the real namespace of your database cluster:
 
 === "if sharding is on"
     ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}

@@ -2023,6 +2023,58 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
 
+## <a name="operator-users-section"></a>Users section
+
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-in-the-custom-resource).
+
+### `users.name`
+
+The username of the MongoDB user.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `my-user` |
+
+### `users.db`
+
+Database that the user authenticates against.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `admin` |
+
+### `users.passwordSecretRef.name`
+
+Name of the secret that contains the user's password.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `my-user-password` |
+
+### `users.passwordSecretRef.key`
+
+Key in the secret that corresponds to the value of the user's password. Defaults to `password`.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `password` |
+
+### `users.roles.role.name`
+
+Name of the MongoDB role assigned to the user. As [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles), so [custom roles](https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/docs/deploy-configure.md#define-a-custom-database-role) are supported.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `clusterAdmin` |
+
+### `users.roles.role.db`
+
+Database that the MongoDB role applies to.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `admin` |
+
 ## <a name="operator-backup-section"></a>Backup Section
 
 The `backup` section in the
