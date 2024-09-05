@@ -400,7 +400,7 @@ a cluster named `cluster1`:
 
     !!! note
 
-        you may need to make sure that [`finalizers.delete-psmdb-pvc` is not set](operator.md)
+        you may need to make sure that [`finalizers.percona.com/delete-psmdb-pvc` is not set](operator.md#metadata)
         if you want to preserver Persistent Volumes with the data.
 
     Deletion command should look as follows:

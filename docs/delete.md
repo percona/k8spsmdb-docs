@@ -13,12 +13,12 @@ To delete the database cluster means to delete the Custom Resource associated wi
 
 !!! note
 
-    There are two [finalizers  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which define whether to delete or preserve  TLS-related objects and data volumes when the cluster is deleted.
+    There are two [finalizers  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which are related to cluster deletion:
 
-    * `finalizers.percona.com/delete-ssl`: if present, objects, created for SSL (Secret, certificate, and issuer) are deleted along with the cluster deletion.
-    * `finalizers.percona.com/delete-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
+    * `percona.com/delete-psmdb-pods-in-order`: if present, ensures the proper Pods deletion order at cluster deletion (on by default).
+    * `finalizers.percona.com/delete-psmdb-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
 
-    Both finalizers are off by default in the `deploy/cr.yaml` configuration file, and this allows you to recreate the cluster without losing data, credentials for the system users, etc. You can always [delete TLS-related objects and PVCs manually](#clean-up-resources), if needed. 
+    Second one is off by default in the `deploy/cr.yaml` configuration file, which allows you to recreate the cluster without losing data. Also, you can [delete TLS-related objects and PVCs manually](#clean-up-resources), if needed. 
 
 The steps are the following:
 {.power-number}
