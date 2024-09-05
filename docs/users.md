@@ -103,18 +103,15 @@ configuration file.
 **Password-based authorization method for PMM is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
 
 * Backup/Restore - MongoDB Role: [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+ [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [readWrite :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWrite), [pbmAnyAction :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/install/configure-authentication.html)
 
-* Cluster Admin - MongoDB Roles: [clusterAdmin  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
+* Cluster Admin - MongoDB Roles: [clusterAdmin :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
-* Cluster Monitor - MongoDB Role: [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Cluster Monitor - MongoDB Role: [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [read (on the `local` database):octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read), [explainRole :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/setting-up/client/mongodb.html#create-roles-with-privileges-for-backups-and-qan)
 
-* Database Admin - MongoDB Roles: [readWriteAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Database Admin - MongoDB Roles: [readWriteAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup), [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* User Admin - MongoDB Role: [userAdmin  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
+* User Admin - MongoDB Role: [userAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdminAnyDatabase)
 
 If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
 Pods will go into restart cycle, and the cluster can be not accessible through
