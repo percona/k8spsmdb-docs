@@ -2053,7 +2053,7 @@ Name of the secret that contains the user's password.
 
 ### `users.passwordSecretRef.key`
 
-Key in the secret that corresponds to the value of the user's password. Defaults to `password`.
+Key in the secret that corresponds to the value of the user's password.
 
 | Value type | Example |
 | ---------- | ------- |

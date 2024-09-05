@@ -27,7 +27,7 @@ Starting from the Operator version 1.17.0 declarative creation of custom MongoDB
 
 You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
 
-You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, a reference to a key in a Secret resource containing user's password, as well as MongoDB roles on various databases which should be assigned to this user. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, a reference to a key in some Secret resource that contains user's password, as well as MongoDB roles on various databases which should be assigned to this user. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
 
 ``` {.bash data-prompt="$"}
 ...
@@ -36,6 +36,7 @@ users:
     db: admin
     passwordSecretRef: 
       name: my-user-password
+      key: password
     roles:
       - name: clusterAdmin
         db: admin
@@ -55,6 +56,8 @@ stringData:
   password: mypassword
 ```
 
+The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed.
+
 Note the following limitations of the current declarative user management implementation:
 
 * The user is not automatically updated after `users.user.roles` are changed,
@@ -62,6 +65,7 @@ Note the following limitations of the current declarative user management implem
 * If the user created using Custom Resource is manually deleted in the database, it is not recreated (neither automatically, nor after Custom Resource manifest re-apply).
 * If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
 * If the user was created via Custom Resource and then manually updated directly in the database, Custom Resource config prevails, and the user is updated according to the Custom Resource.
+* If the user name is changed in the Custom Resource, the new user will be created, and the old one will stay in the database and should be removed manually.
 
 ### Create users manually
 
