@@ -64,7 +64,6 @@ Note the following limitations of the current declarative user management implem
 * The new user is not created when the `users.user.db` is updated,
 * If the user created using Custom Resource is manually deleted in the database, it is not recreated (neither automatically, nor after Custom Resource manifest re-apply).
 * If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
-* If the user was created via Custom Resource and then manually updated directly in the database, Custom Resource config prevails, and the user is updated according to the Custom Resource.
 * If the user name is changed in the Custom Resource, the new user will be created, and the old one will stay in the database and should be removed manually.
 
 ### Create users manually
