@@ -43,14 +43,14 @@ Logs older than 24 hours are automatically deleted.
 
 ## New Features
 
-* {{ k8spsmdbjira(919) }}:  The Operator now checks if the needed Secrets exist and connects to the storage to check the validity of credentials and the existence of a backup before starting the restore process
+* {{ k8spsmdbjira(919) }}: The Operator now checks if the needed Secrets exist and connects to the storage to check the validity of credentials and the existence of a backup before starting the restore process
+* {{ k8spsmdbjira(253) }}: It is now possible to create and manage users via the Custom Resource 
 
 ## Improvements
 
-* {{ k8spsmdbjira(253) }}: Creating users in Percona Operator for MongoDB
 * {{ k8spsmdbjira(899) }}: Add Labels for all Kubernetes objects created by Operator (backups/restores, Secrets, Volumes, etc.) to make them clearly distinguishable
-* {{ k8spsmdbjira(934) }}: Liveness checks are providing more debug information and keep separate log archives for each failure with the 24 hours retention
-* {{ k8spsmdbjira(1057) }}: Finalizers were renamed to contain fully qualified domain names (FQDNs), avoiding potential conflicts with other finalizer names in the same Kubernetes environmentAdd domain-qualified finalizer names
+* {{ k8spsmdbjira(934) }}: Liveness checks are providing more debug information and keeping separate log archives for each failure with the 24 hours retention
+* {{ k8spsmdbjira(1057) }}: Finalizers were renamed to contain fully qualified domain names (FQDNs), avoiding potential conflicts with other finalizer names in the same Kubernetes environment
 
 ## Bugs Fixed
 
