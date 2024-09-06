@@ -143,8 +143,8 @@ If you have [installed the Operator on the OpenShift platform using OLM](openshi
 
 1. List installed Operators for your Namespace to see if there are upgradable items.
 
-   ![image](assets/images/olm4.svg)
-   
+    ![image](assets/images/olm4.svg)
+
 2. Click the "Upgrade available" link to see upgrade details, then click "Preview InstallPlan" button, and finally "Approve" to upgrade the Operator.
 
 ## Upgrading Percona Server for MongoDB
