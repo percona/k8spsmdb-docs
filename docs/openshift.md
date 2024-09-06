@@ -11,7 +11,31 @@ Installing Percona Server for MongoDB on OpenShift includes two steps:
 
 ## Install the Operator
 
-You can install Percona Operator for MongoDB on OpenShift using the [Red Hat Marketplace  :octicons-link-external-16:](https://marketplace.redhat.com) web interface or using the command line interface.
+You can install Percona Operator for MongoDB on OpenShift using the web interface (the [Operator Lifecycle Manager :octicons-link-external-16:](https://docs.redhat.com/en/documentation/openshift_container_platform/4.2/html/operators/understanding-the-operator-lifecycle-manager-olm#olm-overview_olm-understanding-olm) or [Red Hat Marketplace :octicons-link-external-16:](https://marketplace.redhat.com)), or using the command line interface.
+
+### Install the Operator via the Operator Lifecycle Manager (OLM)
+
+Operator Lifecycle Manager (OLM) is a part of the [Operator Framework :octicons-link-external-16:](https://github.com/operator-framework) that allows you to install, update, and manage the Operators lifecycle on the OpenShift platform.
+
+Following steps will allow you to deploy the Operator and Percona Server for MongoDB on your OLM installation:
+
+1. Login to the OLM and click the needed Operator on the OperatorHub:
+
+    ![image](assets/images/olm1.svg)
+
+    Then click "Contiune", and "Install".
+
+2. A new page will allow you to choose the Operator version and the Namespace / OpenShift project you would like to install the Operator into. 
+
+    ![image](assets/images/olm1.svg)
+    
+    Click "Install" button to actually install the Operator.
+
+3. When the installation finishes, you can deploy your MongoDB cluster. In the "Operator Details" you will see Provided APIs (Custom Resources, available for installation). Click "Create instance" for the `PerconaServerMongoDB` Custom Resource. 
+
+    ![image](assets/images/olm3.svg)
+    
+    You will be able to edit manifest with the Custom Resource options, and then click "Create" to actually create your database cluster.
 
 ### Install the Operator via the Red Hat Marketplace
 
