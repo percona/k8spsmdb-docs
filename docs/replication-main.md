@@ -52,7 +52,7 @@ $ kubectl apply -f deploy/cr.yaml
 
 !!! note
 
-    Don't forget to [expose instances of the Main cluster](replication.md#exposing-instances-of-the-mongodb-cluster)!
+    Don't forget to [expose instances of the Main cluster](replication.md#controlling-hostnames-in-replset-configuration)!
 
 ## Getting the cluster secrets and certificates to be copied from Main to Replica
 
