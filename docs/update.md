@@ -137,6 +137,16 @@ Operator with the `helm upgrade` command.
 
     You can use `helm upgrade` to upgrade the Operator only. The Database (Percona Server for MongoDB) should be upgraded in the same way whether you used helm to install it or not.
 
+### Upgrade via Operator Lifecycle Manager (OLM)
+
+If you have [installed the Operator on the OpenShift platform using OLM](openshift.md#install-the-operator-via-the-operator-lifecycle-manager-olm), you can upgrade the Operator within it.
+
+1. List installed Operators for your Namespace to see if there are upgradable items.
+
+   ![image](assets/images/olm4.svg)
+   
+2. Click the "Upgrade available" link to see upgrade details, then click "Preview InstallPlan" button, and finally "Approve" to upgrade the Operator.
+
 ## Upgrading Percona Server for MongoDB
 
 The following section presumes that you are upgrading your cluster within the

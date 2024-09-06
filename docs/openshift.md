@@ -19,7 +19,7 @@ Operator Lifecycle Manager (OLM) is a part of the [Operator Framework :octicons-
 
 Following steps will allow you to deploy the Operator and Percona Server for MongoDB on your OLM installation:
 
-1. Login to the OLM and click the needed Operator on the OperatorHub:
+1. Login to the OLM and click the needed Operator on the OperatorHub page:
 
     ![image](assets/images/olm1.svg)
 
@@ -27,7 +27,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
 
 2. A new page will allow you to choose the Operator version and the Namespace / OpenShift project you would like to install the Operator into. 
 
-    ![image](assets/images/olm1.svg)
+    ![image](assets/images/olm2.svg)
     
     Click "Install" button to actually install the Operator.
 
@@ -35,7 +35,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
 
     ![image](assets/images/olm3.svg)
     
-    You will be able to edit manifest with the Custom Resource options, and then click "Create" to actually create your database cluster.
+    You will be able to edit manifest to set needed Custom Resource options, and then click "Create" button to deploy your database cluster.
 
 ### Install the Operator via the Red Hat Marketplace
 
