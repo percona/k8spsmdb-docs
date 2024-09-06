@@ -50,6 +50,10 @@ The _Main_ site will be ready for replication when you apply changes as usual:
 $ kubectl apply -f deploy/cr.yaml
 ```
 
+!!! note
+
+    Don't forget to [expose instances of the Main cluster](replication.md#exposing-instances-of-the-mongodb-cluster)!
+
 ## Getting the cluster secrets and certificates to be copied from Main to Replica
 
 _Main_ and _Replica_ should have same Secrets objects (to have same users
