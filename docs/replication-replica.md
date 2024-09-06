@@ -51,4 +51,4 @@ $ kubectl apply -f deploy/cr.yaml
 
 !!! note
 
-    Don't forget that you need to [expose instances of the Replica cluster](replication.md#exposing-instances-of-the-mongodb-cluster)!
+    Don't forget that you need to [expose instances of the Replica cluster](replication.md#controlling-hostnames-in-replset-configuration)!
