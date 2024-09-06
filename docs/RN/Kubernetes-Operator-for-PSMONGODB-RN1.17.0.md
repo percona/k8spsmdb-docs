@@ -10,10 +10,10 @@
 
 ## Release Highlights
 
-### User management in Custom Resource
+### Declarative user management (technical preview)
 
 Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](users.md#unprivileged-users) via the `users` subsection in the Custom Resource. 
-You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user's password), as well as MongoDB roles on various databases which should be assigned to this user: 
+You can specify a new user in `deploy/cr.yaml` manifest, setting the user's login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user's password), as well as MongoDB roles on various databases which should be assigned to this user: 
 
 ``` {.bash data-prompt="$"}
 ...
@@ -32,18 +32,14 @@ users:
 
 See [documentation](users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
-!!! note
-
-    Declarative user management has technical preview status and is not yet recommended for production environments.
-
 ### Liveness check improvements
 
 Several improvements in logging were made related to the liveness checks, to allow getting more information for debug, and to make these logs persist on failures to allow further examination.
 
-Liveness check logs are stored in the `/data/db/mongod-data/logs/mongodb-healthcheck.log` file, which can be [accessed in the correspondent Pod](../debug-shell.md) if needed. Starting from now, Liveness check generates mover log messages, and the default log level is set to `DEBUG`.
+Liveness check logs are stored in the `/data/db/mongod-data/logs/mongodb-healthcheck.log` file, which can be [accessed in the corresponding Pod](../debug-shell.md) if needed. Starting from now, Liveness check generates more log messages, and the default log level is set to `DEBUG`.
 
 Each time the health check fails, the current log is saved to a gzip compressed file named `mongodb-healthcheck-<timestamp>.log.gz`, and the `mongodb-healthcheck.log` log file is reset.
-Log archives older than 24 hours are automatically deleted.
+Logs older than 24 hours are automatically deleted.
 
 ## New Features
 
@@ -71,7 +67,7 @@ Log archives older than 24 hours are automatically deleted.
 
 ## Deprecation, Rename and Removal
 
-Finalizers were renamed to contain fully qualified domain names.
+Finalizers were renamed to contain fully qualified domain names to comply with the Kubernetes standards.
 
 * `PerconaServerMongoDB` Custom Resource:
     * `delete-psmdb-pods-in-order` finalizer renamed to `percona.com/delete-psmdb-pods-in-order`
