@@ -80,7 +80,7 @@ Also, you need to configure AWS CLI with your credentials according to the
     
         Clone the repository with all manifests and source code by executing the following command:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
@@ -105,7 +105,7 @@ Also, you need to configure AWS CLI with your credentials according to the
 
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply --server-side -f deploy/bundle.yaml
         ```       
 
@@ -140,13 +140,13 @@ Also, you need to configure AWS CLI with your credentials according to the
 
             This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
             ```
 
             After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ kubectl apply -f deploy/cr.yaml
             ```
 
@@ -170,7 +170,7 @@ Also, you need to configure AWS CLI with your credentials according to the
 
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
 

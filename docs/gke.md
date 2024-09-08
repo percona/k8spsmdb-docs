@@ -114,7 +114,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
     
         Clone the repository with all manifests and source code by executing the following command:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
@@ -139,7 +139,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply --server-side -f deploy/bundle.yaml
         ```       
 

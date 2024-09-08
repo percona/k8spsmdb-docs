@@ -83,7 +83,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     
         Clone the repository with all manifests and source code by executing the following command:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
@@ -108,7 +108,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply --server-side -f deploy/bundle.yaml
         ```       
 
@@ -143,13 +143,13 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
             This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
             ```
 
             After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ kubectl apply -f deploy/cr.yaml
             ```
 
@@ -173,7 +173,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
 
