@@ -174,13 +174,13 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
             This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
             ```
 
             After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-            {.bash data-prompt="$" }
+            ``` {.bash data-prompt="$" }
             $ kubectl apply -f deploy/cr.yaml
             ```
 
@@ -204,7 +204,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
-        {.bash data-prompt="$" }
+        ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
 
