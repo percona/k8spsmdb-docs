@@ -152,7 +152,7 @@ Also, you need to configure AWS CLI with your credentials according to the
 
     === "For ARM64 architecture"
     
-        Edit the `deploy/cr.yaml` file: set the following [affinity rules](constraints.md#affinity-and-anti-affinity) in **all** `affinity` subsections:
+        Edit the `deploy/cr.yaml` file: set the following [affinity rules](constraints.md#affinity-and-anti-affinity) in **all `affinity` subsections**:
 
         ```yaml hl_lines="2-11"
         ....

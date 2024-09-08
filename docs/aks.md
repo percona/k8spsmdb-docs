@@ -155,7 +155,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
     === "For ARM64 architecture"
     
-        Edit the `deploy/cr.yaml` file: set the following [affinity rules](constraints.md#affinity-and-anti-affinity) in **all** `affinity` subsections:
+        Edit the `deploy/cr.yaml` file: set the following [affinity rules](constraints.md#affinity-and-anti-affinity) in **all `affinity` subsections**:
 
         ```yaml hl_lines="2-11"
         ....
