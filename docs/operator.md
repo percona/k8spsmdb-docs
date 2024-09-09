@@ -2146,7 +2146,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `100m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `backup.resources.limits.memory`
 
@@ -2154,7 +2154,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `0.2G`     |
+| :material-code-string: string     | `1.2G`     |
 
 ### `backup.resources.requests.cpu`
 
@@ -2162,7 +2162,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `100m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `backup.resources.requests.memory`
 
@@ -2170,7 +2170,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `0.1G`     |
+| :material-code-string: string     | `1G`     |
 
 ### 'backup.containerSecurityContext'
 
