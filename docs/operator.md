@@ -838,6 +838,22 @@ The number of [Replica Set non-voting instances](arbiter.md#adding-non-voting-no
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `1`        |
 
+### `replsets.nonvoting.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.nonvoting.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
