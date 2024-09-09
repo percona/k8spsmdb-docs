@@ -30,7 +30,7 @@ Platforms:
 
 | Operator | [GKE  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine)         | [EKS  :octicons-link-external-16:](https://aws.amazon.com)         | [Openshift  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)                          |
 |:--------|:------------|:------------|:------------|:------------|:----------------------------------|
-| [1.17.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md) | 1.27 - 1.29 | 1.28 - 1.30 | 4.13.48 - 4.16.9 | 1.28 - 1.30 | 1.33.1 |
+| [1.17.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md) | 1.27 - 1.30 | 1.28 - 1.30 | 4.13.48 - 4.16.9 | 1.28 - 1.30 | 1.33.1 |
 | [1.16.2](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
 | [1.16.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
 | [1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md) | 1.26 - 1.29 | 1.26 - 1.29 | 4.12.56 - 4.15.11 | 1.27 - 1.29 | 1.33 |
