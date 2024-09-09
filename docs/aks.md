@@ -108,7 +108,7 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
         Also, set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
         
-        ```yaml hl_lines="2,6"
+        ```yaml
         ...
         image: percona/percona-server-mongodb:{{ mongodb70recommended }}-multi
         ...
