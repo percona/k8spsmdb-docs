@@ -168,6 +168,17 @@ Also, you need to configure AWS CLI with your credentials according to the
                     - arm64
         ```
 
+        Also, set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
+        
+        ```yaml hl_lines="2,6"
+        ...
+        image: percona/percona-server-mongodb:{{ mongodb70recommended }}-multi
+        ...
+        backup:
+          ...
+          image: percona/percona-backup-mongodb:{{ pbmrecommended }}-multi
+        ```
+
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
         ``` {.bash data-prompt="$" }

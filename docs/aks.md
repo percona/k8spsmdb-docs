@@ -106,6 +106,17 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
                               - arm64
         ```
 
+        Also, set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
+        
+        ```yaml hl_lines="2,6"
+        ...
+        image: percona/percona-server-mongodb:{{ mongodb70recommended }}-multi
+        ...
+        backup:
+          ...
+          image: percona/percona-backup-mongodb:{{ pbmrecommended }}-multi
+        ```
+
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
 
         ``` {.bash data-prompt="$" }
