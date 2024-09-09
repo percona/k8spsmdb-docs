@@ -19,6 +19,11 @@ spec:
     mode: preferTLS
 ```
 
+* `allowTLS` means that both TLS and non-TLS incoming connections are accepted, but server doesn't use TLS internally,
+* `preferTLS` turns on TLS for internal communication, and allows both TLS and non-TLS external traffic,
+* `requireTLS` **enforces** the use of TLS encrypted connections only,
+* `disabled` completely [turns TLS off](#run-percona-server-for-mongodb-without-tls).
+
 Certificates for TLS security can be generated in several ways. By default, the
 Operator generates long-term certificates automatically if there are no
 certificate secrets available.
@@ -42,6 +47,8 @@ You can also use pre-generated certificates available in the
 
 The following subsections explain how to configure TLS security with the
 Operator yourself, as well as how to temporarily disable it if needed.
+
+Please note that you will need to additionally configure your client application if you are going to use TLS for external traffic. See [this blog post :octicons-link-external-16:](https://www.percona.com/blog/authenticating-your-clients-to-mongodb-on-kubernetes-using-x509-certificates/) for detailed instruction with examples. Also, you can check the [official MongoDB documentation :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/configure-ssl-clients/). For clients outside of your Kubernetes-based environment, don't forget about [exposing your cluster](expose.md).
 
 ## Install and use the *cert-manager*
 
@@ -99,7 +106,7 @@ you will find that they are valid and short-term.
 
 !!! warning
 
-    Using manually generated certificates doesn't work in the Operator version 1.16.0. Check the [bug K8SPSMDB-1101](https://perconadev.atlassian.net/browse/K8SPSMDB-1101) for updates.
+    Using manually generated certificates didn't work in the Operator version 1.16.0. The problem is fixed starting from the version 1.16.1.
 
 To generate certificates manually, follow these steps:
 
@@ -119,6 +126,7 @@ be added to the `spec.secrets.ssl` key of the `deploy/cr.yaml` file. A
 certificate generated for internal communications must be added to the
 `spec.secrets.sslInternal` key of the `deploy/cr.yaml` file.
 
+You can explore pre-generated / development mode sample certificates available as base64-encoded data in the `deploy/ssl-secrets.yaml` file. Also, check MongoDB certificate requirements in the [upstream documentation :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/configure-ssl/#member-certificate-requirements).
 
 !!! note
 
@@ -129,87 +137,200 @@ certificate generated for internal communications must be added to the
 Supposing that your cluster name is `my-cluster-name`, the instructions to
 generate certificates manually are as follows:
 
-``` {.bash data-prompt="$" }
-$ CLUSTER_NAME=my-cluster-name
-$ NAMESPACE=default
-$ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
-  {
-    "CN": "Root CA",
-    "names": [
+=== "if sharding is off"
+    ``` {.bash data-prompt="$" }
+    $ CLUSTER_NAME=my-cluster-name
+    $ NAMESPACE=default
+    $ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
       {
-        "O": "PSMDB"
+        "CN": "Root CA",
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
       }
-    ],
-    "key": {
-      "algo": "rsa",
-      "size": 2048
-    }
-  }
-EOF
-
-$ cat <<EOF > ca-config.json
-  {
-    "signing": {
-      "default": {
-        "expiry": "87600h",
-        "usages": ["signing", "key encipherment", "server auth", "client auth"]
-      }
-    }
-  }
-EOF
-
-$ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
-  {
-    "hosts": [
-      "localhost",
-      "${CLUSTER_NAME}-rs0",
-      "${CLUSTER_NAME}-rs0.${NAMESPACE}",
-      "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
-      "*.${CLUSTER_NAME}-rs0",
-      "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
-      "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local"
-    ],
-    "names": [
+    EOF
+    
+    $ cat <<EOF > ca-config.json
       {
-        "O": "PSMDB"
+        "signing": {
+          "default": {
+            "expiry": "87600h",
+            "usages": ["signing", "key encipherment", "server auth", "client auth"]
+          }
+        }
       }
-    ],
-    "CN": "${CLUSTER_NAME/-rs0}",
-    "key": {
-      "algo": "rsa",
-      "size": 2048
-    }
-  }
-EOF
-$ cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
-
-$ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
-
-$ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
-  {
-    "hosts": [
-      "${CLUSTER_NAME}-rs0",
-      "${CLUSTER_NAME}-rs0.${NAMESPACE}",
-      "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
-      "*.${CLUSTER_NAME}-rs0",
-      "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
-      "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local"
-    ],
-    "names": [
+    EOF
+    
+    $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
       {
-        "O": "PSMDB"
+        "hosts": [
+          "localhost",
+          "${CLUSTER_NAME}-rs0",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-rs0",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local"
+        ],
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "CN": "${CLUSTER_NAME/-rs0}",
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
       }
-    ],
-    "CN": "${CLUSTER_NAME/-rs0}",
-    "key": {
-      "algo": "rsa",
-      "size": 2048
-    }
-  }
-EOF
+    EOF
+    $ cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
+    
+    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    
+    $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
+      {
+        "hosts": [
+          "${CLUSTER_NAME}-rs0",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-rs0",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local"
+        ],
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "CN": "${CLUSTER_NAME/-rs0}",
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
+      }
+    EOF
+    
+    $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    ```
 
-$ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
-```
+=== "if sharding is on"
+
+    ``` {.bash data-prompt="$" }
+    $ CLUSTER_NAME=my-cluster-name
+    $ NAMESPACE=default
+    $ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
+      {
+        "CN": "Root CA",
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
+      }
+    EOF
+    
+    $ cat <<EOF > ca-config.json
+      {
+        "signing": {
+          "default": {
+            "expiry": "87600h",
+            "usages": ["signing", "key encipherment", "server auth", "client auth"]
+          }
+        }
+      }
+    EOF
+    
+    $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
+      {
+        "hosts": [
+          "localhost",
+          "${CLUSTER_NAME}-rs0",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-rs0",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "${CLUSTER_NAME}-mongos",
+          "${CLUSTER_NAME}-mongos.${NAMESPACE}",
+          "${CLUSTER_NAME}-mongos.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-mongos",
+          "*.${CLUSTER_NAME}-mongos.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-mongos.${NAMESPACE}.svc.cluster.local",
+          "${CLUSTER_NAME}-cfg",
+          "${CLUSTER_NAME}-cfg.${NAMESPACE}",
+          "${CLUSTER_NAME}-cfg.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-cfg",
+          "*.${CLUSTER_NAME}-cfg.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-cfg.${NAMESPACE}.svc.cluster.local"
+        ],
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "CN": "${CLUSTER_NAME/-rs0}",
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
+      }
+    EOF
+    $ cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
+    
+    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    
+    $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
+      {
+        "hosts": [
+          "${CLUSTER_NAME}-rs0",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-rs0",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-rs0.${NAMESPACE}.svc.cluster.local",
+          "${CLUSTER_NAME}-mongos",
+          "${CLUSTER_NAME}-mongos.${NAMESPACE}",
+          "${CLUSTER_NAME}-mongos.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-mongos",
+          "*.${CLUSTER_NAME}-mongos.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-mongos.${NAMESPACE}.svc.cluster.local",
+          "${CLUSTER_NAME}-cfg",
+          "${CLUSTER_NAME}-cfg.${NAMESPACE}",
+          "${CLUSTER_NAME}-cfg.${NAMESPACE}.svc.cluster.local",
+          "*.${CLUSTER_NAME}-cfg",
+          "*.${CLUSTER_NAME}-cfg.${NAMESPACE}",
+          "*.${CLUSTER_NAME}-cfg.${NAMESPACE}.svc.cluster.local"
+        ],
+        "names": [
+          {
+            "O": "PSMDB"
+          }
+        ],
+        "CN": "${CLUSTER_NAME/-rs0}",
+        "key": {
+          "algo": "rsa",
+          "size": 2048
+        }
+      }
+    EOF
+    
+    $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    ```
+
+!!! note
+
+    Commands in the above example use `rs0` replica set name (the default one). If you set different name in `replsets.name` Custom Resource option, change these commands accordingly.
 
 ## Update certificates
 
@@ -239,6 +360,8 @@ They are reissued automatically on schedule and without downtime.
     my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
     ```
 
+   This command is available if you have cert-manager installed; if not, you can still check the necessary secrets names with `kubectl get secrets` command.
+
 2. Optionally you can also check that the certificates issuer is up and running:
 
     ``` {.bash data-prompt="$" }
@@ -253,6 +376,8 @@ They are reissued automatically on schedule and without downtime.
     my-cluster-name-psmdb-ca-issuer   True    61m
     ```
     
+    Again, this command is provided by cert-manager; if you don't have it installed, you can still use `kubectl get secrets`.
+
     !!! note
 
         The presence of two issuers has the following meaning. The
