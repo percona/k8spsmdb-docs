@@ -54,53 +54,144 @@ Also, you need to configure AWS CLI with your credentials according to the
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context was modified.
 
-    Deploy the Operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+    Deploy the Operator by applying the `deploy/bundle.yaml` manifest from the Operator source tree. 
+    
+    === "For x86_64 architecture"
+    
+        You can apply it without downloading, [using :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
-        role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
-        serviceaccount/percona-server-mongodb-operator serverside-applied
-        rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
-        deployment.apps/percona-server-mongodb-operator serverside-applied
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
-2. The operator has been started, and you can deploy your MongoDB cluster:
+        ??? example "Expected output"
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
-    ```
+            ``` {.text .no-copy}
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
+            role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
+            serviceaccount/percona-server-mongodb-operator serverside-applied    
+            rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
+            deployment.apps/percona-server-mongodb-operator serverside-applied
+            ```
 
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        perconaservermongodb.psmdb.percona.com/my-cluster-name created
-        ```
-
-    !!! note
-
-        This deploys default MongoDB cluster configuration, three mongod, three mongos, and
-        three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml)
-        and [Custom Resource Options](operator.md)
-        for the configuration options. You can clone the repository with all
-        manifests and source code by executing the following command:
+    === "For ARM64 architecture"
+    
+        Clone the repository with all manifests and source code by executing the following command:
 
         ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
-        After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
+        Edit the `deploy/bundle.yaml` file: add the following [affinity rules](constraints.md#affinity-and-anti-affinity) to the  `spec` part of the `percona-server-mongodb-operator` Deployment:
+        
+        ```yaml hl_lines="6-14"
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: percona-server-mongodb-operator
+            spec:
+              affinity:
+                nodeAffinity:
+                  requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                      - matchExpressions:
+                          - key: kubernetes.io/arch
+                            operator: In
+                            values:
+                              - arm64
+        ```
+
+        After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply --server-side -f deploy/bundle.yaml
+        ```       
+
+        ??? example "Expected output"
+
+            ``` {.text .no-copy}
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
+            role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
+            serviceaccount/percona-server-mongodb-operator serverside-applied    
+            rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
+            deployment.apps/percona-server-mongodb-operator serverside-applied
+            ```
+
+2. The Operator has been started, and you can deploy your MongoDB cluster:
+
+    === "For x86_64 architecture"
+      
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
+        ```
+
+        ??? example "Expected output"
+
+            ``` {.text .no-copy}
+            perconaservermongodb.psmdb.percona.com/my-cluster-name created
+            ```
+
+        !!! note
+
+            This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
+
+            ``` {.bash data-prompt="$" }
+            $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+            ```
+
+            After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
+
+            ``` {.bash data-prompt="$" }
+            $ kubectl apply -f deploy/cr.yaml
+            ```
+
+    === "For ARM64 architecture"
+    
+        Edit the `deploy/cr.yaml` file: set the following [affinity rules](constraints.md#affinity-and-anti-affinity) in **all `affinity` subsections**:
+
+        ```yaml hl_lines="2-11"
+        ....
+        affinity:
+          advanced:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - arm64
+        ```
+
+        Also, set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
+        
+        ```yaml
+        ...
+        image: percona/percona-server-mongodb:{{ mongodb70recommended }}-multi
+        ...
+        backup:
+          ...
+          image: percona/percona-backup-mongodb:{{ pbmrecommended }}-multi
+        ```
+
+        Please note, that currently [monitoring with PMM](monitoring.md) is not supported on ARM64 configurations.
+
+        After editing, apply your modified `deploy/cr.yaml` file as follows:
 
         ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
+
+        ??? example "Expected output"
+
+            ``` {.text .no-copy}
+            perconaservermongodb.psmdb.percona.com/my-cluster-name created
+            ```
 
     The creation process may take some time. When the process is over your
     cluster will obtain the `ready` status. You can check it with the following
