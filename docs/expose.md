@@ -147,7 +147,7 @@ Restart can be done manually with the `kubectl rollout restart sts
 
 !!! warning
 
-    You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make reconfiguration and recovery more complicated, and are **generally problematic in scenarios where IP addresses change**. In particular, if you delete and recreate the cluster with `clusterServiceDNSMode=External` without deleting its volumes (having `delete-psmdb-pvc` finalizer unset), your cluster will crash and there will be no straightforward way to recover it.
+    You should be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make reconfiguration and recovery more complicated, and are **generally problematic in scenarios where IP addresses change**. In particular, if you delete and recreate the cluster with `clusterServiceDNSMode=External` without deleting its volumes (having `percona.com/delete-psmdb-pvc` finalizer unset), your cluster will crash and there will be no straightforward way to recover it.
 
 ## Exposing replica set with split-horizon DNS
 
@@ -190,6 +190,4 @@ Split horizon has following limitations:
 * duplicating domain names in horizons is not allowed by MongoDB
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
-* horizons should be configured on an existing cluster (creating a new
-    cluster with pre-configured horizons is currently not supported)
 

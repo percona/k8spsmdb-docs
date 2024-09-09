@@ -35,7 +35,7 @@
     kind: PerconaServerMongoDBBackup
     metadata:
       finalizers:
-      - delete-backup
+      - percona.com/delete-backup
       name: backup1
     spec:
       clusterName: my-cluster-name

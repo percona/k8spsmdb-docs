@@ -402,7 +402,13 @@ mongos>
 
 Here are the needed modifications to [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection which will enable it:
 
-1. Add a path to the CA certificate in `/etc/openldap/ldap.conf` if the `secrets.ldapSecret`  Custom Resource option. Your modified `deploy/cr.yaml` may look as follows:
+1. First, create a secret that contains the SSL certificate to connect to LDAP. The following example creates it from the file with CA certificate (the one you use in `/etc/openldap/ldap.conf`), naming the new secret `my-ldap-secret`:
+
+    ```{.bash data-prompt="$" }
+    $ kubectl create secret generic my-ldap-secret --from-file=ca.crt=ldap-ca.pem
+    ```
+
+2. Set the `secrets.ldapSecret` Custom Resource option to the name of your newly created secret. Your modified `deploy/cr.yaml` may look as follows:
 
     ```yaml
     ...
@@ -411,7 +417,7 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
         ldapSecret: my-ldap-secret
     ```
 
-2. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection:
+3. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection:
 
 Changed mongod configuration should look as follows:
 
@@ -437,7 +443,7 @@ Changed mongod configuration should look as follows:
       authenticationMechanisms: 'PLAIN,SCRAM-SHA-1'
     ```
 
-If **sharding is on**, you will also need to change mongos configuration:
+    If **sharding is on**, you will also need to change mongos configuration:
 
     ```yaml title="my_mongos.conf" hl_lines="4"
     security:

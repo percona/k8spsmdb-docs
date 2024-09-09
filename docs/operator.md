@@ -9,8 +9,9 @@ The metadata part of this file contains the following keys:
 
 * `name` (`my-cluster-name` by default) sets the name of your Percona Server
 for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
-* `finalizers.delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
-* `finalizers.delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
+* `finalizers` subsection:
+    * `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
+    * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
 
 ## Toplevel `spec` elements
 
@@ -837,6 +838,22 @@ The number of [Replica Set non-voting instances](arbiter.md#adding-non-voting-no
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `1`        |
 
+### `replsets.nonvoting.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.nonvoting.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
 ### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
@@ -1265,6 +1282,15 @@ Address of the PMM Server to collect data from the Cluster.
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `monitoring-service` |
+
+### `pmm.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
 
 ### `pmm.mongodParams`
 
@@ -2023,6 +2049,58 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
 
+## <a name="operator-users-section"></a>Users section
+
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-in-the-custom-resource).
+
+### `users.name`
+
+The username of the MongoDB user.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `my-user` |
+
+### `users.db`
+
+Database that the user authenticates against.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `admin` |
+
+### `users.passwordSecretRef.name`
+
+Name of the secret that contains the user's password.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `my-user-password` |
+
+### `users.passwordSecretRef.key`
+
+Key in the secret that corresponds to the value of the user's password.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `password` |
+
+### `users.roles.role.name`
+
+Name of the MongoDB role assigned to the user. As [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles), so [custom roles](https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/docs/deploy-configure.md#define-a-custom-database-role) are supported.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `clusterAdmin` |
+
+### `users.roles.role.db`
+
+Database that the MongoDB role applies to.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `admin` |
+
 ## <a name="operator-backup-section"></a>Backup Section
 
 The `backup` section in the
@@ -2068,7 +2146,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `100m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `backup.resources.limits.memory`
 
@@ -2076,7 +2154,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `0.2G`     |
+| :material-code-string: string     | `1.2G`     |
 
 ### `backup.resources.requests.cpu`
 
@@ -2084,7 +2162,7 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `100m`     |
+| :material-code-string: string     | `300m`     |
 
 ### `backup.resources.requests.memory`
 
@@ -2092,7 +2170,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `0.1G`     |
+| :material-code-string: string     | `1G`     |
 
 ### 'backup.containerSecurityContext'
 
