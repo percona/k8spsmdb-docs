@@ -122,6 +122,8 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
           ...
           image: percona/percona-backup-mongodb:{{ pbmrecommended }}-multi
         ```
+
+        Please note, that currently [monitoring with PMM](monitoring.md) is not supported on ARM64 configurations.
    
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
