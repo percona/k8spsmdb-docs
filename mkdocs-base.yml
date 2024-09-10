@@ -144,7 +144,7 @@ plugins:
     print_page_title: 'Percona Operator for MongoDB 1.17.0 documentation'
     add_print_site_banner: false
     # Table of contents
-    add_table_of_contents: true
+    add_table_of_contents: false
     toc_title: 'Table of Contents'
     toc_depth: 6
     # Content-related
