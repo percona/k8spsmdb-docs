@@ -6,11 +6,9 @@
 <img src="/assets/images/PerconaLogostackedlightbackground.svg" />
 </p>
 
-<center>
-  Operator for MongoDB 1.17.0 documentation
-  <p>1.17.0 (September 09, 2024)</p>
-  <p>Percona Technical Documentation Team</p>
-</center>
+<h2> Operator for MongoDB 1.17.0 documentation</h2>
+<h3>1.17.0 (September 09, 2024)</h3>
+<h3>Percona Technical Documentation Team</h3>
 
 {% if config.site_description %}
     <h2>{{ config.site_description }}</h2>
