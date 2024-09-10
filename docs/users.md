@@ -323,11 +323,21 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 
 ## MongoDB Internal Authentication Key (optional)
 
-*Default Secret name:* `my-cluster-name-mongodb-key`
+*Default Secret name:* `my-cluster-name-mongodb-keyfile`
 
 *Secret name field:* `spec.secrets.key`
 
 By default, the operator will create a random, 1024-byte key for
 [MongoDB Internal Authentication  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/)
 if it does not already exist. If you would like to deploy a different
-key, create the secret manually before starting the operator.
+key, create the secret manually before starting the operator. Example:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-cluster-name-mongodb-keyfile
+type: Opaque
+data:
+  mongodb-key: <replace-this-value-with-base-64-encoded-text>
+```
