@@ -158,6 +158,7 @@ plugins:
     enabled: true
     exclude:
       - "RN/index.md"
+      - "../snippets/services-banner.md"
 
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
