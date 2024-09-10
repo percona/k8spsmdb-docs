@@ -121,8 +121,9 @@ plugins:
       - "variables.yml"
   # https://pypi.org/project/mkdocs-exclude/
   exclude:
-    glob:
-      - "setting-up/client/docker.md"
+      - "RN/index.md"
+  #  glob:
+  #    - "setting-up/client/docker.md"
   # https://github.com/orzih/mkdocs-with-pdf
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
