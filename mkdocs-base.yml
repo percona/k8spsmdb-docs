@@ -154,11 +154,11 @@ plugins:
     add_cover_page: true
     cover_page_template: "pdf_cover_page.tpl"
     path_to_pdf: ""
-    include_css: false
+    include_css: true
     enabled: true
-    exclude:
-      - "RN/index.md"
-      - "../snippets/services-banner.md"
+#    exclude:
+#      - "RN/index.md"
+#      - "../snippets/services-banner.md"
 
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
