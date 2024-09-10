@@ -144,7 +144,7 @@ plugins:
     print_page_title: 'Percona Operator for MongoDB 1.17.0 documentation'
     add_print_site_banner: false
     # Table of contents
-    add_table_of_contents: false
+    add_table_of_contents: true
     toc_title: 'Table of Contents'
     toc_depth: 6
     # Content-related
@@ -154,7 +154,7 @@ plugins:
     add_cover_page: true
     cover_page_template: "pdf_cover_page.tpl"
     path_to_pdf: ""
-    include_css: true
+    include_css: false
     enabled: true
     exclude:
       - "RN/index.md"
