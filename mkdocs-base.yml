@@ -153,7 +153,7 @@ plugins:
     enumerate_headings: true
     enumerate_figures: true
     add_cover_page: true
-    cover_page_template: ""
+    cover_page_template: "pdf_cover_page.tpl"
     path_to_pdf: ""
     include_css: true
     enabled: true
