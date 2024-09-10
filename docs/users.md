@@ -11,21 +11,118 @@ considered separately in the following sections.
 
 ## Unprivileged users
 
-There are no unprivileged (general purpose) user accounts created by
-default.
+The Operator does not create unprivileged (general purpose) user accounts by default.
+There are two ways to create general purpose users:
 
-Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource. With previous versions custom users [had to be created manually](users_create_manually.md).
+* manual creation of custom MongoDB users,
+* automated users creation via Custom Resource (Operator versions 1.17.0 and newer).
 
-Users can be customized in `spec.users` section in the Custom Resource. Section can be changed at the cluster creation time and adjusted over time. Note the following:
+### Create users in the Custom Resource
 
-- If `spec.users` is set during the cluster creation, the Operator will not create any default users. If you want additional databases, you will need to specify them.
-- For each user added in `spec.users`, the Operator will create a Secret of the `<clusterName>-pguser-<userName>` format (such default Secret naming can be altered for the user with the `spec.users.secretName` option). This Secret will contain the user credentials.
-- If no databases are specified, `dbname` and `uri` will not be present in the Secret.
-- If at least one option under the `spec.users.databases` is specified, the first database in the list will be populated into the connection credentials.
-- The Operator does not automatically drop users in case of removed Custom Resource options to prevent accidental data loss.
-- Similarly, to prevent accidental data loss Operator does not automatically drop databases (see how to actually drop a database [here](users.md#deleting-users-and-databases)).
-- Role attributes are not automatically dropped if you remove them. You need to set the inverse attribute to actually drop them (e.g. `NOSUPERUSER`).
-- The special `postgres` user can be added as one of the custom users; however, the privileges of this user cannot be adjusted.
+Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource.
+
+!!! warning
+
+    Declarative user management has technical preview status and is not yet recommended for production environments.
+
+You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
+
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, a reference to a key in some Secret resource that contains user's password, as well as MongoDB roles on various databases which should be assigned to this user. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+
+``` {.bash data-prompt="$"}
+...
+users:
+  - name: my-user
+    db: admin
+    passwordSecretRef: 
+      name: my-user-password
+      key: password
+    roles:
+      - name: clusterAdmin
+        db: admin
+      - name: userAdminAnyDatabase
+        db: admin
+```
+
+The Secret mentioned in the `users.passwordSecretRef.name` option should look as follows:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-user-password
+type: Opaque
+stringData:
+  password: mypassword
+```
+
+The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed.
+
+Note the following limitations of the current declarative user management implementation:
+
+* The user is not automatically updated after `users.user.roles` are changed,
+* The new user is not created when the `users.user.db` is updated,
+* If the user created using Custom Resource is manually deleted in the database, it is not recreated (neither automatically, nor after Custom Resource manifest re-apply).
+* If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
+* If the user name is changed in the Custom Resource, the new user will be created, and the old one will stay in the database and should be removed manually.
+
+### Create users manually
+
+You can create unprivileged users manually. Please run commands below, substituting the `<namespace name>` placeholder with the real namespace of your database cluster:
+
+=== "if sharding is on"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
+
+    Now check the newly created user:
+
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
+
+=== "if sharding is off"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
+
+    Now check the newly created user:
+
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
 
 ## System Users
 
@@ -60,18 +157,15 @@ configuration file.
 **Password-based authorization method for PMM is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
 
 * Backup/Restore - MongoDB Role: [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+ [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [readWrite :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWrite), [pbmAnyAction :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/install/configure-authentication.html)
 
-* Cluster Admin - MongoDB Roles: [clusterAdmin  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
+* Cluster Admin - MongoDB Roles: [clusterAdmin :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
-* Cluster Monitor - MongoDB Role: [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Cluster Monitor - MongoDB Role: [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [read (on the `local` database):octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read), [explainRole :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/setting-up/client/mongodb.html#create-roles-with-privileges-for-backups-and-qan)
 
-* Database Admin - MongoDB Roles: [readWriteAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Database Admin - MongoDB Roles: [readWriteAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup), [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* User Admin - MongoDB Role: [userAdmin  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
+* User Admin - MongoDB Role: [userAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdminAnyDatabase)
 
 If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
 Pods will go into restart cycle, and the cluster can be not accessible through
@@ -88,7 +182,7 @@ the `mongos` service until this cycle finishes.
     
     ??? example "gen_users.sh"
     
-        ``` {.bash data-prompt="$"}
+        ``` bash
         clusterAdminPass="clusterAdmin"
         userAdminPass="userAdmin"
         clusterMonitorPass="clusterMonitor"
@@ -168,13 +262,13 @@ following command:
 
 === "in Linux"
 
-    ``` {.bash data-prompt="$"}
+    ```bash
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
     ```
 
 === "in macOS"
 
-    ``` {.bash data-prompt="$"}
+    ```bash
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
     ```
 
@@ -219,9 +313,9 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 | MONGODB_CLUSTER_MONITOR_PASSWORD | clusterMonitor123456 |
 | MONGODB_USER_ADMIN_USER          | userAdmin            |
 | MONGODB_USER_ADMIN_PASSWORD      | userAdmin123456      |
-| PMM_SERVER_API_KEY               | apikey               |
 | PMM_SERVER_USER                  | admin                |
 | PMM_SERVER_PASSWORD              | admin                |
+| PMM_SERVER_API_KEY               | apikey               |
 
 !!! warning
 
