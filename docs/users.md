@@ -104,9 +104,9 @@ configuration file.
 
 * Backup/Restore - MongoDB Role: [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
     [restore  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
+    [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
 * Cluster Admin - MongoDB Roles: [clusterAdmin  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
-
 
 * Cluster Monitor - MongoDB Role: [clusterMonitor  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
