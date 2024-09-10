@@ -120,8 +120,6 @@ plugins:
     include_yaml:
       - "variables.yml"
   # https://pypi.org/project/mkdocs-exclude/
-  exclude:
-      - "RN/index.md"
   #  glob:
   #    - "setting-up/client/docker.md"
   # https://github.com/orzih/mkdocs-with-pdf
@@ -148,7 +146,7 @@ plugins:
     # Table of contents
     add_table_of_contents: true
     toc_title: 'Table of Contents'
-    toc_depth: 3
+    toc_depth: 6
     # Content-related
     add_full_urls: false
     enumerate_headings: true
@@ -158,6 +156,8 @@ plugins:
     path_to_pdf: ""
     include_css: true
     enabled: true
+    exclude:
+      - "RN/index.md"
 
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
