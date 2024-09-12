@@ -73,6 +73,8 @@ Finalizers were renamed to contain fully qualified domain names to comply with t
 * `PerconaServerMongoDBBackup` Custom Resource:
     * `delete-backup` finalizer renamed to `percona.com/delete-backup`
 
+Key change in [`psmdb-db` Helm chart](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db): the parameter for defining [system users](../users.md#system-users) is renamed from `users` to `systemUsers`. The `users` parameter now handles the new [Declarative user management](../users.md#create-users-in-the-custom-resource) feature. This change impacts users upgrading to this version via Helm: make sure that values manifests are changed accordingly.
+
 ## Supported Platforms
 
 The Operator was developed and tested with Percona Server for MongoDB 5.0.28-24,
