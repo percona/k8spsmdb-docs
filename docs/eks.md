@@ -85,22 +85,31 @@ Also, you need to configure AWS CLI with your credentials according to the
         ```
 
         Edit the `deploy/bundle.yaml` file: add the following [affinity rules](constraints.md#affinity-and-anti-affinity) to the  `spec` part of the `percona-server-mongodb-operator` Deployment:
-        
-        ```yaml hl_lines="6-14"
+
+        ```yaml hl_lines="15-23"
             apiVersion: apps/v1
             kind: Deployment
             metadata:
               name: percona-server-mongodb-operator
             spec:
-              affinity:
-                nodeAffinity:
-                  requiredDuringSchedulingIgnoredDuringExecution:
-                    nodeSelectorTerms:
-                      - matchExpressions:
-                          - key: kubernetes.io/arch
-                            operator: In
-                            values:
-                              - arm64
+              replicas: 1
+              selector:
+                matchLabels:
+                  name: percona-server-mongodb-operator
+              template:
+                metadata:
+                  labels:
+                    name: percona-server-mongodb-operator
+                spec:
+                  affinity:
+                    nodeAffinity:
+                      requiredDuringSchedulingIgnoredDuringExecution:
+                        nodeSelectorTerms:
+                          - matchExpressions:
+                            - key: kubernetes.io/arch
+                              operator: In
+                              values:
+                                - arm64
         ```
 
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
