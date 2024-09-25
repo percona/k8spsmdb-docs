@@ -8,9 +8,9 @@ For more information on the GKE, see the [Kubernetes Engine Quickstart :octicons
 
 All commands from this guide can be run either in the **Google Cloud shell** or in **your local shell**.
 
-To use _Google Cloud shell_, you need nothing but a modern web browser.
+To use *Google Cloud shell*, you need nothing but a modern web browser.
 
-If you would like to use _your local shell_, install the following:
+If you would like to use *your local shell*, install the following:
 
 1. [gcloud :octicons-link-external-16:](https://cloud.google.com/sdk/docs/quickstarts). This tool is
    part of the Google Cloud SDK. To install it, select your operating
@@ -52,7 +52,7 @@ You may wait a few minutes for the cluster to be generated.
 Now you should configure the command-line access to your newly created cluster
 to make `kubectl` be able to use it.
 
-In the Google Cloud Console, select your cluster and then click the _Connect_
+In the Google Cloud Console, select your cluster and then click the *Connect*
 shown on the above image. You will see the connect statement which configures
 the command-line access. After you have edited the statement, you may run the
 command in your local shell:
@@ -120,7 +120,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
 
         Edit the `deploy/bundle.yaml` file: add the following [affinity rules](constraints.md#affinity-and-anti-affinity) to the  `spec` part of the `percona-server-mongodb-operator` Deployment:
 
-        ```yaml hl_lines="6-14"
+        ```yaml hl_lines="15-23"
             apiVersion: apps/v1
             kind: Deployment
             metadata:
@@ -164,7 +164,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-
             deployment.apps/percona-server-mongodb-operator serverside-applied
             ```
 
-2.  The Operator has been started, and you can deploy your MongoDB cluster:
+3.  The Operator has been started, and you can deploy your MongoDB cluster:
 
     === "For x86_64 architecture"
 
