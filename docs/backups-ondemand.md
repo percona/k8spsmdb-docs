@@ -75,7 +75,7 @@
     ```
     
     Alternatively, [getting ssh access](debug-shell.md) to the same container
-    will allow you to [carry on Percona Backup for MongoDB diagnostics  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/manage/troubleshooting.html). 
+    will allow you to [carry on Percona Backup for MongoDB diagnostics  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html). 
     
     !!! note
     
