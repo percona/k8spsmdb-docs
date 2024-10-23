@@ -4,10 +4,10 @@ The Operator provides entry points for accessing the database by client applicat
 
 This document describes the usage of [Custom Resource manifest options](operator.md) to expose clusters deployed with the Operator. 
 
-## Using single entry point in a sharded cluster
+## Using a single entry point in a sharded cluster
 
-If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (default behavior), then database cluster runs special
-`mongos` Pods - query routers, which acts as an entry point for client applications:
+If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (the default behavior), then database cluster runs special
+`mongos` Pods - query routers, which act as entry points for client applications:
 
 ![image](assets/images/mongos_espose.png)
 
@@ -26,10 +26,11 @@ $ kubectl get psmdb
 ```
 
 ??? example "Expected output"
-```
-NAME              ENDPOINT                                             STATUS   AGE
-my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
-```
+
+    ```
+    NAME              ENDPOINT                                             STATUS   AGE
+    my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
+    ```
 
 !!! warning
 
