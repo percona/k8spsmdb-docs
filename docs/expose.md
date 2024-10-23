@@ -4,19 +4,19 @@ The Operator provides entry points for accessing the database by client applicat
 
 This document describes the usage of [Custom Resource manifest options](operator.md) to expose clusters deployed with the Operator. 
 
-## Using single entry point in a sharded cluster
+## Using a single entry point in a sharded cluster
 
-If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (default behavior), then database cluster runs special
-`mongos` Pods - query routers, which acts as an entry point for client applications:
+If Percona Server for MongoDB [sharding mode](sharding.md) is turned **on** (the default behavior), then the database cluster runs special
+`mongos` Pods - query routers, which act as entry points for client applications:
 
 ![image](assets/images/mongos_espose.png)
 
-By default, a ClusterIP type Service is created (this is controlled by [sharding.mongos.expose.exposeType](operator.md#shardingmongosexposeexposetype)). The Service works in a round-robin fashion between all the `mongos` Pods.
+By default, a ClusterIP type Service is created (this is controlled by [sharding.mongos.expose.type](operator.md#shardingmongosexposetype)). The Service works in a round-robin fashion between all the `mongos` Pods.
 
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
 ``` {.bash data-prompt="$" }
-$ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+$ mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
 You can get the actual Service endpoints by running the following command:
@@ -26,10 +26,11 @@ $ kubectl get psmdb
 ```
 
 ??? example "Expected output"
-```
-NAME              ENDPOINT                                             STATUS   AGE
-my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
-```
+
+    ```
+    NAME              ENDPOINT                                             STATUS   AGE
+    my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local     ready    85m
+    ```
 
 !!! warning
 
@@ -49,12 +50,12 @@ cause problems as things change over time as a result of the cluster scaling,
 maintenance, etc. Due to this changing environment, you should connect to
 Percona Server for MongoDB by using Kubernetes internal DNS names in the URI.
 
-By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.exposeType](operator.md#replsetsexposeexposetype)). The Service works in a round-robin fashion between all the mongod Pods of the replica set.
+By default, a ClusterIP type Service is created (this is controlled by [replsets.expose.type](operator.md#replsetsexposetype)). The Service works in a round-robin fashion between all the mongod Pods of the replica set.
 
 In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
 ``` {.bash data-prompt="$" }
-$ mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+$ mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
 You can get the actual Service endpoints by running the following command:
@@ -80,7 +81,7 @@ names. To make the Pods accessible, Percona Operator for MongoDB
 can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/).
 
 * set `expose.enabled` option to `true` to allow exposing the Pods via Services,
-* set `expose.exposeType` option specifying the type of Service to be used:
+* set `expose.type` option specifying the type of Service to be used:
     * `ClusterIP` - expose the Pod with an internal static
         IP address. This variant makes the Service reachable only from
         within the Kubernetes cluster.
@@ -109,7 +110,7 @@ on some large collection.
 
 This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](operator.md#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
-If this feature is enabled with the `exposeType: NodePort`, the created Services look like this:
+If this feature is enabled with the `expose.type: NodePort`, the created Services look like this:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get svc
@@ -166,7 +167,7 @@ follows:
       - name: rs0
         expose:
           enabled: true
-          exposeType: LoadBalancer
+          type: LoadBalancer
         splitHorizons:
           cluster1-rs0-0:
             external: rs0-0.mycluster.xyz
