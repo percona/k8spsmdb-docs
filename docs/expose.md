@@ -16,7 +16,7 @@ By default, a ClusterIP type Service is created (this is controlled by [sharding
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
 ``` {.bash data-prompt="$" }
-$ mongo "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+$ mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
 You can get the actual Service endpoints by running the following command:
