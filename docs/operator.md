@@ -790,7 +790,7 @@ Enable or disable exposing [MongoDB Replica Set  :octicons-link-external-16:](ht
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
-### `replsets.expose.exposeType`
+### `replsets.expose.type`
 
 The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
@@ -1561,7 +1561,7 @@ Enable or disable exposing [Config Server  :octicons-link-external-16:](https://
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
-### `sharding.configsvrReplSet.expose.exposeType`
+### `sharding.configsvrReplSet.expose.type`
 
 The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
@@ -1985,7 +1985,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
 
-### `sharding.mongos.expose.exposeType`
+### `sharding.mongos.expose.type`
 
 The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
 
@@ -2027,7 +2027,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 
 ### 'sharding.mongos.expose.nodePort'
 
-The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the  `sharding.mongos.expose.exposeType` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on.
+The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the  `sharding.mongos.expose.type` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on.
 
 | Value type  | Example    |
 | ----------- | ---------- |
