@@ -806,7 +806,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | :material-code-string: string     | `10.0.0.0/8` |
 
-### `replsets.expose.serviceAnnotations`
+### `replsets.expose.annotations`
 
 The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongod daemon.
 
@@ -814,13 +814,21 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-### `replsets.expose.serviceLabels`
+### `replsets.expose.labels`
 
 The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB Replica Set Service.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `rack: rack-22` |
+
+### `replsets.expose.internalTrafficPolicy`
+
+Specifies whether Service for MongoDB instances should [route internal traffic to cluster-wide or to node-local endpoints :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `Local` |
 
 ### `replsets.nonvoting.enabled`
 
@@ -1577,7 +1585,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | :material-code-string: string     | `10.0.0.0/8` |
 
-### `sharding.configsvrReplSet.expose.serviceAnnotations`
+### `sharding.configsvrReplSet.expose.annotations`
 
 The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Config Server daemon.
 
@@ -1585,13 +1593,21 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-### `sharding.configsvrReplSet.expose.serviceLabels`
+### `sharding.configsvrReplSet.expose.labels`
 
 The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Config Server Service.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `rack: rack-22` |
+
+### `sharding.configsvrReplSet.expose.internalTrafficPolicy`
+
+Specifies whether Service for config servers should [route internal traffic to cluster-wide or to node-local endpoints :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `Local` |
 
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
@@ -2009,7 +2025,7 @@ The range of client IP addresses from which the load balancer should be reachabl
 | ----------- | ---------- |
 | :material-code-string: string     | `10.0.0.0/8` |
 
-### `sharding.mongos.expose.serviceAnnotations`
+### `sharding.mongos.expose.annotations`
 
 The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon.
 
@@ -2017,7 +2033,7 @@ The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/
 | ----------- | ---------- |
 | :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
 
-### `sharding.mongos.expose.serviceLabels`
+### `sharding.mongos.expose.labels`
 
 The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service.
 
@@ -2032,6 +2048,14 @@ The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/co
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `32017`        |
+
+### `sharding.mongos.internalTrafficPolicy`
+
+Specifies whether Services for the mongos instances should [route internal traffic to cluster-wide or to node-local endpoints :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `Local` |
 
 ### `sharding.mongos.hostAliases.ip`
 
