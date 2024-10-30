@@ -41,7 +41,7 @@ See [documentation](../users.md#unprivileged-users) to find more details about t
 ## Improvements
 
 * {{ k8spsmdbjira(739) }}: Standardize cluster and components service exposure
-* {{ k8spsmdbjira(1002) }}: Primary node preferer
+* {{ k8spsmdbjira(1002) }}: Primary node preferer (Thanks to sergelogvinov for contribution)
 * {{ k8spsmdbjira(1096) }}: Improve physical restore logs
 * {{ k8spsmdbjira(1135) }}: Split-horizon DNS should be configurable for external nodes
 * {{ k8spsmdbjira(1146) }}: User management improvements
