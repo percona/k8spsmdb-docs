@@ -8,6 +8,10 @@ the following ones:
 * [Custom Resource Definition (CRD)](operator.md),
 * Database Management System (Percona Server for MongoDB).
 
+!!! note
+
+    Additional steps are needed to upgrade database and Operator on [Red Hat Marketplace :octicons-link-external-16:](https://marketplace.redhat.com) or to upgrade Red Hat certified Operators on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift). See [this HOWTO](update_openshift.md) for details.
+
 The list of recommended upgrade scenarios includes two variants:
 
 * Upgrade to the new versions of the Operator *and* Percona Server for MongoDB,
@@ -143,7 +147,7 @@ If you have [installed the Operator on the OpenShift platform using OLM](openshi
 
 1. List installed Operators for your Namespace to see if there are upgradable items.
 
-    ![image](assets/images/olm4.svg)
+    !	[image](assets/images/olm4.svg)
 
 2. Click the "Upgrade available" link to see upgrade details, then click "Preview InstallPlan" button, and finally "Approve" to upgrade the Operator.
 
