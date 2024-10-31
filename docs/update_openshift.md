@@ -70,10 +70,11 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
         "initImage": "registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:8adc57e9445cfcea1ae02798a8f9d6a4958ac89f0620b9c6fa6cf969545dd23f",
         ...
         "pmm": {
-          "enabled": false,
+          "enabled": true,
           "image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:165f97cdae2b6def546b0df7f50d88d83c150578bdb9c992953ed866615016f1",
         ...
         "backup": {
+          "enabled": true,
           "image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:a73889d61e996bc4fbc6b256a1284b60232565e128a64e4f94b2c424966772eb",
         ...
         ```
@@ -102,14 +103,9 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
                "crVersion":"{{ release }}",
                "image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:5d29132a60b89e660ab738d463bcc0707a17be73dc955aa8da9e50bed4d9ad3e",
                "initImage": "registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:8adc57e9445cfcea1ae02798a8f9d6a4958ac89f0620b9c6fa6cf969545dd23f",
-               "pmm": {"image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:165f97cdae2b6def546b0df7f50d88d83c150578bdb9c992953ed866615016f1"},
                "backup": {"image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:a73889d61e996bc4fbc6b256a1284b60232565e128a64e4f94b2c424966772eb"}
             }}'
         ```
 
-4. The deployment rollout will be automatically triggered by the applied patch. You can track the rollout process in real time with the `kubectl rollout status` command with the name of your cluster:
-
-    ```default
-    $ kubectl rollout status sts my-cluster-name-rs0
-    ```
+4. The deployment rollout will be automatically triggered by the applied patch.
 
