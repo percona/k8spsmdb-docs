@@ -2049,6 +2049,82 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
 
+## Roles section
+
+The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-in-the-custom-resource).
+
+### `roles.role`
+
+The [cusom MongoDB role :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) name.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `myClusterwideAdmin` |
+
+### `roles.db`
+
+Database in which you want to store the user-defined role.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `admin
+
+### `roles.authenticationRestrictions.clientSource`
+
+List of the IP addresses or CIDR blocks *from which* users assigned this role can connect. MongoDB servers reject connection requests from users with this role if the requests come from a client that is not present in this array.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `127.0.0.1` |
+
+### `roles.authenticationRestrictions.serverAddress`
+
+List of the  IP addresses or CIDR blocks *to which* users assigned this role can connect. MongoDB servers reject connection requests from users with this role if the client requests to connect to a server that is not present in this array.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `127.0.0.1` |
+
+### `roles.privileges.actions`
+
+List of custom role actions: the MongoDB [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles) which correspond to this custom role.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      | `addShard` |
+
+### `roles.privileges.resource.db`
+
+Database for which the custom role actions apply. An empty string ("") indicates that the privilege actions apply to all databases.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `""` |
+
+### `roles.privileges.resource.collection`
+
+Collection for which the custom role actions apply. An empty string ("") indicates that the privilege actions apply to all of the database's collections.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `""` |
+
+### `roles.privileges.resource.cluster`
+
+If true, the custom role actions apply to all databases and collections in the MongoDB deployment. False by default. If set to true, values for `roles.privileges.resource.db` and `roles.privileges.resource.collection` shouldn't be provided.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
+### `roles.roles`
+
+An array of roles (with names of the role and the database) from which this role inherits privileges. The field is mandatory. Empty array (`[]`) can be used to specify no roles to inherit from.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | <pre>role: read<br>db: admin</pre> |
+
 ## <a name="operator-users-section"></a>Users section
 
 The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-in-the-custom-resource).
