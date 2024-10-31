@@ -2087,7 +2087,7 @@ List of the  IP addresses or CIDR blocks *to which* users assigned this role can
 
 ### `roles.privileges.actions`
 
-List of custom role actions  that users granted this role can perform: For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the MongoDB Manual, and the MongoDB [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles).
+List of custom role actions  that users granted this role can perform: For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the MongoDB Manual.
 
 | Value type  | Example    |
 | ----------- | ---------- |
