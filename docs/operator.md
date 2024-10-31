@@ -2119,7 +2119,7 @@ If true, the custom role actions apply to all databases and collections in the 
 
 ### `roles.roles`
 
-An array of roles (with names of the role and the database) from which this role inherits privileges. The field is mandatory. Empty array (`[]`) can be used to specify no roles to inherit from.
+An array of roles (with names of the role and the database) from which this role inherits privileges, if any.
 
 | Value type | Example |
 | ---------- | ------- |
