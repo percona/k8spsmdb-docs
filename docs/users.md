@@ -76,23 +76,28 @@ Custom MongoDB roles can be defined in a declarative way via the `roles` subsect
 
     Custom roles were introduced in the Operator version 1.18.0. It has technical preview status and is not yet recommended for production environments.
 
-This subsection contains array of roles each with the defined custom name (`roles.name`), database in which you want to store the user-defined role (`roles.db`). The `roles.privileges.actions` allows to set List of custom role actions that users granted this role can perform. For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the manual of the corresponding MongoDB version. Actions can be granted for the whole cluster (if `roles.privileges.resource.cluster` set to true), or be related to specific database or collection. Finally, you can apply authentication restrictions for these roles based on the  IP address ranges for the client and server. The following example shows how this subsection may look like:
+This subsection contains array of roles each with the defined custom name (`roles.name`), database in which you want to store the user-defined role (`roles.db`). The `roles.privileges.actions` allows to set List of custom role actions that users granted this role can perform. For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the manual of the corresponding MongoDB version. Actions can be granted for the whole cluster (if `roles.privileges.resource.cluster` set to true), or be related to a specific database or collection. Adding existing role and database names to the `roles.roles` subsection allows you to inherit privileges from existing roles. Finally, you can apply authentication restrictions for your custom role based on the IP address ranges for the client and server. The following example shows how `roles` subsection may look like:
 
 ```yaml
 roles:
-  - role: my-role
-    db: myDb
-    privileges:
-      - resource:
-          db: ''
-          collection: ''
-        actions:
-          - find
-    authenticationRestrictions:
-      - clientSource:
-          - 127.0.0.1
-        serverAddress:
-          - 127.0.0.1
+    - role: my-role
+      db: admin
+      privileges:
+        - resource:
+            db: ''
+            collection: ''
+          actions:
+            - find
+      authenticationRestrictions:
+        - clientSource:
+            - 127.0.0.1
+          serverAddress:
+            - 127.0.0.1
+      roles:
+        - role: read
+          db: admin
+        - role: readWrite
+          db: admin
 ```
 
 Find more infromation about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
