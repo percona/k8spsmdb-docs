@@ -289,13 +289,13 @@ If enabled, [FeatureCompatibilityVersion (FCV)  :octicons-link-external-16:](htt
 Each spec in its turn may contain some key-value pairs. The secrets one
 has only two of them:
 
-### `secrets.key`
+### `secrets.keyFile`
 
-The secret name for the [MongoDB Internal Auth Key  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist.
+The secret name for the [MongoDB Internal Auth Key file :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/). This secret is auto-created by the operator if it doesn’t exist.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `my-cluster-name-mongodb-key` |
+| :material-code-string: string     | `my-cluster-name-mongodb-keyfile` |
 
 ### `secrets.users`
 
