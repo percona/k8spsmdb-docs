@@ -62,6 +62,14 @@ See [documentation](../users.md#unprivileged-users) to find more details about t
 * {{ k8spsmdbjira(1175) }}: MongoDB cluster broken after the unsafe.tls is set to true
 * {{ k8spsmdbjira(1184) }}: Operator fails with readOnlyRootFilesystem field set
 
+## Deprecation, Rename and Removal
+
+A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide unified experience with other Percona Operators:
+
+* `expose.serviceAnnotations` option renamed to `expose.annotations`
+* `expose.serviceLabels` option renamed to `expose.labels`
+* `expose.exposeType` option renamed to `expose.type`
+
 ## Known Issues and Limitations
 
 * {{ k8spsmdbjira(1167) }}: Document PBM 2.6.0 limitation if not fixed before PSMDBO relese
