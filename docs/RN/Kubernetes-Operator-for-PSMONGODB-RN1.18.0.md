@@ -65,17 +65,15 @@ externalNodes:
 * {{ k8spsmdbjira(1096) }}: Restore logs were improved to contain pbm-agent logs in mongod containers, useful to debug faults in the backup restoration process
 * {{ k8spsmdbjira(1135) }}: Split-horizon DNS for external (unmanaged) nodes [is now configurable](../expose.md#exposing-replica-set-with-split-horizon-dns) via the `replsets.externalNodes` subsection in Custom Resource
 * {{ k8spsmdbjira(1152) }}: Starting from now, the Operator uses multi-architecture images of Percona Server for MongoDB and Percona Backup for MongoDB, making it simpler to deploy cluster on ARM
-* {{ k8spsmdbjira(1160) }}: The [PVC resize](../scaling.md#scale-storage) feature introduced in previous release can now be enabled or disabled via the `enableVolumeExpansion` Customn Resource option (`false` by default), which protects the cluster from storage resize triggered by mistake
+* {{ k8spsmdbjira(1160) }}: The [PVC resize](../scaling.md#scale-storage) feature introduced in previous release can now be enabled or disabled via the `enableVolumeExpansion` Customn Resource option (`false` by default), which protects the cluster from storage resize triggered by mistake 
+* {{ k8spsmdbjira(1132) }}: A new [`secrets.keyFile`](../operator.md#secretskeyfile) Custom Resource option allows to configure custom name for the Secret with the MongoDB Internal Auth Key file 
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(912) }}: Backup password is visible in case of PBM error
-* {{ k8spsmdbjira(1047) }}: Operator changes writeConcernMajorityJournalDefault to "true" despite what user configured
-* {{ k8spsmdbjira(1090) }}: It's not possible to make physical backups for databases with files greater 320GB
-* {{ k8spsmdbjira(1132) }}: Keyfile authentication is not working
-* {{ k8spsmdbjira(1141) }}: Cross-site replication with mongoDB doesn't work when Ingress is used to expose service on top of ClusterIP
-* {{ k8spsmdbjira(1158) }}: Upgrade PBM go module to 2.6.0
-* {{ k8spsmdbjira(1168) }}: PBM certificate error if there are two cluster with same name across namespaces
+* {{ k8spsmdbjira(912) }}: Fix a bug where full backup connection string including password was visible in logs in case of the Percona Backup for MongoDB errors
+* {{ k8spsmdbjira(1047) }}: Fix a bug where Operator was changing [writeConcernMajorityJournalDefault](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.writeConcernMajorityJournalDefault) to "true" during the replica set reconfiguring, ignoring the value set by user
+* {{ k8spsmdbjira(1141) }}: Fix a bug where cross-site replication with mongoDB didn't work when Ingress controller was used to expose a Service on top of ClusterIP
+* {{ k8spsmdbjira(1168) }}: Fix a bug where successful backups could obtain failed state in case of the Operator configured with `watchAllNamespaces: true` and having the same name for MongoDB clusters across multiple namespaces due to coinsiding certificate file names on the filesystem (Thanks to Markus Küffner for contribution)
 * {{ k8spsmdbjira(1170) }}: Cluster deletion is stuck if mongo replset fails to reconcile
 * {{ k8spsmdbjira(1175) }}: MongoDB cluster broken after the unsafe.tls is set to true
 * {{ k8spsmdbjira(1184) }}: Operator fails with readOnlyRootFilesystem field set
