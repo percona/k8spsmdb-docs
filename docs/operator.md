@@ -478,6 +478,22 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `6000`     |
 
+### `replsets.primaryPreferTagSelector.region` 
+
+Makes MongoDB instance to be selected as Primary based on specified region
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `us-west-2` |
+
+### `replsets.primaryPreferTagSelector.zone`
+
+Makes MongoDB instance to be selected as Primary based on specified zone
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `us-west-2c` |
+
 ### `replsets.priorityClassName`
 
 The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass)  for the Replica Set nodes.
