@@ -2,7 +2,7 @@
 
 * **Date**
 
-    November XX, 2024
+    November 06, 2024
 
 * **Installation**
 
@@ -31,23 +31,41 @@ users:
 
 See [documentation](../users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
+### Split-horizon DNS configuration for external nodes
+
+Using [split-horizon DNS](../expose.md#exposing-replica-set-with-split-horizon-dns) with cross-site replication now allows users to configure horizons for external nodes in the Custom Resource in the `replsets.externalNodes` subsection:
+
+```yaml
+externalNodes:
+- host: 34.124.76.90
+  horizons:
+    external: rs0-0.example.com
+- host: 34.124.76.91
+  port: 27017
+  votes: 0
+  priority: 0
+  horizons:
+    external: rs0-1.example.com
+- host: 34.124.76.92
+  horizons:
+    external: rs0-2.example.com
+```
+
 ## New Features
 
 * {{ k8spsmdbjira(894) }}: Add support for partial restores
 * {{ k8spsmdbjira(1113 }}: Provide a way to cleanup PITR log files when deleting cluster
-* {{ k8spsmdbjira(1124) }}: User management: Creating and managing user roles
+* {{ k8spsmdbjira(1124) }} and {{ k8spsmdbjira(1146) }}: Declarative user management now covers creating and managing user roles, and has less limitations compared to its initial implementation in previous release
 * {{ k8spsmdbjira(1140) }}: Multi-DC 3 node cluster deployment with ingress deployment
 
 ## Improvements
 
-* {{ k8spsmdbjira(739) }}: Standardize cluster and components service exposure
-* {{ k8spsmdbjira(1002) }}: Primary node preferer (Thanks to sergelogvinov for contribution)
-* {{ k8spsmdbjira(1096) }}: Improve physical restore logs
-* {{ k8spsmdbjira(1135) }}: Split-horizon DNS should be configurable for external nodes
-* {{ k8spsmdbjira(1146) }}: User management improvements
-* {{ k8spsmdbjira(1152) }}: Use multi architecture images by default
-* {{ k8spsmdbjira(1160) }}: Disable PVC resize by default
-* {{ k8spsmdbjira(1183) }}: Generate OLM bundle automatically
+* {{ k8spsmdbjira(739) }}: A number Service exposure options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were unified with other Percona Operators
+* {{ k8spsmdbjira(1002) }}: New Custom Resource options under the [replsets.primaryPreferTagSelector`](../operator.md#replsets.primaryprefertagselectorregion) subsection allow to provide Primary instance selection preferences based on specific zone and region, which may be especially useful within the planned zone switchover process (Thanks to sergelogvinov for contribution)
+* {{ k8spsmdbjira(1096) }}: Restore logs were improved to contain pbm-agent logs in mongod containers, useful to debug faults in the backup restoration process
+* {{ k8spsmdbjira(1135) }}: Split-horizon DNS for external (unmanaged) nodes [is now configurable](../expose.md#exposing-replica-set-with-split-horizon-dns) via the `replsets.externalNodes` subsection in Custom Resource
+* {{ k8spsmdbjira(1152) }}: Starting from now, the Operator uses multi-architecture images of Percona Server for MongoDB and Percona Backup for MongoDB, making it simpler to deploy cluster on ARM
+* {{ k8spsmdbjira(1160) }}: The [PVC resize](../scaling.md#scale-storage) feature introduced in previous release can now be enabled or disabled via the `enableVolumeExpansion` Customn Resource option (`false` by default), which protects the cluster from storage resize triggered by mistake
 
 ## Bugs Fixed
 
