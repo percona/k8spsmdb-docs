@@ -31,6 +31,20 @@ users:
 
 See [documentation](../users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
+### Support for selective resotores 
+
+Percona Backup for MongoDB 2.0.0 had introduced new functionality which allows to do partial restores, which means selectively restore only with the desired subset of data. Now the Operator also supports this feature, allowing you to restore a specific database or a collection from a backup. You can achieve this by using an additional `selective` section in the `PerconaServerMongoDBRestore` Custom Resource:
+
+```yaml
+spec:
+  selective:
+    withUsersAndRoles: true
+    namespaces:
+    - "db.collection"
+```
+
+You can find more on selective restores and their limitations [in official documentation](../backups-restore.md#selective-restores).
+
 ### Split-horizon DNS configuration for external nodes
 
 Using [split-horizon DNS](../expose.md#exposing-replica-set-with-split-horizon-dns) with cross-site replication now allows users to configure horizons for external nodes in the Custom Resource in the `replsets.externalNodes` subsection:
@@ -53,8 +67,8 @@ externalNodes:
 
 ## New Features
 
-* {{ k8spsmdbjira(894) }}: Add support for partial restores
-* {{ k8spsmdbjira(1113 }}: Provide a way to cleanup PITR log files when deleting cluster
+* {{ k8spsmdbjira(894) }}: It is now possible to restore a subset of data (a specific database or a collection) from a backup
+* {{ k8spsmdbjira(1113 }}: The new `percona.com/delete-pitr-chunks` finalizer allows to delete PITR log files from the backup storage when deleting a cluster
 * {{ k8spsmdbjira(1124) }} and {{ k8spsmdbjira(1146) }}: Declarative user management now covers creating and managing user roles, and has less limitations compared to its initial implementation in previous release
 * {{ k8spsmdbjira(1140) }}: Multi-DC 3 node cluster deployment with ingress deployment
 
@@ -65,7 +79,7 @@ externalNodes:
 * {{ k8spsmdbjira(1096) }}: Restore logs were improved to contain pbm-agent logs in mongod containers, useful to debug faults in the backup restoration process
 * {{ k8spsmdbjira(1135) }}: Split-horizon DNS for external (unmanaged) nodes [is now configurable](../expose.md#exposing-replica-set-with-split-horizon-dns) via the `replsets.externalNodes` subsection in Custom Resource
 * {{ k8spsmdbjira(1152) }}: Starting from now, the Operator uses multi-architecture images of Percona Server for MongoDB and Percona Backup for MongoDB, making it simpler to deploy cluster on ARM
-* {{ k8spsmdbjira(1160) }}: The [PVC resize](../scaling.md#scale-storage) feature introduced in previous release can now be enabled or disabled via the `enableVolumeExpansion` Customn Resource option (`false` by default), which protects the cluster from storage resize triggered by mistake 
+* {{ k8spsmdbjira(1160) }}: The [PVC resize](../scaling.md#scale-storage) feature introduced in previous release can now be enabled or disabled via the `enableVolumeExpansion` Custom Resource option (`false` by default), which protects the cluster from storage resize triggered by mistake 
 * {{ k8spsmdbjira(1132) }}: A new [`secrets.keyFile`](../operator.md#secretskeyfile) Custom Resource option allows to configure custom name for the Secret with the MongoDB Internal Auth Key file 
 
 ## Bugs Fixed
@@ -73,10 +87,9 @@ externalNodes:
 * {{ k8spsmdbjira(912) }}: Fix a bug where full backup connection string including password was visible in logs in case of the Percona Backup for MongoDB errors
 * {{ k8spsmdbjira(1047) }}: Fix a bug where Operator was changing [writeConcernMajorityJournalDefault](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.writeConcernMajorityJournalDefault) to "true" during the replica set reconfiguring, ignoring the value set by user
 * {{ k8spsmdbjira(1141) }}: Fix a bug where cross-site replication with mongoDB didn't work when Ingress controller was used to expose a Service on top of ClusterIP
-* {{ k8spsmdbjira(1168) }}: Fix a bug where successful backups could obtain failed state in case of the Operator configured with `watchAllNamespaces: true` and having the same name for MongoDB clusters across multiple namespaces due to coinsiding certificate file names on the filesystem (Thanks to Markus Küffner for contribution)
+* {{ k8spsmdbjira(1168) }}: Fix a bug where successful backups could obtain failed state in case of the Operator configured with `watchAllNamespaces: true` and having the same name for MongoDB clusters across multiple namespaces due to coinciding certificate file names on the filesystem (Thanks to Markus Küffner for contribution)
 * {{ k8spsmdbjira(1170) }}: Fix a bug which prevented to delete a cluster with active `percona.com/delete-psmdb-pods-in-order` finalizer in case of the cluster error state (e.g. when mongo replset failed to reconcile)
-* {{ k8spsmdbjira(1175) }}: MongoDB cluster broken after the unsafe.tls is set to true
-* {{ k8spsmdbjira(1184) }}: Operator fails with readOnlyRootFilesystem field set
+* {{ k8spsmdbjira(1184) }}: Fix a bug where the Operator failed to reconcile when using the container security context with `readOnlyRootFilesystem` set to `true` (Thanks to applejag for contribution)
 
 ## Deprecation, Rename and Removal
 
@@ -88,7 +101,7 @@ A number of Service exposure Custom Resource options in the `replsets`, `shardin
 
 ## Known Issues and Limitations
 
-* {{ k8spsmdbjira(1167) }}: Document PBM 2.6.0 limitation if not fixed before PSMDBO relese
+* {{ k8spsmdbjira(1167) }}: Document PBM 2.6.0 limitation if not fixed before PSMDBO relese **ToDo**
 
 ## Supported Platforms
 
