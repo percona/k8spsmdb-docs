@@ -68,7 +68,7 @@ externalNodes:
 ## New Features
 
 * {{ k8spsmdbjira(894) }}: It is now possible to restore a subset of data (a specific database or a collection) from a backup
-* {{ k8spsmdbjira(1113 }}: The new `percona.com/delete-pitr-chunks` finalizer allows to delete PITR log files from the backup storage when deleting a cluster
+* {{ k8spsmdbjira(1113) }}: The new `percona.com/delete-pitr-chunks` finalizer allows to delete PITR log files from the backup storage when deleting a cluster
 * {{ k8spsmdbjira(1124) }} and {{ k8spsmdbjira(1146) }}: Declarative user management now covers creating and managing user roles, and has less limitations compared to its initial implementation in previous release
 * {{ k8spsmdbjira(1140) }}: Multi-DC 3 node cluster deployment with ingress deployment
 
