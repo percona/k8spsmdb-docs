@@ -74,7 +74,7 @@ externalNodes:
 * {{ k8spsmdbjira(1047) }}: Fix a bug where Operator was changing [writeConcernMajorityJournalDefault](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.writeConcernMajorityJournalDefault) to "true" during the replica set reconfiguring, ignoring the value set by user
 * {{ k8spsmdbjira(1141) }}: Fix a bug where cross-site replication with mongoDB didn't work when Ingress controller was used to expose a Service on top of ClusterIP
 * {{ k8spsmdbjira(1168) }}: Fix a bug where successful backups could obtain failed state in case of the Operator configured with `watchAllNamespaces: true` and having the same name for MongoDB clusters across multiple namespaces due to coinsiding certificate file names on the filesystem (Thanks to Markus Küffner for contribution)
-* {{ k8spsmdbjira(1170) }}: Cluster deletion is stuck if mongo replset fails to reconcile
+* {{ k8spsmdbjira(1170) }}: Fix a bug which prevented to delete a cluster with active `percona.com/delete-psmdb-pods-in-order` finalizer in case of the cluster error state (e.g. when mongo replset failed to reconcile)
 * {{ k8spsmdbjira(1175) }}: MongoDB cluster broken after the unsafe.tls is set to true
 * {{ k8spsmdbjira(1184) }}: Operator fails with readOnlyRootFilesystem field set
 
