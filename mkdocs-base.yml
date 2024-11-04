@@ -128,7 +128,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Operator for MongoDB documentation"
-    cover_subtitle: 1.18.0 (September 09, 2024)
+    cover_subtitle: 1.18.0 (November 06, 2024)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
     custom_template_path: _resource/templates
@@ -149,13 +149,13 @@ extra: # Used in main.html template and can't be externalized
   clusterName: 'my-cluster-name'
   release: '1.18.0'
   apiversion: '1'
-  mongodb70recommended: '7.0.12-7'
-  mongodb60recommended: '6.0.16-13'
-  mongodb50recommended: '5.0.28-24'
-  pmm2recommended: '2.42.0'
-  gkerecommended: '1.30'
-  certmanagerrecommended: ' 1.15.2'
-  pbmrecommended: '2.5.0'
+  mongodb70recommended: '7.0.14-8'
+  mongodb60recommended: '6.0.17-14'
+  mongodb50recommended: '5.0.29-25'
+  pmm2recommended: '2.43.2'
+  gkerecommended: '1.31'
+  certmanagerrecommended: ' 1.16.1'
+  pbmrecommended: '2.6.0'
   version:
     provider: mike
 
@@ -251,7 +251,7 @@ nav:
           - "Trademark policy": trademark-policy.md
     - Release notes:
           - "Release notes index": RN/index.md
-          - "Percona Operator for MongoDB 1.18.0 (2024-11-XX)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
+          - "Percona Operator for MongoDB 1.18.0 (2024-11-06)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
           - "Percona Operator for MongoDB 1.17.0 (2024-09-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
           - "Percona Operator for MongoDB 1.16.2 (2024-07-23)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
           - "Percona Operator for MongoDB 1.16.1 (2024-06-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md

@@ -31,7 +31,7 @@ users:
 
 See [documentation](../users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
-### Support for selective resotores 
+### Support for selective restores 
 
 Percona Backup for MongoDB 2.0.0 has introduced new functionality which allows to do partial restores, which means selectively restore only with the desired subset of data. Now the Operator also supports this feature, allowing you to restore a specific database or a collection from a backup. You can achieve this by using an additional `selective` section in the `PerconaServerMongoDBRestore` Custom Resource:
 
@@ -109,12 +109,12 @@ The Operator was developed and tested with Percona Server for MongoDB 5.0.28-24,
 Operator also uses Percona Backup for MongoDB 2.5.0.
 
 The following platforms were tested and are officially supported by the Operator
-1.17.0:
+1.18.0:
 
-* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.27-1.30
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.28-1.30
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.13.48 - 4.16.9
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.28-1.30
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.33.1
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.28-1.31
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.28-1.31
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.13.52 - 4.17.3
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.28-1.31
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.34.0 based on Kubernetes 1.31.0
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
