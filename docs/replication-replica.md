@@ -29,11 +29,12 @@ spec:
   ...
 ```
 
-_Main_ and _Replica_ sites should have same Secrets objects, so don’t forget
+The _Main_ and _Replica_ sites should [have the same Secrets objects](replication-main.md#getting-the-cluster-secrets-and-certificates-to-be-copied-from-main-to-replica), so don’t forget
 to apply Secrets from your _Main_ site. Names of the corresponding objects
-are set in the `users`, `ssl`, and `sslInternal` keys of the Custom
-Resource `secrets` subsection (`my-cluster-name-secrets`,
-`my-cluster-name-ssl`, and `my-cluster-name-ssl-internal` by default).
+are set in the `secrets.ssl`, `secrets.sslInternal`, `secrets.users`, and
+`secrets.keyfile` Custom Resource options (`my-cluster-name-ssl`,
+`my-cluster-name-ssl-internal`, `my-cluster-name-secrets`, and
+`my-cluster-name-mongodb-keyfile` by default).
 
 Copy your secrets from an existing cluster and apply each of them on your
 _Replica_ site as follows:
