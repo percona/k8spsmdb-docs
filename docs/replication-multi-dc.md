@@ -8,7 +8,7 @@ The solution has the following limitations to consider:
 
 * setting it up involves a number of manual operations, and the same applies to scaling such a manually configured replica,
 * backups are supported on the _Main_ site only, not on the _Replica_ sites,
-* turning managed node off and on, loosing connectivity with the cluster, or just killing the replica Pod will cause it immediately electing itself as a MongoDB primary instance, so any occasion of such a kind needs manual fixing.
+* turning managed node off and on, loosing connectivity with the cluster, or just killing the managed node MongoDB Pod will cause it immediately electing itself as a MongoDB primary instance, so any occasion of such a kind needs manual fixing.
 
 ##  Configuring the _Main_ site
 
