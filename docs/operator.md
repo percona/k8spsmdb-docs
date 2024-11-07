@@ -424,7 +424,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 ### `replsets.replsetOverrides`
 
-Use if you need to override the replica set members FQDNs with custom hostnames. Each key under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
+Use if you need to [override the replica set members FQDNs with custom hostnames](replication-multi-dc.md). Each key under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -432,11 +432,15 @@ Use if you need to override the replica set members FQDNs with custom hostnames.
 
 ### `replsets.externalNodes.host`
 
+The URL or IP address of the [external replset instance](replication-main.md).
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `34.124.76.90` |
 
 ### `replsets.externalNodes.port`
+
+The port number of the [external replset instance](replication-main.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -444,11 +448,15 @@ Use if you need to override the replica set members FQDNs with custom hostnames.
 
 ### `replsets.externalNodes.votes`
 
+The number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external replset instance](replication-main.md).
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0` |
 
 ### `replsets.externalNodes.priority`
+
+The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external replset instance](replication-main.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1408,6 +1416,39 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `DoNotSchedule` |
+
+### `sharding.configsvrReplSet.externalNodes.host`
+
+The URL or IP address of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `34.124.76.90` |
+
+### `sharding.configsvrReplSet.externalNodes.port`
+
+The port number of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `27017` |
+
+### `sharding.configsvrReplSet.externalNodes.votes`
+
+The number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
+### `sharding.configsvrReplSet.externalNodes.priority`
+
+The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
 
 ### `sharding.configsvrReplSet.configuration`
 
