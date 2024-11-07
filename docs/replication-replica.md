@@ -36,6 +36,10 @@ are set in the `secrets.ssl`, `secrets.sslInternal`, `secrets.users`, and
 `my-cluster-name-ssl-internal`, `my-cluster-name-secrets`, and
 `my-cluster-name-mongodb-keyfile` by default).
 
+!!! note
+
+    Replica will not start if the TLS secrets and the encryption key are not copied. If users are not copied, the replica will join the replica set, but it will be restarting due to failed liveness checks.
+
 Copy your secrets from an existing cluster and apply each of them on your
 _Replica_ site as follows:
 

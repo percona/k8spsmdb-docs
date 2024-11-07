@@ -9,6 +9,7 @@ This feature can be useful in several cases:
 
 - simplify the migration of the MongoDB cluster to and from Kubernetes
 - add remote nodes to the replica set for disaster recovery
+- [keep the replica set of the database cluster in different data centers](replication-multi-dc.md) to get a fault-tolerant system.
 
 ## Prerequisites
 
