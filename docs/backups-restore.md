@@ -132,10 +132,11 @@ spec:
   selective:
     withUsersAndRoles: true
     namespaces:
-    - "db.collection"
+    - "db1.collection1"
+    - "db2.collection2"
 ```
 
-The `selective.namespaces` field allows you to specify several "namespaces" (subsets of data) as a list. Each "namespace" is represented as a pair of database and collection names (or just `database_name.*` to get everything from the specific database).
+The `selective.namespaces` field allows you to specify several "namespaces" (subsets of data) as a list. Each "namespace" is represented as a pair of database and collection names, or just `database_name.*` to get everything from the specific database. Specifying "*" as an item in the `namespaces` means restoring all databases and collections.
 
 Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup.
 
