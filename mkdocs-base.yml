@@ -150,12 +150,12 @@ extra: # Used in main.html template and can't be externalized
   release: '1.18.0'
   apiversion: '1'
   mongodb70recommended: '7.0.14-8'
-  mongodb60recommended: '6.0.17-14'
+  mongodb60recommended: '6.0.18-15'
   mongodb50recommended: '5.0.29-25'
   pmm2recommended: '2.43.2'
-  gkerecommended: '1.31'
+  gkerecommended: '1.30'
   certmanagerrecommended: ' 1.16.1'
-  pbmrecommended: '2.6.0'
+  pbmrecommended: '2.7.0'
   version:
     provider: mike
 
