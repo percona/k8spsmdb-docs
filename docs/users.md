@@ -56,7 +56,7 @@ stringData:
   password: mypassword
 ```
 
-The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed.
+The Operator tracks password changes in the Secret object, and updates the user password in the database, when needed.
 
 Note the following limitations of the current declarative user management implementation:
 
