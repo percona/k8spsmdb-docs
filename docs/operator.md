@@ -35,7 +35,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `unmanaged`
 
-Unmanaged site in [cross-site replication](replication.md): setting it to `true` forces the Operator to run the cluster in unmanaged state - nodes do not form replica sets, operator does not control TLS certificates.
+Setting it to `true` instructs the Operator to run the cluster in unmanaged state - the Operator does not form replica sets, and does not generate TLS certificates or user credentials. This can be useful for migration scenarios and for [cross-site replication](replication.md). 
 
 | Value type  | Example    |
 | ----------- | ---------- |
