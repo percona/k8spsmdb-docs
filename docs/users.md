@@ -60,7 +60,7 @@ The Operator tracks password changes in the Secrtet object, and updates the user
 
 Note the following limitation of the current declarative user management implementation:
 
-* if the password for the user is updated manually in the database, it will not be populated to the users secret.
+* the Operator doesn't track manual password updates in the database which may occur for the declaratively managed users, and doesn't overwrite changed passwords with ones from the users secret.
 
 ### Create users manually
 
