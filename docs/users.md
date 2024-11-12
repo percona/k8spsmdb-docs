@@ -56,11 +56,11 @@ stringData:
   password: mypassword
 ```
 
-The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed.
+The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated.
 
-Note the following limitation(s) of the current declarative user management implementation:
+Note the following limitation of the current declarative user management implementation:
 
-* If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
+* if the password for the user is updated manually in the database, it will not be populated to the users secret.
 
 ### Create users manually
 
