@@ -92,11 +92,13 @@ externalNodes:
 
 ## Deprecation, Rename and Removal
 
-A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide unified experience with other Percona Operators:
+* The new `enableVolumeExpansion` Custom Resource option allows to disable the [automated storage scaling with Volume Expansion capability](../scaling.md#automated-scaling-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
+* 
+* A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide unified experience with other Percona Operators:
 
-* `expose.serviceAnnotations` option renamed to `expose.annotations`
-* `expose.serviceLabels` option renamed to `expose.labels`
-* `expose.exposeType` option renamed to `expose.type`
+    * `expose.serviceAnnotations` option renamed to `expose.annotations`
+    * `expose.serviceLabels` option renamed to `expose.labels`
+    * `expose.exposeType` option renamed to `expose.type`
 
 ## Known Issues and Limitations
 
