@@ -118,9 +118,10 @@ to access the storage.
 
 Finally, make sure that your storage has enough resources to store backups, which is
 especially important in the case of large databases. It is clear that you need
-enough free space on the storage. Beside that, S3 storages have an upload limitation
-of 10K parts, and backing up big data would cause higher chunk size, which in its
-turn may cause S3 server be out of RAM, especially within default memory limits.
+enough free space on the storage. Beside that, S3 storage [upload limitats :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html)
+include the maximum number 10000 parts, and backing up large data will result in
+larger chunk sizes, which in turn may cause S3 server to run out of RAM, especially
+within the default memory limits.
 
 ## Microsoft Azure Blob storage
 
