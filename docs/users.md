@@ -58,9 +58,9 @@ stringData:
 
 The Operator tracks password changes in the Secrtet object, and updates the user password in the database, when needed. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated.
 
-Note the following limitation of the current declarative user management implementation:
+!!! note 
 
-* the Operator doesn't track manual password updates in the database which may occur for the declaratively managed users, and doesn't overwrite changed passwords with ones from the users secret.
+    The Operator doesn't track manual password updates in the database which may occur for the declaratively managed users, and doesn't overwrite changed passwords with ones from the users secret.
 
 ### Create users manually
 
