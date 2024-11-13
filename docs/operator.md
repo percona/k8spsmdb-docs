@@ -12,6 +12,7 @@ for MongoDB Cluster; it should include only [URL-compatible characters  :octicon
 * `finalizers` subsection:
     * `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
     * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
+    * `percona.com/delete-pitr-chunks` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes all [point-in-time recovery chunks from the cloud storage](backups-pitr.md) on cluster deletion (off by default)
 
 ## Toplevel `spec` elements
 
