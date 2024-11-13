@@ -56,7 +56,7 @@ stringData:
   password: mypassword
 ```
 
-The Operator tracks password changes in the Sectet object, and updates the user password in the database, when needed. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
+The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
 But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
 
 ### Create users manually
