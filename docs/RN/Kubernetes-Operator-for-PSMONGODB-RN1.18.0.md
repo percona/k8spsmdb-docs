@@ -37,7 +37,7 @@ spec:
     - "db.collection"
 ```
 
-You can find more on selective restores and their limitations [in our documentation](../backups-restore.md#selective-restores).
+You can find more on selective restores and their limitations [in our documentation](../backups-restore.md#selective-restore).
 
 ### Splitting the replica set of the database cluster over multiple Kubernetes clusters
 
@@ -72,7 +72,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 ## Deprecation, Rename and Removal
 
 * The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](../scaling.md#automated-scaling-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
-* 
+
 * A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide a unified experience with other Percona Operators:
 
     * `expose.serviceAnnotations` option renamed to `expose.annotations`
