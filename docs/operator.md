@@ -41,6 +41,14 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
+### `enableVolumeExpansion`
+
+Enables or disables [automatic storage scaling / volume expansion](scaling.md#automated-scaling-with-volume-expansion-capability).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
 ### `crVersion`
 
 Version of the Operator the Custom Resource belongs to.
