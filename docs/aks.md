@@ -77,65 +77,29 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
 2. The Operator has been started, and you can deploy your MongoDB cluster:
 
-    === "For x86_64 architecture"
-      
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
+    ```
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
+    ??? example "Expected output"
+
+        ``` {.text .no-copy}
+        perconaservermongodb.psmdb.percona.com/my-cluster-name created
         ```
 
-        ??? example "Expected output"
+    !!! note
 
-            ``` {.text .no-copy}
-            perconaservermongodb.psmdb.percona.com/my-cluster-name created
-            ```
-
-        !!! note
-
-            This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
-
-            ``` {.bash data-prompt="$" }
-            $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-            ```
-
-            After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
-
-            ``` {.bash data-prompt="$" }
-            $ kubectl apply -f deploy/cr.yaml
-            ```
-
-    === "For ARM64 architecture"
-    
-        Clone the repository with all manifests and source code by executing the following command:
+        This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
         ``` {.bash data-prompt="$" }
         $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
-   
-        Edit the `deploy/cr.yaml` configuration file: set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
 
-        ```yaml
-        ....
-        image: percona/percona-server-mongodb:{{ mongodb70recommended }}-multi
-        ...
-        backup:
-          ...
-          image: percona/percona-backup-mongodb:{{ pbmrecommended }}-multi
-        ```
-
-        Please note, that currently [monitoring with PMM](monitoring.md) is not supported on ARM64 configurations.
-   
-        After editing, apply your modified `deploy/cr.yaml` file as follows:
+        After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
         ``` {.bash data-prompt="$" }
         $ kubectl apply -f deploy/cr.yaml
         ```
-
-        ??? example "Expected output"
-
-            ``` {.text .no-copy}
-            perconaservermongodb.psmdb.percona.com/my-cluster-name created
-            ```
 
     The creation process may take some time. When the process is over your
     cluster will obtain the `ready` status. You can check it with the following
