@@ -116,6 +116,13 @@ to access the storage.
             instance to it.
         * Do not provide `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
+Finally, make sure that your storage has enough resources to store backups, which is
+especially important in the case of large databases. It is clear that you need
+enough free space on the storage. Beside that, S3 storage [upload limitats :octicons-link-external-16:](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html)
+include the maximum number 10000 parts, and backing up large data will result in
+larger chunk sizes, which in turn may cause S3 server to run out of RAM, especially
+within the default memory limits.
+
 ## Microsoft Azure Blob storage
 
 1. To store backups on the Azure Blob storage, you need to create a
