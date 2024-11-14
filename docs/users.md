@@ -56,15 +56,8 @@ stringData:
   password: mypassword
 ```
 
-The Operator tracks password changes in the Secret object, and updates the user password in the database, when needed.
-
-Note the following limitations of the current declarative user management implementation:
-
-* The user is not automatically updated after `users.user.roles` are changed,
-* The new user is not created when the `users.user.db` is updated,
-* If the user created using Custom Resource is manually deleted in the database, it is not recreated (neither automatically, nor after Custom Resource manifest re-apply).
-* If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
-* If the user name is changed in the Custom Resource, the new user will be created, and the old one will stay in the database and should be removed manually.
+The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
+But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
 
 ### Custom MongoDB roles
 
