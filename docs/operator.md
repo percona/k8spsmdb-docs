@@ -480,7 +480,7 @@ The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes
 
 ### `replsets.primaryPreferTagSelector.region` 
 
-Makes MongoDB instance to be selected as Primary based on specified region
+Ensures the MongoDB instance is selected as Primary based on specified region
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -488,7 +488,7 @@ Makes MongoDB instance to be selected as Primary based on specified region
 
 ### `replsets.primaryPreferTagSelector.zone`
 
-Makes MongoDB instance to be selected as Primary based on specified zone
+Ensures the MongoDB instance is selected as Primary based on specified zone
 
 | Value type  | Example    |
 | ----------- | ---------- |
