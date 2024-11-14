@@ -61,36 +61,6 @@ command in your local shell:
 $ gcloud container clusters get-credentials my-cluster-name --zone us-central1-a --project <project name>
 ```
 
-!!! note
-
-    Using ARM64 cluster requires additional step: you need to remove [Kubernetes Node Taints :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/), which otherwise will prevent Pods of your cluster to be scheduled.
-    
-    You can check if there are any as follows:
-    
-    ```{.bash data-prompt="$" }
-    $ kubectl get nodes -o custom-columns="NAME:.metadata.name,TAINTS:.spec.taints"
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        NAME                                           TAINTS
-        my-cluster-name-arm64-default-pool-9da8a595-25gk   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        my-cluster-name-arm64-default-pool-9da8a595-5339   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        my-cluster-name-arm64-default-pool-9da8a595-7lf5   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        my-cluster-name-arm64-default-pool-9da8a595-mcgl   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        my-cluster-name-arm64-default-pool-9da8a595-rvqk   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        my-cluster-name-arm64-default-pool-9da8a595-tp05   [map[effect:NoSchedule key:kubernetes.io/arch value:arm64]]
-        ```
-
-    You can remove them with the following command:
-
-    ```{.bash data-prompt="$" }
-    $ for node in $(kubectl get nodes -o custom-columns=NAME:.metadata.name --no-headers); do
-       kubectl taint nodes $node kubernetes.io/arch=arm64:NoSchedule-
-      done
-    ```
-
 Finally, use your [Cloud Identity and Access Management (Cloud IAM) :octicons-link-external-16:](https://cloud.google.com/iam)
 to control access to the cluster. The following command will give you the
 ability to create Roles and RoleBindings:
