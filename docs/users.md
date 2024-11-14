@@ -66,6 +66,42 @@ Note the following limitations of the current declarative user management implem
 * If the user was created manually in the database before creating user via Custom Resource, the existing user is updated.
 * If the user name is changed in the Custom Resource, the new user will be created, and the old one will stay in the database and should be removed manually.
 
+### Custom MongoDB roles
+
+[Custom MongoDB roles :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) allow providing fine-grained access control over your MongoDB deployment.
+
+Custom MongoDB roles can be defined in a declarative way via the `roles` subsection in the Custom Resource.
+
+!!! warning
+
+    Custom roles were introduced in the Operator version 1.18.0. It has technical preview status and is not yet recommended for production environments.
+
+This subsection contains array of roles each with the defined custom name (`roles.name`), database in which you want to store the user-defined role (`roles.db`). The `roles.privileges.actions` allows to set List of custom role actions that users granted this role can perform. For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the manual of the corresponding MongoDB version. Actions can be granted for the whole cluster (if `roles.privileges.resource.cluster` set to true), or be related to a specific database or collection. Adding existing role and database names to the `roles.roles` subsection allows you to inherit privileges from existing roles. Finally, you can apply authentication restrictions for your custom role based on the IP address ranges for the client and server. The following example shows how `roles` subsection may look like:
+
+```yaml
+roles:
+    - role: my-role
+      db: admin
+      privileges:
+        - resource:
+            db: ''
+            collection: ''
+          actions:
+            - find
+      authenticationRestrictions:
+        - clientSource:
+            - 127.0.0.1
+          serverAddress:
+            - 127.0.0.1
+      roles:
+        - role: read
+          db: admin
+        - role: readWrite
+          db: admin
+```
+
+Find more infromation about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
+
 ### Create users manually
 
 You can create unprivileged users manually. Please run commands below, substituting the `<namespace name>` placeholder with the real namespace of your database cluster:

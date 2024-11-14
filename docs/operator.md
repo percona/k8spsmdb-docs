@@ -2111,7 +2111,7 @@ List of the  IP addresses or CIDR blocks *to which* users assigned this role can
 
 ### `roles.privileges.actions`
 
-List of custom role actions: the MongoDB [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles) which correspond to this custom role.
+List of custom role actions  that users granted this role can perform: For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the MongoDB Manual.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2143,7 +2143,7 @@ If true, the custom role actions apply to all databases and collections in the 
 
 ### `roles.roles`
 
-An array of roles (with names of the role and the database) from which this role inherits privileges. The field is mandatory. Empty array (`[]`) can be used to specify no roles to inherit from.
+An array of roles (with names of the role and the database) from which this role inherits privileges, if any.
 
 | Value type | Example |
 | ---------- | ------- |
