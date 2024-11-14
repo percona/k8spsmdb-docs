@@ -17,6 +17,7 @@ The following tools are used in this guide and therefore should be preinstalled:
 Also, you need to sign in with Azure CLI using your credentials according to the
 [official guide  :octicons-link-external-16:](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli).
 
+## Create and configure the AKS cluster
 
 To create your cluster, you will need the following data:
 
