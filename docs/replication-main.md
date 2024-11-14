@@ -58,10 +58,17 @@ $ kubectl apply -f deploy/cr.yaml
 
 _Main_ and _Replica_ should have same Secrets objects (to have same users
 credentials) and certificates. So you may need to copy them from _Main_.
-Names of the corresponding objects are set in the `users`, `ssl`, and
-`sslInternal` keys of the Custom Resource `secrets` subsection
-(`my-cluster-name-secrets`, `my-cluster-name-ssl`, and
-`my-cluster-name-ssl-internal` by default).
+Names of the corresponding objects are set in the `secrets.ssl`,
+`secrets.sslInternal`, `secrets.users`, and `secrets.keyfile` Custom Resource
+options. The default names are the following ones:
+
+    * `my-cluster-name-ssl` (SSL certificates for client connections),
+
+    * `my-cluster-name-ssl-internal` (SSL certificates for replication),
+
+    * `my-cluster-name-secrets` (user credentials),
+
+    * `my-cluster-name-mongodb-keyfile` (encryption key file).
 
 If you can get Secrets from an existing cluster by executing the
 `kubectl get secret` command for _each_ Secrets object you want to acquire:

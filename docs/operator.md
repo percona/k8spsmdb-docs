@@ -299,11 +299,11 @@ The secret name for the [MongoDB Internal Auth Key file :octicons-link-external-
 
 ### `secrets.users`
 
-The name of the Secrets object for the MongoDB users **required to run the operator.**
+The name of the Secrets object for the MongoDB users required to run the operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `my-cluster-name-mongodb-users` |
+| :material-code-string: string     | `my-cluster-name-secrets` |
 
 ### `secrets.sse`
 
@@ -422,13 +422,53 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | ----------- | ---------- |
 | :material-code-string: string     | `DoNotSchedule` |
 
+### `replsets.replsetOverrides`
+
+Use if you need to [override the replica set members FQDNs with custom hostnames](replication-multi-dc.md). Each key under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | <pre>my-cluster-name-rs0-0:<br>  host: my-cluster-name-rs0-0.example.net:27017<br>  tags:<br>    key: value-0<br>my-cluster-name-rs0-1:<br>   host: my-cluster-name-rs0-1.example.net:27017<br>     tags:<br>    key: value-1<br>my-cluster-name-rs0-2:<br>  host: my-cluster-name-rs0-2.example.net:27017<br>  tags:<br>    key: value-2</pre> |
+
+### `replsets.externalNodes.host`
+
+The URL or IP address of the [external replset instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `34.124.76.90` |
+
+### `replsets.externalNodes.port`
+
+The port number of the [external replset instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `27017` |
+
+### `replsets.externalNodes.votes`
+
+The number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external replset instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
+### `replsets.externalNodes.priority`
+
+The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external replset instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
 ### `replsets.configuration`
 
 Custom configuration options for mongod. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
+| :material-text-long: subdoc     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 
 ### `replsets.affinity.antiAffinityTopologyKey`
 
@@ -1400,6 +1440,39 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `DoNotSchedule` |
+
+### `sharding.configsvrReplSet.externalNodes.host`
+
+The URL or IP address of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `34.124.76.90` |
+
+### `sharding.configsvrReplSet.externalNodes.port`
+
+The port number of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `27017` |
+
+### `sharding.configsvrReplSet.externalNodes.votes`
+
+The number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
+### `sharding.configsvrReplSet.externalNodes.priority`
+
+The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external config server instance](replication-main.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0` |
+
 
 ### `sharding.configsvrReplSet.configuration`
 
