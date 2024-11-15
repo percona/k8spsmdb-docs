@@ -537,7 +537,7 @@ a cluster named `cluster1`:
 2. Deletion takes time. Check that all Pods disappear with `kubectl -n <namespace_name> get pods`
     command, and delete certificate related resources:
     
-     ``` {.bash data-prompt="$" }
+    ``` {.bash data-prompt="$" }
     $ kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
     ```
 
