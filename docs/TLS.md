@@ -532,6 +532,7 @@ a cluster named `cluster1`:
 
     ``` {.bash data-prompt="$" }
     $ kubectl -n <namespace_name> delete psmdb cluster1
+    ```
 
 2. Deletion takes time. Check that all Pods disappear with `kubectl -n <namespace_name> get pods`
     command, and delete certificate related resources:
