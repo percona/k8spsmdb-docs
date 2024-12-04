@@ -54,7 +54,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 ## Improvements
 
 * {{ k8spsmdbjira(739) }}: A number of Service exposure options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos`  were renamed for unification with other Percona Operators
-* {{ k8spsmdbjira(1002) }}: New Custom Resource options under the [replsets.primaryPreferTagSelector`](../operator.md#replsets.primaryprefertagselectorregion) subsection allow providing Primary instance selection preferences based on specific zone and region, which may be especially useful within the planned zone switchover process (Thanks to sergelogvinov for contribution)
+* {{ k8spsmdbjira(1002) }}: New Custom Resource options under the [replsets.primaryPreferTagSelector`](../operator.md#replsetsprimaryprefertagselectorregion) subsection allow providing Primary instance selection preferences based on specific zone and region, which may be especially useful within the planned zone switchover process (Thanks to sergelogvinov for contribution)
 * {{ k8spsmdbjira(1096) }}: Restore logs were improved to contain pbm-agent logs in mongod containers, useful to debug failures in the backup restoration process
 * {{ k8spsmdbjira(1135) }}: Split-horizon DNS for external (unmanaged) nodes [is now configurable](../expose.md#exposing-replica-set-with-split-horizon-dns) via the `replsets.externalNodes` subsection in Custom Resource
 * {{ k8spsmdbjira(1152) }}: Starting from now, the Operator uses multi-architecture images of Percona Server for MongoDB and Percona Backup for MongoDB, making it easier to deploy a cluster on ARM
