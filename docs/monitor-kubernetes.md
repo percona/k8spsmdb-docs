@@ -53,7 +53,7 @@ To set up monitoring of Kubernetes, you need the following:
         We recommend to use a separate namespace like `monitoring-system`.
 
         ```{.bash data-prompt="$" }
-        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
+        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
         ```
 
     !!! note
@@ -61,7 +61,7 @@ To set up monitoring of Kubernetes, you need the following:
         The Prometheus node exporter is not installed by default since it requires privileged containers with the access to the host file system. If you need the metrics for Nodes, add the `--node-exporter-enabled` flag as follows:    
 
         ```{.bash data-prompt="$" }
-        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> --node-exporter-enabled
+        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> --node-exporter-enabled
         ```
 
 ### Install manually
@@ -125,10 +125,10 @@ The [`kube-state-metrics` (KSM)  :octicons-link-external-16:](https://github.com
 
 To define what metrics the `kube-state-metrics` should capture, create the [ConfigMap  :octicons-link-external-16:](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration) and mount it to a container.
 
-Use the [example `configmap.yaml` configuration file  :octicons-link-external-16:](https://github.com/Percona-Lab/k8s-monitoring/blob/main/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.
+Use the [example `configmap.yaml` configuration file  :octicons-link-external-16:](https://github.com/Percona-Lab/k8s-monitoring/blob/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.
 
 ```{.bash data-prompt="$" }
-$ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
+$ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
 ```
 
 As a result, you have the `customresource-config-ksm` ConfigMap created.
@@ -162,7 +162,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
 
     ```{.bash data-prompt="$" }
     $ helm install vm-k8s vm/victoria-metrics-k8s-stack \
-    -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/values.yaml \
+    -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/values.yaml \
     --set externalVM.write.url=<PMM-SERVER-URL>/victoriametrics/api/v1/write \
     --set vmagent.spec.externalLabels.k8s_cluster_id=<UNIQUE-CLUSTER-IDENTIFER/NAME> \
     -n <namespace>
@@ -172,7 +172,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
 
     ```{.bash .no-copy }
     $ helm install vm-k8s vm/victoria-metrics-k8s-stack \
-    -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/values.yaml \
+    -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/values.yaml \
     --set externalVM.write.url=https://pmm-example.com/victoriametrics/api/v1/write \
     --set vmagent.spec.externalLabels.k8s_cluster_id=test-cluster \
     -n monitoring-system
@@ -222,7 +222,7 @@ To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitori
     Replace the `<NAMESPACE>` placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: 
 
     ```{.bash data-prompt="$" }
-    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE>
+    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE>
     ```
 
 === ":material-file-outline: Keep CRDs"
@@ -230,7 +230,7 @@ To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitori
     Replace the `<NAMESPACE>` placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: 
 
     ```{.bash data-prompt="$" }
-    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/main/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE> --keep-crd 
+    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE> --keep-crd 
     ```
 
 Check that the Victoria metrics Kubernetes stack is deleted:
