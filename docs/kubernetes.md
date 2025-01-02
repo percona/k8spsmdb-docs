@@ -58,9 +58,9 @@
         privileges. For example, those using Google Kubernetes Engine can
         grant user needed privileges with the following command:
 
-    ```default
-    $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
-    ```
+        ``` {.bash data-prompt="$" }
+        $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+        ```
 
 5. Start the operator within Kubernetes:
 
@@ -71,8 +71,7 @@
 6. Add the MongoDB Users secrets to Kubernetes. These secrets
     should be placed as plain text in the stringData section of the
     `deploy/secrets.yaml` file as login name and
-    passwords for the user accounts (see [Kubernetes
-    documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/)
+    passwords for the user accounts (see [Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/)
     for details).
 
     After editing the yaml file, MongoDB Users secrets should be created
