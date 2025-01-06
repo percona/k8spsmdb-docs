@@ -68,6 +68,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 * {{ k8spsmdbjira(1168) }}: Fix a bug where successful backups could obtain a failed state in case of the Operator configured with `watchAllNamespaces: true` and having the same name for MongoDB clusters across multiple namespaces (Thanks to Markus Küffner for contribution)
 * {{ k8spsmdbjira(1170) }}: Fix a bug that prevented deletion of a cluster with the active `percona.com/delete-psmdb-pods-in-order` finalizer in case of the cluster error state (e.g. when mongo replset failed to reconcile)
 * {{ k8spsmdbjira(1184) }}: Fix a bug where the Operator failed to reconcile when using the container security context with `readOnlyRootFilesystem` set to `true` (Thanks to applejag for contribution)
+* {{ k8spsmdbjira(1180) }}: Fix a bug where rotation functionality didn't work for scheduled backups
 
 ## Deprecation, Rename and Removal
 

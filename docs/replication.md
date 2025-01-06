@@ -89,13 +89,13 @@ spec:
   - rs0:
     expose:
       enabled: true
-      exposeType: LoadBalancer
+      type: LoadBalancer
     ...
   sharding:
     configsvrReplSet:
       expose:
         enabled: true
-        exposeType: LoadBalancer
+        type: LoadBalancer
       ...
 ```
 
