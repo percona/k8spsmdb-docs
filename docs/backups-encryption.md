@@ -85,7 +85,7 @@ To use the server-side AWS KMS encryption, specify the [ID of your customer-mana
 The Operator also supports server-side encryption with customer-provided keys
 that are stored on the client side. During the backup/restore process,
 encryption key will be provided by the Operator as part of the requests to the
-S3 storage, and the S3 storage will them to encrypt/decrypt the data using the
+S3 storage, and the S3 storage will use them to encrypt/decrypt the data with the
 AES-256 encryption algorithm. This allows to use server-side encryption on
 S3-compatible storages different from AWS KMS (the feature was tested with the
 [AWS  :octicons-link-external-16:](https://aws.amazon.com/) and [MinIO  :octicons-link-external-16:](https://min.io/) storages).
