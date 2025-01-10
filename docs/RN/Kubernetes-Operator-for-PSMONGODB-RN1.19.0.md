@@ -2,7 +2,7 @@
 
 * **Date**
 
-    January XX, 2025
+    January 16, 2025
 
 * **Installation**
 
@@ -43,15 +43,15 @@
 ## Supported Platforms
 
 The Operator was developed and tested with Percona Server for MongoDB 5.0.29-25,
-6.0.18-15, and 7.0.14-8. Other options may also work but have not been tested. The
-Operator also uses Percona Backup for MongoDB 2.7.0.
+6.0.19-16, 7.0.15-9, and 8.0.4-1. Other options may also work but have not been tested. The
+Operator also uses Percona Backup for MongoDB 2.8.0.
 
 The following platforms were tested and are officially supported by the Operator
-1.18.0:
+1.19.0:
 
 * [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.28-1.30
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.28-1.31
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.13.52 - 4.17.3
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.29-1.31
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.14.44 - 4.17.11
 * [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.28-1.31
 * [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.34.0 based on Kubernetes 1.31.0
 
