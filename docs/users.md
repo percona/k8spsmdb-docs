@@ -27,7 +27,7 @@ Starting from the Operator version 1.17.0 declarative creation of custom MongoDB
 
 You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
 
-You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, a reference to a key in some Secret resource that contains user's password, as well as MongoDB roles on various databases which should be assigned to this user. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, as well as MongoDB roles on various databases which should be assigned to this user. Also you can specify a reference to a key in some Secret resource that contains user's password, if you don't want it to be generated automatically. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
 
 ``` {.bash data-prompt="$"}
 ...
@@ -55,6 +55,9 @@ type: Opaque
 stringData:
   password: mypassword
 ```
+
+<a name="commonsecret"></a> If the Secret name was not specified in the Custom Resource, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user and sets it by the key named after the user name. 
+
 
 The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
 But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
