@@ -58,6 +58,9 @@ stringData:
 
 <a name="commonsecret"></a> If the Secret name was not specified in the Custom Resource, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user and sets it by the key named after the user name. 
 
+!!! note 
+
+    Password will not be generated if the user is created in the `$external` database (which is used when mongod should query an external authentication source for the user, such as an LDAP server). For obvious reasons, setting `passwordSecretRef` for such users is not allowed as well.
 
 The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
 But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
