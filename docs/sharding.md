@@ -31,9 +31,19 @@ A MongoDB Sharding involves the following components:
 Sharding is controlled by the `sharding` section of the `deploy/cr.yaml`
 configuration file and is turned on by default.
 
-To enable sharding, set the `sharding.enabled` key to `true` (this will turn
-existing MongoDB replica set nodes into sharded ones). To disable sharding, set
-the `sharding.enabled` key to `false`.
+**To enable sharding**, set the `sharding.enabled` key to `true`. This will turn
+existing MongoDB replica set nodes into sharded ones). 
+
+**To disable sharding**, set the `sharding.enabled` key to `false`.
+If backups are disabled (the 
+[`backup.enabled` Custom Resource option set to `false`](operator.md#backupenabled)),
+the Operator will turn sharded MongoDB instances into unsharded one by one,
+so the datagbase cluster will operate without downtime. If backups are enabled
+(the [`backup.enabled` Custom Resource option is `true`](operator.md#backupenabled)),
+the Operator will pause the cluster (to avoid Percona Backup for MongoDB
+misconfiguration), update the instances, and then unpause it back.
+
+## Configuring instances of a sharded cluster
 
 When sharding is turned on, the Operator runs replica sets with config
 servers and mongos instances. Their number is controlled by
