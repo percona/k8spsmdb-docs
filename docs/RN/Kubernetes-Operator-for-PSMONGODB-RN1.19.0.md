@@ -25,18 +25,17 @@
 * {{ k8spsmdbjira(1171) }}: Add auto-generated user password for custom users
 * {{ k8spsmdbjira(1174) }}: Add VS support to track user management feature
 * {{ k8spsmdbjira(1179) }}: Investigate set values for externalTrafficPolicy 
-* {{ k8spsmdbjira(1205) }}: Allow backups in unmanaged clusters
-* {{ k8spsmdbjira(1215) }}: fix ExternalTrafficPolicy for different service types
-* {{ k8spsmdbjira(1209) }}: Add a new parameter to the Jenkins pipelines to allow selection of architecture - amd64 or arm64
+* {{ k8spsmdbjira(1205) }}: Backups in unmanaged clusters [are now supported](../replication-backups.md)
+* {{ k8spsmdbjira(1215) }}: Fix a bug where ExternalTrafficPolicy was incorectly set for LoadBalancer and NodePort services (Thanks to Anton Averianov for contributing) **BUG**
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(675) }}: Disabling sharding fails on a running cluster
-* {{ k8spsmdbjira(754) }}: ERROR log level not very useful
-* {{ k8spsmdbjira(1088) }}: Operator can start two PBM backup operations if backup object is updated
-* {{ k8spsmdbjira(1156) }}: MongoDB operator cannot recover from invalid tls configurations because it cannot contact with PBM
-* {{ k8spsmdbjira(1172) }}: PBM fails when the backup user's password contains special character - psmdb operator
-* {{ k8spsmdbjira(1212) }}: Don't disable balancer during restores
+* {{ k8spsmdbjira(675) }}: Fix a bug where disabling sharding failed on a running cluster with enabled backups
+* {{ k8spsmdbjira(754) }}: Fix a bug where some error messages had "INFO" log level and therefore were not seen in logs with the "ERROR" log level [turned on](debug-logs.md#changing-logs-representation)
+* {{ k8spsmdbjira(1088) }}: Fix a bug which caused the Operator starting two backup operations if the user patches the backup object while its state is empty or Waiting 
+* {{ k8spsmdbjira(1156) }}: Fix a bug that prevented the Operator with enabled backups to recover from invalid TLS configurations (Thanks to KOS for reporting)
+* {{ k8spsmdbjira(1172) }}: Fix a bug where backup user's password username with special characters caused Percona Backup for MongoDB to fail
+* {{ k8spsmdbjira(1212) }}: Stop diasbling balancer during restores, not needed for Percona Backup for MongoDB 2.x
 
 ## Deprecation, Rename and Removal
 
