@@ -437,7 +437,7 @@ Use if you need to [override the replica set members FQDNs with custom hostnames
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-text-long: subdoc     | <pre>my-cluster-name-rs0-0:<br>  host: my-cluster-name-rs0-0.example.net:27017<br>  tags:<br>    key: value-0<br>my-cluster-name-rs0-1:<br>   host: my-cluster-name-rs0-1.example.net:27017<br>     tags:<br>    key: value-1<br>my-cluster-name-rs0-2:<br>  host: my-cluster-name-rs0-2.example.net:27017<br>  tags:<br>    key: value-2</pre> |
+| :material-text-long: subdoc     | <pre>my-cluster-name-rs0-0:<br>  host: my-cluster-name-rs0-0.example.net:27017<br>  priority: 3<br>  tags:<br>    key: value-0<br>my-cluster-name-rs0-1:<br>   host: my-cluster-name-rs0-1.example.net:27017<br>     tags:<br>    key: value-1<br>my-cluster-name-rs0-2:<br>  host: my-cluster-name-rs0-2.example.net:27017<br>  tags:<br>    key: value-2</pre> |
 
 ### `replsets.externalNodes.host`
 
