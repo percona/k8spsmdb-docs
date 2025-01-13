@@ -28,22 +28,19 @@ users:
 
 Find more details on this automatically created Secret [in our documentation](../users.md#custom-mongodb-roles).
 
-
 ## New Features
 
 * {{ k8spsmdbjira(1109) }}: Allow PBM to use a remote file server as backup location
 * {{ k8spsmdbjira(921) }}: IRSA is not enabled for restore
-* {{ k8spsmdbjira(1133) }}: Allow manual change of Replica Set Member Priority in Percona Server MongoDB Operator
+* {{ k8spsmdbjira(1133) }}: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator [is now possible](../operator.md#replsetoverridesmember-namepriority) with the new `replsetOverrides.MEMBER-NAME.priority` Custom Resource option
 * {{ k8spsmdbjira(1164) }}: Add the [possibility](../users.md#commonsecret) to create users in the $external database for external authentication purposes 
 
 ## Improvements
 
-* {{ k8spsmdbjira(1075) }}: Use controller runtime builder to configure controllers
-* {{ k8spsmdbjira(1123) }}: Add support for MongoDB/PSMDB 8.0
-* {{ k8spsmdbjira(1162) }}: User/Role management post implemantation cleanup
-* {{ k8spsmdbjira(1171) }}: Add auto-generated user password for custom users
-* {{ k8spsmdbjira(1174) }}: Add VS support to track user management feature
-* {{ k8spsmdbjira(1179) }}: Investigate set values for externalTrafficPolicy 
+* {{ k8spsmdbjira(1123) }}: Percona Server for MongoDB 8.0 is now supported
+* {{ k8spsmdbjira(1171) }}: The [declarative user management](users.md#create-users-in-the-custom-resource) was enchanced with the possibility to automatically generate passwords
+* {{ k8spsmdbjira(1174) }}: [Telemetry](../telemetry.md) was improved to to track if the custom users and roles management, automatic volume expansion, and multi-cluster services features are enabled
+* {{ k8spsmdbjira(1179) }}: It is now possiblt to configure externalTrafficPolicy for [mongod](../operator.md#replsetsexposeexternaltrafficpolicy), [configsvr](../operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy) and [mongos](../operator.md#shardingmongosexternaltrafficpolicy) instances
 * {{ k8spsmdbjira(1205) }}: Backups in unmanaged clusters [are now supported](../replication-backups.md)
 * {{ k8spsmdbjira(1215) }}: Fix a bug where ExternalTrafficPolicy was incorectly set for LoadBalancer and NodePort services (Thanks to Anton Averianov for contributing) **BUG**
 
@@ -57,6 +54,8 @@ Find more details on this automatically created Secret [in our documentation](..
 * {{ k8spsmdbjira(1212) }}: Stop diasbling balancer during restores, not needed for Percona Backup for MongoDB 2.x
 
 ## Deprecation, Rename and Removal
+
+* The `psmdbCluster` option from the `deploy/backup/backup.yaml` manifest used for [on-demand backups](backups-ondemand.md), which was deprecated since the Operator version 1.12.0 in favor of the `clusterName` option, has been removed and is no longer supported.
 
 ## Supported Platforms
 
