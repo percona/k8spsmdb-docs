@@ -5,8 +5,7 @@ electing the Primary, generating certificates, and picking specific names. This
 should not happen if we want the Operator to run the _Replica_ site, so first
 of all the cluster should be put into unmanaged state by setting the
 `unmanaged` key in the `deploy/cr.yaml` configuration file to true. Also you
-should set `updateStrategy` key to `OnDelete` and `backup.enabled` to
-`false`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) and [backups](backups.md) are not allowed on unmanaged clusters.
+should set `updateStrategy` key to `OnDelete`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) are not allowed on unmanaged clusters. Also, the Operator versions prior to 1.19.0 did not support [backups](backups.md) on unmanaged clusters, so set `backup.enabled` to `false` for the Operator 1.18.0 and older.
 
 !!! note
 
@@ -24,9 +23,6 @@ spec:
   - name: rs0
     size: 3
     ...
-  backup:
-    enabled: false
-  ...
 ```
 
 The _Main_ and _Replica_ sites should [have the same Secrets objects](replication-main.md#getting-the-cluster-secrets-and-certificates-to-be-copied-from-main-to-replica), so don’t forget
