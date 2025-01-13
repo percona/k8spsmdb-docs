@@ -895,6 +895,14 @@ Specifies whether Service for MongoDB instances should [route internal traffic t
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `Local` |
 
+### `replsets.expose.externalTrafficPolicy`
+
+Specifies whether Service for MongoDB instances [should route external traffic :octicons-link-external-16:](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](expose.md#connecting-from-outside-kubernetes).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Local` |
+
 ### `replsets.nonvoting.enabled`
 
 Enable or disable creation of [Replica Set non-voting instances](arbiter.md#adding-non-voting-nodes) within the cluster.
@@ -1707,6 +1715,14 @@ Specifies whether Service for config servers should [route internal traffic to c
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `Local` |
 
+### `sharding.configsvrReplSet.expose.externalTrafficPolicy`
+
+Specifies whether Service for config servers [should route external traffic :octicons-link-external-16:](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](expose.md#connecting-from-outside-kubernetes).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Local` |
+
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
@@ -2154,6 +2170,15 @@ Specifies whether Services for the mongos instances should [route internal traff
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `Local` |
+
+### `sharding.mongos.externalTrafficPolicy`
+
+Specifies whether Service for the mongos instances [should route external traffic :octicons-link-external-16:](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](expose.md#connecting-from-outside-kubernetes).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Local` |
+
 
 ### `sharding.mongos.hostAliases.ip`
 
