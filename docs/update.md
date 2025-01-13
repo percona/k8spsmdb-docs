@@ -271,23 +271,23 @@ configuration file as follows:
 
     * `Recommended` - automatic upgrade will choose the most recent version
         of software flagged as Recommended (for clusters created from scratch,
-        the Percona Server for MongoDB 7.0 version will be selected instead of the
-        Percona Server for MongoDB 6.0 or 5.0 version regardless of the image
-        path; for already existing clusters, the 7.0 vs. 6.0 vs. 5.0 branch
+        the Percona Server for MongoDB 8.0 version will be selected instead of the
+        Percona Server for MongoDB 7.0, 6.0 or 5.0 version regardless of the image
+        path; for already existing clusters, the 8.0 vs. 7.0 vs. 6.0 vs. 5.0 branch
         choice will be preserved),
-    *  `6.0-recommended`, `6.0-recommended`, `5.0-recommended` -
+    *  `8.0-recommended`, `7.0-recommended`, `6.0-recommended`, `5.0-recommended` -
         same as above, but preserves specific major MongoDB
-        version for newly provisioned clusters (ex. 7.0 will not be automatically
-        used instead of 6.0),
+        version for newly provisioned clusters (ex. 8.0 will not be automatically
+        used instead of 7.0),
     * `Latest` - automatic upgrade will choose the most recent version of
         the software available (for clusters created from scratch,
-        the Percona Server for MongoDB 7.0 version will be selected instead of the
-        Percona Server for MongoDB 6.0 or 5.0 version regardless of the image
-        path; for already existing clusters, the 7.0 vs. 6.0 or 5.0 branch
+        the Percona Server for MongoDB 8.0 version will be selected instead of the
+        Percona Server for MongoDB 7.0, 6.0 or 5.0 version regardless of the image
+        path; for already existing clusters, the 8.0 vs. 7.0 vs. 6.0 vs. 5.0 branch
         choice will be preserved),
-    * `7.0-latest`, `6.0-latest`, `5.0-latest` - same as
+    * `8.0-latest`, `7.0-latest`, `6.0-latest`, `5.0-latest` - same as
         above, but preserves specific major MongoDB version for newly provisioned
-        clusters (ex. 7.0 will not be automatically used instead of 6.0),
+        clusters (ex. 8.0 will not be automatically used instead of 7.0),
     * *version number* - specify the desired version explicitly
         (version numbers are specified as {{ mongodb60recommended }},
         {{ mongodb70recommended }}, etc.). Actual versions can be found
