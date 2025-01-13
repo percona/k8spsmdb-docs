@@ -84,18 +84,12 @@ can create [Kubernetes Services  :octicons-link-external-16:](https://kubernetes
 
 * set `expose.enabled` option to `true` to allow exposing the Pods via Services,
 * set `expose.type` option specifying the type of Service to be used:
-    * `ClusterIP` - expose the Pod with an internal static
-        IP address. This variant makes the Service reachable only from
-        within the Kubernetes cluster.
-    * `NodePort` - expose the Pod on each Kubernetes Node’s
-        IP address at a static port. A ClusterIP Service, to which the Node
-        port will be routed, is automatically created in this variant. As
-        an advantage, the Service will be reachable from outside the
-        cluster by Node address and port number, however the address will be
-        bound to a specific Kubernetes Node.
-    * `LoadBalancer` - expose the Pod externally using a
-        cloud provider’s load balancer. Both [ClusterIP and NodePort
-        Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant
+    * `ClusterIP` - expose the Pod with an internal static IP address. This variant makes the Service reachable only from within the Kubernetes cluster.
+    * `NodePort` - expose the Pod on each Kubernetes Node’s IP address at a static port. A ClusterIP Service, to which the Node port will be routed, is automatically created in this variant.
+        As an advantage, the Service will be reachable from outside the cluster by Node address and port number, however the address will be bound to a specific Kubernetes Node.
+        The `expose.externalTrafficPolicy` Custom Resource option [available in `replsets`](operator.md#replsetsexposeexternaltrafficpolicy), [`sharding.configsvrReplSet`](operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy), [and `sharding.mongos`](operator.md#shardingmongosexternaltrafficpolicy) subsections of the `deploy/cr.yaml` manifest, controlls if the external traffic will be node-local (external requests will be dropped if there is no available Pod on the Node) or cluster-wide (requests can be routed to another Node at the cost of extra latency and not preserving the client IP address).
+    * `LoadBalancer` - expose the Pod externally using a cloud provider’s load balancer. Both [ClusterIP and NodePort Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant.
+        The `expose.externalTrafficPolicy` Custom Resource option controlls if the external traffic will be balanced only between Nodes with the database Pod or cluster-wide (if necessary, requests will be redirected to another node, but with additional delay and replacing the original client IP address with the node's IP address).
 
 If the NodePort type is used, the URI looks like this:
 
