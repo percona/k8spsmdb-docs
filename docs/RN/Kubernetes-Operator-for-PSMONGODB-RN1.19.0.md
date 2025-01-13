@@ -10,12 +10,31 @@
 
 ## Release Highlights
 
+### Generated passwords for custom MongoDB users
+
+A new improvement for the [declarative management of custom MongoDB users](https://docs.percona.com/percona-operator-for-mongodb/users.html#unprivileged-users) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can ommit specifying a reference to an aleready existing Secret with the user's password, and the Operator will generate it automatically:
+
+``` {.bash data-prompt="$"}
+...
+users:
+  - name: my-user
+    db: admin
+    roles:
+      - name: clusterAdmin
+        db: admin
+      - name: userAdminAnyDatabase
+        db: admin
+```
+
+Find more details on this automatically created Secret [in our documentation](../users.md#custom-mongodb-roles).
+
+
 ## New Features
 
 * {{ k8spsmdbjira(1109) }}: Allow PBM to use a remote file server as backup location
 * {{ k8spsmdbjira(921) }}: IRSA is not enabled for restore
 * {{ k8spsmdbjira(1133) }}: Allow manual change of Replica Set Member Priority in Percona Server MongoDB Operator
-* {{ k8spsmdbjira(1164) }}: Add the possibility to create users in the $external database
+* {{ k8spsmdbjira(1164) }}: Add the [possibility](../users.md#commonsecret) to create users in the $external database for external authentication purposes 
 
 ## Improvements
 
