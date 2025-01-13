@@ -38,7 +38,7 @@ existing MongoDB replica set nodes into sharded ones).
 If backups are disabled (the 
 [`backup.enabled` Custom Resource option set to `false`](operator.md#backupenabled)),
 the Operator will turn sharded MongoDB instances into unsharded one by one,
-so the datagbase cluster will operate without downtime. If backups are enabled
+so the database cluster will operate without downtime. If backups are enabled
 (the [`backup.enabled` Custom Resource option is `true`](operator.md#backupenabled)),
 the Operator will pause the cluster (to avoid Percona Backup for MongoDB
 misconfiguration), update the instances, and then unpause it back.
