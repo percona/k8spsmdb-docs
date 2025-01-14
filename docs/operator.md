@@ -431,13 +431,29 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 | ----------- | ---------- |
 | :material-code-string: string     | `DoNotSchedule` |
 
-### `replsets.replsetOverrides`
+### `replsets.replsetOverrides.MEMBER-NAME.host`
 
-Use if you need to [override the replica set members FQDNs with custom hostnames](replication-multi-dc.md). Each key under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
+Use if you need to [override the replica set members FQDNs with custom host names](replication-multi-dc.md). Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-text-long: subdoc     | <pre>my-cluster-name-rs0-0:<br>  host: my-cluster-name-rs0-0.example.net:27017<br>  priority: 3<br>  tags:<br>    key: value-0<br>my-cluster-name-rs0-1:<br>   host: my-cluster-name-rs0-1.example.net:27017<br>     tags:<br>    key: value-1<br>my-cluster-name-rs0-2:<br>  host: my-cluster-name-rs0-2.example.net:27017<br>  tags:<br>    key: value-2</pre> |
+| :material-code-string: string     | `my-cluster-name-rs0-0.example.net:27017` |
+
+### `replsets.replsetOverrides.MEMBER-NAME.priority`
+
+Use if you need to [override the replica set members priorities  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/). 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `3` |
+
+### `replsets.replsetOverrides.MEMBER-NAME.tags`
+
+Optional custom tags which can be added to the replset members to make their identication easier.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label     | `key: value-0` |
 
 ### `replsets.externalNodes.host`
 
