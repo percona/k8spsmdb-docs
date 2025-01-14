@@ -106,7 +106,7 @@ to access the storage.
     
     ??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
 
-        Following steps are needed to turn this feature on:
+        <a name="iam"></a>Following steps are needed to turn this feature on:
 
         * Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
             and the permission policy within where you specify the access level that
