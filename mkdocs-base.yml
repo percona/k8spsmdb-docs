@@ -163,6 +163,7 @@ extra: # Used in main.html template and can't be externalized
 nav:
 
     - Welcome: index.md
+    - Get more help: get-help.md
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
@@ -249,9 +250,7 @@ nav:
           - "Frequently asked questions": faq.md
           - "Copyright and licensing information": copyright.md
           - "Trademark policy": trademark-policy.md
-    
-    - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
-    
+      
     - Release notes:
           - "Release notes index": RN/index.md
           - "Percona Operator for MongoDB 1.17.0 (2024-09-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
@@ -274,4 +273,5 @@ nav:
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
-    - Get more help: get-help.md
+
+    - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
