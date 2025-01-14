@@ -31,7 +31,7 @@ Find more details on this automatically created Secret [in our documentation](..
 ## New Features
 
 * {{ k8spsmdbjira(1109) }}: Allow PBM to use a remote file server as backup location
-* {{ k8spsmdbjira(921) }}: IRSA is not enabled for restore
+* {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](backups-storage.md#iam) allow automating access to S3 storage for backups
 * {{ k8spsmdbjira(1133) }}: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator [is now possible](../operator.md#replsetoverridesmember-namepriority) with the new `replsetOverrides.MEMBER-NAME.priority` Custom Resource option
 * {{ k8spsmdbjira(1164) }}: Add the [possibility](../users.md#commonsecret) to create users in the $external database for external authentication purposes 
 
