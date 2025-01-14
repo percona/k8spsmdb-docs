@@ -441,7 +441,7 @@ Use if you need to [override the replica set members FQDNs with custom host name
 
 ### `replsets.replsetOverrides.MEMBER-NAME.priority`
 
-Use if you need to [override the replica set members priorities  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/). 
+Use if you need to override the [replica set members priorities  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/). 
 
 | Value type  | Example    |
 | ----------- | ---------- |
