@@ -10,11 +10,50 @@
 
 ## Release Highlights
 
+### Using remote file server for backups
+
+The new `fileystem` backup storage type was added in this release in addition to already existing `s3` and `azure` types. 
+It allows users to mount a remote file server to a local directory, and make Percona Backup for MongoDB using this directory as a storage for backus.
+The approach is based on using common Network File System (NFS) protocol, and should be useful in network-restricted environments without S3-compatible storage storage or in cases with a non-standard storage service supporting NFS access.
+
+To use NFS-capable remote file server as a backup storage, user needs to mount the remote storage as a sidecar volume in the `replset` section of the Custom Resource (and also `configsvrReplSet` in case of a sharded cluster):
+
+```yaml
+replsets:
+  ...
+  sidecarVolumes:
+  - name: backup-nfs
+    nfs:
+      server: "nfs-service.storage.svc.cluster.local"
+      path: "/psmdb-some-name-rs0"
+  ...
+backup:
+  ...
+  volumeMounts:
+    - mountPath: /mnt/nfs/
+      name: backup-nfs
+  ...
+```
+
+Finally, this new storage needs to be configured in the same Custom Resource as a normal storage for backpus:
+
+```yaml
+backup:
+  ...
+  storages:
+    backup-nfs:
+      filesystem:
+        path: /mnt/nfs/
+          type: filesystem
+```
+
+See more in our [documentation about this storage type](backups-storage.md#remote-file-server).
+
 ### Generated passwords for custom MongoDB users
 
 A new improvement for the [declarative management of custom MongoDB users](https://docs.percona.com/percona-operator-for-mongodb/users.html#unprivileged-users) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can ommit specifying a reference to an aleready existing Secret with the user's password, and the Operator will generate it automatically:
 
-``` {.bash data-prompt="$"}
+```yaml
 ...
 users:
   - name: my-user
@@ -30,7 +69,7 @@ Find more details on this automatically created Secret [in our documentation](..
 
 ## New Features
 
-* {{ k8spsmdbjira(1109) }}: Allow PBM to use a remote file server as backup location
+* {{ k8spsmdbjira(1109) }}: Backups can now be [stored on a remote file server]](backups-storage.md#remote-file-server)
 * {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](backups-storage.md#iam) allow automating access to S3 storage for backups
 * {{ k8spsmdbjira(1133) }}: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator [is now possible](../operator.md#replsetoverridesmember-namepriority) with the new `replsetOverrides.MEMBER-NAME.priority` Custom Resource option
 * {{ k8spsmdbjira(1164) }}: Add the [possibility](../users.md#commonsecret) to create users in the $external database for external authentication purposes 
