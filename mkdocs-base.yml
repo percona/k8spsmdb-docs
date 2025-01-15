@@ -60,6 +60,7 @@ extra_css:
   - css/nocopy.css
   - css/design.css
   - css/osano.css
+  - css/extra.css
   - css/operators.css
 
 extra_javascript:
