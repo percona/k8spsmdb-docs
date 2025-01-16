@@ -807,6 +807,22 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 | ----------- | ---------- |
 | :material-code-string: string     | `sidecar-secret` |
 
+### `replsets.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `nfs-service.storage.svc.cluster.local` |
+
+### `replsets.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/psmdb-some-name-rs0` |
+
 ### `replsets.sidecarPVCs`
 
 [Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
@@ -2474,7 +2490,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 | ----------- | ---------- |
 | :material-code-string: string     | `us-east-1`|
 
-### `backup.storages.STORAGE-NAME.s3.Url`
+### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
 The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
@@ -2545,6 +2561,14 @@ The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.c
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `https://accountName.blob.core.windows.net` |
+
+### `backup.storages.STORAGE-NAME.filesystem.path`
+
+The mount point for a remote filesystem configured to store backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/mnt/nfs/` |
 
 ### `backup.pitr.enabled`
 
