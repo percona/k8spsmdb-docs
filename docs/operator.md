@@ -2380,7 +2380,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 
 ### `backup.storages.STORAGE-NAME.type`
 
-The cloud storage type used for backups. Only `s3` type is currently supported.
+The cloud storage type used for backups. Only `s3`, `azure`, and `filesystem` types are supported.
 
 | Value type  | Example    |
 | ----------- | ---------- |
