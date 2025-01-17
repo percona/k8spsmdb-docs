@@ -1,6 +1,6 @@
 # 5. Monitor database with Percona Monitoring and Management (PMM)
 
-{% include '../snippets/monitor-db.md' %}
+{% include 'assets/fragments/monitor-db.txt' %}
 
 ## Next steps
 
