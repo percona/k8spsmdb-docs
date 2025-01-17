@@ -1643,6 +1643,31 @@ Name of the [custom sidecar container](sidecar.md) for Config Server Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `rs-sidecar-1` |
 
+### `sharding.configsvrReplSet.sidecarVolumes.name`
+
+Name of the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `sidecar-config` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `nfs-service.storage.svc.cluster.local` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/psmdb-some-name-rs0` |
+
+
 ### `sharding.configsvrReplSet.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
