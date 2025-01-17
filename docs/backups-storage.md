@@ -212,7 +212,7 @@ within the default memory limits.
 ## Remote file server
 
 You can use `fileystem` backup storage type to mount a *remote file server* to
-a local directory as a *sidecar Volume*, and make Percona Backup for MongoDB
+a local directory as a *sidecar volume*, and make Percona Backup for MongoDB
 using this directory as a storage for backups.
 
 The approach is based on using common
@@ -221,7 +221,7 @@ Particularly, this storage type is useful in network-restricted environments
 without S3-compatible storage, or in cases with a non-standard storage service
 that still supports NFS access.
 
-1. Add the remote storage as a [sidecar Volume](operator.md#replsetssidecarvolumesname)
+1. Add the remote storage as a [sidecar volume](operator.md#replsetssidecarvolumesname)
     in the `replset` section of the Custom Resource (and also in `configsvrReplSet`
     in case of a sharded cluster). You will need to specify the server hostname
     and some directory on it, as in the following example:
@@ -239,10 +239,10 @@ that still supports NFS access.
     ```
 
     The `backup-nfs-vol` name specified above will be used to refer this
-    sidecar Volume in the backup section.
+    sidecar volume in the backup section.
 
 2. Now put the mount point (the local directory path to which the remote storage
-    will be mounted) and the name of your sidecar Volume into the
+    will be mounted) and the name of your sidecar volume into the
     `backup.volumeMounts` subsection of the Custom Resource:
 
     ```yaml
