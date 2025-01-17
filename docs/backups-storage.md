@@ -119,19 +119,37 @@ You can use either make and use the *IAM instance profle*, or configure *IAM rol
 
 === "Using IAM instance profile"
 
-    <a name="iam"></a>Following steps are needed to turn this feature on:
+    Following steps are needed to turn this feature on:
 
-    * Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
-        and the permission policy within where you specify the access level that grants the access to S3 buckets.
-    * Attach the IAM profile to an EC2 instance.
-    * Configure an S3 storage bucket and verify the connection from the EC2 instance to it.
-    * *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+    1. Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)         and the permission policy within where you specify the access level that grants the access to S3 buckets.
+    2. Attach the IAM profile to an EC2 instance.
+    3. Configure an S3 storage bucket and verify the connection from the EC2 instance to it.
+    4. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 === "Using IAM role for service account"
 
-[IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) () to allow applications running in EKS pods to access the AWS API using permissions configured in AWS IAM roles.
+    [IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) to access the AWS API using permissions configured in AWS IAM roles.
 
+    Assuming that you created the cluster on [EKS, following our installation steps](eks.md), the the high-level steps to configure it are the following:
 
+    1. Create an IAM role and specify the policy that defines the access to an S3 bucket. See [official Amazon documentation :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) for details.
+
+    2. Find out service accounts used for the Operator and for the database cluster. Service account for the Operator is `percona-server-mongodb-operator` (it is set by the `serviceAccountName` key in the `deploy/operator.yaml` or `deploy/bundle.yaml` manifest) The cluster's default account is `default` (it can be set with `serviceAccountName` Custom Resource option in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections of the `deploy/cr.yaml` manifest).
+    
+    3. Annotate both service accounts with the needed IAM roles. The commands should look as follows:
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl -n <cluster namespace> annotate serviceaccount default eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        $ kubectl -n <operator namespace> annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        ```
+
+        Don't forget to substitute the `<operator namespace>` and `<cluster namespace>` placeholders with the real namespaces, and use your IAM role instead of the `eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role` example.
+
+    4. Configure an S3 storage bucket and verify the connection from the EC2 instance to it. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+
+!!! note 
+
+    If IRSA-related credentials are defined, they have the priority over any IAM instance profile. S3 credentials in a secret, if present, override any IRSA/IAM instance profile related credentials and are used for authentication instead.
 
 ## Microsoft Azure Blob storage
 
