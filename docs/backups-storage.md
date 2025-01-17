@@ -222,7 +222,7 @@ The approach is based on using common
 [Network File System (NFS) protocol :octicons-link-external-16:](https://en.wikipedia.org/wiki/Network_File_System).
 Particularly, this storage type is useful in network-restricted environments
 without S3-compatible storage, or in cases with a non-standard storage service
-that still supports NFS access. T
+that still supports NFS access.
 
 1. Add the remote storage as a [sidecar volume](operator.md#replsetssidecarvolumesname)
     in the `replset` section of the Custom Resource (and also in `configsvrReplSet`
