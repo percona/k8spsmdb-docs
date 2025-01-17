@@ -83,7 +83,7 @@ $ kubectl exec -it my-cluster-name-rs0-0 -c rs-sidecar-0 -- sh
 It is possible to mount volumes into sidecar containers.
 
 Following subsections describe different [volume types  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#volume-types),
-which were tested with sidecar containers and are known to work.
+which were tested with sidecar containers and are known to work. They allow either dynamically provisioning volumes for sidecar containers or mounting existing volumes.
 
 ### Persistent Volume
 
@@ -135,7 +135,7 @@ to pass the information which needs additional protection (e.g. passwords), to
 the container. Secrets are stored with the Kubernetes API and mounted to the
 container as RAM-stored files.
 
-You can mount a secret volume as follows:
+You can mount a secret volume via the `sidecarVolumes` subsection as follows:
 
 ```yaml
 ...
@@ -168,7 +168,7 @@ You can use a [configMap volume  :octicons-link-external-16:](https://kubernetes
 to pass some configuration data to the container. Secrets are stored with the
 Kubernetes API and mounted to the container as RAM-stored files.
 
-You can mount a configMap volume as follows:
+You can mount a configMap volume via the `sidecarVolumes` subsection as follows:
 
 ```yaml
 ...
