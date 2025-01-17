@@ -216,7 +216,7 @@ which configures a private volume for filesystem-type storage:
 
 You can use `fileystem` backup storage type to mount a *remote file server* to
 a local directory as a *sidecar Volume*, and make Percona Backup for MongoDB
-using this directory as a storage for backus.
+using this directory as a storage for backups.
 
 The approach is based on using common
 [Network File System (NFS) protocol :octicons-link-external-16:](https://en.wikipedia.org/wiki/Network_File_System).
