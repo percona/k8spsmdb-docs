@@ -103,18 +103,6 @@ to access the storage.
             credentialsSecret: my-cluster-name-backup-s3
       ...
     ```
-    
-    ??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
-
-        <a name="iam"></a>Following steps are needed to turn this feature on:
-
-        * Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
-            and the permission policy within where you specify the access level that
-            grants the access to S3 buckets.
-        * Attach the IAM profile to an EC2 instance.
-        * Configure an S3 storage bucket and verify the connection from the EC2
-            instance to it.
-        * Do not provide `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 Finally, make sure that your storage has enough resources to store backups, which is
 especially important in the case of large databases. It is clear that you need
@@ -122,6 +110,28 @@ enough free space on the storage. Beside that, S3 storage [upload limitats :octi
 include the maximum number 10000 parts, and backing up large data will result in
 larger chunk sizes, which in turn may cause S3 server to run out of RAM, especially
 within the default memory limits.
+
+### Automating access to Amazon s3 based on IAM roles
+
+Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [Identity Access Management (IAM) roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with *no need to specify the S3 credentials explicitly*.
+
+You can use either make and use the *IAM instance profle*, or configure *IAM roles for Service Accounts* (both ways heavily rely on AWS specifics, and need following the official Amazon documentation to be configured). 
+
+=== "Using IAM instance profile"
+
+    <a name="iam"></a>Following steps are needed to turn this feature on:
+
+    * Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
+        and the permission policy within where you specify the access level that grants the access to S3 buckets.
+    * Attach the IAM profile to an EC2 instance.
+    * Configure an S3 storage bucket and verify the connection from the EC2 instance to it.
+    * *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+
+=== "Using IAM role for service account"
+
+[IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) () to allow applications running in EKS pods to access the AWS API using permissions configured in AWS IAM roles.
+
+
 
 ## Microsoft Azure Blob storage
 
