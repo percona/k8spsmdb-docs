@@ -2595,6 +2595,22 @@ The mount point for a remote filesystem configured to store backups.
 | ----------- | ---------- |
 | :material-code-string: string     | `/mnt/nfs/` |
 
+### `backup.volumeMounts.mountPath`
+
+Mount path for the [remote backup storage](backups-storage.md#remote-file-server).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/mnt/nfs/` |
+
+### `backup.volumeMounts.name`
+
+Name of the [remote backup storage](backups-storage.md#remote-file-server).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `backup-nfs` |
+
 ### `backup.pitr.enabled`
 
 Enables or disables [point-in-time-recovery functionality](backups-pitr.md).
