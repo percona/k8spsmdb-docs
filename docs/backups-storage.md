@@ -55,7 +55,7 @@ to access the storage.
     $ kubectl apply -f deploy/backup-s3.yaml
     ```
 
-2. Put the data needed to access the S3-compatible cloud into the
+2. <a name="bucket"></a>Put the data needed to access the S3-compatible cloud into the
     `backup.storages` subsection of the Custom Resource.
 
     * `storages.<NAME>.type` should be set to `s3` (substitute the <NAME> part
@@ -121,9 +121,9 @@ You can use either make and use the *IAM instance profile*, or configure *IAM ro
 
     Following steps are needed to turn this feature on:
 
-    1. Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)         and the permission policy within where you specify the access level that grants the access to S3 buckets.
+    1. Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and the permission policy within where you specify the access level that grants the access to S3 buckets.
     2. Attach the IAM profile to an EC2 instance.
-    3. Configure an S3 storage bucket and verify the connection from the EC2 instance to it.
+    3. Configure an [S3 storage bucket in the Custom Resource](backups-storage.md#bucket) and verify the connection from the EC2 instance to it.
     4. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 === "Using IAM role for service account"
@@ -145,7 +145,7 @@ You can use either make and use the *IAM instance profile*, or configure *IAM ro
 
         Don't forget to substitute the `<operator namespace>` and `<cluster namespace>` placeholders with the real namespaces, and use your IAM role instead of the `eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role` example.
 
-    4. Configure an S3 storage bucket and verify the connection from the EC2 instance to it. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+    4. Configure an [S3 storage bucket in the Custom Resource](backups-storage.md#bucket) and verify the connection from the EC2 instance to it. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 !!! note 
 
