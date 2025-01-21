@@ -823,6 +823,22 @@ Name of the [Secret  :octicons-link-external-16:](https://kubernetes.io/docs/con
 | ----------- | ---------- |
 | :material-code-string: string     | `sidecar-secret` |
 
+### `replsets.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `nfs-service.storage.svc.cluster.local` |
+
+### `replsets.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/psmdb-some-name-rs0` |
+
 ### `replsets.sidecarPVCs`
 
 [Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
@@ -1651,6 +1667,31 @@ Name of the [custom sidecar container](sidecar.md) for Config Server Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `rs-sidecar-1` |
 
+### `sharding.configsvrReplSet.sidecarVolumes.name`
+
+Name of the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `sidecar-config` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `nfs-service.storage.svc.cluster.local` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](sidecar.md) volume for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/psmdb-some-name-rs0` |
+
+
 ### `sharding.configsvrReplSet.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
@@ -2421,7 +2462,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 
 ### `backup.storages.STORAGE-NAME.type`
 
-The cloud storage type used for backups. Only `s3` type is currently supported.
+The cloud storage type used for backups. Only `s3`, `azure`, and `filesystem` types are supported.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2515,7 +2556,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 | ----------- | ---------- |
 | :material-code-string: string     | `us-east-1`|
 
-### `backup.storages.STORAGE-NAME.s3.Url`
+### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
 The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
 
@@ -2586,6 +2627,30 @@ The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.c
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `https://accountName.blob.core.windows.net` |
+
+### `backup.storages.STORAGE-NAME.filesystem.path`
+
+The mount point for a remote filesystem configured to store backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/mnt/nfs/` |
+
+### `backup.volumeMounts.mountPath`
+
+Mount path for the [remote backup storage](backups-storage.md#remote-file-server).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/mnt/nfs/` |
+
+### `backup.volumeMounts.name`
+
+Name of the [remote backup storage](backups-storage.md#remote-file-server).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `backup-nfs` |
 
 ### `backup.pitr.enabled`
 
