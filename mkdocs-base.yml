@@ -60,6 +60,7 @@ extra_css:
   - css/nocopy.css
   - css/design.css
   - css/osano.css
+  - css/extra.css
   - css/operators.css
 
 extra_javascript:
@@ -89,8 +90,8 @@ markdown_extensions:
     custom_checkbox: true
   pymdownx.snippets:
       base_path: ["snippets"]
-      auto_append:
-        - services-banner.md
+#      auto_append:
+#        - services-banner.md
   pymdownx.highlight:
     use_pygments: true
   pymdownx.emoji:
@@ -164,6 +165,7 @@ extra: # Used in main.html template and can't be externalized
 nav:
 
     - Welcome: index.md
+    - Get more help: get-help.md
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
@@ -250,9 +252,9 @@ nav:
           - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
           - "Copyright and licensing information": copyright.md
           - "Trademark policy": trademark-policy.md
+      
     - Release notes:
           - "Release notes index": RN/index.md
           - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
@@ -276,3 +278,5 @@ nav:
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
+
+    - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
