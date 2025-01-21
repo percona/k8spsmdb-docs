@@ -11,12 +11,15 @@ The following information is gathered:
 * Operator version
 * Mongo version
 * Percona Backup for MongoDB (PBM) version
-* Is sharding enabled (starting from the Operator version 1.13)
-* Is Hashicorp Vault enabled (starting from the Operator version 1.13)
-* Is the Operator deployed in a cluster-wide mode (starting from the Operator version 1.13)
-* Is the Operator deployed with Helm
-* Are sidecar containers used
-* Are backups used, are point-in-time recovery and/or scheduled physical backup features used, if so
+* Is [sharding](sharding.md) enabled (starting from the Operator version 1.13)
+* Is [Hashicorp Vault](encryption.md#using-hashicorp-vault-storage-for-encryption-keys) enabled (starting from the Operator version 1.13)
+* Is the Operator deployed in a [cluster-wide mode](cluster-wide.md) (starting from the Operator version 1.13)
+* Is [Volume Expansion](scaling.md#automated-scaling-with-volume-expansion-capability) enabled (starting from the Operator version 1.19)
+* Are [multi-cluster Services](replication-mcs.md) enabled (starting from the Operator version 1.19)
+* Does the Operator manage [custom MongoDB users](users.md#create-users-in-the-custom-resource) and/or [custom MongoDB roles](users.md#custom-mongodb-roles) (starting from the Operator version 1.19)
+* Is the Operator [deployed with Helm](helm.md)
+* Are [sidecar containers](sidecar.md) used
+* Are [backups](backups.md) used, are [point-in-time recovery](backups-pitr.md) and/or [scheduled physical backup](backups-scheduled.md) features used, if so
 * How large is the cluster
 
 We do not gather anything that identify a system, but the following thing should be mentioned:
