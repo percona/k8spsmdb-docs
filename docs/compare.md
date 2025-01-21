@@ -21,6 +21,7 @@ Here is the review of generic features, such as supported MongoDB versions, open
 | Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                       | No guarantee                 |
 | Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                                | Yes                          |
 | Network exposure  | Yes                          | Yes                | No, only through manual config | No                     | Yes                          |
+| Web-based GUI     | [Percona Everest](https://docs.percona.com/everest/index.html) | :no_entry_sign: | [kubedb-ui](https://kubedb.com/datasheet/) | :no_entry_sign:| [Ops Manager](https://www.mongodb.com/products/self-managed/enterprise-advanced/ops-manager)|
 
 ## Maintenance
 
