@@ -1,7 +1,7 @@
 # System Requirements
 
 The Operator was developed and tested with Percona Server for MongoDB
-{{ mongodb50recommended }}, {{ mongodb60recommended }}, 
+{{ mongodb60recommended }}, 
 {{ mongodb70recommended }}, and {{ mongodb80recommended }}. Other options may also work but have not been
 tested. The Operator {{ release }} also uses Percona Backup for MongoDB
 {{ pbmrecommended }}.
