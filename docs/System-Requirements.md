@@ -1,8 +1,8 @@
 # System Requirements
 
 The Operator was developed and tested with Percona Server for MongoDB
-{{ mongodb50recommended }}, {{ mongodb60recommended }}, and
-{{ mongodb70recommended }}. Other options may also work but have not been
+{{ mongodb60recommended }}, 
+{{ mongodb70recommended }}, and {{ mongodb80recommended }}. Other options may also work but have not been
 tested. The Operator {{ release }} also uses Percona Backup for MongoDB
 {{ pbmrecommended }}.
 
@@ -12,11 +12,10 @@ The following platforms were tested and are officially supported by the Operator
 {{ release }}:
 
 * [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.28-1.30
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.28-1.31
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.13.52 - 4.17.3
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.29-1.31
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.14.44 - 4.17.11
 * [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.28-1.31
 * [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.34.0 based on Kubernetes 1.31.0
-
 
 Other Kubernetes platforms may also work but have not been tested.
 
