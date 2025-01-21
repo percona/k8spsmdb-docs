@@ -6,7 +6,7 @@ Cluster components:
 
 | Operator | [MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
-| [1.19.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md) | 5.0 - 8.0          | 2.8.0 |
+| [1.19.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md) | 6.0 - 8.0          | 2.8.0 |
 | [1.18.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md) | 5.0 - 7.0          | 2.7.0 |
 | [1.17.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md) | 5.0 - 7.0          | 2.5.0 |
 | [1.16.2](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md) | 5.0 - 7.0          | 2.4.1 |
