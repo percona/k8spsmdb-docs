@@ -59,7 +59,7 @@ to access the storage.
     $ kubectl apply -f deploy/backup-s3.yaml
     ```
 
-2. Put the data needed to access the S3-compatible cloud into the
+2. <a name="bucket"></a>Put the data needed to access the S3-compatible cloud into the
     `backup.storages` subsection of the Custom Resource.
 
     * `storages.<NAME>.type` should be set to `s3` (substitute the <NAME> part
@@ -107,18 +107,6 @@ to access the storage.
             credentialsSecret: my-cluster-name-backup-s3
       ...
     ```
-    
-    ??? note "Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [IAM roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with no need to specify the S3 credentials explicitly."
-
-        Following steps are needed to turn this feature on:
-
-        * Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
-            and the permission policy within where you specify the access level that
-            grants the access to S3 buckets.
-        * Attach the IAM profile to an EC2 instance.
-        * Configure an S3 storage bucket and verify the connection from the EC2
-            instance to it.
-        * Do not provide `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
 Finally, make sure that your storage has enough resources to store backups, which is
 especially important in the case of large databases. It is clear that you need
@@ -126,6 +114,46 @@ enough free space on the storage. Beside that, S3 storage [upload limitats :octi
 include the maximum number 10000 parts, and backing up large data will result in
 larger chunk sizes, which in turn may cause S3 server to run out of RAM, especially
 within the default memory limits.
+
+### Automating access to Amazon s3 based on IAM roles
+
+Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [Identity Access Management (IAM) roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with *no need to specify the S3 credentials explicitly*.
+
+You can use either make and use the *IAM instance profile*, or configure *IAM roles for Service Accounts* (both ways heavily rely on AWS specifics, and need following the official Amazon documentation to be configured). 
+
+=== "Using IAM instance profile"
+
+    Following steps are needed to turn this feature on:
+
+    1. Create the [IAM instance profile  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and the permission policy within where you specify the access level that grants the access to S3 buckets.
+    2. Attach the IAM profile to an EC2 instance.
+    3. Configure an [S3 storage bucket in the Custom Resource](backups-storage.md#bucket) and verify the connection from the EC2 instance to it.
+    4. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+
+=== "Using IAM role for service account"
+
+    [IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) to access the AWS API using permissions configured in AWS IAM roles.
+
+    Assuming that you have deployed the MongoDB Operator and the database cluster on [EKS, following our installation steps](eks.md), and your EKS cluster has [OpenID Connect issuer URL (OIDC) :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) enabled, the the high-level steps to configure it are the following:
+
+    1. Create an IAM role for your OIDC, and attach to the created role the policy that defines the access to an S3 bucket. See [official Amazon documentation :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) for details.
+
+    2. Find out service accounts used for the Operator and for the database cluster. Service account for the Operator is `percona-server-mongodb-operator` (it is set by the `serviceAccountName` key in the `deploy/operator.yaml` or `deploy/bundle.yaml` manifest) The cluster's default account is `default` (it can be set with `serviceAccountName` Custom Resource option in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections of the `deploy/cr.yaml` manifest).
+    
+    3. Annotate both service accounts with the needed IAM roles. The commands should look as follows:
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl -n <cluster namespace> annotate serviceaccount default eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        $ kubectl -n <operator namespace> annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        ```
+
+        Don't forget to substitute the `<operator namespace>` and `<cluster namespace>` placeholders with the real namespaces, and use your IAM role instead of the `eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role` example.
+
+    4. Configure an [S3 storage bucket in the Custom Resource](backups-storage.md#bucket) and verify the connection from the EC2 instance to it. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
+
+!!! note 
+
+    If IRSA-related credentials are defined, they have the priority over any IAM instance profile. S3 credentials in a secret, if present, override any IRSA/IAM instance profile related credentials and are used for authentication instead.
 
 ## Microsoft Azure Blob storage
 
