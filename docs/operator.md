@@ -2351,7 +2351,7 @@ Database that the user authenticates against.
 
 ### `users.passwordSecretRef.name`
 
-Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](operator.md#commonsecret).
+Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](users.md#commonsecret).
 
 | Value type | Example |
 | ---------- | ------- |
