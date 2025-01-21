@@ -263,31 +263,31 @@ configuration file as follows:
     !!! note
 
         If you don't update crVersion, minor version upgrade is the only one to
-        occur. For example, the image `percona-server-mongodb:5.0.7-6` can
-        be upgraded to `percona-server-mongodb:5.0.11-10`.
+        occur. For example, the image `percona-server-mongodb:6.0.15-12` can
+        be upgraded to `percona-server-mongodb:6.0.16-13`.
 
 3. Set the `upgradeOptions.apply` option from `Disabled` to one of the
     following values:
 
     * `Recommended` - automatic upgrade will choose the most recent version
         of software flagged as Recommended (for clusters created from scratch,
-        the Percona Server for MongoDB 7.0 version will be selected instead of the
-        Percona Server for MongoDB 6.0 or 5.0 version regardless of the image
-        path; for already existing clusters, the 7.0 vs. 6.0 vs. 5.0 branch
+        the Percona Server for MongoDB 8.0 version will be selected instead of the
+        Percona Server for MongoDB 7.0 or 6.0 version regardless of the image
+        path; for already existing clusters, the 8.0 vs. 7.0 vs. 6.0 branch
         choice will be preserved),
-    *  `6.0-recommended`, `6.0-recommended`, `5.0-recommended` -
+    *  `8.0-recommended`, `7.0-recommended`, `6.0-recommended` -
         same as above, but preserves specific major MongoDB
-        version for newly provisioned clusters (ex. 7.0 will not be automatically
-        used instead of 6.0),
+        version for newly provisioned clusters (ex. 8.0 will not be automatically
+        used instead of 7.0),
     * `Latest` - automatic upgrade will choose the most recent version of
         the software available (for clusters created from scratch,
-        the Percona Server for MongoDB 7.0 version will be selected instead of the
-        Percona Server for MongoDB 6.0 or 5.0 version regardless of the image
-        path; for already existing clusters, the 7.0 vs. 6.0 or 5.0 branch
+        the Percona Server for MongoDB 8.0 version will be selected instead of the
+        Percona Server for MongoDB 7.0 or 6.0 version regardless of the image
+        path; for already existing clusters, the 8.0 vs. 7.0 vs. 6.0 branch
         choice will be preserved),
-    * `7.0-latest`, `6.0-latest`, `5.0-latest` - same as
+    * `8.0-latest`, `7.0-latest`, `6.0-latest` - same as
         above, but preserves specific major MongoDB version for newly provisioned
-        clusters (ex. 7.0 will not be automatically used instead of 6.0),
+        clusters (ex. 8.0 will not be automatically used instead of 7.0),
     * *version number* - specify the desired version explicitly
         (version numbers are specified as {{ mongodb60recommended }},
         {{ mongodb70recommended }}, etc.). Actual versions can be found
@@ -295,14 +295,20 @@ configuration file as follows:
 
     !!! note
 
-        prior to the Operator version 1.16.0 Percona Server for MongoDB 4.4
-        could be used with `upgradeOptions.apply` set to `4.4-recommended`
-        or `4.4-latest`. MongoDB 4.4 support has reached its end-of-life in the
-        Operator version 1.16.0. Users of existing clusters based on Percona
-        Server for MongoDB 4.4 should explicitly switch to newer database
-        versions before upgrading the Operator to 1.16.0.
+        * Prior to the Operator version 1.19.0 Percona Server for MongoDB 5.0
+            could be used with `upgradeOptions.apply` set to `5.0-recommended`
+            or `5.0-latest`. MongoDB 5.0 support has reached its end-of-life in the
+            Operator version 1.19.0. Users of existing clusters based on Percona
+            Server for MongoDB 5.0 should explicitly switch to newer database
+            versions before upgrading the Operator to 1.19.0.
+        * Prior to the Operator version 1.16.0 Percona Server for MongoDB 4.4
+            could be used with `upgradeOptions.apply` set to `4.4-recommended`
+            or `4.4-latest`. MongoDB 4.4 support has reached its end-of-life in the
+            Operator version 1.16.0. Users of existing clusters based on Percona
+            Server for MongoDB 4.4 should explicitly switch to newer database
+            versions before upgrading the Operator to 1.16.0.
 
-4. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
+5. Make sure the `versionServiceEndpoint` key is set to a valid Version Server
     URL (otherwise Smart Updates will not occur).
 
     === "Percona’s Version Service (default)"
@@ -324,7 +330,7 @@ configuration file as follows:
         the Version Service URL can not be reached, no updgrades will be
         performed.
 
-5. Use the `upgradeOptions.schedule` option to specify the update check time in CRON format.
+6. Use the `upgradeOptions.schedule` option to specify the update check time in CRON format.
 
     The following example sets the midnight update checks with the official
     Percona’s Version Service:
@@ -345,7 +351,7 @@ configuration file as follows:
         `* * * * *` (continuously check and upgrade) and changing it back to
         another more conservative schedule when the upgrade is complete.
 
-6. Don't forget to apply your changes to the Custom Resource in the usual way:
+7. Don't forget to apply your changes to the Custom Resource in the usual way:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/cr.yaml
@@ -361,15 +367,15 @@ configuration file as follows:
 ### Major version automated upgrades
 
 Normally automatic upgrade takes place within minor versions (for example,
-from `5.0.7-6` to `5.0.11-10`) of MongoDB. Major versions upgrade (for
-example moving from `5.0-recommended` to `6.0-recommended`) is more
+from `6.0.15-12` to `6.0.16-13`) of MongoDB. Major versions upgrade (for
+example moving from `6.0-recommended` to `7.0-recommended`) is more
 complicated task which might potentially affect how data is stored and how
 applications interacts with the database (in case of some API changes).
 
 Such upgrade is supported by the Operator within one major version at a time:
-for example, to change Percona Server for MongoDB major version from 5.0 to 7.0,
-you should first upgrade it to 6.0, and later make a separate upgrade from 6.0
-to 7.0. The same is true for major version downgrades.
+for example, to change Percona Server for MongoDB major version from 6.0 to 8.0,
+you should first upgrade it to 7.0, and later make a separate upgrade from 7.0
+to 8.0. The same is true for major version downgrades.
 
 !!! note
 
@@ -383,16 +389,16 @@ key in the `deploy/cr.yaml` configuration file:
 ```yaml
 spec:
   upgradeOptions:
-    apply: 5.0-recommended
+    apply: 6.0-recommended
 ```
 
 !!! note
 
-    When making downgrades (e.g. changing version from 6.0 to 5.0), make
+    When making downgrades (e.g. changing version from 7.0 to 6.0), make
     sure to remove incompatible features that are persisted and/or update
     incompatible configuration settings. Compatibility issues between major
     MongoDB versions can be found in
-    [upstream documentation  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/release-notes/6.0-downgrade-standalone/#prerequisites).
+    [upstream documentation  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/release-notes/7.0/#std-label-7.0-downgrade-considerations).
 
 By default the Operator doesn’t set
 [FeatureCompatibilityVersion (FCV)  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)
