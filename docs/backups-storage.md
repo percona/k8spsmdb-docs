@@ -115,7 +115,7 @@ within the default memory limits.
 
 Using AWS EC2 instances for backups makes it possible to automate access to AWS S3 buckets based on [Identity Access Management (IAM) roles  :octicons-link-external-16:](https://kubernetes-on-aws.readthedocs.io/en/latest/user-guide/iam-roles.html) for Service Accounts with *no need to specify the S3 credentials explicitly*.
 
-You can use either make and use the *IAM instance profle*, or configure *IAM roles for Service Accounts* (both ways heavily rely on AWS specifics, and need following the official Amazon documentation to be configured). 
+You can use either make and use the *IAM instance profile*, or configure *IAM roles for Service Accounts* (both ways heavily rely on AWS specifics, and need following the official Amazon documentation to be configured). 
 
 === "Using IAM instance profile"
 
@@ -130,7 +130,7 @@ You can use either make and use the *IAM instance profle*, or configure *IAM rol
 
     [IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) to access the AWS API using permissions configured in AWS IAM roles.
 
-    Assuming that you created the cluster on [EKS, following our installation steps](eks.md), the the high-level steps to configure it are the following:
+    Assuming that you have deployed the MongoDB Operator and the database cluster on [EKS, following our installation steps](eks.md), and your EKS cluster has [OpenID Connect issuer URL :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) enabled, the the high-level steps to configure it are the following:
 
     1. Create an IAM role and specify the policy that defines the access to an S3 bucket. See [official Amazon documentation :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) for details.
 
