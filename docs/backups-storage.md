@@ -130,9 +130,9 @@ You can use either make and use the *IAM instance profile*, or configure *IAM ro
 
     [IRSA :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is the native way for the cluster [running on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md) to access the AWS API using permissions configured in AWS IAM roles.
 
-    Assuming that you have deployed the MongoDB Operator and the database cluster on [EKS, following our installation steps](eks.md), and your EKS cluster has [OpenID Connect issuer URL :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) enabled, the the high-level steps to configure it are the following:
+    Assuming that you have deployed the MongoDB Operator and the database cluster on [EKS, following our installation steps](eks.md), and your EKS cluster has [OpenID Connect issuer URL (OIDC) :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) enabled, the the high-level steps to configure it are the following:
 
-    1. Create an IAM role and specify the policy that defines the access to an S3 bucket. See [official Amazon documentation :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) for details.
+    1. Create an IAM role for your OIDC, and attach to the created role the policy that defines the access to an S3 bucket. See [official Amazon documentation :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html) for details.
 
     2. Find out service accounts used for the Operator and for the database cluster. Service account for the Operator is `percona-server-mongodb-operator` (it is set by the `serviceAccountName` key in the `deploy/operator.yaml` or `deploy/bundle.yaml` manifest) The cluster's default account is `default` (it can be set with `serviceAccountName` Custom Resource option in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections of the `deploy/cr.yaml` manifest).
     
