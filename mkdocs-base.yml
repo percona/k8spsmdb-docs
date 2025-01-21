@@ -129,7 +129,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Operator for MongoDB documentation"
-    cover_subtitle: 1.19.0 (January 16, 2025)
+    cover_subtitle: 1.19.0 (January 21, 2025)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
     custom_template_path: _resource/templates
