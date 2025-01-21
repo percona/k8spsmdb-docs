@@ -26,12 +26,6 @@ replsets:
       server: "nfs-service.storage.svc.cluster.local"
       path: "/psmdb-some-name-rs0"
   ...
-backup:
-  ...
-  volumeMounts:
-    - mountPath: /mnt/nfs/
-      name: backup-nfs
-  ...
 ```
 
 Finally, this new storage needs to be configured in the same Custom Resource as a normal storage for backups:
@@ -44,13 +38,17 @@ backup:
       filesystem:
         path: /mnt/nfs/
           type: filesystem
+  ...
+  volumeMounts:
+  - mountPath: /mnt/nfs/
+    name: backup-nfs
 ```
 
 See more in our [documentation about this storage type](../backups-storage.md#remote-file-server).
 
 ### Generated passwords for custom MongoDB users
 
-A new improvement for the [declarative management of custom MongoDB users](../users.md#unprivileged-users) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can ommit specifying a reference to an already existing Secret with the user's password, and the Operator will generate it automatically:
+A new improvement for the [declarative management of custom MongoDB users](../users.md#unprivileged-users) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can omit specifying a reference to an already existing Secret with the user’s password, and the Operator will generate it automatically:
 
 ```yaml
 ...
@@ -88,7 +86,7 @@ See [this blogpost :octicons-link-external-16:](https://www.percona.com/blog/per
 
 ## Bugs Fixed
 
-* {{ k8spsmdbjira(1215) }}: Fix a bug where ExternalTrafficPolicy was incorectly set for LoadBalancer and NodePort services (Thanks to Anton Averianov for contributing)
+* {{ k8spsmdbjira(1215) }}: Fix a bug where ExternalTrafficPolicy was incorrectly set for LoadBalancer and NodePort services (Thanks to Anton Averianov for contributing)
 * {{ k8spsmdbjira(675) }}: Fix a bug where disabling sharding failed on a running cluster with enabled backups
 * {{ k8spsmdbjira(754) }}: Fix a bug where some error messages had "INFO" log level and therefore were not seen in logs with the "ERROR" log level [turned on](../debug-logs.md#changing-logs-representation)
 * {{ k8spsmdbjira(1088) }}: Fix a bug which caused the Operator starting two backup operations if the user patches the backup object while its state is empty or Waiting 
@@ -99,6 +97,7 @@ See [this blogpost :octicons-link-external-16:](https://www.percona.com/blog/per
 ## Deprecation, Rename and Removal
 
 * The `psmdbCluster` option from the `deploy/backup/backup.yaml` manifest used for [on-demand backups](../backups-ondemand.md), which was deprecated since the Operator version 1.12.0 in favor of the `clusterName` option, has been removed and is no longer supported.
+* Percona Server for MongoDB 5.0 has reached its end of life and in no longer supported by the Operator
 
 ## Supported Platforms
 
