@@ -157,7 +157,7 @@ extra: # Used in main.html template and can't be externalized
   pmm2recommended: '2.44.0'
   gkerecommended: '1.30'
   certmanagerrecommended: ' 1.16.2'
-  pbmrecommended: '2.7.0'
+  pbmrecommended: '2.8.0'
   version:
     provider: mike
   k8s_monitor_tag: 'v0.1.1'
