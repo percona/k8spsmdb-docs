@@ -2,7 +2,7 @@
 
 The Operator allows restoring a backup not only on the Kubernetes cluster where it was made, but also on any Kubernetes-based environment with the installed Operator.
 
-When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. More details about secrets can be found in [System Users](users.md#system-users). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).
+When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. If restoring a physical backup, the encryption key of the target cluster needs to be set accordingly as well. More details about secrets can be found in [System Users](users.md#system-users). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
 
 You will need correct names for the **backup** and the **cluster**. If you have access to the original cluster, available backups can be listed with the following command:
 
