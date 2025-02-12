@@ -23,7 +23,7 @@ OpenShift Platform, configuring it with a standard GUI, following the Open
 Service Broker API.
 
 
-* Now the Operator supports [Percona Monitoring and Management 2 :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html),
+* Now the Operator supports [Percona Monitoring and Management 2 :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/index.html),
 which means being able to detect and register to PMM Server of both 1.x and
 2.0 versions.
 

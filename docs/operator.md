@@ -1407,7 +1407,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 
 ### `pmm.mongodParams`
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongod` Pods.
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb) command for `mongod` Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1415,7 +1415,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 
 ### `pmm.mongosParams`
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/client/mongodb.html#adding-mongodb-service-monitoring) command for `mongos` Pods.
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb) command for `mongos` Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -4,13 +4,13 @@ Monitoring the state of the database is crucial to timely identify and react to 
 
 However, the database state also depends on the state of the Kubernetes cluster itself. Hence it’s important to have metrics that can depict the state of the Kubernetes cluster.
 
-This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
+This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/architecture.html#pmm-server) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
 
 ## Pre-requisites
 
 To set up monitoring of Kubernetes, you need the following:
 
-1. PMM Server up and running. You can run PMM Server as a Docker image, a virtual appliance, or on an AWS instance. Please refer to the [official PMM documentation  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/setting-up/server/index.html) for the installation instructions.
+1. PMM Server up and running. You can run PMM Server as a Docker image, a virtual appliance, or on an AWS instance. Please refer to the [official PMM documentation  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/setting-up/server/index.html) for the installation instructions.
 
 2. [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm).
 3. [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/).
@@ -21,7 +21,7 @@ To set up monitoring of Kubernetes, you need the following:
 
     === ":material-view-dashboard-variant: From PMM UI" 
 
-        [Generate the PMM API key  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/details/api.html#api-keys-and-authentication){.md-button} 
+        [Generate the PMM API key  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication){.md-button} 
 
     === ":material-console: From command line"
 
