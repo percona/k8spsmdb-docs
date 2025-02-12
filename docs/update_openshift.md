@@ -95,7 +95,7 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. If you didn't follow the [official recommendation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server before upgrading PMM Client, you can avoid PMM Client upgrade by removing it from the list of images as follows:
+        The above command upgrades various components of the cluster including PMM Client. If you didn't follow the [official recommendation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/how-to/upgrade.html) to upgrade PMM Server before upgrading PMM Client, you can avoid PMM Client upgrade by removing it from the list of images as follows:
 
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{

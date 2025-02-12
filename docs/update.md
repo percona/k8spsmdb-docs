@@ -210,7 +210,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
