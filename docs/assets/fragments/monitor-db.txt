@@ -8,7 +8,7 @@ PMM is a client/server application. It includes the [PMM Server :octicons-link-e
 
 A PMM Client collects needed metrics and sends gathered data to the PMM Server.
  As a user, you connect to the PMM Server to see database metrics on
-[a number of dashboards :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/details/dashboards/dashboard-mongodb-experimental_collection_overview.html).
+[a number of dashboards :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/dashboards/dashboard-mongodb_collection_overview.html).
 
 PMM Server and PMM Client are installed separately.
 
