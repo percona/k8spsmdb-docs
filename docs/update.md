@@ -82,7 +82,8 @@ You can find Operator versions [listed here](RN/index.md).
 
 !!! warning
 
-    Restoring backups on sharded clusters with MongoDB 8.0 does not work with the *Operator versions* `1.19.0` and `1.19.1`. Therefore upgrading to these Operator versions can be recommended only for MongoDB 5.7 clusters, or for 8.0/8.4 clusters with sharding turned off.
+    Point-in-time restores may fail on MongoDB 8.0 sharded clusters. Therefore the Operator versions 1.19.0 and 1.19.1 have recommended version of MongoDB set to 5.7. Upgrading to the Operator 1.19.0/1.19.1 is not recommended for MongoDB 8.0 sharded clusters.
+
 ### Manual upgrade
 
 The upgrade includes the following steps.
