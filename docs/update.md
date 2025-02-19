@@ -28,10 +28,21 @@ The list of recommended upgrade scenarios includes two variants:
     for MongoDB minor version upgrades with it. But the recommended way is to
     update the Operator *and* CRD.
 
-Only the incremental update to a nearest version of the
-Operator is supported (for example, update from 1.5.0 to 1.6.0). To update
-to a newer version, which differs from the current version by more
-than one, make several incremental updates sequentially.
+The Operator version includes three numbers: `major`, `minor`, and `patch` (for
+example, the Operator version `1.18.0` has major version `1`, 
+minor version `18`, and patch version `0`). Only the incremental update to a
+nearest `major.minor` version of the Operator is supported. To update to a newer
+version, which differs from the current `minor.major` version by more than one,
+make several incremental updates sequentially.
+
+For example, to upgrade the Operator and CRD from the version 1.15.0 to 1.17.0,
+the following sequence of upgrades will be the shortest recommended path:
+
+1. upgrading the Operator and CRD from 1.15.0 to 1.16.0,
+2. upgrading from 1.16.0 to 1.16.2,
+3. upgrading from 1.16.2 to 1.17.0.
+
+You can find Operator versions [listed here](RN/index.md).
 
 !!! note
 
@@ -68,6 +79,10 @@ than one, make several incremental updates sequentially.
     MongoDB version before upgrading the Operator to 1.16.0 (you can use
     [major version upgrade functionality](update.md#major-version-automated-upgrades)
     to fix it.
+
+!!! warning
+
+    *Operator upgrades* to 1.19.0 and 1.19.1 versions do not work for sharded clusters with MongoDB 8.0.
 
 ### Manual upgrade
 
