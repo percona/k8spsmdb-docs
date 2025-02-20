@@ -1,0 +1,81 @@
+
+{#
+MkDocs template for builds with Material Theme to customize docs layout 
+by adding marketing-requested elements
+#}
+
+{# Import the theme's layout. #}
+{% extends "base.html" %}
+
+{%- macro relbar2 () %}
+<div class="md-relbar2__inner md-grid">
+<div class="md-content">
+  <article class="md-content__inner md-typeset" role="main">    
+    <h4>Contact Us </h4>
+       <p>For free technical help, visit the Percona <a class="reference external" href="https://forums.percona.com/c/mongodb/percona-kubernetes-operator-for-mongodb/29?utm_campaign=Doc%20pages" target="_blank">Community Forum</a>.<br>
+        <p>To report bugs or submit feature requests, open a <a class="reference external" href="https://jira.percona.com/projects/K8SPSMDB/issues/" target="_blank">JIRA</a> ticket.<br>
+         <p>For paid <a class="reference external" href="https://www.percona.com/services/support"> support </a> and <a class="reference external" href="https://www.percona.com/services/managed-services"> managed </a> or <a class="reference external" href="https://www.percona.com/services/consulting">consulting services </a>, contact <a class="reference external" href="https://www.percona.com/about-percona/contact" target="_blank">Percona Sales</a>.</p>
+ </article>
+</div>
+</div>
+{%- endmacro %}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}
+
+{% block site_nav %}
+            {% if nav %}
+              {% if page.meta and page.meta.hide %}
+                {% set hidden = "hidden" if "navigation" in page.meta.hide %}
+              {% endif %}
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" {{ hidden }}>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    {% include "partials/nav.html" %}
+                    <br>
+                    <label class="md-nav__title" for="__drawer">
+    <a href=https://learn.percona.com/download-percona-operator-for-mongodb-1 onclick="_gaq.push(['b._trackEvent', 'Percona Operator for MongoDB', 'Download', 'Download Manual Percona Operator for MongoDB']);" class="md-nav__link md-nav__link--active" style="font-size: .7rem;">
+      Download PDF
+    </a>
+  </label> 
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            {% if "toc.integrate" not in features %}
+              {% if page.meta and page.meta.hide %}
+                {% set hidden = "hidden" if "toc" in page.meta.hide %}
+              {% endif %}
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" {{ hidden }}>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    {% include "partials/toc.html" %}
+                  </div>
+                  <div class="md-sidebar__inner">
+                    {% include "partials/banner.html" %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+              
+            <script>
+            window.addEventListener('beforeprint', (event) => {
+  for (const detailEl of document.querySelectorAll('details')) {
+    if (detailEl.getAttribute('open') == null) {
+      detailEl.setAttribute('data-was-closed', 'true')
+    }
+    detailEl.setAttribute('open', '')
+  }
+})
+
+window.addEventListener('afterprint', (event) => {
+  for (const detailEl of document.querySelectorAll('details')) {
+    if (detailEl.getAttribute('data-was-closed') != null) {
+      detailEl.removeAttribute('data-was-closed')
+      detailEl.removeAttribute('open')
+    }
+  }
+})
+            </script>
+          {% endblock %}

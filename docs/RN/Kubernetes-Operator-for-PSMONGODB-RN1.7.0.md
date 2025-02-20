@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.7.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.7.0
 
 
 * **Date**

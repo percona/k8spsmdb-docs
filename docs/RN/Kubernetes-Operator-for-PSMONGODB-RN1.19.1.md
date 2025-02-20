@@ -1,4 +1,4 @@
-# *Percona Operator for MongoDB* 1.19.1
+# Percona Operator for MongoDB 1.19.1
 
 * **Date**
 

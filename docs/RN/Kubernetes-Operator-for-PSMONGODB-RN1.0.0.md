@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.0.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0
 
 Percona announces the general availability of *Percona Kubernetes Operator for Percona Server for MongoDB* 1.0.0 on May 29, 2019. This release is now the current GA release in the 1.0 series. [Install the Kubernetes Operator for Percona Server for MongoDB by following the instructions](../kubernetes.md). Please see the [GA release announcement :octicons-link-external-16:](https://www.percona.com/blog/2019/05/29/percona-kubernetes-operators/). All of Percona’s software is open-source and free.
 

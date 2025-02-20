@@ -38,9 +38,8 @@ make several incremental updates sequentially.
 For example, to upgrade the Operator and CRD from the version 1.15.0 to 1.17.0,
 the following sequence of upgrades will be the shortest recommended path:
 
-1. upgrading the Operator and CRD from 1.15.0 to 1.16.0,
-2. upgrading from 1.16.0 to 1.16.2,
-3. upgrading from 1.16.2 to 1.17.0.
+1. upgrading the Operator and CRD from 1.15.0 to 1.16.2,
+2. upgrading from 1.16.2 to 1.17.0.
 
 You can find Operator versions [listed here](RN/index.md).
 

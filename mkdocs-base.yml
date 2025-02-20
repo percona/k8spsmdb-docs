@@ -148,7 +148,7 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.19.0'
+  release: '1.19.1'
   apiversion: '1'
   mongodb80recommended: '8.0.4-1'
   mongodb70recommended: '7.0.14-8'
