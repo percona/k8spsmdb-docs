@@ -1,4 +1,4 @@
-# *Percona Distribution for MongoDB Operator* 1.10.0
+# Percona Distribution for MongoDB Operator 1.10.0
 
 
 * **Date**

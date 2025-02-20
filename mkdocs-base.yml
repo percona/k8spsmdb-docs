@@ -148,7 +148,7 @@ extra: # Used in main.html template and can't be externalized
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
   commandName: 'kubectl'
   clusterName: 'my-cluster-name'
-  release: '1.19.0'
+  release: '1.19.1'
   apiversion: '1'
   mongodb80recommended: '8.0.4-1'
   mongodb70recommended: '7.0.14-8'
@@ -258,6 +258,7 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.19.1 (2025-02-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
           - "Percona Operator for MongoDB 1.19.0 (2025-01-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
           - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
           - "Percona Operator for MongoDB 1.17.0 (2024-09-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md

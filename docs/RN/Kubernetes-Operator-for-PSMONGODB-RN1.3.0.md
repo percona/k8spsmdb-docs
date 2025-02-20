@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.3.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.3.0
 
 Percona announces the *Percona Kubernetes Operator for Percona Server for
 MongoDB* 1.3.0 release on December 11, 2019. This release is now the current
