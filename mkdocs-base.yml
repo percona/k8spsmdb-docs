@@ -166,7 +166,7 @@ extra: # Used in main.html template and can't be externalized
 nav:
 
     - Welcome: index.md
-    - Get more help: get-help.md
+    - Get help from Percona: get-help.md
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md

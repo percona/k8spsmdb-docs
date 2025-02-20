@@ -1,19 +1,21 @@
-# Get more help
+# Get help from Percona
 
-This guide is packed with information, but it can’t cover everything you need to know about the Percona Operator for MongoDB or every scenario you might encounter.
-Think of this guide as a solid starting point. There’s always more to learn, and you’ll keep discovering new things as you get hands-on experience. And remember, the more you experiment and work with Percona Operator for MongoDB, the more confident and skilled you’ll become. Don’t be afraid to try things out and ask questions when you get stuck.
+Our documentation guides are packed with information, but they can’t cover everything you need to know about Percona Operator for MongoDB. They also won’t cover every scenario you might come across. Don’t be afraid to try things out and ask questions when you get stuck.
 
-## Ask a question in the Community Forum
+## Percona's Community Forum
 
 Be a part of a space where you can tap into a wealth of knowledge from other database enthusiasts and experts who work with Percona’s software every day. While our service is entirely free, keep in mind that response times can vary depending on the complexity of the question. You are engaging with people who genuinely love solving database challenges.
 
-We recommend visiting our [Community Forum :octicons-link-external-16:](https://forums.percona.com/t/welcome-to-perconas-community-forum/7){:target="_blank"}. It’s an excellent place for discussions, technical insights, and support around Percona database software. If you’re new and feeling a bit unsure, our [FAQ :octicons-link-external-16:](https://forums.percona.com/faq){:target="_blank"} and [Guide for New Users :octicons-link-external-16:](https://forums.percona.com/t/faq-guide-for-new-users/8562){:target="_blank"} ease you in.
-        
-If you have thoughts, feedback, or ideas, the community team would like to hear from you at [Any ideas on how to make the forum better? :octicons-link-external-16:](https://forums.percona.com/t/any-ideas-on-how-to-make-the-forum-better/11522){:target="_blank"}. We’re always excited to connect and improve everyone's experience.
+We recommend visiting our [Community Forum](https://forums.percona.com/t/welcome-to-perconas-community-forum/7){:target="_blank"}. It’s an excellent place for discussions, technical insights, and support around Percona database software. If you’re new and feeling a bit unsure, our [FAQ](https://forums.percona.com/faq){:target="_blank"} and [Guide for New Users](https://forums.percona.com/t/faq-guide-for-new-users/8562){:target="_blank"} ease you in.
+
+If you have thoughts, feedback, or ideas, the community team would like to hear from you at [Any ideas on how to make the forum better?](https://forums.percona.com/t/any-ideas-on-how-to-make-the-forum-better/11522){:target="blank"}. We’re always excited to connect and improve everyone's experience.
 
 ## Work with a Percona Expert
 
-[Percona experts :octicons-link-external-16:](https://www.percona.com/services/consulting){:target="_blank"} bring years of experience in tackling tough database performance issues and design challenges. We understand your challenges when managing complex database environments. That's why we offer various services to help you simplify your operations and achieve your goals.
+Percona experts bring years of experience in tackling tough database performance issues and design challenges.
+
+<div data-tf-live="01JKGYCWAND5C0GZRTZ548CRYA"></div><script src="//embed.typeform.com/next/embed.js"></script>
+We understand your challenges when managing complex database environments. That's why we offer various services to help you simplify your operations and achieve your goals.
     
 | Service                    | Description                                                                                                                                                           |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
