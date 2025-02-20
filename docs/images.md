@@ -5,8 +5,8 @@ Percona Operator for Percona Server for MongoDB:
 
 | Image                                                  | Digest                                                           |
 |:-------------------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb-operator:1.19.0 (x86_64)| 22078e92009503d2089803cc8b1cc21c7d7d510313180cae3b4e1125d1322af3 |
-| percona/percona-server-mongodb-operator:1.19.0 (ARM64) | ac62fd793c399811a6fa75a9a452f1d86a5c2f5544b333c153d79c41db17d862 |
+| percona/percona-server-mongodb-operator:1.19.1 (x86_64)| e822a948aa69baa6fe414622fab12a9e8d661296d0d7e7c3feef610d92e334b3 |
+| percona/percona-server-mongodb-operator:1.19.1 (ARM64) | 27a280b44733db6ccbe0e77cca524c3f1c74d20045c7906517a8349cfc89e7f1 |
 | percona/pmm-client:2.44.0 (x86_64)                     | 19a07dfa8c12a0554308cd11d7d38494ea02a14cfac6c051ce8ff254b7d0a4a7 |
 | percona/pmm-client:2.44.0 (ARM64)                      | 43a542f24bdbd11d0c363c1d5002244b0b4840961a8e219a56df1becad77b068 |
 | percona/percona-backup-mongodb:2.8.0-multi (x86_64)    | 808045c4b328a90eea1c74bb213e06a56ebf5d5c6fff98193b7dfb63aa98f4e8 |
@@ -26,4 +26,3 @@ Percona Operator for Percona Server for MongoDB:
 | percona/percona-server-mongodb:6.0.16-13               | 1497e58e39497d8425ccd053898dc323338d6eb3f0e3c4c223f9d5a468da7931 |
 | percona/percona-server-mongodb:6.0.15-12               | f12dd271d78cf3e70088fea0c420e8c03703457d8a5959b645053546bff94dea |
 | percona/percona-server-mongodb:6.0.9-7                 | 5ef8404e200a680a67f0a94599963e17c029ebe5e0045b60b45062bba127c505 |
-
