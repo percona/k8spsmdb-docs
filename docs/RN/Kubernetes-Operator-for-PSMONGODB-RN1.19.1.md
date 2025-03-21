@@ -14,7 +14,7 @@
 
 ## Known limitations
 
-* [PBM-1493](https://perconadev.atlassian.net/browse/PBM-1493): Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
+* [PBM-1493](https://perconadev.atlassian.net/browse/PBM-1493): For sharded MongoDB 8.0 deployments, Percona Operator for MongoDB versions 1.19.0 and 1.19.1 have a known issue causing point-in-time recovery failures. Avoid upgrading to these Operator versions until a fix is released in Percona Backup for MongoDB and added into the newer versions of the Operator
 
 ## Supported Platforms
 
