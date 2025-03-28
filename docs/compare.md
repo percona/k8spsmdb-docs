@@ -17,11 +17,13 @@ Here is the review of generic features, such as supported MongoDB versions, open
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Community Operator         | MongoDB Enterprise Operator  |
 |:------------------|:-----------------------------|:-------------------|:-------------------|:-----------------------------------|:-----------------------------|
 | Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                          | Open core                    |
-| MongoDB versions  | MongoDB 5.0, 6.0, 7.0        | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0, 6.0, 7.0| MongoDB 4.2, 4.4, 5.0, 6.0, 7.0|
+| MongoDB versions  | MongoDB 5.0, 6.0, 7.0 \*     | MongoDB 5.0        | MongoDB 3.4, 3.6. 4.0, 4.1, 4.2 | MongoDB 4.2, 4.4, 5.0, 6.0, 7.0| MongoDB 4.2, 4.4, 5.0, 6.0, 7.0|
 | Kubernetes conformance | Various versions are tested | No guarantee   | No guarantee       | No guarantee                       | No guarantee                 |
 | Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                                | Yes                          |
 | Network exposure  | Yes                          | Yes                | No, only through manual config | No                     | Yes                          |
 | Web-based GUI     | [Percona Everest](https://docs.percona.com/everest/index.html) | :no_entry_sign: | [kubedb-ui](https://kubedb.com/datasheet/) | :no_entry_sign:| [Ops Manager](https://www.mongodb.com/products/self-managed/enterprise-advanced/ops-manager)|
+
+\* Percona Operator relies on [Percona Server for MongoDB](https://www.percona.com/mongodb/software/percona-server-for-mongodb) - a free, enhanced, fully compatible MongoDB software alternative for MongoDB Community Server with enterprise-grade features.
 
 ## Maintenance
 
@@ -46,6 +48,7 @@ The next comparison is focused on replica sets, arbiters, sharding and other nod
 | Non-voting nodes  | Yes                          | No                 | No                 | No                                | Yes                               |
 | Hidden nodes      | No                           | Yes                | Yes                | Yes                               | Yes                               |
 | Network exposure  | Yes                          | Yes                | Manual             | No                                | Yes                               |
+| Split Horizon     | Yes                          | No                 | No                 | Yes                               | Yes                               |
 
 ## Backups
 
