@@ -89,7 +89,7 @@ OpenShift environment demonstrates the process:
         ```
 
     You can find correct names and SHA digests in the
-    [current list of the Operator-related images officially certified by Percona](images.md#custom-registry-images).
+    [current list of the Operator-related images officially certified by Percona](images.md).
 
 5. The following method can push an image to the custom registry for the example
     OpenShift `psmdb` project:
@@ -97,8 +97,8 @@ OpenShift environment demonstrates the process:
     ``` {.bash data-prompt="$" }
     $ docker tag \
         docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0 \
-        172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
-    $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}
+        172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
+    $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
     ```
 
 6. Verify the image is available in the OpenShift registry with the following command:
@@ -111,12 +111,12 @@ OpenShift environment demonstrates the process:
 
         ``` {.text .no-copy}
         NAME                              DOCKER REPO                                                             TAGS             UPDATED
-        percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb44recommended }}  2 hours ago
+        percona-server-mongodb            docker-registry.default.svc:5000/psmdb/percona-server-mongodb  {{ mongodb70recommended }}  2 hours ago
         ```
 
 7. When the custom registry image is available, edit the the `image:` option in
     `deploy/operator.yaml` configuration file with a Docker Repo + Tag string
-    (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb44recommended }}`)
+    (it should look like `docker-registry.default.svc:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}`)
 
     !!! note
 
@@ -127,9 +127,9 @@ OpenShift environment demonstrates the process:
 
     !!! note
 
-        Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptions-apply)
-        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#operator-update-smartupdates)
+        Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptionsapply)
+        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#automated-upgrade)
         will try using the image recommended by the Version Service instead of the
         custom one.
 
-9. Now follow the standard Percona Operator for MongoDB [installation instruction](./index.md/#advanced-installation-guides).
+9. Now follow the standard Percona Operator for MongoDB [installation instruction](System-Requirements.md#installation-guidelines).

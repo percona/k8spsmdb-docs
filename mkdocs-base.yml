@@ -4,7 +4,7 @@ site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
-copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2023
+copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2025
 use_directory_urls: false
 repo_name: percona/k8spsmdb-docs
 repo_url: https://github.com/percona/k8spsmdb-docs
@@ -12,33 +12,60 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: assets/images/percona-logo.svg
-  favicon: assets/images/percona-favicon.ico
+  logo: assets/operators-mark.svg
+  favicon: assets/operators-fav.svg
   custom_dir: _resource/overrides/
   font:
-    text: Chivo, Colfax, Franziska
-    text: Poppins
+    text: Roboto
+    code: Roboto Mono
   palette:
-    #    - media: "(prefers-color-scheme: light)"
-    scheme: percona-light
-#      toggle:
-#        icon: material/toggle-switch-off-outline
-#        name: Switch to night mode
-#    - media: "(prefers-color-scheme: dark)"
-#      scheme: slate
-#      toggle:
-#        icon: material/toggle-switch
-#        name: Switch to day mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Color theme set to Automatic. Click to change
+    - media: "(prefers-color-scheme: light)"
+      scheme: percona-light
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Color theme set to Light Mode. Click to change
+    - media: "(prefers-color-scheme: dark)"
+      scheme: percona-dark
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Color theme set to Dark Mode. Click to change
+
+# Theme features
+
+  features:
+    - search.highlight
+    - navigation.top
+    #- navigation.tabs
+    #- navigation.tabs.sticky
+    #- navigation.sections
+    - navigation.tracking
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+
 
 extra_css:
   - https://unicons.iconscout.com/release/v3.0.3/css/line.css
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css
-  - css/percona.css
   - css/lightgallery.min.css
   - css/nocopy.css
+  - css/design.css
+  - css/osano.css
+  - css/extra.css
+  - css/operators.css
 
 extra_javascript:
   - js/promptremover.js
+  - js/consent.js
 #  - js/version-select.js
 #  - js/toctree.js
 #  - js/lightgallery.min.js
@@ -46,7 +73,8 @@ extra_javascript:
 markdown_extensions:
   attr_list: {}
   toc:
-    permalink: True
+    permalink: true
+  md_in_html: {}
   admonition: {}
   def_list: {}
   meta: {}
@@ -56,16 +84,33 @@ markdown_extensions:
   pymdownx.smartsymbols: {}
   pymdownx.tilde: {}
   pymdownx.superfences: {}
-  pymdownx.snippets: {}
   pymdownx.tabbed:
     alternate_style: true
+  pymdownx.tasklist:
+    custom_checkbox: true
+  pymdownx.snippets:
+      base_path: ["snippets"]
+#      auto_append:
+#        - services-banner.md
   pymdownx.highlight:
-    linenums: false
+    use_pygments: true
+  pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    options:
+      custom_icons:
+        - _resource/overrides/.icons
 
 plugins:
   section-index: {}
   search: 
     separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+#  placeholder:
+#    enabled: True
+#    js_output_dir: assets/javascripts/
+#    placeholder_css: assets/javascripts/placeholder-plugin.css
+#    placeholder_extra_js: ""
+#    placeholder_file: placeholder-plugin.yaml
   git-revision-date: {}
   meta-descriptions:
     export_csv: false
@@ -83,10 +128,10 @@ plugins:
   # https://github.com/orzih/mkdocs-with-pdf
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.15.0 (October 09, 2023)
+    cover_title: "Operator for MongoDB documentation"
+    cover_subtitle: 1.19.0 (January 21, 2025)
     author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/percona_kubernetes_icon.png
+    cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
     custom_template_path: _resource/templates
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
@@ -99,44 +144,48 @@ plugins:
     canonical_version: null
 
 extra: # Used in main.html template and can't be externalized
-  homepage:
-    https://docs.percona.com
-  consent:
-    title: Cookie consent
-    description: >- 
-      We use cookies to recognize your repeated visits and preferences, as well
-      as to measure the effectiveness of our documentation and whether users
-      find what they're searching for. With your consent, you're helping us to
-      make our documentation better. Read more about <a class="reference external" href="https://www.percona.com/20180524-cookie-policy" target="_blank">Percona Cookie Policy</a>.
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  release: '1.15.0'
-  apiversion: '1'  
-  mongodb60recommended: '6.0.9-7'
-  mongodb50recommended: '5.0.20-17'
-  mongodb44recommended: '4.4.24-23'
-  pmm2recommended: '2.39.0'
-  gkerecommended: '1.25'
-  certmanagerrecommended: '1.12.4'
-  pbmrecommended: '2.3.0'
+  commandName: 'kubectl'
+  clusterName: 'my-cluster-name'
+  release: '1.19.1'
+  apiversion: '1'
+  mongodb80recommended: '8.0.4-1'
+  mongodb70recommended: '7.0.14-8'
+  mongodb60recommended: '6.0.18-15'
+  mongodb50recommended: '5.0.29-25'
+  pmm2recommended: '2.44.0'
+  gkerecommended: '1.30'
+  certmanagerrecommended: ' 1.16.2'
+  pbmrecommended: '2.8.0'
   version:
     provider: mike
+  k8s_monitor_tag: 'v0.1.1'
 
 # Common navigation for percona.com, render.com and PDF
 nav:
 
     - Welcome: index.md
+    - Get help from Percona: get-help.md
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
           
-    - Quickstart:
-          - "Install with Helm": helm.md
-          - "Install with kubectl": kubectl.md
+    - Quickstart guides:
+          - Overview: quickstart.md
+          - 1. Quick install:
+            - "With Helm": helm.md
+            - "With kubectl": kubectl.md
+          - 2. Connect to Percona Server for MongoDB: connect.md
+          - 3. Insert data: data-insert.md
+          - 4. Make a backup: backup-tutorial.md
+          - 5. Monitor the database with PMM: monitoring-tutorial.md
+          - what-next.md
           
     - Installation:
           - "System requirements": System-Requirements.md
           - "Install on Minikube": minikube.md
+          - "Install with Everest": everest.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
@@ -168,7 +217,13 @@ nav:
               - "Delete the unneeded backup": backups-delete.md
           - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
-          - "Multi-cluster and multi-region deployment": replication.md
+          - "Multi-cluster and multi-region deployment":
+              - "About Multi-cluster": replication.md
+              - "Configuring Main site for replication": replication-main.md
+              - "Configuring Replica site for replication": replication-replica.md
+              - "Backups with cross-site replication": replication-backups.md
+              - "Splitting replica set across multiple data centers": replication-multi-dc.md
+              - "Enabling multi-cluster Services": replication-mcs.md
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
@@ -180,6 +235,7 @@ nav:
           - "Special debug images": debug-images.md
 
     - HOWTOs:
+          - Install the database with customized parameters: custom-install.md 
           - "OpenLDAP integration": ldap.md
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
@@ -187,7 +243,9 @@ nav:
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Upgrade Percona Server for MongoDB manually": update_manually.md
+          - "How to upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
           - "Monitor Kubernetes": monitor-kubernetes.md
+          - "Delete the Operator": delete.md
 
     - Reference:
           - "Custom Resource options": operator.md
@@ -195,11 +253,18 @@ nav:
           - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
           - "Copyright and licensing information": copyright.md
           - "Trademark policy": trademark-policy.md
+      
     - Release notes:
           - "Release notes index": RN/index.md
+          - "Percona Operator for MongoDB 1.19.1 (2025-02-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
+          - "Percona Operator for MongoDB 1.19.0 (2025-01-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
+          - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
+          - "Percona Operator for MongoDB 1.17.0 (2024-09-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
+          - "Percona Operator for MongoDB 1.16.2 (2024-07-23)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
+          - "Percona Operator for MongoDB 1.16.1 (2024-06-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
+          - "Percona Operator for MongoDB 1.16.0 (2024-05-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
           - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
           - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
           - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
@@ -216,3 +281,5 @@ nav:
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
           - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
+
+    - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/

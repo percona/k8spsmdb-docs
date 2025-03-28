@@ -1,8 +1,10 @@
 # Install Percona Operator for MongoDB in multi-namespace (cluster-wide) mode
 
+## Difference between single-namespace and multi-namespace Operator deployment
+
 By default, Percona Operator for MongoDB functions in a specific Kubernetes
 namespace. You can create one during installation (like it is shown in the
-[installation instructions](kubernetes.md#install-kubernetes)) or just use the
+[installation instructions](kubernetes.md)) or just use the
 `default` namespace. This approach allows several Operators to co-exist in one
 Kubernetes-based environment, being separated in different namespaces:
 
@@ -22,6 +24,8 @@ limited to a specific namespace. But it is possible to run it in so-called
     Please take into account that if several Operators are configured to
     watch the same namespace, it is entirely unpredictable which one will get
     ownership of the Custom Resource in it, so this situation should be avoided.
+
+## Installing the Operator in cluster-wide mode
 
 To use the Operator in such *cluster-wide* mode, you should install it with a
 different set of configuration YAML files, which are available in the `deploy`
@@ -79,10 +83,10 @@ Kubernetes.
     ...
     ```
 
-4. Apply the `deploy/cw-bundle.yaml` file with the following command:
+4. [Apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the `deploy/cw-bundle.yaml` file with the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cw-bundle.yaml -n psmdb-operator
+    $ kubectl apply -f deploy/cw-bundle.yaml --server-side -n psmdb-operator
     ```
 
 5. After the Operator is started, Percona Server for MongoDB can be created at
@@ -94,11 +98,12 @@ Kubernetes.
     ```
 
     The creation process may take some time. When the process is over your
-    cluster will obtain the `ready` status. You can check it with the following
-    command:
+    cluster will obtain the `ready` status. You can check it by quering the
+    `PerconaServerMongoDB` Custom Resource (it has handy `psmdb` shortname
+    also) with the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    $ kubectl get psmdb -n psmdb
     ```
 
     ??? example "Expected output"
@@ -151,10 +156,10 @@ to the cluster.
 
     === "if sharding is on"
         ``` {.bash data-prompt="$" }
-        $ mongo "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
+        $ mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
         ```
 
     === "if sharding is off"
         ``` {.bash data-prompt="$" }
-        $ mongo "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        $ mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```

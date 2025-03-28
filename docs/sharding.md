@@ -2,7 +2,7 @@
 
 ## About sharding
 
-[Sharding](https://docs.mongodb.com/manual/reference/glossary/#term-sharding)
+[Sharding  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/glossary/#term-sharding)
 provides horizontal database scaling, distributing data across multiple MongoDB
 Pods. It is useful for large data sets when a single machine’s overall
 processing speed or storage capacity turns out to be not enough.
@@ -23,17 +23,27 @@ A MongoDB Sharding involves the following components:
     a MongoDB cluster; still, this limited sharding support allowed using
     `mongos` as an entry point instead of provisioning a load-balancer per
     replica set node. Multiple shards are supported starting from the Operator
-    1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-    object, and starting from 1.12.0 they are deployed by the [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
+    1.7.0. Also, before the Operator 1.12.0 mongos were deployed by the [Deployment  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+    object, and starting from 1.12.0 they are deployed by the [StatefulSet  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) one.
 
 ## Turning sharding on and off
 
 Sharding is controlled by the `sharding` section of the `deploy/cr.yaml`
 configuration file and is turned on by default.
 
-To enable sharding, set the `sharding.enabled` key to `true` (this will turn
-existing MongoDB replica set nodes into sharded ones). To disable sharding, set
-the `sharding.enabled` key to `false`.
+**To enable sharding**, set the `sharding.enabled` key to `true`. This will turn
+existing MongoDB replica set nodes into sharded ones). 
+
+**To disable sharding**, set the `sharding.enabled` key to `false`.
+If backups are disabled (the 
+[`backup.enabled` Custom Resource option set to `false`](operator.md#backupenabled)),
+the Operator will turn sharded MongoDB instances into unsharded one by one,
+so the database cluster will operate without downtime. If backups are enabled
+(the [`backup.enabled` Custom Resource option is `true`](operator.md#backupenabled)),
+the Operator will pause the cluster (to avoid Percona Backup for MongoDB
+misconfiguration), update the instances, and then unpause it back.
+
+## Configuring instances of a sharded cluster
 
 When sharding is turned on, the Operator runs replica sets with config
 servers and mongos instances. Their number is controlled by

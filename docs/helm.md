@@ -1,17 +1,29 @@
 # Install Percona Server for MongoDB using Helm
 
-[Helm](https://github.com/helm/helm) is the package manager for Kubernetes. Percona Helm charts can be found in [percona/percona-helm-charts](https://github.com/percona/percona-helm-charts) repository on Github.
+[Helm  :octicons-link-external-16:](https://github.com/helm/helm) is the package manager for Kubernetes. 
+A Helm [chart  :octicons-link-external-16:](https://helm.sh/docs/topics/charts/) is a package that contains all the necessary resources to deploy an application to a Kubernetes cluster.
 
-## Pre-requisites
+You can find Percona Helm charts in [percona/percona-helm-charts  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts) repository in Github.
 
-Install Helm following its [official installation instructions](https://docs.helm.sh/using_helm/#installing-helm).
+## Prerequisites
 
-!!! note
+To install and deploy the Operator, you need the following:
 
-    Helm v3 is needed to run the following steps.
+1. [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm).
+2. [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility.
+3. A Kubernetes environment. You can deploy it locally on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
-## Installation
+    !!! note "See also"
 
+        * [Set up Minikube](minikube.md)
+        * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
+        * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
+        * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
+
+## Installation 
+
+Here's a sequence of steps to follow:
+{.power-number}
 
 1. Add the Percona’s Helm charts repository and make your Helm client up to
     date with it:
@@ -21,86 +33,58 @@ Install Helm following its [official installation instructions](https://docs.hel
     $ helm repo update
     ```
 
-2. Install Percona Operator for MongoDB:
+2. It is a good practice to isolate workloads in Kubernetes via namespaces. Create a namespace:
 
-    ``` {.bash data-prompt="$" }
-    $ helm install my-op percona/psmdb-operator
+    ```{.bash data-prompt="$" }
+    $ kubectl create namespace <namespace>
     ```
 
-    The `my-op` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+3. Install Percona Operator for MongoDB:
+
+    ``` {.bash data-prompt="$" }
+    $ helm install my-op percona/psmdb-operator --namespace <namespace>
+    ```
+
+    The `namespace` is the name of your namespace. The `my-op` parameter in the above example is the name of [a new release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
     which is created for the Operator when you install its Helm chart (use any
     name you like).
 
-    !!! note
-
-        If nothing explicitly specified, `helm install` command will work
-        with the `default` namespace and the latest version of the Helm
-        chart. 
-        
-        * To use different namespace, provide its name with
-            the following additional parameter: `--namespace my-namespace`.
-        
-        * To use different Helm chart version, provide it as follows:
-            `--version {{ release }}`
-
-3. Install Percona Server for MongoDB:
+4. Install Percona Server for MongoDB:
 
     ``` {.bash data-prompt="$" }
-    $ helm install my-db percona/psmdb-db --namespace my-namespace
+    $ helm install cluster1 percona/psmdb-db --namespace <namespace>
     ```
 
-    The `my-db` parameter in the above example is the name of [a new release object](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+    The `cluster1` parameter is the name of [a new release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
     which is created for the Percona Server for MongoDB when you install its Helm
     chart (use any name you like).
 
-## Installing Percona Server for MongoDB with customized parameters
+5. Check the Operator and the Percona Server for MongoDB Pods status.
 
-The command above installs Percona Server for MongoDB with [default parameters](operator.md#operator-custom-resource-options).
-Custom options can be passed to a `helm install` command as a
-`--set key=value[,key=value]` argument. The options passed with a chart can be
-any of the Operator’s [Custom Resource options](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart).
+    ```{.bash data-prompt="$" }
+    $ kubectl get psmdb -n <namespace>
+    ```
 
-!!! note
+    The creation process may take some time. When the process is over your
+    cluster obtains the `ready` status. 
 
-    Parameters from the [Replica Set section](operator.md#operator-replsets-section)
-    are treated differently: if you specify *any* parameter from replsets<operator.replsets-section>,
-    the Operator *will not* use default values for this Replica Set.
-    So do not specify Replica Set options at all or specify all needed options
-    for the Replica Set.
+    ??? example "Expected output"
 
-The following example will deploy a Percona Server for MongoDB Cluster in the
-`psmdb` namespace, with disabled backups and 20 Gi storage:
+        ```{.text .no-copy}
+        NAME              ENDPOINT                                           STATUS   AGE
+        my-cluster-name   cluster1-mongos.default.svc.cluster.local   ready    5m26s
+        ```
 
-``` {.bash data-prompt="$" }
-$ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
-  --set "replsets[0].name=rs0" --set "replsets[0].size=3" \
-  --set "replsets[0].volumeSpec.pvc.resources.requests.storage=20Gi" \
-  --set backup.enabled=false --set sharding.enabled=false
-```
+You have successfully installed and deployed the Operator with default parameters. 
 
-Also it can be more convenient in some cases to specify customized options
-in a YAML file instead of using separate command line parameters. The resulting
-file similar to the above example looks as follows:
+The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
-``` yaml title="values.yaml"
-allowUnsafeConfigurations: true
-sharding:
-  enabled: false
-replsets:
-- name: rs0
-  size: 3
-  volumeSpec:
-    pvc:
-      resources:
-        requests:
-          storage: 2Gi
-backup:
-  enabled: false
-```
+You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
 
-Apply the resulting YAML file as follows:
+## Next steps
 
-``` {.bash data-prompt="$" }
-$ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
-```
+[Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
 
+## Useful links
+
+[Install Percona Server for MongoDB with customized parameters](custom-install.md)

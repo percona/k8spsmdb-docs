@@ -9,6 +9,9 @@ MongoDB, which has the following specifics:
     mongodb-debuginfo package, etc.),
 * extra verbosity is added to the mongodb daemon.
 
+Images are available for Percona server for MongoDB versions 5.0 and 6.0,
+not for 7.0.
+
 Particularly, using this image is useful if the container entry point fails
 (`mongod` crashes). In such a situation, Pod is continuously restarting.
 Continuous restarts prevent to get console access to the container,

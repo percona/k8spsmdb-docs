@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.8.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.8.0
 
 
 * **Date**
@@ -15,19 +15,19 @@
 ## Release Highlights
 
 
-* The support for [Point-in-time recovery](../backups.md#backups-pitr-oplog) added in this
+* The support for [Point-in-time recovery](../backups-pitr.md) added in this
 release. Users can now recover to a specific date and time from operations
 logs stored on S3
 
 
-* It is now possible to perform a [major version upgrade](../update.md#operator-update-smartupdates)
+* It is now possible to perform a [major version upgrade](../update.md#automated-upgrade)
 for MongoDB (for example, upgrade 4.2 version to 4.4) with no manual steps
 
 ## New Features
 
 
 * [K8SPSMDB-387](https://jira.percona.com/browse/K8SPSMDB-387): Add support for
-[point-in-time recovery](../backups.md#backups-pitr-oplog) to recover to a specific date and
+[point-in-time recovery](../backups-pitr.md) to recover to a specific date and
 time
 
 

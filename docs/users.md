@@ -11,41 +11,160 @@ considered separately in the following sections.
 
 ## Unprivileged users
 
-There are no unprivileged (general purpose) user accounts created by
-default. If you need general purpose users, please run commands below:
+The Operator does not create unprivileged (general purpose) user accounts by default.
+There are two ways to create general purpose users:
 
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-mongodb@percona-client:/$ mongo "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-rs0:PRIMARY> db.createUser({
-    user: "myApp",
-    pwd: "myAppPassword",
-    roles: [
-      { db: "myApp", role: "readWrite" }
-    ],
-    mechanisms: [
-       "SCRAM-SHA-1"
-    ]
+* manual creation of custom MongoDB users,
+* automated users creation via Custom Resource (Operator versions 1.17.0 and newer).
 
-})
+### Create users in the Custom Resource
+
+Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource.
+
+!!! warning
+
+    Declarative user management has technical preview status and is not yet recommended for production environments.
+
+You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
+
+You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, as well as MongoDB roles on various databases which should be assigned to this user. Also you can specify a reference to a key in some Secret resource that contains user's password, if you don't want it to be generated automatically. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+
+``` {.bash data-prompt="$"}
+...
+users:
+  - name: my-user
+    db: admin
+    passwordSecretRef: 
+      name: my-user-password
+      key: password
+    roles:
+      - name: clusterAdmin
+        db: admin
+      - name: userAdminAnyDatabase
+        db: admin
 ```
 
-Now check the newly created user:
+The Secret mentioned in the `users.passwordSecretRef.name` option should look as follows:
 
-```bash
-$ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-mongodb@percona-client:/$ mongo "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-rs0:PRIMARY> use myApp
-rs0:PRIMARY> db.test.insert({ x: 1 })
-rs0:PRIMARY> db.test.findOne()
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-user-password
+type: Opaque
+stringData:
+  password: mypassword
 ```
+
+<a name="commonsecret"></a> If the Secret name was not specified in the Custom Resource, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user and sets it by the key named after the user name. 
+
+!!! note 
+
+    Password will not be generated if the user is created in the `$external` database (which is used when mongod should query an external authentication source for the user, such as an LDAP server). For obvious reasons, setting `passwordSecretRef` for such users is not allowed as well.
+
+The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
+But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
+
+### Custom MongoDB roles
+
+[Custom MongoDB roles :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) allow providing fine-grained access control over your MongoDB deployment.
+
+Custom MongoDB roles can be defined in a declarative way via the `roles` subsection in the Custom Resource.
+
+!!! warning
+
+    Custom roles were introduced in the Operator version 1.18.0. It has technical preview status and is not yet recommended for production environments.
+
+This subsection contains array of roles each with the defined custom name (`roles.name`), database in which you want to store the user-defined role (`roles.db`). The `roles.privileges.actions` allows to set List of custom role actions that users granted this role can perform. For a list of accepted values, see [Privilege Actions :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions) in the manual of the corresponding MongoDB version. Actions can be granted for the whole cluster (if `roles.privileges.resource.cluster` set to true), or be related to a specific database or collection. Adding existing role and database names to the `roles.roles` subsection allows you to inherit privileges from existing roles. Finally, you can apply authentication restrictions for your custom role based on the IP address ranges for the client and server. The following example shows how `roles` subsection may look like:
+
+```yaml
+roles:
+    - role: my-role
+      db: admin
+      privileges:
+        - resource:
+            db: ''
+            collection: ''
+          actions:
+            - find
+      authenticationRestrictions:
+        - clientSource:
+            - 127.0.0.1
+          serverAddress:
+            - 127.0.0.1
+      roles:
+        - role: read
+          db: admin
+        - role: readWrite
+          db: admin
+```
+
+Find more infromation about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
+
+### Create users manually
+
+You can create unprivileged users manually. Please run commands below, substituting the `<namespace name>` placeholder with the real namespace of your database cluster:
+
+=== "if sharding is on"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
+
+    Now check the newly created user:
+
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
+
+=== "if sharding is off"
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$
+    $ mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> db.createUser({
+        user: "myApp",
+        pwd: "myAppPassword",
+        roles: [
+          { db: "myApp", role: "readWrite" }
+        ],
+        mechanisms: [
+           "SCRAM-SHA-1"
+        ]
+    })
+    ```
+
+    Now check the newly created user:
+
+    ``` {.bash data-prompt="$" data-prompt-second="mongodb@percona-client:/$"}
+    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    mongodb@percona-client:/$ mongosh "mongodb+srv://myApp:myAppPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+    rs0:PRIMARY> use myApp
+    rs0:PRIMARY> db.test.insert({ x: 1 })
+    rs0:PRIMARY> db.test.findOne()
+    ```
 
 ## System Users
 
 To automate the deployment and management of the cluster components, 
 the Operator requires system-level MongoDB users.
 
-Credentials for these users are stored as a [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+Credentials for these users are stored as a [Kubernetes Secrets  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object.
 The Operator requires Kubernetes Secret before the database cluster is
 started. It will either use existing Secret or create a new Secret with
 randomly generated passwords if it didn’t exist.
@@ -72,19 +191,16 @@ configuration file.
 
 **Password-based authorization method for PMM is deprecated since the Operator 1.13.0**. [Use token-based authorization instead](monitoring.md#operator-monitoring-client-token).
 
-* Backup/Restore - MongoDB Role: [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Backup/Restore - MongoDB Role: [backup  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
+ [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [readWrite :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWrite), [pbmAnyAction :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/install/configure-authentication.html)
 
-* Cluster Admin - MongoDB Roles: [clusterAdmin](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
+* Cluster Admin - MongoDB Roles: [clusterAdmin :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin)
 
-* Cluster Monitor - MongoDB Role: [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Cluster Monitor - MongoDB Role: [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [read (on the `local` database):octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read), [explainRole :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/setting-up/client/mongodb.html#create-pmm-account-and-set-permissions)
 
-* Database Admin - MongoDB Roles: [readWriteAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup),
-    [restore](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore),
-    [clusterMonitor](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
+* Database Admin - MongoDB Roles: [readWriteAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup), [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor)
 
-* User Admin - MongoDB Role: [userAdmin](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdmin)
+* User Admin - MongoDB Role: [userAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdminAnyDatabase)
 
 If you change credentials for the `MONGODB_CLUSTER_MONITOR` user, the cluster
 Pods will go into restart cycle, and the cluster can be not accessible through
@@ -93,7 +209,7 @@ the `mongos` service until this cycle finishes.
 !!! note
 
     In some situations it can be needed to reproduce system users in a bare-bone
-    MongoDB. For example, that's a required step in the [migration scenarios](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
+    MongoDB. For example, that's a required step in the [migration scenarios  :octicons-link-external-16:](https://www.percona.com/blog/migrating-mongodb-to-kubernetes)
     to move existing on-prem MongoDB database to Kubernetes-based MongoDB
     cluster managed by the Operator. You can use the following example script
     which produces a text file with mongo shell commands to create needed system
@@ -242,11 +358,21 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 
 ## MongoDB Internal Authentication Key (optional)
 
-*Default Secret name:* `my-cluster-name-mongodb-key`
+*Default Secret name:* `my-cluster-name-mongodb-keyfile`
 
 *Secret name field:* `spec.secrets.key`
 
 By default, the operator will create a random, 1024-byte key for
-[MongoDB Internal Authentication](https://docs.mongodb.com/manual/core/security-internal-authentication/)
+[MongoDB Internal Authentication  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/security-internal-authentication/)
 if it does not already exist. If you would like to deploy a different
-key, create the secret manually before starting the operator.
+key, create the secret manually before starting the operator. Example:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-cluster-name-mongodb-keyfile
+type: Opaque
+data:
+  mongodb-key: <replace-this-value-with-base-64-encoded-text>
+```

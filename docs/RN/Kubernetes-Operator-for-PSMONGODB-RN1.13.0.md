@@ -1,4 +1,4 @@
-# *Percona Operator for MongoDB* 1.13.0
+# Percona Operator for MongoDB 1.13.0
 
 * **Date**
 
@@ -6,7 +6,7 @@
 
 * **Installation**
 
-    [Installing Percona Operator for MongoDB](../index.md#quickstart-guides)
+    [Installing Percona Operator for MongoDB](../quickstart.md)
 
 ## Release Highlights
 
@@ -29,9 +29,9 @@
 
 * {{ k8spsmdbjira(636) }} An additional `databaseAdmin` user was added to the list of system users which are automatically created by the Operator. This user is intended to provision databases, collections and perform data modifications
 
-* {{ k8spsmdbjira(699) }} Disable [automated upgrade](../update.md#operator-update-smartupdates) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
+* {{ k8spsmdbjira(699) }} Disable [automated upgrade](../update.md#automated-upgrade) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
 
-* {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](../debug.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
+* {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](../debug-logs.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
 
 * {{ k8spsmdbjira(719) }} Details about using sharding, Hashicorp Vault and cluster-wide mode were added to [telemetry](../telemetry.md)
 
@@ -73,14 +73,14 @@ The Operator was developed and tested with Percona Server for MongoDB 4.2.22, 4.
 
 The following platforms were tested and are officially supported by the Operator 1.13.0:
 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine) 1.21 - 1.23
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.21 - 1.23
 
-* [Amazon Elastic Container Service for Kubernetes (EKS)](https://aws.amazon.com) 1.21 - 1.23
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.21 - 1.23
 
-* [OpenShift Container Platform](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.10 - 4.11
 
-* [Azure Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.22 - 1.24
 
-* [Minikube](https://github.com/kubernetes/minikube) 1.26
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.26
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
