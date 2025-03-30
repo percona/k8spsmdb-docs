@@ -38,7 +38,7 @@ In the following examples we will access containers of the `my-cluster-name-rs0-
     $ kubectl logs my-cluster-name-rs0-0 -c mongod --previous
     ```
 
-* Check logs of the `mongod` container, parsing the output with [jq JSON processor](https://stedolan.github.io/jq/):
+* Check logs of the `mongod` container, parsing the output with [jq JSON processor  :octicons-link-external-16:](https://stedolan.github.io/jq/):
 
     ``` {.bash data-prompt="$" }
     $ kubectl logs my-cluster-name-rs0-0 -c mongod -f | jq -R 'fromjson?'
@@ -46,7 +46,7 @@ In the following examples we will access containers of the `my-cluster-name-rs0-
 
 ## Changing logs representation
 
-You can also change the representation of logs: either use structured representation, which produces a parcing-friendly JSON, or use traditional console-frienldy logging with specific level. Changing representation of logs is possible by editing the `deploy/operator.yml` file, which sets the following environment variables with self-speaking names and values:
+You can also change the representation of logs: either use structured representation, which produces a parsing-friendly JSON, or use traditional console-frienldy logging with specific level. Changing representation of logs is possible by editing the `deploy/operator.yml` file, which sets the following environment variables with self-speaking names and values:
 
 ```yaml
 env:

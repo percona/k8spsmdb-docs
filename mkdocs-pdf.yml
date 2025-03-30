@@ -1,3 +1,240 @@
 # MkDocs configuration for PDF output
 # Usage: ENABLE_PDF_EXPORT=1 mkdocs build -f mkdocs-pdf.yml
 INHERIT: mkdocs-base.yml
+
+theme:
+  name: material
+  logo: assets/operators-mark.svg
+  favicon: assets/operators-fav.svg
+  custom_dir: _resourcepdf/overrides/
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Color theme set to Automatic. Click to change
+    - media: "(prefers-color-scheme: light)"
+      scheme: percona-light
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Color theme set to Light Mode. Click to change
+    - media: "(prefers-color-scheme: dark)"
+      scheme: percona-dark
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Color theme set to Dark Mode. Click to change
+
+# Theme features
+
+  features:
+    - search.highlight
+    - navigation.top
+    #- navigation.tabs
+    #- navigation.tabs.sticky
+    #- navigation.sections
+    - navigation.tracking
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+
+
+extra_css:
+  - https://unicons.iconscout.com/release/v3.0.3/css/line.css
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css
+  - css/lightgallery.min.css
+  - css/nocopy.css
+  - css/design.css
+  - css/osano.css
+  - css/extra.css
+  - css/operators.css
+
+extra_javascript:
+  - js/promptremover.js
+#  - js/consent.js
+
+plugins:
+  section-index: {}
+  search: 
+    separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+#  placeholder:
+#    enabled: True
+#    js_output_dir: assets/javascripts/
+#    placeholder_css: assets/javascripts/placeholder-plugin.css
+#    placeholder_extra_js: ""
+#    placeholder_file: placeholder-plugin.yaml
+  git-revision-date: {}
+  meta-descriptions:
+    export_csv: false
+    quiet: false
+    enable_checks: false
+    min_length: 50
+    max_length: 160
+  macros:
+    include_yaml:
+      - "variables.yml"
+  # https://pypi.org/project/mkdocs-exclude/
+  exclude:
+    glob:
+      - "setting-up/client/docker.md"
+  # https://github.com/orzih/mkdocs-with-pdf
+  with-pdf:
+    output_path: "_pdf/PerconaOperatorMongoDB.pdf"
+    cover_title: "Operator for MongoDB documentation"
+    cover_subtitle: 1.19.0 (January 21, 2025)
+    author: "Percona Technical Documentation Team"
+    cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
+    custom_template_path: _resource/templates
+    enabled_if_env: ENABLE_PDF_EXPORT
+  # Check links - but extends build time significantly
+  # https://pypi.org/project/mkdocs-htmlproofer-plugin/
+  #    htmlproofer: {}
+  mike:
+    version_selector: true
+    css_dir: css
+    javascript_dir: js
+    canonical_version: null
+  print-site:
+    add_to_navigation: false
+    print_page_title: 'Percona Operator for MongoDB 1.19.1 documentation'
+    add_print_site_banner: false
+    # Table of contents
+    add_table_of_contents: true
+    toc_title: 'Table of Contents'
+    toc_depth: 2
+    # Content-related
+    add_full_urls: false
+    enumerate_headings: false
+    enumerate_headings_depth: 1
+    enumerate_figures: true
+    add_cover_page: true
+    cover_page_template: "docs/assets/templates/pdf_cover_page.tpl"
+    path_to_pdf: ""
+    include_css: true
+    enabled: true
+
+nav:
+
+    - index.md
+    - get-help.md
+    - Features:
+          - architecture.md
+          - compare.md
+          
+    - Quickstart guides:
+          - quickstart.md
+          - 1. Quick install:
+            - helm.md
+            - kubectl.md
+          - connect.md
+          - data-insert.md
+          - backup-tutorial.md
+          - monitoring-tutorial.md
+          - what-next.md
+          
+    - Installation:
+          - System-Requirements.md
+          - minikube.md
+          - everest.md
+          - gke.md
+          - eks.md
+          - aks.md
+          - kubernetes.md
+          - openshift.md
+          
+    - Configuration:
+          - users.md
+          - options.md
+          - constraints.md
+          - annotations.md
+          - expose.md
+          - storage.md
+          - arbiter.md
+          - sharding.md
+          - TLS.md
+          - encryption.md
+          - telemetry.md
+          
+    - Management:
+          - Backup and restore:
+              - backups.md
+              - backups-storage.md
+              - backups-scheduled.md
+              - backups-ondemand.md
+              - backups-pitr.md
+              - backups-encryption.md
+              - backups-restore.md
+              - backups-delete.md
+          - update.md
+          - scaling.md
+          - "Multi-cluster and multi-region deployment":
+              - replication.md
+              - replication-main.md
+              - replication-replica.md
+              - replication-backups.md
+              - replication-multi-dc.md
+              - replication-mcs.md
+          - monitoring.md
+          - sidecar.md
+          - pause.md
+          
+    - Troubleshooting:
+          - debug.md
+          - debug-shell.md
+          - debug-logs.md
+          - debug-images.md
+
+    - HOWTOs:
+          - custom-install.md 
+          - ldap.md
+          - custom-registry.md
+          - private.md
+          - backups-restore-to-new-cluster.md
+          - backups-move-from-external-db.md
+          - cluster-wide.md
+          - update_manually.md
+          - update_openshift.md
+          - monitor-kubernetes.md
+          - delete.md
+
+    - Reference:
+          - operator.md
+          - images.md
+          - versions.md
+          - api.md
+          - faq.md
+          - copyright.md
+          - trademark-policy.md
+      
+    - Release notes:
+          - RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
+

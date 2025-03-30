@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.6.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.6.0
 
 
 * **Date**
@@ -16,15 +16,15 @@
 
 
 * [K8SPSMDB-273](https://jira.percona.com/browse/K8SPSMDB-273): Add support for `mongos` service to expose a single
-[shard](../sharding.md#operator-sharding) of a MongoDB cluster through one entry point instead of
+[shard](../sharding.md) of a MongoDB cluster through one entry point instead of
 provisioning a load-balancer per replica set node. In the following release,
 we will add support for multiple shards.
 
 
-* [K8SPSMDB-282](https://jira.percona.com/browse/K8SPSMDB-282): Official support for [Percona Monitoring and Management (PMM) v.2](../monitoring.md#operator-monitoring)
+* [K8SPSMDB-282](https://jira.percona.com/browse/K8SPSMDB-282): Official support for [Percona Monitoring and Management (PMM) v.2](../monitoring.md)
 
 !!! note
-    Monitoring with PMM v.1 configured according to the [unofficial instruction](https://www.percona.com/blog/2020/07/23/using-percona-kubernetes-operators-with-percona-monitoring-and-management/)
+    Monitoring with PMM v.1 configured according to the [unofficial instruction :octicons-link-external-16:](https://www.percona.com/blog/2020/07/23/using-percona-kubernetes-operators-with-percona-monitoring-and-management/)
     will not work after the upgrade. Please switch to PMM v.2.
 
 ## Improvements
@@ -39,12 +39,12 @@ we will add support for multiple shards.
 * [K8SPSMDB-257](https://jira.percona.com/browse/K8SPSMDB-257): Store the Operator version as a `crVersion` field in the `deploy/cr.yaml` configuration file
 
 
-* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../users.md#users-system-users) secrets for simplicity
+* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../users.md#system-users) secrets for simplicity
 
 ## Bugs Fixed
 
 
-* [K8SPSMDB-268](https://jira.percona.com/browse/K8SPSMDB-268): Fix a bug affecting the support of TLS certificates issued by [cert-manager](https://github.com/jetstack/cert-manager),
+* [K8SPSMDB-268](https://jira.percona.com/browse/K8SPSMDB-268): Fix a bug affecting the support of TLS certificates issued by [cert-manager :octicons-link-external-16:](https://github.com/jetstack/cert-manager),
 due to which proper rights were not set for the role-based access control, and
 Kubernetes versions newer than 1.15 required other certificate issuing sources
 
@@ -57,7 +57,7 @@ Kubernetes versions newer than 1.15 required other certificate issuing sources
 ## Removal
 
 
-* The [MMAPv1 storage engine](https://docs.mongodb.com/manual/core/storage-engines/)
+* The [MMAPv1 storage engine :octicons-link-external-16:](https://docs.mongodb.com/manual/core/storage-engines/)
 is no longer supported for all MongoDB versions starting from this version of
 the Operator. MMAPv1 was already deprecated by MongoDB for a long time.
 WiredTiger is the default storage engine since MongoDB 3.2, and MMAPv1 was

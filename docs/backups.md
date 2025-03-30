@@ -3,17 +3,17 @@
 You can backup your data in two ways:
 
 * *On-demand*. You can do them manually at any moment.
-* *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
+* *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
 
-To make backups and restores, the Operator uses the [Percona Backup for MongoDB](https://github.com/percona/percona-backup-mongodb) tool.
+To make backups and restores, the Operator uses the [Percona Backup for MongoDB  :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool.
 
 ## Backup storage
 
 You can store Percona Server for MongoDB backups outside the Kubernetes
 cluster using the following remote backup storages: 
 
-* [Amazon S3 or S3-compatible storage](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
-* [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+* [Amazon S3 or S3-compatible storage  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
+* [Azure Blob Storage  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 ![image](assets/images/backup-cloud.svg)
 
@@ -27,14 +27,11 @@ cluster using the following remote backup storages:
 
 Logical backups use less storage, but are much slower than physical backup/restore.
 
-Also, logical backups are stable, while physical backups are available since the
-Operator version 1.14.0 and still have the **technical preview stauts**.
-
 !!! warning
 
     Logical backups made with the Operator versions before 1.9.0 are
     incompatible for restore with the Operator 1.9.0 and later. That is because Percona Backup
     for MongoDB 1.5.0 used by the newer Operator versions
-    [processes system collections Users and Roles differently](https://www.percona.com/doc/percona-backup-mongodb/running.html#pbm-running-backup-restoring).
+    [processes system collections Users and Roles differently  :octicons-link-external-16:](https://www.percona.com/doc/percona-backup-mongodb/running.html#pbm-running-backup-restoring).
     The recommended approach is to **make a fresh backup after upgrading**
     **the Operator to version 1.9.0**.

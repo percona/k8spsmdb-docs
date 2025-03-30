@@ -8,7 +8,7 @@ Starting from the Operator version 1.15.0, point-in-time recovery functionality
 can be used with both logical and physical backups. Previous versions
 supported point-in-time recovery only with logical backups.
 
-To be used, it requires setting the [backup.pitr.enabled](operator.md#backup-pitr-enabled)
+To be used, it requires setting the [backup.pitr.enabled](operator.md#backuppitrenabled)
 key in the `deploy/cr.yaml` configuration file:
 
 ```yaml
@@ -36,7 +36,7 @@ true for clusters which have been just recovered from backup.
 
 Percona Backup for MongoDB uploads operations logs to the same bucket/container,
 where full backup is stored. This makes point-in-time recovery functionality
-available only if there is a single bucket/container in [spec.backup.storages](operator.md#backup-storages-type).
+available only if there is a single bucket/container in [spec.backup.storages](operator.md#backupstoragesstorage-nametype).
 Otherwise point-in-time recovery will not be enabled and there will be an error
 message in the operator logs.
 

@@ -18,7 +18,7 @@ is as follows:
 
 ![image](assets/images/sharding.svg)
 
-<a name="high-availability"></a>To provide high availability the Operator uses [node affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
+<a name="high-availability"></a>To provide high availability the Operator uses [node affinity  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 to run MongoDB instances on separate worker nodes if possible, and the
 database cluster is deployed as a single Replica Set with at least three
 nodes. If a node fails, the pod with the mongod process is automatically
@@ -38,7 +38,7 @@ dynamically assigned nodes.
     than the default Percona Server for MongoDB setup. The initial
     configuration contains default passwords for all needed user accounts,
     which should be changed in the production environment, as stated in
-    the  [installation instructions](index.md#advanced-installation-guides).
+    the  [installation instructions](System-Requirements.md#installation-guidelines).
 
 ![image](assets/images/operator.svg)
 

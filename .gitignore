@@ -1,1 +1,6 @@
 __pycache__/
+site/
+ps/
+Pipfile
+Pipfile.lock
+*~

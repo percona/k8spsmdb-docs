@@ -14,12 +14,12 @@ Operator version 1.5.0 or earlier), and you have to carry on upgrades manually.
 Percona Server for MongoDB can be upgraded manually using one of the following
 *upgrade strategies*:
 
-* *Rolling Update*, initiated manually and [controlled by Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies),
-* *On Delete*, [done by Kubernetes on per-Pod basis](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) when Pods are manually deleted.
+* *Rolling Update*, initiated manually and [controlled by Kubernetes  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies),
+* *On Delete*, [done by Kubernetes on per-Pod basis  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) when Pods are manually deleted.
 
 !!! warning
 
-    In case of [Smart Updates](update.md#automatic-upgrade), the Operator can
+    In case of [Smart Updates](update.md#automated-upgrade), the Operator can
     either detect the availability of the Percona Server for MongoDB version or rely
     on the user's choice of the version. In both cases Pods are restarted by the
     Operator automatically in the order, which assures the primary instance to
@@ -35,24 +35,24 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
 1. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to 
     `RollingUpdate`.
 
-2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
+2. Now you should [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
     Custom Resource, setting necessary image names with a newer version tag.
 
     !!! note
 
         Check the version of the Operator you have in your Kubernetes
-        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd)
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    Actual image names can be found [in the list of certified images](images.md).
     For example, updating to the `{{ release }}` version should look as follows:
 
     ``` {.bash data-prompt="$" }
     $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
        "spec": {
           "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+          "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
           "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
@@ -60,13 +60,13 @@ Semi-automatic update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
     
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```
@@ -86,17 +86,17 @@ Manual update of Percona Server for MongoDB can be done as follows:
 1. Edit the `deploy/cr.yaml` file, setting `updateStrategy` key to
     `OnDelete`.
 
-2. Now you should [apply a patch](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
+2. Now you should [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to your
     Custom Resource, setting necessary image names with a newer version tag.
 
     !!! note
 
         Check the version of the Operator you have in your Kubernetes
-        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator)
+        environment. Please refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd)
         to upgrade the Operator and CRD, if needed.
 
     Patching Custom Resource is done with the `kubectl patch psmdb` command.
-    Actual image names can be found [in the list of certified images](images.md#custom-registry-images).
+    Actual image names can be found [in the list of certified images](images.md).
     For example, updating to the `{{ release }}` version should look as
     follows.
 
@@ -104,7 +104,7 @@ Manual update of Percona Server for MongoDB can be done as follows:
     $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
        "spec": {
           "crVersion":"{{ release }}",
-          "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+          "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
           "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
           "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
        }}'
@@ -112,13 +112,13 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
     !!! warning
 
-        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended](https://docs.percona.com/percona-monitoring-and-management/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
+        The above command upgrades various components of the cluster including PMM Client. It is [highly recommended  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/how-to/upgrade.html) to upgrade PMM Server **before** upgrading PMM Client. If it wasn't done and you would like to avoid PMM Client upgrade, remove it from the list of images, reducing the last of two patch commands as follows:
 
         ``` {.bash data-prompt="$" }
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb44recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```
@@ -148,5 +148,5 @@ Manual update of Percona Server for MongoDB can be done as follows:
 
 4. The update process is successfully finished when all Pods have been
     restarted (including the mongos and Config Server nodes, if
-    [Percona Server for MongoDB Sharding](sharding.md#operator-sharding) is on).
+    [Percona Server for MongoDB Sharding](sharding.md) is on).
 

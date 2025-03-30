@@ -1,4 +1,4 @@
-# *Percona Kubernetes Operator for Percona Server for MongoDB* 1.7.0
+# Percona Kubernetes Operator for Percona Server for MongoDB 1.7.0
 
 
 * **Date**
@@ -15,42 +15,42 @@
 ## Release Highlights
 
 
-* This release brings full support for the [Percona Server for MongoDB Sharding](../sharding.md#operator-sharding). Sharding
+* This release brings full support for the [Percona Server for MongoDB Sharding](../sharding.md). Sharding
 allows you to scale databases horizontally, distributing data across multiple
 MongoDB Pods, and so it is extremely useful for large data sets. By
 default of the `deploy/cr.yaml` configuration file contains only one replica
-set, but when you [turn sharding on](../operator.md#sharding-enabled), you can add more
+set, but when you [turn sharding on](../operator.md#shardingenabled), you can add more
 replica sets with different names to the `replsets` section.
 
 
-* It is now [possible](../operator.md#finalizers) to clean up Persistent Volume Claims
+* It is now [possible](../operator.md#metadata) to clean up Persistent Volume Claims
 automatically after the cluster deletion event. This feature is off by
 default. Particularly it is useful to avoid leftovers in testing environments,
 where the cluster can be re-created and deleted many times.
-Support for [custom sidecar containers](../faq.md#faq-sidecar). The Operator makes
+Support for [custom sidecar containers](../sidecar.md). The Operator makes
 it possible now to deploy additional (*sidecar*) containers to the Pod. This
 feature can be useful to run debugging tools or some specific monitoring
 solutions, etc. The sidecar container can be added to
-[replsets](../operator.md#replsets-sidecars-image),
-[sharding.configsvrReplSet](../operator.md#sharding-configsvrreplset-sidecars-image), and
-[sharding.mongos](../operator.md#sharding-mongos-sidecars-image) sections of the
+[replsets](../operator.md#replsetssidecarsimage),
+[sharding.configsvrReplSet](../operator.md#shardingconfigsvrreplsetsidecarsimage), and
+[sharding.mongos](../operator.md#shardingmongossidecarsimage) sections of the
 `deploy/cr.yaml` configuration file.
 
 ## New Features
 
 
-* [K8SPSMDB-121](https://jira.percona.com/browse/K8SPSMDB-121): Add support for [sharding](../sharding.md#operator-sharding) to scale MongoDB cluster horizontally
+* [K8SPSMDB-121](https://jira.percona.com/browse/K8SPSMDB-121): Add support for [sharding](../sharding.md) to scale MongoDB cluster horizontally
 
 
-* [K8SPSMDB-294](https://jira.percona.com/browse/K8SPSMDB-294): Support for [custom sidecar container](../faq.md#faq-sidecar) to extend the Operator capabilities
+* [K8SPSMDB-294](https://jira.percona.com/browse/K8SPSMDB-294): Support for [custom sidecar container](../sidecar.md) to extend the Operator capabilities
 
 
-* [K8SPSMDB-260](https://jira.percona.com/browse/K8SPSMDB-260): Persistent Volume Claims [can now be automatically removed](../operator.md#finalizers) after MongoDB cluster deletion
+* [K8SPSMDB-260](https://jira.percona.com/browse/K8SPSMDB-260): Persistent Volume Claims [can now be automatically removed](../operator.md#metadata) after MongoDB cluster deletion
 
 ## Improvements
 
 
-* [K8SPSMDB-335](https://jira.percona.com/browse/K8SPSMDB-335): Operator can now automatically remove old backups from S3 if [retention period](../operator.md#backup-tasks-keep) is set
+* [K8SPSMDB-335](https://jira.percona.com/browse/K8SPSMDB-335): Operator can now automatically remove old backups from S3 if [retention period](../operator.md#backuptaskskeep) is set
 
 
 * [K8SPSMDB-330](https://jira.percona.com/browse/K8SPSMDB-330): Add support for runtimeClassName Kubernetes feature for selecting the container runtime

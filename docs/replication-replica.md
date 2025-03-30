@@ -5,8 +5,7 @@ electing the Primary, generating certificates, and picking specific names. This
 should not happen if we want the Operator to run the _Replica_ site, so first
 of all the cluster should be put into unmanaged state by setting the
 `unmanaged` key in the `deploy/cr.yaml` configuration file to true. Also you
-should set `updateStrategy` key to `OnDelete` and `backup.enabled` to
-`false`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) and [backups](backups.md#backups) are not allowed on unmanaged clusters.
+should set `updateStrategy` key to `OnDelete`, because [Smart Updates](update.md#upgrading-percona-server-for-mongodb) are not allowed on unmanaged clusters. Also, the Operator versions prior to 1.19.0 did not support [backups](backups.md) on unmanaged clusters, so set `backup.enabled` to `false` for the Operator 1.18.0 and older.
 
 !!! note
 
@@ -24,16 +23,18 @@ spec:
   - name: rs0
     size: 3
     ...
-  backup:
-    enabled: false
-  ...
 ```
 
-_Main_ and _Replica_ sites should have same Secrets objects, so don’t forget
+The _Main_ and _Replica_ sites should [have the same Secrets objects](replication-main.md#getting-the-cluster-secrets-and-certificates-to-be-copied-from-main-to-replica), so don’t forget
 to apply Secrets from your _Main_ site. Names of the corresponding objects
-are set in the `users`, `ssl`, and `sslInternal` keys of the Custom
-Resource `secrets` subsection (`my-cluster-name-secrets`,
-`my-cluster-name-ssl`, and `my-cluster-name-ssl-internal` by default).
+are set in the `secrets.ssl`, `secrets.sslInternal`, `secrets.users`, and
+`secrets.keyfile` Custom Resource options (`my-cluster-name-ssl`,
+`my-cluster-name-ssl-internal`, `my-cluster-name-secrets`, and
+`my-cluster-name-mongodb-keyfile` by default).
+
+!!! note
+
+    Replica will not start if the TLS secrets and the encryption key are not copied. If users are not copied, the replica will join the replica set, but it will be restarting due to failed liveness checks.
 
 Copy your secrets from an existing cluster and apply each of them on your
 _Replica_ site as follows:
@@ -48,3 +49,7 @@ usual:
 ```{.bash data-prompt="$" }
 $ kubectl apply -f deploy/cr.yaml
 ```
+
+!!! note
+
+    Don't forget that you need to [expose instances of the Replica cluster](expose.md#controlling-hostnames-in-replset-configuration)!

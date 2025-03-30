@@ -10,11 +10,11 @@ Server instances:
 - set `host` to URL or IP address of the external replset instance,
 - set `port` to the port number of the external node (or rely on the `27017`
   default value),
-- set `priority` to define the [priority](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
+- set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
     of the external node (`2` is default for all local members of the cluster;
     external nodes should have lower priority to avoid unmanaged node being elected
-    as a primary; `0` adds the node as a [non-voting member](arbiter.md#arbiter-nonvoting)),
-- set `votes` to the number of [votes](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
+    as a primary; `0` adds the node as a [non-voting member](arbiter.md#adding-non-voting-nodes)),
+- set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
     an external node can cast in a replica set election (`0` is default and
     should be used for non-voting members of the cluster).
 
@@ -50,14 +50,25 @@ The _Main_ site will be ready for replication when you apply changes as usual:
 $ kubectl apply -f deploy/cr.yaml
 ```
 
+!!! note
+
+    Don't forget to [expose instances of the Main cluster](expose.md#controlling-hostnames-in-replset-configuration)!
+
 ## Getting the cluster secrets and certificates to be copied from Main to Replica
 
 _Main_ and _Replica_ should have same Secrets objects (to have same users
 credentials) and certificates. So you may need to copy them from _Main_.
-Names of the corresponding objects are set in the `users`, `ssl`, and
-`sslInternal` keys of the Custom Resource `secrets` subsection
-(`my-cluster-name-secrets`, `my-cluster-name-ssl`, and
-`my-cluster-name-ssl-internal` by default).
+Names of the corresponding objects are set in the `secrets.ssl`,
+`secrets.sslInternal`, `secrets.users`, and `secrets.keyfile` Custom Resource
+options. The default names are the following ones:
+
+    * `my-cluster-name-ssl` (SSL certificates for client connections),
+
+    * `my-cluster-name-ssl-internal` (SSL certificates for replication),
+
+    * `my-cluster-name-secrets` (user credentials),
+
+    * `my-cluster-name-mongodb-keyfile` (encryption key file).
 
 If you can get Secrets from an existing cluster by executing the
 `kubectl get secret` command for _each_ Secrets object you want to acquire:

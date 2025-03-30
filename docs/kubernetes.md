@@ -16,7 +16,7 @@
     created from the `deploy/crd.yaml` file. The Custom Resource Definition
     extends the standard set of resources which Kubernetes “knows” about with the
     new items, in our case these items are the core of the operator.
-    [Apply it](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
+    [Apply it  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
     as follows:
 
     ``` {.bash data-prompt="$" }
@@ -46,7 +46,7 @@
     configured with the `deploy/rbac.yaml` file. Role-based access is based on
     defined roles and the available actions which correspond to each role. The
     role and actions are defined for Kubernetes resources in the yaml file.
-    Further details about users and roles can be found in [Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#default-roles-and-role-bindings).
+    Further details about users and roles can be found in [Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#default-roles-and-role-bindings).
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/rbac.yaml
@@ -58,9 +58,9 @@
         privileges. For example, those using Google Kubernetes Engine can
         grant user needed privileges with the following command:
 
-    ```default
-    $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
-    ```
+        ``` {.bash data-prompt="$" }
+        $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+        ```
 
 5. Start the operator within Kubernetes:
 
@@ -71,8 +71,7 @@
 6. Add the MongoDB Users secrets to Kubernetes. These secrets
     should be placed as plain text in the stringData section of the
     `deploy/secrets.yaml` file as login name and
-    passwords for the user accounts (see [Kubernetes
-    documentation](https://kubernetes.io/docs/concepts/configuration/secret/)
+    passwords for the user accounts (see [Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/)
     for details).
 
     After editing the yaml file, MongoDB Users secrets should be created
@@ -82,12 +81,12 @@
     $ kubectl create -f deploy/secrets.yaml
     ```
 
-    More details about secrets can be found in [Users](users.md#users).
+    More details about secrets can be found in [Users](users.md).
 
 7. Now certificates should be generated. By default, the Operator generates
     certificates automatically, and no actions are required at this step. Still,
     you can generate and apply your own certificates as secrets according
-    to the [TLS instructions](TLS.md#tls).
+    to the [TLS instructions](TLS.md).
 
 8. After the operator is started, Percona Server for MongoDB cluster can
     be created with the following command:
@@ -96,32 +95,26 @@
     $ kubectl apply -f deploy/cr.yaml
     ```
 
-    The creation process may take some time. The process is over when all Pods
-    have reached their Running status. You can check it with the following command:
+    The creation process may take some time. When the process is over your
+    cluster will obtain the `ready` status. You can check it with the following
+    command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get pods
+    $ kubectl get psmdb
     ```
 
-    The result should look as follows:
+    ??? example "Expected output"
 
-    --8<-- "./docs/assets/code/kubectl-get-pods-response.txt"
+        ``` {.text .no-copy}
+        NAME              ENDPOINT                                           STATUS   AGE
+        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
+        ```
 
-9. Check connectivity to a newly created cluster.
+## Verifying the cluster operation
 
-    First of all, run a container with a MongoDB client and connect its console
-    output to your terminal. The following command will do this, naming the new
-    Pod `percona-client`:
+It may take ten minutes to get the cluster started. When `kubectl get psmdb`
+command finally shows you the cluster status as `ready`, you can try to connect
+to the cluster.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb44recommended }} --restart=Never -- bash -il
-    ```
+{% include 'assets/fragments/connectivity.txt' %}
 
-    Executing it may require some time to deploy the correspondent Pod. Now run
-    `mongo` tool in the percona-client command shell using the login (which is
-    `userAdmin`) with a proper password obtained from the Secret, and a proper
-    namespace name instead of the `<namespace name>` placeholder:
-
-    ``` {.bash data-prompt="percona-client:/$" }
-    percona-client:/$ mongo "mongodb://userAdmin:userAdmin123456@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-    ```

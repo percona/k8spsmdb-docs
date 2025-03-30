@@ -20,9 +20,9 @@ break the behavior of the Operator.
 ## Edit the `deploy/cr.yaml` file
 
 You can add MongoDB configuration options to the
-[replsets.configuration](operator.md#replsets-configuration),
-[sharding.mongos.configuration](operator.md#sharding-mongos-configuration), and
-[sharding-configsvrreplset-configuration](operator.md#sharding-configsvrreplset-configuration)
+[replsets.configuration](operator.md#replsetsconfiguration),
+[sharding.mongos.configuration](operator.md#shardingmongosconfiguration), and
+[sharding-configsvrreplset-configuration](operator.md#shardingconfigsvrreplsetconfiguration)
 keys of the `deploy/cr.yaml`. Here is an example:
 
 ```yaml
@@ -39,17 +39,17 @@ spec:
       ...
 ```
 
-See the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/)
+See the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/)
 for the complete list of options, as well as
-[specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html)
-[Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html)
-[Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html)
-[for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html)
-[documentation pages](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
+[specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html)
+[Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html)
+[Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html)
+[for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html)
+[documentation pages  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
 
 ## Use a ConfigMap
 
-You can use a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
+You can use a [ConfigMap  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 and the cluster restart to reset configuration options. A ConfigMap allows
 Kubernetes to pass or update configuration data inside a containerized
 application.
@@ -103,12 +103,12 @@ $ kubectl describe configmaps my-cluster-name-rs0-mongod
 
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
-    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md)
     page).
 
 ## Use a Secret Object
 
-The Operator can also store configuration options in [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
+The Operator can also store configuration options in [Kubernetes Secrets  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/).
 This can be useful if you need additional protection for some sensitive data.
 
 You should create a Secret object with a specific name, composed of your cluster
@@ -131,7 +131,7 @@ Configuration options should be put inside a specific key:
 * `data.mongod` key for Replica Set (mongod) and Config Server Pods,
 * `data.mongos` key for mongos Pods.
 
-Actual options should be encoded with [Base64](https://en.wikipedia.org/wiki/Base64).
+Actual options should be encoded with [Base64  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Base64).
 
 For example, let’s define a `mongod.conf` configuration file and put there
 several MongoDB options we used in the previous example:
@@ -191,5 +191,5 @@ $ kubectl create -f deploy/my-mongod-secret.yaml
 
     Do not forget to restart Percona Server for MongoDB to ensure the
     cluster has updated the configuration (see details on how to connect in the
-    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md#operator-kubernetes)
+    [Install Percona Server for MongoDB on Kubernetes](kubernetes.md)
     page).

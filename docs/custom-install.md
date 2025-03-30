@@ -2,7 +2,7 @@
 
 You can customize the configuration of Percona Server for MongoDB and install it with customized parameters.
 
-To check available configuration options, see [`deploy/cr.yaml`](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md).
+To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md).
 
 === "`kubectl`"
 
@@ -29,15 +29,8 @@ To check available configuration options, see [`deploy/cr.yaml`](https://raw.git
     $ helm install --set key=value
     ```
 
-    You can pass any of the Operator’s [Custom Resource options](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
-    `--set key=value[,key=value]` argument.    
-
-    !!! note
-
-        Parameters from the [Replica Set section](operator.md#operator-replsets-section)
-        are treated differently: if you specify *any* parameter from [replsets](operator.md#replsets-section),
-        the Operator *will not* use default values for this Replica Set.
-        So do not specify Replica Set options at all or specify all needed options for the Replica Set.
+    You can pass any of the Operator’s [Custom Resource options  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
+    `--set key=value[,key=value]` argument.
 
     The following example deploys a Percona Server for MongoDB Cluster in the
     `psmdb` namespace, with disabled backups and 20 Gi storage:
@@ -46,12 +39,12 @@ To check available configuration options, see [`deploy/cr.yaml`](https://raw.git
 
         ``` {.bash data-prompt="$" }
         $ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
-          --set "replsets[0].name=rs0" --set "replsets[0].size=3" \
-          --set "replsets[0].volumeSpec.pvc.resources.requests.storage=20Gi" \
+          --set "replsets.rs0.name=rs0" --set "replsets.rs0.size=3" \
+          --set "replsets.rs0.volumeSpec.pvc.resources.requests.storage=20Gi" \
           --set backup.enabled=false --set sharding.enabled=false
         ``` 
 
-    === "YAML file"   
+    === "YAML file"
 
         You can specify customized options in a YAML file instead of using separate command line parameters. The resulting
         file similar to the following example looks as follows:        

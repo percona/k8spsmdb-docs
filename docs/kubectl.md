@@ -2,9 +2,9 @@
 
 A Kubernetes Operator is a special type of controller introduced to simplify complex deployments. The Operator extends the Kubernetes API with custom resources.
 
-The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Distribution for MongoDB](https://www.percona.com/mongodb/software/mongodb-distribution) in a Kubernetes-based environment on-premises or in the cloud.
+The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Distribution for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/mongodb-distribution) in a Kubernetes-based environment on-premises or in the cloud.
 
-We recommend installing the Operator with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm](https://github.com/helm/helm) package manager.
+We recommend installing the Operator with the [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm  :octicons-link-external-16:](https://github.com/helm/helm) package manager.
 
 [Install with kubectl :material-arrow-down:](#prerequisites){.md-button} [Install with Helm :material-arrow-right:](helm.md){.md-button}
 
@@ -12,15 +12,15 @@ We recommend installing the Operator with the [kubectl](https://kubernetes.io/do
 
 To install Percona Distribution for MongoDB, you need the following:
 
-1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. Install not already installed, [follow its official installation instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. Install not already installed, [follow its official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-2. A Kubernetes environment. You can deploy it on [Minikube](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
+2. A Kubernetes environment. You can deploy it on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
     !!! note "See also"
 
-        * [Set up Minikube](minikube.md#set-up-minikube)
+        * [Set up Minikube](minikube.md)
         * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
-        * [Set up Amazon Elastic Kubernetes Service](eks.md#software-installation)
+        * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
 
 ## Procedure 
@@ -40,7 +40,7 @@ Here's a sequence of steps to follow:
         namespace/<namespace> was created
         ```
 
-2. Deploy the Operator [using](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+2. Deploy the Operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml -n <namespace>
@@ -93,12 +93,12 @@ You have successfully installed and deployed the Operator with default parameter
 
 The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
-You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md#operator-custom-resource-options).
+You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
 
 
 ## Next steps
 
-[Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}    
+[Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
 
 ## Useful links
 
