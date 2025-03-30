@@ -79,7 +79,8 @@ You have successfully installed and deployed the Operator with default parameter
 
 The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
-You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
+You can find in the documentation for the charts which [Operator :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart) and [database :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) parameters can be customized during installation.
+Also, you can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
 
 ## Next steps
 
