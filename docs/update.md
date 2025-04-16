@@ -1,63 +1,62 @@
 # Update Database and Operator
 
-Starting from the version 1.1.0 the Percona Operator for MongoDB allows upgrades
-to newer versions. The upgradable components of the cluster are
-the following ones:
+You can upgrade Percona Operator for MongoDB  starting with version 1.1.0 the allows upgrades
+to newer versions. 
 
-* the Operator;
-* [Custom Resource Definition (CRD)](operator.md),
-* Database Management System (Percona Server for MongoDB).
+The upgrade process consists of these steps:
+
+* Upgrade the [Custom Resource Definition (CRD)](operator.md) and the Operator  
+* Upgrade the database (Percona Server for MongoDB).
 
 !!! note
 
-    Additional steps are needed to upgrade database and Operator on [Red Hat Marketplace :octicons-link-external-16:](https://marketplace.redhat.com) or to upgrade Red Hat certified Operators on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift). See [this HOWTO](update_openshift.md) for details.
+    If you run the Operator on [Red Hat Marketplace :octicons-link-external-16:](https://marketplace.redhat.com) or you run Red Hat certified Operators on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift), you need to do additional steps during the upgrade. See [this HOWTO](update_openshift.md) for details.
 
 The list of recommended upgrade scenarios includes two variants:
 
-* Upgrade to the new versions of the Operator *and* Percona Server for MongoDB,
-* Minor Percona Server for MongoDB version upgrade *without* the Operator upgrade.
+* Upgrade both the Operator *and* Percona Server for MongoDB to their new versions
+* Perform the minor upgrade of Percona Server for MongoDB *without* the Operator upgrade.
 
-## Upgrading the Operator and CRD
+## Upgrade the Operator and CRD
 
-!!! note
+### Considerations
 
-    The Operator supports **last 3 versions of the CRD**, so it is technically
-    possible to skip upgrading the CRD and just upgrade the Operator. If the CRD
-    is older than the new Operator version *by no more than three releases*, you
-    will be able to continue using the old CRD and even carry on Percona Server
-    for MongoDB minor version upgrades with it. But the recommended way is to
-    update the Operator *and* CRD.
+1. The Operator version has three digits separated by a dot (`.`) in the format `major.minor.patch`. Here's how you can understand the version `1.18.0`:
 
-The Operator version includes three numbers: `major`, `minor`, and `patch` (for
-example, the Operator version `1.18.0` has major version `1`, 
-minor version `18`, and patch version `0`). Only the incremental update to a
-nearest `major.minor` version of the Operator is supported. To update to a newer
-version, which differs from the current `minor.major` version by more than one,
-make several incremental updates sequentially.
+    * `1` - major version
+    * `18` - minor version
+    * `0` - patch version
 
-For example, to upgrade the Operator and CRD from the version 1.15.0 to 1.17.0,
-the following sequence of upgrades will be the shortest recommended path:
+    You can only upgrade the Operator to the nearest `major.minor` version. For example, from `1.18.0` to `1.19.0`. To upgrade to a newer version, which differs from the current `minor.major` version by more than one, you need to make several incremental upgrades sequentially. For example, to upgrade the Operator from `1.17.0` to `1.19.1`, you need to first upgrade it to `1.18.0`, and then to `1.19.1`.
 
-1. upgrading the Operator and CRD from 1.15.0 to 1.16.2,
-2. upgrading from 1.16.2 to 1.17.0.
+    Patch versions don't influence the upgrade, so you can safely move from `1.18.0` to `1.19.1`.
 
-You can find Operator versions [listed here](RN/index.md).
+    Check the [Release notes index](RN/index.md) for the list of the Operator versions.
 
-!!! note
-
-    Starting from version 1.14.0, the Operator configures replica set members
-    using local fully-qualified domain names (FQDN). Before this version, it
-    used exposed IP addresses in the replica set configuration in case of the
-    exposed replica set.
-    If you [have your replica set exposed](expose.md) and upgrade to 1.14.0, the
+2. Starting from version 1.14.0, the Operator configures replica set members
+    using local fully-qualified domain names (FQDN). Before this version, if you [exposed a replica set](expose.md), it
+    used the exposed IP addresses in the replica set configuration. Therefore, if you upgrade to version 1.14.0 and your replica set is exposed, the
     replica set configuration [will change to use FQDN](expose.md#controlling-hostnames-in-replset-configuration).
-    If you don't want such reconfiguration to happen, set
+    To prevent such reconfiguration, set the
     `clusterServiceDNSMode` Custom Resource option to `External` before the
     upgrade.
 
-!!! warning
+3. Starting with version 1.12.0, the Operator no longer has a separate API version for each release in CRD. Instead, the CRD has the API version `v1`. Therefore, if you installed the CRD when the Operator version was **older than 1.12.0**, you must update the API version in the CRD manually to run the upgrade. To check your CRD version, use the following command:
 
-    Starting from the Operator version 1.15.0 the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption disabled via the [custom configuration](options.md) before upgrade:
+    ```{.bash data-prompt="$"}
+    $ kubectl get crd perconaservermongodbs.psmdb.percona.com -o yaml | yq .status.storedVersions
+    ```
+
+    ??? example "Sample output"
+
+        ```{.text .no-copy}
+        - v1-11-0
+        - v1
+        ```
+
+    If the CRD version is other than `v1` or has several entries, run the manual update.
+        
+4. Starting from the Operator version 1.15.0, the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption as disabled via the [custom configuration](options.md) before the upgrade:
 
     ```yaml
     spec:
@@ -71,23 +70,54 @@ You can find Operator versions [listed here](RN/index.md).
             ...
     ```
 
-!!! warning
-
-    Starting from the Operator version 1.16.0 MongoDB 4.4 support in the
+5. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
     Operator has reached its end-of-life. Make sure that you have a supported
     MongoDB version before upgrading the Operator to 1.16.0 (you can use
-    [major version upgrade functionality](update.md#major-version-automated-upgrades)
-    to fix it.
+    [major version upgrade functionality](update.md#major-version-automated-upgrades) to fix it.
 
-!!! warning
-
-    Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
+6. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 
 ### Manual upgrade
 
 The upgrade includes the following steps.
 
-1. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+1. **For Operators older than v1.12.0**: Update the API version in the [Custom Resource Definition :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/):
+
+    === "Manually"
+
+        ```{.bash data-prompt="$"}
+        $ kubectl proxy &  \
+        $ curl \
+               --header "Content-Type: application/json-patch+json" \
+               --request PATCH \
+               --data '[{"op": "replace", "path": "/status/storedVersions", "value":["v1"]}]' --url "http://localhost:8001/apis/apiextensions.k8s.io/v1/customresourcedefinitions/perconaservermongodbs.psmdb.percona.com/status"
+        ```
+
+        ??? example "Expected output"
+
+            ```{.text .no-copy}
+            {
+             {...},
+              "status": {
+                "storedVersions": [
+                  "v1"
+                ]
+              }
+            }
+            ```
+
+    === "Via `kubectl patch`"
+
+        ```{.bash data-prompt="$"}
+        $ kubectl patch customresourcedefinitions perconaservermongodbs.psmdb.percona.com --subresource='status' --type='merge' -p '{"status":{"storedVersions":["v1"]}}'
+        ```
+
+        ??? example "Expected output"
+
+            ```{.text .no-copy}
+            customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com patched
+            ```
+2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator, taking it from the official repository on Github, and do
     the same for the Role-based access control:
 
