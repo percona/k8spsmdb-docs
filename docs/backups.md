@@ -19,11 +19,13 @@ cluster using the following remote backup storages:
 
 ## Backup types
 
-<a name="physical"></a> The Operator can do either *logical* or *physical* backups.
+<a name="physical"></a> The Operator can do the following backups.
 
-* *Logical backup* means querying the Percona Server for MongoDB for the database data and writing the retrieved data to the remote backup storage.
+* *Full logical backup* means querying Percona Server for MongoDB for the database data and writing the retrieved data to the remote backup storage. 
 
-* *Physical backup* means copying physical files from the Percona Server for MongoDB `dbPath` data directory to the remote backup storage.
+* *Full physical backup* means copying physical files from the Percona Server for MongoDB `dbPath` data directory to the remote backup storage.
+
+* *Physical incremental* means copying only the data that was changed after the previous backup was taken. Using this type of backups speeds up backup / restore performance, lowers network load and storage consumption.
 
 Logical backups use less storage, but are much slower than physical backup/restore.
 
