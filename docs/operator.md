@@ -2460,6 +2460,16 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
 
+### `backup.storages.STORAGE-NAME.main`
+
+Marks the storage as main. All other storages you define are added as profiles. The Operator saves backups to all storages but it saves oplog chunks for point-in-time recovery only to the main storage. You can define only one storage as main. Read more about [multiple storages for backups](multi-storage.md).
+
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
+
 ### `backup.storages.STORAGE-NAME.type`
 
 The cloud storage type used for backups. Only `s3`, `azure`, and `filesystem` types are supported.
