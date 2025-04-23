@@ -109,12 +109,23 @@ Here's how to do it.
 
 === "Helm"
 
-    1. Create a yaml file with the desired configuration. For example, `values.yaml`:
+    1. Create a yaml file with the desired configuration. For example, `values.yaml`. Some values are mandatory:
+
+        * `replsets.name`
+        * `replsets.<name>.size`
+        * `replsets.volumeSpec`
+
+        Here's the example configuration:
 
         ```yaml title="values.yaml"
         replsets:
           - name: rs0
             size: 3
+            volumeSpec:
+              pvc:
+                resources:
+                  requests:
+                    storage: 1Gi
             configuration: |
               net:
                 port: 29999
