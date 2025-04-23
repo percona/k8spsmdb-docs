@@ -12,24 +12,48 @@ considered separately in the following sections.
 ## Unprivileged users
 
 The Operator does not create unprivileged (general purpose) user accounts by default.
-There are two ways to create general purpose users:
 
-* manual creation of custom MongoDB users,
-* automated users creation via Custom Resource (Operator versions 1.17.0 and newer).
+Here's how you can create unprivileged users:
 
-### Create users in the Custom Resource
+* [manually in Percona Server for MongoDB](#create-users-manually)
+* [automatically via Custom Resource](#create-users-via-custom-resource) (Operator versions 1.17.0 and newer).
 
-Starting from the Operator version 1.17.0 declarative creation of custom MongoDB users is supported via the `users` subsection in the Custom Resource.
+Regardless how you create users, their usernames must be unique.
+
+### Create users via Custom Resource
+
+Starting from the Operator version 1.17.0, you can create users in Percona Server for MongoDB via the `users` subsection in the Custom Resource. This is called declarative user management.
 
 !!! warning
 
-    Declarative user management has technical preview status and is not yet recommended for production environments.
+    Declarative user management has the technical preview status and is not yet recommended for production environments.
 
-You can change `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
+You can change the `users` section in the `deploy/cr.yaml` configuration file at the cluster creation time, and adjust it over time.
 
-You can specify a new user in `deploy/cr.yaml` configuration file, setting the user's login name and database, as well as MongoDB roles on various databases which should be assigned to this user. Also you can specify a reference to a key in some Secret resource that contains user's password, if you don't want it to be generated automatically. You can find detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section), and here is a self-explanatory example:
+For every new user in `deploy/cr.yaml` configuration file, specify the following:
 
-``` {.bash data-prompt="$"}
+* a username and the database where a user will be created. The username must be unique for every user.  
+* roles on databases in MongoDB which you want to grant to this user. 
+
+If you don't the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
+
+Here are example configurations. 
+
+Secret configuration:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-user-password
+type: Opaque
+stringData:
+  password: mypassword
+```
+
+Custom Resource configuration:
+
+```yaml
 ...
 users:
   - name: my-user
@@ -44,25 +68,16 @@ users:
         db: admin
 ```
 
-The Secret mentioned in the `users.passwordSecretRef.name` option should look as follows:
 
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-user-password
-type: Opaque
-stringData:
-  password: mypassword
-```
-
-<a name="commonsecret"></a> If the Secret name was not specified in the Custom Resource, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user and sets it by the key named after the user name. 
+<a name="commonsecret"></a> If you haven't specified the Secret name in the Custom Resource, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user and sets it by the key named after the user name. 
 
 !!! note 
 
-    Password will not be generated if the user is created in the `$external` database (which is used when mongod should query an external authentication source for the user, such as an LDAP server). For obvious reasons, setting `passwordSecretRef` for such users is not allowed as well.
+   The Operator doesn't generate passwords for users created in the `$external` database. You can't set the `passwordSecretRef` for these users, too.
 
-The Operator tracks password changes in the Sectet object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
+   Such users are used for authentication via an external authentication source, such as an LDAP server. The user credentials are stored in an external authentication source and their usernames are mapped to those in the `$external` database during authentication. 
+
+The Operator tracks password changes in the Secret object, and updates the user password in the database. This applies to the manually created users as well: if a user was created manually in the database before creating user via Custom Resource, the existing user is updated. 
 But manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
 
 ### Custom MongoDB roles
@@ -99,7 +114,7 @@ roles:
           db: admin
 ```
 
-Find more infromation about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
+Find more information about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
 
 ### Create users manually
 
