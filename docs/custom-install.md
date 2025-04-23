@@ -85,20 +85,17 @@ Here's how to do it.
           ...
           replsets:
             - name: rs0
-              size: 3
               configuration: |
                 net:
-                  port: 29999
+                  port: 27018
           configsvrReplSet:
-            size: 3
             configuration: |
               net:
-                port: 29998
+                port: 27019
           mongos:
-            size: 3
             configuration: |
               net:
-                port: 29997
+                port: 27017
         ```    
 
     2. Apply the `deploy/cr.yaml` to deploy Percona Server for MongoDB:    
@@ -109,36 +106,25 @@ Here's how to do it.
 
 === "Helm"
 
-    1. Create a yaml file with the desired configuration. For example, `values.yaml`. Some values are mandatory:
-
-        * `replsets.name`
-        * `replsets.<name>.size`
-        * `replsets.volumeSpec`
-
-        Here's the example configuration:
+    1. Create a yaml file with the desired configuration. For example, `values.yaml`:
 
         ```yaml title="values.yaml"
         replsets:
-          - name: rs0
-            size: 3
-            volumeSpec:
-              pvc:
-                resources:
-                  requests:
-                    storage: 1Gi
+          rs0:
+            name: rs0
             configuration: |
               net:
-                port: 29999
+                port: 27018
         configsvrReplSet:
           size: 3
           configuration: |
             net:
-              port: 29998
+              port: 27019
         mongos:
           size: 3
           configuration: |
             net:
-              port: 29997
+              port: 27017
         ```
 
     2. Install Percona Server for MongoDB with the specified configuration:
