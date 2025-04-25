@@ -2,8 +2,7 @@
 
 Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.
 
-It is is a more
-complicated task than a minor version upgrade because it might potentially affect how data is stored and how
+It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.
 
 A major upgrade is supported by the Operator within one major version at a time:

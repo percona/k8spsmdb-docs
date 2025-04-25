@@ -1,6 +1,8 @@
 # Upgrade the Operator and CRD
 
-To update the Operator, you need to update the Custom Resource Definition (CRD) and the Operator deployment. The upgrade process is similar for all installation methods, including Helm and OLM.
+To update the Operator, you need to update the Custom Resource Definition (CRD) and the Operator deployment. Also we recommend to update the Kubernetes database cluster configuration by updating the Custom Resource and the database components to the latest version. This step ensures that all new features that come with the Operator release work in your environment.
+
+The upgrade process is similar for all installation methods, including Helm and OLM.
 
 ## Considerations
 
@@ -16,7 +18,9 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
     Check the [Release notes index](RN/index.md) for the list of the Operator versions.
 
-2. Starting from version 1.14.0, the Operator configures replica set members
+2. CRD supports **the last 3 minor versions of the Operator**. This means it is compatible with the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+
+3. Starting from version 1.14.0, the Operator configures replica set members
     using local fully-qualified domain names (FQDN). Before this version, if you [exposed a replica set](expose.md), it
     used the exposed IP addresses in the replica set configuration. Therefore, if you upgrade to version 1.14.0 and your replica set is exposed, the
     replica set configuration [will change to use FQDN](expose.md#controlling-hostnames-in-replset-configuration).
@@ -24,7 +28,7 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
     `clusterServiceDNSMode` Custom Resource option to `External` before the
     upgrade.
 
-3. Starting with version 1.12.0, the Operator no longer has a separate API version for each release in CRD. Instead, the CRD has the API version `v1`. Therefore, if you installed the CRD when the Operator version was **older than 1.12.0**, you must update the API version in the CRD manually to run the upgrade. To check your CRD version, use the following command:
+4. Starting with version 1.12.0, the Operator no longer has a separate API version for each release in CRD. Instead, the CRD has the API version `v1`. Therefore, if you installed the CRD when the Operator version was **older than 1.12.0**, you must update the API version in the CRD manually to run the upgrade. To check your CRD version, use the following command:
 
     ```{.bash data-prompt="$"}
     $ kubectl get crd perconaservermongodbs.psmdb.percona.com -o yaml | yq .status.storedVersions
@@ -39,7 +43,7 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
     If the CRD version is other than `v1` or has several entries, run the manual update.
         
-4. Starting from the Operator version 1.15.0, the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption as disabled via the [custom configuration](options.md) before the upgrade:
+5. Starting from the Operator version 1.15.0, the `spec.mongod` section (deprecated since 1.12.0) is finally removed from the Custom Resource configuration. If you have encryption disabled using the deprecated `mongod.security.enableEncryption` option, you need to set encryption as disabled via the [custom configuration](options.md) before the upgrade:
 
     ```yaml
     spec:
@@ -53,12 +57,12 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
             ...
     ```
 
-5. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
+6. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
     Operator has reached its end-of-life. Make sure that you have a supported
     MongoDB version before upgrading the Operator to 1.16.0 (you can use
     [major version upgrade functionality](update.md#major-version-automated-upgrades) to fix it.
 
-6. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
+7. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 
 ### Upgrade manually
 
@@ -100,20 +104,16 @@ The upgrade includes the following steps.
             ```{.text .no-copy}
             customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com patched
             ```
-2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-    for the Operator, taking it from the official repository on GitHub, and do
-    the same for the Role-based access control:
+
+2. Update the [Custom Resource Definition :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+    for the Operator and the Role-based access control. Take the latest versions from the official repository on GitHub with the following commands:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
-2. Now you should [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
-    to your deployment, supplying necessary image name with a newer version
-    tag. You can find the proper
-    image name for the current Operator release [in the list of certified images](images.md).
-    updating to the `{{ release }}` version should look as follows:
+2. Next, update the Percona Server for MongoDB Operator Deployment in Kubernetes by changing the container image of the Operator Pod to the latest version. Find the image name for the current Operator release [in the list of certified images](images.md). Then [apply a patch :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to the Operator Deployment and specify the image name and version. Use the following command to update the Operator Deployment to the `{{ release }}` version:
 
     ``` {.bash data-prompt="$" }
     $ kubectl patch deployment percona-server-mongodb-operator \
@@ -131,6 +131,42 @@ The upgrade includes the following steps.
     !!! note
 
         Labels set on the Operator Pod will not be updated during upgrade.
+
+4. Update the Custom Resource version, the database, the backup and PMM Client image names with a newer version tag. This step ensures all new features and improvements of the latest release work well within your environment.
+
+    Find the image names [in the list of certified images](images.md).
+
+    We recommend to update the PMM Server **before** the upgrade of PMM Client. If you haven't done it yet, exclude PMM Client from the list of images to update.
+
+    Since this is a working cluster, the way to update the Custom Resource is to [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) with the `kubectl patch psmdb` command.
+
+    For example, to update the cluster with the name `my-cluster-name` to the `{{ release }}` version, the command is as follows:
+
+    === "With PMM Client"
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+           "spec": {
+              "crVersion":"{{ release }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
+              "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
+           }}'
+        ```
+
+    === "Without PMM Client"
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+           "spec": {
+              "crVersion":"{{ release }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
+           }}'
+        ```
+
+5.  
+
 
 ### Upgrade via helm
 

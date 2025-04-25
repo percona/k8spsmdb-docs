@@ -24,13 +24,21 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
     ```
 --8<-- [start:patch]
 
-3. Update the Custom Resource version, the database, the backup and PMM Client image names with a newer version tag. Find the image names [in the list of certified images](images.md).
+3. Check the current version of the Custom Resource and what versions of the database and cluster components are compatible with it. Use the following command:
+
+    ``` {.bash data-prompt="$" }
+    $ curl https://check.percona.com/versions/v1/psmdb-operator/{{release}} |jq -r '.versions[].matrix'
+    ```
+
+    You can also find this information in the [Versions compatibility](versions.md) matrix.
+
+4. Update the database, the backup and PMM Client image names with a newer version tag. Find the image names [in the list of certified images](images.md).
 
     We recommend to update the PMM Server **before** the upgrade of PMM Client. If you haven't done it yet, exclude PMM Client from the list of images to update.
 
     Since this is a working cluster, the way to update the Custom Resource is to [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) with the `kubectl patch psmdb` command.
 
-    For example, to update the cluster with the name `my-cluster-name` to the `{{ release }}` version, the command is as follows:
+    This example command updates the cluster with the name `my-cluster-name` to the `{{ release }}` version:
 
     === "With PMM Client"
 
@@ -55,14 +63,15 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
            }}'
         ```
 
+--8<-- [end:patch]
 
-4. After you applied the patch, the deployment rollout will be automatically.
+5. After you applied the patch, the deployment rollout will be triggered automatically.
     You can track the rollout process in real time using the
     `kubectl rollout status` command with the name of your cluster:
 
     ``` {.bash data-prompt="$" }
     $ kubectl rollout status sts my-cluster-name-rs0
     ```
---8<-- [end:patch]
+
 
 The update process is successfully finished when all Pods have been restarted. If you turned on [Percona Server for MongoDB Sharding](sharding.md), the mongos and Config Server nodes must be restarted too to complete the upgrade.

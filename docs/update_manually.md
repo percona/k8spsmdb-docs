@@ -25,46 +25,25 @@ To run a semi-automatic update of Percona Server for MongoDB, do the following:
 
 --8<-- "update-minor-set-version.md:patch"
 
+4. After you applied the patch, the deployment rollout will be triggered automatically.
+    You can track the rollout process in real time using the
+    `kubectl rollout status` command with the name of your cluster:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl rollout status sts my-cluster-name-rs0
+    ```
+
 
 ## Manual upgrade (the On Delete strategy)
 
 To upgrade Percona Server for MongoDB manually, do following:
+{.power-number}
 
 1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd).
 
 2. Edit the `deploy/cr.yaml` file and set the `updateStrategy` key to `OnDelete`.
 
-3. Update the Custom Resource version, the database, the backup and PMM Client image names with a newer version tag. Find the image names [in the list of certified images](images.md).
-
-    We recommend to update the PMM Server **before** the upgrade of PMM Client. If you haven't done it yet, exclude PMM Client from the list of images to update.
-
-    Since this is a working cluster, the way to update the Custom Resource is to [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) with the `kubectl patch psmdb` command.
-
-    For example, to update the cluster with the name `my-cluster-name` to the `{{ release }}` version, the command is as follows:
-
-    === "With PMM Client"
-
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
-           "spec": {
-              "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
-              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
-              "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
-           }}'
-        ```
-
-    === "Without PMM Client"
-
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
-           "spec": {
-              "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
-              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
-           }}'
-        ```
-
+--8<-- "update-minor-set-version.md:patch"
 
 4. The Pod with the newer Percona Server for MongoDB image will start after you
     delete it. Delete targeted Pods manually one by one to make them restart in
