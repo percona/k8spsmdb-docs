@@ -88,14 +88,15 @@ Here's how to do it.
               configuration: |
                 net:
                   port: 27018
-          configsvrReplSet:
-            configuration: |
-              net:
-                port: 27019
-          mongos:
-            configuration: |
-              net:
-                port: 27017
+          sharding:
+            configsvrReplSet:
+              configuration: |
+                net:
+                  port: 27019
+            mongos:
+              configuration: |
+                net:
+                  port: 27017
         ```    
 
     2. Apply the `deploy/cr.yaml` to deploy Percona Server for MongoDB:    
@@ -115,16 +116,15 @@ Here's how to do it.
             configuration: |
               net:
                 port: 27018
-        configsvrReplSet:
-          size: 3
-          configuration: |
-            net:
-              port: 27019
-        mongos:
-          size: 3
-          configuration: |
-            net:
-              port: 27017
+        sharding:
+          configsvrReplSet:
+            configuration: |
+              net:
+                port: 27019
+          mongos:
+            configuration: |
+              net:
+                port: 27017
         ```
 
     2. Install Percona Server for MongoDB with the specified configuration:
