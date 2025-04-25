@@ -5,7 +5,11 @@ You can back up your data in two ways:
 * *On-demand*. You can do them manually at any moment.
 * *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
 
-To make backups and restores, the Operator uses the [Percona Backup for MongoDB (PBM) :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool. The Operator runs PBM as [a sidecar container](sidecar.md) to the database Pods. It configures PBM when it creates a new cluster if you defined the [backup storage configuration](backups-storage.md) for it. Otherwise, the Operator configures PBM when you configure the storage for a backup or when you start a restore on a new cluster. 
+To make backups and restores, the Operator uses the [Percona Backup for MongoDB (PBM) :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool. The Operator runs PBM as [a sidecar container](sidecar.md) to the database Pods. It configures PBM in the following cases:
+
+* when it creates a new cluster if you defined the [backup storage configuration](backups-storage.md) for it. 
+* when you configure the backup storage for a backup 
+* when you [start a restore on a new cluster](backups-restore-to-new-cluster.md) and defined the backup storage configuration within the `backupSource` subsection of the Restore resource. 
 
 ## Backup storage
 
