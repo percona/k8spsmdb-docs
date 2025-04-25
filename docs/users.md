@@ -35,7 +35,7 @@ For every new user in `deploy/cr.yaml` configuration file, specify the following
 * a username and the database where a user will be created. The username must be unique for every user.  
 * roles on databases in MongoDB which you want to grant to this user. 
 
-If you don't the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
+If you don't want the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
 
 Here are example configurations. 
 
