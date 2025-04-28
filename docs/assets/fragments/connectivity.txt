@@ -9,7 +9,7 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     The Secrets object you are interested in has the
     `{{ clusterName }}-secrets` name by default.
     
-2. View the Secret contents to retrive the admin user credentials.
+2. View the Secret contents to retrieve the admin user credentials.
 
     ```{.bash data-prompt="$"}
     $ {{ commandName }} get secret {{ clusterName }}-secrets -o yaml

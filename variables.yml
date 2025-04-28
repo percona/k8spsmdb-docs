@@ -1,0 +1,20 @@
+#Variables that are used throughout the docs
+
+commandName: 'kubectl'
+clusterName: 'my-cluster-name'
+release: '1.20.0'
+apiversion: '1'
+mongodb80recommended: '8.0.4-1'
+mongodb70recommended: '7.0.14-8'
+mongodb60recommended: '6.0.18-15'
+mongodb50recommended: '5.0.29-25'
+pmm2recommended: '2.44.0'
+gkerecommended: '1.30'
+certmanagerrecommended: ' 1.16.2'
+pbmrecommended: '2.8.0'
+k8s_monitor_tag: 'v0.1.1'
+
+year: '2025'
+
+date:
+  1_20_0: 2025-05-08
