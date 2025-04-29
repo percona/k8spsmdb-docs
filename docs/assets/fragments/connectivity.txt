@@ -59,10 +59,3 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
         ``` {.bash data-prompt="$" }
         $ mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@{{ clusterName }}-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```
-        
-    !!! note
-    
-        If you are using MongoDB versions earler than 6.x (such as
-        {{ mongodb50recommended }} instead of the
-        default {{ mongodb70recommended }} variant), substitute
-        `mongosh` command with `mongo` in the above examples.

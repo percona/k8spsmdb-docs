@@ -2,10 +2,11 @@
 
 Versions of the cluster components and platforms tested with different Operator releases are shown below. Other version combinations may also work but have not been tested.
 
-Cluster components:
+## Cluster components
 
 | Operator | [MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) | [Percona Backup for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) | 
 |:--------|:--------|:-----|
+| [1.20.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md) | 6.0 - 8.0          | 2.9.1 |
 | [1.19.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md) | 6.0 - 8.0          | 2.8.0 |
 | [1.19.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md) | 6.0 - 8.0          | 2.8.0 |
 | [1.18.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md) | 5.0 - 7.0          | 2.7.0 |
@@ -29,10 +30,11 @@ Cluster components:
 | [1.2.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md)   | 3.6, 4.0           | 0.4.0 |
 | [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)   | 3.6, 4.0           | 0.4.0 |
 
-Platforms:
+## Platforms
 
 | Operator | [GKE  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine)         | [EKS  :octicons-link-external-16:](https://aws.amazon.com)         | [Openshift  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)                          |
 |:--------|:------------|:------------|:------------|:------------|:----------------------------------|
+| [1.20.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md) | 1.30 - 1.32 | 1.30 - 1.32 | 4.14 - 4.18       | 1.30 - 1.32 | 1.35.0 |
 | [1.19.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md) | 1.28 - 1.30 | 1.29 - 1.31 | 4.14.44 - 4.17.11 | 1.28 - 1.31 | 1.34.0 |
 | [1.19.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md) | 1.28 - 1.30 | 1.29 - 1.31 | 4.14.44 - 4.17.11 | 1.28 - 1.31 | 1.34.0 |
 | [1.18.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md) | 1.28 - 1.30 | 1.28 - 1.31 | 4.13.52 - 4.17.3 | 1.28 - 1.31 | 1.34.0 |

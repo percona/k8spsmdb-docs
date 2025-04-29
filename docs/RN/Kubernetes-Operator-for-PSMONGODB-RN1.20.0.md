@@ -96,8 +96,8 @@ spec:
 
 The Operator was developed and tested with the following software:
 
-* Percona Server for MongoDB 6.0.19-16, 7.0.15-9, and 8.0.4-1. 
-* Percona Backup for MongoDB 2.8.0.
+* Percona Server for MongoDB 6.0.21-18, 7.0.18-11, and 8.0.4-2. 
+* Percona Backup for MongoDB 2.9.1.
 
 Other options may also work but have not been tested. 
 
@@ -106,11 +106,15 @@ Other options may also work but have not been tested.
 
 Percona Operators are designed for compatibility with all [CNCF-certified :octicons-link-external-16:](https://www.cncf.io/training/certification/software-conformance/) Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below for Operator version {{release}}:
 
-* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.28-1.30
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.29-1.31
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.14.44 - 4.17.11
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.28-1.31
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.34.0 based on Kubernetes 1.31.0
+--8<-- [start:platforms]
+
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.30-1.32
+* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.30-1.32
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.14 - 4.18
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.30-1.32
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.35.0 based on Kubernetes 1.32.0
+
+--8<-- [end:platforms]
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
 
