@@ -12,10 +12,10 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
     * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
     * `storageName` - specify the name of your [already configured storage](backups-storage.md).
-    * `keep` - define the number of backups to keep in the storage. This key is optional.
+    * `keep` - define the number of backups to keep in the storage. This key is optional. It applies to base incremental backups but is ignored for increments. 
     * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a logical backup by default.
 
-    Note that the `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are not available for incremental backups.
+    Note that the `percona.com/delete-backup` finalizer applies for an incremental base backup but is ignored for increments. This means that when an incremental base backup is deleted, PBM also deletes all increments that derived from it from the backup storage. There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
 **Examples**
 
@@ -74,7 +74,7 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     To run incremental backups, consider the following: 
 
     1. You must use the same storage for the base backup and subsequent incremental ones
-    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are not available for this backup type.
+    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are ignored for this backup type.
 
     This example shows how to set up incremental base backups to run every Sunday at 5 a.m and subsequent incremental backups every night at 1:00 a.m. and store them in Amazon S3:  
 
@@ -91,7 +91,7 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
             credentialsSecret: my-cluster-name-backup-s3
       tasks:
        - name: weekly-s3-us-west-incremental
-         enabled: false
+         enabled: true
          schedule: "0 1 * * *"
          keep: 5
          type: incremental
@@ -101,7 +101,6 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
        - name: weekly-s3-us-west-incremental-base
          enabled: false
          schedule: "0 5 * * 0"
-         keep: 5
          type: incremental-base
          storageName: s3-us-west
          compressionType: gzip

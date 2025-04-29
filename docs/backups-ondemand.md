@@ -76,7 +76,9 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
         2. Use the same storage for base backup and increments. 
 
-        3. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are not available for this backup type.
+        3. The `percona.com/delete-backup` finalizer is considered for incremental base backup but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
+
+           There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
         Here's the configuration example for the base incremental backup
     
@@ -90,7 +92,7 @@ To create a Backup resource, you need a special custom resource manifest. The [d
         spec:
           clusterName: my-cluster-name
           storageName: s3-us-west
-          type: incremental_base
+          type: incremental-base
         ```
 
         This configuration example is for subsequent incremental backups:

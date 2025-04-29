@@ -25,9 +25,12 @@ cluster using the following remote backup storages:
 
 * *Full physical backup* means copying physical files from the Percona Server for MongoDB `dbPath` data directory to the remote backup storage.
 
+    Logical backups use less storage, but are much slower than physical backups/restores.
+
 * *Physical incremental* means copying only the data that was changed after the previous backup was taken. Using this type of backups speeds up backup / restore performance, lowers network load and storage consumption.
 
-Logical backups use less storage, but are much slower than physical backup/restore.
+   To start using incremental backups, you need to make a base incremental backup first. The the subsequent increments derive from this base. To track the backup history, both a base backup and all increments must always be taken from the same node. If the Pod where backups were taken is down or unavailable, you must make a new base backup to start a new incremental chain. The same requirement applies after a restore.
+
 
 !!! warning
 
