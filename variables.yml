@@ -4,7 +4,7 @@ commandName: 'kubectl'
 clusterName: 'my-cluster-name'
 release: '1.20.0'
 apiversion: '1'
-mongodb80recommended: '8.0.4-2'
+mongodb80recommended: '8.0.8-3'
 mongodb70recommended: '7.0.18-11'
 mongodb60recommended: '6.0.21-18'
 mongodb50recommended: '5.0.29-25'  # No updated version provided, value remains the same.

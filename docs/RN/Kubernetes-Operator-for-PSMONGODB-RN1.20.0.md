@@ -96,7 +96,7 @@ spec:
 
 The Operator was developed and tested with the following software:
 
-* Percona Server for MongoDB 6.0.21-18, 7.0.18-11, and 8.0.4-2. 
+* Percona Server for MongoDB 6.0.21-18, 7.0.18-11, and 8.0.8-3. 
 * Percona Backup for MongoDB 2.9.1.
 
 Other options may also work but have not been tested. 
