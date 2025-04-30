@@ -11,11 +11,11 @@ This release of {{config.site_name}} includes the following new features and imp
 
 The Operator now natively supports [multiple backup storages](../multi-storage.md) inheriting this feature from Percona Backup for MongoDB (PBM). This enables you to make a point-in-time recovery from any backup stored on any storage - PBM and the Operator maintain the data consistency for you. And you no longer have to wait till the Operator reconfigures a cluster after you select a different storage for a backup or a restore. As a result, overall performance of your backup flow improves.
 
-### Improve RTO with the added support of incremental physical backups
+### Improve RTO with the added support of incremental physical backups (tech preview)
 
 Using [incremental physical backups](../backup.md) in the Operator, you can now back up only the changes happened since the previous backup. Since increments are smaller in size than the whole backup, the backup completion is faster and you also save on the storage and data transfer costs. Using incremental backups and point-in-time recovery improves your recovery time objective (RTO).
 
-You do need the base backup to start the incremental backup chain and you must make the whole chain from the same storage. Also, note that the `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are not available for this backup type.
+You do need the base backup to start the incremental backup chain and you must make the whole chain from the same storage. Also, note that the `percona.com/delete-backup` finalizer and the [`.spec.backup.tasks.[].keep`](operator.md#backuptaskskeep) option apply for the incremental base backup but are ignore for subsequent incremental backups.
 
 ### Improved monitoring for clusters in multi-region or multi-namespace deployments in PMM
 
