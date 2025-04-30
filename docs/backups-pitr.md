@@ -15,24 +15,21 @@ backup:
     enabled: true
 ```
 
-It is necessary to have at least one full backup to use point-in-time recovery.
-By default Percona Backup for MongoDB will not upload operations logs if there
-is no full backup.
-The rule of having at least one full backup is true for new clusters and also
-true for clusters which have been just recovered from backup.
+You must have a full backup to use point-in-time recovery. Without a full backup, Percona Backup for MongoDB will not upload operations logs. You must have a full backup for a new cluster and for a cluster that you restored from a backup.
 
-!!! note
+After you enabled point-in-time recovery, it takes 10 minutes for a first oplog chunk to be uploaded. The default time period between uploads is 10 minutes. You can adjust this time by setting the new duration for the 'backup.pitr.oplogSpanMin` option.  
 
-    There is also the 'backup.pitr.oplogSpanMin` option which sets the time
-    period between the uploads of oplogs, with default value of 10 minutes.
+## Point-in-time recovery with multiple storages
 
-Percona Backup for MongoDB uploads operations logs to the same bucket/container,
-where the full backup is stored. This makes point-in-time recovery functionality
-available only if there is a single bucket/container in [spec.backup.storages](operator.md#backupstoragesstorage-nametype). Otherwise point-in-time recovery will not be enabled and there will be an error
-message in the operator logs.
+=== "Version 1.20.0 and above"
 
-If you add a new bucket or a container when point-in-time recovery is enabled, you will see a message about it in the Operator logs.
+    The Operator natively supports [multiple storages for backups](multi-storage.md) inheriting this functionality from Percona Backup for MongoDB. This allows you to enable point-in-time recovery and make backups on a storage of your choice. PBM saves oplog only to the main storage to ensure data consistency for all backups on all storages. As a result, you can [make a point-in-time restore](backups-restore.md#with-point-in-time-recovery) from any backup on any storage.  
 
-Starting with version 1.20.0, the Operator natively supports [multiple storages for backups](multi-storage.md) and saves oplog only to the main storage.
+=== "Version 1.19.1 and earlier"
+
+    You must have a single storage defined in the [spec.backup.storages](operator.md#backupstoragesstorage-nametype) option to enable point-in-time recovery. This is because PBM writes oplog to the same bucket where the backup snapshot is saved. 
+
+    If you defined several storages and try to enable point-in-time recovery, PBM won't know where to save oplog and can't therefore guarantee data consistency for the restore. Therefore, point-in-time recovery is not allowed for multiple storages. You will see the error message in the Operator logs. 
+
 
 
