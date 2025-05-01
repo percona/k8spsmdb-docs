@@ -19,24 +19,9 @@ cluster using the following remote backup storages:
 
 ## Backup types
 
-<a name="physical"></a> The Operator can do the following backups.
+| Backup type | Version added | Status | Description | Important considerations |
+|------------|---------------|---------|-------------|-------------------------|
+| Full logical | Initial | GA | Queries Percona Server for MongoDB for database data and writes this data to the remote storage | - Uses less storage but is slower than physical backups<br>- Supports selective restore since [1.18.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md)<br>- Supports point-in-time recovery <br>- Incompatible for restores with backups made with Operator versions before 1.9.0. Make a new backup after the upgrade to the Operator 1.9.0. |
+| Full physical | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | GA ([1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md)) | Copies physical files from MongoDB `dbPath` data directory to remote storage | - Faster backup/restore than logical<br>- Better for large datasets<br>- Supports point-in-time recovery since [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md)|
+| Physical incremental | [1.20.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md) | Tech preview | Copies only data changed after the previous backup | - Speeds up backup/restore<br>- Reduces network load and storage consumption<br>- Requires a base incremental backup to start the incremental chain <br>- Base backup and increments must bet taken from the same node<br>- New base backup is needed if a node is down or if the cluster was restored from a backup|
 
-* *Full logical backup* means querying Percona Server for MongoDB for the database data and writing the retrieved data to the remote backup storage. 
-
-* *Full physical backup* means copying physical files from the Percona Server for MongoDB `dbPath` data directory to the remote backup storage.
-
-    Logical backups use less storage, but are much slower than physical backups/restores.
-
-* *Physical incremental* means copying only the data that was changed after the previous backup was taken. Using this type of backups speeds up backup / restore performance, lowers network load and storage consumption.
-
-   To start using incremental backups, you need to make a base incremental backup first. The the subsequent increments derive from this base. To track the backup history, both a base backup and all increments must always be taken from the same node. If the Pod where backups were taken is down or unavailable, you must make a new base backup to start a new incremental chain. The same requirement applies after a restore.
-
-
-!!! warning
-
-    Logical backups made with the Operator versions before 1.9.0 are
-    incompatible for restore with the Operator 1.9.0 and later. That is because Percona Backup
-    for MongoDB 1.5.0 used by the newer Operator versions
-    [processes system collections Users and Roles differently  :octicons-link-external-16:](https://www.percona.com/doc/percona-backup-mongodb/running.html#pbm-running-backup-restoring).
-    The recommended approach is to **make a fresh backup after upgrading**
-    **the Operator to version 1.9.0**.
