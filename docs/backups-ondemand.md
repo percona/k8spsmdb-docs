@@ -101,7 +101,6 @@ To create a Backup resource, you need a special custom resource manifest. The [d
         apiVersion: psmdb.percona.com/v1
         kind: PerconaServerMongoDBBackup
         metadata:
-          finalizers:
           - percona.com/delete-backup
           name: backup1
         spec:
