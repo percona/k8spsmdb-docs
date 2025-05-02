@@ -123,17 +123,6 @@ plugins:
   #  glob:
   #    - "setting-up/client/docker.md"
   # https://github.com/orzih/mkdocs-with-pdf
-  with-pdf:
-    output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Percona Operator for MongoDB documentation"
-    cover_subtitle: 1.16.2 (July 23, 2024)
-    author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/percona_kubernetes_icon.png
-    custom_template_path: _resource/templates
-    enabled_if_env: ENABLE_PDF_EXPORT
-  # Check links - but extends build time significantly
-  # https://pypi.org/project/mkdocs-htmlproofer-plugin/
-  #    htmlproofer: {}
   mike:
     version_selector: true
     css_dir: css
@@ -141,7 +130,7 @@ plugins:
     canonical_version: null
   print-site:
     add_to_navigation: false
-    print_page_title: 'Percona Operator for MongoDB 1.17.0 documentation'
+    print_page_title: 'Percona Operator for MongoDB documentation'
     add_print_site_banner: false
     # Table of contents
     add_table_of_contents: true
@@ -152,13 +141,10 @@ plugins:
     enumerate_headings: true
     enumerate_figures: true
     add_cover_page: true
-    cover_page_template: "pdf_cover_page.tpl"
+    cover_page_template: "docs/assets/templates/pdf_cover_page.tpl"
     path_to_pdf: ""
     include_css: true
     enabled: true
-#    exclude:
-#      - "RN/index.md"
-#      - "../snippets/services-banner.md"
 
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
