@@ -16,7 +16,7 @@ spec:
       backupOptions:
         priority:
           "cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local:27017": 2.5
-          "cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local:27018": 2.5
+          "cluster1-rs0-1.cluster1-rs0.psmdb.svc.cluster.local:27017": 2.5
 ```
 
 This example shows how to configure the parallel data download for physical restores:
