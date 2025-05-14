@@ -64,3 +64,31 @@ The improved support for multiple backup storages brings the following benefits:
 
 * Enables you to make a point-in-time recovery from any storage with guaranteed data consistency
 * Reduces the load on the cluster for reconfiguration when the storage for a next backup changes	 
+
+## Upgrade considerations
+
+You must specify the main storage during the upgrade. If you use a single storage, it will automatically be marked as main in the Custom Resource manifest. If you use multiple storages, you must define one of them as main. 
+
+The following command shows how to set the `s3-us-west` storage as the main one:
+
+```{.bash data-prompt="$"}
+$ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+    "spec": {
+      "crVersion": "1.20.0",
+      "image": "percona/percona-server-mongodb:7.0.18-11",
+      "backup": {
+        "image": "percona/percona-backup-mongodb:2.9.1",
+        "storages": {
+          "s3-us-west": {
+            "main": true
+          }
+        }
+      },
+      "pmm": {
+        "image": "percona/pmm-client:2.44.1"
+      }
+    }
+  }'
+```
+
+For more information about the upgrades, see the [Update documentation](update.md)
