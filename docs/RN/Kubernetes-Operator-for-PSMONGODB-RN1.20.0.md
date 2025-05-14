@@ -36,7 +36,7 @@ spec:
 
 * [K8SPSMDB-1237](https://perconadev.atlassian.net/browse/K8SPSMDB-1237) - Added support for incremental physical backups
 
-* [K8SPSMDB-1329](https://perconadev.atlassian.net/browse/K8SPSMDB-1329) -  Allowed setting loadBalancerClass service type and using a custom implementation of a load balancer rather than the cloud provider default one.  
+* [K8SPSMDB-1329](https://perconadev.atlassian.net/browse/K8SPSMDB-1329) - Allowed setting loadBalancerClass service type and using a custom implementation of a load balancer rather than the cloud provider default one.  
 
 ### Improvements
 
@@ -44,7 +44,7 @@ spec:
 
 * [K8SPSMDB-1219](https://perconadev.atlassian.net/browse/K8SPSMDB-1219) - Improved the support of multiple storages for backups by using the  Multi Storage support functionality in PBM. This enables users to make point-in-time recovery from any storage
 
-* [K8SPSMDB-1223](https://perconadev.atlassian.net/browse/K8SPSMDB-1223) Improve the `MONGODB_PBM_URI` connection string construction by enabling every `pbm-agent` to connect to local mongoDB directly
+* [K8SPSMDB-1223](https://perconadev.atlassian.net/browse/K8SPSMDB-1223) - Improved the `MONGODB_PBM_URI` connection string construction by enabling every `pbm-agent` to connect to local mongoDB directly
 
 * [K8SPSMDB-1226](https://perconadev.atlassian.net/browse/K8SPSMDB-1226) - Documented how to pass custom configuration for PBM
 
@@ -52,7 +52,7 @@ spec:
 
 * [K8SPSMDB-1236](https://perconadev.atlassian.net/browse/K8SPSMDB-1236) - Added a check for a username to be unique when defining it via the Custom Resource manifest
 
-* [K8SPSMDB-1253](https://perconadev.atlassian.net/browse/K8SPSMDB-1253) - Made the SmartUpdate the default update strategy
+* [K8SPSMDB-1253](https://perconadev.atlassian.net/browse/K8SPSMDB-1253) - Made the `SmartUpdate` the default update strategy
 
 * [K8SPSMDB-1276](https://perconadev.atlassian.net/browse/K8SPSMDB-1276) - Added logic to the getMongoUri function to compare the content of the existing TLS and CA certificate files with the secret data. Files are only overwritten if the data has changed, preventing redundant writes and ensuring smoother operations during backup checks. (Thank you Anton Averianov for reporting and contributing to this issue)
 
@@ -89,7 +89,29 @@ spec:
 
 * [K8SPSMDB-1347](https://perconadev.atlassian.net/browse/K8SPSMDB-1347) - Fixed the issue with the Operator throwing errors when auto generating password for multiple users by properly updating the secret after a password generation
 
-## Known limitations
+## Upgrade considerations
+
+The [added support for multiple backup storages](../multi-storage.md) requires specifying the main storage. If you use a single storage, it will automatically be marked as main in the Custom Resource manifest during the upgrade. If you use multiple storages, you must define one of them as the main storage when you upgrade to version 1.20.0. The following command shows how to set the `s3-us-west` storage as the main one:
+
+```{.bash data-prompt="$"}
+$ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+    "spec": {
+      "crVersion": "1.20.0",
+      "image": "percona/percona-server-mongodb:7.0.18-11",
+      "backup": {
+        "image": "percona/percona-backup-mongodb:2.9.1",
+        "storages": {
+          "s3-us-west": {
+            "main": true
+          }
+        }
+      },
+      "pmm": {
+        "image": "percona/pmm-client:2.44.1"
+      }
+    }
+  }'
+```
 
 
 ## Supported software
