@@ -209,6 +209,7 @@ nav:
     - Configuration:
           - "Application and system users": users.md
           - "Changing MongoDB options": options.md
+          - options-pbm.md
           - "Anti-affinity and tolerations": constraints.md
           - "Labels and annotations": annotations.md
           - "Exposing the cluster": expose.md
