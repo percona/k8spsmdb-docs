@@ -897,6 +897,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
 
+### `replsets.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `replsets.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -1750,6 +1758,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
 
+### `sharding.configsvrReplSet.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -2197,6 +2213,14 @@ If set to `true`, a separate ClusterIP Service is created for each mongos instan
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`     |
+
+### `sharding.mongos.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
 
 ### `sharding.mongos.expose.loadBalancerSourceRanges`
 
