@@ -39,7 +39,7 @@ To run a semi-automatic update of Percona Server for MongoDB, do the following:
 To upgrade Percona Server for MongoDB manually, do following:
 {.power-number}
 
-1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd).
+1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update-db.md).
 
 2. Edit the `deploy/cr.yaml` file and set the `updateStrategy` key to `OnDelete`.
 
