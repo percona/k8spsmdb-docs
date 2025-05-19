@@ -7,7 +7,7 @@
 To upgrade Percona Server for MongoDB to a specific version, do the following:
 {.power-number}
 
-1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd).
+1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update-operator.md).
 
 2. Check the [Custom Resource](operator.md) manifest configuration to be the following:
 

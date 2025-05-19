@@ -2,12 +2,12 @@
 
 You can decide how to run the database upgrades:
 
-* [Automatically](#automatic-upgrade) - the Operator periodically checks for new versions of the database images and for valid image paths and automatically updates your deployment with the latest, recommended or a specific version of the database and other components included. To do so, the Operator queries a special
+* [Automatically](update-minor-automatic.md) - the Operator periodically checks for new versions of the database images and for valid image paths and automatically updates your deployment with the latest, recommended or a specific version of the database and other components included. To do so, the Operator queries a special
 *Version Service* server at scheduled times. If the current version should be upgraded, the Operator updates the Custom
 Resource to reflect the new image paths and sequentially deletes Pods,
 allowing StatefulSet to redeploy the cluster Pods with the new image.
 
-* [Manually](#manual-upgrade) - you manually update the Custom Resource and specify the desired version of the database. Then, depending on the configured [update strategy](update.md#update-strategy), either the Operator automatically updates the deployment to this version. Or you manually trigger the upgrade by deleting Pods.
+* [Manually](update_manually.md) - you manually update the Custom Resource and specify the desired version of the database. Then, depending on the configured [update strategy](update.md#update-strategies), either the Operator automatically updates the deployment to this version. Or you manually trigger the upgrade by deleting Pods.
 
 The way to instruct the Operator how it should run the database upgrades is to set the `upgradeOptions.apply` Custom Resource option to one of the following:
 

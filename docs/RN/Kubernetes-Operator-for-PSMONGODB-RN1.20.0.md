@@ -13,9 +13,9 @@ The Operator now natively supports [multiple backup storages](../multi-storage.m
 
 ### Improve RTO with the added support of incremental physical backups (tech preview)
 
-Using [incremental physical backups](../backup.md) in the Operator, you can now back up only the changes happened since the previous backup. Since increments are smaller in size than the whole backup, the backup completion is faster and you also save on the storage and data transfer costs. Using incremental backups and point-in-time recovery improves your recovery time objective (RTO).
+Using [incremental physical backups](../backups.md#backup-types) in the Operator, you can now back up only the changes happened since the previous backup. Since increments are smaller in size than the whole backup, the backup completion is faster and you also save on the storage and data transfer costs. Using incremental backups and point-in-time recovery improves your recovery time objective (RTO).
 
-You do need the base backup to start the incremental backup chain and you must make the whole chain from the same storage. Also, note that the `percona.com/delete-backup` finalizer and the [`.spec.backup.tasks.[].keep`](operator.md#backuptaskskeep) option apply for the incremental base backup but are ignore for subsequent incremental backups.
+You do need the base backup to start the incremental backup chain and you must make the whole chain from the same storage. Also note that the `percona.com/delete-backup` finalizer and the [`.spec.backup.tasks.[].keep`](../operator.md#backuptaskskeep) option apply for the incremental base backup but are ignored for subsequent incremental backups.
 
 ### Improved monitoring for clusters in multi-region or multi-namespace deployments in PMM
 

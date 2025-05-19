@@ -60,7 +60,7 @@ The upgrade process is similar for all installation methods, including Helm and 
 6. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
     Operator has reached its end-of-life. Make sure that you have a supported
     MongoDB version before upgrading the Operator to 1.16.0 (you can use
-    [major version upgrade functionality](update.md#major-version-automated-upgrades) to fix it.
+    [major version upgrade functionality](update-major.md) to fix it.
 
 7. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 

@@ -27,7 +27,7 @@ When the correct names for the backup and the cluster are known, backup restorat
 
     * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
 
-    * set `spec.backupSource` subsection to point on the appropriate cloud storage. This `backupSource` subsection should contain the [backup type](backups.md#physical) (either `logical` or `physical`), and a `destination` key, followed by [necessary storage configuration keys](backups-storage.md), same as in the `deploy/cr.yaml` file:
+    * set `spec.backupSource` subsection to point on the appropriate cloud storage. This `backupSource` subsection should contain the [backup type](backups.md#backup-types) (either `logical` or `physical`), and a `destination` key, followed by [necessary storage configuration keys](backups-storage.md), same as in the `deploy/cr.yaml` file:
 
         ```yaml
         ...

@@ -10,8 +10,8 @@
 
 ## Release Highlights
 
-* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](../backups.md#physical) support in the Operator. The feature is now in technical preview.
-* MongoDB 6.0 [comes with a variety :octicons-link-external-16:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update.md#major-version-automated-upgrades) to learn how to upgrade.
+* Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with [Physical backups](../backups.md#backup-types) support in the Operator. The feature is now in technical preview.
+* MongoDB 6.0 [comes with a variety :octicons-link-external-16:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/) of improvements and new features. It is now fully supported by the Operator. See our [documentation](../update-major.md#) to learn how to upgrade.
 
 ## New Features
 

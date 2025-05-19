@@ -20,7 +20,7 @@ release. Users can now recover to a specific date and time from operations
 logs stored on S3
 
 
-* It is now possible to perform a [major version upgrade](../update.md#automated-upgrade)
+* It is now possible to perform a [major version upgrade](../update-major.md)
 for MongoDB (for example, upgrade 4.2 version to 4.4) with no manual steps
 
 ## New Features
