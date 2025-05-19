@@ -1,11 +1,15 @@
 # About backups
 
-You can backup your data in two ways:
+You can back up your data in two ways:
 
 * *On-demand*. You can do them manually at any moment.
 * *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
 
-To make backups and restores, the Operator uses the [Percona Backup for MongoDB  :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool.
+To make backups and restores, the Operator uses the [Percona Backup for MongoDB (PBM) :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool. The Operator runs PBM as [a sidecar container](sidecar.md) to the database Pods. It configures PBM in the following cases:
+
+* when it creates a new cluster if you defined the [backup storage configuration](backups-storage.md) for it. 
+* when you configure the backup storage for a backup 
+* when you [start a restore on a new cluster](backups-restore-to-new-cluster.md) and defined the backup storage configuration within the `backupSource` subsection of the Restore resource. 
 
 ## Backup storage
 
@@ -13,11 +17,19 @@ You can store Percona Server for MongoDB backups outside the Kubernetes
 cluster using the following remote backup storages: 
 
 * [Amazon S3 or S3-compatible storage  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
+* [MinIO :octicons-link-external-16:](https://min.io/) S3-compatible storage
 * [Azure Blob Storage  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 ![image](assets/images/backup-cloud.svg)
 
+### Multiple backup storages
+
+Starting with version 1.20.0, the Operator natively supports [multiple backup storages :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/multi-storage.html), inheriting this feature from Percona Backup for MongoDB (PBM). This means you don't have to wait till the Operator reconfigures a cluster after you select a different storage for a backup or a restore. And you can make a point-in-time recovery from any backup stored on any storage - PBM and the Operator maintain the data consistency for you.
+
+Find more information in the [Multiple storages for backups](multi-storage.md) chapter. 
+
 ## Backup types
+
 
 | Backup type | Version added | Status | Description | Important considerations |
 |------------|---------------|---------|-------------|-------------------------|
