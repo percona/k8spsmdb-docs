@@ -91,7 +91,6 @@ markdown_extensions:
   pymdownx.snippets:
       base_path: 
         - snippets
-        - docs
         - docs/RN
 #      auto_append:
 #        - services-banner.md
@@ -115,6 +114,7 @@ plugins:
 #    placeholder_extra_js: ""
 #    placeholder_file: placeholder-plugin.yaml
   git-revision-date: {}
+  open-in-new-tab: {}
   meta-descriptions:
     export_csv: false
     quiet: false
@@ -132,7 +132,7 @@ plugins:
   with-pdf:
     output_path: "_pdf/PerconaOperatorMongoDB.pdf"
     cover_title: "Operator for MongoDB documentation"
-    cover_subtitle: 1.19.0 (January 21, 2025)
+    cover_subtitle: 1.20.0 (May 19, 2025)
     author: "Percona Technical Documentation Team"
     cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
     custom_template_path: _resource/templates
@@ -149,21 +149,10 @@ plugins:
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  commandName: 'kubectl'
-  clusterName: 'my-cluster-name'
-  release: '1.19.1'
-  apiversion: '1'
-  mongodb80recommended: '8.0.4-1'
-  mongodb70recommended: '7.0.14-8'
-  mongodb60recommended: '6.0.18-15'
-  mongodb50recommended: '5.0.29-25'
-  pmm2recommended: '2.44.0'
-  gkerecommended: '1.30'
-  certmanagerrecommended: ' 1.16.2'
-  pbmrecommended: '2.8.0'
+  
   version:
     provider: mike
-  k8s_monitor_tag: 'v0.1.1'
+
 
 # Common navigation for percona.com, render.com and PDF
 nav:
@@ -177,8 +166,8 @@ nav:
     - Quickstart guides:
           - Overview: quickstart.md
           - 1. Quick install:
-            - "With Helm": helm.md
             - "With kubectl": kubectl.md
+            - "With Helm": helm.md
           - 2. Connect to Percona Server for MongoDB: connect.md
           - 3. Insert data: data-insert.md
           - 4. Make a backup: backup-tutorial.md
@@ -278,6 +267,7 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md
           - "Percona Operator for MongoDB 1.19.1 (2025-02-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
           - "Percona Operator for MongoDB 1.19.0 (2025-01-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
           - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md

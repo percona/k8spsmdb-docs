@@ -12,7 +12,7 @@
 
 ### General availability of Physical Backups
 
-Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery)), especially for big data sets. With this release Percona announces the general availability of physical backups and restores for Percona Server for MongoDB with the Operator.
+Two releases ago we added experimental support for [Physical Backups and Restores](../backups.md#backup-types) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery)), especially for big data sets. With this release Percona announces the general availability of physical backups and restores for Percona Server for MongoDB with the Operator.
 
 ### Automated volume expansion
 
@@ -86,7 +86,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 
 * Starting from now, `allowUnsafeConfigurations` Custom Resource option is deprecated in favor of a number of options under the `unsafeFlags` subsection. Setting `allowUnsafeConfigurations` won't have any effect; upgrading existing clusters with `allowUnsafeConfigurations=true` will cause everything under [unsafeFlags](../operator.md#operator-unsafeflags-section) set to true and [TLS funuctionality disabled](../tls-disable.md)
 
-* MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use [major version upgrade functionality](../update.md#automated-upgrade).
+* MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide [officially certified images](../images.md) for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use [major version upgrade functionality](../update-major.md).
 
 ## Supported Platforms
 

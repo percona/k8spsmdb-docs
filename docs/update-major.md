@@ -18,7 +18,7 @@ to 8.0. The same is true for major version downgrades.
 
 ## Procedure
 
-1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update.md#upgrading-the-operator-and-crd).
+1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update-operator.md).
 2. Set the [upgradeOptions.apply](operator.md#upgradeoptionsapply)
 key in the `deploy/cr.yaml` Custom Resource manifest to `<version>-recommended`:
 

@@ -145,7 +145,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 ### `updateStrategy`
 
-A strategy the Operator uses for [upgrades](update.md). Possible values are [SmartUpdate](update.md#automated-upgrade), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
+A strategy the Operator uses for [upgrades](update.md). Possible values are [SmartUpdate](update.md#update-strategies), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -294,7 +294,7 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](update.md#automated-upgrade) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](update-db.md) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2310,7 +2310,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 ## Roles section
 
-The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-in-the-custom-resource).
+The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-via-custom-resource).
 
 ### `roles.role`
 
@@ -2386,7 +2386,7 @@ An array of roles (with names of the role and the database) from which this role
 
 ## <a name="operator-users-section"></a>Users section
 
-The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-in-the-custom-resource).
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-via-custom-resource).
 
 ### `users.name`
 
@@ -2895,7 +2895,7 @@ The backup compression level ([higher values result in better but slower compres
 
 ### `backup.tasks.type`
 
-The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#physical) for details.
+The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#backup-types) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -79,7 +79,7 @@ See [this blogpost :octicons-link-external-16:](https://www.percona.com/blog/per
 ## Improvements
 
 * {{ k8spsmdbjira(1123) }}: Percona Server for MongoDB 8.0 is now supported
-* {{ k8spsmdbjira(1171) }}: The [declarative user management](../users.md#create-users-in-the-custom-resource) was enchanced with the possibility to automatically generate passwords
+* {{ k8spsmdbjira(1171) }}: The [declarative user management](../users.md#create-users-via-custom-resource) was enchanced with the possibility to automatically generate passwords
 * {{ k8spsmdbjira(1174) }}: [Telemetry](../telemetry.md) was improved to to track whether the custom users and roles management, automatic volume expansion, and multi-cluster services features are enabled
 * {{ k8spsmdbjira(1179) }}: It is now possible to configure externalTrafficPolicy for [mongod](../operator.md#replsetsexposeexternaltrafficpolicy), [configsvr](../operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy) and [mongos](../operator.md#shardingmongosexternaltrafficpolicy) instances
 * {{ k8spsmdbjira(1205) }}: Backups in unmanaged clusters [are now supported](../replication-backups.md), removing a long-standing limitation of [cross-site replication](../replication.md) that didn’t allow backups on replica clusters

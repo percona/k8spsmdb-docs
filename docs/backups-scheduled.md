@@ -74,7 +74,7 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     To run incremental backups, consider the following: 
 
     1. You must use the same storage for the base backup and subsequent incremental ones
-    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are is considered for incremental base backup but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
+    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md#backuptaskskeep) option are is considered for incremental base backup but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
 
        There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
