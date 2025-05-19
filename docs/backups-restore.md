@@ -123,9 +123,9 @@ When the correct names for the backup and the cluster are known, backup restorat
 
 ## Selective restore
 
-Starting with the version 1.18.0, the Operator allows doing partial restores, which means to do a selective restore only with the desired subset of data. This feature allows you to restore a specific database or a collection from a backup.
+Starting with the version 1.18.0, you can restore a desired subset of data from a full logical backup. Selective logical backups are not yet supported.
 
-Selective restores are controlled by the additional `selective` section in the `PerconaServerMongoDBRestore` Custom Resource:
+Selective restores are controlled by the additional `selective` section in the `PerconaServerMongoDBRestore` Custom Resource. There you can specify a specific database or a collection that you wish to restore:
 
 ```yaml
 spec:
@@ -140,4 +140,5 @@ The `selective.namespaces` field allows you to specify several "namespaces" (sub
 
 Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup.
 
-Selective restores support only logical backups and have a number of other limitations. See the full list of [current selective restore limitations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/selective-backup.html) in Percona Backup for MongoDB documentation.
+Selective restores support only logical backups and have a number of other limitations. See the full list of [current selective restore limitations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores) in Percona Backup for MongoDB documentation.
+
