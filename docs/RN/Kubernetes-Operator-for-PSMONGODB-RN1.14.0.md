@@ -15,7 +15,7 @@
 
 ## New Features
 
-* {{ k8spsmdbjira(713) }} [Physical backups](../backups.md#physical) are now supported by the Operator to recover big data sets faster
+* {{ k8spsmdbjira(713) }} [Physical backups](../backups.md#backup-types) are now supported by the Operator to recover big data sets faster
 
 * {{ k8spsmdbjira(737) }} MongoDB 6.0 is now officially supported in addition to 4.x and 5.x versions. Read more about version 6 in our [blog post :octicons-link-external-16:](https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/)
 
