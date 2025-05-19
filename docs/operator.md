@@ -1,15 +1,36 @@
 # Custom Resource options
 
-The operator is configured via the spec section of the
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+
+To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+
+This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
+
+## `apiVersion`
+
+Specifies the API version of the Custom Resource.
+`psmdb.percona.com` indicates the group, and `v1` is the version of the API.
+
+This tells Kubernetes which version of the custom resource definition (CRD) to use.
+
+## `kind`
+
+Defines the type of resource being created.
 
 ## `metadata`
 
-The metadata part of this file contains the following keys:
+The metadata part of the `deploy/cr.yaml` contains  metadata about the resource, such as its name and other attributes. It includes the following keys:
 
-* `name` (`my-cluster-name` by default) sets the name of your Percona Server
-for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
-* `finalizers` subsection:
+* `name` sets the name of your Percona Server for MongoDB Cluster. The name must follow these rules:
+
+    * include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), 
+    * not exceed 22 characters, 
+    * start and end with an alphanumeric character
+
+    The default name is  `my-cluster-name`. 
+
+* `finalizers` ensure safe deletion of resources in Kubernetes under certain conditions. This subsection includes the following finalizers:
+
     * `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
     * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
     * `percona.com/delete-pitr-chunks` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes all [point-in-time recovery chunks from the cloud storage](backups-pitr.md) on cluster deletion (off by default)
