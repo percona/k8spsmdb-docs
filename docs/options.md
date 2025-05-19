@@ -1,29 +1,26 @@
-# Changing MongoDB Options
+# Changing MongoDB options
 
-You may require a configuration change for your application. MongoDB allows
-configuring the database with a configuration file, as many other database
-management systems do. You can pass options to MongoDB instances in the cluster
-in one of the following ways:
+When you deploy a new Percona Server for MongoDB cluster, the Operator spins it up with the set of defaults that ensure its correct operation. However, your application may need additional configuration of MongoDB. You can define this configuration using the `mongod.conf` configuration file options. 
+You can configure mongod Pods, mongos Pods and config server replica set Pods separately, based on your requirements.  
+Then you pass these options to MongoDB instances in the cluster in one of the following ways:
 
-* edit the `deploy/cr.yaml` file,
-* use a ConfigMap,
-* use a Secret object.
+- [Edit the `deploy/cr.yaml` file](#edit-the-deploycryaml-file)
+- [Use a ConfigMap](#use-a-configmap)
+- [Use a Secret object](#use-a-secret-object)
 
-You can pass configuration settings separately for **mongod** Pods,
-**mongos** Pods, and **Config Server** Pods.
-
-Often there's no need to add custom options, as the Operator takes care of
-providing MongoDB with reasonable defaults. Also, attempt to change some
-MongoDB options will be ignored: you can't change TLS/SSL options, as it would
-break the behavior of the Operator.
+Note that you can't change options that may break the behavior of the Operator. For example, TLS/SSL options. If you try changing such options, your changes will be ignored.  
 
 ## Edit the `deploy/cr.yaml` file
 
-You can add MongoDB configuration options to the
-[replsets.configuration](operator.md#replsetsconfiguration),
-[sharding.mongos.configuration](operator.md#shardingmongosconfiguration), and
-[sharding-configsvrreplset-configuration](operator.md#shardingconfigsvrreplsetconfiguration)
-keys of the `deploy/cr.yaml`. Here is an example:
+You can add MongoDB configuration options to the following keys of the `deploy/cr.yaml`: 
+
+* [replsets.configuration](operator.md#replsetsconfiguration)
+* [sharding.mongos.configuration](operator.md#shardingmongosconfiguration)
+* [sharding.configsvrReplSet.configuration](operator.md#shardingconfigsvrreplsetconfiguration)
+
+### Example
+
+This example shows how to enable [rate limit for database profiler](https://docs.percona.com/percona-server-for-mongodb/rate-limit.html) and define the default verbosity level for system log:
 
 ```yaml
 spec:
@@ -39,13 +36,14 @@ spec:
       ...
 ```
 
-See the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/)
-for the complete list of options, as well as
-[specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html)
-[Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html)
-[Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html)
-[for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html)
-[documentation pages  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
+
+Find the complete list of options in the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/). Also refer to these pages in Percona Server for MongoDB documentation:
+
+* [Profiling rate limit :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/rate-limit.html)
+* [Percona memory engine :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/LATEST/inmemory.html)
+* [Data-at-rest encryption  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/data-at-rest-encryption.html)
+* [Log redaction  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/LATEST/log-redaction.html)
+* [Audit logging :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/LATEST/audit-logging.html).
 
 ## Use a ConfigMap
 

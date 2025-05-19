@@ -184,16 +184,33 @@ nav:
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           
+    - Upgrade:
+          - About upgrades: update.md
+          - Upgrade CRD and the Operator: update-operator.md
+          - Database upgrade overview: update-db.md
+          - Minor upgrade:
+               - "To a specific version": update-minor-set-version.md
+               - "Automatic minor upgrades": update-minor-automatic.md
+               - "Manual upgrade": update_manually.md
+          - Major upgrade: update-major.md
+          - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
+
     - Configuration:
           - "Application and system users": users.md
           - "Changing MongoDB options": options.md
+          - options-pbm.md
           - "Anti-affinity and tolerations": constraints.md
           - "Labels and annotations": annotations.md
           - "Exposing the cluster": expose.md
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
           - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": TLS.md
+          - "Transport encryption (TLS/SSL)": 
+             - About TLS security: TLS.md
+             - Configure TLS using cert-manager: tls-cert-manager.md
+             - Generate certificates manually: tls-manual.md
+             - Update certificates: tls-update.md
+             - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           
@@ -201,13 +218,13 @@ nav:
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups": backups-storage.md
+              - multi-storage.md
               - "Making scheduled backups": backups-scheduled.md
               - "Making on-demand backup": backups-ondemand.md
               - "Storing operations logs for point-in-time recovery": backups-pitr.md
               - "Enable server-side encryption": backups-encryption.md
               - "Restore from a previously saved backup": backups-restore.md
               - "Delete the unneeded backup": backups-delete.md
-          - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
               - "About Multi-cluster": replication.md
@@ -234,13 +251,13 @@ nav:
           - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
-          - "Upgrade Percona Server for MongoDB manually": update_manually.md
-          - "How to upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
           - "Monitor Kubernetes": monitor-kubernetes.md
           - "Delete the Operator": delete.md
 
     - Reference:
           - "Custom Resource options": operator.md
+          - backup-resource-options.md
+          - restore-options.md
           - "Percona certified images": images.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md

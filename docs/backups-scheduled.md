@@ -1,40 +1,112 @@
 # Making scheduled backups
 
-Backups schedule is defined in the `backup` section of the Custom Resource and can be configured via the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+You can automate the backup process with scheduled backups. You define a schedule and the Operator runs backups automatically according to it. This provides reliability and efficiency to your backups strategy and ensures your data is timely and regularly backed up with no gaps.
 
-1. The `backup.enabled` key should be set to `true`,
-2. The `backup.storages` subsection should contain at least one [configured storage](backups-storage.md).
-3. The `backup.tasks` subsection allows to actually schedule backups:
-    * set the `name` key to some arbitray backup name (this name will be needed later to [restore the bakup](backups-restore.md)).
-    * specify the `schedule` option with the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
-    * set the `enabled` key to `true` (this enables making the `<backup name>` backup along with the specified schedule.
-    * set the `storageName` key to the name of your [already configured storage](backups-storage.md).
-    * you can optionally set the `keep` key to the number of backups which should be kept in the storage.
-    * you can optionally set the `type` key to `physical` if you would like to make physical backups instead of logical ones (please see the [physical backups limitations](backups.md#physical)). Otherwise set this key to `logical`, or just omit it.
+To configure scheduled backups, modify the `backups` section of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) Custom Resource manifest. Specify the following configuration:
 
-Here is an example of the `deploy/cr.yaml` with a scheduled Saturday night backup kept on the Amazon S3 storage:
+1. `backup.enabled` - set to `true`,
+2. `backup.storages` subsection - define at least one [configured storage](backups-storage.md).
+3. Configure the `backup.tasks` subsection:
 
-```yaml
-...
-backup:
-  enabled: true
-  storages:
-    s3-us-west:
-      type: s3
-      s3:
-        bucket: S3-BACKUP-BUCKET-NAME-HERE
-        region: us-west-2
-        credentialsSecret: my-cluster-name-backup-s3
-  tasks:
-   - name: "sat-night-backup"
-     enabled: true
-     schedule: "0 0 * * 6"
-     keep: 3
-     type: logical
-     storageName: s3-us-west
-  ...
-```
+    * `name` - specify a backup name. You will need this name when you [restore from this backup](backups-restore.md).
+    * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
+    * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
+    * `storageName` - specify the name of your [already configured storage](backups-storage.md).
+    * `keep` - define the number of backups to keep in the storage. This key is optional. It applies to base incremental backups but is ignored for increments. 
+    * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a logical backup by default.
 
-!!! note
+    Note that the `percona.com/delete-backup` finalizer applies for an incremental base backup but is ignored for increments. This means that when an incremental base backup is deleted, PBM also deletes all increments that derived from it from the backup storage. There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
-    If you plan to [restore backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md), make sure you will be able to create there a Secrets object with the same user passwords as in the original cluster. More details about secrets can be found in [System Users](users.md#system-users). The name of the current Secrets object you will need to recreate can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default).
+**Examples**
+
+=== "Logical"    
+
+    This example shows how to set up backups to run every Saturday night and store them in Amazon S3:
+
+    ```yaml
+    ...
+    backup:
+      enabled: true
+      storages:
+        s3-us-west:
+          type: s3
+          s3:
+            bucket: S3-BACKUP-BUCKET-NAME-HERE
+            region: us-west-2
+            credentialsSecret: my-cluster-name-backup-s3
+      tasks:
+       - name: "sat-night-backup"
+         enabled: true
+         schedule: "0 0 * * 6"
+         keep: 3
+         type: logical
+         storageName: s3-us-west
+      ...
+    ```
+
+=== "Physical"    
+    
+    This example shows how to set up backups to run every Saturday night and store them in Amazon S3:
+
+    ```yaml
+    ...
+    backup:
+      enabled: true
+      storages:
+        s3-us-west:
+          type: s3
+          s3:
+            bucket: S3-BACKUP-BUCKET-NAME-HERE
+            region: us-west-2
+            credentialsSecret: my-cluster-name-backup-s3
+      tasks:
+       - name: "sat-night-backup"
+         enabled: true
+         schedule: "0 0 * * 6"
+         keep: 3
+         type: physical
+         storageName: s3-us-west
+      ...
+    ```
+
+=== "Incremental"  
+
+    To run incremental backups, consider the following: 
+
+    1. You must use the same storage for the base backup and subsequent incremental ones
+    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md##backuptaskskeep) option are is considered for incremental base backup but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
+
+       There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
+
+    This example shows how to set up incremental base backups to run every Sunday at 5 a.m and subsequent incremental backups every night at 1:00 a.m. and store them in Amazon S3:  
+
+    ```yaml
+    ...
+    backup:
+      enabled: true
+      storages:
+        s3-us-west:
+          type: s3
+          s3:
+            bucket: S3-BACKUP-BUCKET-NAME-HERE
+            region: us-west-2
+            credentialsSecret: my-cluster-name-backup-s3
+      tasks:
+       - name: weekly-s3-us-west-incremental
+         enabled: true
+         schedule: "0 1 * * *"
+         type: incremental
+         storageName: s3-us-west
+         compressionType: gzip
+         compressionLevel: 6
+       - name: weekly-s3-us-west-incremental-base
+         enabled: true
+         schedule: "0 5 * * 0"
+         type: incremental-base
+         storageName: s3-us-west
+         compressionType: gzip
+         compressionLevel: 6
+      ...
+    ```
+
+--8<-- "restore-new-k8s-env.md"

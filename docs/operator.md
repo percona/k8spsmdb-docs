@@ -1,15 +1,36 @@
 # Custom Resource options
 
-The operator is configured via the spec section of the
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+
+To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+
+This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
+
+## `apiVersion`
+
+Specifies the API version of the Custom Resource.
+`psmdb.percona.com` indicates the group, and `v1` is the version of the API.
+
+This tells Kubernetes which version of the custom resource definition (CRD) to use.
+
+## `kind`
+
+Defines the type of resource being created.
 
 ## `metadata`
 
-The metadata part of this file contains the following keys:
+The metadata part of the `deploy/cr.yaml` contains  metadata about the resource, such as its name and other attributes. It includes the following keys:
 
-* `name` (`my-cluster-name` by default) sets the name of your Percona Server
-for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
-* `finalizers` subsection:
+* `name` sets the name of your Percona Server for MongoDB Cluster. The name must follow these rules:
+
+    * include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), 
+    * not exceed 22 characters, 
+    * start and end with an alphanumeric character
+
+    The default name is  `my-cluster-name`. 
+
+* `finalizers` ensure safe deletion of resources in Kubernetes under certain conditions. This subsection includes the following finalizers:
+
     * `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
     * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
     * `percona.com/delete-pitr-chunks` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes all [point-in-time recovery chunks from the cloud storage](backups-pitr.md) on cluster deletion (off by default)
@@ -164,7 +185,9 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
-The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting same keys to `false`, the flags will be ignored*.
+The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. 
+
+*Once you enable permissive mode with unsafe settings, you cannot disable it by simply turning the same settings back (e.g. by setting a configuration option to `false`). These settings will be ignored if you try to revert them. Reverting the cluster to a secure state may require additional steps or reinitialization.*
 
 ### `unsafeFlags.tls`
 
@@ -895,6 +918,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
 
+### `replsets.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `replsets.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -1404,6 +1435,14 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `{}` |
 
+### pmm.customClusterName
+
+A custom name to define for a cluster. PMM Server uses this name to properly parse the metrics and display them on dashboards. Using a custom name is useful for clusters deployed in different data centers - PMM Server connects them and monitors them as one deployment. Another use case is for clusters deployed with the same name in different namespaces - PMM treats each cluster separately.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo-cluster` |
+
 
 ### `pmm.mongodParams`
 
@@ -1739,6 +1778,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
+
+### `sharding.configsvrReplSet.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
 
 ### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
 
@@ -2188,6 +2235,14 @@ If set to `true`, a separate ClusterIP Service is created for each mongos instan
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`     |
 
+### `sharding.mongos.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `sharding.mongos.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -2459,6 +2514,16 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
+
+### `backup.storages.STORAGE-NAME.main`
+
+Marks the storage as main. All other storages you define are added as profiles. The Operator saves backups to all storages but it saves oplog chunks for point-in-time recovery only to the main storage. You can define only one storage as main. Read more about [multiple storages for backups](multi-storage.md).
+
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
 
 ### `backup.storages.STORAGE-NAME.type`
 
