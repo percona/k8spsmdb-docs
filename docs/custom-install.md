@@ -20,7 +20,6 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
         $ kubectl apply -f deploy/cr.yaml
         ```
 
-
 === "Helm"
 
     To install Percona Server for MongoDB with custom parameters, use the following command:
@@ -70,6 +69,73 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
         ``` {.bash data-prompt="$" }
         $ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
         ```
+
+## Configure ports for MongoDB cluster components
+
+By default, the Operator starts Percona Server for MongoDB with the default port `27017` for all cluster components: `mongod`, `mongos` and `configsvrReplSet` Pods. Starting with version 1.20.0, you can start a new cluster with custom ports for all components or for a specific one. 
+
+Here's how to do it.
+
+=== "kubectl"
+
+    1. Edit the `deploy/cr.yaml` file and specify the following configuration:    
+
+        ```yaml
+        spec: 
+          ...
+          replsets:
+            - name: rs0
+              configuration: |
+                net:
+                  port: 27018
+          sharding:
+            configsvrReplSet:
+              configuration: |
+                net:
+                  port: 27019
+            mongos:
+              configuration: |
+                net:
+                  port: 27017
+        ```    
+
+    2. Apply the `deploy/cr.yaml` to deploy Percona Server for MongoDB:    
+
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply -f deploy/cr.yaml
+        ```
+
+=== "Helm"
+
+    1. Create a yaml file with the desired configuration. For example, `values.yaml`:
+
+        ```yaml title="values.yaml"
+        replsets:
+          rs0:
+            name: rs0
+            configuration: |
+              net:
+                port: 27018
+        sharding:
+          configsvrReplSet:
+            configuration: |
+              net:
+                port: 27019
+          mongos:
+            configuration: |
+              net:
+                port: 27017
+        ```
+
+    2. Install Percona Server for MongoDB with the specified configuration:
+
+        ```{.bash data-prompt="$" }
+        $ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+        ```
+
+
+
+
 
 
  
