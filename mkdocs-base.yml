@@ -216,7 +216,12 @@ nav:
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
           - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": TLS.md
+          - "Transport encryption (TLS/SSL)": 
+             - About TLS security: TLS.md
+             - Configure TLS using cert-manager: tls-cert-manager.md
+             - Generate certificates manually: tls-manual.md
+             - Update certificates: tls-update.md
+             - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           

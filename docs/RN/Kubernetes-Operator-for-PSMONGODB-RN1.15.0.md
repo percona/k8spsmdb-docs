@@ -34,7 +34,7 @@ Backups stored on S3 compatible storage [can now be encrypted](../backups-encryp
 
 * {{ k8spsmdbjira(662) }} Restoring a backup with point-in-time recovery can now be easily done to a latest available position by setting `pitr.type` PerconaServerMongoDBRestore Custom Resource option to `latest`
 
-* {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../TLS.md#update-certificates)
+* {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../tls-update.md)
 
 * {{ k8spsmdbjira(807) }} A custom name for a Replica Set config server instead of the default `cfg` one [can be set](../sharding.md#turning-sharding-on-and-off) in the custom configuration, which can be useful for migration purposes
 

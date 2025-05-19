@@ -182,7 +182,7 @@ number. If nothing is set, the default MongoDB port will be used.
 Split horizon has following limitations:
 
 * connecting with horizon domains is only supported if client connects using TLS
-    certificates, and these TLS certificates [need to be generated manually](TLS.md#generate-certificates-manually)
+    certificates, and these TLS certificates [need to be generated manually](tls-manual.md)
 * duplicating domain names in horizons is not allowed by MongoDB
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
