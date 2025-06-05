@@ -1,34 +1,40 @@
 # Restore the cluster from a previously saved backup
 
-The backup is normally restored on the Kubernetes cluster where it was made, but [restoring it on a different Kubernetes-based environment with the installed Operator is also possible](backups-restore-to-new-cluster.md).
+This document describes how to restore from a backup on the same the Kubernetes cluster where it was made. 
 
-Following things are needed to restore a previously saved backup:
+You can also [restore a backup on a different Kubernetes-based environment with the installed Operator](backups-restore-to-new-cluster.md) as part of the disaster recovery strategy or when you configure [multi-cluster deployment with cross-site replication](replication.md).
+
+## Restore types
+
+You can make the following restores:
+
+* [Restore to a specific point in time](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
+* [Restore only a backup snapshot](#restore-without-point-in-time-recovery)
+* [Selective restore from a logical backup](#selective-restore)
+
+For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](<https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml> manifest.
+
+## Before you begin
 
 * Make sure that the cluster is running.
-* Find out correct names for the **backup** and the **cluster**. Available backups can be listed with the following command:
+* Get backup information. List the backups using this command: 
 
     ``` {.bash data-prompt="$" }
     $ kubectl get psmdb-backup
     ```
 
-    And the following command will list available clusters:
+* Get cluster information. List available clusters using this command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl get psmdb
     ```
 
-!!! note
+## Restore without point-in-time recovery
 
-     If you have [configured storing operations logs for point-in-time recovery](backups-pitr.md), you will have possibility to roll back the cluster to a specific date and time. Otherwise, restoring backups without point-in-time recovery is the only option.
+1. Modify the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest and set the following keys:
 
-When the correct names for the backup and the cluster are known, backup restoration can be done in the following way.
-
-## Without point-in-time recovery
-
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
-
-    * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
-    * set `spec.backupName` key to the name of your backup,
+    * set `spec.clusterName` key to the name of your cluster. When restoring to the same cluster where the backup was created, the cluster name will be identical in both the Backup and Restore objects.
+    * set `spec.backupName` key to the name of your backup.
 
         ```yaml
         apiVersion: psmdb.percona.com/v1
@@ -40,7 +46,7 @@ When the correct names for the backup and the cluster are known, backup restorat
           backupName: backup1
         ```
 
-2. After that, the actual restoration process can be started as follows:
+2. Start the restore by creating the Restore object. Use the following command:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
@@ -48,7 +54,7 @@ When the correct names for the backup and the cluster are known, backup restorat
 
     !!! note
 
-        Storing backup settings in a separate file can be replaced by passing its content to the `kubectl apply` command as follows:
+        Instead of storing restore settings in a separate file, you can pass them directly to the `kubectl apply` command as follows:
 
         ```bash
         $ cat <<EOF | kubectl apply -f-
@@ -62,18 +68,19 @@ When the correct names for the backup and the cluster are known, backup restorat
         EOF
         ```
 
-## With point-in-time recovery
+## Make a point-in-time recovery
 
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+1. Modify the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest and specify the following configuration:
 
-    * set `spec.clusterName` key to the name of the target cluster to restore the backup on
-    * set `spec.backupName` key to the name of your backup
-    * put additional restoration parameters to the `pitr` section:
-        * `type` key can be equal to one of the following options
-            * `date` - roll back to specific date
+    * set the `spec.clusterName` key to the name of your cluster. When restoring to the same cluster where the backup was created, the cluster name will be identical in both the Backup and Restore objects.
+    * set the `spec.backupName` key to the name of your backup
+    * configure point-in-time recovery settings in the `pitr` section:
+        * `type` - specify one of the following options
+            * `date` - roll back to a specific date
             * `latest` - recover to the latest possible transaction
-        * `date` key is used with `type=date` option and contains value in datetime format
-    The resulting `restore.yaml` file may look as follows:
+        * `date` - specify the target datetime when `type` is set to `date`
+
+    Here is the example configuration of the `restore.yaml` file:
 
     ```yaml
     apiVersion: psmdb.percona.com/v1
@@ -90,13 +97,13 @@ When the correct names for the backup and the cluster are known, backup restorat
 
     !!! note
 
-        <a name="backups-latest-restorable-time"></a> Full backup objects available with the `kubectl get psmdb-backup` command have a "Latest restorable time" information field handy when selecting a backup to restore. You can easily query the backup for this information as follows:
+        <a name="backups-latest-restorable-time"></a> When you run `kubectl get psmdb-backup`, each backup shows a "Latest restorable time" field. This helps you choose which backup to restore. To get just this time, use:
    
         ``` {.bash data-prompt="$" }
         $ kubectl get psmdb-backup <backup_name> -o jsonpath='{.status.latestRestorableTime}'
         ```
 
-2. Run the actual restoration process:
+2. Start the restore by creating a Restore object:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
@@ -104,9 +111,9 @@ When the correct names for the backup and the cluster are known, backup restorat
 
     !!! note
 
-        Storing backup settings in a separate file can be replaced by passing its content to the `kubectl apply` command as follows:
+        Instead of storing restore settings in a separate file, you can pass them directly to the `kubectl apply` command as follows:
 
-        ``` {.bash data-prompt="$" }
+        ```bash
         $ cat <<EOF | kubectl apply -f-
         apiVersion: psmdb.percona.com/v1
         kind: PerconaServerMongoDBRestore
@@ -115,15 +122,14 @@ When the correct names for the backup and the cluster are known, backup restorat
         spec:
           clusterName: my-cluster-name
           backupName: backup1
-          pitr:
-            type: date
-            date: YYYY-MM-DD hh:mm:ss
         EOF
         ```
 
 ## Selective restore
 
 Starting with the version 1.18.0, you can restore a desired subset of data from a full logical backup. Selective logical backups are not yet supported.
+
+Selective restores have a number of limitations. Learn more about the [current selective restore limitations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores) in Percona Backup for MongoDB documentation.
 
 Selective restores are controlled by the additional `selective` section in the `PerconaServerMongoDBRestore` Custom Resource. There you can specify a specific database or a collection that you wish to restore:
 
@@ -136,9 +142,39 @@ spec:
     - "db2.collection2"
 ```
 
-The `selective.namespaces` field allows you to specify several "namespaces" (subsets of data) as a list. Each "namespace" is represented as a pair of database and collection names, or just `database_name.*` to get everything from the specific database. Specifying "*" as an item in the `namespaces` means restoring all databases and collections.
+You can specify several "namespaces" (subsets of data) as a list for the `selective.namespaces` field. You can specify a namespace as follows:
 
-Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup.
+* as a pair of database and collection names to restore just this database and collection. The format is `db1.collection1`
+* as a database name with a wildcard to restore everything from the specific database. The format is `database_name.*`
+* as a single star "*" to restore all databases and collections
 
-Selective restores support only logical backups and have a number of other limitations. See the full list of [current selective restore limitations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores) in Percona Backup for MongoDB documentation.
+Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup. Read more about this functionality in [PBM documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-selective.html#restore-with-users-and-roles).
 
+## Restore from a backup with a prefix in a bucket path
+
+If you defined a prefix (a folder) in a bucket where you store backups, you must specify this prefix in the `spec.backupSource` subsection of the restore configuration. 
+
+To illustrate, let's say you defined a prefix `my-prefix` for your AWS s3 bucket `my-example-bucket`. You wish to restore a backup`2025-05-19T07:23:46Z`. The pull path to this backup is `"s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"`. In this case, your restore configuration looks like this:
+
+```yaml
+apiVersion: psmdb.percona.com/v1
+kind: PerconaServerMongoDBRestore
+metadata:
+  name: restore1
+spec:
+  clusterName: my-cluster-name
+  backupSource:
+    type: logical
+    destination: "s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"
+    s3:
+      credentialsSecret: my-cluster-name-backup-s3
+      region: us-east-1
+      bucket: chetan-testing-percona
+      prefix: my-prefix
+```
+
+Apply this configuration to start a restore:
+
+``` {.bash data-prompt="$" }
+$ kubectl apply -f deploy/backup/restore.yaml
+```
