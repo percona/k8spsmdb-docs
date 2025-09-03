@@ -34,12 +34,17 @@ local shell (if you have installed Google Cloud SDK locally on the previous
 step). The following command will create a cluster named `my-cluster-name`:
 
 ```{.bash data-prompt="$" }
-$ gcloud container clusters create my-cluster-name --project <project ID> --zone us-central1-a --cluster-version {{ gkerecommended }} --machine-type n1-standard-4 --num-nodes=3
+$ gcloud container clusters create my-cluster-name \
+  --project <project ID> \
+  --zone us-central1-a \
+  --cluster-version {{ gkerecommended }} \
+  --machine-type n1-standard-4 \
+  --num-nodes=3
 ```
 
 !!! note
 
-    You must edit the following command and other command-line statements to replace the `<project ID>` placeholder with your project ID (see available projects with `gcloud projects list` command). You may also be required to edit the *zone location*, which is set to `us-central1` in the above example. Other parameters specify that we are creating a cluster with 3 nodes and with machine type of 4 x86_64 vCPUs. If you need ARM64, use different `--machine-type`, for example, `t2a-standard-4`.
+    You must edit the following command and other command-line statements to replace the `<project ID>` placeholder with your project ID (see available projects with `gcloud projects list` command). You may also be required to edit the *zone location*, which is set to `us-central1` in the above example. Other parameters specify that we are creating a cluster with 3 nodes and with machine type of `n1-standard-4` with x86_64 vCPUs. If you need ARM64, use a different `--machine-type`, for example, `t2a-standard-4`.
 
 You may wait a few minutes for the cluster to be generated.
 
@@ -58,7 +63,9 @@ the command-line access. After you have edited the statement, you may run the
 command in your local shell:
 
 ```{.bash data-prompt="$" }
-$ gcloud container clusters get-credentials my-cluster-name --zone us-central1-a --project <project name>
+$ gcloud container clusters get-credentials my-cluster-name \
+  --zone us-central1-a \
+  --project <project name>
 ```
 
 Finally, use your [Cloud Identity and Access Management (Cloud IAM) :octicons-link-external-16:](https://cloud.google.com/iam)
@@ -66,7 +73,9 @@ to control access to the cluster. The following command will give you the
 ability to create Roles and RoleBindings:
 
 ```{.bash data-prompt="$" }
-$ kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value core/account)
+$ kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole cluster-admin \
+  --user $(gcloud config get-value core/account)
 ```
 
 ??? example "Expected output"
@@ -287,7 +296,7 @@ $ kubectl describe pod my-cluster-name-rs0-2
 Review the detailed information for `Warning` statements and then correct the
 configuration. An example of a warning is as follows:
 
-`Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.`
+```Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.```
 
 ??? note "Alternatively, you can examine your Pods via the object browser"
 
@@ -307,7 +316,9 @@ There are several ways that you can delete the cluster.
 You can clean up the cluster with the `gcloud` command as follows:
 
 ```{.bash data-prompt="$" }
-$ gcloud container clusters delete <cluster name> --zone us-central1-a --project <project ID>
+$ gcloud container clusters delete <cluster name> \
+  --zone us-central1-a \
+  --project <project ID>
 ```
 
 The return statement requests your confirmation of the deletion. Type `y` to confirm.
