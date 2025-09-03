@@ -87,11 +87,15 @@ $ kubectl create clusterrolebinding cluster-admin-binding \
 ## Install the Operator and deploy your MongoDB cluster
 
 1.  Deploy the Operator. By default deployment will be done in the `default`
-    namespace. If that's not the desired one, you can create a new namespace
-    and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
+    namespace. If that's not the desired one, you can create a new namespace (replace the `<namespace name>` placeholder with some descriptive name):
 
     ```{.bash data-prompt="$" }
-    $ kubectl create namespace <namespace name>
+    $ kubectl create namespace <namespace name>    
+    ```
+
+    and/or set the context for the namespace as follows:
+
+    ```{.bash data-prompt="$" }
     $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
