@@ -62,13 +62,13 @@ Names of the corresponding objects are set in the `secrets.ssl`,
 `secrets.sslInternal`, `secrets.users`, and `secrets.keyfile` Custom Resource
 options. The default names are the following ones:
 
-    * `my-cluster-name-ssl` (SSL certificates for client connections),
+* `my-cluster-name-ssl` (SSL certificates for client connections),
 
-    * `my-cluster-name-ssl-internal` (SSL certificates for replication),
+* `my-cluster-name-ssl-internal` (SSL certificates for replication),
 
-    * `my-cluster-name-secrets` (user credentials),
+* `my-cluster-name-secrets` (user credentials),
 
-    * `my-cluster-name-mongodb-keyfile` (encryption key file).
+* `my-cluster-name-mongodb-keyfile` (encryption key file).
 
 If you can get Secrets from an existing cluster by executing the
 `kubectl get secret` command for _each_ Secrets object you want to acquire:
