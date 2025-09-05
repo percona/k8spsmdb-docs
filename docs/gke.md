@@ -302,6 +302,7 @@ configuration. An example of a warning is as follows:
 
 ```{.text .no-edit}
 Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.
+```
 
 ??? note "Alternatively, you can examine your Pods via the object browser"
 
