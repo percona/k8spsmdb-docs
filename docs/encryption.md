@@ -54,7 +54,7 @@ $ kubectl deploy -f deploy/cr.yaml
 
 ## Using HashiCorp Vault storage for encryption keys
 
-!!! admonition "Version added: [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)
+!!! admonition "Version added: [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)"
 
 The Operator supports using [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
