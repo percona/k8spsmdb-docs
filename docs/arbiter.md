@@ -4,7 +4,7 @@ Percona Server for MongoDB replica set is a number of `mongod` instances working
 
 A replica set consists of one **primary** node and several **secondary** nodes. The primary node accepts all write operations, while secondary nodes replicate the data set to maintain redundancy. Secondary nodes can serve read queries, which helps distribute the read load. Secondary nodes can also have additional configuration, like be non-voting or hidden.
 
-Percona Server for MongoDB replication mechanism is based on elections, when replica set nodes [choose which node :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections) becomes the primary. For elections to be successful, the number fo voting members must be odd.
+Percona Server for MongoDB replication mechanism is based on elections, when replica set nodes [choose which node :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections) becomes the primary. For elections to be successful, the number of voting members must be odd.
 
 By default, the Operator creates Percona Server for MongoDB replica set with three members, one primary and the remaining secondaries. This is the minimal recommended configuration. A replica set can have up to 50 members with the maximum of 7 voting members. 
 
