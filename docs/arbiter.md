@@ -100,7 +100,7 @@ Hidden nodes are useful for tasks like backups or reporting, as they do not affe
 
 To add a hidden node with the Operator, set the setting the `replsets.hidden.enabled` and `replsets.hidden.size` options  in the `deploy/cr.yaml` file:
 
-This configuration example create a cluster with 3 data instances and 2 hidden nodes:
+This configuration example creates a cluster with 3 data instances and 2 hidden nodes:
 
 ```yaml
 ....
