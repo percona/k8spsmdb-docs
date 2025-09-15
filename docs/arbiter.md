@@ -1,38 +1,28 @@
-# Using Replica Set Arbiter nodes and non-voting nodes
+# Replica set members and their usage 
 
-Percona Server for MongoDB [replication model  :octicons-link-external-16:](https://www.percona.com/blog/2018/05/17/mongodb-replica-set-transport-encryption-part-1/)
-is based on elections, when nodes of the Replica Set [choose which node  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections)
-becomes the primary node.
+Percona Server for MongoDB replica set is a number of `mongod` instances working together to ensure data durability and system resilience. Such configuration enhances fault tolerance and keeps your database accessible even during failures. 
 
-The need for elections influences the choice of the number of nodes in the cluster.
-Elections are the reason to avoid even number of nodes, and to have at least
-three and not more than seven participating nodes.
+A replica set consists of one **primary** node and several **secondary** nodes. The primary node accepts all write operations, while secondary nodes replicate the data set to maintain redundancy. Secondary nodes can serve read queries, which helps distribute the read load. Secondary nodes can also have additional configuration, like be non-voting or hidden.
 
-Still, sometimes there is a contradiction between the number of nodes suitable for
-elections and the number of nodes needed to store data. You can solve this
-contradiction in two ways:
+Percona Server for MongoDB replication mechanism is based on elections, when replica set nodes [choose which node :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections) becomes the primary. For elections to be successful, the number fo voting members must be odd.
 
-* Add *Arbiter* nodes, which participate in elections, but do not store data,
-* Add *non-voting* nodes, which store data but do not participate in elections.
+By default, the Operator creates Percona Server for MongoDB replica set with three members, one primary and the remaining secondaries. This is the minimal recommended configuration. A replica set can have up to 50 members with the maximum of 7 voting members. 
 
-## Adding Arbiter nodes
+## Replica set member types
 
-Normally, each node stores a complete copy of the data,
-but there is also a possibility, to reduce disk IO and space used by the
-database, to add an [arbiter node  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/replica-set-arbiter/).
-An arbiter cannot become a primary and does not have a complete copy of the
-data. The arbiter does have one election vote and can be the odd number for
-elections. The arbiter does not demand a persistent volume.
+In addition to primary and secondary nodes, a replica set can include specialized member types:
 
-Percona Operator for MongoDB has the ability to create Replica Set Arbiter nodes
-if needed. This feature can be configured in the Replica Set section of the
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
-file:
+* **Arbiter**: An arbiter node participates in elections but does not store data. You may want to add arbiter nodes if cost constraints prevent you from adding another secondary node.
+* **Non-voting**: This type of node stores a full copy of the data but does not participate in elections. This is useful for scaling read capacity beyond the seven-member voting limit of a replica set.
+* **Hidden**: A hidden node is a secondary member that holds data but is invisible to client applications and does not participate in elections by default. It is useful for tasks like backups or running batch jobs that might otherwise interfere with primary operations.
 
-* set `arbiter.enabled` option to `true` to allow Arbiter instances,
-* use `arbiter.size` option to set the desired amount of Arbiter instances.
+### Arbiter nodes
 
-For example, the following keys in `deploy/cr.yaml` will create a cluster
+An Arbiter node participates in the replica set elections but does not store any data. Its primary role is to act as a tiebreaker in a replica set with an even number of data-bearing nodes, ensuring that a primary can always be elected. By not storing data, Arbiter nodes require minimal resources, which can help reduce your overall costs. An does not demand a persistent volume.
+
+To add an Arbiter node, you can update your `deploy/cr.yaml` file by adding an `arbiter` section under `replsets` and setting the `enabled` and `size` options to your desired values.
+
+The following example configuration will create a cluster
 with 4 data instances and 1 Arbiter:
 
 ```yaml
@@ -47,20 +37,14 @@ replsets:
     ....
 ```
 
-!!! note
+Find the description of other available options in the [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the [Custom Resource options reference](operator.md).
 
-    You can find description of other possible options in the
-    [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the
-    [Custom Resource options reference](operator.md).
+### Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members
 
-### Preventing Arbiter instances to share Kubernetes Nodes with Replica Set
-
-By default Arbiter instances are allowed to run on the same host as regular
-Replica Set instances. This may be reasonable in terms of the number of
+By default, Arbiter nodes are allowed to run on the same Kubernetes hosts as your data nodes. This may be reasonable in terms of the number of
 Kubernetes Nodes required for the cluster. But as a result it increases
-possibility to have 50/50 votes division in case of network partitioning.
-You can use [anti-affinity constraints](constraints.md#affinity-and-anti-affinity)
-to avoid such Pod alocation as follows:
+possibility to have 50/50 votes division in case of network partitioning. 
+To prevent this, you can apply an [anti-affinity](constraints.md) constraint, which forces arbiter nodes to be scheduled on separate nodes:
 
 ```yaml
 ....
@@ -83,33 +67,13 @@ arbiter:
           topologyKey: kubernetes.io/hostname
 ```
 
-## Adding non-voting nodes
+## Non-voting nodes
 
-[Non-voting member  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-a-non-voting-replica-set-member/)
-is a Replica Set node which does not participate in the primary election
-process. This feature is required to have more than 7 nodes, or if there is a
-[node in the edge location  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Edge_computing), which
-obviously should not participate in the voting process.
+A non-voting node is a secondary member that stores a full copy of the data but does not participate in elections for the primary node. Non-voting nodes enable you to deploy a replica set with more than seven data-bearing nodes. You can also add a non-voting node to a remote location where network latency might make it unsuitable for voting.
 
-!!! note
+You can add non-voting nodes by setting the `replsets.nonvoting.enabled` and `replsets.nonvoting.size` options in your `deploy/cr.yaml` file. 
 
-    Non-voting nodes support has technical preview status and is not recommended
-    for production environments.
-
-!!! note
-
-    It is possible to add a non-voting node in the edge location through the
-    `externalNodes` option. Please see [cross-site replication documentation](replication.md)
-    for details.
-
-Percona Operator for MongoDB has the ability to configure non-voting nodes in
-the Replica Set section of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
-file:
-
-* set `nonvoting.enabled` option to `true` to allow non-voting instances,
-* use `nonvoting.size` option to set the desired amount of non-voting instances.
-
-For example, the following keys in `deploy/cr.yaml` will create a cluster with
+In this example, the Operator will create a cluster with
 3 data instances and 1 non-voting instance:
 
 ```yaml
@@ -124,7 +88,30 @@ replsets:
     ....
 ```
 
-!!! note
+Find the description of other available options in the [replsets.nonvoting section](operator.md#replsetsnonvotingenabled) of the [Custom Resource options reference](operator.md).
 
-    You can find description of other possible options in the [replsets.nonvoting section](operator.md#replsetsnonvotingenabled)
-    of the [Custom Resource options reference](operator.md).
+Note that you can add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md) for details.
+
+### Hidden nodes
+
+Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden always have a 0 priority and therefore, cannot become a primary. But they may vote in primary elections.
+
+Hidden nodes are useful for tasks like backups or reporting, as they do not affect primary operations. Client applications will not connect to hidden nodes because they are not listed in the replica set's SRV record.
+
+To add a hidden node with the Operator, set the setting the `replsets.hidden.enabled` and `replsets.hidden.size` options  in the `deploy/cr.yaml` file:
+
+This configuration example create a cluster with 3 data instances and 2 hidden nodes:
+
+```yaml
+....
+replsets:
+  ....
+  size: 3
+  ....
+  hidden:
+    enabled: true
+    size: 2
+    ....
+```
+
+Find the description of other available options in the [replsets.hidden section](operator.md#replsetshidden) of the [Custom Resource options reference](operator.md).
