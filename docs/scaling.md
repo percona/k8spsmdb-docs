@@ -51,12 +51,7 @@ Starting from the version 1.16.0, the Operator allows to scale Percona Server
 for MongoDB storage automatically by changing the appropriate Custom Resource
 option, if the volume type supports PVCs expansion.
 
-#### Automated scaling with Volume Expansion capability
-
-!!! warning
-
-    Automated storage scaling by the Operator is in a technical preview stage
-    and is not recommended for production environments.
+#### Storage resizing with Volume Expansion capability
 
 Certain volume types support PVCs expansion (exact details about
 PVCs and the supported volume types can be found in [Kubernetes
@@ -74,38 +69,50 @@ $ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
     AllowVolumeExpansion: true
     ```
 
-You can enable automated scaling with the [enableVolumeExpansion](operator.md#enablevolumeexpansion) Custom Resource option (turned off by default). When enabled, the Operator will automatically expand such storage for you when you change the
-`replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+To enable storage resizing via volume expansion, do the following:
+{.power-number}
+
+1. Set the [enableVolumeExpansion](operator.md#enablevolumeexpansion) Custom Resource option to `true` (it is turned off by default).
+2. Specify new storage size for the  `replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
-options in the Custom Resource.
+options in the Custom Resource. 
 
-For example, you can do it by editing and applying the `deploy/cr.yaml` file:
+    This is the example configuration of defining a new storage size in the `deploy/cr.yaml` file:
 
-``` {.text .no-copy}
-spec:
-  ...
-  enableVolumeExpansion: true
-  ...
-  replsets:
-    ...
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: <NEW STORAGE SIZE>
-```
+    ``` {.text .no-copy}
+    spec:
+      ...
+      enableVolumeExpansion: true
+      ...
+      replsets:
+        ...
+        volumeSpec:
+          persistentVolumeClaim:
+            resources:
+              requests:
+                storage: <NEW STORAGE SIZE>
+      ...
+      configsvrReplSets:
+        volumeSpec:
+          persistentVolumeClaim:
+            resources:
+              requests:
+                storage: <NEW STORAGE SIZE>
+    ```
 
-Apply changes as usual:
+3. Apply changes as usual:
 
-``` {.bash data-prompt="$" }
-$ kubectl apply -f cr.yaml
-```
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f cr.yaml
+    ```
 
-#### Manual scaling without Volume Expansion capability
+After you apply the configuration, the Operator will automatically expand the storage for you.
 
-Manual scaling is the way to go if your version of the Operator is older than
-1.16.0, your volumes have type which does not support Volume Expansion, or you
-just do not rely on automated scaling.
+
+#### Manual resizing without Volume Expansion capability
+
+Manual resizing is the way to go if your version of the Operator is older than
+1.16.0 or your volumes are of the type which does not support Volume Expansion.
 
 You will need to delete Pods one by one and their persistent volumes to resync 
 the data to the new volumes. **This can also be used to shrink the storage.**

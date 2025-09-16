@@ -18,6 +18,8 @@ Two releases ago we added experimental support for [Physical Backups and Restore
 
 Kubernetes supports the Persistent Volume expansion as a stable feature since v1.24. Using it with the Operator previously involved manual operations. Now this is automated, and users can resize their PVCs [by just changing the value](../scaling.md#scale-storage) of the `resources.requests.storage` option in the PerconaServerMongoDB custom resource. This feature is in a technical preview stage and is not recommended for production environments.
 
+*Update from September 16, 2025* Though the Operator automates the storage resizing, the users must still trigger the process by modifying the Custom Resource and applying the new configuration.  
+
 ### Support for MongoDB 7
 
 Starting from this release, MongoDB 7.0 is now supported. Read our take on top-5 changes in MongoDB version 7 in this [blog post :octicons-link-external-16:](https://www.percona.com/blog/5-changes-you-should-know-in-mongodb-7-0/).
