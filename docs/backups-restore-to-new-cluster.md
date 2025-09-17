@@ -1,27 +1,33 @@
-# How to restore backup to a new Kubernetes-based environment
+# Restore from a backup to a new Kubernetes-based environment
 
-The Operator allows restoring a backup not only on the Kubernetes cluster where it was made, but also on any Kubernetes-based environment with the installed Operator.
+You can restore from a backup as follows:
 
-When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. If restoring a physical backup, the encryption key of the target cluster needs to be set accordingly as well. More details about secrets can be found in [System Users](users.md#system-users). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
+* [On the same cluster where you made a backup](backups-restore.md)
+* On a new cluster deployed in a different Kubernetes-based environment.
 
-You will need correct names for the **backup** and the **cluster**. If you have access to the original cluster, available backups can be listed with the following command:
+This document focuses on the restore on a new cluster deployed in a different Kubernetes environment.
 
-``` {.bash data-prompt="$" }
-$ kubectl get psmdb-backup
-```
+To restore from a backup, you create a Restore object using a special restore configuration file. The
+example of such file is [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/backup/restore.yaml).
 
-And the following command will list available clusters:
+You can check available options in the [restore options reference](restore-options.md).
 
-``` {.bash data-prompt="$" }
-$ kubectl get psmdb
-```
-!!! note
+## Restore scenarios
 
-    If you have [configured storing operations logs for point-in-time recovery](backups-pitr.md), you will have possibility to roll back the cluster to a specific date and time. Otherwise, restoring backups without point-in-time recovery is the only option.
+This document covers the following restore scenarios:
 
-When the correct names for the backup and the cluster are known, backup restoration can be done in the following way.
+* [Restore from a full backup](#restore-from-a-full-backup) - restore from a backup snapshot without point-in-time
+* [Point-in-time recovery](#restore-with-point-in-time-recovery) - restore to a specific time, a specific or  latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
-## Without point-in-time recovery
+## Preconditions
+
+1. When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. 
+
+2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about secrets in [System Users](users.md#system-users). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
+
+--8<-- "backups-restore.md:backup-prepare"
+
+## Restore from a full backup
 
 1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
@@ -57,7 +63,7 @@ When the correct names for the backup and the cluster are known, backup restorat
     $ kubectl apply -f deploy/backup/restore.yaml
     ```
 
-## With point-in-time recovery
+## Point-in-time recovery
 
 1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
