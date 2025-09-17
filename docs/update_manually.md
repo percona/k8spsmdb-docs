@@ -23,7 +23,7 @@ To run a semi-automatic update of Percona Server for MongoDB, do the following:
 2. Edit the `deploy/cr.yaml` file and set the `updateStrategy` key to 
     `RollingUpdate`.
 
---8<-- "update-minor-set-version.md:patch"
+{% include 'assets/fragments/patch.txt' %}
 
 4. After you applied the patch, the deployment rollout will be triggered automatically.
     You can track the rollout process in real time using the
@@ -43,7 +43,7 @@ To upgrade Percona Server for MongoDB manually, do following:
 
 2. Edit the `deploy/cr.yaml` file and set the `updateStrategy` key to `OnDelete`.
 
---8<-- "update-minor-set-version.md:patch"
+{% include 'assets/fragments/patch.txt' %}
 
 4. The Pod with the newer Percona Server for MongoDB image will start after you
     delete it. Delete targeted Pods manually one by one to make them restart in
