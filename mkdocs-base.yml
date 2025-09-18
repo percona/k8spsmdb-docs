@@ -221,6 +221,7 @@ nav:
              - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
+          - reconciliation-concurrency.md
           
     - Management:
           - Backup and restore:
@@ -259,6 +260,7 @@ nav:
           - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
+          - "Configure concurrent reconciliation": reconcile.md
           - "Monitor Kubernetes": monitor-kubernetes.md
           - "Delete the Operator": delete.md
 
