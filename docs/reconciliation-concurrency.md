@@ -1,6 +1,6 @@
 # Configure concurrency for a cluster reconciliation
 
-Reconciliation is the process by which the Operator continuously compares the desired state with the actual state of the cluster. The desired state is defined in a Kubernetes custom resource, like PostgresCluster.
+Reconciliation is the process by which the Operator continuously compares the desired state with the actual state of the cluster. The desired state is defined in a Kubernetes custom resource, like PerconaServerMongoDB.
 
 If the actual state does not match the desired state, the Operator takes actions to bring the system into alignment. These means creating, updating, or deleting Kubernetes resources (Pods, Services, ConfigMaps, etc.) or performing database-specific operations like scaling, backups, or failover.
 
