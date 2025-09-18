@@ -47,7 +47,7 @@ $ kubectl deploy -f deploy/cr.yaml
 
 ## Use HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13, the Operator uses [HashiCorp Vault :octicons-link-external-16:](https://www.vaultproject.io/) to securely store and manage master encryption keys, enabling automatic key rotation, audit logging, and compliance with enterprise security standards. 
+Starting from the version 1.13, you can configure the Operator to use [HashiCorp Vault :octicons-link-external-16:](https://www.vaultproject.io/) to securely store and manage master encryption keys, enabling automatic key rotation, audit logging, and compliance with enterprise security standards. 
 
 To use Vault, the `deploy/cr.yaml` configuration file must include
 the following items:
@@ -251,7 +251,7 @@ To enable Vault for the Operator, create a Secret object for it using the Vault 
      If you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert), include the path to TLS certificates when you create a Secret.
 
     ``` {.bash data-prompt="$" }
-    $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN" --from-file=ca.crt=<path to CA>/ca.crt
+    $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r" --from-file=ca.crt=<path to CA>/ca.crt
     ```
         
 ### Reference the Secret in your Custom Resource manifest 
