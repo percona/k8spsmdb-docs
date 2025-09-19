@@ -140,7 +140,7 @@ $ kubectl get <resource> <resource-name> -o jsonpath='{.metadata.annotations}'
 For example:
 
 ``` {.bash data-prompt="$" }
-$ kubectl get pod pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
+$ kubectl get pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
 ```
 
 ## Specifying labels and annotations ignored by the Operator
