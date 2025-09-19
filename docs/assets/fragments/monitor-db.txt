@@ -20,7 +20,7 @@ PMM Server and PMM Client are installed separately.
 2. If you specified both authentication methods for PMM server configuration and they have non-empty values, priority goes to PMM 3. 
 3. For migration from PMM2 to PMM3, see [PMM upgrade documentation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html). Also check the [Automatic migration of API keys :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html#automatic-migration-of-api-keys) page.
 
-## Install PMM Client
+## Install PMM Server
 
 You must have PMM server up and running. You can run PMM Server as a *Docker image*, a *virtual appliance*, or in Kubernetes.
 Please refer to the [official PMM documentation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-server/index.html) for the installation instructions.
