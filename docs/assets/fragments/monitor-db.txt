@@ -42,7 +42,7 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
 === "PMM2"
 
-    [Get the PMM API key from PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.    html#api-keys-and-authentication). The API key must have the role "Admin". You need this key to authorize PMM Client within PMM Server. 
+    [Get the PMM API key from PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication). The API key must have the role "Admin". You need this key to authorize PMM Client within PMM Server. 
 
     === ":material-view-dashboard-variant: From PMM UI" 
 
@@ -84,7 +84,7 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
 
     === "PMM 2"
 
-        Specify the API key as the `PMM_SERVER_KEY` value in the secrets file:
+        Specify the API key as the `PMM_SERVER_API_KEY` value in the secrets file:
 
         ```yaml
         apiVersion: v1
@@ -94,7 +94,7 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
         type: Opaque
         stringData:
           ....
-          PMM_SERVER_KEY: ""
+          PMM_SERVER_API_KEY: ""
         ``` 
 
 2. Create the Secrets object using the `deploy/secrets.yaml` file.
