@@ -4,7 +4,7 @@ The Operator supports both PMM version 2 and PMM version 3.
 
 It determines which PMM server version you are using based on the authentication method you provide. For PMM 2, the Operator uses API keys for authentication. For PMM 3, it uses service account tokens.
 
-We recommend to use the latest PMM 3. 
+We recommend using the latest PMM 3.
 
 PMM is a client/server application. It includes the [PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/reference/index.html#pmm-server) and the number of [PMM Clients :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/reference/index.html#pmm-client) running on each node with the
 database you wish to monitor.
