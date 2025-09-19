@@ -5,10 +5,10 @@
 ## Enable profiling
 
 Starting from the Operator version 1.12.0, MongoDB operation profiling is
-disabled by default. To analyze query execution on the [PMM Query Analytics  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/get-started/query-analytics.html) dashboard, you
-[should enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/setting-up/client/mongodb.html#set-profiling-in-the-configuration-file) explicitly. You can pass options to MongoDB [in several ways](options.md).
+disabled by default. To analyze query execution on the [PMM Query Analytics  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/qan/index.html) dashboard, you
+[should enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html?#compare-query-source-methods) explicitly. You can pass options to MongoDB [in several ways](options.md).
 
-For example, update the `configuration` subsection of the `deploy/cr.yaml`:
+This example shows how to pass the configuration via the `configuration` subsection of the `deploy/cr.yaml` manifest. 
 
    ```yaml
    spec:
@@ -23,9 +23,9 @@ For example, update the `configuration` subsection of the `deploy/cr.yaml`:
              rateLimit: 100
    ```
 
-Optionally, you can specify additional parameters for the [`pmm-admin add mongodb`  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb) command in the  `pmm.mongodParams` and `pmm.mongosParams` keys for `mongod` and `mongos` Pods respectively.
+Optionally, you can specify additional parameters for the [`pmm-admin add mongodb`  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html?h=pmm+admin#__tabbed_1_1) command in the  `pmm.mongodParams` and `pmm.mongosParams` keys for `mongod` and `mongos` Pods respectively.
 
-<i info>:material-information: Info: </i> Please take into account that the Operator automatically manages common [MongoDB Service Monitoring parameters  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb), such as username, password, service-name, host, etc. Assigning values to these parameters is not recommended and can negatively affect the functionality of the PMM setup carried out by the Operator.
+<i info>:material-information: Info: </i> Note that the Operator automatically manages common MongoDB Service Monitoring parameters such as username, password, service-name, host, etc. Assigning values to these parameters is not recommended and can negatively affect the functionality of the PMM setup carried out by the Operator.
 
 When done, apply the edited `deploy/cr.yaml` file:
 
@@ -39,13 +39,13 @@ The `deploy/secrets.yaml` file contains all values for each key/value pair in a 
 
 To encode a password or any other parameter, run the following command:
 
-=== "on Linux" 
+=== ":simple-linux: on Linux"
 
     ```{.bash data-prompt="$"} 
     $ echo -n "password" | base64 --wrap=0
     ``` 
 
-=== "on macOS" 
+=== ":simple-apple: on macOS"
 
     ```{.bash data-prompt="$"} 
     $ echo -n "password" | base64
@@ -53,13 +53,13 @@ To encode a password or any other parameter, run the following command:
 
 For example, to set the new PMM API key in the `my-cluster-name-secrets` object, do the following:
 
-=== "in Linux"
+=== ":simple-linux: on Linux"
 
     ```{.bash data-prompt="$"}
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64 --wrap=0)'}}'
     ```
 
-=== "on macOS"
+=== ":simple-apple: on macOS"
 
     ```{.bash data-prompt="$"}
     $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64)'}}'
