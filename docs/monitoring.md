@@ -6,7 +6,7 @@
 
 Starting from the Operator version 1.12.0, MongoDB operation profiling is
 disabled by default. To analyze query execution on the [PMM Query Analytics  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/qan/index.html) dashboard, you
-[should enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html?#compare-query-source-methods) explicitly. You can pass options to MongoDB [in several ways](options.md).
+[should enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods) explicitly. You can pass options to MongoDB [in several ways](options.md).
 
 This example shows how to pass the configuration via the `configuration` subsection of the `deploy/cr.yaml` manifest. 
 
