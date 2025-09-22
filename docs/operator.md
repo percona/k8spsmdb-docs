@@ -2459,6 +2459,18 @@ The Percona Server for MongoDB Docker image to use for the backup.
 | ----------- | ---------- |
 | :material-code-string: string     | `percona/percona-server-mongodb-operator:{{ release }}-backup` |
 
+### `backup.startingDeadlineSeconds`
+
+The maximum time in seconds for a backup to start. The Operator compares the timestamp of the backup object against the current time. If the backup is not started within the set time, the Operator automatically marks it as “failed”. 
+
+If your cluster is starting or is not in the READY state when you start a backup, such backup will be marked as `failed`.
+
+You can override this setting for a specific backup in the `deploy/backup/backup.yaml` configuration file.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `300` |
+
 ### `backup.serviceAccountName`
 
 Name of the separate privileged service account for backups; **service account for backups is not used by the Operator any more, and the option is deprecated since the Operator version 1.16.0**.
