@@ -71,6 +71,14 @@ Enables or disables [automatic storage scaling / volume expansion](scaling.md#au
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
 
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
 ### `crVersion`
 
 Version of the Operator the Custom Resource belongs to.
