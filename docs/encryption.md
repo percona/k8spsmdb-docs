@@ -138,7 +138,7 @@ Read more about installation in [Vault documentation :octicons-link-external-16:
     Retrieve the unseal key from the file:
 
     ```{.bash .data-prompt="$"}
-    $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init
+    $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
     ```
     
 6. Now, unseal Vault. Run the following command on every Pod where Vault is running:
