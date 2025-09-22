@@ -2,6 +2,12 @@
 
 You can automate the backup process with scheduled backups. You define a schedule and the Operator runs backups automatically according to it. This provides reliability and efficiency to your backups strategy and ensures your data is timely and regularly backed up with no gaps.
 
+## Considerations
+
+1. The `percona.com/delete-backup` finalizer applies for an incremental base backup but is ignored for increments. This means that when an incremental base backup is deleted, PBM also deletes all increments that derived from it from the backup storage. There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
+
+2. Starting with Operator version 1.17.0, the backup label changed from `ancestor` to `percona.com/backup-ancestor`. The Operator automatically deletes backups with the new `percona.com/backup-ancestor` label, but it does not remove older backups that use the `ancestor` label. To free up storage, you need to manually delete backups created with Operator versions before 1.17.0. For instructions, see [Delete backups](backups-delete.md).
+
 To configure scheduled backups, modify the `backups` section of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) Custom Resource manifest. Specify the following configuration:
 
 1. `backup.enabled` - set to `true`,
@@ -15,7 +21,7 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     * `keep` - define the number of backups to keep in the storage. This key is optional. It applies to base incremental backups but is ignored for increments. 
     * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a logical backup by default.
 
-    Note that the `percona.com/delete-backup` finalizer applies for an incremental base backup but is ignored for increments. This means that when an incremental base backup is deleted, PBM also deletes all increments that derived from it from the backup storage. There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
+
 
 **Examples**
 
