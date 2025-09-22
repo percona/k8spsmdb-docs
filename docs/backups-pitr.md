@@ -21,7 +21,7 @@ key in the `deploy/cr.yaml` configuration file to enable saving oplog:
 
 After you enabled point-in-time recovery, it takes 10 minutes for a first oplog chunk to be uploaded. The default time period between uploads is 10 minutes. You can adjust this time by setting the new duration for the `backup.pitr.oplogSpanMin` option.  
 
-The Operator saves the oplog [to the cloud storage](backups-storage.md).
+PBM saves the oplog [to the cloud storage](backups-storage.md).
 
 ## Point-in-time recovery with multiple storages
 

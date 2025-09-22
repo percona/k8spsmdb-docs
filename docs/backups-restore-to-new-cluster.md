@@ -23,7 +23,7 @@ This document covers the following restore scenarios:
 
 1. When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. 
 
-2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about secrets in [System Users](users.md#system-users). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
+2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about encryption in [Data-at-rest encryption](encryption-setup.md). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
 
 --8<-- "backups-restore.md:backup-prepare"
 
