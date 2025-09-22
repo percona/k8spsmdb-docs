@@ -81,4 +81,4 @@ Cluster-level logging is enabled by default and is controlled with the `logcolle
 You can additionally configure Fluent Bit using the `logcollector.configuration` subsection in 
 the `deploy/cr.yaml` Custom Resource manifest. This allows you to define custom filters and output plugins to suit your specific logging and monitoring needs.
 
-When you add a new configuration to the `logcollector.configuration` and this field was previously empty, it triggers a Smart Update. However, if the configuration was not empty, subsequent changes won't trigger an update automatically.
+Note that when you add a new configuration to the `logcollector.configuration`, this triggers a Smart Update. 
