@@ -1,19 +1,19 @@
 # Making scheduled backups
 
-You can automate the backup process with scheduled backups. You define a schedule and the Operator runs backups automatically according to it. This provides reliability and efficiency to your backups strategy and ensures your data is timely and regularly backed up with no gaps.
+You can automate the backup process with scheduled backups. Define a schedule and the Operator runs backups automatically according to it. This provides reliability and efficiency to your backups strategy and ensures your data is timely and regularly backed up with no gaps.
 
 To configure scheduled backups, modify the `backups` section of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) Custom Resource manifest. Specify the following configuration:
 
 1. `backup.enabled` - set to `true`,
 2. `backup.storages` subsection - define at least one [configured storage](backups-storage.md).
-3. Configure the `backup.tasks` subsection:
+3. `backup.tasks` subsection - specify the following configuration:
 
     * `name` - specify a backup name. You will need this name when you [restore from this backup](backups-restore.md).
     * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
     * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
     * `storageName` - specify the name of your [already configured storage](backups-storage.md).
-    * `keep` - define the number of backups to keep in the storage. This key is optional. It applies to base incremental backups but is ignored for increments. 
-    * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a logical backup by default.
+    * `retention` - configure the retention policy: how many backups to keep in the storage This setting is optional. It applies to base incremental backups but is ignored for increments.
+    * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a **logical** backup by default.
 
     Note that the `percona.com/delete-backup` finalizer applies for an incremental base backup but is ignored for increments. This means that when an incremental base backup is deleted, PBM also deletes all increments that derived from it from the backup storage. There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
@@ -38,7 +38,10 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
        - name: "sat-night-backup"
          enabled: true
          schedule: "0 0 * * 6"
-         keep: 3
+         retention:
+            count: 3
+            type: count
+            deleteFromStorage: true
          type: logical
          storageName: s3-us-west
       ...
@@ -63,7 +66,10 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
        - name: "sat-night-backup"
          enabled: true
          schedule: "0 0 * * 6"
-         keep: 3
+         retention:
+            count: 3
+            type: count
+            deleteFromStorage: true
          type: physical
          storageName: s3-us-west
       ...
@@ -102,6 +108,10 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
        - name: weekly-s3-us-west-incremental-base
          enabled: true
          schedule: "0 5 * * 0"
+         retention:
+            count: 3
+            type: count
+            deleteFromStorage: true
          type: incremental-base
          storageName: s3-us-west
          compressionType: gzip

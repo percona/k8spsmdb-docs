@@ -2,7 +2,7 @@
 
 A Kubernetes Operator is a special type of controller introduced to simplify complex deployments. The Operator extends the Kubernetes API with custom resources.
 
-The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Distribution for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/mongodb-distribution) in a Kubernetes-based environment on-premises or in the cloud.
+The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) and [Percona Backup for MongoDB :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) in a Kubernetes-based environment on-premises or in the cloud.
 
 We recommend installing the Operator with the [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm  :octicons-link-external-16:](https://github.com/helm/helm) package manager.
 

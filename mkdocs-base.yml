@@ -92,6 +92,7 @@ markdown_extensions:
       base_path: 
         - snippets
         - docs/RN
+        - docs/
 #      auto_append:
 #        - services-banner.md
   pymdownx.highlight:
@@ -227,11 +228,14 @@ nav:
               - "About backups": backups.md
               - "Configure storage for backups": backups-storage.md
               - multi-storage.md
-              - "Making scheduled backups": backups-scheduled.md
-              - "Making on-demand backup": backups-ondemand.md
-              - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - Make a backup:
+                 - Scheduled backup: backups-scheduled.md
+                 - On-demand backup: backups-ondemand.md
               - "Enable server-side encryption": backups-encryption.md
-              - "Restore from a previously saved backup": backups-restore.md
+              - Restore from a backup: 
+                 - "On the same cluster": backups-restore.md
+                 - "On a new cluster": backups-restore-to-new-cluster.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
@@ -256,7 +260,6 @@ nav:
           - "OpenLDAP integration": ldap.md
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
-          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Monitor Kubernetes": monitor-kubernetes.md

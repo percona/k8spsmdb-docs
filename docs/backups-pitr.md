@@ -1,23 +1,27 @@
 # Storing operations logs for point-in-time recovery
 
 Point-in-time recovery enables you to roll back your cluster to a
-specific date and time. The Operator first restores a backup and then applies an operation log (oplog) - the changes that occurred to the operations up to the defined moment. To do so, the Operator saves oplog [to the cloud storage](backups-storage.md).
+specific date and time. Starting from the Operator version 1.15.0, you can do a point-in-time recovery from both logical and physical backups. 
 
-Starting from the Operator version 1.15.0, you can do a point-in-time recovery from both logical and physical backups. 
+During point-in-time recovery, the Operator first restores a backup and then applies an operations log (oplog) on top of it. The oplog is the changes that occurred to the operations up to the defined moment.
 
-To start saving oplog, set the [backup.pitr.enabled](operator.md#backuppitrenabled)
-key in the `deploy/cr.yaml` configuration file:
+## Preconditions for point-in-time recovery
 
-```yaml
-backup:
-  ...
-  pitr:
-    enabled: true
-```
+1. To make a point-in-time recovery, the Operator must start saving oplog events. Set the [backup.pitr.enabled](operator.md#backuppitrenabled)
+key in the `deploy/cr.yaml` configuration file to enable saving oplog:
 
-You must have a full backup to use point-in-time recovery. Without a full backup, Percona Backup for MongoDB will not upload operations logs. You must have a full backup for a new cluster and for a cluster that you restored from a backup.
+    ```yaml
+    backup:
+      ...
+      pitr:
+        enabled: true
+    ```
 
-After you enabled point-in-time recovery, it takes 10 minutes for a first oplog chunk to be uploaded. The default time period between uploads is 10 minutes. You can adjust this time by setting the new duration for the 'backup.pitr.oplogSpanMin` option.  
+2. You must have a full backup to use point-in-time recovery. Without a full backup, Percona Backup for MongoDB will not upload operations logs. You must have a full backup for a new cluster and for a cluster that you restored from a backup.
+
+After you enabled point-in-time recovery, it takes 10 minutes for a first oplog chunk to be uploaded. The default time period between uploads is 10 minutes. You can adjust this time by setting the new duration for the `backup.pitr.oplogSpanMin` option.  
+
+PBM saves the oplog [to the cloud storage](backups-storage.md).
 
 ## Point-in-time recovery with multiple storages
 
