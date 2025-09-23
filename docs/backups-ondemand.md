@@ -124,8 +124,8 @@ To create a Backup resource, you need a special custom resource manifest. The [d
     ??? example "Expected output"
 
         ``` {.text .no-copy}
-        NAME      CLUSTER           STORAGE      DESTINATION            STATUS    COMPLETED   AGE
-        backup1   my-cluster-name   s3-us-west   2022-09-08T03:22:19Z   running               49s
+        NAME      CLUSTER           STORAGE      DESTINATION                                  TYPE      SIZE       STATUS   COMPLETED   AGE
+        backup1   my-cluster-name   s3-us-west   s3://my-bucket/2025-09-23T10:34:59Z   logical   105.44MB   ready    43m       43m
         ```
 
     It should show the status as `READY` when the backup process is over.

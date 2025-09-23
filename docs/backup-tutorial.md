@@ -139,12 +139,12 @@ $ cd percona-server-mongodb-operator
 	$ kubectl get psmdb-backup -n <namespace>
 	```
 
-	??? example "Output"
+	??? example "Sample output"
 
-	    ```{.text .no-copy}
-	    NAME      CLUSTER           STORAGE      DESTINATION                                     TYPE      STATUS   COMPLETED   AGE
-	    backup1   my-cluster-name   s3-us-west   s3://pg-operator-testing/2023-10-10T16:36:46Z   logical   running                43s
-	    ```
+	    ``` {.text .no-copy}
+      NAME      CLUSTER           STORAGE      DESTINATION                                  TYPE      SIZE       STATUS   COMPLETED   AGE
+      backup1   my-cluster-name   s3-us-west   s3://my-bucket/2025-09-23T10:34:59Z   logical   105.44MB   ready    43s       43s
+      ```
 
 	When the status changes to `Ready`, backup is made.
 
