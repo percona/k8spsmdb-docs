@@ -65,7 +65,13 @@ This document covers the following restore scenarios:
 
 ## Point-in-time recovery
 
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+1. For point-in-time recovery to *the latest possible transaction*, update the metadata on the target cluster. This will also force PBM to recognize latest oplog chunks there. Connect to one of the database Pods (`my-cluster-name-rs0-2` for example) and run the following command:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
+    ```
+
+2. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
     * set `spec.clusterName` key to the name of the target cluster to restore the backup on
     * put additional restoration parameters to the `pitr` section:
