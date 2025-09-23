@@ -52,7 +52,7 @@ The Operator uses Percona-certified Docker images, which you can find [here](ima
 For example, Percona Server for MongoDB 8.0 is supported with the following
 recommended version: {{ mongodb80recommended }}. 
 
-Check [Percona Server for MongoDB release notes :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html) for more details on the exact version of the latest major version. And use the version switcher to check other major versions.
+Check the [Percona Server for MongoDB release notes :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html) for more details on the exact version of the latest major version. Use the version switcher to check other major versions.
 
 ## How can I add custom sidecar containers to my cluster?
 
