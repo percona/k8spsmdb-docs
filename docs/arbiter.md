@@ -92,9 +92,9 @@ Find the description of other available options in the [replsets.nonvoting secti
 
 Note that you can add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md) for details.
 
-### Hidden nodes
+## Hidden nodes
 
-Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden always have a 0 priority and therefore, cannot become a primary. But they may vote in primary elections.
+Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden always have a 0 priority and therefore, cannot become a primary. But they may vote in primary elections. Read more how the Operator [manages voting members in replica set](#manage-voting-members-in-replica-set).
 
 Hidden nodes are useful for tasks like backups or reporting, as they do not affect primary operations. Client applications will not connect to hidden nodes because they are not listed in the replica set's SRV record.
 
@@ -115,3 +115,17 @@ replsets:
 ```
 
 Find the description of other available options in the [replsets.hidden section](operator.md#replsetshidden) of the [Custom Resource options reference](operator.md).
+
+## Manage voting members in replica set
+
+Since [hidden nodes](#hidden-nodes) can participate in elections, the Operator enforces rules to ensure the odd number of voting members and maintain a stable and compliant replica set configuration:
+
+* If the total number of voting members is even, the Operator converts one node to non-voting to maintain an odd number of voters. The node to convert is typically the last Pod in the list
+* If the number of voting members is odd and not more than 7, all nodes participate in elections.
+* If the number of voting members exceeds 7, the Operator automatically converts some nodes to non-voting to stay within MongoDB’s limit of 7 voting members.
+
+To inspect the current configuration, connect to the cluster with clusterAdmin privileges and run:
+
+```javascript
+rs.config() command
+```
