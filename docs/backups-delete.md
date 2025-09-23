@@ -17,7 +17,7 @@ $ kubectl get psmdb-backup -n <namespace>
 When the name is known, backup can be deleted as follows:
 
 ``` {.bash data-prompt="$" }
-kubectl delete psmdb-backup/<backup-name> -n <namespace>
+$ kubectl delete psmdb-backup/<backup-name> -n <namespace>
 ```
 
 !!! note
