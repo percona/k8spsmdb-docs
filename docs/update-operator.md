@@ -4,7 +4,23 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
 The upgrade process is similar for all installation methods, including Helm and OLM.
 
-## Considerations
+## Considerations for Kubernetes Cluster versions and upgrades
+
+1. Before upgrading the Kubernetes cluster, have a disaster recovery plan in place. Ensure that a backup is taken prior to the upgrade, and that point-in-time recovery is enabled to meet your Recovery Point Objective (RPO).
+
+2. Plan your Kubernetes cluster or Operator upgrades with version compatibility in mind.
+
+    The Operator is supported and tested on specific Kubernetes versions. Always refer to the Operator's [release notes](RN/index.md) to verify the supported Kubernetes platforms.
+
+    Note that while the Operator might run on unsupported or untested Kubernetes versions, this is not recommended. Doing so can cause various issues, and in some cases, the Operator may fail if deprecated API versions have been removed.
+
+3. During a Kubernetes cluster upgrade, you must also upgrade the `kubelet`. It is advisable to drain the nodes hosting the database Pods during the upgrade process.
+
+4. During the `kubelet` upgrade, nodes transition between `Ready` and `NotReady` states. Also in some scenarios, older nodes may be replaced entirely with new nodes. Ensure that nodes hosting database or proxy pods are functioning correctly and remain in a stable state after the upgrade.
+
+5. Regardless of the upgrade approach, pods will be rescheduled or recycled. Plan your Kubernetes cluster upgrade accordingly to minimize downtime and service disruption.
+
+## Considerations for the Operator upgrades
 
 1. The Operator version has three digits separated by a dot (`.`) in the format `major.minor.patch`. Here's how you can understand the version `1.18.0`:
 
