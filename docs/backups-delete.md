@@ -11,13 +11,13 @@ name. This name can be taken from the list of available backups returned
 by the following command:
 
 ``` {.bash data-prompt="$" }
-$ kubectl get psmdb-backup
+$ kubectl get psmdb-backup -n <namespace>
 ```
 
 When the name is known, backup can be deleted as follows:
 
 ``` {.bash data-prompt="$" }
-$ kubectl delete psmdb-backup/<backup-name>
+kubectl delete psmdb-backup/<backup-name> -n <namespace>
 ```
 
 !!! note
