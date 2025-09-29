@@ -19,7 +19,7 @@ Note that you can have only one main storage. All other storages are added as pr
 
 To check the list of profiles, connect to the database Pod and run the `pbm profile list` command. For example, for the cluster `cluster1`, the command looks as follows:
 
-```{.bash .data-prompt="$"}
+```{.bash data-prompt="$"}
 $ kubectl exec cluster1-rs0-0 -c backup-agent -- pbm profile list
 ```
 

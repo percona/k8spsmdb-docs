@@ -235,12 +235,21 @@ nav:
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
-              - "About Multi-cluster": replication.md
-              - "Configuring Main site for replication": replication-main.md
-              - "Configuring Replica site for replication": replication-replica.md
-              - "Backups with cross-site replication": replication-backups.md
-              - "Splitting replica set across multiple data centers": replication-multi-dc.md
-              - "Enabling multi-cluster Services": replication-mcs.md
+              - "About Multi-cluster and multi-region deployments": replication.md
+              - "Plan your deployment": replication-plan-deployment.md
+              - Multi-cluster Services: 
+                 - About Multi-cluster Services: replication-mcs.md
+                 - Enable Multi-cluster Services on GKE: replication-mcs-gke.md
+                 - Enable Multi-cluster Services on EKS: replication-mcs-eks.md
+                 - Apply MCS to an existing cluster: replication-apply-mcs-existing.md
+              - Deployment:
+                 - "Configure Main site for replication": replication-main.md
+                 - "Configure Replica site for replication": replication-replica.md
+                 - "Interconnect sites": replication-interconnect.md
+                 - "Fail over workload to the Replica site": replication-failover.md
+                 - "Backups with cross-site replication": replication-backups.md
+                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
+              
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
