@@ -94,13 +94,13 @@ Note that you can add a non-voting node in the edge location through the `extern
 
 ## Hidden nodes
 
-Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden always have a 0 priority and therefore, cannot become a primary. But they may vote in primary elections. Read more how the Operator [manages voting members in replica set](#manage-voting-members-in-replica-set).
+Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden nodes always have a 0 priority and therefore, cannot become a primary. But may vote in primary elections. Read more how the Operator [manages voting members in replica set](#manage-voting-members-in-replica-set).
 
 Hidden nodes are useful for tasks like backups or reporting, as they do not affect primary operations. Client applications will not connect to hidden nodes because they are not listed in the replica set's SRV record.
 
 To add a hidden node with the Operator, set the setting the `replsets.hidden.enabled` and `replsets.hidden.size` options  in the `deploy/cr.yaml` file:
 
-This configuration example create a cluster with 3 data instances and 2 hidden nodes:
+This configuration example creates a cluster with 3 data instances and 2 hidden nodes:
 
 ```yaml
 ....
