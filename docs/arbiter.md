@@ -10,7 +10,7 @@ By default, the Operator creates Percona Server for MongoDB replica set with thr
 
 ## Replica set member types
 
-In addition to primary and secondary nodes, a replica set can include specialized member types:
+In a MongoDB replica set, besides the primary and regular secondaries, you can have special member configurations like hidden, arbiter, and non-voting members.
 
 * **Arbiter**: An arbiter node participates in elections but does not store data. You may want to add arbiter nodes if cost constraints prevent you from adding another secondary node.
 * **Non-voting**: This type of node stores a full copy of the data but does not participate in elections. This is useful for scaling read capacity beyond the seven-member voting limit of a replica set.
