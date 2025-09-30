@@ -480,7 +480,7 @@ Optional custom tags which can be added to the replset members to make their ide
 
 ### `replsets.externalNodes.host`
 
-The URL or IP address of the [external replset instance](replication-main.md).
+The URL or IP address of the [external replica set instance](replication-main.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2527,7 +2527,7 @@ Marks the storage as main. All other storages you define are added as profiles. 
 
 ### `backup.storages.STORAGE-NAME.type`
 
-The cloud storage type used for backups. Only `s3`, `azure`, and `filesystem` types are supported.
+The cloud storage type used for backups. Only `s3`, `gcs`, `minio`, `azure`, and `filesystem` types are supported.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2623,7 +2623,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 
 ### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
-The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+The  URL of the S3-compatible storage to be used. It is required for Minio storage and is not needed for the original Amazon S3 cloud.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2660,6 +2660,14 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.chunkSize`
+
+The size of data chunks in bytes to be uploaded to the GCS storage bucket in a single request. Larger data chunks will be split over multiple requests. Default data chunk size is 10MB.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `10485760`       |
 
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
