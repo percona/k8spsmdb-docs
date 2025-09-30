@@ -59,7 +59,7 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
     !!! warning
 
-        The API key is not rotated automatically when it expired. You must manually recreate it and reconfigure the PMM Client. 
+        The API key is not rotated automatically when it expires. You must manually recreate it and reconfigure the PMM Client. 
 
 ### Create a secret
 
