@@ -20,7 +20,7 @@ graph TD
     E --> I[Documentation]
 ```
 
-Both Labels and Annotations are assigned to the following objects managed by Percona Operator for MongoDB:
+Both Labels and Annotations are assigned to the following objects:
 
 * Custom Resource Definitions
 * Custom Resources
@@ -141,7 +141,7 @@ $ kubectl get <resource> <resource-name> -o jsonpath='{.metadata.annotations}'
 For example:
 
 ``` {.bash data-prompt="$" }
-$ kubectl get pod pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
+$ kubectl get pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
 ```
 
 ## Specifying labels and annotations ignored by the Operator
@@ -165,7 +165,7 @@ Operator removes unknown annotations and labels from Services
 *created by the Operator for Pods*. 
 
 Yet it is still possible to specify which
-annotations and labels should be preserved (not wiped out) by the Operator. It is useful if a cloud provider adda own labels and annotations. Or you may have custom automation tools that add own labels or annotations and you need to keep them.
+annotations and labels should be preserved (not wiped out) by the Operator. It is useful if a cloud provider adds own labels and annotations. Or you may have custom automation tools that add own labels or annotations and you need to keep them.
 
 List
 these labels and annotations in the `spec.ignoreAnnotations` or `spec.ignoreLabels` fields of the
