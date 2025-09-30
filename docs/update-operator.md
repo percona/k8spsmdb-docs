@@ -202,7 +202,7 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 
     === "With customized parameters"
 
-        If you installed the Operator with some [customized parameters :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/pg-operator#installing-the-chart), list these options in the upgrade command.   
+        If you installed the Operator with some [customized parameters :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), list these options in the upgrade command.   
     
         1. Get the list of used options in YAML format :
         
