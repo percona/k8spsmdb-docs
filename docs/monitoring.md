@@ -51,16 +51,16 @@ To encode a password or any other parameter, run the following command:
     $ echo -n "password" | base64
     ```
 
-For example, to set the new PMM API key in the `my-cluster-name-secrets` object, do the following:
+For example, to set the new PMM Server token in the `my-cluster-name-secrets` object, do the following:
 
 === ":simple-linux: on Linux"
 
     ```{.bash data-prompt="$"}
-    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64 --wrap=0)'}}'
+    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64 --wrap=0)'}}'
     ```
 
 === ":simple-apple: on macOS"
 
     ```{.bash data-prompt="$"}
-    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_API_KEY": '$(echo -n new_key | base64)'}}'
+    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64)'}}'
     ```

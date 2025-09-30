@@ -34,7 +34,7 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
 === "PMM3"
 
-    PMM3 uses Grafana service accounts to control access to PMM server components and resources. To authenticate in PMM server, you need a service account token. [Generate a service account and token :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html?h=authe#generate-a-service-account-and-token). Specify the Admin role for the service account.
+    PMM3 uses service accounts to control access to PMM server components and resources. To authenticate in PMM server, you need a service account token. [Generate a service account and token :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html?h=authe#generate-a-service-account-and-token). Specify the Admin role for the service account.
 
     !!! warning
 
@@ -59,7 +59,7 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
     !!! warning
 
-        The API key is not rotated. 
+        The API key is not rotated automatically when it expired. You must manually recreate it and reconfigure the PMM Client. 
 
 ### Create a secret
 
@@ -106,7 +106,7 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
     ??? example "Expected output"
 
         ```{.text .no-copy}
-        secret/my-cluster-name-secret created
+        secret/my-cluster-name-secrets created
         ```
 
 ### Deploy the PMM Client
