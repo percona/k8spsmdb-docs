@@ -102,13 +102,13 @@ subsections. For each node, specify the following:
         configsvrReplSet:
           size: 3
           externalNodes:
-          - host: replica-cluster-cfg0-1.psmdb.svc.clusterset.local
+          - host: replica-cluster-cfg-0.psmdb.svc.clusterset.local
             votes: 1
             priority: 1
-          - host: replica-cluster-cfg0-1.psmdb.svc.clusterset.local
+          - host: replica-cluster-cfg-1.psmdb.svc.clusterset.local
             votes: 1
             priority: 1
-          - host: replica-cluster-cfg0-1.psmdb.svc.clusterset.local
+          - host: replica-cluster-cfg-2.psmdb.svc.clusterset.local
             votes: 0
             priority: 0
           expose:
@@ -256,7 +256,7 @@ You can switch over services to the Replica site while doing some planned mainte
 
     ```yaml
     spec:
-      unamanaged: true
+      unmanaged: true
       updateStrategy: RollingUpdate
     ```
 
@@ -270,7 +270,7 @@ You can switch over services to the Replica site while doing some planned mainte
 
      ```yaml
     spec:
-      unamanaged: false
+      unmanaged: false
       updateStrategy: SmartUpdate
     ```
     
@@ -281,3 +281,7 @@ You can switch over services to the Replica site while doing some planned mainte
     ```
   
 5. Connect to one of the Replica site Pods and check the replica set status. You should see that it has re-elected the new primary.
+
+## Next steps
+
+[Test services failover](replication-failover.md){.md-button}

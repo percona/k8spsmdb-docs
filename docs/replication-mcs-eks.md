@@ -8,7 +8,7 @@ SERVICE_NAME.NAMESPACE.svc.clusterset.local
 
 Read more about how AWS Cloud Map MCS Controller works in the [AWS blog post :octicons-link-external-16:](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
 
-Also, lear more about [AWS Cloud Map pricing :octicons-link-external-16:](https://aws.amazon.com/cloud-map/pricing/)
+Also, learn more about [AWS Cloud Map pricing :octicons-link-external-16:](https://aws.amazon.com/cloud-map/pricing/)
 
 ## Prerequisites
 
@@ -44,5 +44,6 @@ spec:
 
 Check the [AWS MCS controller repository  :octicons-link-external-16:](https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage) for more information.
 
+## Next steps
 
-
+[Deploy the Main site](replication-main.md){.md-button}

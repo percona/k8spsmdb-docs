@@ -105,8 +105,10 @@ $ kubectl get serviceimport
 
 Since ServiceImport is not controlled by the Operator, objects you must check the MCS controller installed by your cloud provider if you need to troubleshoot it.
 
+## Next steps
 
-
+[Enable MCS on GKE](replication-mcs-gke.md){.md-button}
+[Enable MCS on EKS](replication-mcs-eks.md){.md-button}
 
 
 

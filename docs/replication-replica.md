@@ -113,3 +113,7 @@ For the Main and Replica sites to communicate, they must have the same the user 
     ```{.bash data-prompt="$" }
     $ kubectl apply -f deploy/cr.yaml
     ```
+
+## Next steps
+
+[Interconnect sites for replication](replication-interconnect.md){.md-button}

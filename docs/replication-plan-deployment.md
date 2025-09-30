@@ -30,7 +30,7 @@ The following topologies are supported:
 
 ### Main and Replica clusters on Kubernetes. 
 
-This is the Kubernetes-native deployment. You can automate the cluster management using the [Multi-Cluster Services](replication-msc.md). 
+This is the Kubernetes-native deployment. You can automate the cluster management using the [Multi-Cluster Services](replication-mcs.md). 
 
 The Deployment section focuses on this topology and provides the setup steps.
 
@@ -43,7 +43,7 @@ The setup steps are:
 1. Deploy [the _Main_ cluster on a Kubernetes cluster](replication-main.md) (or use an existing one)
 2. Export TLS certificates and user Secrets from the main site and use them to configure the Replica site.
 3. Deploy the _Replica_ cluster wherever you want. 
-4. [Interconnect sites] by adding nodes from the _Replica_ cluster to the _Main_ cluster as external nodes.
+4. [Interconnect sites](replication-interconnect.md) by adding nodes from the _Replica_ cluster to the _Main_ cluster as external nodes.
 
 ### Main cluster outside of Kubernetes and Replica cluster on Kubernetes
 

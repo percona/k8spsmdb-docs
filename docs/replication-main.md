@@ -199,3 +199,7 @@ ready for the `replica` site.
     * Update the Secret file by replacing all instances of "main-cluster" with "replica-cluster", so the secret matches the replica cluster's naming.
 
     You will need to further apply these secrets on Replica.
+
+## Next steps
+
+[Configure Replica site](replication-replica.md){.md-button}
