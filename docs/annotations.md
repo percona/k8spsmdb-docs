@@ -30,6 +30,7 @@ Both Labels and Annotations are assigned to the following objects managed by Per
 * PVCs
 * Pods
 * ConfigMaps and Secrets
+* Backup jobs for scheduled backups
 
 ## When to use labels and annotations
 
