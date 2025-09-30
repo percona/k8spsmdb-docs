@@ -10,11 +10,11 @@ By default, the Operator creates Percona Server for MongoDB replica set with thr
 
 ## Replica set member types
 
-In a MongoDB replica set, besides the primary and regular secondaries, you can have special member configurations like hidden, arbiter, and non-voting members.
+Besides the primary and regular secondaries in a MongoDB replica set, you can have special member configurations like hidden, arbiter, and non-voting members.
 
 * **Arbiter**: An arbiter node participates in elections but does not store data. You may want to add arbiter nodes if cost constraints prevent you from adding another secondary node.
 * **Non-voting**: This type of node stores a full copy of the data but does not participate in elections. This is useful for scaling read capacity beyond the seven-member voting limit of a replica set.
-* **Hidden**: A hidden node is a secondary member that holds data but is invisible to client applications and does not participate in elections by default. It is useful for tasks like backups or running batch jobs that might otherwise interfere with primary operations.
+* **Hidden**: A hidden node is a secondary member that holds data but is invisible to client applications. It is added as a voting member and can participate in elections. It is useful for tasks like backups or running batch jobs that might otherwise interfere with primary operations.
 
 ### Arbiter nodes
 
@@ -94,7 +94,7 @@ Note that you can add a non-voting node in the edge location through the `extern
 
 ## Hidden nodes
 
-Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden nodes always have a 0 priority and therefore, cannot become a primary. But may vote in primary elections. Read more how the Operator [manages voting members in replica set](#manage-voting-members-in-replica-set).
+Hidden nodes are secondary members that hold a full copy of the data but are not visible to client applications. Hidden nodes always have a 0 priority and therefore, cannot become a primary. But hidden members are added as voting members and may, therefore, vote in primary elections. Read more how the Operator [manages voting members in replica set](#manage-voting-members-in-replica-set).
 
 Hidden nodes are useful for tasks like backups or reporting, as they do not affect primary operations. Client applications will not connect to hidden nodes because they are not listed in the replica set's SRV record.
 
