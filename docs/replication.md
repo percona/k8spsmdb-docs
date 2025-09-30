@@ -39,4 +39,4 @@ Choosing the right topology depends on your goals. Here are common use cases tha
 
 ## Next steps
 
-[Plan your deployment](replication-topology.md){.md-button}
+[Plan your deployment](replication-plan-deployment.md){.md-button}
