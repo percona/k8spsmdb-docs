@@ -237,7 +237,7 @@ Don’t forget to apply changes as usual, running the `kubectl apply -f deploy/c
 You can change the size for different components of your MongoDB sharded cluster by setting these options in the appropriate subsections:
 
 * [sharding.configsvrReplSet.size](operator.md#shardingconfigsvrreplsetsize) allows you to set the number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) in a sharded cluster,
-* [sharding.mongos.size](operator.md#shardingmongossize) allows to set the number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances in a sharded cluster.
+* [sharding.mongos.size](operator.md#shardingmongossize) allows you to set the number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances in a sharded cluster.
 
 #### Changing the number of shards
 
