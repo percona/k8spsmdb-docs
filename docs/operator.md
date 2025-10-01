@@ -2661,7 +2661,32 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
-### `backup.storages.STORAGE-NAME.chunkSize`
+### `backup.storages.STORAGE-NAME.gcs.bucket`
+
+The name of the storage bucket. See the [GCS bucket naming guidelines :octicons-link-external-16:](https://cloud.google.com/storage/docs/naming-buckets#requirements) for bucket name requirements.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.gcs.prefix`
+
+The path to the data directory in the bucket. If undefined, backups are stored in the bucket's root directory.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.gcs.credentialsSecret`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the GCS credentials as either the service account and JSON keys or HMAC keys. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"my-cluster-name-backup-gcs"`       |
+
+
+### `backup.storages.STORAGE-NAME.gcs.chunkSize`
 
 The size of data chunks in bytes to be uploaded to the GCS storage bucket in a single request. Larger data chunks will be split over multiple requests. Default data chunk size is 10MB.
 
