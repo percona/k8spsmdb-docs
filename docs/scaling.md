@@ -211,7 +211,7 @@ the data to the new volumes. **This can also be used to shrink the storage.**
 
 You can change the size separately for different components of your MongoDB replica set by setting these options in the appropriate subsections:
 
-* [replsets.size](operator.md#replsetssize) allows to set the size of the MongoDB Replica Set,
+* [replsets.size](operator.md#replsetssize) allows you to set the size of the MongoDB Replica Set,
 * [replsets.nonvoting.size](operator.md#replsetsnonvotingsize) allows to set the number of non-voting members,
 * [replsets.arbiter.size](operator.md#replsetsarbitersize) allows to set the number of [Replica Set Arbiter instances](arbiter.md),
 
