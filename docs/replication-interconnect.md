@@ -35,9 +35,9 @@ $ kubectl get services
     gke-mcs-rp77hijaj0    ClusterIP      34.118.229.123   <none>          27017/TCP         39m
     gke-mcs-tjbtnp3ica    ClusterIP      34.118.236.161   <none>          27017/TCP         27m
     main-cluster-cfg      ClusterIP      None             <none>          27017/TCP         44m
-    main-cluster-cfg-0    ClusterIP   34.118.227.52    34.42.135.122   27017:31233/TCP   44m
-    main-cluster-cfg-1    ClusterIP   34.118.233.187   34.135.82.96    27017:31941/TCP   43m
-    main-cluster-cfg-2    ClusterIP   34.118.227.173   35.202.26.197   27017:30961/TCP   42m
+    main-cluster-cfg-0    ClusterIP      34.118.227.52    34.42.135.122   27017:31233/TCP   44m
+    main-cluster-cfg-1    ClusterIP      34.118.233.187   34.135.82.96    27017:31941/TCP   43m
+    main-cluster-cfg-2    ClusterIP      34.118.227.173   35.202.26.197   27017:30961/TCP   42m
     main-cluster-mongos   ClusterIP      34.118.233.114   <none>          27017/TCP         44m
     main-cluster-rs0      ClusterIP      None             <none>          27017/TCP         44m
     main-cluster-rs0-0    ClusterIP      34.118.231.58    <none>          27017/TCP         44m
@@ -268,7 +268,7 @@ You can switch over services to the Replica site while doing some planned mainte
 
 3. Put the Replica site in the managed mode:
 
-     ```yaml
+    ```yaml
     spec:
       unmanaged: false
       updateStrategy: SmartUpdate

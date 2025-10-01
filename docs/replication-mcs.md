@@ -18,10 +18,8 @@ To use multi-cluster Services for your deployment, you must do the following:
 
 MCS can charge cross-site replication with additional limitations specific to
 the cloud provider. For example, GKE demands all participating Pods to be in the
-same [project  :octicons-link-external-16:](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-Also, `default` Namespace should be used with caution: your cloud provider
-[may not allow  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)
-exporting Services from it to other clusters.
+same [project :octicons-link-external-16:](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+Also, consider using a custom namespace for exporting Services. Using the  `default` and `kube-system` Namespaces can cause unintended name conflicts and the resulting unintended grouping.
 
 ### Enable multi-cluster Services with your cloud provider
 
@@ -41,16 +39,15 @@ A **ServiceExport** is a Kubernetes resource that marks a standard Service for s
 The Operator creates the ServiceExport resource for a cluster when the `multiCluster` subsection of the `deploy/cr.yaml` contains the following configuration:
 
 * the `multiCluster.enabled` key is set to `true`
-* the `multiCluster.DNSSuffix` string is equal to the cluster domain suffix
-    for multi-cluster Services used by Kubernetes. The [default value :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services) is `svc.clusterset.local`.
+* the `multiCluster.DNSSuffix` string is equal to the cluster domain suffix for multi-cluster Services used by Kubernetes. The [default value :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services) is `svc.clusterset.local`.
 
-    ````yaml
-    ...
-    multiCluster:
-      enabled: true
-      DNSSuffix: svc.clusterset.local
-    ...
-    ```
+   ```yaml
+   ...
+   multiCluster:
+     enabled: true
+     DNSSuffix: svc.clusterset.local
+   ...
+   ```
 
 For a Service to be exported and become accessible by other clusters of the fleet, it must have the same name and namespace in each cluster. Once exported, the service is recognized  as a single combined Service. It can be resolved from
 any Pod in any fleet cluster via the shared DNS name:

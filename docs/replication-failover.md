@@ -80,6 +80,7 @@ Here's how to do it:
           }
         ```
 
-7. Connect to the config server replica set Pod and repeat steps 1-6.
-8. Connect to the Replica site and check the replica set configuration
-9. Reconfigure your MongoDB clients to connect to the Replica site.
+7. Repeat steps 1-6 for every shard's replica set in your sharded cluster. 
+8. Connect to the config server replica set Pod and repeat steps 1-6.
+9. Connect to the Replica site and check the replica set configuration
+10. Reconfigure your MongoDB clients to connect to the Replica site.

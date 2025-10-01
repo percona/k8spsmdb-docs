@@ -89,51 +89,51 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
 
     * Multi-cluster services are enabled. Learn more about [preparing the Operator for multi-services](replication-mcs.md#configure-the-operator-to-use-multi-cluster-services)
     
-    The sample configuration looks like this:
+       The sample configuration looks like this:
 
-    ```yaml "title="cr-main.yaml"
-    apiVersion: psmdb.percona.com/v1
-    kind: PerconaServerMongoDB
-    metadata:
-      name: main-cluster
-    updateStrategy: SmartUpdate
-    multiCluster:
-      enabled: true
-      DNSSuffix: svc.clusterset.local
-    upgradeOptions:
-      versionServiceEndpoint: https://check.percona.com
-      apply: disabled
-      schedule: "0 2 * * *"
-      setFCV: false
-    secrets:
-      users: my-cluster-name-secrets
-      encryptionKey: my-cluster-name-mongodb-encryption-key
-    ...
-    replsets:
-    - name: rs0
-      size: 3
-      expose:
-        enabled: true
-        type: ClusterIP
-    ....
-    sharding:
-      enabled: true
-      configsvrReplSet:
-        size: 3
-        expose:
-          enabled: true
-          type: ClusterIP
-        volumeSpec:
-          persistentVolumeClaim:
-            resources:
-              requests:
-                storage: 3Gi
+       ```yaml title="cr-main.yaml"
+       apiVersion: psmdb.percona.com/v1
+       kind: PerconaServerMongoDB
+       metadata:
+         name: main-cluster
+       updateStrategy: SmartUpdate
+       multiCluster:
+         enabled: true
+         DNSSuffix: svc.clusterset.local
+       upgradeOptions:
+         versionServiceEndpoint: https://check.percona.com
+         apply: disabled
+         schedule: "0 2 * * *"
+         setFCV: false
+       secrets:
+         users: my-cluster-name-secrets
+         encryptionKey: my-cluster-name-mongodb-encryption-key
+       ...
+       replsets:
+       - name: rs0
+         size: 3
+         expose:
+           enabled: true
+           type: ClusterIP
+       ....
+       sharding:
+         enabled: true
+         configsvrReplSet:
+           size: 3
+           expose:
+             enabled: true
+             type: ClusterIP
+           volumeSpec:
+             persistentVolumeClaim:
+               resources:
+                 requests:
+                   storage: 3Gi
 
-    mongos:
-      size: 3
-      expose:
-        type: ClusterIP
-    ```
+       mongos:
+         size: 3
+         expose:
+           type: ClusterIP
+       ```
 
 3. Apply the configuration to deploy Percona Server for MongoDB:
 
