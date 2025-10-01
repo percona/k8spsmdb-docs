@@ -213,7 +213,7 @@ You can change the size separately for different components of your MongoDB repl
 
 * [replsets.size](operator.md#replsetssize) allows you to set the size of the MongoDB Replica Set,
 * [replsets.nonvoting.size](operator.md#replsetsnonvotingsize) allows you to set the number of non-voting members,
-* [replsets.arbiter.size](operator.md#replsetsarbitersize) allows to set the number of [Replica Set Arbiter instances](arbiter.md),
+* [replsets.arbiter.size](operator.md#replsetsarbitersize) allows you to set the number of [Replica Set Arbiter instances](arbiter.md),
 
 For example, the following update in `deploy/cr.yaml` will set the size of the MongoDB Replica Set `rs0` to `5` nodes:
 
