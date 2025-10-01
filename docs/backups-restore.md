@@ -14,11 +14,14 @@ You can make the following restores:
 
 For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.
 
-Note that during the restore, the Operator deletes and recreates Pods. This may cause downtime, duration of which depends on the restore type and the database deployment:
+## Considerations
 
-* Logical restore in an unsharded cluster results in the shortest downtime.
-* Logical restore in a sharded cluster causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`.
-* Physical restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`.
+1. Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) **to prevent MongoDB clients from accessing the database when the restore is in progress**.
+2. During the restore, the Operator may delete and recreate Pods. This may cause downtime. The downtime duration depends on the restore type and the database deployment:
+
+* Logical restore in an unsharded cluster results causes downtime for the duration of the data restore. No Pods are deleted or recreated
+* Logical restore in a sharded cluster causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
+* Physical restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
 
 ## Before you begin
 
