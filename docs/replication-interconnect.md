@@ -248,40 +248,6 @@ The members from both clusters appear in the list and the configuration looks li
 
 ![image](assets/images/mcs-setup.png)
 
-## Switch over services to the Replica site 
-
-You can switch over services to the Replica site while doing some planned maintenance on the Main site. Here's how to do it:
-
-1. Set the Main site to the unmanaged mode and change the Update strategy to RollingUpdate. Modify the `deploy/cr-main.yaml` file:
-
-    ```yaml
-    spec:
-      unmanaged: true
-      updateStrategy: RollingUpdate
-    ```
-
-2. Apply the configuration:
-
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr-main.yaml
-    ```
-
-3. Put the Replica site in the managed mode:
-
-    ```yaml
-    spec:
-      unmanaged: false
-      updateStrategy: SmartUpdate
-    ```
-    
-4. Apply the configuration:
-
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr-replica.yaml
-    ```
-  
-5. Connect to one of the Replica site Pods and check the replica set status. You should see that it has re-elected the new primary.
-
 ## Next steps
 
 [Test services failover](replication-failover.md){.md-button}

@@ -1,8 +1,50 @@
 # Fail over services to the Replica site
 
+Failing over services to the Replica site ensures your applications remain available if the Main site needs maintenance or becomes unavailable. You might need to do this during planned maintenance windows or in response to unexpected outages. The following sections explain how to handle both planned and unplanned failover scenarios.
+
+## Planned services switchover
+
+You can switch over services to the Replica site while doing some planned maintenance on the Main site. 
+
+Here's how to do it:
+{.power-number}
+
+1. Set the Main site to the unmanaged mode and change the Update strategy to RollingUpdate. Modify the `deploy/cr-main.yaml` file:
+
+    ```yaml
+    spec:
+      unmanaged: true
+      updateStrategy: RollingUpdate
+    ```
+
+2. Apply the configuration:
+
+    ```{.bash data-prompt="$" }
+    kubectl apply -f deploy/cr-main.yaml
+    ```
+
+3. Put the Replica site in the managed mode:
+
+    ```yaml
+    spec:
+      unmanaged: false
+      updateStrategy: SmartUpdate
+    ```
+
+4. Apply the configuration:
+
+    ```{.bash data-prompt="$" }
+    kubectl apply -f deploy/cr-replica.yaml
+    ```
+  
+5. Connect to one of the Replica site Pods and check the replica set status. You should see that it has re-elected the new primary.
+
+## Fail over services in a disaster recovery scenario
+
 A disaster can strike at any moment and the Main site may be down or unavailable. In this case, you must fail over the services to the Replica site.
 
 Here's how to do it:
+{.power-number}
 
 1. Connect to one of the replica set Pods on the Replica site. Since you will be reconfiguring the replica set, you must connect as the MongoDB `clusterAdmin` user:
 
