@@ -2694,6 +2694,30 @@ The size of data chunks in bytes to be uploaded to the GCS storage bucket in a s
 | ----------- | ---------- |
 | :material-code-string: string     | `10485760`       |
 
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffInitial`
+
+The time to wait to make an initial retry, in seconds. Default value is 1 sec
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `1`       |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMax`
+
+The maximum amount of time between retries, in seconds. Default value is 30 sec.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `30`       |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMultiplier`
+
+Defines the time to increase the wait time after each retry. For example, with the default value of 2 seconds, if the first wait time is 1 second, the next will be 2 seconds, then 4 seconds, and so on, until it reaches the maximum. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `2`       |
+
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
 The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` |
