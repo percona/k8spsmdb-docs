@@ -50,7 +50,7 @@ The configuration of Google Cloud Storage with HMAC keys remains unchanged. Howe
 
 Debugging distributed systems just got easier. The Percona Operator for MongoDB now supports cluster-level logging, ensuring that logs from your `mongod` instances are stored persistently, even across Pod restarts.
 
-Custer-level logging is done with Fluent Bit, running as a sidecar container within each database Pods. 
+Cluster-level logging is done with Fluent Bit, running as a sidecar container within each database Pods. 
 
 Currently, logs are collected only for the `mongod` instances. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are stored for 7 days and are rotated afterwards.
 
