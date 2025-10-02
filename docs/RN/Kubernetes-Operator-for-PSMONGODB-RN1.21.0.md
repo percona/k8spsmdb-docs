@@ -146,7 +146,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 - [K8SPSMDB-1319](https://perconadev.atlassian.net/browse/K8SPSMDB-1319) - Scheduled database backups now wait for the database to be healthy before starting, preventing unnecessary failures.
 * [k8spsmdb-1339](https://perconadev.atlassian.net/browse/K8SPSMDB-1339) - Added validation for the selected restore time, preventing the point-in-time restore process from starting with an invalid date or time.
 * [K8SPSMDB-1344](https://perconadev.atlassian.net/browse/K8SPSMDB-1344), [K8SPSMDB-871](https://perconadev.atlassian.net/browse/K8SPSMDB-871) - Added the ability to retrieve and store the backup size
-- [K8SPSMDB-1398](https://perconadev.atlassian.net/browse/K8SPSMDB-1398) - Added the ability to confogure the use of an external autoscaler (Thank you Terry for contribution)
+- [K8SPSMDB-1398](https://perconadev.atlassian.net/browse/K8SPSMDB-1398) - Added the ability to configure the use of an external autoscaler (Thank you Terry for contribution)
 - [K8SPSMDB-1412](https://perconadev.atlassian.net/browse/K8SPSMDB-1412) - Added the support for Google Cloud Storage with authentication via service account keys.
 
 ## Fixed bugs
