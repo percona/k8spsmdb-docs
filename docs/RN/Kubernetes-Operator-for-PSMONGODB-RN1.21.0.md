@@ -44,7 +44,9 @@ To use Google Cloud Storage for backups with service account keys, you need to d
 
 See the [Configure Google Cloud Storage](../backups-storage.md#configure-storage-for-backups) documentation for detailed steps.
 
-The configuration of Google Cloud Storage with HMAC keys remains unchanged. However, this authentication method is deprecated and we encourage you to plan the migration to using service account keys.
+The configuration of Google Cloud Storage with HMAC keys remains unchanged.
+However, PBM has a known issue for using HMAC keys  with GCS, which was
+reported in [PBM-1605](https://perconadev.atlassian.net/browse/PBM-1605). The issue is in corrupted or partially uploaded archives being stored and treated as valid backups and posing a risk of restore failures. Therefore, we recommend migrating to the native GCS connection type with service account (JSON) keys after the upgrade.
 
 ## Improve operational resilience and observability with persistent cluster-level logging for MongoDB Pods
 
@@ -122,6 +124,13 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
          deleteFromStorage: true
        storageName: s3-us-west
   ```
+
+### Known limitations
+
+The Operator doesn't delete backups created with PBM versions earlier than 2.11.0 from the storage. You need to delete them manually to free up space. To do this:
+
+1. Remove the finalizer from a `psmdb-backup` object.
+2. [Delete the backup](../backups-delete.md).
 
 ## Changelog
 
