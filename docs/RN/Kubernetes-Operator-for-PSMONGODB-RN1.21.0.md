@@ -142,7 +142,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 - [K8SPSMDB-1284](https://perconadev.atlassian.net/browse/K8SPSMDB-1284) - Clearer error messages are now displayed if a filesystem backup deletion fails.
 - [K8SPSMDB-1285](https://perconadev.atlassian.net/browse/K8SPSMDB-1285) - CRDs now include labels that make it easy to identify their associated Operator version.
 - [K8SPSMDB-1304](https://perconadev.atlassian.net/browse/K8SPSMDB-1304) - Added labels recommended by Kubernetes to the Operator deployment object
-- [K8SPSMDB-1318](https://perconadev.atlassian.net/browse/K8SPSMDB-1318) - Added the ability to configure concurrent reconciles to speed upi cluster reconciliation in setups where the Operator manages several database clusters.
+- [K8SPSMDB-1318](https://perconadev.atlassian.net/browse/K8SPSMDB-1318) - Added the ability to configure concurrent reconciles to speed up cluster reconciliation in setups where the Operator manages several database clusters.
 - [K8SPSMDB-1319](https://perconadev.atlassian.net/browse/K8SPSMDB-1319) - Scheduled database backups now wait for the database to be healthy before starting, preventing unnecessary failures.
 * [k8spsmdb-1339](https://perconadev.atlassian.net/browse/K8SPSMDB-1339) - Added validation for the selected restore time, preventing the point-in-time restore process from starting with an invalid date or time.
 * [K8SPSMDB-1344](https://perconadev.atlassian.net/browse/K8SPSMDB-1344), [K8SPSMDB-871](https://perconadev.atlassian.net/browse/K8SPSMDB-871) - Added the ability to retrieve and store the backup size
