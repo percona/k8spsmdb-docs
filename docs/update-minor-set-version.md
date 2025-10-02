@@ -46,7 +46,7 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
            }}'
@@ -58,7 +58,7 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
            }}'
         ```

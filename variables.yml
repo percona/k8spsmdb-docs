@@ -2,7 +2,7 @@
 
 commandName: 'kubectl'
 clusterName: 'my-cluster-name'
-release: '1.20.1'
+release: '1.21.0'
 apiversion: '1'
 mongodb80recommended: '8.0.8-3'
 mongodb70recommended: '7.0.18-11'
@@ -22,5 +22,6 @@ k8s_monitor_tag: 'v0.1.1'
 year: '2025'
 
 date:
+  1_21_0: 2025-10-08
   1_20_1: 2025-06-04
   1_20_0: 2025-05-19
