@@ -175,10 +175,10 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
 3. Encode your keys in base64 format. You need to encode the service account email and the private key. You can get these values from the service account key file you downloaded when you created the service account keys.
 
-    The following command shows how to encode a private key. Replace the placeholder with your private key and service account email or HMAC key and secret:
+    The following command shows how to encode a private key. Replace the placeholder with your private key and service account email:
 
     ```bash 
-    echo "-----BEGIN PRIVATE KEY-----\nPRIVATE_KEY\n-----END PRIVATE KEY-----\n" | base64 
+    echo -n "-----BEGIN PRIVATE KEY-----\nPRIVATE_KEY\n-----END PRIVATE KEY-----\n" | base64 
     ```
 
 4. Create the Kubernetes Secret configuration file and specify the encoded GCS credentials within:
@@ -209,8 +209,6 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
     * Specify the bucket name for the `storages.<NAME>.gcs.bucket` option
 
     * Specify the Secrets object name you created for the `storages.<NAME>.gcs.credentialsSecret` option
-
-    * **For authentication with HMAC keys** specify the `storages.<NAME>.gcs.endpointUrl` as `https://storage.googleapis.com`. 
 
     ```yaml
     backup:
