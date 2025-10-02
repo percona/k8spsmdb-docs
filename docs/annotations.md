@@ -151,7 +151,8 @@ objects managed by the Operator.
 
 The Operator keeps track of all changes to its objects and can remove
 annotations that it didn't create.
-If there are no annotations or labels in the Custom Resource expose subsections,
+
+If there are no annotations or labels in the Custom Resource `expose.*` subsections,
 the Operator does nothing if a new label or annotation is added to the object.
 
 If the [Service per Pod](expose.md#service-per-pod) mode is not used, the
@@ -165,7 +166,7 @@ Operator removes unknown annotations and labels from Services
 *created by the Operator for Pods*. 
 
 Yet it is still possible to specify which
-annotations and labels should be preserved (not wiped out) by the Operator. It is useful if a cloud provider adds own labels and annotations. Or you may have custom automation tools that add own labels or annotations and you need to keep them.
+annotations and labels the Operator should keep. It is useful if a cloud provider adds own labels and annotations. Or you may have custom automation tools that add own labels or annotations and you need to keep them.
 
 List
 these labels and annotations in the `spec.ignoreAnnotations` or `spec.ignoreLabels` fields of the
@@ -179,3 +180,5 @@ spec:
     - some.custom.cloud.label/smth
 ...
 ```
+
+The label and annotation values must exactly match the ones defined for the Service to be kept.
