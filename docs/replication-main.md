@@ -13,13 +13,13 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
     * For the `main` cluster:
 
        ```bash
-       export KUBECONFIG=./gcp-main_config gcloud container clusters get-credentials main-cluster --zone us-central1-a
+       export KUBECONFIG=./main_config gcloud container clusters get-credentials main-cluster --zone us-central1-a
        ```
 
     * For the `replica` cluster:
 
        ```bash
-       export KUBECONFIG=./gcp-replica_config gcloud container clusters get-credentials replica-cluster --zone us-central1-a
+       export KUBECONFIG=./replica_config gcloud container clusters get-credentials replica-cluster --zone us-central1-a
        ```
 
 2. Set the context for the clusters from their respective kubeconfig files.
@@ -27,13 +27,13 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
     * On the `main` cluster:
 
        ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig gcp-main_config config set-context $(kubectl config current-context)
+       $ kubectl --kubeconfig main_config config set-context $(kubectl config current-context)
        ```
 
     * On the `replica` cluster:
 
        ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig gcp-replica_config config set-context $(kubectl config current-context)
+       $ kubectl --kubeconfig replica_config config set-context $(kubectl config current-context)
        ```
 
 3. Grant your Google Cloud user permissions to manage clusters. To do this, create a ClusterRoleBinding binding of the `cluster-admin` ClusterRole to your account for each cluster. Specify different names for each cluster to avoid naming collision:
@@ -41,13 +41,13 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
     * On the `main` cluster:
 
        ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig gcp-main_config create clusterrolebinding cluster-admin-binding-main --clusterrole cluster-admin --user $(gcloud config get-value core/account)
+       $ kubectl --kubeconfig main_config create clusterrolebinding cluster-admin-binding-main --clusterrole cluster-admin --user $(gcloud config get-value core/account)
        ```
 
     * On the `replica` cluster:
 
        ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig gcp-replica_config create clusterrolebinding cluster-admin-binding-replica --clusterrole cluster-admin --user $(gcloud config get-value core/account)
+       $ kubectl --kubeconfig replica_config create clusterrolebinding cluster-admin-binding-replica --clusterrole cluster-admin --user $(gcloud config get-value core/account)
        ```
 
 4. Create the same namespace on both clusters and set the context to point to this namespace. The namespace must be the same because it is a part of the shared DNS used to identify and resolve services across clusters.
