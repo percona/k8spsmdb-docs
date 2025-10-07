@@ -16,8 +16,8 @@ You can check available options in the [restore options reference](restore-optio
 
 This document covers the following restore scenarios:
 
-* [Restore from a full backup](#restore-from-a-full-backup) - restore from a backup snapshot without point-in-time
-* [Point-in-time recovery](#restore-with-point-in-time-recovery) - restore to a specific time, a specific or  latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
+* [Restore from a full backup](#restore-from-a-full-backup) - restore from a full backup  without point-in-time
+* [Point-in-time recovery](#restore-with-point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
 ## Preconditions
 
@@ -29,11 +29,22 @@ This document covers the following restore scenarios:
 
 ## Restore from a full backup
 
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+To make a restore, PBM must know where to take the backup from and have access to that storage.
 
-    * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
+You can define the backup storage in two ways: within the restore object configuration or pre-configure it on the target cluster's `cr.yaml` file.
 
-    * set `spec.backupSource` subsection to point on the appropriate cloud storage. This `backupSource` subsection should contain the [backup type](backups.md#backup-types) (either `logical` or `physical`), and a `destination` key, followed by [necessary storage configuration keys](backups-storage.md), same as in the `deploy/cr.yaml` file:
+### Approach 1: Define storage configuration in the restore object
+
+If you haven't defined storage in the target cluster's `cr.yaml` file, you can configure it directly in the restore object:
+
+1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file:
+
+    * set `spec.clusterName` key to the name of the target cluster to restore the backup on
+    * configure the `spec.backupSource` subsection to point to the cloud storage where the backup is stored. This subsection should include:
+
+        * the [backup type](backups.md#backup-types) - either `logical` or `physical`
+        * a `destination` key. Take it from the output of the `kubectl get psmdb-backup` command.
+        * the [necessary storage configuration keys](backups-storage.md), just like in the `deploy/cr.yaml` file of the source cluster.
 
         ```yaml
         ...
@@ -46,9 +57,33 @@ This document covers the following restore scenarios:
             endpointUrl: https://URL-OF-THE-S3-COMPATIBLE-STORAGE
         ```
 
-        As you have noticed, `destination` value is composed of three parts in case of S3-compatible storage: the `s3://` prefix, the s3 bucket name, and the actual backup name, which you have already found out using the `kubectl get psmdb-backup` command). For Azure Blob storage, you don’t put the prefix, and use your container name as an equivalent of a bucket.
+        The `destination` key is composed of three parts in case of S3-compatible storage: the `s3://` prefix, the s3 bucket name, and the actual backup name. For Azure Blob storage, you don't put the prefix, and use your container name as an equivalent of a bucket.
 
-    * you can also use a `storageName` key to specify the exact name of the storage (the actual storage should be [already defined](backups-storage.md) in the `backup.storages` subsection of the `deploy/cr.yaml` file):
+2. Apply the configuration to start the restore:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
+    ```
+
+    During the restore process, the Operator:
+
+    1. Takes the storage configuration from the Restore object
+    2. Configures PBM using this configuration
+    3. Resyncs metadata to update it on the target cluster
+    4. Performs the restore operation
+    5. Reverts the PBM configuration back to the one defined in the `cr.yaml` file (if any)
+
+3. As the post-restore step, configure the [main storage](multi-storage.md#define-the-main-storage) within the target cluster's `cr.yaml` to be able to make subsequent backups. 
+        
+### Approach 2: The storage is defined on target
+
+You can [already define](backups-storage.md) the storage where the backup is stored in the `backup.storages` subsection of your target cluster's `deploy/cr.yaml` file. In this case, reference it by name within the restore configuration.
+
+1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file:
+
+    * set `spec.clusterName` key to the name of the target cluster to restore the backup on
+    * specify the storage name in the `storageName` key. The name must match the name in the `backup.storages` subsection of the `deploy/cr.yaml` file.
+    * configure the `spec.backupSource` subsection with the backup destination
 
         ```yaml
         ...
@@ -57,7 +92,7 @@ This document covers the following restore scenarios:
           destination: s3://S3-BUCKET-NAME/BACKUP-NAME
         ```
 
-2. After that, the actual restoration process can be started as follows:
+2. After configuring the restore object, start the restoration process:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
@@ -65,13 +100,13 @@ This document covers the following restore scenarios:
 
 ## Point-in-time recovery
 
-1. For point-in-time recovery to *the latest possible transaction*, update the metadata on the target cluster. This will also force PBM to recognize latest oplog chunks there. Connect to one of the database Pods (`my-cluster-name-rs0-2` for example) and run the following command:
+As with the restore from a full backup, PBM must know where to take the backup from and have access to the storage. You can define the backup storage in two ways: within the restore object configuration or pre-configure it on the target cluster's `cr.yaml` file.
 
-    ```{.bash data-prompt="$"}
-    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
-    ```
+### Approach 1: Define storage configuration in the restore object
 
-2. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+You can configure the storage within the restore object configuration:
+
+1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
 
     * set `spec.clusterName` key to the name of the target cluster to restore the backup on
     * put additional restoration parameters to the `pitr` section:
@@ -83,7 +118,11 @@ This document covers the following restore scenarios:
 
         * `date` key is used with `type=date` option and contains value in datetime format
 
-    * set `spec.backupSource` subsection to point on the appropriate cloud storage. For S3-compatible storage this`backupSource` subsection should contain a `destination` key equal to the s3 bucket with a special `s3://` prefix, followed by necessary S3 configuration keys, same as in `deploy/cr.yaml` file:
+    * configure the `spec.backupSource` subsection to point to the cloud storage where the backup is stored. This subsection should include:
+
+        * the [backup type](backups.md#backup-types) - either `logical` or `physical`
+        * a `destination` key. Take it from the output of the `kubectl get psmdb-backup` command.
+        * the [necessary storage configuration keys](backups-storage.md), just like in the `deploy/cr.yaml` file of the source cluster.
 
         ```yaml
         apiVersion: psmdb.percona.com/v1
@@ -103,7 +142,41 @@ This document covers the following restore scenarios:
               endpointUrl: https://URL-OF-THE-S3-COMPATIBLE-STORAGE
         ```
 
-    * you can also use a `storageName` key to specify the exact name of the storage (the actual storage [should be already defined](backups-storage.md) in the `backup.storages` subsection of the `deploy/cr.yaml` file):
+
+2. Run the actual restoration process:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f deploy/backup/restore.yaml
+    ```
+    
+    During the restore process, the Operator:
+
+    1. Takes the storage configuration from the Restore object
+    2. Configures PBM using this configuration
+    3. Resyncs metadata to update it on the target cluster
+    4. Performs the restore operation
+    5. Reverts the PBM configuration back to the one defined in the `cr.yaml` file (if any)
+
+3. As the post-restore step, configure the [main storage](multi-storage.md#define-the-main-storage) within the target cluster's `cr.yaml` to be able to make subsequent backups.
+
+### Approach 2: The storage is defined on target
+
+You can [define the storage](backups-storage.md) where the backup is stored in the `backup.storages` subsection of your target cluster's `deploy/cr.yaml` file. In this case, reference it by name within the restore configuration.
+
+1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+
+    * set `spec.clusterName` key to the name of the target cluster to restore the backup on
+    * put additional restoration parameters to the `pitr` section:
+
+        * `type` key can be equal to one of the following options
+
+            * `date` - roll back to specific date
+            * `latest` - recover to the latest possible transaction
+
+        * `date` key is used with `type=date` option and contains value in datetime format
+
+    * specify the storage name for the `storageName` key. The name must match the name the `backup.storages` subsection of the `deploy/cr.yaml` file.
+    * configure the `spec.backupSource` subsection with the backup destination
 
         ```yaml
         ...
@@ -112,9 +185,14 @@ This document covers the following restore scenarios:
           destination: s3://S3-BUCKET-NAME/BACKUP-NAME
         ```
 
-2. Run the actual restoration process:
+2. Though PBM resyncs metadata on the target cluster when you start the restore process, for point-in-time recovery to *the latest possible transaction*, we recommend to run a manual resync before the restore. This ensures PBM has the latest oplog chunks on the target cluster. Connect to one of the database Pods (`my-cluster-name-rs0-2` for example) and run the following command:
+
+    ```{.bash data-prompt="$"}
+    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
+    ```
+  
+3. Start the restore process:
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
     ```
-
