@@ -45,8 +45,8 @@ To use Google Cloud Storage for backups with service account keys, you need to d
 See the [Configure Google Cloud Storage](../backups-storage.md#configure-storage-for-backups) documentation for detailed steps.
 
 The configuration of Google Cloud Storage with HMAC keys remains unchanged.
-However, PBM has a known issue for using HMAC keys  with GCS, which was
-reported in [PBM-1605](https://perconadev.atlassian.net/browse/PBM-1605). The issue is in corrupted or partially uploaded archives being stored and treated as valid backups and posing a risk of restore failures. Therefore, we recommend migrating to the native GCS connection type with service account (JSON) keys after the upgrade.
+However, PBM has a known issue for using HMAC keys with GCS, which was
+reported in [PBM-1605](https://perconadev.atlassian.net/browse/PBM-1605). The issue is in uploading large files (~512MB+) to the storage when the network is unstable. Such backups may be corrupted or incomplete but they are incorrectly treated as valid backups and pose a risk of restore failures. Therefore, we recommend migrating to the native GCS connection type with service account (JSON) keys after the upgrade.
 
 ## Improve operational resilience and observability with persistent cluster-level logging for MongoDB Pods
 
