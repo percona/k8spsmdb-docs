@@ -222,31 +222,37 @@ Find Percona’s certified Docker images that you can use with the Percona Opera
 
 | Image                                                  | Digest                                                           |
 |:-------------------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb-operator:1.20.0 (x86_64)| 01da3139b0f7f64a27f3642ca06581ea065a02891b13ce2375d61471011d6dd4 |
-| percona/percona-server-mongodb-operator:1.20.0 (ARM64) | 26d885398af42d18928f51f070aff770df900eb5ddf46e3e0bc2570720089bb1 |
-| percona/pmm-client:2.44.1                              | 8b2eaddffd626f02a2d5318ffebc0c277fe8457da6083b8cfcada9b6e6168616 |
-| percona/pmm-client:2.44.1 (ARM64)                      | 337fecd4afdb3f6daf2caa2b341b9fe41d0418a0e4ec76980c7f29be9d08b5ea |
-| percona/percona-backup-mongodb:2.9.1 (x86_64)          | 976bfbaa548eb70dd90bf0bd2dcfe40b2994d749ef644af3a0590f4856e4d7e2 |
-| percona/percona-backup-mongodb:2.9.1 (ARM64)           | ebc6e5c5aa3ed97991d3fd90e9201597b485ddc0eae8d7ee4311ecb785c03bf0 |
-| percona/percona-server-mongodb:8.0.8-3 (x86_64)        | e4580ca292f07fd7800e139121aea4b2c1dfa6aa34f3657d25a861883fd3de41 |
+| percona/percona-server-mongodb-operator:1.21.0         | af7606b2901039e1593ec6dec8b13a48cf50fcc321ab8d6eb2eb6433f49340ca |
+| percona/percona-server-mongodb-operator:1.21.0 (ARM64) | 09a2ef90be5427c14ac37d71ba99750b5790646e2882d27f9066f720f1a3c3cd |
+| percona/percona-server-mongodb:8.0.12-4 (x86_64)               | ab8793879409788b5a19f7e332a3700520e8eeaf4b068ec8cc7d1b680f097307 |
+| percona/percona-server-mongodb:8.0.12-4 (ARM64)        | d367e225b57783bc2ff8451571c7568dc3b240176cf149a01cc3a7b13fb52a78 |
+| percona/percona-server-mongodb:8.0.8-3  (x86_64)               | e4580ca292f07fd7800e139121aea4b2c1dfa6aa34f3657d25a861883fd3de41 |
 | percona/percona-server-mongodb:8.0.8-3 (ARM64)         | 96cfee2102499aba05e63ca7862102c2b1da1cf9f4eea0cbea3793a07c183925 |
-| percona/percona-server-mongodb:8.0.4-1-multi (x86_64)  | 873b201ce3d66d97b1225c26db392c5043a73cc19ee8db6f2dc1b8efd4783bcf |
+| percona/percona-server-mongodb:8.0.4-1-multi (x86_64)          | 873b201ce3d66d97b1225c26db392c5043a73cc19ee8db6f2dc1b8efd4783bcf |
 | percona/percona-server-mongodb:8.0.4-1-multi (ARM64)   | 222ccf746ad4ffdfccf41b41edaa0d318d28f663e13c9629f8dad5a5078434e5 |
-| percona/percona-server-mongodb:7.0.18-11 (x86_64)      | 0115a72f5e60d86cb4f4b7eae32118c0910e8c96831e013de12798a1771c4c91 |
+| percona/percona-server-mongodb:7.0.24-13 (x86_64)              | 71d5389e91014cf6c486c4d28ee2b3f19f16eb421d9d65b36d70b9f712a43eaa |
+| percona/percona-server-mongodb:7.0.24-13 (ARM64)       | 22012034c3e30029b34dda235aa14642377522ba307d742f64d7f69ed6feccf9 |
+| percona/percona-server-mongodb:7.0.18-11 (x86_64)              | 0115a72f5e60d86cb4f4b7eae32118c0910e8c96831e013de12798a1771c4c91 |
 | percona/percona-server-mongodb:7.0.18-11 (ARM64)       | 86c17067f3e233f522612389ed2500231cbb22ce93524c476b9aa8d464d06f0b |
-| percona/percona-server-mongodb:7.0.15-9-multi (x86_64) | 7bffdf2e71c121e2ab37b4fa7e2f513237abdd65266da384bf8197cee1316917 |
+| percona/percona-server-mongodb:7.0.15-9-multi (x86_64)         | 7bffdf2e71c121e2ab37b4fa7e2f513237abdd65266da384bf8197cee1316917 |
 | percona/percona-server-mongodb:7.0.15-9-multi (ARM64)  | fdc4875df82572267445811445ebf517f63e509be54d1a2599fe58e1c525e1d8 |
-| percona/percona-server-mongodb:7.0.14-8-multi (x86_64) | ed932d4e7231dcb793bf609f781226a8393aa8958b103339f4a503a8f70ed17e |
+| percona/percona-server-mongodb:7.0.14-8-multi  (x86_64)        | ed932d4e7231dcb793bf609f781226a8393aa8958b103339f4a503a8f70ed17e |
 | percona/percona-server-mongodb:7.0.14-8-multi (ARM64)  | 052f84ee926ad9b5146f08a7e887820342d65b757a284c2f0ea8e937bb51cd7b |
-| percona/percona-server-mongodb:7.0.12-7                | 7f00e19878bd143119772cd5468f1f0f9857dfcd2ae2f814d52ef3fa7cff6899 |
-| percona/percona-server-mongodb:6.0.21-18 (x86_64)      | 579d2fdc617ea42ab2be8c2682955b489dbf49ab19771b7a5d9c77da4dd323e7 |
+| percona/percona-server-mongodb:7.0.12-7 (x86_64)                | 7f00e19878bd143119772cd5468f1f0f9857dfcd2ae2f814d52ef3fa7cff6899 |
+| percona/percona-server-mongodb:6.0.25-20 (x86_64)               | 0254c10fb8c249c108cd0a6e5885dfe76785e8fdd6ceb23ce98854234672e5d6 |
+| percona/percona-server-mongodb:6.0.25-20 (ARM64)       | 0fd4d1ca4da6377450964f225bd1d508730be9c1fca1c36c3bfcc107678d9a50 |
+| percona/percona-server-mongodb:6.0.21-18 (x86_64)               | 579d2fdc617ea42ab2be8c2682955b489dbf49ab19771b7a5d9c77da4dd323e7 |
 | percona/percona-server-mongodb:6.0.21-18 (ARM64)       | b9d2b7e8c4a97b2d20e2aaccfbd183f65f8ccd9f2ea13939515e18e02bc64871 |
-| percona/percona-server-mongodb:6.0.19-16-multi (x86_64)| c8ff08c4b8a96679e2daf4845873fdd4d2c48646b84db19f0c5fe02e8f3808b4 |
+| percona/percona-server-mongodb:6.0.19-16-multi (x86_64)        | c8ff08c4b8a96679e2daf4845873fdd4d2c48646b84db19f0c5fe02e8f3808b4 |
 | percona/percona-server-mongodb:6.0.19-16-multi (ARM64) | 6908b28ced260b762cd38a642c06dd802cbef0a43ab5f22afe7b583b234ebcec |
-| percona/percona-server-mongodb:6.0.18-15-multi (x86_64)| d197ce16ab0eed6df25e632b92dea5ce448e549e02028f39b78f5730c2ffef36 |
+| percona/percona-server-mongodb:6.0.18-15-multi (x86_64)         | d197ce16ab0eed6df25e632b92dea5ce448e549e02028f39b78f5730c2ffef36 |
 | percona/percona-server-mongodb:6.0.18-15-multi (ARM64) | 7fd1d8f74f71dea6ad423e8e202a0617bdd1e8783f2b5cb071b5281685ce0adf |
 | percona/percona-server-mongodb:6.0.16-13               | 1497e58e39497d8425ccd053898dc323338d6eb3f0e3c4c223f9d5a468da7931 |
-| percona/percona-server-mongodb:6.0.15-12               | f12dd271d78cf3e70088fea0c420e8c03703457d8a5959b645053546bff94dea |
+| percona/pmm-client:3.4.0                               | 9e8bf020be35eddc2a9e3a22e974234ce02c4818353e87e0522191df2743af3c |
+| percona/pmm-client:2.44.1-1                            | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
+| percona/percona-backup-mongodb:2.11.0                  | d09f5de92cfbc5a7a42a8cc86742a07481c98b3b42cffdc6359b3ec1f63de3a5 |
+| percona/percona-backup-mongodb:2.11.0 (ARM64)          | a60d095439537b982209582d428b3b39a01e31e88b2b62d2dcbd99ea4e2d9928 |
+
 
 
 --8<-- [end:images]
