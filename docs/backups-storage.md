@@ -165,6 +165,8 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 !!! note
 
     You can still use the S3-compatible implementation of GCS with HMAC. Refer to the [Amazon S3 storage setup](#amazon-s3-or-s3-compatible-storage) section for steps.
+
+    However, we don't recommend their usage due to a [known issue in PBM :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/release-notes/2.11.0.html#known-limitations-for-using-hmac-keys-on-gcs) and encourage you to switch to using service accounts keys after the upgrade to the Operator version 1.21.0.
     
 **Configuration steps** 
 {.power-number}
