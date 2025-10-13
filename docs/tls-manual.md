@@ -21,8 +21,10 @@ When you follow the steps from this guide, you'll generate these certificate fil
 
 You need to create **two sets** of certificates:
 
-1. **Internal certificates** - for communication between MongoDB nodes within the cluster
-2. **External certificates** - for client connections from outside the cluster
+1. **External certificates** - for client connections from outside the cluster. This set is mandatory
+2. **Internal certificates** - for communication between MongoDB nodes within the cluster. You can omit generating a separate of certificates for internal communication. In this case, the operator reuses the external certificates for both external and internal communication.
+
+Generating two separate sets of certificates is not mandatory but highly recommended. Using different certificates for internal and external connections gives you more control and improves security. For example, you can choose to renew or replace external certificates more often than internal ones, or set different expiration dates for each. This makes managing and securing your cluster easier in the long run.
 
 After creating the certificates, you'll create two Kubernetes Secrets and reference them in your cluster configuration.
 
