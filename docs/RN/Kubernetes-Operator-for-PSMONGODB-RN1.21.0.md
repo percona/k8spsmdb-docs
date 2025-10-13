@@ -124,6 +124,8 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
          deleteFromStorage: true
        storageName: s3-us-west
   ```
+  
+* The S3-compatible implementation of Google Cloud Storage (GCS) with using HMAC keys is deprecated in the Operator. We encourage you to switch to using to the native GCS connection type with service account (JSON) keys after the upgrade.
 
 ### Known limitations
 
