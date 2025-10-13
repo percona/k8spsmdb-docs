@@ -190,7 +190,7 @@ The Operator was developed and tested with the following software:
 
 * Percona Server for MongoDB 6.0.25-20, 7.0.24-13, and 8.0.12-4.
 * Percona Backup for MongoDB 2.11.0.
-* PMM Client: 3.4.0
+* PMM Client: 3.4.1
 * LogCollector based on fluent-bit 4.0.1
 
 Other options may also work but have not been tested. 
@@ -205,7 +205,7 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 * [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.31-1.33
 * [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.31-1.34
 * [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.16 - 4.19
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.31-1.34
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.31-1.33
 * [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.37.0 based on Kubernetes 1.34.0
 
 --8<-- [end:platforms]
@@ -248,8 +248,9 @@ Find Percona’s certified Docker images that you can use with the Percona Opera
 | percona/percona-server-mongodb:6.0.18-15-multi (x86_64)         | d197ce16ab0eed6df25e632b92dea5ce448e549e02028f39b78f5730c2ffef36 |
 | percona/percona-server-mongodb:6.0.18-15-multi (ARM64) | 7fd1d8f74f71dea6ad423e8e202a0617bdd1e8783f2b5cb071b5281685ce0adf |
 | percona/percona-server-mongodb:6.0.16-13               | 1497e58e39497d8425ccd053898dc323338d6eb3f0e3c4c223f9d5a468da7931 |
-| percona/pmm-client:3.4.0                               | 9e8bf020be35eddc2a9e3a22e974234ce02c4818353e87e0522191df2743af3c |
+| percona/pmm-client:3.4.1                               | 1c59d7188f8404e0294f4bfb3d2c3600107f808a023668a170a6b8036c56619b |
 | percona/pmm-client:2.44.1-1                            | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
+| percona/fluentbit:4.0.1                                | a4ab7dd10379ccf74607f6b05225c4996eeff53b628bda94e615781a1f58b779 |
 | percona/percona-backup-mongodb:2.11.0                  | d09f5de92cfbc5a7a42a8cc86742a07481c98b3b42cffdc6359b3ec1f63de3a5 |
 | percona/percona-backup-mongodb:2.11.0 (ARM64)          | a60d095439537b982209582d428b3b39a01e31e88b2b62d2dcbd99ea4e2d9928 |
 
