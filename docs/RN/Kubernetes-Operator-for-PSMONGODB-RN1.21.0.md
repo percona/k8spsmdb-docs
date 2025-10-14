@@ -127,13 +127,6 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
   
 * The S3-compatible implementation of Google Cloud Storage (GCS) with using HMAC keys is deprecated in the Operator. We encourage you to switch to using to the native GCS connection type with service account (JSON) keys after the upgrade.
 
-### Known limitations
-
-The Operator doesn't delete backups created with PBM versions earlier than 2.11.0 from the storage. You need to delete them manually to free up space. To do this:
-
-1. Remove the finalizer from a `psmdb-backup` object.
-2. [Delete the backup](../backups-delete.md).
-
 ## Changelog
 
 ### New features
