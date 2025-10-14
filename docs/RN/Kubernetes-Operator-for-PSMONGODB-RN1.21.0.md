@@ -48,7 +48,7 @@ The configuration of Google Cloud Storage with HMAC keys remains unchanged.
 However, PBM has a known issue for using HMAC keys with GCS, which was
 reported in [PBM-1605](https://perconadev.atlassian.net/browse/PBM-1605). The issue is in uploading large files (~512MB+) to the storage when the network is unstable. Such backups may be corrupted or incomplete but they are incorrectly treated as valid backups and pose a risk of restore failures. Therefore, we recommend migrating to the native GCS connection type with service account (JSON) keys after the upgrade.
 
-## Improve operational resilience and observability with persistent cluster-level logging for MongoDB Pods
+##  Improve operational resilience and observability with persistent cluster-level logging for MongoDB Pods
 
 Debugging distributed systems just got easier. The Percona Operator for MongoDB now supports cluster-level logging, ensuring that logs from your `mongod` instances are stored persistently, even across Pod restarts.
 
@@ -106,7 +106,7 @@ You can now see the size of each backup when viewing the backup list either via 
 
 ### Delegate PVC resizing to an external autoscaler
 
-You can now configure the Operator to use an external storage autoscaler in instead of its own resizing logic. This ability may be useful for organizations needing centralized, advanced, or cross-application scaling policies.
+You can now configure the Operator to use an external storage autoscaler instead of its own resizing logic. This ability may be useful for organizations needing centralized, advanced, or cross-application scaling policies.
 
 To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` option to `true` in the Custom Resource manifest.
 
