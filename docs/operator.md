@@ -998,7 +998,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `{}` |
 
-### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
+### `replsets.nonvoting.affinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
 
@@ -1185,6 +1185,214 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `3Gi`      |
+
+### `replsets.hidden.enabled`
+
+Enable or disable creation of [Replica Set hidden instances](arbiter.md#hidden-nodes) within the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`    |
+
+### `replsets.hidden.size`
+
+The number of [Replica Set hidden instances](arbiter.md#hidden-nodes) within the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.hidden.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.hidden.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `kubernetes.io/hostname` |
+
+### `replsets.hidden.affinity.advanced`
+
+In cases where the pods require complex tuning, the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      |            |
+
+### `replsets.hidden.tolerations.key`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.hidden.tolerations.operator`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Exists`   |
+
+### `replsets.hidden.tolerations.effect`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `NoExecute`|
+
+### `replsets.hidden.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `6000`     |
+
+### `replsets.hidden.priorityClassName`
+
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `high priority` |
+
+### `replsets.hidden.annotations`
+
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.hidden.labels`
+
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | `rack: rack-22` |
+
+### `replsets.hidden.nodeSelector`
+
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | `disktype: ssd` |
+
+### `replsets.hidden.podDisruptionBudget.maxUnavailable`
+
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.podDisruptionBudget.minAvailable`
+
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.resources.limits.cpu`
+
+[Kubernetes CPU limit :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `300m`     |
+
+### `replsets.hidden.resources.limits.memory`
+
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0.5G`     |
+
+### `replsets.hidden.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `{}`       |
+
+### `replsets.hidden.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/data`    |
+
+### `replsets.hidden.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Directory`|
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `rack: rack-22` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the hidden nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `standard` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the hidden nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
