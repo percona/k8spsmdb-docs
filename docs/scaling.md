@@ -51,12 +51,7 @@ Starting from the version 1.16.0, the Operator allows to scale Percona Server
 for MongoDB storage automatically by changing the appropriate Custom Resource
 option, if the volume type supports PVCs expansion.
 
-#### Automated scaling with Volume Expansion capability
-
-!!! warning
-
-    Automated storage scaling by the Operator is in a technical preview stage
-    and is not recommended for production environments.
+#### Storage resizing with Volume Expansion capability
 
 Certain volume types support PVCs expansion (exact details about
 PVCs and the supported volume types can be found in [Kubernetes
@@ -74,38 +69,50 @@ $ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
     AllowVolumeExpansion: true
     ```
 
-You can enable automated scaling with the [enableVolumeExpansion](operator.md#enablevolumeexpansion) Custom Resource option (turned off by default). When enabled, the Operator will automatically expand such storage for you when you change the
-`replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+To enable storage resizing via volume expansion, do the following:
+{.power-number}
+
+1. Set the [enableVolumeExpansion](operator.md#enablevolumeexpansion) Custom Resource option to `true` (it is turned off by default).
+2. Specify new storage size for the  `replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
-options in the Custom Resource.
+options in the Custom Resource. 
 
-For example, you can do it by editing and applying the `deploy/cr.yaml` file:
+    This is the example configuration of defining a new storage size in the `deploy/cr.yaml` file:
 
-``` {.text .no-copy}
-spec:
-  ...
-  enableVolumeExpansion: true
-  ...
-  replsets:
-    ...
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: <NEW STORAGE SIZE>
-```
+    ``` {.text .no-copy}
+    spec:
+      ...
+      enableVolumeExpansion: true
+      ...
+      replsets:
+        ...
+        volumeSpec:
+          persistentVolumeClaim:
+            resources:
+              requests:
+                storage: <NEW STORAGE SIZE>
+      ...
+      configsvrReplSets:
+        volumeSpec:
+          persistentVolumeClaim:
+            resources:
+              requests:
+                storage: <NEW STORAGE SIZE>
+    ```
 
-Apply changes as usual:
+3. Apply changes as usual:
 
-``` {.bash data-prompt="$" }
-$ kubectl apply -f cr.yaml
-```
+    ``` {.bash data-prompt="$" }
+    $ kubectl apply -f cr.yaml
+    ```
 
-#### Manual scaling without Volume Expansion capability
+After you apply the configuration, the Operator will automatically expand the storage for you.
 
-Manual scaling is the way to go if your version of the Operator is older than
-1.16.0, your volumes have type which does not support Volume Expansion, or you
-just do not rely on automated scaling.
+
+#### Manual resizing without Volume Expansion capability
+
+Manual resizing is the way to go if your version of the Operator is older than
+1.16.0 or your volumes are of the type which does not support Volume Expansion.
 
 You will need to delete Pods one by one and their persistent volumes to resync 
 the data to the new volumes. **This can also be used to shrink the storage.**
@@ -200,39 +207,84 @@ the data to the new volumes. **This can also be used to shrink the storage.**
 
 ## Horizontal scaling
 
-The size of the cluster is controlled by the `size` key in the
-[Custom Resource options](operator.md)
-configuration.
+### Replica Sets
 
-!!! note
+You can change the size separately for different components of your MongoDB replica set by setting these options in the appropriate subsections:
 
-    The Operator will not allow to scale Percona Server for MongoDB with the
-    `kubectl scale statefulset <StatefulSet name>` command as it puts `size`
-    configuration options out of sync.
+* [replsets.size](operator.md#replsetssize) allows you to set the size of the MongoDB Replica Set,
+* [replsets.nonvoting.size](operator.md#replsetsnonvotingsize) allows you to set the number of non-voting members,
+* [replsets.arbiter.size](operator.md#replsetsarbitersize) allows you to set the number of [Replica Set Arbiter instances](arbiter.md),
 
-You can change size separately for different components of your cluster by
-setting this option in the appropriate subsections:
-
-* [replsets.size](operator.md#replsetssize) allows to set the size of the
-    MongoDB Replica Set,
-* [replsets.arbiter.size](operator.md#replsetsarbitersize) allows to set the
-    number of [Replica Set Arbiter instances](arbiter.md),
-* [sharding.configsvrReplSet.size](operator.md#shardingconfigsvrreplsetsize)
-    allows to set the number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/),
-* [sharding.mongos.size](operator.md#shardingmongossize) allows to set the
-    number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/)
-    instances.
-
-For example, the following update in `deploy/cr.yaml` will set the size of the
-MongoDB Replica Set to `5` nodes:
+For example, the following update in `deploy/cr.yaml` sets the size of the MongoDB Replica Set `rs0` to `5` nodes:
 
 ```yaml
 spec:
   ...
   replsets:
-    ...
+  - name: rs0
     size: 5
+    ...
 ```
 
-Don’t forget to apply changes as usual, running the
-`kubectl apply -f deploy/cr.yaml` command.
+Don’t forget to apply changes as usual, running the `kubectl apply -f deploy/cr.yaml` command.
+
+!!! note
+
+    The Operator will not allow to scale Percona Server for MongoDB with the `kubectl scale statefulset <StatefulSet name>` command as it puts `size` configuration options out of sync.
+
+### Sharding
+
+You can change the size for different components of your MongoDB sharded cluster by setting these options in the appropriate subsections:
+
+* [sharding.configsvrReplSet.size](operator.md#shardingconfigsvrreplsetsize) allows you to set the number of [Config Server instances  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) in a sharded cluster,
+* [sharding.mongos.size](operator.md#shardingmongossize) allows you to set the number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances in a sharded cluster.
+
+#### Changing the number of shards
+
+You can change the number of shards of an existing cluster by adding or removing members in the [spec.replsets](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsets-section) subsection.
+
+For example, given the following cluster that has 2 shards:
+
+```yaml
+spec:
+  ...
+  replsets:
+  - name: rs0
+    size: 3
+    ...
+  - name: rs1
+    size: 3
+    ...
+```
+
+You can add an extra shard by applying the following configuration:
+
+```yaml
+spec:
+  ...
+  replsets:
+  - name: rs0
+    size: 3
+    ...
+  - name: rs1
+    size: 3
+    ...
+  - name: rs2
+    size: 3
+    ...
+```
+
+Similary, you can reduce the number of shards by removing the `rs1` and `rs2` elements:
+
+```yaml
+spec:
+  ...
+  replsets:
+  - name: rs0
+    size: 3
+    ...
+```
+
+!!! note
+
+    The Operator will not allow you to remove existing shards unless they don't have any user-created collections. It is your responsibility to ensure the shard's data is [migrated to the remaining shards](https://www.mongodb.com/docs/manual/tutorial/remove-shards-from-cluster) in the cluster before trying to applying this change.
