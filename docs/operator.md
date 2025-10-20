@@ -268,7 +268,7 @@ If `true`, the mongo shell will not attempt to validate the server certificates.
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`    |
 
-### 'tls.issuerConf.name'
+### `tls.issuerConf.name`
 
 A [cert-manager issuer name :octicons-link-external-16:](https://cert-manager.io/docs/concepts/issuer/).
 
@@ -276,11 +276,11 @@ A [cert-manager issuer name :octicons-link-external-16:](https://cert-manager.io
 | ----------- | ---------- |
 | :material-code-string: string     |  `special-selfsigned-issuer` |
 
-### 'tls.issuerConf.kind'
+### `tls.issuerConf.kind`
 
 A [cert-manager issuer type :octicons-link-external-16:](https://cert-manager.io/docs/configuration/).
 
-### 'tls.issuerConf.group'
+### `tls.issuerConf.group`
 
 A [cert-manager issuer group :octicons-link-external-16:](https://cert-manager.io/docs/configuration/). Should be `cert-manager.io` for built-in cert-manager certificate issuers.
 
@@ -422,7 +422,7 @@ The amount of seconds Kubernetes will wait for a clean replica set Pods terminat
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
-### 'replsets.serviceAccountName'
+### `replsets.serviceAccountName`
 
 Name of the separate privileged service account for Replica Set Pods.
 
@@ -758,7 +758,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
-### 'replsets.containerSecurityContext'
+### `replsets.containerSecurityContext`
 
 A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -766,7 +766,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
 
-### 'replsets.podSecurityContext'
+### `replsets.podSecurityContext`
 
 A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -1738,7 +1738,7 @@ The amount of seconds Kubernetes will wait for a clean config server Pods termin
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
-### 'sharding.configsvrReplSet.serviceAccountName'
+### `sharding.configsvrReplSet.serviceAccountName`
 
 Name of the separate privileged service account for Config Server Pods.
 
@@ -1899,7 +1899,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
-### 'sharding.configsvrReplSet.containerSecurityContext'
+### `sharding.configsvrReplSet.containerSecurityContext`
 
 A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -1907,7 +1907,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
 
-### 'sharding.configsvrReplSet.podSecurityContext'
+### `sharding.configsvrReplSet.podSecurityContext`
 
 A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -2156,6 +2156,22 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
 
+### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external`
+
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `cfg-0.mycluster.xyz` |
+
+### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2`
+
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `cfg-0.mycluster2.xyz` |
+
 ### `sharding.mongos.size`
 
 The number of [mongos  :octicons-link-external-16:](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster.
@@ -2172,7 +2188,7 @@ The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `300`      |
 
-### 'sharding.mongos.serviceAccountName'
+### `sharding.mongos.serviceAccountName`
 
 Name of the separate privileged service account for mongos Pods.
 
@@ -2380,7 +2396,7 @@ Number of seconds after which the [readiness probe  :octicons-link-external-16:]
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `2`        |
 
-### 'sharding.mongos.containerSecurityContext'
+### `sharding.mongos.containerSecurityContext`
 
 A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -2388,7 +2404,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
 
-### 'sharding.mongos.podSecurityContext'
+### `sharding.mongos.podSecurityContext`
 
 A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -2516,7 +2532,7 @@ The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/
 | ----------- | ---------- |
 | :material-code-string: string     | `rack: rack-22` |
 
-### 'sharding.mongos.expose.nodePort'
+### `sharding.mongos.expose.nodePort`
 
 The [Node port number :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the  `sharding.mongos.expose.type` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on.
 
@@ -2756,7 +2772,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-code-string: string     | `1G`     |
 
-### 'backup.containerSecurityContext'
+### `backup.containerSecurityContext`
 
 A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
 
@@ -2934,7 +2950,7 @@ The path (sub-folder) to the backups inside the [container  :octicons-link-exter
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
-### 'backup.storages.STORAGE-NAME.azure.endpointUrl'
+### `backup.storages.STORAGE-NAME.azure.endpointUrl`
 
 The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to use instead of the public endpoint.
 
