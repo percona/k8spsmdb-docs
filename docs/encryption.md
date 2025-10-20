@@ -1,11 +1,16 @@
 # Data-at-rest encryption
 
-Data-at-rest encryption ensures that stored data remains protected even if the underlying storage is compromised. Percona Operator for MongoDB uses the [data-at-rest encryption implementation in Percona Server for MongoDB  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) to protect your data.
+!!! admonition "Version added: [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)"
 
-Data-at-rest encryption is turned on by default. It uses two-tiered key architecture to secure your data: 
 
-* Each database instance generates a unique encryption key for every database. These keys are stored internally, close to the data they encrypt
-* The master encryption key is used to encrypt database keys. It is stored separately from database keys, either [in a Secret](#use-encryption-key-secret) or in an external key management service like [HashiCorp Vault](#use-hashicorp-vault-storage-for-encryption-keys).
+Data-at-rest encryption ensures that data stored on disk remains protected even if the underlying storage is compromised. This process is transparent to your applications, meaning you don't need to change the application's code. If an unauthorized user gains access to the storage, they can't read the data files.
+
+To learn more about data-at-rest-encryption in Percona Server for MongoDB, see the [Data-at-rest encryption :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) documentation.
+
+Data-at-rest encryption is turned on by default. The Operator implements it in one of the following ways:
+
+* [uses an encryption key stored in a Secret](#using-encryption-key-secret)
+* [gets encryption key from the HashiCorp Vault key storage](#using-hashicorp-vault-storage-for-encryption-keys)
 
 ## Use encryption key Secret
 
@@ -19,7 +24,7 @@ Data-at-rest encryption is turned on by default. It uses two-tiered key architec
     ```
 
     The Operator creates the encryption key Secret automatically if it
-    doesn't exist. If you would like to create it yourself, take into account
+    doesn't exist. If you would like to create it yourself, ensure
     that [the key must be a 32 character string encoded in base64  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
 2. Specify the following MongoDB encryption-specific options in the `replsets.configuration`, `replsets.nonvoting.configuration`, and
@@ -47,16 +52,18 @@ $ kubectl deploy -f deploy/cr.yaml
 
 ## Use HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13, you can configure the Operator to use [HashiCorp Vault :octicons-link-external-16:](https://www.vaultproject.io/) to securely store and manage master encryption keys, enabling automatic key rotation, audit logging, and compliance with enterprise security standards. 
+!!! admonition "Version added: [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)"
 
-To use Vault, the `deploy/cr.yaml` configuration file must include
+You can configure the Operator to use [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+
+The Operator will use Vault if the `deploy/cr.yaml` configuration file contains
 the following items:
 
 * a `secrets.vault` key equal to the name of a specially created Secret,
 * `configuration` keys for `mongod` and config servers with a number of
     Vault-specific options.
 
-The Operator itself neither installs Vault, nor configures it. You must do both operations  manually. Refer to the following sections for steps.
+The Operator itself neither installs Vault, nor configures it. You must do both operations manually. Refer to the following sections for steps.
 
 ### Create the namespace
 
