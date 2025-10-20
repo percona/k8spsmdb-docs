@@ -3140,11 +3140,37 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 
 ### `backup.tasks.keep`
 
-The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.
+This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention`.
+
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  subsection instead.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `3`        |
+
+### `backup.tasks.retention.type`
+
+Defines how to retain backups. The type of retention defaults to `count`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `count` |
+
+### `backup.tasks.retention.count`
+
+Defines the number of backups to store. Older backups are automatically deleted from the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `count` |
+
+### `backup.tasks.retention.deleteFromStorage`
+
+Defines if the backups are deleted from the cloud storage too. Supported only for AWS and Azure storage. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
 
 ### `backup.tasks.storageName`
 
