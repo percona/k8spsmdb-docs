@@ -48,7 +48,7 @@ theme:
     #- navigation.sections
     - navigation.tracking
     - content.tabs.link
-    - content.action.edit
+    #- content.action.edit
     - content.action.view
     - content.code.copy
 
@@ -83,7 +83,11 @@ markdown_extensions:
   pymdownx.mark: {}
   pymdownx.smartsymbols: {}
   pymdownx.tilde: {}
-  pymdownx.superfences: {}
+  pymdownx.superfences: 
+    custom_fences:
+      - name: mermaid
+        class: mermaid
+        format: !!python/name:pymdownx.superfences.fence_code_format
   pymdownx.tabbed:
     alternate_style: true
   pymdownx.tasklist:
@@ -92,6 +96,7 @@ markdown_extensions:
       base_path: 
         - snippets
         - docs/RN
+        - docs/
 #      auto_append:
 #        - services-banner.md
   pymdownx.highlight:
@@ -221,26 +226,39 @@ nav:
              - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
+          - reconciliation-concurrency.md
           
     - Management:
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups": backups-storage.md
               - multi-storage.md
-              - "Making scheduled backups": backups-scheduled.md
-              - "Making on-demand backup": backups-ondemand.md
-              - "Storing operations logs for point-in-time recovery": backups-pitr.md
+              - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - Make a backup:
+                 - Scheduled backup: backups-scheduled.md
+                 - On-demand backup: backups-ondemand.md
               - "Enable server-side encryption": backups-encryption.md
-              - "Restore from a previously saved backup": backups-restore.md
+              - Restore from a backup: 
+                 - "On the same cluster": backups-restore.md
+                 - "On a new cluster": backups-restore-to-new-cluster.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
-              - "About Multi-cluster": replication.md
-              - "Configuring Main site for replication": replication-main.md
-              - "Configuring Replica site for replication": replication-replica.md
-              - "Backups with cross-site replication": replication-backups.md
-              - "Splitting replica set across multiple data centers": replication-multi-dc.md
-              - "Enabling multi-cluster Services": replication-mcs.md
+              - "About Multi-cluster and multi-region deployments": replication.md
+              - "Plan your deployment": replication-plan-deployment.md
+              - Multi-cluster Services: 
+                 - About Multi-cluster Services: replication-mcs.md
+                 - Enable Multi-cluster Services on GKE: replication-mcs-gke.md
+                 - Enable Multi-cluster Services on EKS: replication-mcs-eks.md
+                 - Apply MCS to an existing cluster: replication-apply-mcs-existing.md
+              - Deployment:
+                 - "Configure Main site for replication": replication-main.md
+                 - "Configure Replica site for replication": replication-replica.md
+                 - "Interconnect sites": replication-interconnect.md
+                 - "Fail over workload to the Replica site": replication-failover.md
+                 - "Backups with cross-site replication": replication-backups.md
+                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
+              
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
@@ -256,10 +274,11 @@ nav:
           - "OpenLDAP integration": ldap.md
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
-          - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
+          - "Configure concurrent reconciliation": reconciliation-concurrency.md
           - "Monitor Kubernetes": monitor-kubernetes.md
+          - "Retrieve Percona certified images": image-query.md
           - "Delete the Operator": delete.md
 
     - Reference:

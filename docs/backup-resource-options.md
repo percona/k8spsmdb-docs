@@ -66,3 +66,11 @@ Specifies the compression level. Note that the higher value you specify, the mor
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `6` |
+
+### `startingDeadlineSeconds`
+
+The maximum time in seconds for a backup to start. The Operator compares the timestamp of the backup object against the current time. If the backup is not started within the set time, the Operator automatically marks it as “failed”.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `300` |

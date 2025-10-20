@@ -1,6 +1,8 @@
 # Percona certified images
 
-Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:
+This page lists Percona's certified Docker images that you can use with Percona Operator for MongoDB.
+
+To find images for a specific Operator version, see [Retrieve Percona certified images](image-query.md).
 
 **Images released with the Operator version {{release}}**:
 
