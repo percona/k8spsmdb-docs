@@ -1621,7 +1621,7 @@ Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-l
 
 ### `pmm.image`
 
-PMM Client docker image to use.
+PMM Client Docker image to use.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1667,6 +1667,39 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+
+### `pmm.resources.requests.cpu`
+
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `300m`     |
+
+### `pmm.resources.requests.memory`
+
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `150M`     |
+
+### `pmm.resources.limits.cpu`
+
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `400m`     |
+
+### `pmm.resources.limits.memory`
+
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `256M`     |
+
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
