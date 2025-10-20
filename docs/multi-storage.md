@@ -19,7 +19,7 @@ Note that you can have only one main storage. All other storages are added as pr
 
 To check the list of profiles, connect to the database Pod and run the `pbm profile list` command. For example, for the cluster `cluster1`, the command looks as follows:
 
-```{.bash .data-prompt="$"}
+```{.bash data-prompt="$"}
 $ kubectl exec cluster1-rs0-0 -c backup-agent -- pbm profile list
 ```
 
@@ -37,8 +37,8 @@ You can change the main storage by reassigning the `main:true` flag for another 
 
 Usually you define the storage configuration within the `deploy/cr.yaml` Custom Resource manifest. You can also pass it to the Operator within the `backupSource` option of a Restore object. For example, when you restore the failed site after a disaster. The Operator then checks the current configuration and:
 
-* If there is no storage configured there, it uses the one from the Restore object as the main storage until you define it in the `deploy/cr.yaml` file.
-* If the `deploy/cr.yaml` Custom Resource manifest has the storage configured and it differs from the one from the Restore object, the Operator adds this storage as a profile.
+* If there is no storage configured there, it uses the one from the Restore object as the main storage. After the restore it reverts the PBM configuration. You must define the main storage in the `deploy/cr.yaml` file to run further backups. 
+* If the `deploy/cr.yaml` Custom Resource manifest has the storage configured and it differs from the one from the Restore object, the Operator adds the storage from the Restore object as a profile.
 
 ## Backup metadata resync
 

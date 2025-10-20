@@ -1,20 +1,21 @@
-# Data at rest encryption
+# Data-at-rest encryption
 
-[Data at rest encryption in Percona Server for MongoDB  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html)
-is supported by the Operator since version 1.1.0.
+!!! admonition "Version added: [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)"
 
-!!! note
 
-    [Data at rest  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Data_at_rest) means inactive data stored as files, database records, etc.
+Data-at-rest encryption ensures that data stored on disk remains protected even if the underlying storage is compromised. This process is transparent to your applications, meaning you don't need to change the application's code. If an unauthorized user gains access to the storage, they can't read the data files.
 
-Data at rest encryption is turned on by default. The Operator implements it by
-either using encryption key stored in a Secret, or obtaining encryption key
-from the HashiCorp Vault key storage.
+To learn more about data-at-rest-encryption in Percona Server for MongoDB, see the [Data-at-rest encryption :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) documentation.
 
-## Using encryption key Secret
+Data-at-rest encryption is turned on by default. The Operator implements it in one of the following ways:
 
-1. The `secrets.encryptionKey` key in the `deploy/cr.yaml` file should specify
-    the name of the encryption key Secret:
+* [uses an encryption key stored in a Secret](#using-encryption-key-secret)
+* [gets encryption key from the HashiCorp Vault key storage](#using-hashicorp-vault-storage-for-encryption-keys)
+
+## Use encryption key Secret
+
+1. Specify
+    the name of the encryption key Secret in the `secrets.encryptionKey` key in the `deploy/cr.yaml` file:
 
     ```yaml
     secrets:
@@ -22,13 +23,12 @@ from the HashiCorp Vault key storage.
       encryptionKey: my-cluster-name-mongodb-encryption-key
     ```
 
-    Encryption key Secret will be created automatically by the Operator if it
-    doesn’t exist. If you would like to create it yourself, take into account
+    The Operator creates the encryption key Secret automatically if it
+    doesn't exist. If you would like to create it yourself, ensure
     that [the key must be a 32 character string encoded in base64  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
-2. The `replsets.configuration`, `replsets.nonvoting.configuration`, and
-    `sharding.configsvrReplSet.configuration` keys should include the following
-    two MongoDB encryption-specific options:
+2. Specify the following MongoDB encryption-specific options in the `replsets.configuration`, `replsets.nonvoting.configuration`, and
+    `sharding.configsvrReplSet.configuration` keys:
 
     ```yaml
     ...
@@ -40,88 +40,165 @@ from the HashiCorp Vault key storage.
         ...
     ```
 
-    The `enableEncryption` option should be set to `true` (the default value).
-    The `security.encryptionCipherMode` option should specify a proper cipher
-    mode for decryption: either `AES256-CBC` (the default value) or
-    `AES256-GCM`.
+    Set the `enableEncryption` option to `true` (the default value).
+    Specify a proper cipher
+    mode for decryption in the `security.encryptionCipherMode` option. It should be either `AES256-CBC` (the default value) or `AES256-GCM`.
 
-Don't forget to apply the modified `cr.yaml` configuration file as usual:
+Apply the modified `cr.yaml` configuration file:
 
 ``` {.bash data-prompt="$" }
 $ kubectl deploy -f deploy/cr.yaml
 ```
 
-## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
+## Use HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13, the Operator supports using [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+!!! admonition "Version added: [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)"
 
-!!! warning
-
-    Vault integration has technical preview status and is not yet recommended
-    for production environments.
+You can configure the Operator to use [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
 The Operator will use Vault if the `deploy/cr.yaml` configuration file contains
 the following items:
 
 * a `secrets.vault` key equal to the name of a specially created Secret,
-* `configuration` keys for mongod and config servers with a number of
+* `configuration` keys for `mongod` and config servers with a number of
     Vault-specific options.
 
-The Operator itself neither installs Vault, nor configures it; both operations 
-should be done manually, as described in the following parts.
+The Operator itself neither installs Vault, nor configures it. You must do both operations manually. Refer to the following sections for steps.
 
-### Installing Vault
+### Create the namespace
 
-The following steps will deploy Vault on Kubernetes with the [Helm 3 package manager  :octicons-link-external-16:](https://helm.sh/). Other Vault installation methods should also work, so the instruction placed here is not obligatory and is for illustration purposes. Read more about installation in Vault’s [documentation  :octicons-link-external-16:](https://www.vaultproject.io/docs/platform/k8s).
+It is a good practice to isolate workloads in Kubernetes using namespaces. Create a namespace with the following command:
 
-1. Add helm repo and install:
+```{.bash .data-prompt="$"}
+$ kubectl create namespace vault
+```
+
+Export the namespace as an environment variable to simplify further configuration and management
+
+```bash
+NAMESPACE="vault"
+```
+
+### Install Vault
+
+For this setup, we install Vault in Kubernetes using the [Helm 3 package manager :octicons-link-external-16:](https://helm.sh/). However, Helm is not required — any supported Vault deployment (on-premises, in the cloud, or a managed Vault service) works as long as the Operator can reach it.
+
+Read more about installation in [Vault documentation :octicons-link-external-16:](https://www.vaultproject.io/docs/platform/k8s).
+
+1. Add and update the Vault Helm repository.
 
     ``` {.bash data-prompt="$" }
     $ helm repo add hashicorp https://helm.releases.hashicorp.com
-    "hashicorp" has been added to your repositories
-
-    $ helm install vault hashicorp/vault
+    $ helm repo update
     ```
 
-2. After installation, Vault should be first initialized and then *unsealed*.
-    Initializing Vault is done with the following commands:
+2. Install Vault:
+
+    ```{.bash data-prompt="$" }
+    $ helm install vault hashicorp/vault --namespace $NAMESPACE
+    ```
+
+    ??? example "Sample output"
+
+        ```{.text .no-copy}
+        NAME: vault
+        LAST DEPLOYED: Thu Sep 18 12:11:08 2025
+        NAMESPACE: vault
+        STATUS: deployed
+        REVISION: 1
+        NOTES:
+        Thank you for installing HashiCorp Vault!
+
+        Now that you have deployed Vault, you should look over the docs on using
+        Vault with Kubernetes available here:
+        https://developer.hashicorp.com/vault/docs
+        ```
+
+3. Retrieve the Pod name where Vault is running:
+
+    ```{.bash data-prompt="$" }
+    $ kubectl -n $NAMESPACE get pod -l app.kubernetes.io/name=vault -o jsonpath='{.items[0].metadata.name}'
+    ```
+
+    ??? example "Sample output"
+
+        ```{.text .no-copy}
+        vault-0
+        ```
+        
+4. After Vault is installed, you need to initialize it. Run the following command:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl exec -it pod/vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format=json > /tmp/vault-init
+    $ kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator init -key-shares=1 -key-threshold=1 -format=json > /tmp/vault-init
     $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
     ```
 
-    To unseal Vault, execute the following command **for each Pod** of Vault
-    running:
+    The command does the following:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl exec -it pod/vault-0 -- vault operator unseal "$unsealKey"
+    * Connects to the Vault Pod
+    * Initializes Vault server
+    * Creates 1 unseal key share which is required to unseal the server
+    * Outputs the init response in JSON format to a local file `/tmp/vault-init`. It includes unseal keys and root token.
+
+5. Vault is started in a sealed state. In this state Vault can access the storage but it cannot decrypt data. In order to use Vault, you need to unseal it.
+
+    Retrieve the unseal key from the file:
+
+    ```{.bash .data-prompt="$"}
+    $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
+    ```
+    
+6. Now, unseal Vault. Run the following command on every Pod where Vault is running:
+
+    ```{.bash .data-prompt="$"}
+    $ kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator unseal "$unsealKey"
     ```
 
-### Configuring Vault
+    ??? example "Sample output"
 
-1. First, you should enable secrets within Vault. For this you will need a [Vault token  :octicons-link-external-16:](https://www.vaultproject.io/docs/concepts/tokens).
-    Percona Server for MongoDB can use any regular token which allows all operations
-    inside the secrets mount point. In the following example we are using the
-    *root token* to be sure the permissions requirement is met, but actually
-    there is no need in root permissions. We don’t recommend using the root token
-    on the production system.
+        ```{.text .no-copy}
+        Key             Value
+        ---             -----
+        Seal Type       shamir
+        Initialized     true
+        Sealed          false
+        Total Shares    1
+        Threshold       1
+        Version         1.20.1
+        Build Date      2025-07-24T13:33:51Z
+        Storage Type    file
+        Cluster Name    vault-cluster-55062a37
+        Cluster ID      37d0c2e4-8f47-14f7-ca49-905b66a1804d
+        HA Enabled      false
+        ```
 
-    ``` {.bash data-prompt="$" }
+### Configure Vault
+
+At this step you need to configure Vault and enable secrets within it. To do so you must first authenticate in Vault.
+
+When you started Vault, it generates and starts with a [root token :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/concepts/tokens) that provides full access to Vault. Use this token to authenticate.
+
+!!! note
+
+    For the purposes of this tutorial we use the root token in further sections. For security considerations, the use of root token is not recommended. Refer to the [Create token :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/commands/token/create) in Vault documentation how to create user tokens.
+
+1. Extract the Vault root token from the file where you saved the init response output:
+
+    ```{.bash .data-prompt="$"}
     $ cat /tmp/vault-init | jq -r ".root_token"
     ```
 
-    The output will show you the token:
+    ??? example "Sample output"
+    
+        ```{.text .no-copy}
+        hvs.CvmS......gXWMJg9r
+        ```
 
-    ``` {.text .no-copy}
-    s.VgQvaXl8xGFO1RUxAPbPbsfN
-    ```
-
-    Now login to Vault with this token to enable the key-value secret engine:
+2. Authenticate in Vault with this token:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl exec -it vault-0 -- /bin/sh
-    $ vault login s.VgQvaXl8xGFO1RUxAPbPbsfN
+    $ kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh
+    $ vault login hvs.CvmS......gXWMJg9r
     ```
     
     ??? example "Expected output"
@@ -133,7 +210,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
 
         Key                  Value
         ---                  -----
-        token                s.VgQvaXl8xGFO1RUxAPbPbsfN
+        token                hvs.CvmS......gXWMJg9r
         token_accessor       iMGp477aReYkPBWrR42Z3L6R
         token_duration       ∞
         token_renewable      false
@@ -142,7 +219,7 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         policies             ["root"]`
         ```
     
-    Now enable the key-value secret engine with the following command:
+3. Now enable the key-value secrets engine at the path `secret` with the following command:
     
     ``` {.bash data-prompt="$" }
     $ vault secrets enable -path secret kv-v2
@@ -154,39 +231,60 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         Success! Enabled the kv-v2 secrets engine at: secret/
         ```
 
-    !!! note
+4. (Optional) You can also enable audit. This is not mandatory, but useful:
 
-        You can also enable audit, which is not mandatory, but useful:
+    ``` {.bash data-prompt="$" }
+    $ vault audit enable file file_path=/vault/vault-audit.log
+    ```
+        
+    ??? example "Expected output"
 
-        ``` {.bash data-prompt="$" }
-        $ vault audit enable file file_path=/vault/vault-audit.log
+        ``` {.text .no-copy}
+        Success! Enabled the file audit device at: file/
         ```
-        
-        ??? example "Expected output"
 
-            ``` {.text .no-copy}
-            Success! Enabled the file audit device at: file/
-            ```
-        
-2. Now generate Secret with the Vault root token using `kubectl command` (don't
-    forget to substitute the token from the example with your real root token)
-    and add necessary options to `configuration` keys in your `deploy/cr.yaml`:
-    
-    === "without TLS, to access the Vault server via HTTP"
-        Generate Secret:
-        ``` {.bash data-prompt="$" }
-        $ kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN"
-        ```
-        
-        Now modify your `deploy/cr.yaml`:
+### Create a Secret for Vault
 
-        First set the `secrets.encryptionKey` key to the name of your Secret created on
-        the previous step. Then Add Vault-specific options to the
+To enable Vault for the Operator, create a Secret object for it using the Vault token. 
+   
+=== "HTTP access without TLS"
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r"
+    ```
+
+ === "HTTPS access with TLS"
+
+     If you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert), include the path to TLS certificates when you create a Secret.
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r" --from-file=ca.crt=<path to CA>/ca.crt
+    ```
+        
+### Reference the Secret in your Custom Resource manifest 
+
+Now, reference the Vault Secret in the Operator Custom Resource manifest. You also need the following Vault-related information:
+
+* A Vault server name and port
+* Path to the token file. When you apply the new configuration, the Operator creates the required directories and places the token file there. 
+* The secrets mount path in the format `<mount-path>/data/dc/<cluster name>/<path>`. 
+* Path to TLS certificates if you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert)
+* Contents of the ca.cert certificate file 
+
+=== "HTTP access without TLS"
+
+    Modify your `deploy/cr.yaml` as follows:
+
+    1. Set the `secrets.vault` key to the name of your Secret created on
+        the previous step. 
+    2. Add Vault-specific options to the
         `replsets.configuration`, `replsets.nonvoting.configuration`, and
         `sharding.configsvrReplSet.configuration` keys, using the following
         template:
 
         ```yaml
+        secrets:
+          vault: vault-secret
         ...
         configuration: |
           ...
@@ -201,16 +299,11 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
             ...
         ```
 
-    === "with TLS, to access the Vault server via HTTPS"
-        Generate Secret, using the path to your `ca.crt` certificate instead of the `<path to CA>` placeholder (see [the Operator TLS guide](TLS.md), if needed):
-        ``` {.bash data-prompt="$" }
-        kubectl create secret generic vault-secret --from-literal=token="s.VgQvaXl8xGFO1RUxAPbPbsfN" --from-file=ca.crt=<path to CA>/ca.crt
-        ```
+=== "HTTPS access with TLS"
         
-        Now modify your `deploy/cr.yaml`:
-
-        First set the `secrets.encryptionKey` key to the name of your Secret created on
-        the previous step. Then Add Vault-specific options to the
+    1. Set the `secrets.vault` key to the name of your Secret created on
+        the previous step. 
+    2. Add Vault-specific options to the
         `replsets.configuration`, `replsets.nonvoting.configuration`, and
         `sharding.configsvrReplSet.configuration` keys, using the following
         template:
@@ -231,13 +324,14 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
         ```
 
     While adding options, modify this template as follows:
+
     * substitute the `<cluster name>` placeholder with your real cluster name,
     * substitute the <path> placeholder with `rs0` when adding options to
         `replsets.configuration` and `replsets.nonvoting.configuration`,
     * substitute the <path> placeholder with `cfg` when adding options to
     `sharding.configsvrReplSet.configuration`.
     
-    Finally, apply your modified `cr.yaml` as usual:
+2. Apply your modified `cr.yaml` file:
     
     ``` {.bash data-prompt="$" }
     $ kubectl deploy -f deploy/cr.yaml
@@ -251,5 +345,5 @@ The following steps will deploy Vault on Kubernetes with the [Helm 3 package man
     $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
     ```
 
-More details on how to install and configure Vault can be found [in the official documentation  :octicons-link-external-16:](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
+Find more details on how to install and configure Vault [in Vault documentation  :octicons-link-external-16:](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).
 

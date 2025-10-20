@@ -1,84 +1,62 @@
-# Enabling multi-cluster Services
+# Multi-cluster Services
 
+[Multi-cluster Services (MCS)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services)
+is a cross-cluster discovery and invocation mechanism that uses the existing Service object. 
 
-Kubernetes [multi-cluster Services (MCS)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services)
-is a cross-cluster discovery and invocation of Services. MCS-enabled Services
-become discoverable and accessible across clusters with a virtual IP address.
+MCS allows you to create a "fleet" of Kubernetes clusters that share a common identity and are managed as a single logical unit. This enables service discovery and communication across clusters via a virtual IP address, simplifying the process of building multi-region or multi-cluster deployments. 
 
-This feature allows splitting applications into multiple clusters combined in
-one *fleet*, which can be useful to separate logically standalone parts
-(i.e. stateful and stateless ones), or to address privacy and scalability
-requirements, etc.
+Multi-cluster Services should be supported by the cloud provider. It is natively
+supported [by Google Kubernetes Engine (GKE)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services). 
+Amazon Elastic Kubernetes Service (EKS) provides multi-cluster Services via the [AWS Cloud Map :octicons-link-external-16:](https://aws.amazon.com/cloud-map/).
 
-Multi-cluster Services should be supported by the cloud provider. It is 
-supported [by Google Kubernetes Engine (GKE)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services),
-and [by Amazon Elastic Kubernetes Service (EKS)  :octicons-link-external-16:](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
+## Use multi-cluster Services
 
-Configuring your cluster for multi-cluster Services includes two parts:
+To use multi-cluster Services for your deployment, you must do the following:
 
-- configure MCS with your cloud provider,
-- make needed preparations with the Operator.
+* Enable multi-cluster Services with your cloud provider
+* Configure the Operator to use multi-cluster Services
 
-To set up MCS for a specific cloud provider you should follow official guides,
-for example ones [from Google Kubernetes Engine (GKE)  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
-or [from Amazon Elastic Kubernetes Service (EKS)  :octicons-link-external-16:](https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/).
+MCS can charge cross-site replication with additional limitations specific to
+the cloud provider. For example, GKE demands all participating Pods to be in the
+same [project :octicons-link-external-16:](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+Also, consider using a custom namespace for exporting Services. Using the  `default` and `kube-system` Namespaces can cause unintended name conflicts and the resulting unintended grouping.
 
-!!! warning
+### Enable multi-cluster Services with your cloud provider
 
-    For EKS, you also need to create ClusterProperty objects prior to enabling multi-cluster services.
+To get started, follow the setup guides for your specific cloud provider:
 
-    ```yaml
-    apiVersion: about.k8s.io/v1alpha1
-      kind: ClusterProperty
-    metadata:
-      name: cluster.clusterset.k8s.io
-    spec:
-      value: [Your Cluster identifier]
-    ---
-    apiVersion: about.k8s.io/v1alpha1
-    kind: ClusterProperty
-    metadata:
-      name: clusterset.k8s.io
-    spec:
-      value: [Your ClusterSet identifier]
-    ```
+* [Enable multi-cluster Services on GKE](replication-mcs-gke.md)
+* [Enable multi-cluster Services on EKS](replication-mcs-eks.md)
 
-    Check [AWS MCS controller repository  :octicons-link-external-16:](https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage) for more information.
+### Configure the Operator to use multi-cluster Services
 
-Setting up the Operator for MCS results in registering Services for export to
-other clusters [using the ServiceExport object  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services),
-and using ServiceImport one to import external services. Set the following
-options in the `multiCluster` subsection of the `deploy/cr.yaml` configuration
-file to make it happen:
+To work in multi-cluster Kubernetes environment, the Operator must ensure service discovery across clusters. 
 
-- `multiCluster.enabled` should be set to `true`,
-- `multiCluster.DNSSuffix` string should be equal to the cluster domain suffix
-    for multi-cluster Services used by Kubernetes (`svc.clusterset.local`
-    [by default  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)).
+To do this, the Operator must create the ServiceExport and ServiceImport resources.
 
-The following example in the `deploy/cr.yaml` configuration file is rather
-straightforward:
+A **ServiceExport** is a Kubernetes resource that marks a standard Service for sharing across clusters. When created, ServiceExport signals to the MCS controller that the service with the same name should be made discoverable to other clusters.
 
-```yaml
-...
-multiCluster:
-  enabled: true
-  DNSSuffix: svc.clusterset.local
-...
+The Operator creates the ServiceExport resource for a cluster when the `multiCluster` subsection of the `deploy/cr.yaml` contains the following configuration:
+
+* the `multiCluster.enabled` key is set to `true`
+* the `multiCluster.DNSSuffix` string is equal to the cluster domain suffix for multi-cluster Services used by Kubernetes. The [default value :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services) is `svc.clusterset.local`.
+
+   ```yaml
+   ...
+   multiCluster:
+     enabled: true
+     DNSSuffix: svc.clusterset.local
+   ...
+   ```
+
+For a Service to be exported and become accessible by other clusters of the fleet, it must have the same name and namespace in each cluster. Once exported, the service is recognized  as a single combined Service. It can be resolved from
+any Pod in any fleet cluster via the shared DNS name:
+
+```
+SERVICE_NAME.NAMESPACE.svc.clusterset.local
 ```
 
-Apply changes as usual with the `kubectl apply -f deploy/cr.yaml` command.
-
-!!! note
-
-    If you want to enable multi-cluster services in a new cluster, we
-    recommended deploying the cluster first with `multiCluster.enabled` set to
-    `false` and enable it after replset is initialized. Having MCS enabled from
-    the start is prone to errors on replset initialization.
-
-The initial ServiceExport creation and sync with the clusters of the fleet takes
-approximately five minutes. You can check the list of services for export and
-import with the following commands:
+It takes approximately  five minutes to create ServiceExport and sync with the clusters of the fleet. You can check the list of services for export with the following commands:
 
 ``` {.bash data-prompt="$" }
 $ kubectl get serviceexport
@@ -99,6 +77,10 @@ $ kubectl get serviceexport
     my-cluster-name-rs0-2    22m
     ```
 
+A **ServiceImport** is a Kubernetes resource to consume exported services in each importing cluster. This is analogous to the traditional Service type in Kubernetes. The ServiceImport is created automatically by the MCS controller. It contains endpoint information from all clusters that exported the service and enables workloads in one cluster to access services in another using the unified DNS name.
+
+To check the list of services for import, run this command:
+
 ``` {.bash data-prompt="$" }
 $ kubectl get serviceimport
 ```
@@ -118,44 +100,12 @@ $ kubectl get serviceimport
     my-cluster-name-rs0-2    ClusterSetIP   ["10.73.193.92"]    22m
     ```
 
-!!! note
+Since ServiceImport is not controlled by the Operator, objects you must check the MCS controller installed by your cloud provider if you need to troubleshoot it.
 
-    ServiceExport objects are created automatically by the Percona Server for
-    MongoDB Operator. ServiceImport objects, on the other hand, are not
-    controlled by the operator. If you need to troubleshoot ServiceImport
-    objects you must check the MCS controller installed by your cloud provider.
+## Next steps
 
-After ServiceExport object is created, exported Services can be resolved from
-any Pod in any fleet cluster as
-`SERVICE_EXPORT_NAME.NAMESPACE.svc.clusterset.local`.
+[Enable MCS on GKE](replication-mcs-gke.md){.md-button}
+[Enable MCS on EKS](replication-mcs-eks.md){.md-button}
 
-!!! note
 
-    This means that ServiceExports with the same name and namespace will
-    be recognized as a single combined Service.
 
-MCS can charge cross-site replication with additional limitations specific to
-the cloud provider. For example, GKE demands all participating Pods to be in the
-same [project  :octicons-link-external-16:](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-Also, `default` Namespace should be used with caution: your cloud provider
-[may not allow  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services)
-exporting Services from it to other clusters.
-
-## Applying MCS to an existing cluster
-
-Additional actions are needed to turn on MCS for the 
-**already-existing non-MCS cluster**.
-
-- You need to restart the Operator after editing the `multiCluster` subsection
-    keys and applying `deploy/cr.yaml`. Find the Operator’s Pod name in the
-    output of the `kubectl get pods` command (it will be something like
-    `percona-server-mongodb-operator-d859b69b6-t44vk`) and delete it as follows:
-
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete percona-server-mongodb-operator-d859b69b6-t44vk
-    ```
-
-- If you are enabling MCS for a running cluster after upgrading from the
-    Operator version `1.11.0` or below, you need rotating multi-domain (SAN)
-    certificates. Do this by [pausing the cluster](pause.md) and
-    deleting [TLS Secrets](TLS.md).
