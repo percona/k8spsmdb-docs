@@ -1,15 +1,16 @@
 # Data at rest encryption
 
-[Data at rest encryption in Percona Server for MongoDB  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html)
-is supported by the Operator since version 1.1.0.
+!!! admonition "Version added: [1.1.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md)"
 
-!!! note
 
-    [Data at rest  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Data_at_rest) means inactive data stored as files, database records, etc.
+Data-at-rest encryption ensures that data stored on disk remains protected even if the underlying storage is compromised. This process is transparent to your applications, meaning you don't need to change the application's code. If an unauthorized user gains access to the storage, they can't read the data files.
 
-Data at rest encryption is turned on by default. The Operator implements it by
-either using encryption key stored in a Secret, or obtaining encryption key
-from the HashiCorp Vault key storage.
+To learn more about data-at-rest-encryption in Percona Server for MongoDB, see the [Data-at-rest encryption :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) documentation.
+
+Data-at-rest encryption is turned on by default. The Operator implements it in one of the following ways:
+
+* [uses an encryption key stored in a Secret](#using-encryption-key-secret)
+* [gets encryption key from the HashiCorp Vault key storage](#using-hashicorp-vault-storage-for-encryption-keys)
 
 ## Using encryption key Secret
 
@@ -23,7 +24,7 @@ from the HashiCorp Vault key storage.
     ```
 
     Encryption key Secret will be created automatically by the Operator if it
-    doesn’t exist. If you would like to create it yourself, take into account
+    doesn’t exist. If you would like to create it yourself, ensure
     that [the key must be a 32 character string encoded in base64  :octicons-link-external-16:](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management).
 
 2. The `replsets.configuration`, `replsets.nonvoting.configuration`, and
@@ -51,14 +52,11 @@ Don't forget to apply the modified `cr.yaml` configuration file as usual:
 $ kubectl deploy -f deploy/cr.yaml
 ```
 
-## <a name="using-vault"></a>Using HashiCorp Vault storage for encryption keys
+## Using HashiCorp Vault storage for encryption keys
 
-Starting from the version 1.13, the Operator supports using [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
+!!! admonition "Version added: [1.13.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)"
 
-!!! warning
-
-    Vault integration has technical preview status and is not yet recommended
-    for production environments.
+The Operator supports using [HashiCorp Vault  :octicons-link-external-16:](https://www.vaultproject.io/) storage for encryption keys - a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider.
 
 The Operator will use Vault if the `deploy/cr.yaml` configuration file contains
 the following items:
