@@ -1,0 +1,9 @@
+## Before you start
+
+Clone the repository with all manifests and source code. You'll need it to edit configuration files for the database clusters, Secrets, backups and restores. Run the following command:
+
+```{.bash data-prompt="$"}
+$ git clone -b v{{release}} https://github.com/percona/percona-server-mongodb-operator
+```
+
+Make sure to clone the correct branch. The branch name is the same as the Operator release version.

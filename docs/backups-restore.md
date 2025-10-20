@@ -1,34 +1,56 @@
 # Restore the cluster from a previously saved backup
 
-The backup is normally restored on the Kubernetes cluster where it was made, but [restoring it on a different Kubernetes-based environment with the installed Operator is also possible](backups-restore-to-new-cluster.md).
+You can restore from a backup as follows:
 
-Following things are needed to restore a previously saved backup:
+* On the same cluster where you made a backup
+* On [a new cluster deployed in a different Kubernetes-based environment](backups-restore-to-new-cluster.md).
 
-* Make sure that the cluster is running.
-* Find out correct names for the **backup** and the **cluster**. Available backups can be listed with the following command:
+This document focuses on the restore to the same cluster.
+
+To restore from a backup, you create a Restore object using a special restore configuration file. The
+example of such file is [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/backup/restore.yaml).
+
+You can check available options in the [restore options reference](restore-options.md).
+
+## Restore scenarios
+
+This document covers the following restore scenarios:
+
+* [Restore from a full backup](#restore-from-a-full-backup) - restore from a backup snapshot without point-in-time
+* [Point-in-time recovery](#restore-with-point-in-time-recovery) - restore to a specific time, a specific or latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
+* [Selective restore from a full logical backup](#selective-restore)
+
+--8<-- [start:backup-prepare]
+
+## Before you start
+
+1. Make sure that the cluster is running.
+2. List the cluster to find the correct cluster name. Replace the `<namespace>` with your value:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb-backup
+    $ kubectl get psmdb -n <namespace>
     ```
 
-    And the following command will list available clusters:
+3. List backups to retrieve the desired backup name. Replace the `<namespace>` with your value:
 
     ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    $ kubectl get psmdb-backup -n <namespace>
     ```
 
-!!! note
+--8<-- [end:backup-prepare]
 
-     If you have [configured storing operations logs for point-in-time recovery](backups-pitr.md), you will have possibility to roll back the cluster to a specific date and time. Otherwise, restoring backups without point-in-time recovery is the only option.
+## Restore from a full backup
 
-When the correct names for the backup and the cluster are known, backup restoration can be done in the following way.
+To restore your Percona XtraDB cluster from a backup, define a `PerconaServerMongoDBRestore` custom resource. Set the following keys:
 
-## Without point-in-time recovery
+* set `spec.clusterName` key to the name of the target cluster to restore the backup on,
+* set `spec.backupName` key to the name of your backup
 
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+Pass this configuration to the Operator:
 
-    * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
-    * set `spec.backupName` key to the name of your backup,
+=== "via the YAML manifest"
+
+    1. Edit the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/backup/restore.yaml) file and specify the following keys:
 
         ```yaml
         apiVersion: psmdb.percona.com/v1
@@ -40,31 +62,38 @@ When the correct names for the backup and the cluster are known, backup restorat
           backupName: backup1
         ```
 
-2. After that, the actual restoration process can be started as follows:
+    2. Start the restore with this command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/restore.yaml
-    ```
-
-    !!! note
-
-        Storing backup settings in a separate file can be replaced by passing its content to the `kubectl apply` command as follows:
-
-        ```bash
-        $ cat <<EOF | kubectl apply -f-
-        apiVersion: psmdb.percona.com/v1
-        kind: PerconaServerMongoDBRestore
-        metadata:
-          name: restore1
-        spec:
-          clusterName: my-cluster-name
-          backupName: backup1
-        EOF
+        ``` {.bash data-prompt="$" }
+        $ kubectl apply -f deploy/backup/restore.yaml
         ```
 
-## With point-in-time recovery
+=== "via the command line"
 
-1. Set appropriate keys in the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) file.
+    You can skip creating a separate file by passing YAML content directly:
+
+    ```{.bash data-prompt="$"}
+    $ cat <<EOF | kubectl apply -f-
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore1
+    spec:
+      clusterName: my-cluster-name
+      backupName: backup1
+    EOF
+    ```
+
+## Restore with point-in-time recovery
+
+1. Check a time to restore for a backup. Use the command below to find the latest restorable timestamp:
+    
+    ``` {.bash data-prompt="$" }
+    $ kubectl get psmdb-backup <backup_name> -o jsonpath='{.status.latestRestorableTime}'
+    ```
+    
+
+2. Set the following keys for the `PerconaServerMongoDBRestore` custom resource:
 
     * set `spec.clusterName` key to the name of the target cluster to restore the backup on
     * set `spec.backupName` key to the name of your backup
@@ -73,38 +102,35 @@ When the correct names for the backup and the cluster are known, backup restorat
             * `date` - roll back to specific date
             * `latest` - recover to the latest possible transaction
         * `date` key is used with `type=date` option and contains value in datetime format
-    The resulting `restore.yaml` file may look as follows:
 
-    ```yaml
-    apiVersion: psmdb.percona.com/v1
-    kind: PerconaServerMongoDBRestore
-    metadata:
-      name: restore1
-    spec:
-      clusterName: my-cluster-name
-      backupName: backup1
-      pitr:
-        type: date
-        date: YYYY-MM-DD hh:mm:ss
-    ```
+3. Pass this configuration to the Operator.
 
-    !!! note
+    === "via the YAML manifest"
+    
+        1. Edit the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{release}}/deploy/backup/restore.yaml) file. 
 
-        <a name="backups-latest-restorable-time"></a> Full backup objects available with the `kubectl get psmdb-backup` command have a "Latest restorable time" information field handy when selecting a backup to restore. You can easily query the backup for this information as follows:
-   
-        ``` {.bash data-prompt="$" }
-        $ kubectl get psmdb-backup <backup_name> -o jsonpath='{.status.latestRestorableTime}'
-        ```
+            ```yaml
+            apiVersion: psmdb.percona.com/v1
+            kind: PerconaServerMongoDBRestore
+            metadata:
+              name: restore1
+            spec:
+              clusterName: my-cluster-name
+              backupName: backup1
+              pitr:
+                type: date
+                date: YYYY-MM-DD hh:mm:ss
+            ```
 
-2. Run the actual restoration process:
+        2. Start the restore with this command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/restore.yaml
-    ```
+            ``` {.bash data-prompt="$" }
+            $ kubectl apply -f deploy/backup/restore.yaml
+            ```
 
-    !!! note
+    === "via the command line"
 
-        Storing backup settings in a separate file can be replaced by passing its content to the `kubectl apply` command as follows:
+        You can skip editing the YAML file and pass its contents to the Operator via the command line. For example:
 
         ``` {.bash data-prompt="$" }
         $ cat <<EOF | kubectl apply -f-

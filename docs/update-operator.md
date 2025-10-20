@@ -4,7 +4,23 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
 The upgrade process is similar for all installation methods, including Helm and OLM.
 
-## Considerations
+## Considerations for Kubernetes Cluster versions and upgrades
+
+1. Before upgrading the Kubernetes cluster, have a disaster recovery plan in place. Ensure that a backup is taken prior to the upgrade, and that point-in-time recovery is enabled to meet your Recovery Point Objective (RPO).
+
+2. Plan your Kubernetes cluster or Operator upgrades with version compatibility in mind.
+
+    The Operator is supported and tested on specific Kubernetes versions. Always refer to the Operator's [release notes](RN/index.md) to verify the supported Kubernetes platforms.
+
+    Note that while the Operator might run on unsupported or untested Kubernetes versions, this is not recommended. Doing so can cause various issues, and in some cases, the Operator may fail if deprecated API versions have been removed.
+
+3. During a Kubernetes cluster upgrade, you must also upgrade the `kubelet`. It is advisable to drain the nodes hosting the database Pods during the upgrade process.
+
+4. During the `kubelet` upgrade, nodes transition between `Ready` and `NotReady` states. Also, in some scenarios, older nodes may be replaced entirely with new nodes. Ensure that nodes hosting database or proxy pods are functioning correctly and remain in a stable state after the upgrade.
+
+5. Regardless of the upgrade approach, pods will be rescheduled or recycled. Plan your Kubernetes cluster upgrade accordingly to minimize downtime and service disruption.
+
+## Considerations for the Operator upgrades
 
 1. The Operator version has three digits separated by a dot (`.`) in the format `major.minor.patch`. Here's how you can understand the version `1.18.0`:
 
@@ -168,37 +184,60 @@ The upgrade includes the following steps.
         ```
 
 
-### Upgrade via helm
+### Upgrade via Helm
 
 If you have [installed the Operator using Helm](helm.md), you can upgrade the
 Operator with the `helm upgrade` command.
 
-1. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-    for the Operator, taking it from the official repository on Github, and do
-    the same for the Role-based access control:
+The `helm upgrade` command updates only the Operator deployment. The [update flow for the database management system](update-db.md) is the same for all installation methods, whether it was installed via Helm or `kubectl`.
+
+1. You must have the compatible version of the Custom Resource Definition (CRD) in all namespaces that the Operator manages. Starting with version 1.21.0, you can check it using the following command:
+
+    ``` {.bash data-prompt="$" }
+    $ kubectl get crd perconaservermongodbs.psmdb.percona.com --show-labels
+    ```
+
+2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+    for the Operator, taking it from the official repository on Github.
+
+    Refer to the [compatibility between CRD and the Operator](#considerations) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
-    ```
-    
-2. If you installed the Operator with no [customized parameters  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), the upgrade can be done as follows: 
-
-    ``` {.bash data-prompt="$" }
-    $ helm upgrade my-op percona/psmdb-operator --version {{ release }}
     ```
 
-    The `my-op` parameter in the above example is the name of a [release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
-    which which you have chosen for the Operator when installing its Helm chart.
+    If you already have the latest CRD version in one of namespaces, don't re-run intermediate upgrades for it.
+   
+3. Upgrade the Operator deployment
 
-    If the Operator was installed with some [customized parameters  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), you should list these options in the upgrade command.
-    
-    
-    You can get list of used options in YAML format with the `helm get values my-op -a > my-values.yaml` command, and this file can be directly passed to the upgrade command as follows:
+    === "With default parameters"
 
-    ``` {.bash data-prompt="$" }
-    $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
-    ```
+        To upgrade the Operator installed with default parameters, use the following command: 
+
+        ``` {.bash data-prompt="$" }
+        $ helm upgrade my-op percona/psmdb-operator --version {{ release }}
+        ```
+
+    === "With customized parameters"
+
+        If you installed the Operator with some [customized parameters :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart), list these options in the upgrade command.   
+    
+        1. Get the list of used options in YAML format :
+        
+            ```{.bash data-prompt="$" }
+            $ helm get values my-op -a > my-values.yaml
+            ``` 
+        
+        2. Pass these options to the upgrade command as follows:
+
+            ``` {.bash data-prompt="$" }
+            $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
+            ```
+    The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
+        which you have chosen for the Operator when installing its Helm chart.
+
+    During the upgrade, you may see a warning to manually apply the CRD if it has the outdated version. In this case, refer to step 2 to upgrade the CRD and then step 3 to upgrade the deployment.
+
 
 ### Upgrade via Operator Lifecycle Manager (OLM)
 
