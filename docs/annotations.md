@@ -147,7 +147,7 @@ $ kubectl get pod my-cluster-name-rs0-0 -o jsonpath='{.metadata.annotations}'
 ## Specifying labels and annotations ignored by the Operator
 
 Sometimes various Kubernetes flavors can add their own annotations to the
-objects managed by the Operator.
+Services managed by the Operator.
 
 The Operator keeps track of all changes to its objects and can remove
 annotations that it didn't create.
