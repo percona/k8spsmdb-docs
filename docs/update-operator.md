@@ -166,7 +166,8 @@ The upgrade includes the following steps.
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
-              "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" }
+              "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" },
+              "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
         ```
 
@@ -177,7 +178,8 @@ The upgrade includes the following steps.
            "spec": {
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
-              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" }
+              "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
+              "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
         ```
 

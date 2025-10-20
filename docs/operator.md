@@ -3203,3 +3203,47 @@ The backup type: (can be either `logical` (default) or `physical`; see [the Oper
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
+
+## <a name="operator-logcollector-section"></a>Log Collector section
+
+The `logcollector` section contains configuration options for [Fluent Bit Log Collector :octicons-link-external-16:](https://fluentbit.io).
+
+### `logcollector.enabled`
+
+Enables or disables [cluster-level logging with Fluent Bit](debug-logs.md#cluster-level-logging).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
+
+### `logcollector.image`
+
+Log Collector Docker image to use.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `perconalab/fluentbit:main-logcollector` |
+
+### `logcollector.configuration`
+
+Additional configuration options (see [Fluent Bit official documentation :octicons-link-external-16:](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/configuration-file) for details).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
+### `logcollector.resources.requests.memory`
+
+The [Kubernetes memory requests :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for a Log Collector sidecar container in a Percona Server for MongoDB Pod.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `100M` |
+
+### `logcollector.resources.requests.cpu`
+
+[Kubernetes CPU requests :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for a Log collector sidecar container in a Percona Server for MongoDB Pod.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `200m` |
