@@ -153,7 +153,7 @@ The Operator keeps track of all changes to its objects and can remove
 annotations that it didn't create.
 
 If there are no annotations or labels in the Custom Resource `expose.*` subsections,
-the Operator does nothing if a new label or annotation is added to the object.
+the Operator does nothing if a new label or annotation is added to the Service object.
 
 If the [Service per Pod](expose.md#service-per-pod) mode is not used, the
 Operator **won't remove any annotations and labels** from any Services related
