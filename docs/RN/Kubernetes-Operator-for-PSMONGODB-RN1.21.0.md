@@ -217,8 +217,8 @@ Find Percona’s certified Docker images that you can use with the Percona Opera
 
 | Image                                                  | Digest                                                           |
 |:-------------------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb-operator:1.21.0         | af7606b2901039e1593ec6dec8b13a48cf50fcc321ab8d6eb2eb6433f49340ca |
-| percona/percona-server-mongodb-operator:1.21.0 (ARM64) | 09a2ef90be5427c14ac37d71ba99750b5790646e2882d27f9066f720f1a3c3cd |
+| percona/percona-server-mongodb-operator:1.21.0         | 791a27c0df745e1b3531b6bbdba0b4ff67c46a38df62c23bc3203bcf0563e4cb |
+| percona/percona-server-mongodb-operator:1.21.0 (ARM64) | 56bec3f64f64497bc1468ec64dc5ca44a282da4c2666e1a9d0f96a00d329f88f |
 | percona/percona-server-mongodb:8.0.12-4 (x86_64)               | ab8793879409788b5a19f7e332a3700520e8eeaf4b068ec8cc7d1b680f097307 |
 | percona/percona-server-mongodb:8.0.12-4 (ARM64)        | d367e225b57783bc2ff8451571c7568dc3b240176cf149a01cc3a7b13fb52a78 |
 | percona/percona-server-mongodb:8.0.8-3  (x86_64)               | e4580ca292f07fd7800e139121aea4b2c1dfa6aa34f3657d25a861883fd3de41 |
