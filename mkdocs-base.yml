@@ -273,6 +273,7 @@ nav:
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Monitor Kubernetes": monitor-kubernetes.md
+          - "Retrieve Percona certified images": image-query.md
           - "Delete the Operator": delete.md
 
     - Reference:
