@@ -114,7 +114,7 @@ replsets:
     ....
 ```
 
-Find the description of other available options in the [replsets.hidden section](operator.md#replsetshidden) of the [Custom Resource options reference](operator.md).
+Find the description of other available options in the [replsets.hidden section](operator.md#replsetshiddenenabled) of the [Custom Resource options reference](operator.md).
 
 ## Manage voting members in replica set
 

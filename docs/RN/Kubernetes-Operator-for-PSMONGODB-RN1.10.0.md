@@ -15,7 +15,7 @@
 ## Release Highlights
 
 
-* Starting from this release, the Operator implements as a technical preview the possibility to [include non-voting replica set members](../arbiter.md#adding-non-voting-nodes) into the cluster, which do not participate in the primary election process. This feature enables users to deploy non-voting members with the Operator through a Custom Resource object without manual configuration.
+* Starting from this release, the Operator implements as a technical preview the possibility to [include non-voting replica set members](../arbiter.md#non-voting-nodes) into the cluster, which do not participate in the primary election process. This feature enables users to deploy non-voting members with the Operator through a Custom Resource object without manual configuration.
 
 
 * The technical preview of the [cross-site replication](../replication.md) feature allows users to add external replica set nodes into the cluster managed by the Operator, including scenarios when one of the clusters is outside of the Kubernetes environment. External nodes can be run by another Operator or can be regular MongoDB deployment. The feature is intended for the following use cases:
@@ -29,7 +29,7 @@
 ## New Features
 
 
-* [K8SPSMDB-479](https://jira.percona.com/browse/K8SPSMDB-479): Allow users to add [non-voting members](../arbiter.md#adding-non-voting-nodes) to MongoDB replica, needed to have more than 7 nodes or to create a node in the edge location
+* [K8SPSMDB-479](https://jira.percona.com/browse/K8SPSMDB-479): Allow users to add [non-voting members](../arbiter.md#non-voting-nodes) to MongoDB replica, needed to have more than 7 nodes or to create a node in the edge location
 
 
 * [K8SPSMDB-265](https://jira.percona.com/browse/K8SPSMDB-265): [Cross region replication](../replication.md) feature simplifies the migrations and enables Disaster Recovery capabilities for MongoDB on Kubernetes

@@ -12,7 +12,7 @@
 
 ### Enhancements of the declarative user management
 
-The [declarative management of custom MongoDB users](../users.md#unprivileged-users) was improved compared to its initial implementation in the previous release, where the Operator did not track and sync user-related changes in the Custom Resource and the database. Also, starting from now you can create custom MongoDB roles on various databases just like users in the `deploy/cr.yaml` manifest:
+The [declarative management of custom MongoDB users](../users.md#application-level-unprivileged-users) was improved compared to its initial implementation in the previous release, where the Operator did not track and sync user-related changes in the Custom Resource and the database. Also, starting from now you can create custom MongoDB roles on various databases just like users in the `deploy/cr.yaml` manifest:
 
 ```yaml
 ...
@@ -72,7 +72,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 
 ## Deprecation, Rename and Removal
 
-* The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](../scaling.md#automated-scaling-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
+* The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](../scaling.md#storage-resizing-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
 
 * A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide a unified experience with other Percona Operators:
 

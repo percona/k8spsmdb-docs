@@ -8,7 +8,7 @@ This release of {{config.site_name}} includes the following new features and imp
 
 ### Percona Server for MongoDB 8.0 is now the default version
 
-For you to enjoy all features and improvements that come with the latest major version out of the box, the Operator now deploys the cluster with Percona Server for MongoDB 8.0 by default. You can always change the version to your desired one for the installation and update. Check the list of [Percona certified images](#percona-certified-images) for the database versions available for this release. For previous Operator versions, learn [how to query the Version Service](image-query.md) and retrieve the available images from it.
+For you to enjoy all features and improvements that come with the latest major version out of the box, the Operator now deploys the cluster with Percona Server for MongoDB 8.0 by default. You can always change the version to your desired one for the installation and update. Check the list of [Percona certified images](#percona-certified-images) for the database versions available for this release. For previous Operator versions, learn [how to query the Version Service](../image-query.md) and retrieve the available images from it.
 
 ### PMM3 support
 
@@ -177,7 +177,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 
 * The [Data-at-rest encryption](../encryption.md) topic is updated with the correct steps for using HashiCorp Vault.
 
-* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#considerations) before updating any Operator.
+* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#considerations-for-kubernetes-cluster-versions-and-upgrades) before updating any Operator.
 
 ## Supported software
 

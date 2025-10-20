@@ -85,7 +85,7 @@
 
 ## Known Issues and Limitations
 
-* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [arbiter](../arbiter.md#adding-arbiter-nodes), [non-voting](../arbiter.md#adding-non-voting-nodes), or [delayed :octicons-link-external-16:](https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/) members due to current Percona Backup for MongoDB limitations
+* {{ k8spsmdbjira(875) }} Physical backups cannot be restored on the clusters with [arbiter](../arbiter.md#arbiter-nodes), [non-voting](../arbiter.md#non-voting-nodes), or [delayed :octicons-link-external-16:](https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/) members due to current Percona Backup for MongoDB limitations
 
 * {{ k8spsmdbjira(846) }} After switching the cluster to unsafe mode by setting allowUnsafeConfig: true, it is not possible to switch back into safe mode. The user can still scale the cluster safely, but the flag is ignored
 

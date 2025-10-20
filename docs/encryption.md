@@ -9,8 +9,8 @@ To learn more about data-at-rest-encryption in Percona Server for MongoDB, see t
 
 Data-at-rest encryption is turned on by default. The Operator implements it in one of the following ways:
 
-* [uses an encryption key stored in a Secret](#using-encryption-key-secret)
-* [gets encryption key from the HashiCorp Vault key storage](#using-hashicorp-vault-storage-for-encryption-keys)
+* [uses an encryption key stored in a Secret](#use-encryption-key-secret)
+* [gets encryption key from the HashiCorp Vault key storage](#use-hashicorp-vault-storage-for-encryption-keys)
 
 ## Use encryption key Secret
 
