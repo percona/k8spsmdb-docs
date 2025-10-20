@@ -65,7 +65,15 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `enableVolumeExpansion`
 
-Enables or disables [automatic storage scaling / volume expansion](scaling.md#automated-scaling-with-volume-expansion-capability).
+Enables or disables [storage scaling / volume expansion](scaling.md#automated-scaling-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling.md#storage-resizing-with-volume-expansion-capability)
 
 | Value type  | Example    |
 | ----------- | ---------- |
