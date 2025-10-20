@@ -45,22 +45,21 @@ whole.
 ## Which versions of MongoDB does the Operator support?
 
 Percona Operator for MongoDB works
-with Percona Server for MongoDB 5.0, 6.0, and 7.0, and the exact version is
+with all active major versions of Percona Server for MongoDB. The exact version is
 determined by the Docker image in use.
 
-Percona-certified Docker images that can be used by the Operator are listed [here](images.md).
-For example, Percona Server for MongoDB 6.0 is supported with the following
-recommended version: {{ mongodb60recommended }}. 
-More details on the exact
-Percona Server for MongoDB version can be found in the release notes
-([5.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/5.0/release_notes/index.html),
-[6.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/6.0/release_notes/index.html),
-and [7.0  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/7.0/release_notes/index.html)).
+The Operator uses Percona-certified Docker images, which you can find [here](images.md).
+For example, Percona Server for MongoDB 8.0 is supported with the following
+recommended version: {{ mongodb80recommended }}. 
+
+Check the [Percona Server for MongoDB release notes :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html) for more details on the exact version of the latest major version. Use the version switcher to check other major versions.
 
 ## How can I add custom sidecar containers to my cluster?
 
-The Operator allows you to deploy additional (so-called *sidecar*) containers to
-the Pod. You can use this feature to run debugging tools, some specific 
+The Operator allows you to deploy additional containers to
+the Pod. Such containers are called *sidecar* containers. 
+
+You can use sidecar containers to run debugging tools, some specific
 monitoring solutions, etc. Add such sidecar container to the `deploy/cr.yaml`
 configuration file, specifying its name and image, and possibly a command to 
 run:

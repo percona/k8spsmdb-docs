@@ -12,7 +12,7 @@
 
 ### Physical Backups now support Point-in-time Recovery (in tech preview)
 
-In the previous [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#physical) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. But the problem with losing data between backups - in other words Recovery Point Objective (RPO) - for physical backups was not solved. With this release users can greatly reduce RPO by leveraging the Point-in-time Recovery feature in the Operators. Under the hood we store logical oplogs along with physical backups into the object storage. Read more about this feature in our [documentation](../backups.md).
+In the previous [1.14.0 release](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) we added support for [Physical Backups and Restores](../backups.md#backup-types) to significantly reduce Recovery Time Objective ([RTO :octicons-link-external-16:](https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery).)), especially for big data sets. But the problem with losing data between backups - in other words Recovery Point Objective (RPO) - for physical backups was not solved. With this release users can greatly reduce RPO by leveraging the Point-in-time Recovery feature in the Operators. Under the hood we store logical oplogs along with physical backups into the object storage. Read more about this feature in our [documentation](../backups.md).
 
 ### Encrypted backups with Server Side Encryption (SSE)
 
@@ -34,7 +34,7 @@ Backups stored on S3 compatible storage [can now be encrypted](../backups-encryp
 
 * {{ k8spsmdbjira(662) }} Restoring a backup with point-in-time recovery can now be easily done to a latest available position by setting `pitr.type` PerconaServerMongoDBRestore Custom Resource option to `latest`
 
-* {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../TLS.md#update-certificates)
+* {{ k8spsmdbjira(774) }} The Transport encryption documentation now includes details on [updating TLS certificates](../tls-update.md)
 
 * {{ k8spsmdbjira(807) }} A custom name for a Replica Set config server instead of the default `cfg` one [can be set](../sharding.md#turning-sharding-on-and-off) in the custom configuration, which can be useful for migration purposes
 

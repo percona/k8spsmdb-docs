@@ -6,10 +6,8 @@
 <img src="assets/images/Percona_Logo_Color.png" />
 </p>
 
-<h1>Operator for MongoDB 1.19.1</h1>
-<h2>(February 20, 2025)</h2>
-<!--<h3>Percona Technical Documentation Team</h3>-->
-
+<h1>Operator for MongoDB</h1>
 {% if config.site_description %}
-    <h2>{{ config.site_description }}</h2>
-{% endif %}
+<h1>{{ config.site_description }}</h1>
+{% endif %} 
+<h2> 1.20.1 (June 4, 2025)</h2>

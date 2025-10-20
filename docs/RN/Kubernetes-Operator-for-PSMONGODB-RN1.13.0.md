@@ -29,7 +29,7 @@
 
 * {{ k8spsmdbjira(636) }} An additional `databaseAdmin` user was added to the list of system users which are automatically created by the Operator. This user is intended to provision databases, collections and perform data modifications
 
-* {{ k8spsmdbjira(699) }} Disable [automated upgrade](../update.md#automated-upgrade) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
+* {{ k8spsmdbjira(699) }} Disable [automated upgrade](../update-db.md) by default to prevent an unplanned downtime for user applications and to provide defaults more focused on strict user’s control over the cluster
 
 * {{ k8spsmdbjira(725) }} Configuring the log structuring and leveling [is now supported](../debug-logs.md#changing-logs-representation) using the `LOG_STRUCTURED` and `LOG_LEVEL` environment variables. This reduces the information overload in logs, still leaving the possibility of getting more details when needed, for example, for debugging
 

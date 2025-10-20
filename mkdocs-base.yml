@@ -48,7 +48,7 @@ theme:
     #- navigation.sections
     - navigation.tracking
     - content.tabs.link
-    - content.action.edit
+    #- content.action.edit
     - content.action.view
     - content.code.copy
 
@@ -83,13 +83,19 @@ markdown_extensions:
   pymdownx.mark: {}
   pymdownx.smartsymbols: {}
   pymdownx.tilde: {}
-  pymdownx.superfences: {}
+  pymdownx.superfences: 
+    custom_fences:
+      - name: mermaid
+        class: mermaid
+        format: !!python/name:pymdownx.superfences.fence_code_format
   pymdownx.tabbed:
     alternate_style: true
   pymdownx.tasklist:
     custom_checkbox: true
   pymdownx.snippets:
-      base_path: ["snippets"]
+      base_path: 
+        - snippets
+        - docs/RN
 #      auto_append:
 #        - services-banner.md
   pymdownx.highlight:
@@ -112,6 +118,7 @@ plugins:
 #    placeholder_extra_js: ""
 #    placeholder_file: placeholder-plugin.yaml
   git-revision-date: {}
+  open-in-new-tab: {}
   meta-descriptions:
     export_csv: false
     quiet: false
@@ -125,15 +132,6 @@ plugins:
   exclude:
     glob:
       - "setting-up/client/docker.md"
-  # https://github.com/orzih/mkdocs-with-pdf
-  with-pdf:
-    output_path: "_pdf/PerconaOperatorMongoDB.pdf"
-    cover_title: "Operator for MongoDB documentation"
-    cover_subtitle: 1.19.0 (January 21, 2025)
-    author: "Percona Technical Documentation Team"
-    cover_logo: docs/assets/images/PerconaLogostackedlightbackground.svg
-    custom_template_path: _resource/templates
-    enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
@@ -142,25 +140,31 @@ plugins:
     css_dir: css
     javascript_dir: js
     canonical_version: null
+  print-site:
+    add_to_navigation: false
+    print_page_title: 'Percona Operator for MongoDB documentation'
+    add_print_site_banner: false
+    # Table of contents
+    add_table_of_contents: true
+    toc_title: 'Table of Contents'
+    toc_depth: 2
+    # Content-related
+    add_full_urls: false
+    enumerate_headings: true
+    enumerate_figures: true
+    add_cover_page: true
+    cover_page_template: "docs/assets/templates/pdf_cover_page.tpl"
+    path_to_pdf: ""
+    include_css: true
+    enabled: true
 
 extra: # Used in main.html template and can't be externalized
   edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
   updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  commandName: 'kubectl'
-  clusterName: 'my-cluster-name'
-  release: '1.19.1'
-  apiversion: '1'
-  mongodb80recommended: '8.0.4-1'
-  mongodb70recommended: '7.0.14-8'
-  mongodb60recommended: '6.0.18-15'
-  mongodb50recommended: '5.0.29-25'
-  pmm2recommended: '2.44.0'
-  gkerecommended: '1.30'
-  certmanagerrecommended: ' 1.16.2'
-  pbmrecommended: '2.8.0'
+  
   version:
     provider: mike
-  k8s_monitor_tag: 'v0.1.1'
+
 
 # Common navigation for percona.com, render.com and PDF
 nav:
@@ -174,8 +178,8 @@ nav:
     - Quickstart guides:
           - Overview: quickstart.md
           - 1. Quick install:
-            - "With Helm": helm.md
             - "With kubectl": kubectl.md
+            - "With Helm": helm.md
           - 2. Connect to Percona Server for MongoDB: connect.md
           - 3. Insert data: data-insert.md
           - 4. Make a backup: backup-tutorial.md
@@ -192,16 +196,33 @@ nav:
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           
+    - Upgrade:
+          - About upgrades: update.md
+          - Upgrade CRD and the Operator: update-operator.md
+          - Database upgrade overview: update-db.md
+          - Minor upgrade:
+               - "To a specific version": update-minor-set-version.md
+               - "Automatic minor upgrades": update-minor-automatic.md
+               - "Manual upgrade": update_manually.md
+          - Major upgrade: update-major.md
+          - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
+
     - Configuration:
           - "Application and system users": users.md
           - "Changing MongoDB options": options.md
+          - options-pbm.md
           - "Anti-affinity and tolerations": constraints.md
           - "Labels and annotations": annotations.md
           - "Exposing the cluster": expose.md
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
           - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": TLS.md
+          - "Transport encryption (TLS/SSL)": 
+             - About TLS security: TLS.md
+             - Configure TLS using cert-manager: tls-cert-manager.md
+             - Generate certificates manually: tls-manual.md
+             - Update certificates: tls-update.md
+             - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           
@@ -209,13 +230,13 @@ nav:
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups": backups-storage.md
+              - multi-storage.md
               - "Making scheduled backups": backups-scheduled.md
               - "Making on-demand backup": backups-ondemand.md
               - "Storing operations logs for point-in-time recovery": backups-pitr.md
               - "Enable server-side encryption": backups-encryption.md
               - "Restore from a previously saved backup": backups-restore.md
               - "Delete the unneeded backup": backups-delete.md
-          - "Upgrade MongoDB and the Operator": update.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
               - "About Multi-cluster": replication.md
@@ -242,13 +263,13 @@ nav:
           - "Restore backup to a new Kubernetes-based environment": backups-restore-to-new-cluster.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
-          - "Upgrade Percona Server for MongoDB manually": update_manually.md
-          - "How to upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
           - "Monitor Kubernetes": monitor-kubernetes.md
           - "Delete the Operator": delete.md
 
     - Reference:
           - "Custom Resource options": operator.md
+          - backup-resource-options.md
+          - restore-options.md
           - "Percona certified images": images.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md
@@ -258,6 +279,8 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md
           - "Percona Operator for MongoDB 1.19.1 (2025-02-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
           - "Percona Operator for MongoDB 1.19.0 (2025-01-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
           - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md

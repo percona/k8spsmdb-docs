@@ -128,7 +128,7 @@ OpenShift environment demonstrates the process:
     !!! note
 
         Don’t forget to set [upgradeoptions.apply](operator.md#upgradeoptionsapply)
-        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#automated-upgrade)
+        option to `Disabled`. Otherwise [Smart Upgrade functionality](update.md#update-strategies)
         will try using the image recommended by the Version Service instead of the
         custom one.
 

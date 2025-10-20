@@ -4,7 +4,7 @@ You may have different reasons to clean up your Kubernetes environment: moving f
 
 * Percona Distribution for MongoDB cluster managed by the Operator
 * Percona Operator for MongoDB itself
-* Custom Resource Definition deployed with the Operator
+* Custom Resource Definitions deployed with the Operator
 * Resources like PVCs and Secrets
 
 ## Delete the database cluster
@@ -182,6 +182,8 @@ By default, TLS-related objects and data volumes remain in Kubernetes environmen
             persistentvolumeclaim "mongod-data-my-cluster-name-rs0-1" deleted
             persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
             ```    
+
+    Note that if your Custom Resource manifest includes the `percona.com/delete-psmdb-pvc` finalizer, all Secrets will be automatically deleted when you delete the PVCs. To prevent this from happening, disable the finalizer.
 
 2. Delete the Secrets
 

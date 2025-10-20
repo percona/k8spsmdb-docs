@@ -1,17 +1,38 @@
 # Custom Resource options
 
-The operator is configured via the spec section of the
-[deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+
+To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+
+This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
+
+## `apiVersion`
+
+Specifies the API version of the Custom Resource.
+`psmdb.percona.com` indicates the group, and `v1` is the version of the API.
+
+This tells Kubernetes which version of the custom resource definition (CRD) to use.
+
+## `kind`
+
+Defines the type of resource being created.
 
 ## `metadata`
 
-The metadata part of this file contains the following keys:
+The metadata part of the `deploy/cr.yaml` contains  metadata about the resource, such as its name and other attributes. It includes the following keys:
 
-* `name` (`my-cluster-name` by default) sets the name of your Percona Server
-for MongoDB Cluster; it should include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), not exceed 22 characters, start with an alphabetic character, and end with an alphanumeric character
-* `finalizers` subsection:
+* `name` sets the name of your Percona Server for MongoDB Cluster. The name must follow these rules:
+
+    * include only [URL-compatible characters  :octicons-link-external-16:](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3), 
+    * not exceed 22 characters, 
+    * start and end with an alphanumeric character
+
+    The default name is  `my-cluster-name`. 
+
+* `finalizers` ensure safe deletion of resources in Kubernetes under certain conditions. This subsection includes the following finalizers:
+
     * `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
-    * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default)
+    * `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default). It also deletes Secrets.
     * `percona.com/delete-pitr-chunks` if present, activates the [Finalizer  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes all [point-in-time recovery chunks from the cloud storage](backups-pitr.md) on cluster deletion (off by default)
 
 ## Toplevel `spec` elements
@@ -124,7 +145,7 @@ Prevents users from configuring a cluster with unsafe parameters: starting it wi
 
 ### `updateStrategy`
 
-A strategy the Operator uses for [upgrades](update.md). Possible values are [SmartUpdate](update.md#automated-upgrade), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
+A strategy the Operator uses for [upgrades](update.md). Possible values are [SmartUpdate](update.md#update-strategies), [RollingUpdate  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -164,7 +185,9 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
-The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting same keys to `false`, the flags will be ignored*.
+The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. 
+
+*Once you enable permissive mode with unsafe settings, you cannot disable it by simply turning the same settings back (e.g. by setting a configuration option to `false`). These settings will be ignored if you try to revert them. Reverting the cluster to a secure state may require additional steps or reinitialization.*
 
 ### `unsafeFlags.tls`
 
@@ -271,7 +294,7 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](update.md#automated-upgrade) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](update-db.md) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -325,7 +348,7 @@ The name of the Secrets object for [server side encryption credentials](backups-
 
 ### `secrets.ssl`
 
-A secret with TLS certificate generated for *external* communications, see [Transport Layer Security (TLS)](TLS.md) for details.
+A secret with TLS certificate generated for *external* communications. When generated by the Operator, the name defaults to `<cluster-name>-ssl`. See [Transport Layer Security (TLS)](TLS.md) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -333,7 +356,7 @@ A secret with TLS certificate generated for *external* communications, see [Tran
 
 ### `secrets.sslInternal`
 
-A secret with TLS certificate generated for *internal* communications, see [Transport Layer Security (TLS)](TLS.md) for details.
+A secret with TLS certificate generated for *internal* communications. When generated by the Operator, the name defaults to `<cluster-name>-sslInternal`. See [Transport Layer Security (TLS)](TLS.md) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -895,6 +918,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
 
+### `replsets.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `replsets.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -967,7 +998,7 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `{}` |
 
-### `replsets.nonvoting.afinity.antiAffinityTopologyKey`
+### `replsets.nonvoting.affinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
 
@@ -1154,6 +1185,214 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `3Gi`      |
+
+### `replsets.hidden.enabled`
+
+Enable or disable creation of [Replica Set hidden instances](arbiter.md#hidden-nodes) within the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`    |
+
+### `replsets.hidden.size`
+
+The number of [Replica Set hidden instances](arbiter.md#hidden-nodes) within the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.hidden.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.hidden.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `kubernetes.io/hostname` |
+
+### `replsets.hidden.affinity.advanced`
+
+In cases where the pods require complex tuning, the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      |            |
+
+### `replsets.hidden.tolerations.key`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.hidden.tolerations.operator`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Exists`   |
+
+### `replsets.hidden.tolerations.effect`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `NoExecute`|
+
+### `replsets.hidden.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `6000`     |
+
+### `replsets.hidden.priorityClassName`
+
+The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `high priority` |
+
+### `replsets.hidden.annotations`
+
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.hidden.labels`
+
+The [Kubernetes affinity labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | `rack: rack-22` |
+
+### `replsets.hidden.nodeSelector`
+
+The [Kubernetes nodeSelector  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | `disktype: ssd` |
+
+### `replsets.hidden.podDisruptionBudget.maxUnavailable`
+
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.podDisruptionBudget.minAvailable`
+
+The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.hidden.resources.limits.cpu`
+
+[Kubernetes CPU limit :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `300m`     |
+
+### `replsets.hidden.resources.limits.memory`
+
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `0.5G`     |
+
+### `replsets.hidden.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `{}`       |
+
+### `replsets.hidden.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath), i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `/data`    |
+
+### `replsets.hidden.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Directory`|
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `rack: rack-22` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the hidden nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance  :octicons-link-external-16:](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `standard` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the hidden nodes.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the hidden nodes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1382,7 +1621,7 @@ Enables or disables monitoring Percona Server for MongoDB with [PMM  :octicons-l
 
 ### `pmm.image`
 
-PMM Client docker image to use.
+PMM Client Docker image to use.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1404,6 +1643,14 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `{}` |
 
+### pmm.customClusterName
+
+A custom name to define for a cluster. PMM Server uses this name to properly parse the metrics and display them on dashboards. Using a custom name is useful for clusters deployed in different data centers - PMM Server connects them and monitors them as one deployment. Another use case is for clusters deployed with the same name in different namespaces - PMM treats each cluster separately.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo-cluster` |
+
 
 ### `pmm.mongodParams`
 
@@ -1420,6 +1667,39 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+
+### `pmm.resources.requests.cpu`
+
+The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `300m`     |
+
+### `pmm.resources.requests.memory`
+
+The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `150M`     |
+
+### `pmm.resources.limits.cpu`
+
+[Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `400m`     |
+
+### `pmm.resources.limits.memory`
+
+[Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `256M`     |
+
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
@@ -1739,6 +2019,14 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `ClusterIP`|
+
+### `sharding.configsvrReplSet.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
 
 ### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
 
@@ -2188,6 +2476,14 @@ If set to `true`, a separate ClusterIP Service is created for each mongos instan
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`     |
 
+### `sharding.mongos.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eks.amazonaws.com/nlb`|
+
 ### `sharding.mongos.expose.loadBalancerSourceRanges`
 
 The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
@@ -2255,7 +2551,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 ## Roles section
 
-The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-in-the-custom-resource).
+The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-via-custom-resource).
 
 ### `roles.role`
 
@@ -2331,7 +2627,7 @@ An array of roles (with names of the role and the database) from which this role
 
 ## <a name="operator-users-section"></a>Users section
 
-The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-in-the-custom-resource).
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-via-custom-resource).
 
 ### `users.name`
 
@@ -2459,6 +2755,16 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
+
+### `backup.storages.STORAGE-NAME.main`
+
+Marks the storage as main. All other storages you define are added as profiles. The Operator saves backups to all storages but it saves oplog chunks for point-in-time recovery only to the main storage. You can define only one storage as main. Read more about [multiple storages for backups](multi-storage.md).
+
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
 
 ### `backup.storages.STORAGE-NAME.type`
 
@@ -2830,7 +3136,7 @@ The backup compression level ([higher values result in better but slower compres
 
 ### `backup.tasks.type`
 
-The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#physical) for details.
+The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#backup-types) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |

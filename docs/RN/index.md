@@ -1,26 +1,30 @@
 # Percona Operator for MongoDB Release Notes
 
-* [*Percona Operator for MongoDB* 1.19.1 (2025-02-20)](Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md)
+* [Percona Operator for MongoDB 1.20.1 ({{date.1_20_1}})](Kubernetes-Operator-for-PSMONGODB-RN1.20.1.md)
 
-* [*Percona Operator for MongoDB* 1.19.0 (2025-01-21)](Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md)
+* [Percona Operator for MongoDB 1.20.0 ({{date.1_20_0}})](Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md)
 
-* [*Percona Operator for MongoDB* 1.18.0 (2024-11-14)](Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md)
+* [Percona Operator for MongoDB 1.19.1 (2025-02-20)](Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md)
 
-* [*Percona Operator for MongoDB* 1.17.0 (2024-09-09)](Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md)
+* [Percona Operator for MongoDB 1.19.0 (2025-01-21)](Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md)
 
-* [*Percona Operator for MongoDB* 1.16.2 (2024-07-23)](Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md)
+* [Percona Operator for MongoDB 1.18.0 (2024-11-14)](Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md)
 
-* [*Percona Operator for MongoDB* 1.16.1 (2024-06-24)](Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md)
+* [Percona Operator for MongoDB 1.17.0 (2024-09-09)](Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md)
 
-* [*Percona Operator for MongoDB* 1.16.0 (2024-05-24)](Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md)
+* [Percona Operator for MongoDB 1.16.2 (2024-07-23)](Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md)
 
-* [*Percona Operator for MongoDB* 1.15.0 (2023-10-09)](Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md)
+* [Percona Operator for MongoDB 1.16.1 (2024-06-24)](Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md)
 
-* [*Percona Operator for MongoDB* 1.14.0 (2023-03-13)](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md)
+* [Percona Operator for MongoDB 1.16.0 (2024-05-24)](Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md)
 
-* [*Percona Operator for MongoDB* 1.13.0 (2022-09-08)](Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)
+* [Percona Operator for MongoDB 1.15.0 (2023-10-09)](Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md)
 
-* [*Percona Operator for MongoDB* 1.12.0 (2022-05-05)](Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md)
+* [Percona Operator for MongoDB 1.14.0 (2023-03-13)](Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md)
+
+* [Percona Operator for MongoDB 1.13.0 (2022-09-08)](Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md)
+
+* [Percona Operator for MongoDB 1.12.0 (2022-05-05)](Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md)
 
 * [*Percona Distribution for MongoDB Operator* 1.11.0 (2021-12-21)](Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md)
 

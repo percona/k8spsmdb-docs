@@ -5,14 +5,14 @@ site_url: https://docs.percona.com/percona-operator-for-mongodb/
 
 theme:
   name: material
-  custom_dir: _resource/overrides
+  custom_dir: _resourcepdf/overrides
 # Theme features
   features:
     - search.highlight
     - navigation.top
     - navigation.tracking
     - content.tabs.link
-    - content.action.edit
+#    - content.action.edit
     - content.action.view
     - content.code.copy
 
@@ -33,5 +33,5 @@ extra:
           name: This page could be improved
           data: 0
           note: >- 
-            Thank you for your feedback! Help us improve by following this <a href="https://docs.google.com/forms/d/1bkWACehjqlwA0AKf-qTJcXvYbOSYgze8iTPXjntqmNo/edit" target="_blank" rel="noopener">feedback form</a>.
+            Thanks for your feedback! Want to improve this page? Click <strong>Edit this page on GitHub</strong> above to submit a pull request.</a>
 

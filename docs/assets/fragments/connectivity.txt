@@ -9,7 +9,7 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     The Secrets object you are interested in has the
     `{{ clusterName }}-secrets` name by default.
     
-2. View the Secret contents to retrive the admin user credentials.
+2. View the Secret contents to retrieve the admin user credentials.
 
     ```{.bash data-prompt="$"}
     $ {{ commandName }} get secret {{ clusterName }}-secrets -o yaml
@@ -59,10 +59,3 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
         ``` {.bash data-prompt="$" }
         $ mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@{{ clusterName }}-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```
-        
-    !!! note
-    
-        If you are using MongoDB versions earler than 6.x (such as
-        {{ mongodb50recommended }} instead of the
-        default {{ mongodb70recommended }} variant), substitute
-        `mongosh` command with `mongo` in the above examples.
