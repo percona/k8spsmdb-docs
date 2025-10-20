@@ -56,7 +56,8 @@ For either type of a restore you need to create a Restore object using the [`dep
 To restore your Percona Server for MongoDB cluster from a backup, define a `PerconaServerMongoDBRestore` custom resource. Set the following keys:
 
 * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
-* set `spec.backupName` key to the name of your backup
+* set `spec.backupName` key to the name of your backup. This is the value from the output of the `kubectl get psmdb-backup` command.
+
 
 Pass this configuration to the Operator:
 
@@ -77,7 +78,7 @@ Pass this configuration to the Operator:
     2. Start the restore with this command:
 
         ``` {.bash data-prompt="$" }
-        $ kubectl apply -f deploy/backup/restore.yaml
+        $ kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
         ```
 
 === "via the command line"
@@ -85,7 +86,7 @@ Pass this configuration to the Operator:
     Instead of storing restore settings in a separate file, you can pass them directly to the `kubectl apply` command as follows:
 
     ```{.bash data-prompt="$"}
-    $ cat <<EOF | kubectl apply -f-
+    $ cat <<EOF | kubectl apply -n $NAMESPACE -f-
     apiVersion: psmdb.percona.com/v1
     kind: PerconaServerMongoDBRestore
     metadata:
@@ -93,7 +94,7 @@ Pass this configuration to the Operator:
     spec:
       clusterName: my-cluster-name
       backupName: backup1
-    EOF
+    EOF -n $NAMESPACE
     ```
 
 
@@ -102,10 +103,10 @@ Pass this configuration to the Operator:
 1. Check a time to restore for a backup. Use the command below to find the latest restorable timestamp:
     
     ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb-backup <backup_name> -o jsonpath='{.status.latestRestorableTime}'
+    $ kubectl get psmdb-backup <backup_name> -n $NAMESPACE -o jsonpath='{.status.latestRestorableTime}'
     ```
     
-2. Modify the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest and specify the following configuration:
+2. Modify the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest and specify the following configuration:
 
     * set the `spec.clusterName` key to the name of your cluster. When restoring to the same cluster where the backup was created, the cluster name will be identical in both the Backup and Restore objects.
     * set the `spec.backupName` key to the name of your backup
@@ -142,15 +143,15 @@ Pass this configuration to the Operator:
         2. Start the restore with this command:
 
             ``` {.bash data-prompt="$" }
-            $ kubectl apply -f deploy/backup/restore.yaml
+            $ kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
             ```
 
     === "via the command line"
 
         You can skip editing the YAML file and pass its contents to the Operator via the command line. For example:
 
-        ```bash
-        $ cat <<EOF | kubectl apply -f-
+        ```{.bash data-prompt="$" }
+        $ cat <<EOF | kubectl apply -n $NAMESPACE -f-
         apiVersion: psmdb.percona.com/v1
         kind: PerconaServerMongoDBRestore
         metadata:
@@ -158,7 +159,7 @@ Pass this configuration to the Operator:
         spec:
           clusterName: my-cluster-name
           backupName: backup1
-        EOF
+        EOF 
         ```
 
 ## Selective restore
