@@ -65,7 +65,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `enableVolumeExpansion`
 
-Enables or disables [storage scaling / volume expansion](scaling.md#automated-scaling-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -161,7 +161,7 @@ A strategy the Operator uses for [upgrades](update.md). Possible values are [Sma
 
 ### `ignoreAnnotations`
 
-The list of annotations [to be ignored](annotations.md#annotations-ignore) by the Operator.
+The list of annotations [to be ignored](annotations.md#specifying-labels-and-annotations-ignored-by-the-operator) by the Operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -169,7 +169,7 @@ The list of annotations [to be ignored](annotations.md#annotations-ignore) by th
 
 ### `ignoreLabels`
 
-The list of labels [to be ignored](annotations.md#annotations-ignore) by the Operator.
+The list of labels [to be ignored](annotations.md#setting-labels-and-annotations-in-the-custom-resource) by the Operator.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -380,7 +380,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 
 ### `secrets.vault`
 
-Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#using-vault).
+Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-storage-for-encryption-keys).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -976,7 +976,7 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 
 ### `replsets.nonvoting.enabled`
 
-Enable or disable creation of [Replica Set non-voting instances](arbiter.md#adding-non-voting-nodes) within the cluster.
+Enable or disable creation of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -984,7 +984,7 @@ Enable or disable creation of [Replica Set non-voting instances](arbiter.md#addi
 
 ### `replsets.nonvoting.size`
 
-The number of [Replica Set non-voting instances](arbiter.md#adding-non-voting-nodes) within the cluster.
+The number of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2671,7 +2671,7 @@ Database that the user authenticates against.
 
 ### `users.passwordSecretRef.name`
 
-Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](users.md#commonsecret).
+Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](users.md#create-users-manually).
 
 | Value type | Example |
 | ---------- | ------- |

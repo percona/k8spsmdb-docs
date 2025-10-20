@@ -19,7 +19,7 @@
 
 * {{ k8spsmdbjira(203) }} Support for the [cluster-wide operator mode](../cluster-wide.md) allowing one Operator to watch for Percona Server for MongoDB Custom Resources in several namespaces
 
-* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](../encryption.md/#using-vault) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
+* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](../encryption.md/#use-hashicorp-vault-storage-for-encryption-keys) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
 
 * {{ k8spsmdbjira(704) }} Support for the [Azure Kubernetes Service (AKS)](../aks.md)
 
@@ -37,7 +37,7 @@
 
 * {{ k8spsmdbjira(715) }} Starting from now, the Opearator changed its API version to v1 instead of having a separate API version for each release. Three last API version are supported in addition to `v1`, which substantially reduces the size of Custom Resource Definition to prevent reaching the etcd limit
 
-* {{ k8spsmdbjira(709) }} Make it possible [to use API Key](../monitoring.md#operator-monitoring-client-token) to authorize within Percona Monitoring and Management Server as a more convenient and modern alternative password-based authentication
+* {{ k8spsmdbjira(709) }} Make it possible to use API Key to authorize within Percona Monitoring and Management Server as a more convenient and modern alternative password-based authentication
 
 * {{ k8spsmdbjira(707) }} Allow to set Service labels for replica set, config servers and mongos in Custom Resource to enable various integrations with cloud providers or service meshes
 
@@ -65,7 +65,7 @@
 
 * {{ k8spsmdbjira(690) }} CCustom Resource options under the sharding.mongos.auditLog subsection, deprecated since the Operator version 1.9.0 in favor of using replsets.configuration, were finally removed and cannot be used with the Operator
 
-* {{ k8spsmdbjira(709) }} Password-based authorization to Percona Monitoring and Management Server is now deprecated and will be removed in future releases in favor of a token-based one. Password-based authorization was used by the Operator before this release to provide MongoDB monitoring, but now using the API Key [is the recommended authorization method](../monitoring.md#operator-monitoring-client-token)
+* {{ k8spsmdbjira(709) }} Password-based authorization to Percona Monitoring and Management Server is now deprecated and will be removed in future releases in favor of a token-based one. Password-based authorization was used by the Operator before this release to provide MongoDB monitoring, but now using the API Key is the recommended authorization method
 
 ## Supported Platforms
 

@@ -17,13 +17,13 @@ You can check available options in the [restore options reference](restore-optio
 This document covers the following restore scenarios:
 
 * [Restore from a full backup](#restore-from-a-full-backup) - restore from a full backup  without point-in-time
-* [Point-in-time recovery](#restore-with-point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
+* [Point-in-time recovery](#point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
 ## Preconditions
 
 1. When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. 
 
-2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about encryption in [Data-at-rest encryption](encryption-setup.md). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
+2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about encryption in [Data-at-rest encryption](encryption.md). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
 
 --8<-- "backups-restore.md:backup-prepare"
 

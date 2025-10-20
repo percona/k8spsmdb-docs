@@ -17,7 +17,7 @@ $ curl https://check.percona.com/versions/v1/psmdb-operator/<operator-version>/<
 where:
 
 * **`<operator-version>`** is the version of the Percona Operator for MongoDB you are using.
-* **`<psmdb-version>`** is the version of Percona Server for MongoDB you want to get images for. This part is optional and helps filter the results. It can be a specific Percona Server for MongoDB version (e.g. 8.0.8-3), a recommended version (e.g. {{7.0-recommended}}), or the latest available version (e.g. 8.0-latest).
+* **`<psmdb-version>`** is the version of Percona Server for MongoDB you want to get images for. This part is optional and helps filter the results. It can be a specific Percona Server for MongoDB version (e.g. 8.0.8-3), a recommended version (e.g. 7.0-recommended), or the latest available version (e.g. 8.0-latest).
 
 For example, to retrieve the list of images for the Operator version `1.20.0` and the latest version of Percona Server for MongoDB 8.0, use the following command:
 

@@ -27,7 +27,7 @@ PBM saves the oplog [to the cloud storage](backups-storage.md).
 
 === "Version 1.20.0 and above"
 
-    The Operator natively supports [multiple storages for backups](multi-storage.md) inheriting this functionality from Percona Backup for MongoDB. This allows you to enable point-in-time recovery and make backups on a storage of your choice. PBM saves oplog only to the main storage to ensure data consistency for all backups on all storages. As a result, you can [make a point-in-time restore](backups-restore.md#with-point-in-time-recovery) from any backup on any storage.  
+    The Operator natively supports [multiple storages for backups](multi-storage.md) inheriting this functionality from Percona Backup for MongoDB. This allows you to enable point-in-time recovery and make backups on a storage of your choice. PBM saves oplog only to the main storage to ensure data consistency for all backups on all storages. As a result, you can [make a point-in-time restore](backups-restore.md#make-a-point-in-time-recovery) from any backup on any storage.  
 
 === "Version 1.19.1 and earlier"
 

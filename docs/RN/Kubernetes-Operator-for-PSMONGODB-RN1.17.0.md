@@ -12,7 +12,7 @@
 
 ### Declarative user management (technical preview)
 
-Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](../users.md#unprivileged-users) via the `users` subsection in the Custom Resource. You can specify a new user in `deploy/cr.yaml` manifest, setting the user’s login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user’s password) and as well as MongoDB roles on various databases which should be assigned to this user:
+Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](../users.md#application-level-unprivileged-users) via the `users` subsection in the Custom Resource. You can specify a new user in `deploy/cr.yaml` manifest, setting the user’s login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user’s password) and as well as MongoDB roles on various databases which should be assigned to this user:
 
 ```yaml
 ...
@@ -29,7 +29,7 @@ users:
       db: admin
 ```
 
-See [documentation](../users.md#unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
+See [documentation](../users.md#application-level-unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
 
 ### Liveness check improvements
 

@@ -164,7 +164,7 @@ The upgrade includes the following steps.
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
@@ -177,7 +177,7 @@ The upgrade includes the following steps.
         $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb70recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
@@ -200,7 +200,7 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator, taking it from the official repository on Github.
 
-    Refer to the [compatibility between CRD and the Operator](#considerations) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
+    Refer to the [compatibility between CRD and the Operator](#considerations-for-the-operator-upgrades) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
 
     ``` {.bash data-prompt="$" }
     $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml

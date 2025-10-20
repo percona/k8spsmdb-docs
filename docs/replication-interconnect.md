@@ -56,7 +56,7 @@ subsections. For each node, specify the following:
        port is used,
     - set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
         of the external node. The default priority for local members of the cluster is `2`. When you add external nodes, set the lower priority to avoid an unmanaged node being elected
-        as a primary. A zero `0` priority adds the node as a [non-voting member](arbiter.md#adding-non-voting-nodes).
+        as a primary. A zero `0` priority adds the node as a [non-voting member](arbiter.md#non-voting-nodes).
     - set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
         an external node can cast in a replica set election (`0` is default and
         should be used for non-voting members of the cluster).

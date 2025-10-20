@@ -48,9 +48,9 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 ## New Features
 
 * {{ k8spsmdbjira(1000) }}: Users who store backups on Azure Blob Storage can now use [private endpoints](../operator.md#backupstoragesstorage-nameazureendpointurl)
-* {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows [latest restorable time](../backups-restore.md#backups-latest-restorable-time) to make it easier to pick a point-in-time recovery target
+* {{ k8spsmdbjira(1055) }}: The `kubectl get psmdb-backup` command now shows [latest restorable time](../backups-restore.md#make-a-point-in-time-recovery) to make it easier to pick a point-in-time recovery target
 * {{ k8spsmdbjira(491) }}: It is now possible to specify the [existing cert-manager issuer](../operator.md#tlsissuerconfname) which should be used by the Operator
-* {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../scaling.md#automated-scaling-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
+* {{ k8spsmdbjira(733) }}: It is now possible to [resize Persistent Volume Claims](../scaling.md#storage-resizing-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change  `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
 
 ## Improvements
 
