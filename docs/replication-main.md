@@ -152,15 +152,15 @@ credentials and TLS certificates to be able to communicate with each other. To d
     $ kubectl get secrets
     ```
    
-   The Secrets you are interested in are the following:
+    The Secrets you are interested in are the following:
 
-   * `main-cluster-name-ssl` - SSL certificates for client connections,
+    * `main-cluster-name-ssl` - SSL certificates for client connections,
 
-   * `main-cluster-name-ssl-internal` - SSL certificates for replication,
+    * `main-cluster-name-ssl-internal` - SSL certificates for replication,
 
-   * `my-cluster-name-secrets` - user credentials,
+    * `my-cluster-name-secrets` - user credentials,
 
-   * `my-cluster-name-mongodb-encryption-key` - encryption key file.
+    * `my-cluster-name-mongodb-encryption-key` - encryption key file.
 
 2. Export each Secret to a file:
 
