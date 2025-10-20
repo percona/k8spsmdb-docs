@@ -488,7 +488,7 @@ Optional custom tags which can be added to the replset members to make their ide
 
 ### `replsets.externalNodes.host`
 
-The URL or IP address of the [external replset instance](replication-main.md).
+The URL or IP address of the [external replica set instance](replication-main.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2804,7 +2804,7 @@ Marks the storage as main. All other storages you define are added as profiles. 
 
 ### `backup.storages.STORAGE-NAME.type`
 
-The cloud storage type used for backups. Only `s3`, `azure`, and `filesystem` types are supported.
+The cloud storage type used for backups. Only `s3`, `gcs`, `minio`, `azure`, and `filesystem` types are supported.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2900,7 +2900,7 @@ The [AWS region  :octicons-link-external-16:](https://docs.aws.amazon.com/genera
 
 ### `backup.storages.STORAGE-NAME.s3.endpointUrl`
 
-The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+The  URL of the S3-compatible storage to be used. It is required for Minio storage and is not needed for the original Amazon S3 cloud.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2937,6 +2937,63 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.gcs.bucket`
+
+The name of the storage bucket. See the [GCS bucket naming guidelines :octicons-link-external-16:](https://cloud.google.com/storage/docs/naming-buckets#requirements) for bucket name requirements.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.gcs.prefix`
+
+The path to the data directory in the bucket. If undefined, backups are stored in the bucket's root directory.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.gcs.credentialsSecret`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the GCS credentials as either the service account and JSON keys or HMAC keys. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"my-cluster-name-backup-gcs"`       |
+
+
+### `backup.storages.STORAGE-NAME.gcs.chunkSize`
+
+The size of data chunks in bytes to be uploaded to the GCS storage bucket in a single request. Larger data chunks will be split over multiple requests. Default data chunk size is 10MB.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `10485760`       |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffInitial`
+
+The time to wait to make an initial retry, in seconds. Default value is 1 sec
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `1`       |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMax`
+
+The maximum amount of time between retries, in seconds. Default value is 30 sec.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `30`       |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMultiplier`
+
+Defines the time to increase the wait time after each retry. For example, with the default value of 2 seconds, if the first wait time is 1 second, the next will be 2 seconds, then 4 seconds, and so on, until it reaches the maximum. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `2`       |
 
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
