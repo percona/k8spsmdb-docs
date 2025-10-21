@@ -141,7 +141,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 * [K8SPSMDB-1216](https://perconadev.atlassian.net/browse/K8SPSMDB-1216) - Updated the command to describe the `mongod` instance role to `db.hello()`, which is the currently used one. 
 - [K8SPSMDB-1243](https://perconadev.atlassian.net/browse/K8SPSMDB-1243) - Added the ability to pass PBM restore configuration options to the Operator.
 - [K8SPSMDB-1261](https://perconadev.atlassian.net/browse/K8SPSMDB-1261) - Improved the test suite for physical backups to run on every supported platform individually.
-* [K8SPSMDB-1262](https://perconadev.atlassian.net/browse/K8SPSMDB-1262) - Improved the test suite foron demand backups to run on OpenShift
+* [K8SPSMDB-1262](https://perconadev.atlassian.net/browse/K8SPSMDB-1262) - Improved the test suite for on demand backups to run on OpenShift
 - [K8SPSMDB-1272](https://perconadev.atlassian.net/browse/K8SPSMDB-1272) - The `helm upgrade` command now displays warnings to clarify when CRDs are not updated.
 - [K8SPSMDB-1284](https://perconadev.atlassian.net/browse/K8SPSMDB-1284) - Clearer error messages are now displayed if a filesystem backup deletion fails.
 - [K8SPSMDB-1285](https://perconadev.atlassian.net/browse/K8SPSMDB-1285) - CRDs now include labels that make it easy to identify their associated Operator version.
