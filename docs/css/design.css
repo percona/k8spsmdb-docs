@@ -73,8 +73,9 @@
     /* mkdocs root override */
     --md-primary-fg-color--dark: var(--night400);
 }
+
 :root,
-[data-md-color-scheme="default"] {
+[data-md-color-scheme="percona-light"] {
 
     /* Primitives */
     --md-hue: 220;
@@ -86,7 +87,6 @@
 
     /* Defaults */
     --md-default-bg-color: var(--white);
-    --md-default-fg-color: var(--stone900);
     --md-default-fg-color--light: rgba(44,50,62,0.72);
     --md-default-fg-color--lighter: rgba(44,50,62,0.40);
     --md-default-fg-color--lightest: rgba(44,50,62,0.25);
@@ -108,6 +108,7 @@
     /* Tables */
     --md-typeset-table-color: hsla(var(--md-hue),17%,21%,0.25)
 }
+
 [data-md-color-scheme="percona-dark"] {
 
     /* Primitives */
