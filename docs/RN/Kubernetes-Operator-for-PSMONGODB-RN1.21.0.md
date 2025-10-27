@@ -193,7 +193,7 @@ Other options may also work but have not been tested.
 
 ## Supported platforms
 
-Percona Operators are designed for compatibility with all [CNCF-certified :octicons-link-external-16:](https://www.cncf.io/training/certification/software-conformance/) Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below for Operator version {{release}}:
+Percona Operators are designed for compatibility with all [CNCF-certified :octicons-link-external-16:](https://www.cncf.io/training/certification/software-conformance/) Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:
 
 --8<-- [start:platforms]
 
@@ -210,8 +210,6 @@ This list only includes the platforms that the Percona Operators are specificall
 ## Percona certified images
 
 Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:
-
-**Images released with the Operator version {{release}}**:
 
 --8<-- [start:images]
 
