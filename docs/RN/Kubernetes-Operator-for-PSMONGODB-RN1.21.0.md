@@ -4,6 +4,12 @@
 
 ## Release Highlights
 
+!!! warning
+
+    We strongly recommend that you **do not upgrade to this version** due to a MongoDB connection leak issue that occurs during PBM operations. Our team is actively working on a fix and will release an hotfix as soon as possible.
+
+    For more details, see [K8SPSMDB-1504](https://perconadev.atlassian.net/browse/K8SPSMDB-1504).
+
 This release of {{config.site_name}} includes the following new features and improvements:
 
 ### Percona Server for MongoDB 8.0 is now the default version
