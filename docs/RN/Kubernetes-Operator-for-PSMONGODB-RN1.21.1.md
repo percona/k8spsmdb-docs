@@ -17,9 +17,11 @@ This release resolves the MongoDB connection leak issue that occurred during PBM
 
 The Operator was developed and tested with the following software:
 
-* Percona Server for MongoDB 6.0.25-20, 7.0.24-13, and 8.0.12-4.
-* Percona Backup for MongoDB 2.11.0.
-* PMM Client: 3.4.1
+* Percona Server for MongoDB 6.0.25-20, 7.0.24-13, and 8.0.12-4
+* Percona Backup for MongoDB 2.11.0
+* PMM Client: 2.44.1
+* PMM3 Client: 3.4.1
+* cert-manager: 1.18.2
 * LogCollector based on fluent-bit 4.0.1
 
 Other options may also work but have not been tested. 
