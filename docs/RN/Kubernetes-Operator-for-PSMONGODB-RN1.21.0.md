@@ -6,9 +6,11 @@
 
 !!! warning
 
-    We strongly recommend that you **do not upgrade to this version** due to a MongoDB connection leak issue that occurs during PBM operations. Our team is actively working on a fix and will release an hotfix as soon as possible.
+    We strongly recommend that you **do not upgrade to this version** due to a MongoDB connection leak issue that occurs during PBM operations. 
 
     For more details, see [K8SPSMDB-1504](https://perconadev.atlassian.net/browse/K8SPSMDB-1504).
+
+    The issue is resolved and included in the Operator version [1.21.1](Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md). Please plan your upgrades to this version.
 
 This release of {{config.site_name}} includes the following new features and improvements:
 
