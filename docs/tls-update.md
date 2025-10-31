@@ -188,7 +188,7 @@ a cluster named `cluster1`:
 
 1. Delete the `psmdb` Custom Resource in the proper namespace (this will cause
     deletion of all Pods of the cluster, but later you will recreate the cluster
-    using the same `deploy/cr.yaml` flie from which it was originally created).
+    using the same `deploy/cr.yaml` file from which it was originally created).
 
     !!! note
 

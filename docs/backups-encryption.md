@@ -80,7 +80,7 @@ To use the server-side AWS KMS encryption, specify the [ID of your customer-mana
               sseAlgorithm: aws:kms
     ```
 
-## Encryption with localy-stored keys on any S3-compatible storage
+## Encryption with locally-stored keys on any S3-compatible storage
 
 The Operator also supports server-side encryption with customer-provided keys
 that are stored on the client side. During the backup/restore process,

@@ -46,7 +46,7 @@ To set up monitoring of Kubernetes, you need the following:
     * `PMM-SERVER-URL` - The URL to access the PMM Server 
     * `UNIQUE-K8s-CLUSTER-IDENTIFIER` - Identifier for the Kubernetes cluster. It can be the name you defined during the cluster creation.
 
-        You should use a unique identifier for each Kubernetes cluster. The use of the same identifer for more than one Kubernetes cluster will result in the conflicts during the metrics collection.
+        You should use a unique identifier for each Kubernetes cluster. The use of the same identifier for more than one Kubernetes cluster will result in the conflicts during the metrics collection.
 
     * `NAMESPACE` - The namespace where the Victoria metrics Kubernetes stack will be installed. If you haven't created the namespace before, it will be created during the command execution.
 
@@ -164,7 +164,7 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
     $ helm install vm-k8s vm/victoria-metrics-k8s-stack \
     -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/values.yaml \
     --set externalVM.write.url=<PMM-SERVER-URL>/victoriametrics/api/v1/write \
-    --set vmagent.spec.externalLabels.k8s_cluster_id=<UNIQUE-CLUSTER-IDENTIFER/NAME> \
+    --set vmagent.spec.externalLabels.k8s_cluster_id=<UNIQUE-CLUSTER-IDENTIFIER/NAME> \
     -n <namespace>
     ```
 

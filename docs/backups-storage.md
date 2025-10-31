@@ -316,7 +316,7 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
 ## Remote file server
 
-You can use the `fileystem` backup storage type to mount a *remote file server* to
+You can use the `filesystem` backup storage type to mount a *remote file server* to
 a local directory as a *sidecar volume*, and make Percona Backup for MongoDB
 use this directory as a storage for backups.
 

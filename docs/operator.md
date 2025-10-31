@@ -480,7 +480,7 @@ Use if you need to override the [replica set members priorities  :octicons-link-
 
 ### `replsets.replsetOverrides.MEMBER-NAME.tags`
 
-Optional custom tags which can be added to the replset members to make their identication easier.
+Optional custom tags which can be added to the replset members to make their identification easier.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1422,7 +1422,7 @@ The number of [Replica Set Arbiter  :octicons-link-external-16:](https://docs.mo
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `1`        |
 
-### `replsets.arbiter.afinity.antiAffinityTopologyKey`
+### `replsets.arbiter.affinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter.
 
@@ -2236,7 +2236,7 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
 
-### `sharding.mongos.afinity.antiAffinityTopologyKey`
+### `sharding.mongos.affinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos.
 
@@ -2579,7 +2579,7 @@ The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https:/
 
 ### `roles.role`
 
-The [cusom MongoDB role :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) name.
+The [custom MongoDB role :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) name.
 
 | Value type | Example |
 | ---------- | ------- |

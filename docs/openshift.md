@@ -23,7 +23,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
 
     ![image](assets/images/olm1.svg)
 
-    Then click "Contiune", and "Install".
+    Then click "Continue", and "Install".
 
 2. A new page will allow you to choose the Operator version and the Namespace / OpenShift project you would like to install the Operator into. 
 
