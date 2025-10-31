@@ -14,7 +14,7 @@ The following subsections describe the Percona XtraDB Cluster API provided by th
     ```
 
     Trying to create an already-existing namespace will show you a
-    self-explanatory error message. Also, you can use the `defalut` namespace.
+    self-explanatory error message. Also, you can use the `default` namespace.
 
     !!! note
 
@@ -132,7 +132,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }
 >     3. encryptionCipherMode (String, min-length: 1) : `type of encryption cipher to use`
 
 
-> 3. setParameter (Object): `configure mongod enginer paramters`
+> 3. setParameter (Object): `configure mongod engineer parameters`
 
 
 > 4. storage:
@@ -149,7 +149,7 @@ $ curl -k -v -XPOST "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }
 > pmm:
 
 
-> 1. serverHost (String, min-length: 1) : `serivce name for monitoring`
+> 1. serverHost (String, min-length: 1) : `service name for monitoring`
 
 
 > 2. image (String, min-length: 1) : `name of pmm image`
@@ -316,7 +316,7 @@ $ curl -k -v -XPATCH "https://$API_SERVER/apis/psmdb.percona.com/v1/namespaces/d
 > replsets
 
 
-> 1. size (Int or String, Defaults: 3): `Specifiy the sie of the replsets cluster to scale up or down to`
+> 1. size (Int or String, Defaults: 3): `Specify the sie of the replsets cluster to scale up or down to`
 
 **Response:**
 

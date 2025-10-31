@@ -280,7 +280,7 @@ spec:
     ...
 ```
 
-Similary, you can reduce the number of shards by removing the `rs1` and `rs2` elements:
+Similarly, you can reduce the number of shards by removing the `rs1` and `rs2` elements:
 
 ```yaml
 spec:

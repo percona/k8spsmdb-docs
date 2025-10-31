@@ -1,6 +1,6 @@
 # Design overview
 
-The design of the Operator is tighly bound to the Percona Server for
+The design of the Operator is tightly bound to the Percona Server for
 MongoDB replica set or sharded cluster. Replica set cluster is briefly described
 in the following diagram.
 

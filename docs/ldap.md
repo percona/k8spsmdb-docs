@@ -215,7 +215,7 @@ In order to get MongoDB connected with OpenLDAP in this case we need to configur
 * Internal mongodb role
 * Mongos
 
-Both the routing interface (mongos) and the configuraion ReplicaSet (mongod) have to be configured to make the LDAP server a part of the Authentication/Authorization chain. 
+Both the routing interface (mongos) and the configuration ReplicaSet (mongod) have to be configured to make the LDAP server a part of the Authentication/Authorization chain. 
 
 !!! note
 

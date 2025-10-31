@@ -27,7 +27,7 @@ or on [Azure Blob Storage  :octicons-link-external-16:](https://azure.microsoft.
         to allow it accessing your database.
 
     * The Operator and the *destination* cluster should be
-        [installed](quickstart.md) in the Kuberentes-based
+        [installed](quickstart.md) in the Kubernetes-based
         environment. For simplicity, it's reasonable to have the same topology
         of the *source* and *destination* clusters, although Percona Backup for
         MongoDB [allows replset-remapping  :octicons-link-external-16:](https://www.percona.com/blog/moving-mongodb-cluster-to-a-different-environment-with-percona-backup-for-mongodb/) as well.
