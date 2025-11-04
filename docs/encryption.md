@@ -253,9 +253,9 @@ To enable Vault for the Operator, create a Secret object for it using the Vault 
     $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r"
     ```
 
- === "HTTPS access with TLS"
+=== "HTTPS access with TLS"
 
-     If you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert), include the path to TLS certificates when you create a Secret.
+    If you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert), include the path to TLS certificates when you create a Secret.
 
     ``` {.bash data-prompt="$" }
     $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r" --from-file=ca.crt=<path to CA>/ca.crt
