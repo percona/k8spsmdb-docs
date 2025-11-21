@@ -14,7 +14,7 @@
 /* Dark mode title */
 @media (prefers-color-scheme: dark) {
   .rating-widget .rating-title {
-    color: var(--md-typeset-a-color, #93C7FF) !important;
+    color: var(--md-typeset-a-color, #93C7FF);
   }
 }
 
@@ -25,19 +25,19 @@
 
 @media (prefers-color-scheme: dark) {
   #feedback-status {
-    color: var(--md-typeset-a-color, #93C7FF) !important;
+    color: var(--md-typeset-a-color, #93C7FF);
   }
 }
 
 /* Light mode: Send button */
 #submit-feedback {
-  color: white !important;
+  color: white;
 }
 
 /* Dark mode: Send button */
 @media (prefers-color-scheme: dark) {
   #submit-feedback {
-    background-color: var(--md-typeset-a-color, #93C7FF) !important;
-    color: #999 !important;
+    background-color: var(--md-typeset-a-color, #93C7FF);
+    color: #999;
   }
 }
