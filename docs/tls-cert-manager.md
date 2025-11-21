@@ -3,7 +3,7 @@
 ## About the *cert-manager*
 
 The [cert-manager  :octicons-link-external-16:](https://cert-manager.io/docs/) is a Kubernetes certificate
-management controller which widely used to automate the management and issuance
+management controller which is widely used to automate the management and issuance
 of TLS certificates. It is community-driven, and open source.
 
 When you have already installed *cert-manager* and deploy the operator, the
