@@ -6,6 +6,7 @@ mkdocs-material
 mkdocs-with-pdf
 mkdocs-print-site-plugin
 mkdocs-git-revision-date-plugin
+mkdocs-git-revision-date-localized-plugin
 mkdocs-material-extensions
 mkdocs-bootstrap-tables-plugin
 mkdocs-section-index
@@ -15,3 +16,4 @@ mkdocs-user-defined-values
 mkdocs-placeholder-plugin
 mkdocs-open-in-new-tab
 mike
+mkdocs-git-committers-plugin-2
