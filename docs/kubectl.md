@@ -12,7 +12,7 @@ We recommend installing the Operator with the [kubectl  :octicons-link-external-
 
 To install Percona Distribution for MongoDB, you need the following:
 
-1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. Install not already installed, [follow its official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. If you don’t have it installed, you can install it by following the [official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
 2. A Kubernetes environment. You can deploy it on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
