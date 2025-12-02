@@ -62,10 +62,12 @@ extra_css:
   - css/osano.css
   - css/extra.css
   - css/operators.css
+  - css/rating.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
+  - js/rating.js
 #  - js/version-select.js
 #  - js/toctree.js
 #  - js/lightgallery.min.js
@@ -118,7 +120,13 @@ plugins:
 #    placeholder_css: assets/javascripts/placeholder-plugin.css
 #    placeholder_extra_js: ""
 #    placeholder_file: placeholder-plugin.yaml
-  git-revision-date: {}
+  git-revision-date-localized:
+    enable_creation_date: true
+    enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
+  git-committers:
+    enabled: !ENV [CI, false]
+    repository: k8spsmdb-docs
+    branch: "main"
   open-in-new-tab: {}
   meta-descriptions:
     export_csv: false
