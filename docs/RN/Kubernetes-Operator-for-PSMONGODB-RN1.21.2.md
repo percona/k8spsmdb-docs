@@ -28,7 +28,7 @@ The Operator was developed and tested with the following software:
 
 * Percona Server for MongoDB 6.0.27-21, 7.0.28-15, and 8.0.17-6
 * Percona Backup for MongoDB 2.11.0
-* PMM Client: 2.44.1
+* PMM Client: 2.44.1-1
 * PMM3 Client: 3.5.0
 * cert-manager: 1.18.2
 * LogCollector based on fluent-bit 4.0.1
@@ -42,11 +42,11 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 
 --8<-- [start:platforms]
 
-* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.31-1.33
-* [Amazon Elastic Container Service for Kubernetes (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.31-1.34
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.31 - 1.33
+* [Amazon Elastic Kubernetes Service (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.31 - 1.34
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.31 - 1.33
 * [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.16 - 4.19
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.31-1.33
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.37.0 based on Kubernetes 1.34.0
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.37.0 based on Kubernetes v1.34.0
 
 --8<-- [end:platforms]
 

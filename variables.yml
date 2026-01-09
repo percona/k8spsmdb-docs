@@ -8,7 +8,7 @@ mongodb80recommended: '8.0.17-6'
 mongodb70recommended: '7.0.28-15'
 mongodb60recommended: '6.0.27-21'
 mongodb50recommended: '5.0.29-25'  # No updated version provided, value remains the same.
-pmm2recommended: '2.44.1'
+pmm2recommended: '2.44.1-1'
 pmm3recommended: '3.5.0'
 logcollectorrecommended: '4.0.1'
 gkerecommended: '1.33'
