@@ -24,7 +24,7 @@ For either type of a restore you need to create a Restore object using the [`dep
 
     * Logical restore in an unsharded cluster results causes downtime for the duration of the data restore. No Pods are deleted or recreated
     * Logical restore in a sharded cluster causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
-    * Physical restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
+    * Physical and incremental restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
 
 --8<-- [start:backup-prepare]
 
@@ -51,9 +51,11 @@ For either type of a restore you need to create a Restore object using the [`dep
 
 --8<-- [end:backup-prepare]
 
-## Restore from a full backup
+## Restore from a backup
 
-To restore your Percona Server for MongoDB cluster from a backup, define a `PerconaServerMongoDBRestore` custom resource. Set the following keys:
+To restore your Percona Server for MongoDB cluster from any backup, define a `PerconaServerMongoDBRestore` custom resource. The `deploy/backup/restore.yaml` manifest is the same for all restore types. During the restore, PBM automatically detects the backup type and performs the corresponding restore procedure.
+
+Set the following keys:
 
 * set `spec.clusterName` key to the name of the target cluster to restore the backup on,
 * set `spec.backupName` key to the name of your backup. This is the value from the output of the `kubectl get psmdb-backup` command.
