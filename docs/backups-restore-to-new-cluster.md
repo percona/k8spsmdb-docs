@@ -4,6 +4,7 @@ You can restore from a backup as follows:
 
 * [On the same cluster where you made a backup](backups-restore.md)
 * On a new cluster deployed in a different Kubernetes-based environment.
+* On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
 
 This document focuses on the restore on a new cluster deployed in a different Kubernetes environment.
 
@@ -19,11 +20,15 @@ This document covers the following restore scenarios:
 * [Restore from a backup](#restore-from-a-backup) - restore from a full backup  without point-in-time
 * [Point-in-time recovery](#point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
+--8<-- [start:backup-new-env-preconditions]
+
 ## Preconditions
 
 1. When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. 
 
 2. To restore from a physical backup, set the corresponding encryption key of the target cluster. Find more details about encryption in [Data-at-rest encryption](encryption.md). The name of the required Secrets object can be found out from the `spec.secrets` key in the `deploy/cr.yaml` (`my-cluster-name-secrets` by default). 
+
+--8<-- [end:backup-new-env-preconditions]
 
 --8<-- "backups-restore.md:backup-prepare"
 

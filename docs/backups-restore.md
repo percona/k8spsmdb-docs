@@ -4,6 +4,7 @@ You can restore from a backup as follows:
 
 * On the same cluster where you made a backup
 * On [a new cluster deployed in a different Kubernetes-based environment](backups-restore-to-new-cluster.md).
+* On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
 
 This document focuses on the restore to the same cluster.
 
@@ -33,9 +34,9 @@ For either type of a restore you need to create a Restore object using the [`dep
 1. Make sure that the cluster is running.
 2. Export your namespace as an environment variable. Replace the `<namespace>` placeholder with your value:
 
-   ```bash
-   export NAMESPACE = <namespace>
-   ```
+    ```bash
+    export NAMESPACE = <namespace>
+    ```
 
 3. Get the backup information. List the backups using this command: 
 
