@@ -24,8 +24,8 @@ spec:
 
 Apply the manifest:
 
-```{.bash data-prompt="$" }
-$ kubectl apply -f deploy/cr.yaml -n <namespace>
+```bash
+kubectl apply -f deploy/cr.yaml -n <namespace>
 ```
 
 ## Disable TLS for a running cluster
@@ -34,15 +34,15 @@ To disable TLS protocol for a running cluster, follow these steps:
 
 1. Pause the cluster. Since the cluster is running, run the `kubectl patch` command to update the cluster configuration. Replace the `<namespace>` placeholder with your namespace. For example, for the cluster with the name `my-cluster-name`, the command is:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl patch psmdb my-cluster-name -n <namespace> --type json -p='[{"op":"add","path":"/spec/pause","value":true}]'
+    ```bash
+    kubectl patch psmdb my-cluster-name -n <namespace> --type json -p='[{"op":"add","path":"/spec/pause","value":true}]'
     ```
 
 
 2. Wait for the cluster to be paused. Check the status with the `kubectl get psmdb` command:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl get psmdb -n <namespace>
+    ```bash
+    kubectl get psmdb -n <namespace>
     ```
 
     ??? example "Expected output"
@@ -67,14 +67,14 @@ To disable TLS protocol for a running cluster, follow these steps:
 
 4. Apply the changes:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 5. Now resume the cluster with the `kubectl patch` command: 
 
-    ```{.bash data-prompt="$" }
-    $ kubectl patch psmdb my-cluster-name -n <namespace> --type json -p='[{"op":"add","path":"/spec/pause","value":false}]'
+    ```bash
+    kubectl patch psmdb my-cluster-name -n <namespace> --type json -p='[{"op":"add","path":"/spec/pause","value":false}]'
     ```
 
 
@@ -94,14 +94,14 @@ To re-enable TLS protocol for a running cluster, follow these steps:
 
 2. Apply the changes:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 3. Wait for the cluster to be paused. Check the status with the `kubectl get psmdb` command:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl get psmdb -n <namespace>
+    ```bash
+    kubectl get psmdb -n <namespace>
     ```
 
 4. Enable the TLS protocol by setting the following configuration in the `deploy/cr.yaml` Custom Resource manifest:
@@ -119,8 +119,8 @@ To re-enable TLS protocol for a running cluster, follow these steps:
 
 5. Apply the changes:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 6. Now resume the cluster. Edit the `deploy/cr.yaml` Custom Resource manifest and set the `spec.pause` key to `false`:
@@ -132,8 +132,8 @@ To re-enable TLS protocol for a running cluster, follow these steps:
 
 7. Apply the changes:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 8. Wait for the cluster to be resumed. Check the status with the `kubectl get psmdb` command.

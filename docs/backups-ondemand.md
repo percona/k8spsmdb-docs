@@ -16,8 +16,8 @@ Here's what you need to do to run on-demand backups:
 
 2. Apply the changes. Don't forget to replace the `<namespace>` placeholder with your namespace:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 ## Create a Backup resource 
@@ -111,14 +111,14 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
 2. Apply the `backup.yaml` manifest to start a backup:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/backup.yaml
+    ```bash
+    kubectl apply -f deploy/backup/backup.yaml
     ```
 
 3. You can track the backup process with the `PerconaServerMongoDBBackup` Custom Resource as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb-backup
+    ```bash
+    kubectl get psmdb-backup
     ```
     
     ??? example "Expected output"
@@ -136,8 +136,8 @@ If you have any issues with a backup, here's how you can troubleshoot it:
 
 1. View information about a backup:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl describe psmdb-backup backup1
+    ```bash
+    kubectl describe psmdb-backup backup1
     ```
 
     ??? example "Expected output"
@@ -185,14 +185,14 @@ If you have any issues with a backup, here's how you can troubleshoot it:
 
 2. [Check logs](debug-logs.md) from the backup-agent container of the appropriate Pod as follows. Find the Pod name in the `pbm Pod` field in the output from the previous step. Or use the following command to get the Pod name:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl get psmdb-backup -o yaml | grep pbmPod
+    ```bash
+    kubectl get psmdb-backup -o yaml | grep pbmPod
     ```
 
     Now connect to the `backup-agent` of this Pod:
     
-    ```{.bash data-prompt="$" }
-    $ kubectl logs pod/my-cluster-name-rs0 -c backup-agent
+    ```bash
+    kubectl logs pod/my-cluster-name-rs0 -c backup-agent
     ```
     
 3. [Access the same container via ssh](debug-shell.md) and [carry on Percona Backup for MongoDB diagnostics  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html). 

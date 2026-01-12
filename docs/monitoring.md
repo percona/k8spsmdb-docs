@@ -29,8 +29,8 @@ Optionally, you can specify additional parameters for the [`pmm-admin add mongod
 
 When done, apply the edited `deploy/cr.yaml` file:
 
-```{.bash data-prompt="$"}
-$ kubectl apply -f deploy/cr.yaml
+```bash
+kubectl apply -f deploy/cr.yaml
 ```
 
 ## Update the secrets file
@@ -41,26 +41,26 @@ To encode a password or any other parameter, run the following command:
 
 === ":simple-linux: on Linux"
 
-    ```{.bash data-prompt="$"} 
-    $ echo -n "password" | base64 --wrap=0
+    ```bash 
+    echo -n "password" | base64 --wrap=0
     ``` 
 
 === ":simple-apple: on macOS"
 
-    ```{.bash data-prompt="$"} 
-    $ echo -n "password" | base64
+    ```bash 
+    echo -n "password" | base64
     ```
 
 For example, to set the new PMM Server token in the `my-cluster-name-secrets` object, do the following:
 
 === ":simple-linux: on Linux"
 
-    ```{.bash data-prompt="$"}
-    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64 --wrap=0)'}}'
+    ```bash
+    kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64 --wrap=0)'}}'
     ```
 
 === ":simple-apple: on macOS"
 
-    ```{.bash data-prompt="$"}
-    $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64)'}}'
+    ```bash
+    kubectl patch secret/my-cluster-name-secrets -p '{"data":{"PMM_SERVER_TOKEN": '$(echo -n <new-token> | base64)'}}'
     ```

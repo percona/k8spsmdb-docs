@@ -51,20 +51,20 @@ or on [Azure Blob Storage  :octicons-link-external-16:](https://azure.microsoft.
     `AWS_SECRET_ACCESS_KEY`, the S3 bucket and region in the above example),
     provide the config file to the pbm-agent on all nodes as follows:
     
-    ``` {.bash data-prompt="$" }
-    $ pbm config --file pbm_config.yaml
+    ```bash
+    pbm config --file pbm_config.yaml
     ```
  
 3. Start the pbm-agent:
 
-    ``` {.bash data-prompt="$" }
-    $ sudo systemctl start pbm-agent
+    ```bash
+    sudo systemctl start pbm-agent
     ```
 
 4. Now you can make backup as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ pbm backup --wait
+    ```bash
+    pbm backup --wait
     ```
 
     The command output will contain the *backup name*, which you will further

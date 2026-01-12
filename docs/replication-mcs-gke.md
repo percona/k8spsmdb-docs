@@ -27,8 +27,8 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
 
 2. Enable the MCS, fleet (hub), Resource Manager, Cloud Service Mesh, and Cloud DNS APIs for your account:
 
-    ```{.bash data-prompt="$"}
-    $ gcloud services enable \
+    ```bash
+    gcloud services enable \
     multiclusterservicediscovery.googleapis.com \
     gkehub.googleapis.com \
     cloudresourcemanager.googleapis.com \
@@ -39,16 +39,16 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
 
 3. Enable multi-cluster Services for your project on GKE:
 
-    ```{.bash data-prompt="$"}
-    $ gcloud container fleet multi-cluster-services enable --project $PROJECT_ID
+    ```bash
+    gcloud container fleet multi-cluster-services enable --project $PROJECT_ID
     ```
 
 4. Create two clusters and enable Workload Identity for them. Let's name the clusters `main` and `replica`:
 
     * Create the `main` cluster:
 
-       ```{.bash data-prompt="$"}
-       $ gcloud container clusters create main-cluster \
+       ```bash
+       gcloud container clusters create main-cluster \
          --zone us-central1-a \
          --cluster-version {{ gkerecommended }} \
          --machine-type n1-standard-4 \
@@ -58,8 +58,8 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
        
     * Create the `replica` cluster:
       
-       ```{.bash data-prompt="$"}
-       $ gcloud container clusters create replica-cluster \
+       ```bash
+       gcloud container clusters create replica-cluster \
          --zone us-central1-a \
          --cluster-version {{ gkerecommended }} \
          --machine-type n1-standard-4 \
@@ -71,16 +71,16 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
 
     * Add the main cluster
 
-    ```{.bash data-prompt="$"}
-    $ gcloud container fleet memberships register main-cluster \
+    ```bash
+    gcloud container fleet memberships register main-cluster \
       --gke-cluster us-central1-a/main-cluster \
       --enable-workload-identity 
     ```
     
     * Add the replica cluster
 
-    ```{.bash data-prompt="$"}
-    $ gcloud container fleet memberships register replica-cluster \
+    ```bash
+    gcloud container fleet memberships register replica-cluster \
       --gke-cluster us-central1-a/replica-cluster \
       --enable-workload-identity 
     ```
@@ -89,22 +89,22 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
 
     * Extract the Project number and set it as the environment variable:
 
-       ```{.bash data-prompt="$"}
-       $ PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+       ```bash
+       PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
        ```
 
     * Enable IAM permissions:
 
-       ```{.bash data-prompt="$"}
-       $ gcloud projects add-iam-policy-binding $PROJECT_ID \
+       ```bash
+       gcloud projects add-iam-policy-binding $PROJECT_ID \
          --member "principal://iam.googleapis.com/projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$PROJECT_ID.svc.id.goog/subject/ns/gke-mcs/sa/gke-mcs-importer" \
          --role "roles/compute.networkViewer"
        ```
 
 7. Verify that MCS is enabled:
 
-    ```{.bash data-prompt="$"}
-    $ gcloud container fleet multi-cluster-services describe --project $PROJECT_ID
+    ```bash
+    gcloud container fleet multi-cluster-services describe --project $PROJECT_ID
     ```
 
     ??? example "Sample output"

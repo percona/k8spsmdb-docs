@@ -46,17 +46,17 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
 
     1. Set your cluster variables
     
-        ``` {.bash data-prompt="$" }
-        $ CLUSTER_NAME=my-cluster-name
-        $ NAMESPACE=my-namespace
+        ```bash
+        CLUSTER_NAME=my-cluster-name
+        NAMESPACE=my-namespace
         ```
     
     2. Create the Certificate Authority (CA)
     
         This command creates a root Certificate Authority that will sign all your certificates:
         
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
+        ```bash
+        cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
           {
             "CN": "Root CA",
             "names": [
@@ -74,8 +74,8 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     3. Create CA configuration file that defines how the CA will sign certificates:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF > ca-config.json
+        ```bash
+        cat <<EOF > ca-config.json
           {
             "signing": {
               "default": {
@@ -89,8 +89,8 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     4. Generate the certificate for internal MongoDB node communication, including all shard components:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
+        ```bash
+        cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
           {
             "hosts": [
               "localhost",
@@ -129,20 +129,20 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     5. Bundle the server certificate with the CA certificate:
     
-        ``` {.bash data-prompt="$" }
-        $ cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
+        ```bash
+        cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
         ```
     
     6. Create a Kubernetes Secret for internal cluster communication:
     
-        ``` {.bash data-prompt="$" }
-        $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        ```bash
+        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
         ```
     
     7. Generate the certificate for external client connections, including all shard components:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
+        ```bash
+        cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
           {
             "hosts": [
               "${CLUSTER_NAME}-rs0",
@@ -180,25 +180,25 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     8. Create a Kubernetes Secret for external client connections:
     
-        ``` {.bash data-prompt="$" }
-        $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        ```bash
+        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
         ```
 
 === "Replica set only (no sharding)"
 
     1. Set your cluster variables
     
-        ``` {.bash data-prompt="$" }
-        $ CLUSTER_NAME=my-cluster-name
-        $ NAMESPACE=my-namespace
+        ```bash
+        CLUSTER_NAME=my-cluster-name
+        NAMESPACE=my-namespace
         ```
     
     2. Create the Certificate Authority (CA)
     
         This command creates a root Certificate Authority that will sign all your certificates:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
+        ```bash
+        cat <<EOF | cfssl gencert -initca - | cfssljson -bare ca
           {
             "CN": "Root CA",
             "names": [
@@ -216,8 +216,8 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     3. Create a CA configuration file that defines how the CA will sign certificates:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF > ca-config.json
+        ```bash
+        cat <<EOF > ca-config.json
           {
             "signing": {
               "default": {
@@ -231,8 +231,8 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     4. Generate the certificate for internal MongoDB node communication:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
+        ```bash
+        cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare server
           {
             "hosts": [
               "localhost",
@@ -259,20 +259,20 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     5. Bundle the server certificate with the CA certificate:
     
-        ``` {.bash data-prompt="$" }
-        $ cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
+        ```bash
+        cfssl bundle -ca-bundle=ca.pem -cert=server.pem | cfssljson -bare server
         ```
     
     6. Create a Kubernetes Secret for internal cluster communication:
     
-        ``` {.bash data-prompt="$" }
-        $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        ```bash
+        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
         ```
     
     7. Generate the certificate for external client connections:
     
-        ``` {.bash data-prompt="$" }
-        $ cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
+        ```bash
+        cat <<EOF | cfssl gencert -ca=ca.pem  -ca-key=ca-key.pem -config=./ca-config.json - | cfssljson -bare client
           {
             "hosts": [
               "${CLUSTER_NAME}-rs0",
@@ -298,8 +298,8 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     
     8. Create a Kubernetes Secret for external client connections:
     
-        ``` {.bash data-prompt="$" }
-        $ kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        ```bash
+        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
         ```
 
 ### Configure your cluster

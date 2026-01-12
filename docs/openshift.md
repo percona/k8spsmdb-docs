@@ -41,9 +41,9 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
 
 1. Clone the percona-server-mongodb-operator repository:
 
-    ``` {.bash data-prompt="$" }
-    $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-    $ cd percona-server-mongodb-operator
+    ```bash
+    git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+    cd percona-server-mongodb-operator
     ```
 
     !!! note
@@ -61,8 +61,8 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
     [Apply it  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
     as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ oc apply --server-side -f deploy/crd.yaml
+    ```bash
+    oc apply --server-side -f deploy/crd.yaml
     ```
 
     !!! note
@@ -74,22 +74,22 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
     non-privileged user, the necessary permissions can be granted by applying the
     next clusterrole:
 
-    ``` {.bash data-prompt="$" }
-    $ oc create clusterrole psmdb-admin --verb="*" --resource=perconaservermongodbs.psmdb.percona.com,perconaservermongodbs.psmdb.percona.com/status,perconaservermongodbbackups.psmdb.percona.com,perconaservermongodbbackups.psmdb.percona.com/status,perconaservermongodbrestores.psmdb.percona.com,perconaservermongodbrestores.psmdb.percona.com/status
-    $ oc adm policy add-cluster-role-to-user psmdb-admin <some-user>
+    ```bash
+    oc create clusterrole psmdb-admin --verb="*" --resource=perconaservermongodbs.psmdb.percona.com,perconaservermongodbs.psmdb.percona.com/status,perconaservermongodbbackups.psmdb.percona.com,perconaservermongodbbackups.psmdb.percona.com/status,perconaservermongodbrestores.psmdb.percona.com,perconaservermongodbrestores.psmdb.percona.com/status
+    oc adm policy add-cluster-role-to-user psmdb-admin <some-user>
     ```
 
     If you have a [cert-manager  :octicons-link-external-16:](https://docs.cert-manager.io/en/release-0.8/getting-started/install/openshift.html) installed, then you have to execute two more commands to be able to manage certificates with a non-privileged user:
 
-    ``` {.bash data-prompt="$" }
-    $ oc create clusterrole cert-admin --verb="*" --resource=iissuers.certmanager.k8s.io,certificates.certmanager.k8s.io
-    $ oc adm policy add-cluster-role-to-user cert-admin <some-user>
+    ```bash
+    oc create clusterrole cert-admin --verb="*" --resource=iissuers.certmanager.k8s.io,certificates.certmanager.k8s.io
+    oc adm policy add-cluster-role-to-user cert-admin <some-user>
     ```
 
 3. Create a new `psmdb` project:
 
-    ``` {.bash data-prompt="$" }
-    $ oc new-project psmdb
+    ```bash
+    oc new-project psmdb
     ```
 
 4. Add role-based access control (RBAC) for Percona Server for MongoDB is
@@ -98,14 +98,14 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
     actions are allowed on specific Kubernetes resources. The details about users
     and roles can be found in [OpenShift documentation  :octicons-link-external-16:](https://docs.openshift.com/enterprise/3.0/architecture/additional_concepts/authorization.html).
 
-    ``` {.bash data-prompt="$" }
-    $ oc apply -f deploy/rbac.yaml
+    ```bash
+    oc apply -f deploy/rbac.yaml
     ```
 
 5. Start the Operator within OpenShift:
 
-    ``` {.bash data-prompt="$" }
-    $ oc apply -f deploy/operator.yaml
+    ```bash
+    oc apply -f deploy/operator.yaml
     ```
 
 ## Install Percona Server for MongoDB
@@ -120,8 +120,8 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
     After editing the yaml file, the secrets should be created
     with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ oc create -f deploy/secrets.yaml
+    ```bash
+    oc create -f deploy/secrets.yaml
     ```
 
     More details about secrets can be found in [Users](users.md).
@@ -156,16 +156,16 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
 
     3. Create/apply the Custom Resource file:
 
-        ``` {.bash data-prompt="$" }
-        $ oc apply -f deploy/cr.yaml
+        ```bash
+        oc apply -f deploy/cr.yaml
         ```
 
         The creation process will take time. When the process is over your
         cluster will obtain the `ready` status. You can check it with the 
         following command:
 
-        ``` {.bash data-prompt="$" }
-        $ oc get psmdb
+        ```bash
+        oc get psmdb
         ```
 
         ??? example "Expected output"

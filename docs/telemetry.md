@@ -33,8 +33,8 @@ You can disable telemetry with a special option when installing the Operator:
 
 * if you [install the Operator with helm](helm.md), use the following installation command:
 
-  ``` {.bash data-prompt="$" }
-  $ helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace --set disable_telemetry="true"
+  ```bash
+  helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace --set disable_telemetry="true"
   ```
 
 * if you don't use helm for installation, you have to edit the `operator.yaml`

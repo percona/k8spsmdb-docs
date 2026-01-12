@@ -10,8 +10,8 @@ The **Version Service** is a centralized repository that the Percona Operator fo
 
 You can manually query the Version Service using the `curl` command. The basic syntax is:
 
-```{.bash data-prompt="$"}
-$ curl https://check.percona.com/versions/v1/psmdb-operator/<operator-version>/<psmdb-version> | jq -r '.versions[].matrix'
+```bash
+curl https://check.percona.com/versions/v1/psmdb-operator/<operator-version>/<psmdb-version> | jq -r '.versions[].matrix'
 ```
 
 where:
@@ -21,8 +21,8 @@ where:
 
 For example, to retrieve the list of images for the Operator version `1.20.0` and the latest version of Percona Server for MongoDB 8.0, use the following command:
 
-```{.bash data-prompt="$"}
-$ curl https://check.percona.com/versions/v1/psmdb-operator/1.20.0/8.0-latest |jq -r '.versions[].matrix'
+```bash
+curl https://check.percona.com/versions/v1/psmdb-operator/1.20.0/8.0-latest |jq -r '.versions[].matrix'
 ```
 
 ??? example "Sample output"
@@ -69,8 +69,8 @@ $ curl https://check.percona.com/versions/v1/psmdb-operator/1.20.0/8.0-latest |j
 
 To narrow down the search and check the Percona Server for MySQL images available for a specific Operator version (`1.20.1` in the following example), use the following command:
 
-```{.bash data-prompt="$"}
-$ curl -s https://check.percona.com/versions/v1/psmdb-operator/1.20.1 | jq -r '.versions[0].matrix.mongod | to_entries[] | "\(.key)\t\(.value.imagePath)\t\(.value.status)"'
+```bash
+curl -s https://check.percona.com/versions/v1/psmdb-operator/1.20.1 | jq -r '.versions[0].matrix.mongod | to_entries[] | "\(.key)\t\(.value.imagePath)\t\(.value.status)"'
 ```
 
 ??? example "Sample output"

@@ -2,9 +2,9 @@
 
 1. Clone the percona-server-mongodb-operator repository:
 
-    ``` {.bash data-prompt="$" }
-    $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-    $ cd percona-server-mongodb-operator
+    ```bash
+    git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+    cd percona-server-mongodb-operator
     ```
 
     !!! note
@@ -19,8 +19,8 @@
     [Apply it  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/)
     as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f deploy/crd.yaml
+    ```bash
+    kubectl apply --server-side -f deploy/crd.yaml
     ```
 
     This step should be done only once; the step does not need to be repeated
@@ -34,9 +34,9 @@
     commands as follows (replace the `<namespace name>` placeholder with some
     descriptive name):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create namespace <namespace name>
-    $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
+    ```bash
+    kubectl create namespace <namespace name>
+    kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
     At success, you will see the message that `namespace/<namespace name>` was
@@ -48,8 +48,8 @@
     role and actions are defined for Kubernetes resources in the yaml file.
     Further details about users and roles can be found in [Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#default-roles-and-role-bindings).
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/rbac.yaml
+    ```bash
+    kubectl apply -f deploy/rbac.yaml
     ```
 
     !!! note
@@ -58,14 +58,14 @@
         privileges. For example, those using Google Kubernetes Engine can
         grant user needed privileges with the following command:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+        ```bash
+        kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
         ```
 
 5. Start the operator within Kubernetes:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/operator.yaml
+    ```bash
+    kubectl apply -f deploy/operator.yaml
     ```
 
 6. Add the MongoDB Users secrets to Kubernetes. These secrets
@@ -77,8 +77,8 @@
     After editing the yaml file, MongoDB Users secrets should be created
     using the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create -f deploy/secrets.yaml
+    ```bash
+    kubectl create -f deploy/secrets.yaml
     ```
 
     More details about secrets can be found in [Users](users.md).
@@ -91,16 +91,16 @@
 8. After the operator is started, Percona Server for MongoDB cluster can
     be created with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```
 
     The creation process may take some time. When the process is over your
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    ```bash
+    kubectl get psmdb
     ```
 
     ??? example "Expected output"

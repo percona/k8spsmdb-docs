@@ -26,45 +26,45 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
 
     * On the `main` cluster:
 
-       ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig main_config config set-context $(kubectl config current-context)
+       ```bash
+       kubectl --kubeconfig main_config config set-context $(kubectl config current-context)
        ```
 
     * On the `replica` cluster:
 
-       ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig replica_config config set-context $(kubectl config current-context)
+       ```bash
+       kubectl --kubeconfig replica_config config set-context $(kubectl config current-context)
        ```
 
 3. Grant your Google Cloud user permissions to manage clusters. To do this, create a ClusterRoleBinding binding of the `cluster-admin` ClusterRole to your account for each cluster. Specify different names for each cluster to avoid naming collision:
 
     * On the `main` cluster:
 
-       ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig main_config create clusterrolebinding cluster-admin-binding-main --clusterrole cluster-admin --user $(gcloud config get-value core/account)
+       ```bash
+       kubectl --kubeconfig main_config create clusterrolebinding cluster-admin-binding-main --clusterrole cluster-admin --user $(gcloud config get-value core/account)
        ```
 
     * On the `replica` cluster:
 
-       ```{.bash data-prompt="$"}
-       $ kubectl --kubeconfig replica_config create clusterrolebinding cluster-admin-binding-replica --clusterrole cluster-admin --user $(gcloud config get-value core/account)
+       ```bash
+       kubectl --kubeconfig replica_config create clusterrolebinding cluster-admin-binding-replica --clusterrole cluster-admin --user $(gcloud config get-value core/account)
        ```
 
 4. Create the same namespace on both clusters and set the context to point to this namespace. The namespace must be the same because it is a part of the shared DNS used to identify and resolve services across clusters.
 
     Run this command on both clusters to create the `example` namespace. Use your own value:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl create namespace example
-    $ kubectl config set-context --current --namespace=example
+    ```bash
+    kubectl create namespace example
+    kubectl config set-context --current --namespace=example
     ```
 
 ## Install the Operator and Percona Server for MongoDB
 
 1. Install the Operator deployment:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml -n <namespace>
+    ```bash
+    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml -n <namespace>
     ```
 
     ??? example "Expected output"
@@ -137,8 +137,8 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
 
 3. Apply the configuration to deploy Percona Server for MongoDB:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl apply -f cr-main.yaml
+    ```bash
+    kubectl apply -f cr-main.yaml
     ```
 
 ## Export the cluster secrets and certificates to be copied from Main to Replica
@@ -148,8 +148,8 @@ credentials and TLS certificates to be able to communicate with each other. To d
 
 1. List the Secrets objects:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get secrets
+    ```bash
+    kubectl get secrets
     ```
    
     The Secrets you are interested in are the following:
@@ -164,11 +164,11 @@ credentials and TLS certificates to be able to communicate with each other. To d
 
 2. Export each Secret to a file:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl get secret my-cluster-name-secrets -o yaml > my-cluster-secrets.yml
-    $ kubectl get secret main-cluster-ssl  -o yaml > main-cluster-ssl.yml
-    $ kubectl get secret main-cluster-ssl-internal -o yaml > main-cluster-ssl-internal.yml
-    $ kubectl get secret my-cluster-name-mongodb-encryption-key -o yaml > my-cluster-name-mongodb-encryption-key.yml
+    ```bash
+    kubectl get secret my-cluster-name-secrets -o yaml > my-cluster-secrets.yml
+    kubectl get secret main-cluster-ssl  -o yaml > main-cluster-ssl.yml
+    kubectl get secret main-cluster-ssl-internal -o yaml > main-cluster-ssl-internal.yml
+    kubectl get secret my-cluster-name-mongodb-encryption-key -o yaml > my-cluster-name-mongodb-encryption-key.yml
     ```
 
 3. Remove the `annotations`, `creationTimestamp`, `resourceVersion`,
@@ -177,18 +177,18 @@ ready for the `replica` site.
 
     Use the following scripts:
 
-    ```{.bash data-prompt="$" }
-    $ yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-secrets.yml > my-cluster-secrets-replica.yaml
+    ```bash
+    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-secrets.yml > my-cluster-secrets-replica.yaml
     sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-secrets-replica.yaml
 
-    $ yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl.yml > replica-cluster-ssl.yml
+    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl.yml > replica-cluster-ssl.yml
     sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl.yml
 
-    $ yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl-internal.yml > replica-cluster-ssl-internal.yml
+    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl-internal.yml > replica-cluster-ssl-internal.yml
     sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl-internal.yml
 
     
-    $ yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-name-mongodb-encryption-key.yml > my-cluster-name-mongodb-encryption-key2.yml
+    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-name-mongodb-encryption-key.yml > my-cluster-name-mongodb-encryption-key2.yml
     sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-name-mongodb-encryption-key2.yml
     ```
 

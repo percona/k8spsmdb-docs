@@ -25,14 +25,14 @@ The steps are the following:
 
 1. List the Custom Resources. Replace the `<namespace>` placeholder with your value
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get psmdb -n <namespace>
+    ```bash
+    kubectl get psmdb -n <namespace>
     ```
 
 2. Delete the Custom Resource with the name of your cluster
 
-    ```{.bash data-prompt="$"}
-    $ kubectl delete psmdb <cluster_name> -n <namespace>
+    ```bash
+    kubectl delete psmdb <cluster_name> -n <namespace>
     ```
 
     It may take a while to stop and delete the cluster. 
@@ -45,8 +45,8 @@ The steps are the following:
 
 3. Check that the cluster is deleted by listing the Custom Resources again:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get psmdb -n <namespace>
+    ```bash
+    kubectl get psmdb -n <namespace>
     ```
 
     ??? example "Sample output"
@@ -66,20 +66,20 @@ To uninstall the Operator, delete the [Deployments  :octicons-link-external-16:]
 
 1. List the deployments. Replace the `<namespace>` placeholder with your namespace.
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get deploy -n <namespace>
+    ```bash
+    kubectl get deploy -n <namespace>
     ```
 
 2. Delete the `percona-*` deployment
 
-    ```{.bash data-prompt="$"}
-    $ kubectl delete deploy percona-server-mongodb-operator -n <namespace>
+    ```bash
+    kubectl delete deploy percona-server-mongodb-operator -n <namespace>
     ```
 
 3. Check that the Operator is deleted by listing the Pods. As a result you should have no Pods related to it.
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get pods -n <namespace>
+    ```bash
+    kubectl get pods -n <namespace>
     ```
     
     ??? example "Sample output"
@@ -94,14 +94,14 @@ To uninstall the Operator, delete the [Deployments  :octicons-link-external-16:]
 
     Get the list of CRDs. 
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get crd
+    ```bash
+    kubectl get crd
     ```
 
 5. Delete the `percona*.psmdb.percona.com` CRDs
 
-    ```{.bash data-prompt="$"}
-    $ kubectl delete crd perconaservermongodbbackups.psmdb.percona.com perconaservermongodbrestores.psmdb.percona.com perconaservermongodbs.psmdb.percona.com
+    ```bash
+    kubectl delete crd perconaservermongodbbackups.psmdb.percona.com perconaservermongodbrestores.psmdb.percona.com perconaservermongodbs.psmdb.percona.com
     ``` 
 
     ??? example "Sample output"
@@ -119,8 +119,8 @@ To delete the Operator, do the following:
 
 1. List the Helm charts:
 
-    ```{.bash data-prompt="$"}
-    $ helm list -n <namespace>
+    ```bash
+    helm list -n <namespace>
     ```
 
     ??? example "Sample output"
@@ -132,14 +132,14 @@ To delete the Operator, do the following:
 
 2. Delete the [release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for Percona Server for MongoDB 
 
-    ```{.bash data-prompt="$"}
-    $ helm uninstall cluster1 --namespace <namespace>
+    ```bash
+    helm uninstall cluster1 --namespace <namespace>
     ```
 
 3. Delete the [release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts) for the Operator 
 
-    ```{.bash data-prompt="$"}
-    $ helm uninstall my-op --namespace <namespace>
+    ```bash
+    helm uninstall my-op --namespace <namespace>
     ```
 
 ## Clean up resources
@@ -151,8 +151,8 @@ By default, TLS-related objects and data volumes remain in Kubernetes environmen
 
     1. List PVCs. Replace the `<namespace>` placeholder with your namespace:
 
-        ```{.bash data-prompt="$"}
-        $ kubectl get pvc -n <namespace>
+        ```bash
+        kubectl get pvc -n <namespace>
         ```    
 
         ??? example "Sample output"    
@@ -169,8 +169,8 @@ By default, TLS-related objects and data volumes remain in Kubernetes environmen
 
     2. Delete PVCs related to your cluster. The following command deletes PVCs for the `my-cluster-name` cluster:
 
-        ```{.bash data-prompt="$"}
-        $ kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-cfg-1 mongod-data-my-cluster-name-cfg-2 mongod-data-my-cluster-name-rs0-0 mongod-data-my-cluster-name-rs0-1 mongod-data-my-cluster-name-rs0-2 -n <namespace>
+        ```bash
+        kubectl delete pvc mongod-data-my-cluster-name-cfg-0 mongod-data-my-cluster-name-cfg-1 mongod-data-my-cluster-name-cfg-2 mongod-data-my-cluster-name-rs0-0 mongod-data-my-cluster-name-rs0-1 mongod-data-my-cluster-name-rs0-2 -n <namespace>
         ```    
 
         ??? example "Sample output"       
@@ -189,13 +189,13 @@ By default, TLS-related objects and data volumes remain in Kubernetes environmen
 
     1. List Secrets:
 
-        ```{.bash data-prompt="$"}
-        $ kubectl get secrets -n <namespace>
+        ```bash
+        kubectl get secrets -n <namespace>
         ```    
 
     2. Delete the Secret:
         
-        ```{.bash data-prompt="$"}
-        $ kubectl delete secret <secret_name> -n <namespace>
+        ```bash
+        kubectl delete secret <secret_name> -n <namespace>
         ```
 

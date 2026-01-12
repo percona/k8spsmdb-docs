@@ -26,15 +26,15 @@ The steps to install the *cert-manager* are the following:
 
 The following commands perform all the needed actions:
 
-``` {.bash data-prompt="$" }
-$ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v{{ certmanagerrecommended }}/cert-manager.yaml --validate=false
+```bash
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v{{ certmanagerrecommended }}/cert-manager.yaml --validate=false
 ```
 
 After the installation, you can verify the *cert-manager* by running the
 following command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get pods -n cert-manager
+```bash
+kubectl get pods -n cert-manager
 ```
 
 The result should display the *cert-manager* and webhook active and running:

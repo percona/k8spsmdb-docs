@@ -9,8 +9,8 @@ Percona Operator for MongoDB uses [Custom Resources  :octicons-link-external-16:
 The first thing you can check for the Custom Resource is to query it with `kubectl get` command:
 
 
-``` {.bash data-prompt="$" }
-$ kubectl get psmdb
+```bash
+kubectl get psmdb
 ```
 
 ??? example "Expected output"
@@ -26,8 +26,8 @@ The Custom Resource should have `Ready` status.
 
     You can check which Percona’s Custom Resources are present and get some information about them as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl api-resources | grep -i percona
+    ```bash
+    kubectl api-resources | grep -i percona
     ```
 
     ??? example "Expected output"
@@ -43,8 +43,8 @@ The Custom Resource should have `Ready` status.
 If Custom Resource is not getting `Ready` status, it makes sense to check
 individual Pods. You can do it as follows:
 
-``` {.bash data-prompt="$" }
-$ kubectl get pods
+```bash
+kubectl get pods
 ```
 
 ???+ example "Expected output"
@@ -71,8 +71,8 @@ The above command provides the following insights:
 You can find more details about a specific Pod using the
 `kubectl describe pods <pod-name>` command.
 
-``` {.bash data-prompt="$" }
-$ kubectl describe pods my-cluster-name-rs0-0
+```bash
+kubectl describe pods my-cluster-name-rs0-0
 ```
 
 ??? example "Expected output"

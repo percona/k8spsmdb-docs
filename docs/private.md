@@ -13,8 +13,8 @@ the following steps:
     environment and create the correspondent Kubernetes Service as
     follows:
 
-    ``` {.bash data-prompt="$" }
-    $ helm install \
+    ```bash
+    helm install \
       --name minio-service \
       --version 8.0.5 \
       --set accessKey=some-access-key \
@@ -37,8 +37,8 @@ the following steps:
 
 2. Create an S3 bucket for backups:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm aws-cli --image=perconalab/awscli --restart=Never -- \
+    ```bash
+    kubectl run -i --rm aws-cli --image=perconalab/awscli --restart=Never -- \
       bash -c 'AWS_ACCESS_KEY_ID=some-access-key \
       AWS_SECRET_ACCESS_KEY=some-secret-key \
       AWS_DEFAULT_REGION=us-east-1 \
@@ -83,15 +83,15 @@ the following steps:
     `AWS_SECRET_ACCESS_KEY` keys. After you have finished editing the file, the
     secrets object are created or updated when you run the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup-s3.yaml
+    ```bash
+    kubectl apply -f deploy/backup-s3.yaml
     ```
 
 4. When the setup process is completed, making the backup is based on a script.
     Following example illustrates how to make an on-demand backup:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- \
+    ```bash
+    kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- \
        run backup \
        --server-address=<cluster-name>-backup-coordinator:10001 \
        --storage <storage> \
@@ -110,15 +110,15 @@ the following steps:
     the proper Backup Coordinator URL and storage name, you can obtain a list of
     the available backups:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- list backups --server-address=<cluster-name>-backup-coordinator:10001
+    ```bash
+    kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- list backups --server-address=<cluster-name>-backup-coordinator:10001
     ```
 
     Now, restore the backup, using backup name instead of the `backup-name`
     parameter:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- \
+    ```bash
+    kubectl run -it --rm pbmctl --image=percona/percona-server-mongodb-operator:0.3.0-backup-pbmctl --restart=Never -- \
        run restore \
        --server-address=<cluster-name>-backup-coordinator:10001 \
        --storage <storage> \

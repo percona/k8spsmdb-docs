@@ -30,14 +30,14 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
 
 2. Deploy the operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
+    ```bash
+    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
 3. Deploy MongoDB cluster with:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
+    ```bash
+    kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
     ```
 
     !!! note
@@ -50,14 +50,14 @@ The following steps are needed to run Percona Operator for MongoDB on minikube:
         repository with all manifests and source code by executing the following
         command:
 
-        ``` {.bash data-prompt="$" }
-        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```bash
+        git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
         After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f deploy/cr.yaml
+        ```bash
+        kubectl apply -f deploy/cr.yaml
         ```
 
     The creation process may take some time.

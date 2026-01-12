@@ -93,8 +93,8 @@ spec:
 
 The [added support for multiple backup storages](../multi-storage.md) requires specifying the main storage. If you use a single storage, it will automatically be marked as main in the Custom Resource manifest during the upgrade. If you use multiple storages, you must define one of them as the main storage when you upgrade to version 1.20.0. The following command shows how to set the `s3-us-west` storage as the main one:
 
-```{.bash data-prompt="$"}
-$ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+```bash
+kubectl patch psmdb my-cluster-name --type=merge --patch '{
     "spec": {
       "crVersion": "1.20.0",
       "image": "percona/percona-server-mongodb:7.0.18-11",

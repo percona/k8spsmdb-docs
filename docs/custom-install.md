@@ -10,22 +10,22 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
     1. Clone the repository with all manifests and source code by executing the following command:
 
-        ```{.bash data-prompt="$" }
-        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```bash
+        git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
     2. Edit the required options and apply the modified `deploy/cr.yaml` file as follows:
 
-        ```{.bash data-prompt="$" }
-        $ kubectl apply -f deploy/cr.yaml
+        ```bash
+        kubectl apply -f deploy/cr.yaml
         ```
 
 === "Helm"
 
     To install Percona Server for MongoDB with custom parameters, use the following command:
     
-    ```{.bash data-prompt="$" }
-    $ helm install --set key=value
+    ```bash
+    helm install --set key=value
     ```
 
     You can pass any of the Operator’s [Custom Resource options  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
@@ -36,8 +36,8 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
     === "Command line"
 
-        ``` {.bash data-prompt="$" }
-        $ helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
+        ```bash
+        helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
           --set "replsets.rs0.name=rs0" --set "replsets.rs0.size=3" \
           --set "replsets.rs0.volumeSpec.pvc.resources.requests.storage=20Gi" \
           --set backup.enabled=false --set sharding.enabled=false
@@ -66,8 +66,8 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
         Apply the resulting YAML file as follows:        
 
-        ``` {.bash data-prompt="$" }
-        $ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+        ```bash
+        helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
         ```
 
 ## Configure ports for MongoDB cluster components
@@ -101,8 +101,8 @@ Here's how to do it.
 
     2. Apply the `deploy/cr.yaml` to deploy Percona Server for MongoDB:    
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f deploy/cr.yaml
+        ```bash
+        kubectl apply -f deploy/cr.yaml
         ```
 
 === "Helm"
@@ -129,8 +129,8 @@ Here's how to do it.
 
     2. Install Percona Server for MongoDB with the specified configuration:
 
-        ```{.bash data-prompt="$" }
-        $ helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+        ```bash
+        helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
         ```
 
 

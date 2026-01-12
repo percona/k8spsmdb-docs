@@ -10,8 +10,8 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 
     1. Find the initial Operator installation image with `kubectl get deploy` command:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl get deploy percona-server-mongodb-operator -o yaml
+        ```bash
+        kubectl get deploy percona-server-mongodb-operator -o yaml
         ```
     
         ??? example "Expected output"
@@ -24,8 +24,8 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 
     2. [Apply a patch :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to update the `initImage` option of your cluster Custom Resource with this value taken from `containerImage`. Supposing that your cluster name is `my-cluster-name`, the command should look as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
             "spec": {
                "initImage":"registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:201092cf97c9ceaaaf3b60dd1b24c7c5228d35aab2674345893f4cd4d9bb0e2e"
             }}'
@@ -57,8 +57,8 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 
 2. Find the **new** initial Operator installation image name (it had changed during the Operator upgrade) and other image names for the components of your cluster with the `kubectl get deploy` command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get deploy percona-server-mongodb-operator -o yaml
+    ```bash
+    kubectl get deploy percona-server-mongodb-operator -o yaml
     ```
 
     ??? example "Expected output"
@@ -82,8 +82,8 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 3. [Apply a patch :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to set the necessary `crVersion` value (equal to the Operator version) and update images in your cluster Custom Resource. Supposing that your cluster name is `cluster1`, the command should look as follows:
 
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+    ```bash
+    kubectl patch psmdb my-cluster-name --type=merge --patch '{
         "spec": {
            "crVersion":"{{ release }}",
            "image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:5d29132a60b89e660ab738d463bcc0707a17be73dc955aa8da9e50bed4d9ad3e",
@@ -97,8 +97,8 @@ Upgrading database and Operator on [Red Hat Marketplace :octicons-link-external-
 
         The above command upgrades various components of the cluster including PMM Client. If you didn't follow the [official recommendation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/how-to/upgrade.html) to upgrade PMM Server before upgrading PMM Client, you can avoid PMM Client upgrade by removing it from the list of images as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
             "spec": {
                "crVersion":"{{ release }}",
                "image": "registry.connect.redhat.com/percona/percona-server-mongodb-operator-containers@sha256:5d29132a60b89e660ab738d463bcc0707a17be73dc955aa8da9e50bed4d9ad3e",
