@@ -12,7 +12,7 @@ This document focuses on the restore to the same cluster.
 You can make the following restores:
 
 * [Restore to a specific point in time](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
-* [Restore from a full backup](#restore-from-a-full-backup)
+* [Restore from a backup](#restore-from-a-backup)
 * [Selective restore from a full logical backup](#selective-restore)
 
 For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.

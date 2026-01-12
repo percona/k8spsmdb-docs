@@ -16,7 +16,7 @@ You can check available options in the [restore options reference](restore-optio
 
 This document covers the following restore scenarios:
 
-* [Restore from a full backup](#restore-from-a-full-backup) - restore from a full backup  without point-in-time
+* [Restore from a backup](#restore-from-a-backup) - restore from a full backup  without point-in-time
 * [Point-in-time recovery](#point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
 ## Preconditions
