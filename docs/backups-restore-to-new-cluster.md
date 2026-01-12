@@ -27,7 +27,7 @@ This document covers the following restore scenarios:
 
 --8<-- "backups-restore.md:backup-prepare"
 
-## Restore from a full backup
+## Restore from a backup
 
 To make a restore, PBM must know where to take the backup from and have access to that storage.
 
@@ -100,7 +100,7 @@ You can [already define](backups-storage.md) the storage where the backup is sto
 
 ## Point-in-time recovery
 
-As with the restore from a full backup, PBM must know where to take the backup from and have access to the storage. You can define the backup storage in two ways: within the restore object configuration or pre-configure it on the target cluster's `cr.yaml` file.
+As with the restore from a backup, PBM must know where to take the backup from and have access to the storage. You can define the backup storage in two ways: within the restore object configuration or pre-configure it on the target cluster's `cr.yaml` file.
 
 ### Approach 1: Define storage configuration in the restore object
 
