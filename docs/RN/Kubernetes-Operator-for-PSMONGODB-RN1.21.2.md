@@ -57,8 +57,8 @@ Find Percona's certified Docker images that you can use with the Percona Operato
 | percona/percona-server-mongodb:8.0.17-6 (ARM64)              | f1170f8bf68d051816cd4d956ca1f6ee9885c6cf0e1e5db5dc00a137af3603ee |
 | percona/percona-server-mongodb:7.0.28-15                     | d131a4375c3e669f97da6cdf5eef847099c731fd956341345f37e6e6fb68d699 |
 | percona/percona-server-mongodb:7.0.28-15 (ARM64)             | 6bc8ee24a7e60ec8ef32002165584320b9cc0eb6067a5f304cee6f1ea708f9b3 |
-| percona/percona-server-mongodb:6.0.27-21                     | --                                                               |
-| percona/percona-server-mongodb:6.0.27-21 (ARM64)             | --                                                               |
+| percona/percona-server-mongodb:6.0.27-21                     | 2bd82853fd207ecadc8e5cd3ee598db7b9943f6976d9ae2140f5bdc997b0e8bb |
+| percona/percona-server-mongodb:6.0.27-21 (ARM64) a23e4fa1b956299fb7403eef70082b13b3ecf75e51bba12f674f552508a42d61 |
 | percona/percona-backup-mongodb:2.11.0                        | d09f5de92cfbc5a7a42a8cc86742a07481c98b3b42cffdc6359b3ec1f63de3a5 |
 | percona/percona-backup-mongodb:2.11.0 (ARM64)                | a60d095439537b982209582d428b3b39a01e31e88b2b62d2dcbd99ea4e2d9928 |
 | percona/pmm-client:2.44.1-1                                  | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
