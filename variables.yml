@@ -2,14 +2,14 @@
 
 commandName: 'kubectl'
 clusterName: 'my-cluster-name'
-release: '1.21.1'
+release: '1.21.2'
 apiversion: '1'
-mongodb80recommended: '8.0.12-4'
-mongodb70recommended: '7.0.24-13'
-mongodb60recommended: '6.0.25-20'
+mongodb80recommended: '8.0.17-6'
+mongodb70recommended: '7.0.28-15'
+mongodb60recommended: '6.0.27-21'
 mongodb50recommended: '5.0.29-25'  # No updated version provided, value remains the same.
-pmm2recommended: '2.44.1'
-pmm3recommended: '3.4.1'
+pmm2recommended: '2.44.1-1'
+pmm3recommended: '3.5.0'
 logcollectorrecommended: '4.0.1'
 gkerecommended: '1.33'
 eksrecommended: '1.34'
@@ -21,9 +21,10 @@ certmanagerrecommended: '1.18.2'
 pbmrecommended: '2.11.0'
 k8s_monitor_tag: 'v0.1.1'
 
-year: '2025'
+year: '2026'
 
 date:
+  1_21_2: 2026-01-12
   1_21_1: 2025-10-30
   1_21_0: 2025-10-20
   1_20_1: 2025-06-04

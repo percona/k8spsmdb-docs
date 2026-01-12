@@ -1,5 +1,7 @@
 # Percona Operator for MongoDB Release Notes
 
+* [Percona Operator for MongoDB 1.21.2 ({{date.1_21_2}})](Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md)
+
 * [Percona Operator for MongoDB 1.21.1 ({{date.1_21_1}})](Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md)
 
 * [Percona Operator for MongoDB 1.21.0 ({{date.1_21_0}})](Kubernetes-Operator-for-PSMONGODB-RN1.21.0.md)
