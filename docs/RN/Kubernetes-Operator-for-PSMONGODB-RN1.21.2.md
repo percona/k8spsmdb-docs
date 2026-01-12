@@ -6,13 +6,13 @@
 
 ### Security update: Mitigation of heap memory disclosure vulnerability
 
-This release includes the fix for security vulnerability [CVE-2025-14847: CWE-130 :material-arrow-right:](https://radar.offseq.com/threat/cve-2025-14847-cwe-130-improper-handling-of-length-dd0a4a45), which is about how MongoDB uses `zlib` compression library. Attackers with network access to `mongod` or `mongos` can extract fragments of uninitialized server memory without authentication if zlib compression is enabled. This memory may contain sensitive data, which poses a serious information disclosure risk.
+This release includes the fix for security vulnerability [CVE-2025-14847: CWE-130 :octicons-link-external-16:](https://radar.offseq.com/threat/cve-2025-14847-cwe-130-improper-handling-of-length-dd0a4a45), which is about how MongoDB uses `zlib` compression library. Attackers with network access to `mongod` or `mongos` can extract fragments of uninitialized server memory without authentication if zlib compression is enabled. This memory may contain sensitive data, which poses a serious information disclosure risk.
 
 The issue is resolved upstream and is included in Percona Server for MongoDB 6.0.27-21, 7.0.28-15 and 8.0.17-6. Percona Operator for MongoDB includes these updated Percona Server for MongoDB images. 
 
 We strongly recommend upgrading to this latest version of the Operator to ensure your deployments remain secure.
 
-Learn more about the vulnerability in the [upstream bug report :material-arrow-right:](https://jira.mongodb.org/browse/SERVER-115508) and in Percona Blog: [Urgent Security Update: Patching "Mongobleed" (CVE-2025-14847) in Percona Server for MongoDB :material-arrow-right:](https://www.percona.com/blog/urgent-security-update-patching-mongobleed-cve-2025-14847-in-percona-server-for-mongodb/).
+Learn more about the vulnerability in the [upstream bug report :octicons-link-external-16:](https://jira.mongodb.org/browse/SERVER-115508) and in Percona Blog: [Urgent Security Update: Patching "Mongobleed" (CVE-2025-14847) in Percona Server for MongoDB :material-arrow-right:](https://www.percona.com/blog/urgent-security-update-patching-mongobleed-cve-2025-14847-in-percona-server-for-mongodb/).
 
 
 ## Supported software
@@ -58,7 +58,7 @@ Find Percona's certified Docker images that you can use with the Percona Operato
 | percona/percona-server-mongodb:7.0.28-15                     | d131a4375c3e669f97da6cdf5eef847099c731fd956341345f37e6e6fb68d699 |
 | percona/percona-server-mongodb:7.0.28-15 (ARM64)             | 6bc8ee24a7e60ec8ef32002165584320b9cc0eb6067a5f304cee6f1ea708f9b3 |
 | percona/percona-server-mongodb:6.0.27-21                     | 2bd82853fd207ecadc8e5cd3ee598db7b9943f6976d9ae2140f5bdc997b0e8bb |
-| percona/percona-server-mongodb:6.0.27-21 (ARM64) a23e4fa1b956299fb7403eef70082b13b3ecf75e51bba12f674f552508a42d61 |
+| percona/percona-server-mongodb:6.0.27-21 (ARM64)             | a23e4fa1b956299fb7403eef70082b13b3ecf75e51bba12f674f552508a42d61 |
 | percona/percona-backup-mongodb:2.11.0                        | d09f5de92cfbc5a7a42a8cc86742a07481c98b3b42cffdc6359b3ec1f63de3a5 |
 | percona/percona-backup-mongodb:2.11.0 (ARM64)                | a60d095439537b982209582d428b3b39a01e31e88b2b62d2dcbd99ea4e2d9928 |
 | percona/pmm-client:2.44.1-1                                  | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
