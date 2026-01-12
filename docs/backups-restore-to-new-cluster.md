@@ -196,3 +196,51 @@ You can [define the storage](backups-storage.md) where the backup is stored in t
     ``` {.bash data-prompt="$" }
     $ kubectl apply -f deploy/backup/restore.yaml
     ```
+
+## Restore from a backup with a prefix in a bucket path
+
+If you defined a prefix (a folder) in a bucket where you store backups, you must specify this prefix in the `spec.backupSource` subsection of the restore configuration.
+
+To illustrate, let's say you defined a prefix `my-prefix` for your AWS s3 bucket `my-example-bucket`. You wish to restore a logical backup `2025-05-19T07:23:46Z`. The pull path to this backup is `"s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"`. In this case, your restore configuration looks like this:
+
+=== "Storage defined in a Restore object" 
+
+    ```yaml
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore-prefix
+    spec:
+      clusterName: my-cluster-name
+      backupSource:
+        type: logical
+        destination: "s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"
+        s3:
+          credentialsSecret: my-cluster-name-backup-s3
+          region: us-east-1
+          bucket: backup-testing
+          prefix: my-prefix
+    ```
+
+=== "Storage defined on target"
+
+    Make sure the Custom Resource of the target cluster includes the storage configuration and the defined prefix. Then you reference this storage by name in the restore configuration.
+
+    ```yaml
+    apiVersion: psmdb.percona.com/v1
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore-prefix
+    spec:
+      clusterName: my-cluster-name
+      storageName: us-east-1
+      backupSource:
+        type: logical
+        destination: "s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"
+    ```
+
+Apply the configuration to start a restore:
+
+```bash
+kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
+```
