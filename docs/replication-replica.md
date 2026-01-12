@@ -14,9 +14,9 @@ For the Main and Replica sites to communicate, they must have the same the user 
 
 1. Ensure you have created the same namespace as on the main site and set the context to it so that subsequent commands are executed in that namespace.
      
-     ```{.bash data-prompt="$" }
-     $ kubectl get namespaces
-     $ kubectl config get-contexts
+     ```bash
+     kubectl get namespaces
+     kubectl config get-contexts
      ```
 
     ??? example "Sample output"
@@ -27,11 +27,11 @@ For the Main and Replica sites to communicate, they must have the same the user 
     
 2. Create the Secrets from the secrets files you prepared from the main cluster. 
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f my-cluster-secrets-replica.yaml
-    $ kubectl apply -f replica-cluster-ssl.yml
-    $ kubectl apply -f replica-cluster-ssl-internal.yml
-    $ kubectl apply -f my-cluster-name-mongodb-encryption-key2.yml
+    ```bash
+    kubectl apply -f my-cluster-secrets-replica.yaml
+    kubectl apply -f replica-cluster-ssl.yml
+    kubectl apply -f replica-cluster-ssl-internal.yml
+    kubectl apply -f my-cluster-name-mongodb-encryption-key2.yml
     ```
 
     ??? example "Sample output"
@@ -110,8 +110,8 @@ For the Main and Replica sites to communicate, they must have the same the user 
 
 4. Apply the configuration to deploy the Replica site
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```
 
 ## Next steps

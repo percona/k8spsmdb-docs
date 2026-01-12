@@ -47,9 +47,9 @@ Also, you need to configure AWS CLI with your credentials according to the
     namespace. If that's not the desired one, you can create a new namespace
     and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create namespace <namespace name>
-    $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
+    ```bash
+    kubectl create namespace <namespace name>
+    kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context was modified.
@@ -60,8 +60,8 @@ Also, you need to configure AWS CLI with your credentials according to the
     
         You can apply it without downloading, [using :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
+        ```bash
+        kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
         ```
 
         ??? example "Expected output"
@@ -80,8 +80,8 @@ Also, you need to configure AWS CLI with your credentials according to the
     
         Clone the repository with all manifests and source code by executing the following command:
 
-        ``` {.bash data-prompt="$" }
-        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```bash
+        git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
 
         Edit the `deploy/bundle.yaml` file: add the following [affinity rules](constraints.md#affinity-and-anti-affinity) to the  `spec` part of the `percona-server-mongodb-operator` Deployment:
@@ -114,8 +114,8 @@ Also, you need to configure AWS CLI with your credentials according to the
 
         After editing, [apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) your modified `deploy/bundle.yaml` file as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply --server-side -f deploy/bundle.yaml
+        ```bash
+        kubectl apply --server-side -f deploy/bundle.yaml
         ```       
 
         ??? example "Expected output"
@@ -135,8 +135,8 @@ Also, you need to configure AWS CLI with your credentials according to the
     === "For x86_64 architecture"
       
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
+        ```bash
+        kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
         ??? example "Expected output"
@@ -149,14 +149,14 @@ Also, you need to configure AWS CLI with your credentials according to the
 
             This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
-            ``` {.bash data-prompt="$" }
-            $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+            ```bash
+            git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
             ```
 
             After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-            ``` {.bash data-prompt="$" }
-            $ kubectl apply -f deploy/cr.yaml
+            ```bash
+            kubectl apply -f deploy/cr.yaml
             ```
 
     === "For ARM64 architecture"
@@ -192,8 +192,8 @@ Also, you need to configure AWS CLI with your credentials according to the
 
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f deploy/cr.yaml
+        ```bash
+        kubectl apply -f deploy/cr.yaml
         ```
 
         ??? example "Expected output"
@@ -206,8 +206,8 @@ Also, you need to configure AWS CLI with your credentials according to the
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    ```bash
+    kubectl get psmdb
     ```
 
     ??? example "Expected output"
@@ -230,8 +230,8 @@ to the cluster.
 If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
 check the creation process with the `kubectl get pods` command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get pods
+```bash
+kubectl get pods
 ```
 
 ??? example "Expected output"
@@ -241,8 +241,8 @@ $ kubectl get pods
 If the command output had shown some errors, you can examine the problematic
 Pod with the `kubectl describe <pod name>` command as follows:
 
-``` {.bash data-prompt="$" }
-$ kubectl describe pod my-cluster-name-rs0-2
+```bash
+kubectl describe pod my-cluster-name-rs0-2
 ```
 
 Review the detailed information for `Warning` statements and then correct the
@@ -260,8 +260,8 @@ To delete your cluster, you will need the following data:
 You can clean up the cluster with the `eksctl` command as follows (with
 real names instead of `<region>` and `<cluster name>` placeholders):
 
-``` {.bash data-prompt="$" }
-$ eksctl delete cluster --region=<region> --name="<cluster name>"
+```bash
+eksctl delete cluster --region=<region> --name="<cluster name>"
 ```
 
 The cluster deletion may take time.

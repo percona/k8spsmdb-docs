@@ -2,8 +2,8 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
 
 1. List the Secrets objects
 
-    ```{.bash data-prompt="$"}
-    $ {{ commandName }} get secrets -n <namespace>
+    ```bash
+    {{ commandName }} get secrets -n <namespace>
     ```
     
     The Secrets object you are interested in has the
@@ -11,8 +11,8 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     
 2. View the Secret contents to retrieve the admin user credentials.
 
-    ```{.bash data-prompt="$"}
-    $ {{ commandName }} get secret {{ clusterName }}-secrets -o yaml
+    ```bash
+    {{ commandName }} get secret {{ clusterName }}-secrets -o yaml
     ``` 
     The command returns the YAML file with generated Secrets, including the `MONGODB_DATABASE_ADMIN_USER`
     and `MONGODB_DATABASE_ADMIN_PASSWORD` strings, which should look as follows:
@@ -30,17 +30,17 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     The actual login name and password on the output are base64-encoded. To bring it
     back to a human-readable form, run:
 
-    ```{.bash data-prompt="$"}
-    $ echo 'MONGODB_DATABASE_ADMIN_USER' | base64 --decode
-    $ echo 'MONGODB_DATABASE_ADMIN_PASSWORD' | base64 --decode
+    ```bash
+    echo 'MONGODB_DATABASE_ADMIN_USER' | base64 --decode
+    echo 'MONGODB_DATABASE_ADMIN_PASSWORD' | base64 --decode
     ```
 
 3. Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     `percona-client`:
 
-    ``` {.bash data-prompt="$" }
-    $ {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    ```bash
+    {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
     ```
 
     Executing it may require some time to deploy the corresponding Pod.
@@ -51,11 +51,11 @@ To connect to Percona Server for MongoDB you need to construct the MongoDB conne
     is on (the default behavior) or off:
 
     === "if sharding is on"
-        ``` {.bash data-prompt="$" }
-        $ mongosh "mongodb://databaseAdmin:databaseAdminPassword@{{ clusterName }}-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+        ```bash
+        mongosh "mongodb://databaseAdmin:databaseAdminPassword@{{ clusterName }}-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
         ```
 
     === "if sharding is off"
-        ``` {.bash data-prompt="$" }
-        $ mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@{{ clusterName }}-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```bash
+        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@{{ clusterName }}-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```

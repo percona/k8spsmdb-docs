@@ -56,8 +56,8 @@ documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/
 
 Certain volume types support PVCs expansion. You can run the following command to check if your storage supports the expansion capability:
 
-``` {.bash data-prompt="$" }
-$ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
+```bash
+kubectl describe sc <storage class name> | grep AllowVolumeExpansion
 ```
 
 ??? example "Expected output"
@@ -99,8 +99,8 @@ options in the Custom Resource.
 
 3. Apply changes as usual:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f cr.yaml
+    ```bash
+    kubectl apply -f cr.yaml
     ```
 
 The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running.. After the resize finishes, the Operator deletes this annotation.
@@ -136,21 +136,21 @@ Here's how to resize the storage:
 
 2. Apply the Custom Resource for the changes to come into effect:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```
 
 3. Delete the StatefulSet with the `orphan` option
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete sts <statefulset-name> --cascade=orphan
+    ```bash
+    kubectl delete sts <statefulset-name> --cascade=orphan
     ```
 
     The Pods will not go down and the Operator is going to recreate
     the StatefulSet:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get sts <statefulset-name>
+    ```bash
+    kubectl get sts <statefulset-name>
     ```
 
     ??? example "Expected output"
@@ -176,14 +176,14 @@ Here's how to resize the storage:
     
     Apply the change:
     
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```
 
     New Pods will already have the new storage size:
     
-    ``` {.bash data-prompt="$" }
-    $ kubectl get pvc
+    ```bash
+    kubectl get pvc
     ```
 
     ??? example "Expected output"
@@ -201,9 +201,9 @@ Here's how to resize the storage:
 5. Delete PVCs and Pods with the old storage size one by one. Wait for data to sync 
     before you proceed to the next node.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete pvc <PVC NAME>
-    $ kubectl delete pod <POD NAME>
+    ```bash
+    kubectl delete pvc <PVC NAME>
+    kubectl delete pod <POD NAME>
     ```
 
     The new PVC is going to be created along with the Pod.

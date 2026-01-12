@@ -7,7 +7,7 @@ You can turn on MCS for the **already-existing non-MCS cluster**. To do this:
     output of the `kubectl get pods` command (it will be something like
     `percona-server-mongodb-operator-d859b69b6-t44vk`) and delete it as follows:
 
-    ``` {.bash data-prompt="$" }
+    ```bash
     kubectl delete percona-server-mongodb-operator-d859b69b6-t44vk
     ```
 

@@ -104,8 +104,8 @@ Custom Resource Definition (CRD) is compatible with the last three Operator vers
 
 To view the labels, run: 
 
-```{.bash data-prompt="$"}
-$ kubectl get crd perconaservermongodbs.psmdb.percona.com --show-labels
+```bash
+kubectl get crd perconaservermongodbs.psmdb.percona.com --show-labels
 ```
 
 ### View backup size

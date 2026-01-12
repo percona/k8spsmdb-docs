@@ -28,8 +28,8 @@ To create your cluster, you will need the following data:
 You can create your cluster via command line using `az aks create` command.
 The following command will create a 3-node cluster named `my-cluster-name` within some [already existing  :octicons-link-external-16:](https://docs.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#create-a-resource-group) resource group named `my-resource-group`:
 
-``` {.bash data-prompt="$" }
-$ az aks create --resource-group my-resource-group --name my-cluster-name --enable-managed-identity --node-count 3 --node-vm-size Standard_B4ms --node-osdisk-size 30 --network-plugin kubenet  --generate-ssh-keys --outbound-type loadbalancer
+```bash
+az aks create --resource-group my-resource-group --name my-cluster-name --enable-managed-identity --node-count 3 --node-vm-size Standard_B4ms --node-osdisk-size 30 --network-plugin kubenet  --generate-ssh-keys --outbound-type loadbalancer
 ```
 
 Other parameters in the above example specify that we are creating a cluster with x86_64 machine type of [Standard_B4ms  :octicons-link-external-16:](https://azureprice.net/vm/Standard_B4ms) and OS disk size reduced to 30 GiB. If you need ARM64, use different machine type, for example,  [Standard_D4ps_v5](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dpsv5-series?tabs=sizebasic). You can see detailed information about
@@ -40,7 +40,7 @@ You may wait a few minutes for the cluster to be generated.
 Now you should configure the command-line access to your newly created cluster
 to make `kubectl` be able to use it.
 
-``` {.bash data-prompt="$" } 
+```bash 
 az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 ```
 
@@ -50,17 +50,17 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     namespace. If that's not the desired one, you can create a new namespace
     and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create namespace <namespace name>
-    $ kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
+    ```bash
+    kubectl create namespace <namespace name>
+    kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
     ```
 
     At success, you will see the message that `namespace/<namespace name>` was created, and the context (`<cluster name>`) was modified.
 
     Deploy the Operator, [using :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
+    ```bash
+    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
     ```
 
     ??? example "Expected output"
@@ -80,8 +80,8 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     === "For x86_64 architecture"
       
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
+        ```bash
+        kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
         ```
 
         ??? example "Expected output"
@@ -94,22 +94,22 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
 
             This deploys default MongoDB cluster configuration, three mongod, three mongos, and three config server instances. Please see [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md) for the configuration options. You can clone the repository with all manifests and source code by executing the following command:
 
-            ``` {.bash data-prompt="$" }
-            $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+            ```bash
+            git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
             ```
 
             After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
 
-            ``` {.bash data-prompt="$" }
-            $ kubectl apply -f deploy/cr.yaml
+            ```bash
+            kubectl apply -f deploy/cr.yaml
             ```
 
     === "For ARM64 architecture"
     
         Clone the repository with all manifests and source code by executing the following command:
 
-        ``` {.bash data-prompt="$" }
-        $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+        ```bash
+        git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
         ```
    
         Edit the `deploy/cr.yaml` configuration file: set `image` and `backup.image` Custom Resource options to special multi-architecture image versions by adding a `-multi` suffix to their tags:
@@ -127,8 +127,8 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
    
         After editing, apply your modified `deploy/cr.yaml` file as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl apply -f deploy/cr.yaml
+        ```bash
+        kubectl apply -f deploy/cr.yaml
         ```
 
         ??? example "Expected output"
@@ -141,8 +141,8 @@ az aks get-credentials --resource-group my-resource-group --name my-cluster-name
     cluster will obtain the `ready` status. You can check it with the following
     command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb
+    ```bash
+    kubectl get psmdb
     ```
 
     ??? example "Expected output"
@@ -165,8 +165,8 @@ to the cluster.
 If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
 check the creation process with the `kubectl get pods` command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get pods
+```bash
+kubectl get pods
 ```
 
 ??? example "Expected output"
@@ -176,8 +176,8 @@ $ kubectl get pods
 If the command output had shown some errors, you can examine the problematic
 Pod with the `kubectl describe <pod name>` command as follows:
 
-``` {.bash data-prompt="$" }
-$ kubectl describe pod my-cluster-name-rs0-2
+```bash
+kubectl describe pod my-cluster-name-rs0-2
 ```
 
 Review the detailed information for `Warning` statements and then correct the
@@ -195,8 +195,8 @@ To delete your cluster, you will need the following data:
 You can clean up the cluster with the `az aks delete` command as follows (with
 real names instead of `<resource group>` and `<cluster name>` placeholders):
 
-``` {.bash data-prompt="$" }
-$ az aks delete --name <cluster name> --resource-group <resource group> --yes --no-wait
+```bash
+az aks delete --name <cluster name> --resource-group <resource group> --yes --no-wait
 ```
 
 It may take ten minutes to get the cluster actually deleted after executing this command.

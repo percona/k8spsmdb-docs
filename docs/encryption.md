@@ -46,8 +46,8 @@ Data-at-rest encryption is turned on by default. The Operator implements it in o
 
 Apply the modified `cr.yaml` configuration file:
 
-``` {.bash data-prompt="$" }
-$ kubectl deploy -f deploy/cr.yaml
+```bash
+kubectl deploy -f deploy/cr.yaml
 ```
 
 ## Use HashiCorp Vault storage for encryption keys
@@ -69,8 +69,8 @@ The Operator itself neither installs Vault, nor configures it. You must do both 
 
 It is a good practice to isolate workloads in Kubernetes using namespaces. Create a namespace with the following command:
 
-```{.bash .data-prompt="$"}
-$ kubectl create namespace vault
+```bash
+kubectl create namespace vault
 ```
 
 Export the namespace as an environment variable to simplify further configuration and management
@@ -87,15 +87,15 @@ Read more about installation in [Vault documentation :octicons-link-external-16:
 
 1. Add and update the Vault Helm repository.
 
-    ``` {.bash data-prompt="$" }
-    $ helm repo add hashicorp https://helm.releases.hashicorp.com
-    $ helm repo update
+    ```bash
+    helm repo add hashicorp https://helm.releases.hashicorp.com
+    helm repo update
     ```
 
 2. Install Vault:
 
-    ```{.bash data-prompt="$" }
-    $ helm install vault hashicorp/vault --namespace $NAMESPACE
+    ```bash
+    helm install vault hashicorp/vault --namespace $NAMESPACE
     ```
 
     ??? example "Sample output"
@@ -116,8 +116,8 @@ Read more about installation in [Vault documentation :octicons-link-external-16:
 
 3. Retrieve the Pod name where Vault is running:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl -n $NAMESPACE get pod -l app.kubernetes.io/name=vault -o jsonpath='{.items[0].metadata.name}'
+    ```bash
+    kubectl -n $NAMESPACE get pod -l app.kubernetes.io/name=vault -o jsonpath='{.items[0].metadata.name}'
     ```
 
     ??? example "Sample output"
@@ -128,9 +128,9 @@ Read more about installation in [Vault documentation :octicons-link-external-16:
         
 4. After Vault is installed, you need to initialize it. Run the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator init -key-shares=1 -key-threshold=1 -format=json > /tmp/vault-init
-    $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
+    ```bash
+    kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator init -key-shares=1 -key-threshold=1 -format=json > /tmp/vault-init
+    unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
     ```
 
     The command does the following:
@@ -144,14 +144,14 @@ Read more about installation in [Vault documentation :octicons-link-external-16:
 
     Retrieve the unseal key from the file:
 
-    ```{.bash .data-prompt="$"}
-    $ unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
+    ```bash
+    unsealKey=$(jq -r ".unseal_keys_b64[]" < /tmp/vault-init)
     ```
     
 6. Now, unseal Vault. Run the following command on every Pod where Vault is running:
 
-    ```{.bash .data-prompt="$"}
-    $ kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator unseal "$unsealKey"
+    ```bash
+    kubectl exec -it pod/vault-0 -n $NAMESPACE -- vault operator unseal "$unsealKey"
     ```
 
     ??? example "Sample output"
@@ -184,8 +184,8 @@ When you started Vault, it generates and starts with a [root token :octicons-lin
 
 1. Extract the Vault root token from the file where you saved the init response output:
 
-    ```{.bash .data-prompt="$"}
-    $ cat /tmp/vault-init | jq -r ".root_token"
+    ```bash
+    cat /tmp/vault-init | jq -r ".root_token"
     ```
 
     ??? example "Sample output"
@@ -196,9 +196,9 @@ When you started Vault, it generates and starts with a [root token :octicons-lin
 
 2. Authenticate in Vault with this token:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh
-    $ vault login hvs.CvmS......gXWMJg9r
+    ```bash
+    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh
+    vault login hvs.CvmS......gXWMJg9r
     ```
     
     ??? example "Expected output"
@@ -221,8 +221,8 @@ When you started Vault, it generates and starts with a [root token :octicons-lin
     
 3. Now enable the key-value secrets engine at the path `secret` with the following command:
     
-    ``` {.bash data-prompt="$" }
-    $ vault secrets enable -path secret kv-v2
+    ```bash
+    vault secrets enable -path secret kv-v2
     ```
 
     ??? example "Expected output"
@@ -233,8 +233,8 @@ When you started Vault, it generates and starts with a [root token :octicons-lin
 
 4. (Optional) You can also enable audit. This is not mandatory, but useful:
 
-    ``` {.bash data-prompt="$" }
-    $ vault audit enable file file_path=/vault/vault-audit.log
+    ```bash
+    vault audit enable file file_path=/vault/vault-audit.log
     ```
         
     ??? example "Expected output"
@@ -249,16 +249,16 @@ To enable Vault for the Operator, create a Secret object for it using the Vault 
    
 === "HTTP access without TLS"
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r"
+    ```bash
+    kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r"
     ```
 
 === "HTTPS access with TLS"
 
     If you [deployed Vault with TLS :octicons-link-external-16:](https://developer.hashicorp.com/vault/docs/auth/cert), include the path to TLS certificates when you create a Secret.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r" --from-file=ca.crt=<path to CA>/ca.crt
+    ```bash
+    kubectl create secret generic vault-secret --from-literal=token="hvs.CvmS......gXWMJg9r" --from-file=ca.crt=<path to CA>/ca.crt
     ```
         
 ### Reference the Secret in your Custom Resource manifest 
@@ -333,16 +333,16 @@ Now, reference the Vault Secret in the Operator Custom Resource manifest. You al
     
 2. Apply your modified `cr.yaml` file:
     
-    ``` {.bash data-prompt="$" }
-    $ kubectl deploy -f deploy/cr.yaml
+    ```bash
+    kubectl deploy -f deploy/cr.yaml
     ```
 
 3. To verify that everything was configured properly, use the following log
     filtering command (substitute the `<cluster name>` and `<namespace>`
     placeholders with your real cluster name and namespace):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
+    ```bash
+    kubectl logs <cluster name>-rs0-0 -c mongod -n <namespace> | grep -i "Encryption keys DB is initialized successfully"
     ```
 
 Find more details on how to install and configure Vault [in Vault documentation  :octicons-link-external-16:](https://learn.hashicorp.com/vault?track=getting-started-k8s#getting-started-k8s).

@@ -48,23 +48,23 @@ Kubernetes.
 
 1. First of all, clone the percona-server-mongodb-operator repository:
 
-    ``` {.bash data-prompt="$" }
-    $ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-    $ cd percona-server-mongodb-operator
+    ```bash
+    git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+    cd percona-server-mongodb-operator
     ```
 
 2. Let’s suppose that Operator’s namespace should be the `psmdb-operator` one.
     Create it as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create namespace psmdb-operator
+    ```bash
+    kubectl create namespace psmdb-operator
     ```
 
     Namespaces to be watched by the Operator should be created in the same way
     if not exist. Let’s say the Operator should watch the `psmdb` namespace:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create namespace psmdb
+    ```bash
+    kubectl create namespace psmdb
     ```
 
 3. Edit the ``deploy/cw-bundle.yaml`` configuration file to set proper
@@ -85,16 +85,16 @@ Kubernetes.
 
 4. [Apply :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the `deploy/cw-bundle.yaml` file with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cw-bundle.yaml --server-side -n psmdb-operator
+    ```bash
+    kubectl apply -f deploy/cw-bundle.yaml --server-side -n psmdb-operator
     ```
 
 5. After the Operator is started, Percona Server for MongoDB can be created at
     any time by applying the `deploy/cr.yaml` configuration file, like in the
     case of normal installation:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n psmdb
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n psmdb
     ```
 
     The creation process may take some time. When the process is over your
@@ -102,8 +102,8 @@ Kubernetes.
     `PerconaServerMongoDB` Custom Resource (it has handy `psmdb` shortname
     also) with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get psmdb -n psmdb
+    ```bash
+    kubectl get psmdb -n psmdb
     ```
 
     ??? example "Expected output"
@@ -143,8 +143,8 @@ to the cluster.
     terminal. The following command will do this, naming the new Pod
     `percona-client`:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
+    ```bash
+    kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb60recommended }} --restart=Never --env="POD_NAMESPACE=psmdb" -- bash -il
     ```
 
     Executing it may require some time to deploy the correspondent Pod.
@@ -155,11 +155,11 @@ to the cluster.
     is on (the default behavior) or off:
 
     === "if sharding is on"
-        ``` {.bash data-prompt="$" }
-        $ mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
+        ```bash
+        mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
         ```
 
     === "if sharding is off"
-        ``` {.bash data-prompt="$" }
-        $ mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```bash
+        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```

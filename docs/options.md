@@ -64,7 +64,7 @@ name and a specific suffix:
     To find the cluster name, you can use the following command:
 
     ```bash
-    $ kubectl get psmdb
+    kubectl get psmdb
     ```
 
 For example, let’s define a `mongod.conf` configuration file and put there
@@ -80,21 +80,21 @@ systemLog:
 You can create a ConfigMap from the `mongod.conf` file with the
 `kubectl create configmap` command. It has the following syntax:
 
-``` {.bash data-prompt="$" }
-$ kubectl create configmap <configmap-name> <resource-type=resource-name>
+```bash
+kubectl create configmap <configmap-name> <resource-type=resource-name>
 ```
 
 The following example defines `my-cluster-name-rs0-mongod` as the ConfigMap name
 and the `mongod.conf` file as the data source:
 
-``` {.bash data-prompt="$" }
-$ kubectl create configmap my-cluster-name-rs0-mongod --from-file=mongod.conf=mongod.conf
+```bash
+kubectl create configmap my-cluster-name-rs0-mongod --from-file=mongod.conf=mongod.conf
 ```
 
 To view the created ConfigMap, use the following command:
 
-``` {.bash data-prompt="$" }
-$ kubectl describe configmaps my-cluster-name-rs0-mongod
+```bash
+kubectl describe configmaps my-cluster-name-rs0-mongod
 ```
 
 !!! note
@@ -121,7 +121,7 @@ name and a specific suffix:
     To find the cluster name, you can use the following command:
 
     ```bash
-    $ kubectl get psmdb
+    kubectl get psmdb
     ```
 
 Configuration options should be put inside a specific key:
@@ -146,14 +146,14 @@ follows:
 
 === "in Linux"
 
-    ``` {.bash data-prompt="$" }
-    $ cat mongod.conf | base64 --wrap=0
+    ```bash
+    cat mongod.conf | base64 --wrap=0
     ```
 
 === "in macOS"
 
-    ``` {.bash data-prompt="$" }
-    $ cat mongod.conf | base64
+    ```bash
+    cat mongod.conf | base64
     ```
 
 !!! note
@@ -161,8 +161,8 @@ follows:
     Similarly, you can read the list of options from a Base64 encoded
     string:
 
-    ``` {.bash data-prompt="$" }
-    $ echo "ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\
+    ```bash
+    echo "ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\
     AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==" | base64 --decode
     ```
 
@@ -181,8 +181,8 @@ data:
 
 When ready, apply it with the following command:
 
-``` {.bash data-prompt="$" }
-$ kubectl create -f deploy/my-mongod-secret.yaml
+```bash
+kubectl create -f deploy/my-mongod-secret.yaml
 ```
 
 !!! note

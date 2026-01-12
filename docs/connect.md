@@ -9,8 +9,8 @@ Here's how to do it:
 
 1. List the Secrets objects
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get secrets -n <namespace>
+    ```bash
+    kubectl get secrets -n <namespace>
     ```
 
     The Secrets object we target is named as
@@ -29,22 +29,22 @@ Here's how to do it:
 
     * Retrieve the login 
 
-       ```{.bash data-prompt="$"}
-       $ kubectl get secret <secret-name> -n <namespace> -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_USER}' | base64 --decode | tr '\n' ' ' && echo " "
+       ```bash
+       kubectl get secret <secret-name> -n <namespace> -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_USER}' | base64 --decode | tr '\n' ' ' && echo " "
        ``` 
 
        The default value is `databaseAdmin` 
 
     * Retrieve the password 
 
-       ```{.bash data-prompt="$"}
-       $ kubectl get secret <secret-name> -n <namespace> -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 --decode | tr '\n' ' ' && echo " "
+       ```bash
+       kubectl get secret <secret-name> -n <namespace> -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 --decode | tr '\n' ' ' && echo " "
        ```
 
 3. Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod `percona-client`:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    ```bash
+    kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
     ```
 
 4. Connect to Percona Server for MongoDB. The format of the MongoDB connection URI string is the following: 

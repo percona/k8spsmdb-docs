@@ -28,8 +28,8 @@ To set up monitoring of Kubernetes, you need the following:
         You can query your PMM Server installation for the API
         Key using `curl` and `jq` utilities. Replace `<login>:<password>@<server_host>` placeholders with your real PMM Server login, password, and hostname in the following command:
 
-        ```{.bash data-prompt="$"}
-        $ API_KEY=$(curl --insecure -X POST -H "Content-Type: application/json" -d {"name":"operator", "role": "Admin"}' "https://<login>:<password>@<server_host>/graph/api/auth/keys" | jq .key)
+        ```bash
+        API_KEY=$(curl --insecure -X POST -H "Content-Type: application/json" -d {"name":"operator", "role": "Admin"}' "https://<login>:<password>@<server_host>/graph/api/auth/keys" | jq .key)
         ```
 
         !!! note
@@ -52,16 +52,16 @@ To set up monitoring of Kubernetes, you need the following:
 
         We recommend to use a separate namespace like `monitoring-system`.
 
-        ```{.bash data-prompt="$" }
-        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
+        ```bash
+        curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> 
         ```
 
     !!! note
 
         The Prometheus node exporter is not installed by default since it requires privileged containers with the access to the host file system. If you need the metrics for Nodes, add the `--node-exporter-enabled` flag as follows:    
 
-        ```{.bash data-prompt="$" }
-        $ curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> --node-exporter-enabled
+        ```bash
+        curl -fsL  https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/quick-install.sh | bash -s -- --api-key <API-KEY> --pmm-server-url <PMM-SERVER-URL> --k8s-cluster-id <UNIQUE-K8s-CLUSTER-IDENTIFIER> --namespace <NAMESPACE> --node-exporter-enabled
         ```
 
 ### Install manually
@@ -79,19 +79,19 @@ To access the PMM Server resources and perform actions on the server, configure 
 
     === ":simple-linux: Linux"
 
-        ````{.bash data-prompt="$" }
+        ````bash
         $ echo -n <API-key> | base64 --wrap=0
         ````
 
     === ":simple-apple: macOS"
-        ```{.bash data-prompt="$" }
-        $ echo -n <API-key> | base64
+        ```bash
+        echo -n <API-key> | base64
         ```
 
 2. Create the Namespace where you want to set up monitoring. The following command creates the Namespace `monitoring-system`. You can specify a different name. In the latter steps, specify your namespace instead of the `<namespace>` placeholder.
     
-    ```{.bash data-prompt="$" }
-    $ kubectl create namespace monitoring-system
+    ```bash
+    kubectl create namespace monitoring-system
     ```
 
 3. Create the YAML file for the [Kubernetes Secrets  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.
@@ -109,14 +109,14 @@ To access the PMM Server resources and perform actions on the server, configure 
 
 4. Create the Secrets object using the YAML file you created previously. Replace the `<filename>` placeholder with your value.
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f pmm-api-vmoperator.yaml -n <namespace>
+    ```bash
+    kubectl apply -f pmm-api-vmoperator.yaml -n <namespace>
     ```
 
 5. Check that the secret is created. The following command checks the secret for the resource named `pmm-token-vmoperator` (as defined in the `metadata.name` option in the secrets file). If you defined another resource name, specify your value.
 
-   ```{.bash data-prompt="$" }
-   $ kubectl get secret pmm-token-vmoperator -n <namespace>
+   ```bash
+   kubectl get secret pmm-token-vmoperator -n <namespace>
    ```
 
 #### Create a ConfigMap to mount for `kube-state-metrics`
@@ -127,8 +127,8 @@ To define what metrics the `kube-state-metrics` should capture, create the [Conf
 
 Use the [example `configmap.yaml` configuration file  :octicons-link-external-16:](https://github.com/Percona-Lab/k8s-monitoring/blob/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/ksm-configmap.yaml) to create the ConfigMap.
 
-```{.bash data-prompt="$" }
-$ kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
+```bash
+kubectl apply -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/ksm-configmap.yaml -n <namespace>
 ```
 
 As a result, you have the `customresource-config-ksm` ConfigMap created.
@@ -137,21 +137,21 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
 
 1. Add the dependency repositories of [victoria-metrics-k8s-stack  :octicons-link-external-16:](https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack) chart.
 
-    ```{.bash data-prompt="$" }
-    $ helm repo add grafana https://grafana.github.io/helm-charts
-    $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    ```bash
+    helm repo add grafana https://grafana.github.io/helm-charts
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     ```
 
 2. Add the Victoria Metrics Kubernetes monitoring stack repository.
 
-    ```{.bash data-prompt="$" }
-    $ helm repo add vm https://victoriametrics.github.io/helm-charts/
+    ```bash
+    helm repo add vm https://victoriametrics.github.io/helm-charts/
     ```
 
 3. Update the repositories.
 
-    ```{.bash data-prompt="$" }
-    $ helm repo update
+    ```bash
+    helm repo update
     ```
 
 4. Install the Victoria Metrics Kubernetes monitoring stack Helm chart. You need to specify the following configuration:
@@ -160,8 +160,8 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
     * the unique name or an ID of the Kubernetes cluster in the `vmagent.spec.externalLabels.k8s_cluster_id` option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server. 
     * the `<namespace>` placeholder with your value. The Namespace must be the same as the Namespace for the Secret and ConfigMap.
 
-    ```{.bash data-prompt="$" }
-    $ helm install vm-k8s vm/victoria-metrics-k8s-stack \
+    ```bash
+    helm install vm-k8s vm/victoria-metrics-k8s-stack \
     -f https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/values.yaml \
     --set externalVM.write.url=<PMM-SERVER-URL>/victoriametrics/api/v1/write \
     --set vmagent.spec.externalLabels.k8s_cluster_id=<UNIQUE-CLUSTER-IDENTIFIER/NAME> \
@@ -181,8 +181,8 @@ As a result, you have the `customresource-config-ksm` ConfigMap created.
 
 ## Validate the successful installation
 
-```{.bash data-prompt="$" }
-$ kubectl get pods -n <namespace>
+```bash
+kubectl get pods -n <namespace>
 ```
 
 ??? example "Sample output"
@@ -221,29 +221,29 @@ To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitori
 
     Replace the `<NAMESPACE>` placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: 
 
-    ```{.bash data-prompt="$" }
-    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE>
+    ```bash
+    bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE>
     ```
 
 === ":material-file-outline: Keep CRDs"
 
     Replace the `<NAMESPACE>` placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: 
 
-    ```{.bash data-prompt="$" }
-    $ bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE> --keep-crd 
+    ```bash
+    bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE> --keep-crd 
     ```
 
 Check that the Victoria metrics Kubernetes stack is deleted:
 
-```{.bash data-prompt="$" }
-$ helm list -n <namespace>
+```bash
+helm list -n <namespace>
 ```
 
 The output should provide the empty list.
 
 If you face any issues with the removal, uninstall the stack manually:
 
-```{.bash data-prompt="$" }
-$ helm uninstall vm-k8s-stack -n < namespace> 
+```bash
+helm uninstall vm-k8s-stack -n < namespace> 
 ```
 

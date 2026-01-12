@@ -46,8 +46,8 @@ The upgrade process is similar for all installation methods, including Helm and 
 
 4. Starting with version 1.12.0, the Operator no longer has a separate API version for each release in CRD. Instead, the CRD has the API version `v1`. Therefore, if you installed the CRD when the Operator version was **older than 1.12.0**, you must update the API version in the CRD manually to run the upgrade. To check your CRD version, use the following command:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get crd perconaservermongodbs.psmdb.percona.com -o yaml | yq .status.storedVersions
+    ```bash
+    kubectl get crd perconaservermongodbs.psmdb.percona.com -o yaml | yq .status.storedVersions
     ```
 
     ??? example "Sample output"
@@ -88,9 +88,9 @@ The upgrade includes the following steps.
 
     === "Manually"
 
-        ```{.bash data-prompt="$"}
-        $ kubectl proxy &  \
-        $ curl \
+        ```bash
+        kubectl proxy &  \
+        curl \
                --header "Content-Type: application/json-patch+json" \
                --request PATCH \
                --data '[{"op": "replace", "path": "/status/storedVersions", "value":["v1"]}]' --url "http://localhost:8001/apis/apiextensions.k8s.io/v1/customresourcedefinitions/perconaservermongodbs.psmdb.percona.com/status"
@@ -111,8 +111,8 @@ The upgrade includes the following steps.
 
     === "Via `kubectl patch`"
 
-        ```{.bash data-prompt="$"}
-        $ kubectl patch customresourcedefinitions perconaservermongodbs.psmdb.percona.com --subresource='status' --type='merge' -p '{"status":{"storedVersions":["v1"]}}'
+        ```bash
+        kubectl patch customresourcedefinitions perconaservermongodbs.psmdb.percona.com --subresource='status' --type='merge' -p '{"status":{"storedVersions":["v1"]}}'
         ```
 
         ??? example "Expected output"
@@ -124,15 +124,15 @@ The upgrade includes the following steps.
 2. Update the [Custom Resource Definition :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
     for the Operator and the Role-based access control. Take the latest versions from the official repository on GitHub with the following commands:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
-    $ kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
+    ```bash
+    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/rbac.yaml
     ```
 
 2. Next, update the Percona Server for MongoDB Operator Deployment in Kubernetes by changing the container image of the Operator Pod to the latest version. Find the image name for the current Operator release [in the list of certified images](images.md). Then [apply a patch :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) to the Operator Deployment and specify the image name and version. Use the following command to update the Operator Deployment to the `{{ release }}` version:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl patch deployment percona-server-mongodb-operator \
+    ```bash
+    kubectl patch deployment percona-server-mongodb-operator \
        -p'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","image":"percona/percona-server-mongodb-operator:{{ release }}"}]}}}}'
     ```
 
@@ -140,8 +140,8 @@ The upgrade includes the following steps.
     You can track the rollout process in real time with the
     `kubectl rollout status` command with the name of your cluster:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl rollout status deployments percona-server-mongodb-operator
+    ```bash
+    kubectl rollout status deployments percona-server-mongodb-operator
     ```
 
     !!! note
@@ -160,8 +160,8 @@ The upgrade includes the following steps.
 
     === "With PMM Client"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
@@ -173,8 +173,8 @@ The upgrade includes the following steps.
 
     === "Without PMM Client"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
@@ -193,8 +193,8 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 
 1. You must have the compatible version of the Custom Resource Definition (CRD) in all namespaces that the Operator manages. Starting with version 1.21.0, you can check it using the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get crd perconaservermongodbs.psmdb.percona.com --show-labels
+    ```bash
+    kubectl get crd perconaservermongodbs.psmdb.percona.com --show-labels
     ```
 
 2. Update the [Custom Resource Definition  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
@@ -202,8 +202,8 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 
     Refer to the [compatibility between CRD and the Operator](#considerations-for-the-operator-upgrades) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
+    ```bash
+    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml
     ```
 
     If you already have the latest CRD version in one of namespaces, don't re-run intermediate upgrades for it.
@@ -214,8 +214,8 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 
         To upgrade the Operator installed with default parameters, use the following command: 
 
-        ``` {.bash data-prompt="$" }
-        $ helm upgrade my-op percona/psmdb-operator --version {{ release }}
+        ```bash
+        helm upgrade my-op percona/psmdb-operator --version {{ release }}
         ```
 
     === "With customized parameters"
@@ -224,14 +224,14 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
     
         1. Get the list of used options in YAML format :
         
-            ```{.bash data-prompt="$" }
-            $ helm get values my-op -a > my-values.yaml
+            ```bash
+            helm get values my-op -a > my-values.yaml
             ``` 
         
         2. Pass these options to the upgrade command as follows:
 
-            ``` {.bash data-prompt="$" }
-            $ helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
+            ```bash
+            helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
             ```
     The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
         which you have chosen for the Operator when installing its Helm chart.

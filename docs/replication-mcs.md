@@ -58,8 +58,8 @@ SERVICE_NAME.NAMESPACE.svc.clusterset.local
 
 It takes approximately  five minutes to create ServiceExport and sync with the clusters of the fleet. You can check the list of services for export with the following commands:
 
-``` {.bash data-prompt="$" }
-$ kubectl get serviceexport
+```bash
+kubectl get serviceexport
 ```
 
 ??? example "Expected output"
@@ -81,8 +81,8 @@ A **ServiceImport** is a Kubernetes resource to consume exported services in eac
 
 To check the list of services for import, run this command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get serviceimport
+```bash
+kubectl get serviceimport
 ```
 
 ??? example "Expected output"

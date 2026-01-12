@@ -53,8 +53,8 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
         You can query your PMM Server installation for the API
         Key using `curl` and `jq` utilities. Replace `<login>:<password>@<server_host>` placeholders with your real PMM Server login, password, and hostname in the following command:
         
-        ``` {.bash data-prompt="$" }
-        $ PMM_SERVER_API_KEY=$(curl --insecure -X POST -H "Content-Type: application/json" -d '{"name":"operator", "role": "Admin"}' "https://<login>:<password>@<server_host>/graph/api/auth/keys" | jq .key)
+        ```bash
+        PMM_SERVER_API_KEY=$(curl --insecure -X POST -H "Content-Type: application/json" -d '{"name":"operator", "role": "Admin"}' "https://<login>:<password>@<server_host>/graph/api/auth/keys" | jq .key)
         ```
 
     !!! warning
@@ -99,8 +99,8 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
 
 2. Create the Secrets object using the `deploy/secrets.yaml` file.
 
-    ```{.bash data-prompt="$"}
-    $ kubectl apply -f deploy/secrets.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/secrets.yaml -n <namespace>
     ```
 
     ??? example "Expected output"
@@ -128,16 +128,16 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
      
 3. Apply the changes:
 
-    ``` {.bash data-prompt="$"}
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 4. Check that corresponding Pods are not in a cycle of stopping and restarting.
     This cycle occurs if there are errors on the previous steps:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl get pods -n <namespace>
-    $ kubectl logs <cluster-name>-rs0-0 -c pmm-client -n <namespace>
+    ```bash
+    kubectl get pods -n <namespace>
+    kubectl logs <cluster-name>-rs0-0 -c pmm-client -n <namespace>
     ```
 
 ## Check the metrics

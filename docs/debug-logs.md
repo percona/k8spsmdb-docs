@@ -16,32 +16,32 @@ In the following examples we will access containers of the `my-cluster-name-rs0-
 
 * Check logs of the `mongod` container:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs my-cluster-name-rs0-0 -c mongod
+    ```bash
+    kubectl logs my-cluster-name-rs0-0 -c mongod
     ```
 
 * Check logs of the `pmm-client` container:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs my-cluster-name-rs0-0 -c pmm-client
+    ```bash
+    kubectl logs my-cluster-name-rs0-0 -c pmm-client
     ```
 
 * Filter logs of the `mongod` container which are not older than 600 seconds:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs my-cluster-name-rs0-0 -c mongod --since=600s
+    ```bash
+    kubectl logs my-cluster-name-rs0-0 -c mongod --since=600s
     ```
 
 * Check logs of a previous instantiation of the `mongod` container, if any:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs my-cluster-name-rs0-0 -c mongod --previous
+    ```bash
+    kubectl logs my-cluster-name-rs0-0 -c mongod --previous
     ```
 
 * Check logs of the `mongod` container, parsing the output with [jq JSON processor  :octicons-link-external-16:](https://stedolan.github.io/jq/):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl logs my-cluster-name-rs0-0 -c mongod -f | jq -R 'fromjson?'
+    ```bash
+    kubectl logs my-cluster-name-rs0-0 -c mongod -f | jq -R 'fromjson?'
     ```
 
 ## Changing logs representation
@@ -68,8 +68,8 @@ The Operator collects logs using [Fluent Bit :octicons-link-external-16:](https:
 
 Logs are also streamed to standard output, making them accessible via the `kubectl logs` command for quick troubleshooting:
 
-```{.bash data-prompt="$"}
-$ kubectl logs my-cluster-name-rs0-0 -c logs
+```bash
+kubectl logs my-cluster-name-rs0-0 -c logs
 ```
 
 Currently, logs are collected only for the `mongod` instance. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are stored for 7 days and are rotated afterwards.

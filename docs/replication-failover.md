@@ -19,7 +19,7 @@ Here's how to do it:
 
 2. Apply the configuration:
 
-    ```{.bash data-prompt="$" }
+    ```bash
     kubectl apply -f deploy/cr-main.yaml
     ```
 
@@ -33,7 +33,7 @@ Here's how to do it:
 
 4. Apply the configuration:
 
-    ```{.bash data-prompt="$" }
+    ```bash
     kubectl apply -f deploy/cr-replica.yaml
     ```
   
@@ -48,8 +48,8 @@ Here's how to do it:
 
 1. Connect to one of the replica set Pods on the Replica site. Since you will be reconfiguring the replica set, you must connect as the MongoDB `clusterAdmin` user:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl exec -it replica-cluster-rs0-0 -- mongosh -u clusterAdmin -p <clusterAdminPassword>
+    ```bash
+    kubectl exec -it replica-cluster-rs0-0 -- mongosh -u clusterAdmin -p <clusterAdminPassword>
     ```
 
 2. Check the current replica set status:

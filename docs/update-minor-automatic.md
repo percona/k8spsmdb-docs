@@ -63,8 +63,8 @@ The steps are the following:
         Alternatively, you can run Version Service inside your cluster. This
         can be done with the `kubectl` command as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl run version-service --image=perconalab/version-service --env="SERVE_HTTP=true" --port 11000 --expose
+        ```bash
+        kubectl run version-service --image=perconalab/version-service --env="SERVE_HTTP=true" --port 11000 --expose
         ```
 
 6. Specify the schedule to check for the new versions in in CRON format for the `upgradeOptions.schedule` option.
@@ -90,6 +90,6 @@ The steps are the following:
 
 7. Apply your changes to the Custom Resource:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```

@@ -7,8 +7,8 @@ OpenShift environment demonstrates the process:
 
 1. Log into the OpenShift and create a project.
 
-    ``` {.bash data-prompt="$" }
-    $ oc login
+    ```bash
+    oc login
     ```
 
     ??? example "Expected output"
@@ -20,8 +20,8 @@ OpenShift environment demonstrates the process:
         Login successful.
         ```
 
-    ``` {.bash data-prompt="$" }
-    $ oc new-project psmdb
+    ```bash
+    oc new-project psmdb
     ```
 
     ??? example "Expected output"
@@ -38,8 +38,8 @@ OpenShift environment demonstrates the process:
 
     You can view the token with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ oc whoami -t
+    ```bash
+    oc whoami -t
     ```
 
     ??? example "Expected output"
@@ -50,8 +50,8 @@ OpenShift environment demonstrates the process:
 
     The following command returns the registry IP address:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get services/docker-registry -n default
+    ```bash
+    kubectl get services/docker-registry -n default
     ```
 
     ??? example "Expected output"
@@ -63,8 +63,8 @@ OpenShift environment demonstrates the process:
 
 3. Use the user token and the registry IP address to login to the registry:
 
-    ``` {.bash data-prompt="$" }
-    $ docker login -u admin -p ADO8CqCDappWR4hxjfDqwijEHei31yXAvWg61Jg210s 172.30.162.173:5000
+    ```bash
+    docker login -u admin -p ADO8CqCDappWR4hxjfDqwijEHei31yXAvWg61Jg210s 172.30.162.173:5000
     ```
 
     ??? example "Expected output"
@@ -75,8 +75,8 @@ OpenShift environment demonstrates the process:
 
 4. Use the Docker commands to pull the needed image by its SHA digest:
 
-    ``` {.bash data-prompt="$" }
-    $ docker pull docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
+    ```bash
+    docker pull docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0
     ```
 
     ??? example "Expected output"
@@ -94,17 +94,17 @@ OpenShift environment demonstrates the process:
 5. The following method can push an image to the custom registry for the example
     OpenShift `psmdb` project:
 
-    ``` {.bash data-prompt="$" }
-    $ docker tag \
+    ```bash
+    docker tag \
         docker.io/perconalab/percona-server-mongodb@sha256:991d6049059e5eb1a74981290d829a5fb4ab0554993748fde1e67b2f46f26bf0 \
         172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
-    $ docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
+    docker push 172.30.162.173:5000/psmdb/percona-server-mongodb:{{ mongodb70recommended }}
     ```
 
 6. Verify the image is available in the OpenShift registry with the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ oc get is
+    ```bash
+    oc get is
     ```
 
     ??? example "Expected output"

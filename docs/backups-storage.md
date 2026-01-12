@@ -43,20 +43,20 @@ to access the storage.
 
         === "in Linux"
 
-            ``` {.bash data-prompt="$" }
-            $ echo -n 'plain-text-string' | base64 --wrap=0
+            ```bash
+            echo -n 'plain-text-string' | base64 --wrap=0
             ```
 
         === "in macOS"
 
-            ``` {.bash data-prompt="$" }
-            $ echo -n 'plain-text-string' | base64
+            ```bash
+            echo -n 'plain-text-string' | base64
             ```
 
     Once the editing is over, create the Kubernetes Secret object as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup-s3.yaml
+    ```bash
+    kubectl apply -f deploy/backup-s3.yaml
     ```
 
 2. <a name="bucket"></a>Put the data needed to access the S3-compatible cloud into the
@@ -142,9 +142,9 @@ You can use either make and use the *IAM instance profile*, or configure *IAM ro
     
     3. Annotate both service accounts with the needed IAM roles. The commands should look as follows:
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl -n <cluster namespace> annotate serviceaccount default eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
-        $ kubectl -n <operator namespace> annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        ```bash
+        kubectl -n <cluster namespace> annotate serviceaccount default eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
+        kubectl -n <operator namespace> annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role --overwrite
         ```
 
         Don't forget to substitute the `<operator namespace>` and `<cluster namespace>` placeholders with the real namespaces, and use your IAM role instead of the `eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/my-role` example.
@@ -198,8 +198,8 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
 5. Create the Kubernetes Secrets object. Replace the `<namespace>` placeholder with your value:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f gcp-cs-secret.yaml -n <namespace>
+    ```bash
+    kubectl apply -f gcp-cs-secret.yaml -n <namespace>
     ```    
 
 6. Configure the GCS storage in the `deploy/cr.yaml` Custom Resource. Specify the following information:
@@ -224,8 +224,8 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
 7. Apply the configuration:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 ## Microsoft Azure Blob storage
@@ -260,20 +260,20 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
         === "in Linux"
 
-            ``` {.bash data-prompt="$" }
-            $ echo -n 'plain-text-string' | base64 --wrap=0
+            ```bash
+            echo -n 'plain-text-string' | base64 --wrap=0
             ```
 
         === "in macOS"
 
-            ``` {.bash data-prompt="$" }
-            $ echo -n 'plain-text-string' | base64
+            ```bash
+            echo -n 'plain-text-string' | base64
             ```
 
     Once the editing is over, create the Kubernetes Secret object as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup-azure.yaml
+    ```bash
+    kubectl apply -f deploy/backup-azure.yaml
     ```
 
 2. Put the data needed to access the Azure Blob storage into the
