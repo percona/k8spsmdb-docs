@@ -31,8 +31,9 @@ For either type of a restore you need to create a Restore object using the [`dep
 ## Before you begin
 
 1. Make sure that the cluster is running.
+   
 2. Export your namespace as an environment variable. Replace the `<namespace>` placeholder with your value:
-
+   
    ```bash
    export NAMESPACE = <namespace>
    ```
