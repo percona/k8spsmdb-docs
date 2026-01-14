@@ -1,7 +1,7 @@
 3. Check the current version of the Custom Resource and what versions of the database and cluster components are compatible with it. Use the following command:
 
-    ``` {.bash data-prompt="$" }
-    $ curl https://check.percona.com/versions/v1/psmdb-operator/{{release}} |jq -r '.versions[].matrix'
+    ```bash
+    curl https://check.percona.com/versions/v1/psmdb-operator/{{release}} |jq -r '.versions[].matrix'
     ```
 
     You can also find this information in the [Versions compatibility](versions.md) matrix.
@@ -18,8 +18,8 @@
 
     === "With PMM Client"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
@@ -31,8 +31,8 @@
 
     === "Without PMM Client"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+        ```bash
+        kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",

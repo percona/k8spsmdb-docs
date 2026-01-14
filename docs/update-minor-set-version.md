@@ -29,8 +29,8 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
     You can track the rollout process in real time using the
     `kubectl rollout status` command with the name of your cluster:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl rollout status sts my-cluster-name-rs0
+    ```bash
+    kubectl rollout status sts my-cluster-name-rs0
     ```
 
 

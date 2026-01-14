@@ -16,9 +16,9 @@ If you don’t have access to AWS, you can use any S3-compatible storage like [M
 Also, we will use some files from the Operator repository for setting up 
 backups. So, clone the percona-server-mongodb-operator repository:
 
-``` {.bash data-prompt="$" }
-$ git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-$ cd percona-server-mongodb-operator
+```bash
+git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
+cd percona-server-mongodb-operator
 ```
 
 !!! note
@@ -32,16 +32,16 @@ $ cd percona-server-mongodb-operator
 
     === "on Linux" 
 
-        ```{.bash data-prompt="$"}
-        $ echo -n 'AWS_ACCESS_KEY_ID' | base64 --wrap=0
-        $ echo -n 'AWS_SECRET_ACCESS_KEY' | base64 --wrap=0
+        ```bash
+        echo -n 'AWS_ACCESS_KEY_ID' | base64 --wrap=0
+        echo -n 'AWS_SECRET_ACCESS_KEY' | base64 --wrap=0
         ``` 
 
     === "on MacOS" 
 
-        ```{.bash data-prompt="$"}
-        $ echo -n 'AWS_ACCESS_KEY_ID' | base64 
-        $ echo -n 'AWS_SECRET_ACCESS_KEY' | base64 
+        ```bash
+        echo -n 'AWS_ACCESS_KEY_ID' | base64 
+        echo -n 'AWS_SECRET_ACCESS_KEY' | base64 
         ```
 
 2. Edit the [`deploy/backup-s3.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup-s3.yaml) example Secrets configuration file and specify the following:
@@ -62,8 +62,8 @@ $ cd percona-server-mongodb-operator
 
 3. Create the Secrets object from this yaml file. Specify your namespace instead of the `<namespace>` placeholder:
 
-	```{.bash data-prompt="$"}
-	$ kubectl apply -f deploy/backup-s3.yaml -n <namespace>
+	```bash
+	kubectl apply -f deploy/backup-s3.yaml -n <namespace>
 	```
 
 4. Update your `deploy/cr.yaml` configuration. Specify the following parameters in the `backups` section:
@@ -97,8 +97,8 @@ $ cd percona-server-mongodb-operator
   
 5. Apply the configuration. Specify your namespace instead of the `<namespace>` placeholder:
 
-	```{.bash data-prompt="$"}
-	$ kubectl apply -f deploy/cr.yaml -n <namespace>
+	```bash
+	kubectl apply -f deploy/cr.yaml -n <namespace>
 	```
  
 ## Make a logical backup {.power-number}
@@ -129,14 +129,14 @@ $ cd percona-server-mongodb-operator
 
 3. Apply the configuration. This instructs the Operator to start a backup. Specify your namespace instead of the `<namespace>` placeholder:
 
-    ```{.bash data-prompt="$"}
-	$ kubectl apply -f deploy/backup/backup.yaml -n <namespace>
+    ```bash
+	kubectl apply -f deploy/backup/backup.yaml -n <namespace>
 	```
 
 4. Track the backup progress. 
 
-    ```{.bash data-prompt="$"}
-	$ kubectl get psmdb-backup -n <namespace>
+    ```bash
+	kubectl get psmdb-backup -n <namespace>
 	```
 
 	??? example "Sample output"
@@ -154,14 +154,14 @@ You may face issues with the backup. To identify the issue, you can do the follo
 
 * View the information about the backup with the following command:
 
-   ```{.bash data-prompt="$"}
-   $ kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml
+   ```bash
+   kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml
    ```
 
 * [View the backup-agent logs](debug-logs.md). Use the previous command to find the name of the pod where the backup was made:
   
-  ```{.bash data-prompt="$"}
-  $ kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
+  ```bash
+  kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
   ```
 
 Congratulations! You have made the first backup manually. Want to learn more about backups? See the [Backup and restore](backups.md) section for how to [configure point-in-time recovery](backups-pitr.md), [enable server-side encryption](backups-encryption.md) and how to [automatically make backups according to the schedule](backups-scheduled.md).

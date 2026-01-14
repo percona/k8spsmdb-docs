@@ -11,8 +11,8 @@ the `replica` nodes.
 
 Ensure that the nodes are exposed by listing the services. Run the following command on both clusters:
 
-```{.bash data-prompt="$" }
-$ kubectl get services
+```bash
+kubectl get services
 ```
 
 ??? example "Sample output"
@@ -124,8 +124,8 @@ subsections. For each node, specify the following:
 
 2. Apply the changes:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr-main.yaml
+    ```bash
+    kubectl apply -f deploy/cr-main.yaml
     ```
 
 ## Add Main site nodes to the Replica site
@@ -171,8 +171,8 @@ subsections. For each node, specify the following:
 
 2. Apply the configuration:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl apply -f deploy/cr-replica.yaml
+    ```bash
+    kubectl apply -f deploy/cr-replica.yaml
     ```
 
 ## Check cluster connectivity
@@ -181,8 +181,8 @@ Verify that the clusters are interconnected by connecting to one of them.
 
 1. Connect to one of the Pods directly using the credentials of the database admin user. Refer to the [Connect to Percona Server for MongoDB](connect.md) tutorial how to retrieve user credentials:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl exec -it main-cluster-rs0-0 -- mongosh -u databaseAdmin -p <dbAdminPassword>
+    ```bash
+    kubectl exec -it main-cluster-rs0-0 -- mongosh -u databaseAdmin -p <dbAdminPassword>
     ```
 
 2. List replica set members:

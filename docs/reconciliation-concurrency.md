@@ -22,8 +22,8 @@ The general recommendation is to set the number of concurrent workers equal to t
 
 1. Check the index of the `MAX_CONCURRENT_RECONCILES` environment variable using the following command:
 
-    ```{bash data-prompt="$"}
-    $ kubectl get deployment percona-server-mongodb-operator -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="MAX_CONCURRENT_RECONCILES")].value}'
+    ```bash
+    kubectl get deployment percona-server-mongodb-operator -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="MAX_CONCURRENT_RECONCILES")].value}'
     ```
 
     ??? example "Sample output"
@@ -34,8 +34,8 @@ The general recommendation is to set the number of concurrent workers equal to t
 
 2. To set a new value and verify it's been updated, run the following command:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl patch deployment percona-server-mongodb-operator \
+    ```bash
+    kubectl patch deployment percona-server-mongodb-operator \
     --type='strategic' \
     -o yaml \
     -p='{

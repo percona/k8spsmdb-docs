@@ -41,8 +41,8 @@ You can add needed OpenLDAP settings will the following [LDIF  :octicons-link-ex
 
 Also a read-only user should be created for the database-issued user lookups. If everything is done correctly, the following command should work, resetting the percona user password:
 
-``` {.bash data-prompt="$" }
-$ ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=percona,ou=perconadba,dc=ldap,dc=local"
+```bash
+ldappasswd -s percona -D "cn=admin,dc=ldap,dc=local" -w password -x "uid=percona,ou=perconadba,dc=ldap,dc=local"
 ```
 !!! note
 
@@ -89,14 +89,14 @@ setParameter:
 
 Put the snippet on you local machine and create a Kubernetes Secret object named based on [your MongoDB cluster name](operator.md#metadata):
 
-``` {.bash data-prompt="$" }
-$ kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
+```bash
+kubectl create secret generic <your_cluster_name>-rs0-mongod --from-file=mongod.conf=my_mongod.conf
 ```
 
 Next step is to start the MongoDB cluster up as it’s described in [Install Percona server for MongoDB on Kubernetes](kubernetes.md). On successful completion of the steps from this doc, we are to proceed with setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB. For this, log into MongoDB as administrator:
 
-``` {.bash data-prompt="$" }
-$ mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+```bash
+mongo "mongodb+srv://userAdmin:<userAdmin_password>@<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
 When logged in, execute the following:
@@ -142,8 +142,8 @@ mongos> db.getSiblingDB("admin").createRole(
 
 Now the new `percona` user created inside OpenLDAP is able to login to MongoDB as administrator. Verify whether the user role has been identified correctly with the following command:
 
-``` {.bash data-prompt="$" }
-$ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
+```bash
+mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <mongodb-rs-endpoint> --port 27017
 ```
 
 When logged in, execute the following:
@@ -246,8 +246,8 @@ setParameter:
 
 Put the snippet on you local machine and create a Kubernetes Secret object named based on [your MongoDB cluster name](operator.md#metadata):
 
-``` {.bash data-prompt="$" }
-$ kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=my_mongos.conf
+```bash
+kubectl create secret generic <your_cluster_name>-mongos --from-file=mongos.conf=my_mongos.conf
 ```
 
 Secret for the configuration ReplicaSet should look as follows:
@@ -276,16 +276,16 @@ setParameter:
 
 Put the snippet on you local machine and create a Kubernetes Secret object named based on [your MongoDB cluster name](operator.md#metadata):
 
-``` {.bash data-prompt="$" }
-$ kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=my_mongod.conf
+```bash
+kubectl create secret generic <your_cluster_name>-cfg-mongod --from-file=mongod.conf=my_mongod.conf
 ```
 
 Both files are pretty much the same except the `authz` subsection, which is only present for the configuration ReplicaSet.
 
 Next step is to start the MongoDB cluster up as it’s described in [Install Percona server for MongoDB on Kubernetes](kubernetes.md). On successful completion of the steps from this doc, we are to proceed with setting the roles for the ‘external’ (managed by LDAP) user inside the MongoDB. For this, log into MongoDB as administrator:
 
-``` {.bash data-prompt="$" }
-$ mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
+```bash
+mongo "mongodb://userAdmin:<userAdmin_password>@<your_cluster_name>-mongos.<your_namespace>.svc.cluster.local/admin?ssl=false"
 ```
 
 When logged in, execute the following:
@@ -331,8 +331,8 @@ mongos> db.getSiblingDB("admin").createRole(
 
 Now the new `percona` user created inside OpenLDAP is able to login to MongoDB as administrator. Verify whether the user role has been identified correctly with the following command:
 
-``` {.bash data-prompt="$" }
-$ mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <your_cluster_name>-mongos --port 27017
+```bash
+mongo --username percona --password 'percona' --authenticationMechanism 'PLAIN' --authenticationDatabase '$external' --host <your_cluster_name>-mongos --port 27017
 ```
 
 When logged in, execute the following:
@@ -404,8 +404,8 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
 
 1. First, create a secret that contains the SSL certificate to connect to LDAP. The following example creates it from the file with CA certificate (the one you use in `/etc/openldap/ldap.conf`), naming the new secret `my-ldap-secret`:
 
-    ```{.bash data-prompt="$" }
-    $ kubectl create secret generic my-ldap-secret --from-file=ca.crt=ldap-ca.pem
+    ```bash
+    kubectl create secret generic my-ldap-secret --from-file=ca.crt=ldap-ca.pem
     ```
 
 2. Set the `secrets.ldapSecret` Custom Resource option to the name of your newly created secret. Your modified `deploy/cr.yaml` may look as follows:

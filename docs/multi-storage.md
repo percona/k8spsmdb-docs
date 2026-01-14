@@ -19,8 +19,8 @@ Note that you can have only one main storage. All other storages are added as pr
 
 To check the list of profiles, connect to the database Pod and run the `pbm profile list` command. For example, for the cluster `cluster1`, the command looks as follows:
 
-```{.bash data-prompt="$"}
-$ kubectl exec cluster1-rs0-0 -c backup-agent -- pbm profile list
+```bash
+kubectl exec cluster1-rs0-0 -c backup-agent -- pbm profile list
 ```
 
 You can run other [profile management commands :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/reference/pbm-commands.html#pbm-profile-add) in the same way.
@@ -71,8 +71,8 @@ You must specify the main storage during the upgrade. If you use a single storag
 
 The following command shows how to set the `s3-us-west` storage as the main one:
 
-```{.bash data-prompt="$"}
-$ kubectl patch psmdb my-cluster-name --type=merge --patch '{
+```bash
+kubectl patch psmdb my-cluster-name --type=merge --patch '{
     "spec": {
       "crVersion": "1.20.0",
       "image": "percona/percona-server-mongodb:7.0.18-11",

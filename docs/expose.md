@@ -15,14 +15,14 @@ By default, a ClusterIP type Service is created (this is controlled by [sharding
 
 The URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-``` {.bash data-prompt="$" }
-$ mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+```bash
+mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
 ```
 
 You can get the actual Service endpoints by running the following command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get psmdb
+```bash
+kubectl get psmdb
 ```
 
 ??? example "Expected output"
@@ -54,14 +54,14 @@ By default, a ClusterIP type Service is created (this is controlled by [replsets
 
 In this case, the URI looks like this (taking into account the need for a proper password obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder):
 
-``` {.bash data-prompt="$" }
-$ mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+```bash
+mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
 ```
 
 You can get the actual Service endpoints by running the following command:
 
-``` {.bash data-prompt="$" }
-$ kubectl get psmdb
+```bash
+kubectl get psmdb
 ```
 
 ??? example "Expected output"
@@ -107,8 +107,8 @@ This feature can be enabled for both sharded and non-sharded clusters by setting
 
 If this feature is enabled with the `expose.type: NodePort`, the created Services look like this:
 
-``` {.bash data-prompt="$" }
-$ kubectl get svc
+```bash
+kubectl get svc
 NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
 my-cluster-name-mongos-0   NodePort       10.38.158.103   <none>         27017:31689/TCP              12s
 my-cluster-name-mongos-1   NodePort       10.38.155.250   <none>         27017:31389/TCP              12s

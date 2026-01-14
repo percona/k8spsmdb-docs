@@ -16,7 +16,7 @@ You can check available options in the [restore options reference](restore-optio
 
 This document covers the following restore scenarios:
 
-* [Restore from a full backup](#restore-from-a-full-backup) - restore from a full backup  without point-in-time
+* [Restore from a backup](#restore-from-a-backup) - restore from a full backup  without point-in-time
 * [Point-in-time recovery](#point-in-time-recovery) - restore to a specific time, a specific or a latest transaction or skip a specific transaction during a restore. This ability requires that you [configure storing oplog for point-in-time recovery](backups-pitr.md)
 
 ## Preconditions
@@ -61,8 +61,8 @@ If you haven't defined storage in the target cluster's `cr.yaml` file, you can c
 
 2. Apply the configuration to start the restore:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
+    ```bash
+    kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
     ```
 
     During the restore process, the Operator:
@@ -94,8 +94,8 @@ You can [already define](backups-storage.md) the storage where the backup is sto
 
 2. After configuring the restore object, start the restoration process:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/restore.yaml
+    ```bash
+    kubectl apply -f deploy/backup/restore.yaml
     ```
 
 ## Point-in-time recovery
@@ -145,8 +145,8 @@ You can configure the storage within the restore object configuration:
 
 2. Run the actual restoration process:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/restore.yaml
+    ```bash
+    kubectl apply -f deploy/backup/restore.yaml
     ```
     
     During the restore process, the Operator:
@@ -187,14 +187,14 @@ You can [define the storage](backups-storage.md) where the backup is stored in t
 
 2. Though PBM resyncs metadata on the target cluster when you start the restore process, for point-in-time recovery to *the latest possible transaction*, we recommend to run a manual resync before the restore. This ensures PBM has the latest oplog chunks on the target cluster. Connect to one of the database Pods (`my-cluster-name-rs0-2` for example) and run the following command:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
+    ```bash
+    kubectl exec -it my-cluster-name-rs0-2 -c backup-agent -- pbm config --force-resync
     ```
   
 3. Start the restore process:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl apply -f deploy/backup/restore.yaml
+    ``` bash
+    kubectl apply -f deploy/backup/restore.yaml
     ```
 
 ## Restore from a backup with a prefix in a bucket path

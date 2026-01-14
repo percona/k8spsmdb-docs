@@ -69,8 +69,8 @@ Here's how to do it:
 
 2. Create a Secret object:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl apply -f my-secret.yaml
+    ```bash
+    kubectl apply -f my-secret.yaml
     ```
 
 3. Reference this Secret in the Custom Resource
@@ -92,8 +92,8 @@ Here's how to do it:
 
 4. Apply the configuration to create users:
 
-    ```{.bash data-prompt="$"}
-    $ kubectl apply -f deploy/cr.yaml
+    ```bash
+    kubectl apply -f deploy/cr.yaml
     ```
 
 !!! note "External database users"
@@ -160,8 +160,8 @@ You can create application-level users manually. Run the commands below, substit
 
     1. Connect to Percona Server for MongoDB:
     
-        ``` {.bash data-prompt="$"}
-        $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+        ```bash
+        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
         ```
 
         ??? example "Sample output"
@@ -172,8 +172,8 @@ You can create application-level users manually. Run the commands below, substit
 
     2. Start the `mongosh` session and create a user:
         
-        ``` {.bash data-prompt="$"}
-        $ mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+        ```bash
+        mongosh "mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
         rs0:PRIMARY> db.createUser({
             user: "myApp",
             pwd: "myAppPassword",
@@ -198,8 +198,8 @@ You can create application-level users manually. Run the commands below, substit
 
     1. Connect to Percona Server for MongoDB:
     
-        ``` {.bash data-prompt="$"}
-        $ kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+        ```bash
+        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
         ```
 
         ??? example "Sample output"
@@ -210,8 +210,8 @@ You can create application-level users manually. Run the commands below, substit
 
     2. Start the `mongosh` session and create a user:
 
-        ``` {.bash data-prompt="$"}
-        $ mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```bash
+        mongosh "mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         rs0:PRIMARY> db.createUser({
             user: "myApp",
             pwd: "myAppPassword",
@@ -363,14 +363,14 @@ Here's how to do it:
 
     === "in Linux"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
+        ```bash
+        kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
         ```
 
     === "in macOS"
 
-        ``` {.bash data-prompt="$" }
-        $ kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
+        ```bash
+        kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
         ```
 
 ### Internal Secret and its usage

@@ -15,8 +15,8 @@ How your TLS certificates are updated depends on how they were created:
 1. First, check the necessary secrets names (`my-cluster-name-ssl` and
     `my-cluster-name-ssl-internal` by default):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get certificate
+    ```bash
+    kubectl get certificate
     ```
 
     You will have the following response:
@@ -31,8 +31,8 @@ How your TLS certificates are updated depends on how they were created:
 
 2. Optionally you can also check that the certificates issuer is up and running:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get issuer
+    ```bash
+    kubectl get issuer
     ```
 
     The response should be as follows:
@@ -57,8 +57,8 @@ How your TLS certificates are updated depends on how they were created:
 3. Now use the following command to find out the certificates validity dates,
     substituting Secrets names if necessary:
 
-    ``` {.bash data-prompt="$" }
-    $ {
+    ```bash
+    {
       kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
       kubectl get secret/my-cluster-name-ssl -o jsonpath='{.data.ca\.crt}' | base64 --decode | openssl x509 -noout -dates
       }
@@ -91,25 +91,25 @@ as follows.
 2. Get the current CA (`ca.pem.old`) and TLS (`tls.pem.old`) certificates
     and the TLS certificate key (`tls.key.old`):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.pem.old
-    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode > tls.pem.old
-    $ kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.key}' | base64 --decode > tls.key.old
+    ```bash
+    kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.ca\.crt}' | base64 --decode > ca.pem.old
+    kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode > tls.pem.old
+    kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.key}' | base64 --decode > tls.key.old
     ```
 
 3. Combine new and current `ca.pem` into a `ca.pem.combined` file:
 
-    ``` {.bash data-prompt="$" }
-    $ cat ca.pem ca.pem.old >> ca.pem.combined
+    ```bash
+    cat ca.pem ca.pem.old >> ca.pem.combined
     ```
 
 4. Create a new Secrets object with *old* TLS certificate (`tls.pem.old`)
     and key (`tls.key.old`), but a *new combined* `ca.pem`
     (`ca.pem.combined`):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete secret/my-cluster-name-ssl-internal
-    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=tls.pem.old --from-file=tls.key=tls.key.old --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
+    ```bash
+    kubectl delete secret/my-cluster-name-ssl-internal
+    kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=tls.pem.old --from-file=tls.key=tls.key.old --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
     ```
 
 5. The cluster will go through a rolling reconciliation, but it will do it
@@ -123,9 +123,9 @@ as follows.
     (`server.pem` in the example) and its key (`server-key.pem`), and again
     the combined CA certificate (`ca.pem.combined`):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete secret/my-cluster-name-ssl-internal
-    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
+    ```bash
+    kubectl delete secret/my-cluster-name-ssl-internal
+    kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem.combined --type=kubernetes.io/tls
     ```
 
 8. The cluster will go through a rolling reconciliation, but it will do it
@@ -137,9 +137,9 @@ as follows.
 9. Create a final Secrets object: use new TLS certificate (`server.pmm`) and
     its key (`server-key.pem`), and just the new CA certificate (`ca.pem`):
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete secret/my-cluster-name-ssl-internal
-    $ kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+    ```bash
+    kubectl delete secret/my-cluster-name-ssl-internal
+    kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
     ```
 
 10. The cluster will go through a rolling reconciliation, but it will do it
@@ -159,8 +159,8 @@ Operator version prior to 1.9.0), you should move through the
 2. If cert-manager is used, delete issuer
     and TLS certificates:
 
-    ``` {.bash data-prompt="$" }
-    $ {
+    ```bash
+    {
       kubectl delete issuer/my-cluster-name-psmdb-ca-issuer issuer/my-cluster-name-psmdb-issuer 
       kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal
       }
@@ -168,8 +168,8 @@ Operator version prior to 1.9.0), you should move through the
 
 3. Delete Secrets to force the SSL reconciliation:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl delete secret/my-cluster-name-ssl secret/my-cluster-name-ssl-internal
+    ```bash
+    kubectl delete secret/my-cluster-name-ssl secret/my-cluster-name-ssl-internal
     ```
 
 4. Check certificates to make sure reconciliation have succeeded.
@@ -197,15 +197,15 @@ a cluster named `cluster1`:
 
     Deletion command should look as follows:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl -n <namespace_name> delete psmdb cluster1
+    ```bash
+    kubectl -n <namespace_name> delete psmdb cluster1
     ```
 
 2. Deletion takes time. Check that all Pods disappear with `kubectl -n <namespace_name> get pods`
     command, and delete certificate related resources:
     
-    ``` {.bash data-prompt="$" }
-    $ kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
+    ```bash
+    kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
     ```
 
 3. Create your own custom CA:
@@ -237,8 +237,8 @@ a cluster named `cluster1`:
 
 4. Recreate the cluster from the original `deploy/cr.yaml` configuration file:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl -n <namespace_name> apply -f deploy/cr.yaml
+    ```bash
+    kubectl -n <namespace_name> apply -f deploy/cr.yaml
     ```
 
 5. Verify certificate duration [in usual way](#check-your-certificates-for-expiration).

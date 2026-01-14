@@ -6,8 +6,8 @@ In the following examples we will access the container `mongod` of the `my-clust
 
 * Run `date` command:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- date
+    ```bash
+    kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- date
     ```
 
     ??? example "Expected output"
@@ -27,22 +27,40 @@ In the following examples we will access the container `mongod` of the `my-clust
 
 * Print `/var/log/mongo/mongod.log` file to a terminal:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- cat /var/log/mongo/mongod.log
+    ```bash
+    kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- cat /var/log/mongo/mongod.log
     ```
 
-* Similarly, opening an Interactive terminal, executing a pair of commands in
-    the container, and exiting it may look as follows:
+* Similarly, you can open an Interactive terminal, execute a pair of commands in
+    the container, and exit:
 
-    ```{.bash data-prompt="$" data-prompt-second="[mongodb@my-cluster-name-rs0-0 db]$"}
-    $ kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- bash
-    [mongodb@my-cluster-name-rs0-0 db]$ cat /etc/hostname
-    my-cluster-name-rs0-0
-    [mongodb@my-cluster-name-rs0-0 db]$ ls /var/log/mongo/mongod.log
-    /var/log/mongo/mongod.log
-    [mongodb@my-cluster-name-rs0-0 db]$ exit
+    ```bash
+    kubectl exec -ti my-cluster-name-rs0-0 -c mongod -- bash
+    ```
+
+    ??? example "Expected output"
+
+        ```{.text no-copy}
+        [mongodb@my-cluster-name-rs0-0 db]$ 
+        ```
+        
+    ```bash
+    cat /etc/hostname
+    ```
+
+    ??? example "Expected output"
+
+        ```{.text no-copy}
+        my-cluster-name-rs0-0 
+        ```
+    
+    ```bash
+    ls /var/log/mongo/mongod.log 
+    ls /var/log/mongo/mongod.log
+    ```
+    
+    ```bash
     exit
-    $
     ```
 
 ## Avoid the restart-on-fail loop for Percona Server for MongoDB containers
@@ -61,14 +79,14 @@ confg server Pods.
 For example, you can do it for the `mongod` container of an appropriate Percona
 Server for MongoDB Pod as follows:
 
-``` {.bash data-prompt="$" }
-$ kubectl exec -it my-cluster-name-cfg-0 -c mongod -- sh -c 'touch /data/db/sleep-forever' 
+```bash
+kubectl exec -it my-cluster-name-cfg-0 -c mongod -- sh -c 'touch /data/db/sleep-forever' 
 ```
 
 If `mongod` container can’t start, you can use `backup-agent` container instead:
 
-``` {.bash data-prompt="$" }
-$ kubectl exec -it my-cluster-name-cfg-0 -c backup-agent -- sh -c 'touch /data/db/sleep-forever' 
+```bash
+kubectl exec -it my-cluster-name-cfg-0 -c backup-agent -- sh -c 'touch /data/db/sleep-forever' 
 ```
 
 The instance will restart automatically and run in its usual way as soon as you

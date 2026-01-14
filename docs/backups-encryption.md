@@ -58,8 +58,8 @@ To use the server-side AWS KMS encryption, specify the [ID of your customer-mana
 
     When the YAML file is ready, apply it to create the Secret:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create -f deploy/sse-secret.yaml
+    ```bash
+    kubectl create -f deploy/sse-secret.yaml
     ```
     
     After creating the Secret, set the following Custom Resource options in the `deploy/cr.yaml` configuration file:
@@ -136,8 +136,8 @@ encryption key and other needed options:
 
     When the YAML file is ready, apply it to create the Secret:
 
-    ``` {.bash data-prompt="$" }
-    $ kubectl create -f deploy/sse-secret.yaml
+    ```bash
+    kubectl create -f deploy/sse-secret.yaml
     ```
     
     After creating the Secret, set the following Custom Resource options in the `deploy/cr.yaml` configuration file:
@@ -165,12 +165,12 @@ encryption key and other needed options:
 
     === "in Linux"
 
-        ``` {.bash data-prompt="$" }
-        $ echo -n 'plain-text-string' | base64 --wrap=0
+        ```bash
+        echo -n 'plain-text-string' | base64 --wrap=0
         ```
 
     === "in macOS"
 
-       ``` {.bash data-prompt="$" }
-       $ echo -n 'plain-text-string' | base64
+       ```bash
+       echo -n 'plain-text-string' | base64
        ```

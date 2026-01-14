@@ -34,8 +34,8 @@ spec:
 
 Apply the manifest to pass your configuration to the Operator:
 
-```{.bash data-prompt="$"}
-$ kubectl apply -f deploy/cr.yaml
+```bash
+kubectl apply -f deploy/cr.yaml
 ```
 
 Refer to the [Custom Resource options](operator.md) for the full list of available options.
