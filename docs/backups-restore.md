@@ -21,7 +21,7 @@ You can specify the backup to restore from in two ways: using the `backupName` o
 
 * Use the **`backupName`** option when backup objects exist in the cluster, such as for restoring to the same cluster where the backup was created. When you specify the `backupName`, PBM automatically determines the backup type and performs the corresponding restore procedure.
 
-* Use the **`backupSource`** option when there are no backup objects in the cluster, such as [when restoring to a new cluster](backups-restore-to-new-cluster.md). You can also use the `backupSource` for restores to the same cluster, instead of the `backupName`.  If you specify the `backupSource`, you must manually specify the backup type (`logical` or `physical`) in the configuration.
+* Use the **`backupSource`** option when there are no backup objects in the cluster, such as [when restoring to a new cluster](backups-restore-to-new-cluster.md). You can also use the `backupSource` for restores to the same cluster, instead of the `backupName`.  If you specify the `backupSource`, you must manually specify the backup type (`logical`, `physical` or `incremental`) in the configuration.
 
 ## Considerations
 
