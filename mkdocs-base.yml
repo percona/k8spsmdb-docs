@@ -218,6 +218,7 @@ nav:
 
     - Configuration:
           - "Application and system users": users.md
+          - "Disable authentication": auth-disable.md
           - "Changing MongoDB options": options.md
           - options-pbm.md
           - "Anti-affinity and tolerations": constraints.md
