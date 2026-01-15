@@ -7,6 +7,8 @@ MongoDB user accounts within the cluster can be divided into two different group
 
 These two groups serve different purposes. Read the following sections to learn more.
 
+By default, authentication is enabled in Percona Server for MongoDB clusters. If you need to disable authentication for development, testing, or migration purposes, see [Disable authentication](auth-disable.md).
+
 ## Application-level (unprivileged) users
 
 The Operator doesn't create application-level (unprivileged) user accounts by default.
