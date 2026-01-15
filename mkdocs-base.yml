@@ -234,6 +234,9 @@ nav:
              - Disable TLS: tls-disable.md
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
+          - "Operator environment variables": env-vars-operator.md
+          - "Cluster component environment variables": env-vars-cluster.md
+          - "Define custom environment variables": env-vars-custom.md
           - reconciliation-concurrency.md
           
     - Management:
