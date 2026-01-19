@@ -23,6 +23,8 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
 
+--8<-- "what-you-install.md"
+
 ## Procedure 
 
 Here's a sequence of steps to follow:
@@ -90,8 +92,6 @@ Here's a sequence of steps to follow:
         ```
 
 You have successfully installed and deployed the Operator with default parameters. 
-
-The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with [enabled sharding](sharding.md).
 
 You can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
 
