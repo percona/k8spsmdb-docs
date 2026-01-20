@@ -235,6 +235,9 @@ nav:
           - "Data at rest encryption": encryption.md
           - "Telemetry": telemetry.md
           - reconciliation-concurrency.md
+          - Logging:
+            - "Cluster-level logging": cluster-level-logging.md
+            - "Log rotation": logrotate.md
           
     - Management:
           - Backup and restore:
