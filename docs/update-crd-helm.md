@@ -135,7 +135,7 @@ You can add the CRD chart as a dependency to the main Operator chart. This way y
 
 Note that you must install the CRD chart first. Otherwise Helm will fail with an ownership metadata error because the existing CRDs installed from the `crds/` directory don't have Helm ownership metadata.
 
-Refer to step 3 of the [Upgrade steps](#upgrade-steps) for the steps to add thr CRD chart.
+Refer to step 3 of the [Upgrade steps](#upgrade-steps) for the steps to add the CRD chart.
 
 To add the CRD as a dependency, do the following:
 
