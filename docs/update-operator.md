@@ -84,7 +84,7 @@ The upgrade process is similar for all installation methods, including Helm and 
 
 ## Update guides
 
-[Update manually](update-operator-manual.md){.md-button}
-[Update via Helm](update-operator-helm.md){.md-button}
-[Update via OLM](update-operator-olm.md){.md-button}
+[Update manually](update-crd-manual.md){.md-button}
+[Update via Helm](update-crd-helm.md){.md-button}
+[Update via OLM](update-crd-olm.md){.md-button}
 
