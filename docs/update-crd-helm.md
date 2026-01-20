@@ -30,7 +30,7 @@ To update the CRDs you have the following options:
 2. Export the namespace where the Operator deployment is running as an environment variable:
 
     ```bash
-    export NAMESPACE = <namespace>
+    export NAMESPACE=<namespace>
     ```
 
 3. Update the [Custom Resource Definition :octicons-link-external-16:](https://
