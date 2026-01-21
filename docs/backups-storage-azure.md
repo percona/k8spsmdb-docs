@@ -9,9 +9,9 @@ Use the following command to encode the keys:
 
 === ":simple-linux: in Linux"
 
-        ```bash
-        echo -n 'plain-text-string' | base64 --wrap=0
-        ```
+    ```bash
+    echo -n 'plain-text-string' | base64 --wrap=0
+    ```
 
 === ":simple-apple: in macOS"
 
