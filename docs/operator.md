@@ -2938,6 +2938,78 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
+### `backup.storages.STORAGE-NAME.minio.insecureSkipTLSVerify`
+
+Disables verification of the storage server TLS certificate. This enables data upload to S3-compatible storage with a self-issued certificate bypassing TLS verification for private. Read more about [using custom CA certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
+### `backup.storages.STORAGE-NAME.minio.credentialsSecret`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the  `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-minio` |
+
+### `backup.storages.STORAGE-NAME.minio.bucket`
+
+The bucket name for backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |            |
+
+### `backup.storages.STORAGE-NAME.minio.prefix`
+
+The path (sub-folder) to the backups inside the bucket.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.minio.region`
+
+The region name of the bucket. This is where the bucket is located
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `us-east-1` |
+
+### `backup.storages.STORAGE-NAME.minio.endpointUrl`
+
+The endpoint URL of the S3-compatible storage service. This points to your storage service and is specific to your cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `minio.psmdb.svc.cluster.local:9000/minio/` |
+
+### `backup.storages.STORAGE-NAME.minio.secure`
+
+Defines whether to use HTTP or HTTPS protocol for communication with the S3 storage.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.name`
+
+The name of the Secret that stores custom TLS certificates for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `minio-ca-bundle` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.key`
+
+he custom CA certificate for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `ca.crt` |
+
 ### `backup.storages.STORAGE-NAME.gcs.bucket`
 
 The name of the storage bucket. See the [GCS bucket naming guidelines :octicons-link-external-16:](https://cloud.google.com/storage/docs/naming-buckets#requirements) for bucket name requirements.
@@ -3037,7 +3109,7 @@ The mount point for a remote filesystem configured to store backups.
 
 ### `backup.volumeMounts.mountPath`
 
-Mount path for the [remote backup storage](backups-storage.md#remote-file-server).
+Mount path for the [remote backup storage](backups-storage-filesystem.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3045,7 +3117,7 @@ Mount path for the [remote backup storage](backups-storage.md#remote-file-server
 
 ### `backup.volumeMounts.name`
 
-Name of the [remote backup storage](backups-storage.md#remote-file-server).
+Name of the [remote backup storage](backups-storage-filesystem.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
