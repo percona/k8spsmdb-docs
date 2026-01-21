@@ -44,7 +44,7 @@ backup:
     name: backup-nfs
 ```
 
-See more in our [documentation about this storage type](../backups-storage.md#remote-file-server).
+See more in our [documentation about this storage type](../backups-storage-filesystem.md).
 
 ### Generated passwords for custom MongoDB users
 
@@ -71,8 +71,8 @@ See [this blogpost :octicons-link-external-16:](https://www.percona.com/blog/per
 
 ## New Features
 
-* {{ k8spsmdbjira(1109) }}: Backups can now be [stored on a remote file server](../backups-storage.md#remote-file-server)
-* {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](../backups-storage.md#__tabbed_2_2) allow automating access to AWS S3 buckets based on Identity Access Management with no need to specify the S3 credentials explicitly
+* {{ k8spsmdbjira(1109) }}: Backups can now be [stored on a remote file server](../backups-storage-filesystem.md)
+* {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](../backups-storage-s3.md#automating-access-to-amazon-s3-based-on-iam-roles) allow automating access to AWS S3 buckets based on Identity Access Management with no need to specify the S3 credentials explicitly
 * {{ k8spsmdbjira(1133) }}: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator [is now possible](../operator.md#replsetsreplsetoverridesmember-namepriority) with the new `replsetOverrides.MEMBER-NAME.priority` Custom Resource option
 * {{ k8spsmdbjira(1164) }}: Add the possibility to create users in the `$external` database for external authentication purposes 
 

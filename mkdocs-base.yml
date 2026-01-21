@@ -239,7 +239,13 @@ nav:
     - Management:
           - Backup and restore:
               - "About backups": backups.md
-              - "Configure storage for backups": backups-storage.md
+              - "Configure storage for backups":
+                  - Overview: backups-storage.md
+                  - "Amazon S3 storage": backups-storage-s3.md
+                  - "MinIO and S3-compatible storages": backups-storage-minio.md
+                  - "Google Cloud storage": backups-storage-gcp.md
+                  - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
               - Make a backup:
