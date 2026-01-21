@@ -3004,7 +3004,7 @@ The name of the Secret that stores custom TLS certificates for TLS communication
 
 ### `backup.storages.STORAGE-NAME.minio.caBundle.key`
 
-he custom CA certificate for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+The custom CA certificate for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
 
 | Value type  | Example    |
 | ----------- | ---------- |
