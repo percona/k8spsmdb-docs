@@ -7,19 +7,19 @@
 
 By default, `logrotate` in Percona Operator for MongoDB works as follows:
 
-
 * Rotates the `/data/db/logs/mongod.full.log` daily.
 * If the log file exceeds 100 MB, it will be rotated on the next run, regardless of the schedule.
 * Keeps up to 7 rotated log files.
 * Skips missing or empty log files.
 * Leaves rotated logs uncompressed.
-* Copies the current file to the rotated file and then truncates this file to zero in place. This avoids the need to restart MongoDB or force it to reopen the log file.
+* Copies the current file to the rotated file and then truncates this file to zero in place. 
 * Ensures pre-rotation scripts run only once per rotation with `sharedscripts`.
 * Before rotating, performs the following in the `prerotate` script:
 
   * Runs the `db.adminCommand({ logRotate: 1 })` command so that MongoDB
   closes its current log and starts a new one.
   * Deletes any `mongod.log.*` files in `/data/db/logs/` that are older than 7 days.
+
 
 ## Configure log rotation
 
@@ -40,6 +40,7 @@ Use the `logcollector.logrotate.configuration` section in the Custom Resource to
 !!! important
 
     You must provide the full `logrotate` configuration because the Operator replaces the default configuration with the one you provide.
+    Refer to the [default configuration](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/build/logcollector/logrotate/logrotate.conf) to see the built-in logrotate rules and use it as a guide for your custom settings.
 
 Here's an example configuration:
 
