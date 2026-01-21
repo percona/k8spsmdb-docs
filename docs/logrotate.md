@@ -48,7 +48,7 @@ spec:
   logcollector:
     logrotate:
       configuration: |
-        /data/db/logs/*.log {
+        /data/db/logs/mongod.full.log {
            daily
            minsize 100K
            maxsize 200M
