@@ -4,7 +4,7 @@ In a distributed Kubernetes environment, it's often difficult to debug issues be
 
 Percona Operator for MongoDB addresses this challenge with **cluster-level logging**, ensuring logs are stored persistently, independent of the Pods. This approach helps ensure that logs are available for review even after a Pod restarts.
 
-The Operator collects logs using [Fluent Bit :octicons-link-external-16:](https://fluentbit.io/) - a lightweight log processor, which supports many output plugins and has broad forwarding capabilities. Fluent Bit runs inside a `logs` sidecar container within each database Pod. It collects logs from the primary `mongod` container, adds metadata, and stores them in a single file in a dedicated log-specific Persistent Volume Claim (PVC) at `/data/db/logs/`. This allows logs to survive Pod restarts and be accessed for later debugging.
+The Operator collects logs using [Fluent Bit :octicons-link-external-16:](https://fluentbit.io/) - a lightweight log processor, which supports many output plugins and has broad forwarding capabilities. Fluent Bit runs inside a `logs` sidecar container within each database Pod. It collects logs from the primary `mongod` container, adds metadata, and stores them in a single file in `/data/db/` directory in each Persistent Volume Claim (PVC) associated with the database Pods. This allows logs to survive Pod restarts and be accessed for later debugging.
 
 Logs are also streamed to standard output, making them accessible via the `kubectl logs` command for quick troubleshooting:
 
