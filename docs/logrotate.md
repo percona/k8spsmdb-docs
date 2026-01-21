@@ -75,7 +75,7 @@ kubectl apply -f deploy/cr.yaml -n <namespace>
 
 ### Add extra logrotate configuration
 
-You can supplement the default logrotate configuration by providing additional options via a ConfigMap or a Secret. Use `logcollector.logrotate.extraConfig.name` to load an additional `.conf` file from a ConfigMap or Secret. The file name must end with `.conf`.
+You can pass additional configuration options for the default logrotate configuration via a ConfigMap or a Secret. Use `logcollector.logrotate.extraConfig.name` to load an additional `.conf` file from a ConfigMap or Secret. The file name must end with `.conf`.
 
 !!! important
 
