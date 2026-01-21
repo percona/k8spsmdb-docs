@@ -3303,15 +3303,15 @@ References a ConfigMap or a Secret containing additional logrotate configuration
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `logrotate-custom-conf` |
+| :material-code-string: string     | `logrotate-config` |
 
 ### `logcollector.logrotate.schedule`
 
-Cron expression for the logrotate schedule (default: `0 0 * * *`).
+Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `"0 0 * * 0"` |
+| :material-code-string: string     | `"0 0 0 * * *"` |
 
 ### `logcollector.resources.requests.memory`
 

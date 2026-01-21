@@ -7,15 +7,19 @@
 
 By default, `logrotate` in Percona Operator for MongoDB works as follows:
 
-* Rotates all /data/db/logs/*.log files.
-* Runs daily, but only rotates when a log is at least 10 MB. If a log reaches 100 MB , it will be rotated on the next run.
-* Keeps 10 rotated files.
-* Skips missing files and doesn't rotate empty logs.
-* Leaves rotated logs uncompressed.
-* After rotation, it:
 
-  * calls `db.adminCommand({ logRotate: 1 })` so MongoDB closes its current log and starts a new one
-  * removes `mongod.log.*` and `mongod.full.log` files that are older than 7 days
+* Rotates the `/data/db/logs/mongod.full.log` daily.
+* If the log file exceeds 100 MB, it will be rotated on the next run, regardless of the schedule.
+* Keeps up to 7 rotated log files.
+* Skips missing or empty log files.
+* Leaves rotated logs uncompressed.
+* Copies the current file to the rotated file and then truncates this file to zero in place. This avoids the need to restart MongoDB or force it to reopen the log file.
+* Ensures pre-rotation scripts run only once per rotation with `sharedscripts`.
+* Before rotating, performs the following in the `prerotate` script:
+
+  * Runs the `db.adminCommand({ logRotate: 1 })` command so that MongoDB
+  closes its current log and starts a new one.
+  * Deletes any `mongod.log.*` files in `/data/db/logs/` that are older than 7 days.
 
 ## Configure log rotation
 
@@ -31,7 +35,7 @@ Regardless of the method you use, after you apply the new configuration, the Ope
 
 ### Override the default logrotate configuration
 
-Use the `logcollector.logrotate.configuration` section in the Custom Resource to completely override the default `logrotate` settings. For example, you can configure it to rotate logs when their size is between 10 KB (minimum) and 20 KB (maximum).
+Use the `logcollector.logrotate.configuration` section in the Custom Resource to completely override the default `logrotate` settings. For example, you can configure it to rotate logs when their size is between 100 KB (minimum) and 200 MB (maximum).
 
 !!! important
 
@@ -46,18 +50,19 @@ spec:
       configuration: |
         /data/db/logs/*.log {
            daily
-           minsize 10K
-           maxsize 20K
-           rotate 10
+           minsize 100K
+           maxsize 200M
+           rotate 7
            missingok
            nocompress
            notifempty
+           copytruncate
            sharedscripts
-           postrotate
+           prerotate
+               # rotate mongod.log using 'db.adminCommand({ logRotate: 1 })'
                mongosh "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin" \
                        --eval 'db.adminCommand({ logRotate: 1 })'
                find /data/db/logs/ -type f -name 'mongod.log.*' -mtime +7 -delete
-               find /data/db/logs/ -type f -name 'mongod.full.log' -mtime +7 -delete
            endscript
         }
 ```
@@ -140,7 +145,7 @@ Use the `logcollector.logrotate.schedule` option in the Custom Resource to set a
 spec:
   logcollector:
     logrotate:
-      schedule: "15 2 * * 0"
+      schedule: "0 15 2 * * 0"
 ```
 
 Apply the configuration:
