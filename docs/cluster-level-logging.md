@@ -12,7 +12,7 @@ Logs are also streamed to standard output, making them accessible via the `kubec
 kubectl logs my-cluster-name-rs0-0 -c logs
 ```
 
-Currently, logs are collected only for the `mongod` instances running in the config server and replica set Pods. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are stored for 7 days and are rotated afterwards.
+Currently, logs are collected only for the `mongod` instances running in the config server and replica set Pods. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are rotated daily, stored for 7 days and are deleted afterwards.
 
 ## Configure log collector
 
