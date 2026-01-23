@@ -236,7 +236,7 @@ nav:
           - "Telemetry": telemetry.md
           - reconciliation-concurrency.md
           - Logging:
-            - "Cluster-level logging": cluster-level-logging.md
+            - "Persistent logging": persistent-logging.md
             - "Log rotation": logrotate.md
           
     - Management:

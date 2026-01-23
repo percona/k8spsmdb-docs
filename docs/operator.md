@@ -3267,7 +3267,7 @@ The `logcollector` section contains configuration options for [Fluent Bit Log Co
 
 ### `logcollector.enabled`
 
-Enables or disables [cluster-level logging with Fluent Bit](debug-logs.md#cluster-level-logging).
+Enables or disables [persistent logging with Fluent Bit](persistent-logging.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
