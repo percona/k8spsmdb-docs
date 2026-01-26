@@ -105,7 +105,8 @@ For example, you want to capture the startup time of the container to observe wh
           replicaSets:
             - name: rs0
               hookScript:
-                configMap: hookscript-configmap
+                configMapRef:
+                  name: hookscript-configmap
         ```
 
     4. Apply the configuration changes.
