@@ -89,7 +89,7 @@ Enables or disables automatic storage resizing based on user-defined thresholds.
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percetange of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
 
 | Value type  | Example    |
 | ----------- | ---------- |

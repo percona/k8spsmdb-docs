@@ -76,7 +76,9 @@ documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/
 
 #### Automatic storage resizing
 
-Starting with version 1.22.0, the Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage and when it exceeds the defined threshold, triggers resizing until it reaches the maximum storage size. This gives you:
+Starting with version 1.22.0, the Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. 
+
+This feature gives you:
 
 * fewer outages from full disks because storage grows with demand
 * less guesswork on capacity planning and fewer last-minute fixes
@@ -101,7 +103,7 @@ To enable automatic storage resizing, edit the `deploy/cr.yaml` Custom Resource 
               storage: 3Gi
     ```
 
-2. Configure `storageScaling`:
+2. Configure autoscaling thresholds in the `storageScaling` subsection:
 
     * `enableVolumeScaling` - set to `true`
     * `autoscaling.enabled` - set to `true`
@@ -130,10 +132,11 @@ To enable automatic storage resizing, edit the `deploy/cr.yaml` Custom Resource 
 
 When the Operator changes the storage size, it updates the Custom Resource status as follows:
 
+* adds the `pvc-resize-in-progress` annotation. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.
 * records the new size in the `currentSize` field
 * updates the `resizeCount` field.
 
-Run the `kubectl get psmdb -n namespace` to check the current cluster state.
+Run the `kubectl get psmdb -o yaml -n <namespace>` to check the current cluster state.
 
 ??? example "Sample output"
 
@@ -144,6 +147,10 @@ Run the `kubectl get psmdb -n namespace` to check the current cluster state.
         lastResizeTime: "2026-01-23T15:08:59Z"
         resizeCount: 2
     ```
+
+The `storageAutoscaling` section appears under `.status` in the Custom Resource.
+
+When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization's policies and requirements.
 
 #### Storage resizing with Volume Expansion capability
 
