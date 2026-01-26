@@ -782,6 +782,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
 
+### `replsets.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.hookScript.script`
+
+The inline hook script that you can apply to the replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `replsets.sidecars.image`
 
 Image for the [custom sidecar container](sidecar.md) for Replica Set Pods.
@@ -1062,6 +1078,23 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
 
+### `replsets.nonvoting.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.nonvoting.hookScript.script`
+
+The inline hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+
 ### `replsets.nonvoting.annotations`
 
 The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the non-voting nodes.
@@ -1286,6 +1319,22 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
 
+### `replsets.hidden.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.hidden. hookScript.script`
+
+The inline hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `replsets.hidden.annotations`
 
 The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the hidden nodes.
@@ -1477,6 +1526,22 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
+
+### `replsets.arbiter.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.arbiter.hookScript.script`
+
+The inline hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `replsets.arbiter.annotations`
 
@@ -1922,6 +1987,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
+
+### `sharding.configsvrReplSet.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `sharding.configsvrReplSet.hookScript.script`
+
+The inline hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `sharding.configsvrReplSet.sidecars.image`
 
@@ -2420,6 +2501,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
 
+### `sharding.mongos.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `sharding.mongos.hookScript.script`
+
+The inline hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `sharding.mongos.sidecars.image`
 
 Image for the [custom sidecar container](sidecar.md) for mongos Pods.
@@ -2735,6 +2832,22 @@ You can override this setting for a specific backup in the `deploy/backup/backup
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int     | `300` |
+
+### `backup.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `pbm-agent` container before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `backup.hookScript.script`
+
+The inline hook script that you can apply to tthe `pbm-agent` container before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `backup.serviceAccountName`
 
