@@ -63,7 +63,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
-### `enableVolumeExpansion`
+### `storageScaling.enableVolumeScaling`
 
 Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
@@ -71,13 +71,45 @@ Enables or disables [storage scaling / volume expansion](scaling.md#storage-resi
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
 
-### `enableExternalVolumeAutoscaling`
+### `storageScaling.enableExternalAutoscaling`
 
 Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling.md#storage-resizing-with-volume-expansion-capability)
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.enabled`
+
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic stirage resizing](scaling.md#automatic-storage-resizing).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.triggerThresholdPercent`
+
+The percetange of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `80`        |
+
+### `storageScaling.autoscaling.growthStep`
+
+The amount to increase the storage during automatic resizing. Default value is 2Gi
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `2Gi`        |
+
+### `storageScaling.autoscaling.maxSize`
+
+The maximum size to which storage can be automatically resized.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `10Gi`        |
 
 ### `crVersion`
 

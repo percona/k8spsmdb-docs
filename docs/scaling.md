@@ -39,22 +39,26 @@ for more details about other components.
 
 ### Scale storage
 
-Kubernetes manages storage with a PersistentVolume (PV), a segment of
-storage supplied by the administrator, and a PersistentVolumeClaim
-(PVC), a request for storage from a user. Starting with Kubernetes v1.11, a user can increase the size of an existing
-PVC object (considered stable since Kubernetes v1.24).
-The user cannot shrink the size of an existing PVC object.
+Kubernetes manages storage with the following components:
 
-Starting from the Operator version 1.16.0, you can scale Percona Server
-for MongoDB storage automatically by configuring the Custom Resource manifest. Alternatively, you can scale the storage manually. For either way, the volume type must support PVCs expansion. 
+* a PersistentVolume (PV) - a segment of
+storage supplied by the Kubernetes administrator,
+* a PersistentVolumeClaim
+(PVC) - a request for storage from a user.
 
-Find exact details about
-PVCs and the supported volume types in [Kubernetes
-documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims).
+Starting with Kubernetes v1.11, you can increase the size of an existing PVC object (considered stable since Kubernetes v1.24).
+Note that you **cannot** shrink the size of an existing PVC object.
 
-#### Storage resizing with Volume Expansion capability
+Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:
 
-Certain volume types support PVCs expansion. You can run the following command to check if your storage supports the expansion capability:
+* automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage and scales the storage automatically
+* storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest
+* manual scaling - scale the storage manually.
+
+You can also use an external autoscaler with the Operator. Enabling an external autoscaler disables the Operator's internal logic for automatic storage resizing. Choose one method based on your environment and requirements; using both simultaneously is not supported.
+
+For either option, the volume type must support PVC expansion.
+To check if your storage supports the expansion capability, run the following command:
 
 ```bash
 kubectl describe sc <storage class name> | grep AllowVolumeExpansion
@@ -66,10 +70,87 @@ kubectl describe sc <storage class name> | grep AllowVolumeExpansion
     AllowVolumeExpansion: true
     ```
 
+Find exact details about
+PVCs and the supported volume types in [Kubernetes
+documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims).
+
+#### Automatic storage resizing
+
+Starting with version 1.22.0, the Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage and when it exceeds the defined threshold, triggers resizing until it reaches the maximum storage size. This gives you:
+
+* fewer outages from full disks because storage grows with demand
+* less guesswork on capacity planning and fewer last-minute fixes
+* lower operational effort for developers and platform engineers
+* cost control by expanding only when needed
+* a more predictable environment so teams can focus on delivery
+
+To enable automatic storage resizing, edit the `deploy/cr.yaml` Custom Resource manifest as follows:
+{.power-number}
+
+1. Make sure each MongoDB container has a storage size set.
+
+    Example for a replica set container:
+
+    ```yaml
+    replsets:
+    - name: rs0
+      volumeSpec:
+        persistentVolumeClaim:
+          resources:
+            requests:
+              storage: 3Gi
+    ```
+
+2. Configure `storageScaling`:
+
+    * `enableVolumeScaling` - set to `true`
+    * `autoscaling.enabled` - set to `true`
+    * `autoscaling.triggerThresholdPercent` - specify the usage percentage. When the usage exceeds this threshold, this triggers autoscaling
+    * `autoscaling.growthStep` - specify how much to increase the storage on
+    * `autoscaling.maxSize` - specify the upper limit for storage growth. When this limit is reached, scaling is no longer possible.
+
+    Example configuration:
+
+    ```yaml
+    spec:
+      storageScaling:
+        enableVolumeScaling: true
+        autoscaling:
+          enabled: true
+          triggerThresholdPercent: 80
+          growthStep: 2Gi
+          maxSize: "10Gi"
+    ```
+
+3. Apply the configuration:
+
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
+
+When the Operator changes the storage size, it updates the Custom Resource status as follows:
+
+* records the new size in the `currentSize` field
+* updates the `resizeCount` field.
+
+Run the `kubectl get psmdb -n namespace` to check the current cluster state.
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    storageAutoscaling:
+      mongod-data-my-cluster-name-rs0-0:
+        currentSize: 5123744Ki
+        lastResizeTime: "2026-01-23T15:08:59Z"
+        resizeCount: 2
+    ```
+
+#### Storage resizing with Volume Expansion capability
+
 To enable storage resizing via volume expansion, do the following:
 {.power-number}
 
-1. Set the [enableVolumeExpansion](operator.md#enablevolumeexpansion) Custom Resource option to `true` (it is turned off by default).
+1. Set the [storageScaling.enableVolumeScaling](operator.md#enablevolumescaling) Custom Resource option to `true` (it is turned off by default).
 2. Specify new storage size for the  `replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 options in the Custom Resource. 
@@ -103,7 +184,7 @@ options in the Custom Resource.
     kubectl apply -f cr.yaml
     ```
 
-The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running.. After the resize finishes, the Operator deletes this annotation.
+The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.
 
 #### Manual scaling without Volume Expansion capability
 
@@ -208,8 +289,13 @@ Here's how to resize the storage:
 
     The new PVC is going to be created along with the Pod.
 
-The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running.. After the resize finishes, the Operator deletes this annotation.
+The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.
 
+#### Storage resizing with an external autoscaler
+
+You can configure the Operator to use an external storage autoscaler instead of its own resizing logic. This ability may be useful for organizations needing centralized, advanced, or cross-application scaling policies.
+
+To use an external autoscaler, set the `spec.storageScaling.enableExternalAutoscaling` option to `true` in the Custom Resource manifest.
 
 ## Horizontal scaling
 
