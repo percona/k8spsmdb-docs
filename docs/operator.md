@@ -81,7 +81,7 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 ### `storageScaling.autoscaling.enabled`
 
-Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic stirage resizing](scaling.md#automatic-storage-resizing).
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling.md#automatic-storage-resizing).
 
 | Value type  | Example    |
 | ----------- | ---------- |
