@@ -10,7 +10,7 @@
 
     We recommend to update the PMM Server **before** the upgrade of PMM Client. If you haven't done it yet, exclude PMM Client from the list of images to update.
 
-    Starting with version 1.21.0, the Operator supports [cluster-level logging](debug-logs.md#cluster-level-logging). To update to version 1.21.0, exclude the `logcollector` from the list of images to update. 
+    Starting with version 1.21.0, the Operator supports [persistent logging](persistent-logging.md). To update to version 1.21.0, exclude the `logcollector` from the list of images to update. 
 
     Since this is a working cluster, the way to update the Custom Resource is to [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) with the `kubectl patch psmdb` command.
 

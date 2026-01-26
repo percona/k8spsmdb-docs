@@ -3267,7 +3267,7 @@ The `logcollector` section contains configuration options for [Fluent Bit Log Co
 
 ### `logcollector.enabled`
 
-Enables or disables [cluster-level logging with Fluent Bit](debug-logs.md#cluster-level-logging).
+Enables or disables [persistent logging with Fluent Bit](persistent-logging.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3288,6 +3288,30 @@ Additional configuration options (see [Fluent Bit official documentation :octico
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | |
+
+### `logcollector.logrotate.configuration`
+
+Overrides the default logrotate configuration used by the log collector sidecar container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
+### `logcollector.logrotate.extraConfig.name`
+
+References a ConfigMap or a Secret containing additional logrotate configuration. The key name must end with `.conf`. The `mongodb.conf` key name is reserved for the main configuration and is not allowed to use.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `logrotate-config` |
+
+### `logcollector.logrotate.schedule`
+
+Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"0 0 0 * * *"` |
 
 ### `logcollector.resources.requests.memory`
 

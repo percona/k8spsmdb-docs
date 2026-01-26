@@ -58,13 +58,13 @@ reported in [PBM-1605](https://perconadev.atlassian.net/browse/PBM-1605). The is
 
 ##  Improve operational resilience and observability with persistent cluster-level logging for MongoDB Pods
 
-Debugging distributed systems just got easier. The Percona Operator for MongoDB now supports cluster-level logging, ensuring that logs from your `mongod` instances are stored persistently, even across Pod restarts.
+Debugging distributed systems just got easier. The Percona Operator for MongoDB now supports persistent logging, ensuring that logs from your `mongod` instances are stored persistently, even across Pod restarts.
 
 Cluster-level logging is done with Fluent Bit, running as a sidecar container within each database Pods. 
 
 Currently, logs are collected only for the `mongod` instances. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are stored for 7 days and are rotated afterwards.
 
-Learn more about cluster-level logging in the [documentation](../debug-logs.md#cluster-level-logging)
+Learn more about persistent logging in the [documentation](../persistent-logging.md)
 
 ### Improved backup retention for streamlined management of scheduled backups in cloud storage
 
@@ -139,7 +139,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 
 ### New features
 
-* [K8SPSMDB-297](https://perconadev.atlassian.net/browse/K8SPSMDB-297): Added cluster-wide logging with the Fluent Bit log collector
+* [K8SPSMDB-297](https://perconadev.atlassian.net/browse/K8SPSMDB-297): Added persistent logging with the Fluent Bit log collector
 * [K8SPSMDB-1268](https://perconadev.atlassian.net/browse/K8SPSMDB-1268) - Added support for PMM v3.
 * [K8SPSMDB-723](https://perconadev.atlassian.net/browse/K8SPSMDB-723) - Added the ability to add hidden members to MongoDB replica sets for specialized purposes.
 
