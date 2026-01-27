@@ -1,8 +1,16 @@
 # Custom Resource options
 
-A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+The Operator uses Custom Resources (CRs) to manage the database cluster and related objects such as backups and restores. A CR defines the desired state of an object. The Operator reads the CR and reconciles that object to bring it to the state you define.
 
-To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+There are the following Custom Resources:
+
+* `PerconaServerMongoDB` contains options to configure Percona Server for MongoDB.
+* `PerconaServerMongoDBBackup` contains options for PBM to make backups.
+* `PerconaServerMongoDBRestore` contains options to restore Percona Server for MongoDB from backups.
+
+## PerconaServerMongoDB Custom Resource options
+
+To customize PerconaServerMongoDB Custom Resource, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
 
 This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
 
