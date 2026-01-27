@@ -974,6 +974,10 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
 ### `replsets.nonvoting.enabled`
 
 Enable or disable creation of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
@@ -2076,6 +2080,10 @@ Specifies whether Service for config servers [should route external traffic :oct
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
@@ -2556,6 +2564,9 @@ Specifies whether Service for the mongos instances [should route external traffi
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
 ### `sharding.mongos.hostAliases.ip`
 
