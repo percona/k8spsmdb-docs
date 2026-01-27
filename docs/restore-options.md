@@ -59,6 +59,15 @@ Specifies the list of namespaces to restore. The namespace has the format `<db.c
 | ----------- | ---------- |
 | :material-text-long: array     | `["db1.collection1", "db2.collection2"]` |
 
+## `replsetRemapping` 
+
+Defines mapping between source and target replica set names during a restore. This should be a dictionary where each key is the replica set name from the source cluster, and the corresponding value is the desired replica set name in the target cluster. Read more about [restores to the cluster with different replica set names](backups-restore-replset-remapping.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: array     | `sourceRs0: targetRs0` |
+
+
 ## The `pitr` subsection
 
 Controls how to make a point-in-time restore
