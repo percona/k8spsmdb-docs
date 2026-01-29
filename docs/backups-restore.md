@@ -32,6 +32,14 @@ You can specify the backup to restore from in two ways: using the `backupName` o
     * Logical restore in a sharded cluster causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
     * Physical and incremental restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
 
+## If a restore fails
+
+If a restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.
+
+The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.
+
+You can inspect restore logs by exec-ing into the `mongod` container and checking the PBM logs. PBM keeps only the latest restore logs because it cleans up the data directory during the process.
+
 --8<-- [start:backup-prepare]
 
 ## Before you begin
