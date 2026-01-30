@@ -179,10 +179,10 @@ URIs for external usage are specified as key-value pairs, where the key is an
 arbitrary name and the value is the actual URI. The URI may include a port
 number. If nothing is set, the default MongoDB port will be used.
 
+Starting with version 1.22.0, the Operator adds the DNS records defined in the `splitHorizons` subsection to the certificates it generates. 
+
 Split horizon has following limitations:
 
-* connecting with horizon domains is only supported if client connects using TLS
-    certificates, and these TLS certificates [need to be generated manually](tls-manual.md)
 * duplicating domain names in horizons is not allowed by MongoDB
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
