@@ -78,6 +78,7 @@ Use **Annotations** when:
 | `percona.com/ssl-hash` | Pods | Stores the hash of the most recent TLS configuration | 
 | `percona.com/ssl-internal-hash` | Pods | Stores the hash of the most recent TLS configuration for internal communication |
 | `percona.com/passwords-updated`| Secrets | Indicates when passwords were last updated in the Secret |
+| `kubectl.kubernetes.io/restartedAt` | PVC | Records the most recent timestamp when the associated resource was intentionally restarted. This annotation is typically used to trigger rolling restarts of StatefulSets, ensuring Pods or PVCs are refreshed according to Kubernetes best practices. | `2026-02-01T12:34:56Z` |
 
 ## Setting labels and annotations in the Custom Resource
 
