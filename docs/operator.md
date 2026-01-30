@@ -3197,9 +3197,9 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 
 ### `backup.tasks.keep`
 
-This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention`.
+This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention` subsection instead.
 
-The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  subsection instead.
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -18,14 +18,20 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
     * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
     * `storageName` - specify the name of your [already configured storage](backups-storage.md).
-    * `retention` - configure the retention policy: how many backups to keep in the storage This setting is optional. It applies to base incremental backups but is ignored for increments.
+    * `retention` - configure the retention policy: how many backups to keep in the storage. This setting is optional. It applies to base incremental backups but is ignored for increments. Read more about it in the [Configure retention](#configure-retention) section.
     * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a **logical** backup by default.
 
+## Configure retention
 
+Use the `backup.tasks.retention` subsection to configure the retention policy for backups. Specify the following parameters:
+
+* `backup.tasks.retention.type` - the retention strategy. The default is `count`.
+* `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Considerations](#considerations) for details on how this applies to incremental backups.
+* `backup.tasks.retention.deleteFromStorage` - delete backup files from storage as well. This option is supported only for AWS and Azure storage.
 
 **Examples**
 
-=== "Logical"    
+=== "Logical"
 
     This example shows how to set up backups to run every Saturday night and store them in Amazon S3:
 
@@ -53,8 +59,8 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
       ...
     ```
 
-=== "Physical"    
-    
+=== "Physical"
+
     This example shows how to set up backups to run every Saturday night and store them in Amazon S3:
 
     ```yaml
@@ -81,16 +87,16 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
       ...
     ```
 
-=== "Incremental"  
+=== "Incremental"
 
-    To run incremental backups, consider the following: 
+    To run incremental backups, consider the following:
 
     1. You must use the same storage for the base backup and subsequent incremental ones
-    2. The `percona.com/delete-backup` finalizer and the [` .spec.backup.tasks.[].keep`](operator.md#backuptaskskeep) option are is considered for incremental base backup but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
+    2. The `percona.com/delete-backup` finalizer and the [`backup.tasks.retention`](operator.md#backuptasksretentiontype) settings are considered for incremental base backups but are ignored for increments. This means that when a base backup is deleted, PBM deletes all increments that derive from it.
 
        There is the limitation that the Backup resource for the base incremental backup is deleted but the Backup resources for increments remain in the Operator. This is because the Operator doesn't control their deletion outsourcing this task to PBM. This limitation will be fixed in future releases.
 
-    This example shows how to set up incremental base backups to run every Sunday at 5 a.m and subsequent incremental backups every night at 1:00 a.m. and store them in Amazon S3:  
+    This example shows how to set up incremental base backups to run every Sunday at 5 a.m. and subsequent incremental backups every night at 1:00 a.m., and store them in Amazon S3:
 
     ```yaml
     ...
