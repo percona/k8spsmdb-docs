@@ -92,7 +92,6 @@ Common fields:
 | `paused` | The cluster is paused. |
 | `ready` | The cluster is up and healthy. |
 | `error` | The Operator detected an error; check conditions and events. |
-| `sharding` | Sharding changes are in progress. |
 
 ### Conditions 
 
