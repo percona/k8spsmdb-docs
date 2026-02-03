@@ -39,7 +39,7 @@ data:
 1. Create the Secret object with this file:
 
     ```bash
-    kubectl apply -f deploy/backup-secret-s3.yaml -n <namespace>
+    kubectl apply -f deploy/backup-s3.yaml -n <namespace>
     ```
 
 2. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
