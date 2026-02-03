@@ -3223,7 +3223,7 @@ Defines the number of backups to store. Older backups are automatically deleted 
 
 ### `backup.tasks.retention.deleteFromStorage`
 
-Defines if the backups are deleted from the cloud storage too. Supported only for AWS and Azure storage. 
+Defines if the backups are deleted from the cloud storage too. 
 
 | Value type  | Example    |
 | ----------- | ---------- |

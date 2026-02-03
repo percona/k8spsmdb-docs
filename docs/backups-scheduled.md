@@ -27,7 +27,7 @@ Use the `backup.tasks.retention` subsection to configure the retention policy fo
 
 * `backup.tasks.retention.type` - the retention strategy. The default (and currently only supported strategy) is `count`, which keeps the most recent `backup.tasks.retention.count` backups and removes older ones.
 * `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Considerations](#considerations) for details on how this applies to incremental backups.
-* `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well. This option is supported only for AWS and Azure storage.
+* `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well. 
 
 **Examples**
 
