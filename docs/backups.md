@@ -61,7 +61,7 @@ To restore the database from a physical backup, a `pbm-agent` requires the acces
 1. The Operator follows the same preparation steps as for a physical restore.
 2. It ensures that Pod 0 is the primary. If it is not, the Operator makes it primary and waits for it to report the `PRIMARY` status.
 3. PBM restores the backup and then applies oplog chunks to reach the target time.
-4. After the successful restore, the Operator recreates the StatefulSet with its regular configuration,
+4. After the successful restore, the Operator recreates the StatefulSet with its regular configuration.
 
 For hands-on steps, see [Restore the cluster from a previously saved backup](backups-restore.md).
 
