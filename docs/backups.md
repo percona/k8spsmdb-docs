@@ -53,7 +53,7 @@ To restore the database from a physical backup, a `pbm-agent` requires the acces
    
 2. The restore is made by the `pbm-agent` process running inside the `mongod` container.
 3. The `pbm-agent` wipes the `dbPath`, downloads the backup files from the storage, and copies the files into the data directory. It also applies oplog chunks from the backup snapshot to maintain data consistency.
-4. PBM triggers several restarts during the restore.
+4. During the restore, PBM restarts the `mongod` process several times as it switches between restore phases and starts `mongod` with the newly restored data files.
 5. After a successful restore, the Operator recreates the StatefulSet with the regular configuration so PBM runs as a sidecar again. All database Pods are terminated and recreated. The Operator also restarts arbiter nodes and `mongos` Pods.
 
 **Point-in-time recovery from a physical backup**
@@ -67,7 +67,7 @@ For hands-on steps, see [Restore the cluster from a previously saved backup](bac
 
 ### Backup retention
 
-Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. You can control how many backups to keep with the [backup.tasks.retention](operator.md#backuptasksretention) retention setting. For details, see [Configure retention policy](backups-scheduled#configure-retention-policy.md).
+Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. You can control how many backups to keep with the [backup.tasks.retention](operator.md#backuptasksretention) retention setting. For details, see [Configure retention policy](backups-delete.md#configure-retention-policy.md).
 
 ## Backup storage
 
