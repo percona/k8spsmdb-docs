@@ -1,8 +1,16 @@
 # Custom Resource options
 
-A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+The Operator uses Custom Resources (CRs) to manage the database cluster and related objects such as backups and restores. A CR defines the desired state of an object. The Operator reads the CR and reconciles that object to bring it to the state you define.
 
-To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+There are the following Custom Resources:
+
+* `PerconaServerMongoDB` contains options to configure Percona Server for MongoDB.
+* `PerconaServerMongoDBBackup` contains options for PBM to make backups.
+* `PerconaServerMongoDBRestore` contains options to restore Percona Server for MongoDB from backups.
+
+## PerconaServerMongoDB Custom Resource options
+
+To customize PerconaServerMongoDB Custom Resource, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
 
 This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
 
@@ -1182,6 +1190,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
 
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
+
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the non-voting nodes.
@@ -1390,6 +1406,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
 
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
+
 ### `replsets.hidden.volumeSpec.persistentVolumeClaim.accessModes`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the hidden nodes.
@@ -1581,6 +1605,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -2123,6 +2155,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -3197,9 +3237,9 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 
 ### `backup.tasks.keep`
 
-This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention`.
+This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention` subsection instead.
 
-The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  subsection instead.
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3223,7 +3263,7 @@ Defines the number of backups to store. Older backups are automatically deleted 
 
 ### `backup.tasks.retention.deleteFromStorage`
 
-Defines if the backups are deleted from the cloud storage too. Supported only for AWS and Azure storage. 
+Defines if the backups are deleted from the cloud storage too. 
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -297,6 +297,7 @@ nav:
           - "Custom Resource options": operator.md
           - backup-resource-options.md
           - restore-options.md
+          - "Custom resource statuses": cr-statuses.md
           - "Percona certified images": images.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md
