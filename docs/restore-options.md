@@ -31,6 +31,14 @@ Specifies the name of the MongoDB cluster to restore.
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster-name` |
 
+### `storageName`
+
+Specifies the name of the storage where a backup is located. The storage name must match the name in the `backup.storages` subsection of the `deploy/cr.yaml` file. Use this option together with the `backupSource` option. For more information on the flow and restore steps, see [Restore from a backup on a new cluster](backups-restore-to-new-cluster.md#approach-2-the-storage-is-defined-on-target)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `s3-us-west` |
+
 ### `backupName`
 
 Specifies the name of a backup to be used for a restore. This backup should be from the same cluster.
