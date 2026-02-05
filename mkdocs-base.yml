@@ -254,6 +254,7 @@ nav:
               - Restore from a backup: 
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
+                 - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
