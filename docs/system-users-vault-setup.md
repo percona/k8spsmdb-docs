@@ -26,7 +26,7 @@ Before you begin, ensure you have the following tools installed:
     export VAULT_HELM_VERSION="0.30.0"
     export SERVICE="vault"
     export CSR_NAME="vault-csr"
-    export SECRET_NAME_VAULT="vault-server-tls"
+    export SECRET_NAME_VAULT="vault-secret"
     export POLICY_NAME="operator"
     export WORKDIR="/tmp/vault"
     ```
@@ -47,9 +47,10 @@ Before you begin, ensure you have the following tools installed:
 
     * For Percona Server for MongoDB cluster:
 
-       ``bash
+       ```bash
        kubectl create namespace psmdb
        ```
+       
 
 ---8<--- "vault-generate-tls-certs.md"
 
@@ -72,17 +73,15 @@ Before you begin, ensure you have the following tools installed:
 Create a policy for accessing the kv engine path and define the required permissions in the `capabilities` parameter:
 
 ```bash
-kubectl -n "$NAMESPACE" exec vault-0 -- sh -c "
-  vault policy write $POLICY_NAME - <<EOF
-path "secret/psmdb/operator/*" {
-  capabilities = ["read"]
+kubectl -n "$NAMESPACE" exec vault-0 -- sh -c "vault policy write $POLICY_NAME - << 'EOF'
+path \"secret/psmdb/operator/*\" {
+  capabilities = [\"read\"]
 }
 
-path "secret/data/psmdb/operator/*" {
-  capabilities = ["read"]
+path \"secret/data/psmdb/operator/*\" {
+  capabilities = [\"read\"]
 }
-EOF
-"
+EOF"
 ```
 
 ### Configure authentication in Vault
@@ -196,9 +195,9 @@ The following steps guide you through the setup.
 
 1. Create a non-root token in Vault using the [access policy](#create-the-access-policy-for-the-operator) you created before:
 
-   ```bash
-   kubectl -n "${NAMESPACE}" exec pod/vault-0 -- vault token create -policy="operator" -format=json > "${WORKDIR}/vault-token.json"
-   ```
+    ```bash
+    kubectl -n "${NAMESPACE}" exec pod/vault-0 -- sh -c "vault token create -policy="operator" -format=json" > "${WORKDIR}/vault-token.json"
+    ```
 
 2. Export a token as an environment variable:
 
@@ -206,11 +205,11 @@ The following steps guide you through the setup.
     export NEW_TOKEN=$(jq -r '.auth.client_token' "${WORKDIR}/vault-token.json")
     ```
 
-3. Create a Kubernetes Secret with the token
+3. Create a Kubernetes Secret with the token for the namespace where Percona Server for MongoDB is deployed
 
     ```bash
     kubectl create secret generic vault-sync-secret \
-     --from-literal=token="$NEW_TOKEN" -n test
+     --from-literal=token="$NEW_TOKEN" -n $CLUSTER_NAMESPACE
     ```
 
     ??? example "Sample output"
@@ -227,52 +226,88 @@ The default path in Vault to store user passwords is `secret/data/psmdb/{role}/{
 * `{namespace}` is the namespace where Percona Server for MongoDB is deployed
 * `{name}` is the Percona Server for MongoDB cluster name as defined in the Custom Resource
 
-Here's how you can insert a single value to Vault:
+For testing purposes, let's insert the credentials from the sample `deploy/secrets.yaml` file in the JSON format.
 
-```bash
-kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv get -mount=secret psmdb/operator/test/my-cluster-name/users/databaseAdmin"
-```
+1. Create a file in JSON format:
 
-??? example "Sample output"
-
-    ```{.text .no-copy}
-    =========================== Secret Path ===========================
-    secret/data/psmdb/operator/test/my-cluster-name/users/databaseAdmin
-    ======= Metadata =======
-    Key                Value
-    ---                -----
-    created_time       2026-02-05T14:32:48.376356584Z
-    custom_metadata    <nil>
-    deletion_time      n/a
-    destroyed          false
-    version            2
+    ```bash
+    cat <<EOF | tee $WORKDIR/passwords.json
+    {
+        "MONGODB_USER_ADMIN_USER": "userAdmin",
+        "MONGODB_USER_ADMIN_PASSWORD": "strongPass",
+        "MONGODB_DATABASE_ADMIN_USER": "dbAdmin",
+        "MONGODB_DATABASE_ADMIN_PASSWORD": "strongPass",
+        "MONGODB_BACKUP_USER": "backup",
+        "MONGODB_BACKUP_PASSWORD": "strongPass",
+        "MONGODB_CLUSTER_ADMIN_USER": "clusterAdmin",
+        "MONGODB_CLUSTER_ADMIN_PASSWORD": "strongPass",
+        "MONGODB_CLUSTER_MONITOR_USER": "clusterMonitor",
+        "MONGODB_CLUSTER_MONITOR_PASSWORD": "strongPass"
+    }
+    EOF
     ```
 
-To verify the insertion, run:
+2. Copy the file to a folder inside the Vault Pod:
 
-```bash
-kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv get -mount=secret psmdb/operator/test/my-cluster-name/users/databaseAdmin"
-```
-
-??? example "Sample output"
-
-    ```{.text .no-copy}
-    =========================== Secret Path ===========================
-    secret/data/psmdb/operator/test/my-cluster-name/users/databaseAdmin
-    ======= Metadata =======
-    Key                Value
-    ---                -----
-    created_time       2026-02-05T14:32:48.376356584Z
-    custom_metadata    <nil>
-    deletion_time      n/a
-    destroyed          false
-    version            2
-
-    ====== Data ======
-    Key         Value
-    ---         -----
-    password    test-password
+    ```bash
+    kubectl cp $WORKDIR/passwords.json $NAMESPACE/vault-0:/tmp/passwords.json
     ```
+
+3. Upload the file in Vault:
+
+    ```bash
+    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv put -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users/ @/tmp/passwords.json"
+    ```
+
+    ??? example "Sample output"
+
+        ```{.text .no-copy}
+        =========================== Secret Path ===========================
+        secret/data/psmdb/operator/psmdb/my-cluster-name/users/databaseAdmin
+        ======= Metadata =======
+        Key                Value
+        ---                -----
+        created_time       2026-02-05T14:32:48.376356584Z
+        custom_metadata    <nil>
+        deletion_time      n/a
+        destroyed          false
+        version            1
+        ```
+
+3. Verify the insertion:
+
+    ```bash
+    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv get -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users/databaseAdmin"
+    ```
+
+    ??? example "Sample output"
+
+        ```{.text .no-copy}
+        =========================== Secret Path ===========================
+        secret/data/psmdb/operator/psmdb/my-cluster-name/users/databaseAdmin
+        ======= Metadata =======
+        Key                Value
+        ---                -----
+        created_time       2026-02-06T11:22:18.96780783Z
+        custom_metadata    <nil>
+        deletion_time      n/a
+        destroyed          false
+        version            2
+
+        ================== Data ==================
+        Key                                 Value
+        ---                                 -----
+        MONGODB_BACKUP_PASSWORD             strongPass
+        MONGODB_BACKUP_USER                 backup
+        MONGODB_CLUSTER_ADMIN_PASSWORD      strongPass
+        MONGODB_CLUSTER_ADMIN_USER          clusterAdmin
+        MONGODB_CLUSTER_MONITOR_PASSWORD    strongPass
+        MONGODB_CLUSTER_MONITOR_USER        clusterMonitor
+        MONGODB_DATABASE_ADMIN_PASSWORD     newStrongPass
+        MONGODB_DATABASE_ADMIN_USER         dbAdmin
+        MONGODB_USER_ADMIN_PASSWORD         strongPass
+        MONGODB_USER_ADMIN_USER             userAdmin
+        ```
 
 See the [Vault documentation](https://developer.hashicorp.com/vault/docs/commands/kv/put) for more usage examples of manipulating the data.
 
@@ -289,7 +324,7 @@ If you don't set the `tokenSecret`, the Operator authenticates to Vault over an 
 Create the Secret with the following command. Replace the token value with your token:
 
 ```bash
-kubectl create secret generic vault-secret --from-literal=token="hvs.Xu**********LHvD9PN" --from-file=ca.crt=$WORKDIR/vault.ca -n $CLUSTER_NAMESPACE
+kubectl create secret generic my-tls-vault-secret --from-file=ca.crt=$WORKDIR/vault.ca -n $CLUSTER_NAMESPACE
 ```
 
 ### Reference Vault configuration in the Custom Resource
@@ -314,7 +349,7 @@ Specify the following information:
         ```yaml
         spec:
           vault:
-            endpointUrl: http://vault.vault.svc.cluster.local:8200
+            endpointUrl: https://vault.vault.svc.cluster.local:8200
             tlsSecret: my-tls-vault-secret
             syncUsers:
               role: operator
@@ -327,7 +362,7 @@ Specify the following information:
         ```yaml
         spec:
           vault:
-            endpointUrl: http://vault.vault.svc.cluster.local:8200
+            endpointUrl: https://vault.vault.svc.cluster.local:8200
             tlsSecret: my-tls-vault-secret
             syncUsers:
               role: operator
@@ -336,4 +371,55 @@ Specify the following information:
               tokenSecret: vault-token-operator
         ```
 
-## Verify authentication in Percona Server for MongoDB
+## Authenticate in Percona Server for MongoDB to verify password management
+
+To verify that the Operator retrieves passwords from Vault, we'll do the following:
+
+* deploy a separate  `mongo` client Pod
+* authenticate in Percona Server for MongoDB with the current password
+* change the password in Vault
+* authenticate with the new password
+
+Here's how to do it:
+
+1. Get the user credentials from the Secret `<cluster-name>-secrets`. Run the following commands to retrieve the username and password for the database admin user:
+
+    ```bash
+    kubectl get secret my-cluster-name-secrets -n $CLUSTER_NAMESPACE -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_USER}' | base64 --decode | tr '\n' ' ' && echo " "
+    kubectl get secret my-cluster-name-secrets -n $CLUSTER_NAMESPACE -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 --decode | tr '\n' ' ' && echo " "
+    ```
+    
+2. Spin up a `mongo` client Pod:
+
+    ```bash
+    kubectl -n $CLUSTER_NAMESPACE run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    ```
+
+3. Inside the Pod, run the following command:
+
+    === "sharding is on"
+
+        ```
+        mongosh "mongodb://<databaseAdminUser>:<databaseAdminPassword>@my-cluster-name-mongos.<namespace>.svc.cluster.local/admin?ssl=false"
+        ```
+
+    === "sharding is off"
+
+        ```
+        mongosh  "mongodb://<databaseAdminUser>:<databaseAdminPassword>@my-cluster-name-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```
+
+        ??? example "Expected output"
+
+            ```{.text .no-copy}
+            .....
+            [direct: mongos] admin>
+            ```
+
+4. Update the password for the `MONGODB_DATABASE_ADMIN_PASSWORD` user:
+
+    ```bash
+    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv patch -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users MONGODB_DATABASE_ADMIN_PASSWORD="newStrongPass""
+    ```
+
+5. Repeat steps 2-3 and connect to Percona Server for MongoDB with this new password. As a result you should be successfully authenticated.
