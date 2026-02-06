@@ -55,6 +55,28 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
+### `enableVolumeExpansion`
+
+Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`  |  
+|
+This option is deprecated and will be removed in version 1.25.0. Use the 
+[`storageScaling.enableVolumeScaling`](#storagescalingenablevolumescaling) option instead.
+
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`    |
+
+This option is deprecated and will be removed in version 1.25.0. Use the
+[`storageScaling.enableExternalAutoscaling`](#storagescalingenableexternalautoscaling) option instead.
+
 ### `unmanaged`
 
 Setting it to `true` instructs the Operator to run the cluster in unmanaged state - the Operator does not form replica sets, and does not generate TLS certificates or user credentials. This can be useful for migration scenarios and for [cross-site replication](replication.md). 

@@ -12,7 +12,8 @@ Use this guidance if [storage resizing](scaling.md#scale-storage) does not behav
 
 ## Max size is not respected
 
-If PVCs keep scaling beyond the configured maximum, check namespace quotas. Quotas can block or alter the scaling process and may prevent the Operator from reconciling as expected.
+The Operator increases storage by the full `growthStep` value each time. If the current size plus `growthStep` exceeds the `maxSize` value, the final PVC size may end up larger than intended. Lower the `growthStep` value or adjust the `maxSize` so that it aligns with the step increments.
+
 
 ## Scaling doesn't happen despite it hasn't reached the maximum.
 
