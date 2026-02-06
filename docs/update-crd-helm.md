@@ -1,4 +1,4 @@
-# Upgrade the Operator and CRD via Helm
+# Upgrade the Operator and CRD with Helm
 
 If you have [installed the Operator using Helm](helm.md), you can upgrade the
 Operator with the `helm upgrade` command.
@@ -33,21 +33,7 @@ To update the CRDs you have the following options:
     export NAMESPACE=<namespace>
     ```
 
-3. Update the [Custom Resource Definition :octicons-link-external-16:](https://
-kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-    for the Operator.
-
-    === Update manually"
-
-        Update the Custom Resource Definition for the Operator, taking it from the official repository on Github.
-
-        Refer to the [compatibility between CRD and the Operator](#considerations-for-the-operator-upgrades) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
-
-        ```bash
-        kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml -n $NAMESPACE
-        ```
-
-        If you already have the latest CRD version in one of namespaces, don't re-run intermediate upgrades for it.
+3. Update the [Custom Resource Definition :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) for the Operator.
 
     === "Add the CRD chart (recommended)"
 
@@ -91,6 +77,19 @@ kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
                 --namespace $NAMESPACE \
                 --version {{ release }}
                 ```
+        
+    === "Update manually"
+
+        Update the Custom Resource Definition for the Operator, taking it from the official repository on Github.
+
+        Refer to the [compatibility between CRD and the Operator](#considerations-for-the-operator-upgrades) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
+
+        ```bash
+        kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml -n $NAMESPACE
+        ```
+
+        If you already have the latest CRD version in one of namespaces, don't re-run intermediate upgrades for it.
+
 
 4. Upgrade the Operator deployment
 
@@ -100,9 +99,6 @@ kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
 
         ```bash
         helm upgrade my-op percona/psmdb-operator --version {{ release }}
-        helm upgrade psmdb-operator-crds percona/psmdb-operator-crds \
-        --namespace $NAMESPACE \
-        --version {{ release }}
         ```
 
     === "With customized parameters"
@@ -119,13 +115,9 @@ kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
 
             ```bash
             helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
-            helm upgrade psmdb-operator-crds percona/psmdb-operator-crds \
-            --namespace $NAMESPACE \
-            --version {{ release }}
             ```
 
-    The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
-        which you have chosen for the Operator when installing its Helm chart.
+    The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts) which you have chosen for the Operator when installing its Helm chart.
 
     During the upgrade, you may see a warning to manually apply the CRD if it has the outdated version. In this case, refer to step 3 to upgrade the CRD and then step 4 to upgrade the deployment.
 
@@ -148,7 +140,7 @@ To add the CRD as a dependency, do the following:
 2. Upgrade operator with CRD dependency enabled:
 
     ```bash
-    helm upgrade my-operator percona/psmdb-operator \
+    helm upgrade my-op percona/psmdb-operator \
     --namespace $NAMESPACE \
     --version {{ release }} \
     --set crds.enabled=true
