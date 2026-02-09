@@ -12,8 +12,7 @@ Use this guidance if [storage resizing](scaling.md#scale-storage) does not behav
 
 ## Max size is not respected
 
-The Operator increases storage by the full `growthStep` value each time. If the current size plus `growthStep` exceeds the `maxSize` value, the final PVC size may end up larger than intended. Lower the `growthStep` value or adjust the `maxSize` so that it aligns with the step increments.
-
+The Operator always grows storage by the full `growthStep` value. If the current size plus `growthStep` exceeds the `maxSize` value, the Operator caps the resize at `maxSize` instead. To avoid large jumps or unexpected caps, either set the `growthStep` value to the increment you want the storage to resize or raise the `maxSize` limit.
 
 ## Scaling doesn't happen despite it hasn't reached the maximum.
 
