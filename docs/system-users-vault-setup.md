@@ -4,7 +4,7 @@ This document guides you through the configuration of the Operator and Vault for
 
 ## Assumptions
 
-1. This guide is provided as a best effort and builds upon procedures described in the official Vault documentation. Since Vault's setup steps may change in future releases, this document may become outdated; we cannot guarantee ongoing accuracy or responsibility for such changes. For the most up-to-date and reliable information, please always refer to [the official Vault documentation](https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls#expose-the-vault-service-and-retrieve-the-secret-via-the-api).
+1. This guide is provided as a best effort and builds upon procedures described in the official Vault documentation. Since Vault's setup steps may change in future releases, this document may become outdated; we cannot guarantee ongoing accuracy or responsibility for such changes. For the most up-to-date and reliable information, please always refer to [the official Vault documentation](https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls#kubernetes-minikube-tls).
 2. In the following sections we deploy the Vault server in High Availability (HA) mode on Kubernetes via Helm with TLS enabled. The HA setup uses Raft storage backend and consists of 3 replicas for redundancy. Using Helm is not mandatory. Any supported Vault deployment (on-premises, in the cloud, or a managed Vault service) works as long as the Operator can reach it.
 3. This guide uses Vault Helm chart version 0.30.0. You may want to change it to the required version by setting the `VAULT_HELM_VERSION` variable.
 
@@ -319,7 +319,7 @@ Now you must configure the Operator to communicate with Vault.
 
 You can specify what TLS certificate the Operator should use when it connects to Vault over TLS. To do that, you must create a Secret object with this data and reference it in the `tlsSecret` option in the Custom Resource.
 
-If you don't set the `tokenSecret`, the Operator authenticates to Vault over an unencrypted HTTP protocol. 
+If you don't set the `tlsSecret`, the Operator authenticates to Vault over an unencrypted HTTP protocol. 
 
 Create the Secret with the following command. Replace the token value with your token:
 
@@ -334,7 +334,7 @@ Now, configure Vault in the Custom Resource to make the Operator aware of it.
 Specify the following information:
 
 * `endpointURL`: Where your Vault server is running.
-* `tlsSecret` (optional): The Secret name that contains TLS certificates for accessing Vault via TLS. This is the Secret object you created at the previous step
+* `tlsSecret` (optional): The Secret name that contains TLS certificates for accessing Vault via TLS. This is the Secret object that you created at the previous step
 * Specify the Vault-related information for the `syncUsers` subsection:
 
    * `role`: The role you have created for the Operator in Vault
