@@ -51,7 +51,7 @@ Here's a sequence of steps to follow:
     which is created for the Operator when you install its Helm chart (use any
     name you like).
     
-    The `--set crds.enabled=true` flag adds the Helm chart for CRDs as a dependency to the main chart. This is done to enable automatic CRD updates during the [upgrade](update-operator.md).
+    The `--set crds.enabled=true` flag adds the Helm chart for CRDs as a dependency to the main chart. This is done to enable automatic CRD updates during the [upgrade](update-crd-helm.md).
 
     ??? example "Expected output"
 
