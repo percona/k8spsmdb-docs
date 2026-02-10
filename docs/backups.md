@@ -72,11 +72,13 @@ Each backup object has the `delete-backup` finalizer, so deleting the object als
 ## Backup storage
 
 You can store Percona Server for MongoDB backups outside the Kubernetes
-cluster using the following remote backup storages: 
+cluster using the following remote backup storages:
 
-* [Amazon S3 or S3-compatible storage  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Amazon_S3#S3_API_and_competing_services),
-* [MinIO :octicons-link-external-16:](https://min.io/) S3-compatible storage
-* [Azure Blob Storage  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/storage/blobs/)
+* [Amazon S3 storage](backups-storage-s3.md)
+* [Google Cloud storage](backups-storage-gcp.md)
+* [MinIO and S3-compatible storages](backups-storage-minio.md)
+* [Microsoft Azure Blob storage](backups-storage-azure.md)
+* [Remote file server](backups-storage-filesystem.md)
 
 ![image](assets/images/backup-cloud.svg)
 
