@@ -424,7 +424,7 @@ The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses the
 
 ### `vault.syncUsers.role`
 
-The Vault Kubernetes auth role name. This option is required.
+The Vault Kubernetes auth role name. 
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -432,11 +432,19 @@ The Vault Kubernetes auth role name. This option is required.
 
 ### `vault.syncUsers.mountPath`
 
-The Vault path where system user credentials are stored. This option is required. 
+The root path where a specific secrets engine is enabled inside Vault.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `secret/data/psmdb/operator/{namespace}/my-cluster-name/users` |
+| :material-code-string: string     | `secret` |
+
+### `vault.syncUsers.keyPath`
+
+The Vault path where system user credentials are stored. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `psmdb/operator/{namespace}/my-cluster-name/users` |
 
 ### `vault.syncUsers.tokenSecret`
 
