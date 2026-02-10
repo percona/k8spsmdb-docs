@@ -1,0 +1,23 @@
+# Persistent logging
+
+In a distributed Kubernetes environment, it's often difficult to debug issues because logs are tied to the lifecycle of individual Pods and containers. If a Pod fails and restarts, its logs are lost, making it hard to identify the root cause of an issue.
+
+Percona Operator for MongoDB addresses this challenge with **persistent logging**, ensuring logs are stored persistently, independent of the Pods. This approach helps ensure that logs are available for review even after a Pod restarts.
+
+The Operator uses [Fluent Bit :octicons-link-external-16:](https://fluentbit.io/), a lightweight log processor with versatile output plugins and forwarding features, to collect logs. Fluent Bit runs as a `logs` sidecar container alongside each database Pod. It gathers logs from the `mongod` container, adds metadata, and saves them in a single file called `mongod.full.log` in the `/data/db/` directory within the Pod’s Persistent Volume Claim (PVC). As a result, logs persist across Pod restarts and remain available for later debugging.
+
+Logs are also streamed to standard output, making them accessible via the `kubectl logs` command for quick troubleshooting:
+
+```bash
+kubectl logs my-cluster-name-rs0-0 -c logs
+```
+
+Currently, logs are collected only for the `mongod` instances running in the config server and replica set Pods. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are rotated daily, stored for 7 days and are deleted afterwards.
+
+## Configure log collector
+
+Cluster-level logging is enabled by default and is controlled with the `logcollector.enabled` key in the `deploy/cr.yaml` Custom Resource manifest.
+
+You can additionally configure Fluent Bit using the `logcollector.configuration` subsection in the `deploy/cr.yaml` Custom Resource manifest. This allows you to define custom filters or output plugins to suit your specific logging and monitoring needs.
+
+Note that when you add a new configuration to the `logcollector.configuration`, this triggers a Smart Update.

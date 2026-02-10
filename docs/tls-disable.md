@@ -137,3 +137,7 @@ To re-enable TLS protocol for a running cluster, follow these steps:
     ```
 
 8. Wait for the cluster to be resumed. Check the status with the `kubectl get psmdb` command.
+
+!!! note
+
+    If you also need to disable authentication in addition to TLS, see [Disable authentication](auth-disable.md). Note that TLS must be disabled before you can disable authentication.
