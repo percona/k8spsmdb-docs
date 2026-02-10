@@ -5,14 +5,12 @@
 
 ## What's new at a glance
 
-* [Deprecated support for Percona Server for MongoDB 6.0](#deprecated-support-for-percona-server-for-mongodb-60)
-
 ### Backup and restore
 
 * [Restore into clusters with different replica set names using remapping](#restore-to-a-cluster-with-different-replica-set-names)
-* [Configure a longer PBM startup deadline to prevent false backup failures](#configurable-deadline-for-pbm-to-start-backups)
-* [Use native MinIO support for S3-compatible storage](#native-minio-support-as-a-backup-storage)
-* [Verify TLS for S3 storage with your own CA certificates (MinIO type)](#use-your-own-ca-certificates-for-tls-verification-with-custom-s3-storage)
+* [Configure a longer PBM startup timeout to prevent false backup failures](#configurable-timeout-for-pbm-to-start-backups)
+* [Use the `minio` storage type for backups to S3-compatible storage services](#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages)
+* [Verify TLS communication for a S3-compatible storage with a private CA certificates](#use-private-certificate-authorities-for-tls-communication-with-s3-compatible-storage-services)
 * [Track PBM readiness via the new `PBMReady` status condition](#cluster-readiness-now-reflects-pbm-state)
 
 ### Operations
@@ -30,12 +28,6 @@
 * [Integrate with HashCorp Vault for system users management](#)
 
 ## Release Highlights
-
-### Deprecated support for Percona Server for MongoDB 6.0
-
-The Operator deprecates the support of Percona Server for MongoDB 6.0 as this major version entered end-of-life stage. You can still run Percona Server for MongoDB 6.0 in the Operator and existing functionality remains compatible. However, we will no longer test new features and improvements against this version.
-
-Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.23.0. 
 
 ### Ensure smooth integration with service meshes
 
@@ -128,22 +120,22 @@ You can configure log rotation in these ways:
 
 See our [documentation](../logrotate.md) for step-by-step instructions for each option.
 
-### Configurable deadline for PBM to start backups
+### Configurable timeout for PBM to start backups
 
 You can now configure how long the Operator waits for PBM to report that a backup has begun. Instead of relying on a fixed timeout of 120 seconds, you can tune this value to match your cluster's performance characteristics.
 
-This deadline is controlled by the `startingDeadlineSeconds` option in the Custom Resource.
+This timeout is controlled by the `startingDeadlineSeconds` option in the Custom Resource.
 
 With this improvement, you:
 
-* Reduce false backup failures when PBM starts slowly under load
-* Give PBM enough time to start in environments with limited CPU or memory
+* Eliminate false backup failures when PBM starts slowly under load
+* Give PBM enough time to start in environments with insufficient CPU or memory
 * Get more predictable backup flows where PBM and the Operator stay in sync
-* Reduce the risk of OOM errors during backups
+* Enable reliable backups in large or memory-intensive clusters. Increasing both memory resources and the PBM startup timeout ensures PBM has enough resources and time to initialize.
 
-### Native MinIO support as a backup storage
+### Support of the `minio` storage type for backups to S3-compatible storages
 
-The Operator now includes native support for MinIO and other S3-compatible storage services through the MinIO Go client. It also adds the `minio` storage type, aligning with recent PBM changes. This addition helps avoid connectivity and compatibility issues when S3-compatible services don't support Signature Version 4 (SigV4) used in AWS SDK v2.
+The Operator now adds the `minio` storage type, aligning with [recent PBM changes](https://docs.percona.com/percona-backup-mongodb/release-notes/2.12.0.html#native-minio-support-in-pbm). The use of the `minio` storage type instructs PBM to use the native MinIO SDK to interact with MinIO and other S3-compatible storage services. This addition helps avoid connectivity and compatibility issues when S3-compatible services don't support Signature Version 4 (SigV4) used in AWS SDK v2.
 
 If your S3-compatible storage shows connectivity issues or depends on older signing mechanisms, consider switching to the `minio` storage type.
 
@@ -164,11 +156,11 @@ minio:
  
 The use of the `minio` storage type offers a more stable and straightforward configuration for custom S3 storage services. It also keeps your Operator setup aligned with PBM's current behavior.
 
-### Use your own CA certificates for TLS verification with custom S3 storage
+### Use Private Certificate Authorities (CA) for TLS communication with S3-compatible storage services
 
-You can now use your organization’s custom Certificate Authority (CA) to securely verify TLS communication with S3 storage during backups and restores.
+You can now provide a Private Certificate Authority (CA) bundle to verify TLS communication with an S3-compatible storage service. This is essential for organizations utilizing internal PKI to secure backup and restore traffic.
 
-The configuration is straightforward: create the Secret that stores your custom CA and certificates to authorize in the S3 storage. Then reference this Secret and specify the CA certificate in the `caBundle` option in the Custom Resource. The Operator will verify TLS communication against it.
+The configuration is straightforward: create the Secret that stores your private CA and certificates to authorize in the S3-compatible storage. Then reference this Secret and specify the CA certificate in the `caBundle` option in the Custom Resource. The Operator will verify TLS communication against it.
 
 Note that you must use the `minio` storage type for your S3-compatible storage services. Read more about this storage type in the [Native MinIO support as a backup storage](#native-minio-support-as-a-backup-storage) section.
 
@@ -185,7 +177,7 @@ backup:
            key: ca.crt
 ```
 
-You can specify several storages and use custom CA certificates with each. In this case, the Operator merges the certificates into a single file, which is used for secure communication with the respective storage.
+You can specify several storages and use private CA certificates with each. In this case, the Operator merges the certificates into a single file, which is used for secure communication with the respective storage.
 
 With this improvement, you ensure the following:
 
@@ -193,7 +185,7 @@ With this improvement, you ensure the following:
 * Alignment with your internal standards – use the CA your company already trusts.
 * Confidence in backup and restore flows – every S3 interaction is properly verified.
 
-Read more about the use of own CA certificates in our [documentation](../backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage).
+Read more about the use of private CA certificates in our [documentation](../backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage).
 
 ### Hook Script support
 
@@ -273,6 +265,12 @@ Learn more about the workflow and the setup in our [documentation](../system-use
 
 ## Deprecation, rename and removal
 
+### Deprecated support for Percona Server for MongoDB 6.0
+
+The Operator deprecates the support of Percona Server for MongoDB 6.0 as this major version entered end-of-life stage. You can still run Percona Server for MongoDB 6.0 in the Operator and existing functionality remains compatible. However, we will no longer test new features and improvements against this version.
+
+Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.23.0.
+
 **Deprecated (will be removed in 1.25.0):**
 
 * The `spec.enableVolumeExpansion` option is deprecated. It remains working for backward compatibility but it will be removed in version 1.25.0. Use the `enableVolumeScaling` option under the `spec.storageScaling` subsection instead.
@@ -282,7 +280,7 @@ Learn more about the workflow and the setup in our [documentation](../system-use
 
 ## CRD Changes
 
-* The `.spec.startingDeadlineSeconds` option has now a minimum value of 1 and the default value of 120
+* The `.spec.startingDeadlineSeconds` option has now a minimum value of `1` and the default value of `120`
 
 ## Changelog
 
