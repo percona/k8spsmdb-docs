@@ -588,6 +588,38 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 | ----------- | ---------- |
 | :material-text-long: subdoc     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
 
+### `replsets.env.name`
+
+The name of a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `replsets.env.value`
+
+The vallue for a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `replsets.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `replsets.envFrom.secretRef.name`
+
+The name of a Sexcret object from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `custom-secret` |
+
 ### `replsets.affinity.antiAffinityTopologyKey`
 
 The [Kubernetes topologyKey  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes.
@@ -1974,6 +2006,38 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 
+### `sharding.configsvrReplSet.env.name`
+
+The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `sharding.configsvrReplSet.env.value`
+
+The value of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `sharding.configsvrReplSet.envFrom.ConfigMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `sharding.configsvrReplSet.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-secret` |
+
 ### `sharding.configsvrReplSet.livenessProbe.failureThreshold`
 
 Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
@@ -2418,6 +2482,38 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
+
+### `sharding.mongos.env.name`
+
+The name of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `sharding.mongos.env.value`
+
+The value of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `sharding.mongos.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `sharding.mongos.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-secret` |
 
 ### `sharding.mongos.affinity.antiAffinityTopologyKey`
 
@@ -3507,6 +3603,37 @@ Additional configuration options (see [Fluent Bit official documentation :octico
 | ----------- | ---------- |
 | :material-text-long: subdoc     | |
 
+### `logcollector.env.name`
+
+The name of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `logcollector.env.value`
+
+The value of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `logcollector.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-configmap` |
+
+### `logcollector.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-secret` |
 ### `logcollector.logrotate.configuration`
 
 Overrides the default logrotate configuration used by the log collector sidecar container.
