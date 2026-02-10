@@ -111,3 +111,7 @@ kubectl describe pods my-cluster-name-rs0-0
 
 This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.
+
+## Check logs
+
+Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won't see in Pod status alone. See the [Check logs](debug-logs.md) section for more information about logs and how to check them.

@@ -1,8 +1,16 @@
 # Custom Resource options
 
-A Custom Resource (CR) is how you configure the Operator to manage Percona Server for MongoDB. It defines a custom resource of type `PerconaServerMongoDB`. 
+The Operator uses Custom Resources (CRs) to manage the database cluster and related objects such as backups and restores. A CR defines the desired state of an object. The Operator reads the CR and reconciles that object to bring it to the state you define.
 
-To customize it, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
+There are the following Custom Resources:
+
+* `PerconaServerMongoDB` contains options to configure Percona Server for MongoDB.
+* `PerconaServerMongoDBBackup` contains options for PBM to make backups.
+* `PerconaServerMongoDBRestore` contains options to restore Percona Server for MongoDB from backups.
+
+## PerconaServerMongoDB Custom Resource options
+
+To customize PerconaServerMongoDB Custom Resource, edit the `spec` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml).
 
 This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
 
@@ -55,6 +63,28 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
+### `enableVolumeExpansion`
+
+Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`  |  
+|
+This option is deprecated and will be removed in version 1.25.0. Use the 
+[`storageScaling.enableVolumeScaling`](#storagescalingenablevolumescaling) option instead.
+
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`    |
+
+This option is deprecated and will be removed in version 1.25.0. Use the
+[`storageScaling.enableExternalAutoscaling`](#storagescalingenableexternalautoscaling) option instead.
+
 ### `unmanaged`
 
 Setting it to `true` instructs the Operator to run the cluster in unmanaged state - the Operator does not form replica sets, and does not generate TLS certificates or user credentials. This can be useful for migration scenarios and for [cross-site replication](replication.md). 
@@ -63,7 +93,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
-### `enableVolumeExpansion`
+### `storageScaling.enableVolumeScaling`
 
 Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
@@ -71,13 +101,45 @@ Enables or disables [storage scaling / volume expansion](scaling.md#storage-resi
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
 
-### `enableExternalVolumeAutoscaling`
+### `storageScaling.enableExternalAutoscaling`
 
 Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling.md#storage-resizing-with-volume-expansion-capability)
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.enabled`
+
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling.md#automatic-storage-resizing).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.triggerThresholdPercent`
+
+The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `80`        |
+
+### `storageScaling.autoscaling.growthStep`
+
+The amount to increase the storage during automatic resizing. Default value is 2Gi
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `2Gi`        |
+
+### `storageScaling.autoscaling.maxSize`
+
+The maximum size to which storage can be automatically resized.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `10Gi`        |
 
 ### `crVersion`
 
@@ -814,6 +876,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
 
+### `replsets.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.hookScript.script`
+
+The inline hook script that you can apply to the replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `replsets.sidecars.image`
 
 Image for the [custom sidecar container](sidecar.md) for Replica Set Pods.
@@ -1006,6 +1084,10 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
 ### `replsets.nonvoting.enabled`
 
 Enable or disable creation of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
@@ -1093,6 +1175,23 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
+
+### `replsets.nonvoting.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.nonvoting.hookScript.script`
+
+The inline hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 
 ### `replsets.nonvoting.annotations`
 
@@ -1214,6 +1313,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
 
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
+
 ### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the non-voting nodes.
@@ -1317,6 +1424,22 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
+
+### `replsets.hidden.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.hidden. hookScript.script`
+
+The inline hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `replsets.hidden.annotations`
 
@@ -1422,6 +1545,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
 
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
+
 ### `replsets.hidden.volumeSpec.persistentVolumeClaim.accessModes`
 
 The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the hidden nodes.
@@ -1509,6 +1640,22 @@ The [Kuberentes Pod priority class  :octicons-link-external-16:](https://kuberne
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `high priority` |
+
+### `replsets.arbiter.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `replsets.arbiter.hookScript.script`
+
+The inline hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `replsets.arbiter.annotations`
 
@@ -1613,6 +1760,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
 
 ### `replsets.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -1987,6 +2142,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
 
+### `sharding.configsvrReplSet.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `sharding.configsvrReplSet.hookScript.script`
+
+The inline hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `sharding.configsvrReplSet.sidecars.image`
 
 Image for the [custom sidecar container](sidecar.md) for Config Server Pods.
@@ -2140,6 +2311,10 @@ Specifies whether Service for config servers [should route external traffic :oct
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
@@ -2187,6 +2362,14 @@ The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.i
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `standard` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
 
 ### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes`
 
@@ -2516,6 +2699,22 @@ Name of the [Kubernetes Runtime Class  :octicons-link-external-16:](https://kube
 | ----------- | ---------- |
 | :material-code-string: string     | `image-rc` |
 
+### `sharding.mongos.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `sharding.mongos.hookScript.script`
+
+The inline hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
 ### `sharding.mongos.sidecars.image`
 
 Image for the [custom sidecar container](sidecar.md) for mongos Pods.
@@ -2652,6 +2851,9 @@ Specifies whether Service for the mongos instances [should route external traffi
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
 ### `sharding.mongos.hostAliases.ip`
 
@@ -2831,6 +3033,22 @@ You can override this setting for a specific backup in the `deploy/backup/backup
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int     | `300` |
+
+### `backup.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `pbm-agent` container before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `hookscript-configmap` |
+
+### `backup.hookScript.script`
+
+The inline hook script that you can apply to tthe `pbm-agent` container before the main process.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
 
 ### `backup.serviceAccountName`
 
@@ -3293,9 +3511,9 @@ The scheduled time to make a backup, specified in the [crontab format  :octicons
 
 ### `backup.tasks.keep`
 
-This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention`.
+This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention` subsection instead.
 
-The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  subsection instead.
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.  
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3319,7 +3537,7 @@ Defines the number of backups to store. Older backups are automatically deleted 
 
 ### `backup.tasks.retention.deleteFromStorage`
 
-Defines if the backups are deleted from the cloud storage too. Supported only for AWS and Azure storage. 
+Defines if the backups are deleted from the cloud storage too. 
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3363,7 +3581,7 @@ The `logcollector` section contains configuration options for [Fluent Bit Log Co
 
 ### `logcollector.enabled`
 
-Enables or disables [cluster-level logging with Fluent Bit](debug-logs.md#cluster-level-logging).
+Enables or disables [persistent logging with Fluent Bit](persistent-logging.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3416,6 +3634,29 @@ The name of a Secret from where environment variables will be loaded for the log
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-secret` |
+### `logcollector.logrotate.configuration`
+
+Overrides the default logrotate configuration used by the log collector sidecar container.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
+### `logcollector.logrotate.extraConfig.name`
+
+References a ConfigMap or a Secret containing additional logrotate configuration. The key name must end with `.conf`. The `mongodb.conf` key name is reserved for the main configuration and is not allowed to use.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `logrotate-config` |
+
+### `logcollector.logrotate.schedule`
+
+Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"0 0 0 * * *"` |
 
 ### `logcollector.resources.requests.memory`
 

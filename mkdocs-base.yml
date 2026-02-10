@@ -218,8 +218,10 @@ nav:
 
     - Configuration:
           - "Application and system users": users.md
+          - "Disable authentication": auth-disable.md
           - "Changing MongoDB options": options.md
           - options-pbm.md
+          - hookscript.md
           - "Anti-affinity and tolerations": constraints.md
           - "Labels and annotations": annotations.md
           - "Exposing the cluster": expose.md
@@ -238,6 +240,9 @@ nav:
           - "Cluster component environment variables": env-vars-cluster.md
           - "Define custom environment variables": env-vars-custom.md
           - reconciliation-concurrency.md
+          - Logging:
+            - "Persistent logging": persistent-logging.md
+            - "Log rotation": logrotate.md
           
     - Management:
           - Backup and restore:
@@ -252,6 +257,7 @@ nav:
               - Restore from a backup: 
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
+                 - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
@@ -279,6 +285,7 @@ nav:
           - "Exec into the container": debug-shell.md
           - "Check the logs": debug-logs.md
           - "Special debug images": debug-images.md
+          - "Storage resizing": debug-storage.md
 
     - HOWTOs:
           - Install the database with customized parameters: custom-install.md 
@@ -296,6 +303,7 @@ nav:
           - "Custom Resource options": operator.md
           - backup-resource-options.md
           - restore-options.md
+          - "Custom resource statuses": cr-statuses.md
           - "Percona certified images": images.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md

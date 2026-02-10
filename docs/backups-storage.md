@@ -4,12 +4,7 @@ You can configure storage for backups in the `backup.storages` subsection of the
 Custom Resource, using the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 configuration file.
 
-!!! warning 
-
-    Remote storage for backups has the **technical preview status**.
-
-You should also create the [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials needed
-to access the storage.
+Before configuring the storage, you need to create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object that contains the credentials needed to access your storage.
 
 ## Amazon S3 or S3-compatible storage
 
