@@ -103,7 +103,7 @@ If you are still running into issues, check with your Kubernetes cluster adminis
 2. Check the status of the database cluster
 
     ```bash
-    kubectl get pg <database-cluster-name>
+    kubectl get psmdb <database-cluster-name>
     ```  
     
     The cluster should typically be in the `Running` state. It may briefly enter the `initializing` state while reconciling changes. If the cluster remains in the `initializing` state for an extended period, investigate further to identify any underlying issues.
