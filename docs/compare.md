@@ -46,7 +46,7 @@ The next comparison is focused on replica sets, arbiters, sharding and other nod
 | Sharding          | Yes                          | Yes, another chart | Yes                | No                                | Yes                               |
 | Arbiter           | Yes                          | Yes                | Yes                | Yes                               | Yes                               |
 | Non-voting nodes  | Yes                          | No                 | No                 | No                                | Yes                               |
-| Hidden nodes      | No                           | Yes                | Yes                | Yes                               | Yes                               |
+| Hidden nodes      | Yes                           | Yes                | Yes                | Yes                               | Yes                               |
 | Network exposure  | Yes                          | Yes                | Manual             | No                                | Yes                               |
 | Split Horizon     | Yes                          | No                 | No                 | Yes                               | Yes                               |
 
@@ -57,7 +57,7 @@ Here are the backup and restore capabilities of each solution.
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Community Operator        | MongoDB Enterprise Operator       |
 |:------------------|:-----------------------------|:-------------------|:-------------------|:----------------------------------|:----------------------------------|
 | Scheduled backups | Yes                          | No                 | Enterprise only    | No                                | Yes                               |
-| Incremental backups | No                         | No                 | Enterprise only    | No                                | No                                |
+| Incremental backups | Yes                         | No                 | Enterprise only    | No                                | No                                |
 | Point-in-time recovery | Yes                     | No                 | No                 | No                                | Yes                               |
 | Logical backups | Yes                            | No                 | No                 | No                                | Yes                               |
 | Physical backups | Yes                           | No                 | No                 | No                                | Yes                               |

@@ -4,6 +4,7 @@ You can restore from a backup as follows:
 
 * On the same cluster where you made a backup
 * On [a new cluster deployed in a different Kubernetes-based environment](backups-restore-to-new-cluster.md).
+* On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
 
 This document focuses on the restore to the same cluster.
 
@@ -25,12 +26,12 @@ You can specify the backup to restore from in two ways: using the `backupName` o
 
 ## Considerations
 
-1. Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) **to prevent MongoDB clients from accessing the database when the restore is in progress**.
+1. Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) to prevent MongoDB clients from accessing the database when the restore is in progress.
 2. During the restore, the Operator may delete and recreate Pods. This may cause downtime. The downtime duration depends on the restore type and the database deployment:
 
-    * Logical restore in an unsharded cluster results causes downtime for the duration of the data restore. No Pods are deleted or recreated
-    * Logical restore in a sharded cluster causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
-    * Physical and incremental restore causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
+    * *Logical restore in an unsharded cluster* results causes downtime for the duration of the data restore. No Pods are deleted or recreated
+    * *Logical restore in a sharded cluster* causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
+    * *Physical and incremental restore* causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
 
 --8<-- [start:backup-prepare]
 
@@ -104,6 +105,14 @@ Pass this configuration to the Operator:
       backupName: backup1
     EOF -n $NAMESPACE
     ```
+
+### If a physical restore fails
+
+If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.
+
+The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.
+
+You can inspect restore logs by executing into the `mongod` container and checking the PBM logs. PBM keeps only the latest restore logs because it cleans up the data directory during the process.
 
 ## Make a point-in-time recovery
 
