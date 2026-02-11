@@ -321,7 +321,7 @@ You can specify what TLS certificate the Operator should use when it connects to
 
 If you don't set the `tlsSecret`, the Operator authenticates to Vault over an unencrypted HTTP protocol. 
 
-Create the Secret with the following command. Replace the token value with your token:
+Create the Secret with the following command. Specify the path to your TLS certificate:
 
 ```bash
 kubectl create secret generic my-tls-vault-secret --from-file=ca.crt=$WORKDIR/vault.ca -n $CLUSTER_NAMESPACE
