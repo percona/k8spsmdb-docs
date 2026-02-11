@@ -1,6 +1,6 @@
 # Percona Operator troubleshooting
 
-This section provides information on how to troubleshoot issues when you install Percona Operator for PostgreSQL.
+This section provides information on how to troubleshoot issues when you install Percona Operator for MongoDB.
 
 Make sure you have CLI tool `kubectl` installed to interact with Kubernetes API.
 
@@ -56,7 +56,7 @@ If you are still running into issues, check with your Kubernetes cluster adminis
 
 2. Installing the Operator requires specific privileges, such as the ability to create custom resource definitions and other Kubernetes objects.
 
-    To verify that you have the necessary privileges, run the following script:
+    To verify that you have the necessary privileges, download and run the following script:
 
     ```bash
     bash <(curl -s https://gist.githubusercontent.com/cshiv/6048bdd0174275b48f633549c69d0844/raw/fd547b783a30b827362ee9f9ec03436f9bc79524/check_priviliges.sh)
@@ -75,7 +75,7 @@ If you are still running into issues, check with your Kubernetes cluster adminis
         https://docs.percona.com/percona-operator-for-postgresql/index.html
         ------------------------------------------------------------------------------------------
         GOOD TO INSTALL: Percona Operator for MySQL based on Percona XtraDB Cluster
-        https://docs.percona.com/percona-operator-for-postgresql/index.html
+        https://docs.percona.com/percona-operator-for-mysql/pxc/index.html
         ------------------------------------------------------------------------------------------
         GOOD TO INSTALL: Percona Operator for MongoDB
         https://docs.percona.com/percona-operator-for-mongodb/index.html
