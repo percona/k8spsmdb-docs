@@ -6,7 +6,7 @@ However, the database state also depends on the state of the Kubernetes cluster 
 
 This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/reference/index.html) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
 
-The Operator is compatible with both PMM versions 2 and 3. PMM2 has reached end-of0life. Therefore, we recommend using the latest PMM version 3 for optimal monitoring capabilities.
+The Operator is compatible with both PMM versions 2 and 3. PMM2 has reached end-of-life. Therefore, we recommend using the latest PMM version 3 for optimal monitoring capabilities.
 
 The steps in this tutorial are for PMM 3.
 
