@@ -255,7 +255,7 @@ To remove Victoria metrics Kubernetes stack used for Kubernetes cluster monitori
     Replace the `<NAMESPACE>` placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: 
 
     ```bash
-    curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh --namespace <NAMESPACE>
+    bash <(curl -fsL https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/{{k8s_monitor_tag}}/vm-operator-k8s-stack/cleanup.sh) --namespace <NAMESPACE>
     ```
 
 === ":material-file-outline: Keep CRDs"
@@ -277,6 +277,6 @@ The output should provide the empty list.
 If you face any issues with the removal, uninstall the stack manually:
 
 ```bash
-helm uninstall vm-k8s-stack -n < namespace> 
+helm uninstall vm-k8s-stack -n <namespace> 
 ```
 
