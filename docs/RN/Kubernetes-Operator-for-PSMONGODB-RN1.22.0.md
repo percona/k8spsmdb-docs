@@ -271,10 +271,18 @@ The Operator deprecates the support of Percona Server for MongoDB 6.0 as this ma
 
 Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.23.0.
 
-**Deprecated (will be removed in 1.25.0):**
+### Deprecated support for PMM2 
 
-* The `spec.enableVolumeExpansion` option is deprecated. It remains working for backward compatibility but it will be removed in version 1.25.0. Use the `enableVolumeScaling` option under the `spec.storageScaling` subsection instead.
-* The `spec.enableExternalVolumeAutoscaling` option is deprecated. It remains working for backward compatibility but it will be removed in version 1.25.0. Use the `enableExternalAutoscaling` option under the `spec.storageScaling` subsection instead.
+The Operator deprecates support for PMM2 as this version entered end-of-life stage. PMM2 remains available so you can still monitor the health of your database using this version. However, we encourage you to plan migration to PMM3 to enjoy all features and fixes that this version provides. See the [PMM upgrade :octicons--link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html) documentation for steps.
+
+The support for PMM2 will be dropped in the Operator in two releases. 
+
+### Deprecated options
+
+These options are deprecated and will be removed in version 1.25.0:
+
+* `spec.enableVolumeExpansion`. This option remains working for backward compatibility but it will be removed in version 1.25.0. Use the `enableVolumeScaling` option under the `spec.storageScaling` subsection instead.
+* `spec.enableExternalVolumeAutoscaling`. This option remains working for backward compatibility but it will be removed in version 1.25.0. Use the `enableExternalAutoscaling` option under the `spec.storageScaling` subsection instead.
 
    After the upgrade, reconfigure your Custom Resource to use the new structure.
 
