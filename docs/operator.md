@@ -456,6 +456,59 @@ Specifies a secret object for [LDAP over TLS](ldap.md#using-ldap-over-tls-connec
 | ----------- | ---------- |
 | :material-code-string: string     | `my-ldap-secret` |
 
+## <a name="operator-vault-section"></a>Vault section
+
+The Vault section defines how the Operator connects to HashiCorp Vault to sync system user credentials. Read more about this feature in [Manage system users with Vault](system-users-vault.md)
+
+### `vault.endpointUrl`
+
+The Vault server address.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `https://vault-service:8200` |
+
+### `vault.tlsSecret`
+
+The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses these certificates for TLS connections to Vault.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-tls-vault-secret` |
+
+### `vault.syncUsers.role`
+
+The Vault Kubernetes auth role name. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `operator` |
+
+### `vault.syncUsers.mountPath`
+
+The root path where a specific secrets engine is enabled inside Vault.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `secret` |
+
+### `vault.syncUsers.keyPath`
+
+The Vault path where system user credentials are stored. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `psmdb/operator/{namespace}/my-cluster-name/users` |
+
+### `vault.syncUsers.tokenSecret`
+
+The Kubernetes Secret that contains a Vault token for token-based
+authentication. If this value is set, the Operator uses the provided token to authenticate with Vault. If this value is not set and authentication with Kubernetes service account is also enabled, the Operator will use its service account with Vault Kubernetes authentication.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `vault-token-operator` |
+
 ## <a name="operator-replsets-section"></a>Replsets Section
 
 The replsets section controls the MongoDB Replica Set.

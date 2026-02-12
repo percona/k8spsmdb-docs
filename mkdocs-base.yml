@@ -217,7 +217,13 @@ nav:
           - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
 
     - Configuration:
-          - "Application and system users": users.md
+          - Manage users: 
+             - "About application and system users": users.md
+             - "Application-level (unprivileged) users": app-users.md
+             - "System users": system-users.md
+             - Manage system users with Vault: 
+                - "Overview": system-users-vault.md
+                - "Configuration": system-users-vault-setup.md
           - "Disable authentication": auth-disable.md
           - "Changing MongoDB options": options.md
           - options-pbm.md
