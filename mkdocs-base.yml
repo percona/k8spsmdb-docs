@@ -294,6 +294,7 @@ nav:
           - volume-attributes-class.md
           
     - Troubleshooting:
+          - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
           - "Initial troubleshooting": debug.md
           - "Exec into the container": debug-shell.md
           - "Check the logs": debug-logs.md
