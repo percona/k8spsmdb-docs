@@ -1,8 +1,17 @@
 # What's next?
 
-Congratulations! You have completed all the steps in the Get started guide. 
+Congratulations! You have completed the steps in your Get started path.
 
-You have the following options to move forward with the Operator:
+## If you're building an application
+
+* [Connect your application](connect-from-app.md) — Use the connection URI in your app with any MongoDB driver
+* [Get credentials for your app](app-credentials.md) — Create a dedicated application user and use it in your connection string
+* [Connect from your laptop or CI](connect-from-outside.md) — Use port-forward for local dev or expose the cluster for shared access
+* [Connection examples (Node, Python, Go)](connection-examples.md) — Minimal code snippets to get started
+* [App configuration](app-configuration.md) — Use environment variables, a dedicated app user, and optional retries
+* [Troubleshoot connection issues](troubleshoot-connection.md) — Fix connection refused, auth failed, and similar errors
+
+## If you're operating the cluster
 
 * Deepen your monitoring insights by setting up [Kubernetes monitoring with PMM](monitor-kubernetes.md)
 * Control Pods assignment on specific Kubernetes Nodes by setting up [affinity / anti-affinity](constraints.md)
