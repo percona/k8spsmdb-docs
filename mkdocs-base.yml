@@ -68,9 +68,7 @@ extra_javascript:
   - js/promptremover.js
   - js/consent.js
   - js/rating.js
-#  - js/version-select.js
-#  - js/toctree.js
-#  - js/lightgallery.min.js
+
 
 markdown_extensions:
   attr_list: {}
@@ -98,9 +96,7 @@ markdown_extensions:
       base_path: 
         - snippets
         - docs/RN
-        - docs/
-#      auto_append:
-#        - services-banner.md
+        - docs/s
   pymdownx.highlight:
     use_pygments: true
   pymdownx.emoji:
@@ -194,34 +190,6 @@ nav:
           - 4. Make a backup: backup-tutorial.md
           - 5. Monitor the database with PMM: monitoring-tutorial.md
           - what-next.md
-<<<<<<< HEAD
-          
-    - Installation:
-          - "System requirements": System-Requirements.md
-          - "Install on Minikube": minikube.md
-          - "Install with OpenEverest": everest.md
-          - "Install on Google Kubernetes Engine (GKE)": gke.md
-          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
-          - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
-          - "Generic Kubernetes installation": kubernetes.md
-          - "Install on OpenShift": openshift.md
-          
-    - Upgrade:
-          - About upgrades: update.md
-          - Upgrade CRD and the Operator: 
-              - "Considerations": update-operator.md
-              - "Manually": update-crd-manual.md
-              - "With Helm": update-crd-helm.md
-              - "Via OLM": update-crd-olm.md
-          - Database upgrade overview: update-db.md
-          - Minor upgrade:
-               - "To a specific version": update-minor-set-version.md
-               - "Automatic minor upgrades": update-minor-automatic.md
-               - "Manual upgrade": update_manually.md
-          - Major upgrade: update-major.md
-          - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
-=======
->>>>>>> Reworked the navigation to reflect the learning path
 
     - Install:
        - Plan your installation:
@@ -247,41 +215,6 @@ nav:
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
-<<<<<<< HEAD
-          - "Disable authentication": auth-disable.md
-          - "Changing MongoDB options": options.md
-          - options-pbm.md
-          - hookscript.md
-          - "Anti-affinity and tolerations": constraints.md
-          - "Labels and annotations": annotations.md
-          - "Exposing the cluster": expose.md
-          - "Local storage support": storage.md
-          - "Arbiter and non-voting nodes": arbiter.md
-          - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": 
-             - About TLS security: TLS.md
-             - Configure TLS using cert-manager: tls-cert-manager.md
-             - Generate certificates manually: tls-manual.md
-             - Update certificates: tls-update.md
-             - Disable TLS: tls-disable.md
-          - Data at rest encryption: 
-            - About data-at-rest encryption: encryption.md
-            - Configure encryption using an encryption key Secret: encryption-keyfile.md
-            - Configure encryption with HashiCorp Vault:
-               - without TLS: encryption-vault.md
-               - with TLS: encryption-vault-tls.md
-          - "Telemetry": telemetry.md
-          - "Operator environment variables": env-vars-operator.md
-          - "Cluster component environment variables": env-vars-cluster.md
-          - "Define custom environment variables": env-vars-custom.md
-          - reconciliation-concurrency.md
-          - Logging:
-            - "Persistent logging": persistent-logging.md
-            - "Log rotation": logrotate.md
-          
-    - Management:
-=======
->>>>>>> Reworked the navigation to reflect the learning path
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups":
