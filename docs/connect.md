@@ -75,7 +75,9 @@ Here's how to do it:
         The exact URI depends on your cluster configuration. Use the value retrieved from the connection string Secret.
 
 
-Congratulations! You have connected to Percona Server for MongoDB. 
+Congratulations! You have connected to Percona Server for MongoDB.
+
+To connect from your own application (connection string, credentials, code examples), see [Get started](get-started.md) (developer path) or [Connect your application](connect-from-app.md).
 
 ## Next steps
 
