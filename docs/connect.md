@@ -71,7 +71,9 @@ Here's how to do it:
         mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.mongodb-operator.svc.cluster.local/admin?ssl=false"
         ```
 
-Congratulations! You have connected to Percona Server for MongoDB. 
+Congratulations! You have connected to Percona Server for MongoDB.
+
+To connect from your own application (connection string, credentials, code examples), see [Get started](get-started.md) (developer path) or [Connect your application](connect-from-app.md).
 
 ## Next steps
 
