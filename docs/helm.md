@@ -41,17 +41,22 @@ Here's a sequence of steps to follow:
     kubectl create namespace <namespace>
     ```
 
-3. Install Percona Operator for MongoDB Deployment. Replace the `namespace` with the name of your namespace:
+3. Install the Percona Server for MongoDB Operator Custom Resource Definitions (CRDs) first. You can later use this chart to manage and upgrade CRDs independently using Helm or GitOps tools.
 
     ```bash
-    helm install my-op percona/psmdb-operator --namespace <namespace> --set crds.enabled=true
+    psmdb-operator-crds percona/psmdb-operator-crds --namespace <namespace> 
+    ```
+
+4. Percona Operator for MongoDB Deployment. Replace the `namespace` with the name of your namespace:
+
+    ```bash
+    helm install my-op percona/psmdb-operator --namespace <namespace> 
     ```
 
     The `my-op` parameter in the above example is the name of [a new release object  :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts)
     which is created for the Operator when you install its Helm chart (use any
     name you like).
-    
-    The `--set crds.enabled=true` flag adds the Helm chart for CRDs as a dependency to the main chart. This is done to enable automatic CRD updates during the [upgrade](update-crd-helm.md).
+
 
     ??? example "Expected output"
 

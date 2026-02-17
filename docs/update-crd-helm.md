@@ -7,7 +7,7 @@ The `helm upgrade` command updates only the Operator deployment. The [update flo
 
 ## CRD management by Helm
 
-When you install the Operator deployment, Helm installs the CRDs from the `crds/` directory in the main `psmdb-operator` chart.
+If you installed the Operator deployment from the main `psmdb-operator` chart, Helm installs the CRDs from the `crds/` directory.
 
 Helm v3 doesn't update the CRDs by default to prevent accidental CRD upgrades that could break existing resources. Starting with version 1.22.0, a dedicated CRD chart `psmdb-operator-crds` was added that enables Helm to handle automatic CRD updates. The use of the separate CRD chart also provides better compatibility with GitOPs tools such as ArgoCD and FluxCD and ensures version control and rollback capability for CRDs.
 
@@ -17,7 +17,6 @@ To update the CRDs you have the following options:
 
 * update them manually before you update the Operator deployment. Use this option if you run the Operator version *before* 1.22.0.
 * install a dedicated CRD chart and update the CRDs using Helm
-* (optional) add a CRD chart as a dependency to the main chart. You can do this only **after you have installed the CRD chart and updated the CRDs from it**.
 
 ## Upgrade steps
 
@@ -120,31 +119,6 @@ To update the CRDs you have the following options:
     The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts) which you have chosen for the Operator when installing its Helm chart.
 
     During the upgrade, you may see a warning to manually apply the CRD if it has the outdated version. In this case, refer to step 3 to upgrade the CRD and then step 4 to upgrade the deployment.
-
-### Add the CRD chart as a dependency
-
-You can add the CRD chart as a dependency to the main Operator chart. This way you can upgrade both charts with a single command.
-
-Note that you must install the CRD chart first. Otherwise Helm will fail with an ownership metadata error because the existing CRDs installed from the `crds/` directory don't have Helm ownership metadata.
-
-Refer to step 3 of the [Upgrade steps](#upgrade-steps) for the steps to add the CRD chart.
-
-To add the CRD as a dependency, do the following:
-
-1. Uninstall the separate CRD chart:
-
-    ```bash
-    helm uninstall psmdb-operator-crds --namespace $NAMESPACE
-    ```
-
-2. Upgrade operator with CRD dependency enabled:
-
-    ```bash
-    helm upgrade my-op percona/psmdb-operator \
-    --namespace $NAMESPACE \
-    --version {{ release }} \
-    --set crds.enabled=true
-    ```
 
 ## Troubleshooting CRD upgrades with Helm
 
