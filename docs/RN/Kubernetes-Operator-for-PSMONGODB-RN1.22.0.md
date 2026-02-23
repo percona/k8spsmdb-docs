@@ -368,6 +368,8 @@ These options are deprecated and will be removed in version 1.25.0:
 
 * [K8SPSMDB-1561](https://perconadev.atlassian.net/browse/K8SPSMDB-1561) - Mounted the PVC to the PMM3 container. This enables the node_exporter running in the pmm-client container to collect metrics on the database's persistent volume. (Thank you Stephen Foulkes for contributing to this issue)
 
+* [K8SPSMDB-1538](https://perconadev.atlassian.net/browse/K8SPSMDB-1538) - Fixed a template condition bug in the Helm chart that prevented arbiter affinity from being applied correctly. The logic now correctly checks for `arbiter.affinity` independently of the parent replica set configuration, ensuring that arbiters are scheduled on the intended nodes even when general replica set affinity is not defined.
+
 
 ## Supported software
 
