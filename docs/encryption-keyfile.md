@@ -6,7 +6,7 @@ Data-at-rest encryption using a Kubernetes Secret allows you to securely store t
 
 1. Set the encryption key Secret name. 
 
-    In your Custom Resource file, set `secrets.encryptionKey` to the name of the Secret that will hold the encryption key:
+    In your Custom Resource file, set `secrets.encryptionKey` to the name of the Secret that will hold the encryption key. The default Secret name is `my-cluster-name-mongodb-encryption-key`. If you use your own key and Secret, reference that Secret name here:
 
     ```yaml
     secrets:
@@ -17,7 +17,9 @@ Data-at-rest encryption using a Kubernetes Secret allows you to securely store t
 2. Enable encryption and set the cipher mode in the configuration passed to MongoDB. Set these options in every relevant `configuration` block: 
 
     * `replsets.configuration`, 
-    * `replsets.nonvoting.configuration` if you use non-voting members, 
+    * `replsets.nonvoting.configuration` if you use [non-voting members](arbiter.md#non-voting-nodes), 
+    * `replsets.hidden.configuration` if you use [hidden members](arbiter.md#hidden-nodes),
+    * `replsets.arbiter.configuration` if you use [arbiter nodes](arbiter.md),
     * `sharding.configsvrReplSet.configuration` if you use sharding.
 
     Add or update the `security` section in each block with this configuration:
@@ -39,12 +41,12 @@ Data-at-rest encryption using a Kubernetes Secret allows you to securely store t
 3. Apply the updated Custom Resource:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
     The Operator creates or uses the encryption key Secret and rolls out the configuration to the MongoDB pods. This triggers the rolling restart of your database Pods. After the rollout completes, data written by MongoDB will be encrypted at rest.
 
-4. Check that the encryption is enabled by executing into a Percona Server for MongoDB Pod as the administrative user and running the following command against the `admin` database:
+4. Check that the encryption is enabled. Execute into a Percona Server for MongoDB Pod as as a user with sufficient administrative privileges (`databaseAdmin` or `clusterAdmin`) and run the following command against the `admin` database:
 
     ```javascript
     db.serverStatus().encryptionAtRest

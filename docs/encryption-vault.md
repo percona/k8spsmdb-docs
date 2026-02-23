@@ -4,6 +4,10 @@ This guide walks you through deploying and configuring HashiCorp Vault to work w
 
 If you want to add an extra layer of security for communication between  Percona Server for MongoDB and the Vault server, you can also set up HashiCorp Vault with TLS enabled. For details, see the [guide for configuring Vault with TLS](encryption-vault-tls.md).
 
+!!! important 
+
+    You can enable data at rest encryption with HashiCorp Vault only when you create a new cluster. This is because Percona Server for MongoDB doesn't allow enabling / disabling or changing encryption settings for a running cluster. Every time you restart the server, the encryption settings must be the same. When you define Vault configuration for a cluster, the Operator uses that instead of the default encryption key Secret. 
+
 ## Assumptions
 
 1. This guide is provided as a best effort and builds upon procedures described in the official Vault documentation. Since Vault's setup steps may change in future releases, this document may become outdated; we cannot guarantee ongoing accuracy or responsibility for such changes. For the most up-to-date and reliable information, please always refer to [the official Vault documentation](https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls#kubernetes-minikube-tls).
@@ -24,7 +28,7 @@ Before you begin, ensure you have the following tools installed:
 
     ```bash
     export NAMESPACE="vault" 
-    export CLUSTER_NAMESPACE="psmdb"
+    export CLUSTER_NAMESPACE="psmdb" # The namespace where the database cluster will be deployed
     export VAULT_HELM_VERSION="0.30.0"
     export SERVICE="vault"
     export POLICY_NAME="psmdb-policy"
@@ -106,13 +110,7 @@ Using the root token for authentication is not recommended, as it poses signific
 3. Export the non-root token as an environment variable:
 
     ```bash
-    export NEW_TOKEN=$(jq -r '.auth.client_token' "${WORKDIR}/vault-token.json")
-    ```
-
-4. Verify the token:
-
-    ```bash
-    echo "New Vault Token: $NEW_TOKEN"
+    export NEW_TOKEN=$(jq -r '.auth.client_token' "${WORKDIR}/vault-token.json") && echo "$NEW_TOKEN"
     ```
 
     ??? example "Sample output"
@@ -130,7 +128,30 @@ Run the following command:
 ```bash
 kubectl create secret generic my-cluster-name-vault --from-literal=token=$NEW_TOKEN -n $CLUSTER_NAMESPACE
 ```
+
+Check that the Secret is created:
+
+```bash
+kubectl get secret -n $CLUSTER_NAMESPACE
+```
      
+## Deploy the Operator
+
+Follow the [Quickstart](quickstart.md) guide to install the Operator Deployment.
+
+Check that it is up and running with this command:
+
+```bash
+kubectl get deploy -n $CLUSTER_NAMESPACE
+```
+
+??? example "Sample output"
+ 
+    ```{.text .no-copy}
+    NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+    percona-server-mongodb-operator   1/1     1            1           162m
+    ```
+
 ## Reference the Secret in your Custom Resource manifest 
 
 Now, reference the Vault Secret in the Operator Custom Resource manifest. You also need the following Vault-related information:
@@ -139,12 +160,12 @@ Now, reference the Vault Secret in the Operator Custom Resource manifest. You al
 * Path to the token file. When you apply the new configuration, the Operator creates the required directories and places the token file there. 
 * The secrets mount path in the format `<mount-path>/data/dc/<cluster name>/<path>`, where:
 
-    * the `<cluster name>` is your real cluster name
-    * the `<path>` is where keys are stored. Specify the `rs0` value when you add options to the `replsets.configuration` and `replsets.nonvoting.configuration` sections. Specify the  `cfg` value when you add options to the `sharding.configsvrReplSet.configuration` section.
+    * the `<cluster name>` is your real cluster name. 
+    * the `<path>` is where encryption keys are stored. Specify the replica set name value (`rs0` in our example) when you add options to the `replsets.configuration` section. Specify the  `cfg` value when you add options to the `sharding.configsvrReplSet.configuration` section.
 
 !!! note
 
-    In a sharded cluster, you must specify the Vault configuration in both `replsets.configuration` and `sharding.configsvrReplSet.configuration` sections.
+    In a sharded cluster, you must specify the Vault configuration in both `replsets.configuration` and `sharding.configsvrReplSet.configuration` sections. If you use arbiter, non-voting and / or hidden nodes and want to encrypt the data there, specify the Vault configuration for these members too.
 
 1. Modify your `deploy/cr.yaml` as follows:
 
@@ -196,7 +217,7 @@ Now, reference the Vault Secret in the Operator Custom Resource manifest. You al
 
 ## Verify encryption
 
-Check that the encryption is enabled by executing into a Percona Server for MongoDB Pod as the administrative user and running the following command against the `admin` database:
+Check that the encryption is enabled. Execute into a Percona Server for MongoDB Pod as as a user with sufficient administrative privileges (`databaseAdmin` or `clusterAdmin`) and run the following command against the `admin` database:
 
 ```javascript
 db.serverStatus().encryptionAtRest

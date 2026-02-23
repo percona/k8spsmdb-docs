@@ -7,7 +7,7 @@ Data-at-rest encryption ensures that data stored on disk remains protected even 
 
 To learn more about data-at-rest-encryption in Percona Server for MongoDB, see the [Data-at-rest encryption :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/data-at-rest-encryption.html) documentation.
 
-Data-at-rest encryption is turned on by default. The Operator implements it in one of the following ways:
+Data-at-rest encryption is turned on by default when you deploy a new cluster. The Operator implements it in one of the following ways:
 
 * [uses an encryption key stored in a Secret](#use-an-encryption-key-secret)
 * [gets encryption key from the HashiCorp Vault key storage](#use-hashicorp-vault-to-store-and-manage-encryption-keys). 
@@ -22,7 +22,7 @@ The Operator uses a single encryption key to protect MongoDB data files on disk.
 
 The Operator creates a Secret with the specified name and generates a random 32-byte key (base64-encoded), if such a Secret doesn't already exist. You can also use your own key and create a Secret object with it; the key must be a [32-character string encoded in base64](https://www.mongodb.com/docs/manual/tutorial/configure-encryption/#local-key-management). Reference your Secret in the Custom Resource for the Operator to use it.
 
-Next, enable encryption and choose the cipher mode in the MongoDB configuration for all Pods where you want to encrypt data: regular replica set members (primary and secondary) as well as non-voting replica set members, and config servers if you use sharding. The Operator mounts the key from the Secret into the MongoDB pods so the database can encrypt and decrypt data at rest.
+Next, enable encryption and choose the cipher mode in the MongoDB configuration for all Pods where you want to encrypt data: regular replica set members (primary and secondary) as well as arbiter, hidden and/or non-voting replica set members, and config servers if you use sharding. The Operator mounts the key from the Secret into the MongoDB pods so the database can encrypt and decrypt data at rest.
 
 Once configured, encryption is transparent to your applications; no code changes are required.
 

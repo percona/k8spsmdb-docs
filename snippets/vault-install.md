@@ -53,13 +53,23 @@ For this setup, we install Vault in Kubernetes using the [Helm 3 package manager
         REVISION: 1
         NOTES:
         Thank you for installing HashiCorp Vault!
-        ....
+
+        Now that you have deployed Vault, you should look over the docs on using
+        Vault with Kubernetes available here:
+
+        https://developer.hashicorp.com/vault/docs
+
+        Your release is named vault. To learn more about the release, try:
+
+          $ helm status vault
+          $ helm get manifest vault
         ```
 
 3. Wait for all Vault pods to be running:
 
     ```bash
-    kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=${SERVICE} -n $NAMESPACE --timeout=300s
+    kubectl wait --for=jsonpath='{.status.phase}'=Running pod \
+    -l app.kubernetes.io/name=${SERVICE} -n $NAMESPACE --timeout=300s
     ```
 
 4. Retrieve the Pod names where Vault is running:

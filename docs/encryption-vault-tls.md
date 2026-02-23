@@ -4,6 +4,10 @@ This guide walks you through deploying and configuring HashiCorp Vault to work w
 
 By default, Percona Server for MongoDB and Vault communicate over an unencrypted HTTP protocol. You can enable encrypted HTTPS protocol with TLS as an additional security layer to protect the data transmitted between Vault and your Percona Server for MongoDB nodes. HTTPS ensures that sensitive information, such as encryption keys and secrets, cannot be intercepted or tampered with on the network.
 
+!!! important
+
+    You can enable data at rest encryption with HashiCorp Vault only when you create a new cluster. This is because Percona Server for MongoDB doesn't allow enabling / disabling or changing encryption settings for a running cluster. Every time you restart the server, the encryption settings must be the same. When you define Vault configuration for a cluster, the Operator uses that instead of the default encryption key Secret. 
+
 ## Assumptions
 
 1. This guide is provided as a best effort and builds upon procedures described in the official Vault documentation. Since Vault's setup steps may change in future releases, this document may become outdated; we cannot guarantee ongoing accuracy or responsibility for such changes. For the most up-to-date and reliable information, please always refer to [the official Vault documentation](https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls#kubernetes-minikube-tls).
@@ -134,7 +138,30 @@ Run the following command:
 ```bash
 kubectl create secret generic my-cluster-name-vault --from-literal=token=$NEW_TOKEN --from-file=ca.crt=${WORKDIR}/vault.ca -n $CLUSTER_NAMESPACE
 ```
-     
+
+Check that the Secret is created:
+
+```bash
+kubectl get secret -n $CLUSTER_NAMESPACE
+```
+
+## Deploy the Operator
+
+Follow the [Quickstart](quickstart.md) guide to install the Operator Deployment.
+
+Check that it is up and running with this command:
+
+```bash
+kubectl get deploy -n $CLUSTER_NAMESPACE
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+    percona-server-mongodb-operator   1/1     1            1           162m
+    ```
+
 ## Reference the Secret in your Custom Resource manifest 
 
 Now, reference the Vault Secret in the Operator Custom Resource manifest. You also need the following Vault-related information:
@@ -201,7 +228,7 @@ Now, reference the Vault Secret in the Operator Custom Resource manifest. You al
 
 ## Verify encryption
 
-Check that the encryption is enabled by executing into a Percona Server for MongoDB Pod as the administrative user and running the following command against the `admin` database:
+Check that the encryption is enabled. Execute into a Percona Server for MongoDB Pod as as a user with sufficient administrative privileges (`databaseAdmin` or `clusterAdmin`) and run the following command against the `admin` database:
 
 ```javascript
 db.serverStatus().encryptionAtRest
