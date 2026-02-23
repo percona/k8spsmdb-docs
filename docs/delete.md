@@ -140,6 +140,20 @@ To delete the Operator, do the following:
     helm uninstall my-op --namespace <namespace>
     ```
 
+    This command deletes only the Operator deployment. The CRDs remain in the Kubernetes environment, allowing other clusters in other namespaces to run.
+
+4. Delete Custom Resource Definitions:
+
+     !!! warning
+    
+         Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them. 
+
+         If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+
+     ```bash
+     helm uninstall psmdb-operator-crds --namespace <namespace>
+     ```
+
 ## Clean up resources
  
 By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. 

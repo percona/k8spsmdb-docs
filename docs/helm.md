@@ -44,10 +44,15 @@ Here's a sequence of steps to follow:
 3. Install the Percona Server for MongoDB Operator Custom Resource Definitions (CRDs) first. You can later use this chart to manage and upgrade CRDs independently using Helm or GitOps tools.
 
     ```bash
-    psmdb-operator-crds percona/psmdb-operator-crds --namespace <namespace> 
+    helm install psmdb-operator-crds percona/psmdb-operator-crds --namespace <namespace> 
     ```
 
-4. Percona Operator for MongoDB Deployment. Replace the `namespace` with the name of your namespace:
+    
+    !!! important
+    
+        Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them. 
+
+4. Install Percona Operator for MongoDB Deployment. Replace the `namespace` with the name of your namespace:
 
     ```bash
     helm install my-op percona/psmdb-operator --namespace <namespace> 
