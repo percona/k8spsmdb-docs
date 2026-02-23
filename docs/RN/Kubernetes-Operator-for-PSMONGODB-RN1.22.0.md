@@ -25,7 +25,7 @@
 * [Better service mesh compatibility with automatic `appProtocol: mongo` on services](#ensure-smooth-integration-with-service-meshes)
 * [Improved GitOps workflows via automated CRD upgrades from a dedicated Helm chart](#automatic-crd-updates-for-helm-installations)
 * [Disable authentication for dev/test environments to speed up setup](#speed-up-development-or-testing-pipelines-by-disabling-authentication)
-* [Integrate with HashCorp Vault for system users management](#)
+* [Integrate with HashCorp Vault for system users management](#vault-integration-for-system-user-password-management)
 
 ## Release Highlights
 
