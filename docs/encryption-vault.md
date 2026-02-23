@@ -14,7 +14,7 @@ If you want to add an extra layer of security for communication between  Percona
 
 Before you begin, ensure you have the following tools installed:
 
-* `kubectl`- Kubernetes command-line interface
+* `kubectl` - Kubernetes command-line interface
 * `helm` - Helm package manager
 * `jq` - JSON processor
 
