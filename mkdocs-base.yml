@@ -207,7 +207,11 @@ nav:
           
     - Upgrade:
           - About upgrades: update.md
-          - Upgrade CRD and the Operator: update-operator.md
+          - Upgrade CRD and the Operator: 
+              - "Considerations": update-operator.md
+              - "Manually": update-crd-manual.md
+              - "With Helm": update-crd-helm.md
+              - "Via OLM": update-crd-olm.md
           - Database upgrade overview: update-db.md
           - Minor upgrade:
                - "To a specific version": update-minor-set-version.md
