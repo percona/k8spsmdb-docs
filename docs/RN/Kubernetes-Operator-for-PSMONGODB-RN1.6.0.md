@@ -39,7 +39,7 @@ we will add support for multiple shards.
 * [K8SPSMDB-257](https://jira.percona.com/browse/K8SPSMDB-257): Store the Operator version as a `crVersion` field in the `deploy/cr.yaml` configuration file
 
 
-* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../users.md#system-users) secrets for simplicity
+* [K8SPSMDB-266](https://jira.percona.com/browse/K8SPSMDB-266): Use plain-text passwords instead of base64-encoded ones when creating [System Users](../system-users.md) secrets for simplicity
 
 ## Bugs Fixed
 

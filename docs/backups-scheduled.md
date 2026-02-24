@@ -15,7 +15,7 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
 3. `backup.tasks` subsection - specify the following configuration:
 
     * `name` - specify a backup name. You will need this name when you [restore from this backup](backups-restore.md).
-    * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron)).
+    * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron).
     * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
     * `storageName` - specify the name of your [already configured storage](backups-storage.md).
     * `retention` - configure the retention policy: how many backups to keep in the storage. This setting is optional. It applies to base incremental backups but is ignored for increments. Read more about it in the [Configure retention](#configure-retention) section.

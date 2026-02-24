@@ -67,7 +67,7 @@ For hands-on steps, see [Restore the cluster from a previously saved backup](bac
 
 ### Backup retention
 
-Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. You can control how many backups to keep with the [backup.tasks.retention](operator.md#backuptasksretention) retention setting. For details, see [Configure retention policy](backups-delete.md#configure-retention-policy.md).
+Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. You can control how many backups to keep with the [backup.tasks.retention](operator.md#backuptasksretentioncount) retention setting. For details, see [Configure retention policy](backups-delete.md#configure-backup-retention).
 
 ## Backup storage
 

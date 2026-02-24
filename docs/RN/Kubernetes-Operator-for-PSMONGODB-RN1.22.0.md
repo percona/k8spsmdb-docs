@@ -10,7 +10,7 @@
 * [Restore into clusters with different replica set names using remapping](#restore-to-a-cluster-with-different-replica-set-names)
 * [Configure a longer PBM startup timeout to prevent false backup failures](#configurable-timeout-for-pbm-to-start-backups)
 * [Use the `minio` storage type for backups to S3-compatible storage services](#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages)
-* [Verify TLS communication for a S3-compatible storage with a private CA certificates](#use-private-certificate-authorities-for-tls-communication-with-s3-compatible-storage-services)
+* [Verify TLS communication for a S3-compatible storage with a private CA certificates](#use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services)
 * [Track PBM readiness via the new `PBMReady` status condition](#cluster-readiness-now-reflects-pbm-state)
 
 ### Operations
@@ -104,9 +104,9 @@ Starting with version 1.22.0, the Operator has a separate `psmdb-operator-crds` 
 * Ensure compatibility with GitOps tools like ArgoCD and FluxCD that expect Helm to manage all resources
 * Take advantage of Helm’s version control and rollback capabilities
 
-You can use the CRD chart on new installs and add it to your upgrade workflow. See the [upgrade documentation](../update-operator.md) for step-by-step instructions.
+You can use the CRD chart on new installs and add it to your upgrade workflow. See the [upgrade documentation](../update-crd-helm.md) for step-by-step instructions.
 
-This change is fully compatible with the previous behavior, where CRDs are installed from the `crds/` folder of the main Helm repository. We keep this behavior as default for the next three releases to give you more time to adjust your workflows and update.
+This change is fully compatible with the previous behavior, where CRDs are installed from the `crds/` folder of the main Helm chart. We keep this behavior as default for the next three releases to give you more time to adjust your workflows and update.
 
 ### Configure log rotation for persistent logs
 

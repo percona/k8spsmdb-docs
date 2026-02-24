@@ -7,7 +7,7 @@ This allows you to centralize password management, enforce rotation policies, an
 ## How it works
 
 
-When [Vault is enabled](#configuration-steps), the Operator:
+When [Vault is enabled](system-users-vault-setup.md#configure-vault), the Operator:
 
 * Retrieves system user passwords from Vault during cluster creation
 * Creates Kubernetes Secrets using those passwords

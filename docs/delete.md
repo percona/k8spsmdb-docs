@@ -158,7 +158,7 @@ To delete the Operator, do the following:
  
 By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. 
 
-You can automate resource cleanup by turning on `percona.com/delete-psmdb-pvc` [finalizer](operator.md#metadata-name). Note that in this case user Secrets will also be deleted.
+You can automate resource cleanup by turning on `percona.com/delete-psmdb-pvc` [finalizer](operator.md#metadata). Note that in this case user Secrets will also be deleted.
 
 You can also delete TLS-related objects and PVCs manually.
 
