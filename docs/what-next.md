@@ -1,19 +1,31 @@
 # What's next?
 
-Congratulations! You have completed the steps in your Get started path.
+You've finished the first steps. Use the tasks below to go deeper—whether you're hardening your application or running the Operator in production environment.
 
 ## If you're building an application
 
-* [Connect your application](connect-from-app.md) — Use the connection URI in your app with any MongoDB driver
-* [Get credentials for your app](app-credentials.md) — Create a dedicated application user and use it in your connection string
-* [Connect from your laptop or CI](connect-from-outside.md) — Use port-forward for local dev or expose the cluster for shared access
-* [Connection examples (Node, Python, Go)](connection-examples.md) — Minimal code snippets to get started
-* [App configuration](app-configuration.md) — Use environment variables, a dedicated app user, and optional retries
-* [Troubleshoot connection issues](troubleshoot-connection.md) — Fix connection refused, auth failed, and similar errors
+Move beyond the basics and get production-ready:
+
+* **[Enable TLS for application connections](TLS.md)** — Encrypt traffic between your app and the database.
+* **[Create and manage application users](app-users.md)** — Use dedicated, least-privilege users instead of the default admin.
+* **[Expose the cluster for production access](expose.md)** — Connect from outside the cluster (load balancer or ingress) instead of port-forward.
+* **[Scale the replica set](scaling.md)** — Add nodes for read capacity and high availability; understand how your driver uses secondaries.
+* **[Understand backups and restore](backups.md)** — See how scheduled backups and point-in-time recovery work and what they mean for your app.
+* **[Test your disaster recovery and failover strategies]()** - 
 
 ## If you're operating the cluster
 
-* Deepen your monitoring insights by setting up [Kubernetes monitoring with PMM](monitor-kubernetes.md)
-* Control Pods assignment on specific Kubernetes Nodes by setting up [affinity / anti-affinity](constraints.md)
-* Ready to adopt the Operator for production use and need to delete the testing deployment? Use [this guide](delete.md) to do it
-* You can also try operating the Operator and database clusters via the web interface with [Percona Everest  :octicons-link-external-16:](https://docs.percona.com/everest/index.html) - an open-source web-based database provisioning tool based on Percona Operators. See [Get started with Percona Everest  :octicons-link-external-16:](https://docs.percona.com/everest/quickstart-guide/quick-install.html) on how to start using it
+Run the database and Operator reliably in production:
+
+* **[Set up scheduled backups](backups-scheduled.md)** — Automate backups and define retention.
+* **[Restore from a backup](backups-restore.md)** — Restore on the same cluster or [provision a new cluster from a backup](backups-restore-to-new-cluster.md).
+* **[Scale the cluster](scaling.md)** — Add replica set members or plan for [sharding](sharding.md) when you need more capacity.
+* **[Upgrade the Operator and database](update.md)** — Keep the [Operator](update-operator.md) and [Percona Server for MongoDB](update-db.md) up to date.
+* **Secure your data** — [Encrypt client and server-side traffic](TLS.md) either with the [cert-manager](tls-cert-manager.md) or [manual certificates](tls-manual.md). Configure [data-at-rest encryption](encryption.md) to ensure data safety when it is written on disk.
+* **[Control Pod placement](constraints.md)** — Use affinity and anti-affinity so Pods run on the right nodes.
+* **[Monitor the database and Kubernetes](monitoring.md)** — Use [PMM for the database](monitoring.md) and [Kubernetes monitoring](monitor-kubernetes.md) for full observability.
+* **[Set up persistent logging](persistent-logging.md)** — Retain and rotate logs for troubleshooting.
+* **[Plan multi-region or disaster recovery](replication-plan-deployment.md)** — Replicate across sites and [fail over](replication-failover.md) when needed.
+* **[Remove a deployment](delete.md)** — Delete a test cluster or decommission an environment.
+
+You can also operate the Operator and database via the [Open Everest](https://openeverest.io/docs/) web interface. See [Get started with Percona Everest](https://docs.percona.com/everest/quickstart-guide/quick-install.html) to try it.

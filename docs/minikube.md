@@ -1,82 +1,34 @@
-# Install Percona Server for MongoDB on Minikube
+# Set up Minikube
 
-{%set clusterName = 'minimal-cluster' %}
+This guide walks you through creating a local Kubernetes cluster with [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube). Minikube runs Kubernetes on Linux, Windows, or macOS using a hypervisor (VirtualBox, KVM/QEMU, VMware Fusion, Hyper-V). It is a common way to try the Percona Operator for MongoDB locally before deploying to a cloud provider.
 
-Installing the Percona Operator for MongoDB on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)
-is the easiest way to try it locally without a cloud provider. Minikube runs
-Kubernetes on GNU/Linux, Windows, or macOS system using a system-wide
-hypervisor, such as VirtualBox, KVM/QEMU, VMware Fusion or Hyper-V. Using it is
-a popular way to test Kubernetes application locally prior to deploying it on a
-cloud.
+## Prerequisites
 
-The following steps are needed to run Percona Operator for MongoDB on minikube:
+Install Minikube using the [official install guide  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-minikube/) for your system. That includes:
 
-1. [Install minikube  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-minikube/), using a way recommended for your system. This includes the installation of the following three components:
+* **kubectl**
+* A **hypervisor** (if not already installed)
+* The **minikube** binary
 
-    1. kubectl tool,
+## Create the Minikube cluster
 
-    2. a hypervisor, if it is not already installed,
+1. Start Minikube with enough resources for the Operator and MongoDB (adjust memory, CPUs, and disk as needed):
 
-    3. actual minikube package
+   ```bash
+   minikube start --memory=5120 --cpus=4 --disk-size=30g
+   ```
 
-    After the installation, run `minikube start --memory=5120 --cpus=4 --disk-size=30g`
-    (parameters increase the virtual machine limits for the CPU cores, memory, and disk,
-    to ensure stable work of the Operator). Being executed, this command will
-    download needed virtualized images, then initialize and run the
-    cluster. After Minikube is successfully started, you can optionally run the
-    Kubernetes dashboard, which visually represents the state of your cluster.
-    Executing `minikube dashboard` will start the dashboard and open it in your
-    default web browser.
+   This downloads images, initializes the cluster, and starts it. Optionally run `minikube dashboard` to open the Kubernetes dashboard in your browser.
 
-2. Deploy the operator [using  :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/server-side-apply/) the following command:
+2. Verify the cluster is up:
 
-    ```bash
-    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
-    ```
+   ```bash
+   kubectl get nodes
+   ```
 
-3. Deploy MongoDB cluster with:
+## Next steps
 
-    ```bash
-    kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml
-    ```
-
-    !!! note
-
-        This deploys a one-shard MongoDB cluster with one replica set with one
-        node, one mongos node and one config server node. The
-        [deploy/cr-minimal.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr-minimal.yaml) is for minimal non-production deployment.
-        For more configuration options please see
-        [deploy/cr.yaml  :octicons-link-external-16:](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml) and [Custom Resource Options](operator.md). You can clone the
-        repository with all manifests and source code by executing the following
-        command:
-
-        ```bash
-        git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
-        ```
-
-        After editing the needed options, apply your modified `deploy/cr.yaml` file as follows:
-
-        ```bash
-        kubectl apply -f deploy/cr.yaml
-        ```
-
-    The creation process may take some time.
-
-    The process is over when both operator and replica set pod
-    have reached their Running status. `kubectl get pods` output should look like this:
-
-    --8<-- "./docs/assets/code/kubectl-get-minimal-response.txt"
-
-    You can also track the progress via the Kubernetes dashboard:
-
-    ![image](assets/images/minikube-pods.svg)
-
-
-## Verifying the cluster operation
-
-It may take ten minutes to get the cluster started. When `kubectl get pods`
-command finally shows you the cluster is ready, you can try to connect
-to the cluster.
-
-{% include 'assets/fragments/connectivity.txt' %}
-
+* Deploy the Operator and Percona Server for MongoDB in [single-namespace mode](kubectl.md) or [cluster-wide mode](cluster-wide.md). For a minimal local deployment, use `deploy/cr-minimal.yaml` from the Operator repository instead of the default `deploy/cr.yaml`.
+* [Verify the cluster operation](verify-cluster.md).
+* If the cluster does not become ready, see [Initial troubleshooting](debug.md).
+* To stop or remove the Minikube cluster, see [Delete the Operator and database](delete.md#delete-the-kubernetes-cluster-platform-specific).
