@@ -38,7 +38,7 @@ You define the user in the Percona Server for MongoDB Custom Resource. The Opera
 ## Use the credentials in your app
 
 * **Inside Kubernetes:** Mount the Secret as environment variables or a file in your app's Pod, and build the connection URI from those values. For example, set `MONGODB_USER` and `MONGODB_PASSWORD` from the Secret and use them in the URI.
-* **Outside Kubernetes:** Read the Secret with `kubectl` (as above) or use a secret manager that syncs from Kubernetes. Then pass the credentials into your app via config or environment variables.
+* **Outside Kubernetes:** Read the Secret with `kubectl` (as above). Then pass the credentials into your app via config or environment variables.
 
 !!! note "More options"
 
