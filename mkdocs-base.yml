@@ -173,13 +173,13 @@ extra: # Used in main.html template and can't be externalized
 nav:
     - Welcome: index.md
     - Get help from Percona: get-help.md
-    - "Understand the Operator":
-          - "How it works": how-it-works.md
-          - "Design and architecture": architecture.md
-          - "Comparison with other solutions": compare.md
-          - "Known limitations": limitations.md
-
-    - Get started:
+    - Understand the Operator:
+       - "How it works": how-it-works.md
+       - "Features and capabilities": features.md
+       - "Design and architecture": architecture.md
+       - "Comparison with other solutions": compare.md
+       - "Known limitations": limitations.md
+    - Get started: 
        - Choose your path: quickstart.md
        - Application development quickstart:
           - "1. Get a cluster": get-a-cluster.md
@@ -199,14 +199,12 @@ nav:
           - 4. Make a backup: backup-tutorial.md
           - 5. Monitor the database with PMM: monitoring-tutorial.md
           - what-next.md
-
     - Install:
        - Plan your installation:
-         - Single-namespace and multi-namespace deployment modes: single-namespace-and-multi-namespace-deployment.md
+         - Single-namespace and multi-namespace deployment modes: namespace-mode.md
          - "System requirements": System-Requirements.md
        - Create a Kubernetes cluster:
           - "Minikube": minikube.md
-          - "Everest": everest.md
           - "Google Kubernetes Engine (GKE)": gke.md
           - "Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Microsoft Azure Kubernetes Service (AKS)": aks.md
@@ -216,7 +214,9 @@ nav:
           - "Install the database with customized parameters": custom-install.md
           - "Install on OpenShift": openshift.md
        - "Install in multi-namespace (cluster-wide) mode": cluster-wide.md
-    - Day two operations:
+       - Install with OpenEverest: everest.md
+       - Verify the cluster operation: verify-cluster.md
+    - Day-2 tasks:
           - Manage users: 
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
@@ -256,6 +256,7 @@ nav:
         - Operator and Kubernetes:
             - Configure external access: expose.md
             - Control Pod scheduling with anti-affinity and tolerations: constraints.md
+            - Configure concurrent reconciliation: reconciliation-concurrency.md
   
         - Percona Server for MongoDB:
             - "Arbiter, non-voting and hidden nodes": arbiter.md
@@ -283,6 +284,9 @@ nav:
                         - "Fail over workload to the Replica site": replication-failover.md
                         - "Backups with cross-site replication": replication-backups.md
                         - "Splitting replica set across multiple data centers": replication-multi-dc.md
+            - Authentication:
+                - "OpenLDAP integration": ldap.md
+
 
     - Cluster lifecycle management:
           - Upgrade:
@@ -297,6 +301,7 @@ nav:
                        - "Manual upgrade": update_manually.md
                   - "Major upgrade": update-major.md
                   - "Upgrade on OpenShift": update_openshift.md
+          - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
           - "Pause or restart the cluster": pause.md
           - "Delete the Operator and database": delete.md
 
@@ -306,7 +311,6 @@ nav:
                 - "Operator environment variables": env-vars-operator.md
                 - "Cluster component environment variables": env-vars-cluster.md
                 - "Define custom environment variables": env-vars-custom.md
-            - "Reconciliation concurrency": reconciliation-concurrency.md
             - "Add sidecar containers": sidecar.md
             - "Labels and annotations": annotations.md
             - "Disable authentication": auth-disable.md
@@ -314,9 +318,11 @@ nav:
             - Manage storage:
                 - "Local storage support": storage.md
                 - "Configure VolumeAttributesClass for persistent volumes": volume-attributes-class.md
+            - "Use a private registry": custom-registry.md
         - Percona Server for MongoDB:
             - "Changing MongoDB options": options.md
             - "Percona Backup for MongoDB options": options-pbm.md
+            - "Create a private S3-compatible cloud for backups": private.md
             - "Telemetry": telemetry.md
 
     - Troubleshooting:
@@ -324,19 +330,9 @@ nav:
               - "Exec into the container": debug-shell.md
               - "Special debug images": debug-images.md
               - "Storage resizing": debug-storage.md
-          - "Database and cluster":
+          - "Database cluster":
               - "Initial troubleshooting": debug.md
               - "Check the logs": debug-logs.md
-
-    - How-to guides:
-          - "Kubernetes and Operator":
-              - "Use a private registry": custom-registry.md
-              - "Configure concurrent reconciliation": reconciliation-concurrency.md
-          - "Database and data":
-              - "OpenLDAP integration": ldap.md
-              - "Creating a private S3-compatible cloud for backups": private.md
-              - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
-
     - Reference:
           - Custom Resource reference:
               - "Custom Resource options": operator.md
