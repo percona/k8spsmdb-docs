@@ -3,7 +3,7 @@
 **Start here.** Choose your path based on what you want to do:
 
 * **Building an application?** Follow the **developer path** to get a cluster, connect from your code, and run locally.
-* **Deploying or operating the cluster?** Follow the **operator path** to install the Operator, connect with the shell, and run backups and monitoring.
+* **Deploying or operating the cluster?** Follow the **deployment and operations path** to install the Operator, connect with the shell, and run backups and monitoring.
 
 ---
 
@@ -16,7 +16,7 @@ Use this path when you want to connect your application to Percona Server for Mo
 3. **[Get credentials for your app](app-credentials.md)** — Create a dedicated application user and use it in your connection string.
 4. **[Connection examples](connection-examples.md)** — Copy minimal examples in Node.js, Python, or Go.
 5. **[Connect from your laptop or CI](connect-from-outside.md)** — Use port-forward for local development or expose the cluster for shared access.
-6. **[What's next](what-next.md#if-youre-building-an-application)** — App configuration, troubleshooting connection issues, and more.
+6. **[What's next](what-next.md#if-youre-building-an-application)** — Deepen your knowledge and get ready for production use.
 
 [Start the developer path :material-arrow-right:](get-a-cluster.md){.md-button}
 
