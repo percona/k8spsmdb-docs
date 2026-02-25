@@ -244,7 +244,12 @@ nav:
              - Generate certificates manually: tls-manual.md
              - Update certificates: tls-update.md
              - Disable TLS: tls-disable.md
-          - "Data at rest encryption": encryption.md
+          - Data at rest encryption: 
+            - About data-at-rest encryption: encryption.md
+            - Configure encryption using an encryption key Secret: encryption-keyfile.md
+            - Configure encryption with HashiCorp Vault:
+               - without TLS: encryption-vault.md
+               - with TLS: encryption-vault-tls.md
           - "Telemetry": telemetry.md
           - "Operator environment variables": env-vars-operator.md
           - "Cluster component environment variables": env-vars-cluster.md
