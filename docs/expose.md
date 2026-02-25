@@ -195,10 +195,11 @@ follows:
 
 URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.
 
-Split-horizon DNS has the following limitations:
+Starting with version 1.22.0, the Operator adds the DNS records defined in the `splitHorizons` subsection to the certificates it generates. 
 
-* Connecting with horizon domains is only supported if the client connects using TLS certificates, and these TLS certificates [must be generated manually](tls-manual.md).
-* Duplicating domain names in horizons is not allowed by MongoDB.
-* Using IP addresses in horizons is not allowed by MongoDB.
-* Horizons must be set for *all Pods of a replica set* or not set at all.
+Split horizon has following limitations:
+
+* duplicating domain names in horizons is not allowed by MongoDB
+* using IP addresses in horizons is not allowed by MongoDB
+* horizons should be set for *all Pods of a replica set* or not set at all
 

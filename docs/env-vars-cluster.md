@@ -12,7 +12,7 @@ These variables are injected into every MongoDB container (replica sets and conf
 | `NAMESPACE` | Kubernetes namespace of the cluster. |
 | `MONGODB_PORT` | Port of the `mongod` process. |
 | `MONGODB_REPLSET` | Replica set name. |
-| `LOGCOLLECTOR_ENABLED` | `"true"` when [log collector is enabled](debug-logs.md#configure-log-collector). |
+| `LOGCOLLECTOR_ENABLED` | `"true"` when [log collector is enabled](persistent-logging.md#configure-log-collector). |
 
 ## `mongos` containers (sharding)
 

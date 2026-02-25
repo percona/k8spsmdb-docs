@@ -12,7 +12,7 @@
 
 ### Declarative user management (technical preview)
 
-Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](../users.md#application-level-unprivileged-users) via the `users` subsection in the Custom Resource. You can specify a new user in `deploy/cr.yaml` manifest, setting the user’s login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user’s password) and as well as MongoDB roles on various databases which should be assigned to this user:
+Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users [is supported](../app-users.md) via the `users` subsection in the Custom Resource. You can specify a new user in `deploy/cr.yaml` manifest, setting the user’s login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user’s password) and as well as MongoDB roles on various databases which should be assigned to this user:
 
 ```yaml
 ...
@@ -29,7 +29,7 @@ users:
       db: admin
 ```
 
-See [documentation](../users.md#application-level-unprivileged-users) to find more details about this feature with additional explanations and the list of current limitations.
+See [documentation](../app-users.md) to find more details about this feature with additional explanations and the list of current limitations.
 
 ### Liveness check improvements
 
@@ -73,7 +73,7 @@ Finalizers were renamed to contain fully qualified domain names to comply with t
 * `PerconaServerMongoDBBackup` Custom Resource:
     * `delete-backup` finalizer renamed to `percona.com/delete-backup`
 
-Key change in [`psmdb-db` Helm chart](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db): the parameter for defining [system users](../users.md#system-users) is renamed from `users` to `systemUsers`. The `users` parameter now handles the new [Declarative user management](../users.md#create-users-via-custom-resource) feature. This change impacts users upgrading to this version via Helm: make sure that values manifests are changed accordingly.
+Key change in [`psmdb-db` Helm chart](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db): the parameter for defining [system users](../system-users.md) is renamed from `users` to `systemUsers`. The `users` parameter now handles the new [Declarative user management](../app-users.md#create-users-via-custom-resource) feature. This change impacts users upgrading to this version via Helm: make sure that values manifests are changed accordingly.
 
 ## Supported Platforms
 

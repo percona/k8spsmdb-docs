@@ -185,7 +185,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 
 * The [Data-at-rest encryption](../encryption.md) topic is updated with the correct steps for using HashiCorp Vault.
 
-* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#considerations-for-kubernetes-cluster-versions-and-upgrades) before updating any Operator.
+* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#for-kubernetes-cluster-versions-and-upgrades) before updating any Operator.
 
 ## Supported software
 

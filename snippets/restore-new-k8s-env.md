@@ -4,4 +4,4 @@ To [restore from a backup to a new Kubernetes-based environment](backups-restore
 
 Find the Secrets name object on the source cluster in the `spec.secrets` key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.
 
-Find more details about secrets in [System Users](users.md#system-users). 
+Find more details about secrets in [System Users](system-users.md). 

@@ -150,14 +150,14 @@ Run the `kubectl get psmdb -o yaml -n <namespace>` to check the current cluster 
 
 The `storageAutoscaling` section appears under `.status` in the Custom Resource.
 
-When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization's policies and requirements. For help with common issues, see [Troubleshooting storage resizing](troubleshooting-storage-resizing.md).
+When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization's policies and requirements. For help with common issues, see [Troubleshooting storage ](debug-storage.md).
 
 #### Storage resizing with Volume Expansion capability
 
 To enable storage resizing via volume expansion, do the following:
 {.power-number}
 
-1. Set the [storageScaling.enableVolumeScaling](operator.md#enablevolumescaling) Custom Resource option to `true` (it is turned off by default).
+1. Set the [storageScaling.enableVolumeScaling](operator.md#storagescalingenablevolumescaling) Custom Resource option to `true` (it is turned off by default).
 2. Specify new storage size for the  `replsets.<NAME>.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 and/or `configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
 options in the Custom Resource. 

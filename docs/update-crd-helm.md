@@ -85,7 +85,7 @@ To update the CRDs you have the following options:
 
         Update the Custom Resource Definition for the Operator, taking it from the official repository on Github.
 
-        Refer to the [compatibility between CRD and the Operator](#considerations-for-the-operator-upgrades) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
+        Refer to the [compatibility between CRD and the Operator](update-operator.md#considerations) and how you can update the CRD if it is too old. Use the following command and replace the version to the required one until you are safe to update to the latest CRD version.
 
         ```bash
         kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/crd.yaml -n $NAMESPACE

@@ -19,7 +19,7 @@
 
 * {{ k8spsmdbjira(203) }} Support for the [cluster-wide operator mode](../cluster-wide.md) allowing one Operator to watch for Percona Server for MongoDB Custom Resources in several namespaces
 
-* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](../encryption.md/#use-hashicorp-vault-storage-for-encryption-keys) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
+* {{ k8spsmdbjira(287) }} Support for the [HashiCorp Vault](../encryption.md/#use-hashicorp-vault-to-store-and-manage-encryption-keys) for encryption keys as a universal, secure and reliable way to store and distribute secrets without depending on the operating system, platform or cloud provider
 
 * {{ k8spsmdbjira(704) }} Support for the [Azure Kubernetes Service (AKS)](../aks.md)
 

@@ -199,7 +199,7 @@ The (non-standard) cluster domain to be used as a suffix of the Service name.
 
 ### `clusterServiceDNSMode`
 
-Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](expose.md#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (use a [special FQDN based on the Pod name](expose.md#servicemesh)). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](expose.md#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (use a [special FQDN based on the Pod name](expose.md#application-protocol-support-for-service-mesh-integrations)). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -442,7 +442,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 
 ### `secrets.vault`
 
-Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-storage-for-encryption-keys).
+Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2926,7 +2926,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 ## Roles section
 
-The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-via-custom-resource).
+The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](app-users.md#create-users-via-custom-resource).
 
 ### `roles.role`
 
@@ -3002,7 +3002,7 @@ An array of roles (with names of the role and the database) from which this role
 
 ## <a name="operator-users-section"></a>Users section
 
-The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-via-custom-resource).
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](app-users.md#create-users-via-custom-resource).
 
 ### `users.name`
 
@@ -3022,7 +3022,7 @@ Database that the user authenticates against.
 
 ### `users.passwordSecretRef.name`
 
-Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](users.md#create-users-manually).
+Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](app-users.md#create-users-manually).
 
 | Value type | Example |
 | ---------- | ------- |
