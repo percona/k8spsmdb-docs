@@ -4,7 +4,7 @@ site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
-copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2025
+copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2026
 use_directory_urls: false
 repo_name: percona/k8spsmdb-docs
 repo_url: https://github.com/percona/k8spsmdb-docs
@@ -175,17 +175,27 @@ extra: # Used in main.html template and can't be externalized
     provider: mike
 
 
-# Common navigation for percona.com, render.com and PDF
+# Common navigation for render.com and PDF
 nav:
-
     - Welcome: index.md
     - Get help from Percona: get-help.md
-    - Features:
-          - "Design and architecture": architecture.md
-          - "Comparison with other solutions": compare.md
-          
-    - Quickstart guides:
-          - Overview: quickstart.md
+    - Understand the Operator:
+       - "How it works": how-it-works.md
+       - "Features and capabilities": features.md
+       - "Design and architecture": architecture.md
+       - "Comparison with other solutions": compare.md
+    - Get started: 
+       - Choose your path: quickstart.md
+       - Application development quickstart:
+          - "1. Get a cluster": get-a-cluster.md
+          - "2. Connect your application": connect-from-app.md
+          - "3. Get credentials for your app": app-credentials.md
+          - "4. Connect from your laptop or CI": connect-from-outside.md
+          - "5. Connection examples (Node, Python, Go)": connection-examples.md
+          - "6. App configuration": app-configuration.md
+          - "7. Troubleshoot connection issues": troubleshoot-connection.md
+          - what-next.md
+       - Deployment and operations quickstart:
           - 1. Quick install:
             - "With kubectl": kubectl.md
             - "With Helm": helm.md
@@ -194,33 +204,24 @@ nav:
           - 4. Make a backup: backup-tutorial.md
           - 5. Monitor the database with PMM: monitoring-tutorial.md
           - what-next.md
-          
-    - Installation:
-          - "System requirements": System-Requirements.md
-          - "Install on Minikube": minikube.md
-          - "Install with Everest": everest.md
-          - "Install on Google Kubernetes Engine (GKE)": gke.md
-          - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
-          - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
-          - "Generic Kubernetes installation": kubernetes.md
+    - Install:
+       - Plan your installation:
+         - Single-namespace and multi-namespace deployment modes: namespace-mode.md
+         - "System requirements": System-Requirements.md
+       - Create a Kubernetes cluster:
+          - "Minikube": minikube.md
+          - "Google Kubernetes Engine (GKE)": gke.md
+          - "Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
+          - "Microsoft Azure Kubernetes Service (AKS)": aks.md
+       - Install in a single namespace:
+          - From Helm charts: helm.md
+          - Using manifests: kubernetes.md
+          - "Install the database with customized parameters": custom-install.md
           - "Install on OpenShift": openshift.md
-          
-    - Upgrade:
-          - About upgrades: update.md
-          - Upgrade CRD and the Operator: 
-              - "Considerations": update-operator.md
-              - "Manually": update-crd-manual.md
-              - "With Helm": update-crd-helm.md
-              - "Via OLM": update-crd-olm.md
-          - Database upgrade overview: update-db.md
-          - Minor upgrade:
-               - "To a specific version": update-minor-set-version.md
-               - "Automatic minor upgrades": update-minor-automatic.md
-               - "Manual upgrade": update_manually.md
-          - Major upgrade: update-major.md
-          - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
-
-    - Configuration:
+       - "Install in multi-namespace (cluster-wide) mode": cluster-wide.md
+       - Install with OpenEverest: everest.md
+       - Verify the cluster operation: verify-cluster.md
+    - Day-2 tasks:
           - Manage users: 
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
@@ -228,33 +229,6 @@ nav:
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
-          - "Disable authentication": auth-disable.md
-          - "Changing MongoDB options": options.md
-          - options-pbm.md
-          - hookscript.md
-          - "Anti-affinity and tolerations": constraints.md
-          - "Labels and annotations": annotations.md
-          - "Exposing the cluster": expose.md
-          - "Local storage support": storage.md
-          - "Arbiter and non-voting nodes": arbiter.md
-          - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": 
-             - About TLS security: TLS.md
-             - Configure TLS using cert-manager: tls-cert-manager.md
-             - Generate certificates manually: tls-manual.md
-             - Update certificates: tls-update.md
-             - Disable TLS: tls-disable.md
-          - "Data at rest encryption": encryption.md
-          - "Telemetry": telemetry.md
-          - "Operator environment variables": env-vars-operator.md
-          - "Cluster component environment variables": env-vars-cluster.md
-          - "Define custom environment variables": env-vars-custom.md
-          - reconciliation-concurrency.md
-          - Logging:
-            - "Persistent logging": persistent-logging.md
-            - "Log rotation": logrotate.md
-          
-    - Management:
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups":
@@ -270,94 +244,147 @@ nav:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md
               - "Enable server-side encryption": backups-encryption.md
-              - Restore from a backup: 
+              - Restore from a backup:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
               - "Delete the unneeded backup": backups-delete.md
-          - "Horizontal and vertical scaling": scaling.md
-          - "Multi-cluster and multi-region deployment":
-              - "About Multi-cluster and multi-region deployments": replication.md
-              - "Plan your deployment": replication-plan-deployment.md
-              - Multi-cluster Services: 
-                 - About Multi-cluster Services: replication-mcs.md
-                 - Enable Multi-cluster Services on GKE: replication-mcs-gke.md
-                 - Enable Multi-cluster Services on EKS: replication-mcs-eks.md
-                 - Apply MCS to an existing cluster: replication-apply-mcs-existing.md
-              - Deployment:
-                 - "Configure Main site for replication": replication-main.md
-                 - "Configure Replica site for replication": replication-replica.md
-                 - "Interconnect sites": replication-interconnect.md
-                 - "Fail over workload to the Replica site": replication-failover.md
-                 - "Backups with cross-site replication": replication-backups.md
-                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
-              
-          - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
-          - "Add sidecar containers": sidecar.md
-          - "Restart or pause the cluster": pause.md
-          - volume-attributes-class.md
-          
+          - scaling.md
+          - Monitoring:
+              - "Monitor the database with PMM": monitoring.md
+              - "Monitor Kubernetes": monitor-kubernetes.md
+          - Logging:
+              - "Persistent logging": persistent-logging.md
+              - "Log rotation": logrotate.md
+
+    - User guides:
+        - Operator and Kubernetes:
+            - Configure external access: expose.md
+            - Control Pod scheduling with anti-affinity and tolerations: constraints.md
+            - Configure concurrent reconciliation: reconciliation-concurrency.md
+  
+        - Percona Server for MongoDB:
+            - "Arbiter, non-voting and hidden nodes": arbiter.md
+            - "MongoDB sharding": sharding.md
+            - Security:
+                - Transport encryption (TLS/SSL):
+                    - About TLS security: TLS.md
+                    - Configure TLS using cert-manager: tls-cert-manager.md
+                    - Generate certificates manually: tls-manual.md
+                    - Update certificates: tls-update.md
+                    - Disable TLS: tls-disable.md
+                - Data at rest encryption: encryption.md
+                - Multi-cluster and multi-region deployment:
+                    - "About multi-cluster and multi-region deployments": replication.md
+                    - "Plan your deployment": replication-plan-deployment.md
+                    - Multi-cluster Services:
+                        - About Multi-cluster Services: replication-mcs.md
+                        - Enable Multi-cluster Services on GKE: replication-mcs-gke.md
+                        - Enable Multi-cluster Services on EKS: replication-mcs-eks.md
+                        - Apply MCS to an existing cluster: replication-apply-mcs-existing.md
+                    - Deployment:
+                        - "Configure Main site for replication": replication-main.md
+                        - "Configure Replica site for replication": replication-replica.md
+                        - "Interconnect sites": replication-interconnect.md
+                        - "Fail over workload to the Replica site": replication-failover.md
+                        - "Backups with cross-site replication": replication-backups.md
+                        - "Splitting replica set across multiple data centers": replication-multi-dc.md
+            - Authentication:
+                - "OpenLDAP integration": ldap.md
+
+
+    - Cluster lifecycle management:
+          - Upgrade:
+              - About upgrades: update.md
+              - "Operator (CRD and Controller)":
+                  - "Upgrade CRD and the Operator": update-operator.md
+              - "Database (Percona Server for MongoDB)":
+                  - "Database upgrade overview": update-db.md
+                  - Minor upgrade:
+                       - "To a specific version": update-minor-set-version.md
+                       - "Automatic minor upgrades": update-minor-automatic.md
+                       - "Manual upgrade": update_manually.md
+                  - "Major upgrade": update-major.md
+                  - "Upgrade on OpenShift": update_openshift.md
+          - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
+          - "Pause or restart the cluster": pause.md
+          - "Delete the Operator and database": delete.md
+
+    - Advanced operations:
+        - Kubernetes and Operator:
+            - Environment variables:
+                - "Operator environment variables": env-vars-operator.md
+                - "Cluster component environment variables": env-vars-cluster.md
+                - "Define custom environment variables": env-vars-custom.md
+            - "Add sidecar containers": sidecar.md
+            - "Labels and annotations": annotations.md
+            - "Disable authentication": auth-disable.md
+            - "Extend startup logic (hook script)": hookscript.md
+            - Manage storage:
+                - "Local storage support": storage.md
+                - "Configure VolumeAttributesClass for persistent volumes": volume-attributes-class.md
+            - "Use a private registry": custom-registry.md
+        - Percona Server for MongoDB:
+            - "Changing MongoDB options": options.md
+            - "Percona Backup for MongoDB options": options-pbm.md
+            - "Create a private S3-compatible cloud for backups": private.md
+            - "Telemetry": telemetry.md
+
     - Troubleshooting:
-          - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
-          - "Initial troubleshooting": debug.md
-          - "Exec into the container": debug-shell.md
-          - "Check the logs": debug-logs.md
-          - "Special debug images": debug-images.md
-          - "Storage resizing": debug-storage.md
-
-    - HOWTOs:
-          - Install the database with customized parameters: custom-install.md 
-          - "OpenLDAP integration": ldap.md
-          - "How to use private registry": custom-registry.md
-          - "Creating a private S3-compatible cloud for backups": private.md
-          - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
-          - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
-          - "Configure concurrent reconciliation": reconciliation-concurrency.md
-          - "Monitor Kubernetes": monitor-kubernetes.md
-          - "Retrieve Percona certified images": image-query.md
-          - "Delete the Operator": delete.md
-
+          - "Kubernetes and Operator":
+              - "Exec into the container": debug-shell.md
+              - "Special debug images": debug-images.md
+              - "Storage resizing": debug-storage.md
+          - "Database cluster":
+              - "Initial troubleshooting": debug.md
+              - "Check the logs": debug-logs.md
     - Reference:
-          - "Custom Resource options": operator.md
-          - backup-resource-options.md
-          - restore-options.md
+          - Custom Resource reference:
+              - "Custom Resource options": operator.md
+              - "Backup resource options": backup-resource-options.md
+              - "Restore resource options": restore-options.md
           - "Custom resource statuses": cr-statuses.md
-          - "Percona certified images": images.md
+          - "Operator API": api.md           
+          - "Certified images":
+                  - "Percona certified images": images.md
+                  - "Retrieve certified images": image-query.md
           - "Versions compatibility": versions.md
-          - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          - "Copyright and licensing information": copyright.md
-          - "Trademark policy": trademark-policy.md
-      
+          - Legal:
+              - "Copyright and licensing information": copyright.md
+              - "Trademark policy": trademark-policy.md
+
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md
-          - "Percona Operator for MongoDB 1.19.1 (2025-02-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
-          - "Percona Operator for MongoDB 1.19.0 (2025-01-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
-          - "Percona Operator for MongoDB 1.18.0 (2024-11-14)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
-          - "Percona Operator for MongoDB 1.17.0 (2024-09-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
-          - "Percona Operator for MongoDB 1.16.2 (2024-07-23)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
-          - "Percona Operator for MongoDB 1.16.1 (2024-06-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
-          - "Percona Operator for MongoDB 1.16.0 (2024-05-24)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
-          - "Percona Operator for MongoDB 1.15.0 (2023-10-09)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
-          - "Percona Operator for MongoDB 1.14.0 (2023-03-13)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
-          - "Percona Operator for MongoDB 1.13.0 (2022-09-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
-          - "Percona Operator for MongoDB 1.12.0 (2022-05-05)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
-          - "Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
-          - "Percona Distribution for MongoDB Operator 1.10.0 (2021-09-30)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md
-          - "Percona Distribution for MongoDB Operator 1.9.0 (2021-07-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.8.0 (2021-05-06)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.7.0 (2021-03-08)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.6.0 (2020-12-22)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.5.0 (2020-09-07)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.4.0 (2020-03-31)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.3.0 (2019-12-11)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
-          - "Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)": RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
 
-    - "Old releases (documentation archive)": https://docs.percona.com/legacy-documentation/
+    - "Documentation archive": https://docs.percona.com/legacy-documentation/
