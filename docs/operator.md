@@ -442,7 +442,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 
 ### `secrets.vault`
 
-Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-storage-for-encryption-keys).
+Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3002,7 +3002,7 @@ An array of roles (with names of the role and the database) from which this role
 
 ## <a name="operator-users-section"></a>Users section
 
-The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-via-custom-resource).
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](app-users.md#create-users-via-custom-resource).
 
 ### `users.name`
 

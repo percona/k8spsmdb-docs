@@ -12,7 +12,7 @@ The following information is gathered:
 * Mongo version
 * Percona Backup for MongoDB (PBM) version
 * Is [sharding](sharding.md) enabled (starting from the Operator version 1.13)
-* Is [Hashicorp Vault](encryption.md#use-hashicorp-vault-storage-for-encryption-keys) enabled (starting from the Operator version 1.13)
+* Is [Hashicorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys) enabled (starting from the Operator version 1.13)
 * Is the Operator deployed in a [cluster-wide mode](cluster-wide.md) (starting from the Operator version 1.13)
 * Is [Volume Expansion](scaling.md#storage-resizing-with-volume-expansion-capability) enabled (starting from the Operator version 1.19)
 * Are [multi-cluster Services](replication-mcs.md) enabled (starting from the Operator version 1.19)

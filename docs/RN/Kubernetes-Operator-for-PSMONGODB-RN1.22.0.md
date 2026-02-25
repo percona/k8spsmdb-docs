@@ -162,7 +162,7 @@ You can now provide a Private Certificate Authority (CA) bundle to verify TLS co
 
 The configuration is straightforward: create the Secret that stores your private CA and certificates to authorize in the S3-compatible storage. Then reference this Secret and specify the CA certificate in the `caBundle` option in the Custom Resource. The Operator will verify TLS communication against it.
 
-Note that you must use the `minio` storage type for your S3-compatible storage services. Read more about this storage type in the [Native MinIO support as a backup storage](#native-minio-support-as-a-backup-storage) section.
+Note that you must use the `minio` storage type for your S3-compatible storage services. Read more about this storage type in the [Native MinIO support as a backup storage](#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages) section.
 
 Here's the example configuration:
 
@@ -273,7 +273,7 @@ Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.23
 
 ### Deprecated support for PMM2 
 
-The Operator deprecates support for PMM2 as this version entered end-of-life stage. PMM2 remains available so you can still monitor the health of your database using this version. However, we encourage you to plan migration to PMM3 to enjoy all features and fixes that this version provides. See the [PMM upgrade :octicons--link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html) documentation for steps.
+The Operator deprecates support for PMM2 as this version entered end-of-life stage. PMM2 remains available so you can still monitor the health of your database using this version. However, we encourage you to plan migration to PMM3 to enjoy all features and fixes that this version provides. See the [PMM upgrade :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html) documentation for steps.
 
 The support for PMM2 will be dropped in the Operator in two releases. 
 
@@ -364,7 +364,7 @@ These options are deprecated and will be removed in version 1.25.0:
 
 * [K8SPSMDB-1553](https://perconadev.atlassian.net/browse/K8SPSMDB-1553) - Preserved annotations during PVC resizing, ensuring that the `kubectl.kubernetes.io/restartedAt` annotation is not lost when a StatefulSet is recreated to accommodate volume expansion.
 
-[K8SPSMDB-1560](https://perconadev.atlassian.net/browse/K8SPSMDB-1560) - Fixed a bug where log rotation incorrectly produced duplicate files, resolving issues with unnecessary storage growth. The updated logic ensures only a single log file is generated and changes the default rotation schedule from hourly to daily for more efficient resource management.
+* [K8SPSMDB-1560](https://perconadev.atlassian.net/browse/K8SPSMDB-1560) - Fixed a bug where log rotation incorrectly produced duplicate files, resolving issues with unnecessary storage growth. The updated logic ensures only a single log file is generated and changes the default rotation schedule from hourly to daily for more efficient resource management.
 
 * [K8SPSMDB-1561](https://perconadev.atlassian.net/browse/K8SPSMDB-1561) - Mounted the PVC to the PMM3 container. This enables the node_exporter running in the pmm-client container to collect metrics on the database's persistent volume. (Thank you Stephen Foulkes for contributing to this issue)
 
@@ -380,7 +380,7 @@ The Operator was developed and tested with the following software:
 * PMM Client: 2.44.1-1
 * PMM3 Client: 3.6.0
 * cert-manager: 1.19.3
-* LogCollector based on fluent-bit 4.0.1-2
+* LogCollector based on fluent-bit: 4.0.1-2
 
 Other options may also work but have not been tested.
 
@@ -393,7 +393,7 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 * [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.32 - 1.33
 * [Amazon Elastic Kubernetes Service (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.32 - 1.35
 * [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.32 - 1.34
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.17.48 - 4.21.1
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.17 - 4.21
 * [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.38.0 based on Kubernetes v1.35.0
 
 --8<-- [end:platforms]
