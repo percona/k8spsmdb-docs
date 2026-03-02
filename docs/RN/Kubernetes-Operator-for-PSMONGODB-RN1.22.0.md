@@ -23,7 +23,7 @@
 ### Automation and integrations
 
 * [Better service mesh compatibility with automatic `appProtocol: mongo` on services](#ensure-smooth-integration-with-service-meshes)
-* [Improved GitOps workflows via automated CRD upgrades from a dedicated Helm chart](#automatic-crd-updates-for-helm-installations)
+* [Improved GitOps workflows via CRD upgrades from a dedicated Helm chart](#separate-crd-chart-for-helm-installations)
 * [Disable authentication for dev/test environments to speed up setup](#speed-up-development-or-testing-pipelines-by-disabling-authentication)
 * [Integrate with HashCorp Vault for system users management](#vault-integration-for-system-user-password-management)
 
@@ -94,7 +94,7 @@ Custom environment variables make deployments flexible, reproducible, and enviro
 
 See our [documentation](../env-vars-cluster.md) on how to define custom environment variables.
 
-### Automatic CRD updates for Helm installations
+### Separate CRD chart for Helm installations
 
 By default all components for the Operator Deployment are installed from the same Helm repository. To prevent accidental CRD updates, Helm v3 doesn't automatically update the CRDs during the upgrade, and you must update them manually, after you update the Operator deployment.
 
