@@ -3759,6 +3759,7 @@ The name of a Secret from where environment variables will be loaded for the log
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-secret` |
+
 ### `logcollector.logrotate.configuration`
 
 Overrides the default logrotate configuration used by the log collector sidecar container.
