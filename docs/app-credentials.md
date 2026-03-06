@@ -1,6 +1,6 @@
 # Get credentials for your app
 
-For production and for most applications, you should use a dedicated **application-level (unprivileged) user** instead of the database admin account. The Operator can create this user for you and store the credentials in a Kubernetes Secret that your app can read.
+For production and for most applications, you should use a dedicated **application-level (unprivileged) user** instead of the [database admin account](system-users.md). The Operator can create this user for you and store the credentials in a Kubernetes Secret that your app can read.
 
 ## Create one application user via Custom Resource
 
