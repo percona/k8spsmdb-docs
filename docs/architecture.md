@@ -40,11 +40,13 @@ By default, the Operator creates Percona Server for MongoDB replica set with thr
 
 ## High availability
 
-The Operator supports high availability through replica set topology, Pod distribution, automatic recovery, and client connectivity.
+High-availability is natively supported via Percona Server for MongoDB replica set or sharded cluster topology. 
+
+The Operator adds to it through replica set topology, Pod distribution, automatic recovery, and client connectivity.
 
 ### Pod distribution
 
-The Operator uses [node affinity and anti-affinity](constraints.md) to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can tune affinity rules in the PerconaServerMongoDB custom resource.
+The Operator uses [node affinity and anti-affinity](constraints.md) to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can [tune affinity](constraints.md) rules in the `PerconaServerMongoDB` custom resource.
 
 ### Automatic recovery
 
@@ -63,10 +65,7 @@ Applications should use a **mongodb+srv** connection URI. MongoDB drivers (4.2 a
 
     The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the [installation instructions](System-Requirements.md#installation-guidelines).
 
-## What to read next
+## Next step
 
-- [About backups](backups.md) — How backups and restores work with PBM
-- [Scale the cluster](scaling.md) — Scale your cluster vertically or horizontally
-* [Control Pod placement](constraints.md) — Configure anti-affinity and pod distribution
-* [Upgrade the Operator and database](update.md) — Keep your cluster up to date
-* [Custom Resource options](operator.md) — Description of available configuration options
+[Get started with the Operator](quickstart.md){.md-button}
+[Compare with other solutions](compare.md){.md-button}

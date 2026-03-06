@@ -24,6 +24,7 @@ Protect your data with [Percona Backup for MongoDB (PBM)](backups.md), which run
 * **Scheduled backups** — [Configure scheduled backups](backups-scheduled.md) with [remote storage](backups-storage.md) (S3, GCS, Azure, MinIO, or a file server) and retention policies.
 * **On-demand backups** — [Create a backup](backups-ondemand.md) at any time for critical operations.
 * **Logical and physical backups** — Use logical backups for portability or physical backups (including [physical incremental](backups.md#backup-types)) for faster restore on large datasets.
+* **PVC snapshots** to boost your backup and restore performance.
 * **Point-in-time recovery** — [Store oplog and restore to a point in time](backups-pitr.md).
 * **Restore** — [Restore on the same cluster or a new cluster](backups-restore.md); [replica set name remapping](backups-restore-replset-remapping.md) is supported when needed.
 
@@ -40,7 +41,7 @@ Scale your database infrastructure as demand grows:
 
 Keep your data and backups secure with built-in options:
 
-* **Transport encryption** — [Enable TLS](TLS.md) for client and server; use [cert-manager](tls-cert-manager.md) or [manual certificates](tls-manual.md).
+* **Transport encryption** — [Enable TLS](TLS.md) for client and server; use [cert-manager](tls-cert-manager.md) or [custom certificates](tls-manual.md).
 * **Data-at-rest encryption** — [Encrypt MongoDB data on disk](encryption.md).
 * **Users and roles** — Manage [application users](app-users.md) and [system users](system-users.md); optionally use [Vault](system-users-vault.md) for system user credentials.
 * **Backup encryption** — [Encrypt backups](backups-encryption.md) in object storage.
@@ -70,12 +71,10 @@ Here is what happens under the hood:
 This declarative approach means you describe what you want, and the Operator handles the orchestration so your database cluster matches your specification.
 
 [Explore the architecture](architecture.md){.md-button}
-[Comparison with other solutions](compare.md){.md-button}
+[Compare with other solutions](compare.md){.md-button}
 
-## What's next?
+## Next steps
 
-* [Get started](quickstart.md) — Get up and running in minutes, whether you build and application or need to deploy and operate the database
-* [Single- and multi-namespace deployment](single-namespace-and-multi-namespace-deployment.md) — Understand your required deployment mode
-* [Backups and restores](backups.md) — Protect your data with automated backups
-* [Monitor with PMM](monitoring.md) — Gain visibility into database performance
-* [TLS and security](TLS.md) — Secure client and server communications
+Get up and running in minutes, whether you build and application or need to deploy and operate the database.
+
+[Get started](quickstart.md){.md-button}

@@ -21,41 +21,64 @@ Choose how you want to use the Operator:
 
 ---
 
-## Featured topics
+<div data-grid markdown>
+<div data-banner markdown>
 
-Pick the topic that matches what you need to do:
-
-<div data-grid markdown><div data-banner markdown>
-
-## :fontawesome-solid-magnifying-glass: Discover the Operator { .title }
+## :fontawesome-solid-magnifying-glass: Understand the Operator { .title }
 
 Understand how the Operator works, how it’s designed, and how it compares to other ways to run MongoDB on Kubernetes.
 
-[How the Operator works :material-arrow-right:](how-it-works.md){ .md-button }
+* [How the Operator works](how-it-works.md)
+* [Features](features.md)
+* [Architecture](architecture.md)
+* [Compare with other solutions](compare.md)
 
 </div><div data-banner markdown>
 
-## :material-file-document-multiple: User guides { .title }
+## :material-progress-download: Set up the Operator and the database { .title }
+
+Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes? Install the Operator and learn how to easily manage daily operations.
+
+* [Installation](install-overview.md)
+* [Manage users](users.md)
+* [Configure backups](backups.md)
+* [Scale your cluster](scaling.md)
+* [Monitor database health](monitoring.md)
+* [Upgrade](update.md)
+
+</div><div data-banner markdown>
+
+## :material-file-document-multiple: User guides {.title}
 
 Optimize your Kubernetes and database workflows with the Operator.
 
-[User guides :material-arrow-right:](.md){ .md-button }
+* [Configure external access to the cluster](expose.md)
+* [Configure TLS](TLS.md)
+* [Encrypt data at rest](encryption.md)
+* [Set up disaster recovery with multi-cluster deployment](replication.md)
+
 
 </div><div data-banner markdown>
 
-### :material-frequently-asked-questions: Troubleshooting { .title }
+### :fontawesome-solid-user-tie: Manage cluster lifecycle {.title}
 
-Diagnose and fix issues with the Operator, the cluster, storage, or logs.
+Take control of your cluster's lifecycle. Follow these guides to keep your environment running smoothly with minimal downtime.
 
-[Troubleshooting :material-arrow-right:](debug.md){.md-button}
+* [Upgrade](update.md)
+* [Pause and resume](pause.md)
+* [Migrate data using backups](backups-move-from-external-db.md)
 
 </div><div data-banner markdown>
 
-### :material-book-education: Reference { .title }
+### :material-book-education: Look up reference materials { .title }
 
 Explore Custom Resource, backup and restore options, certified images and version compatibility.
 
-[Custom Resource options :material-arrow-right:](operator.md){ .md-button }
+* [Custom Resource options :material-arrow-right:](operator.md)
+* [Backup Resource options](backup-resource-options.md.)
+* [Restore Resource options](restore-options.md.)
+* [Percona certified images](images.md)
+* [Version compatibility matrix](versions.md)
 
 </div>
 </div>
