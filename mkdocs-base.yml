@@ -221,7 +221,7 @@ nav:
        - "Install in multi-namespace (cluster-wide) mode": cluster-wide.md
        - Install with OpenEverest: everest.md
        - Verify the cluster operation: verify-cluster.md
-    - Day-2 tasks:
+    - Manage your cluster:
           - Manage users: 
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
@@ -229,41 +229,6 @@ nav:
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
-<<<<<<< HEAD
-          - "Disable authentication": auth-disable.md
-          - "Changing MongoDB options": options.md
-          - options-pbm.md
-          - hookscript.md
-          - "Anti-affinity and tolerations": constraints.md
-          - "Labels and annotations": annotations.md
-          - "Exposing the cluster": expose.md
-          - "Local storage support": storage.md
-          - "Arbiter and non-voting nodes": arbiter.md
-          - "MongoDB sharding": sharding.md
-          - "Transport encryption (TLS/SSL)": 
-             - About TLS security: TLS.md
-             - Configure TLS using cert-manager: tls-cert-manager.md
-             - Generate certificates manually: tls-manual.md
-             - Update certificates: tls-update.md
-             - Disable TLS: tls-disable.md
-          - Data at rest encryption: 
-            - About data-at-rest encryption: encryption.md
-            - Configure encryption using an encryption key Secret: encryption-keyfile.md
-            - Configure encryption with HashiCorp Vault:
-               - without TLS: encryption-vault.md
-               - with TLS: encryption-vault-tls.md
-          - "Telemetry": telemetry.md
-          - "Operator environment variables": env-vars-operator.md
-          - "Cluster component environment variables": env-vars-cluster.md
-          - "Define custom environment variables": env-vars-custom.md
-          - reconciliation-concurrency.md
-          - Logging:
-            - "Persistent logging": persistent-logging.md
-            - "Log rotation": logrotate.md
-          
-    - Management:
-=======
->>>>>>> Reworked the navigation to reflect the learning path
           - Backup and restore:
               - "About backups": backups.md
               - "Configure storage for backups":
@@ -283,6 +248,7 @@ nav:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
+              - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
               - "Delete the unneeded backup": backups-delete.md
           - scaling.md
           - Monitoring:
@@ -291,13 +257,37 @@ nav:
           - Logging:
               - "Persistent logging": persistent-logging.md
               - "Log rotation": logrotate.md
+          - Upgrade:
+              - About upgrades: update.md
+              - Upgrade CRD and the Operator: 
+                  - "Considerations": update-operator.md
+                  - "Manually": update-crd-manual.md
+                  - "Via Helm": update-crd-helm.md
+                  - "Via OLM": update-crd-olm.md
+              - Upgrade Percona Server for MongoDB:
+                  - "Overview": update-db.md
+                  - Minor upgrade:
+                       - "To a specific version": update-minor-set-version.md
+                       - "Automatic minor upgrades": update-minor-automatic.md
+                       - "Manual upgrade": update_manually.md
+                  - "Major upgrade": update-major.md
+                  - "Upgrade on OpenShift": update_openshift.md
+          - "Pause or restart the cluster": pause.md
+          - "Delete the Operator and database": delete.md
 
     - User guides:
         - Operator and Kubernetes:
             - Configure external access: expose.md
             - Control Pod scheduling with anti-affinity and tolerations: constraints.md
             - Configure concurrent reconciliation: reconciliation-concurrency.md
-  
+            - "Add sidecar containers": sidecar.md
+            - "Labels and annotations": annotations.md
+            - "Extend startup logic (hook script)": hookscript.md
+            - Manage local storage:
+                - "Local storage support": storage.md
+                - "Configure VolumeAttributesClass for persistent volumes": volume-attributes-class.md
+            - "Use a private registry": custom-registry.md
+
         - Percona Server for MongoDB:
             - "Arbiter, non-voting and hidden nodes": arbiter.md
             - "MongoDB sharding": sharding.md
@@ -308,7 +298,12 @@ nav:
                     - Generate certificates manually: tls-manual.md
                     - Update certificates: tls-update.md
                     - Disable TLS: tls-disable.md
-                - Data at rest encryption: encryption.md
+                - Data at rest encryption: 
+                    - "About data-at-rest encryption": encryption.md
+                    - Configure encryption using an encryption key Secret: encryption-keyfile.md
+                    - Configure encryption with HashiCorp Vault:
+                       - "without TLS": encryption-vault.md
+                       - "with TLS": encryption-vault-tls.md
                 - Multi-cluster and multi-region deployment:
                     - "About multi-cluster and multi-region deployments": replication.md
                     - "Plan your deployment": replication-plan-deployment.md
@@ -326,53 +321,23 @@ nav:
                         - "Splitting replica set across multiple data centers": replication-multi-dc.md
             - Authentication:
                 - "OpenLDAP integration": ldap.md
-
-
-    - Cluster lifecycle management:
-          - Upgrade:
-              - About upgrades: update.md
-              - "Operator (CRD and Controller)":
-                  - "Upgrade CRD and the Operator": update-operator.md
-              - "Database (Percona Server for MongoDB)":
-                  - "Database upgrade overview": update-db.md
-                  - Minor upgrade:
-                       - "To a specific version": update-minor-set-version.md
-                       - "Automatic minor upgrades": update-minor-automatic.md
-                       - "Manual upgrade": update_manually.md
-                  - "Major upgrade": update-major.md
-                  - "Upgrade on OpenShift": update_openshift.md
-          - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
-          - "Pause or restart the cluster": pause.md
-          - "Delete the Operator and database": delete.md
-
-    - Advanced operations:
-        - Kubernetes and Operator:
+                - "Disable authentication": auth-disable.md
             - Environment variables:
                 - "Operator environment variables": env-vars-operator.md
                 - "Cluster component environment variables": env-vars-cluster.md
                 - "Define custom environment variables": env-vars-custom.md
-            - "Add sidecar containers": sidecar.md
-            - "Labels and annotations": annotations.md
-            - "Disable authentication": auth-disable.md
-            - "Extend startup logic (hook script)": hookscript.md
-            - Manage storage:
-                - "Local storage support": storage.md
-                - "Configure VolumeAttributesClass for persistent volumes": volume-attributes-class.md
-            - "Use a private registry": custom-registry.md
-        - Percona Server for MongoDB:
-            - "Changing MongoDB options": options.md
+            - "Change MongoDB options": options.md
             - "Percona Backup for MongoDB options": options-pbm.md
             - "Create a private S3-compatible cloud for backups": private.md
             - "Telemetry": telemetry.md
 
     - Troubleshooting:
-          - "Kubernetes and Operator":
-              - "Exec into the container": debug-shell.md
-              - "Special debug images": debug-images.md
-              - "Storage resizing": debug-storage.md
-          - "Database cluster":
-              - "Initial troubleshooting": debug.md
-              - "Check the logs": debug-logs.md
+        - Troubleshoot the Operator installation issues: troubleshoot-operator.md    
+        - "Exec into the container": debug-shell.md
+        - "Special debug images": debug-images.md
+        - "Storage resizing": debug-storage.md
+        - "Initial troubleshooting": debug.md
+        - "Check the logs": debug-logs.md
     - Reference:
           - Custom Resource reference:
               - "Custom Resource options": operator.md
