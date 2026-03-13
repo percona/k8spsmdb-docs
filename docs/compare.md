@@ -6,7 +6,7 @@ There are multiple ways to deploy and manage MongoDB in Kubernetes. Here we will
 
 * [KubeDB  :octicons-link-external-16:](https://github.com/kubedb)
 
-* [MongoDB Community Operator  :octicons-link-external-16:](https://github.com/mongodb/mongodb-kubernetes-operator)
+* [MongoDB Community Operator  :octicons-link-external-16:](https://github.com/mongodb/mongodb-kubernetes)
 
 * [Percona Operator for MongoDB  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/)
 
