@@ -81,3 +81,5 @@ Finally, let’s compare various features that are not a good fit for other cate
 | Helm              | Yes                          | Yes                | Yes, for operator only | Yes, for operator only        | Yes, for operator only            |
 | SSL/TLS           | Yes                          | Yes                | Enterprise only    | Yes                               | Yes                               |
 | Create users/roles| Yes                          | Yes                | No                 | Yes                               | Yes                               |
+
+[Get started with the Operator](quickstart.md){.md-button}
