@@ -8,7 +8,7 @@ Here is what the Operator brings to your infrastructure:
 
 ### High availability and failover
 
-**MongoDB’s built-in high availability** — Replica sets and sharding give you data redundancy and automatic failover at the database layer. A [replica set](architecture.md#replica-set-and-sharded-cluster) uses elections to promote a new primary when the current one fails, with no manual intervention. With [sharding](sharding.md), data is distributed across shards (each shard is a replica set), and mongos routes traffic. Both topologies are designed for availability and scale.
+**MongoDB’s built-in high availability** — Replica sets and sharding give you data redundancy and automatic failover at the database layer. A [replica set](architecture.md#replica-set) uses elections to promote a new primary when the current one fails, with no manual intervention. With [sharding](sharding.md), data is distributed across shards (each shard is a replica set), and mongos routes traffic. Both topologies are designed for availability and scale.
 
 **What the Operator adds** — The Operator runs these topologies reliably in Kubernetes:
 

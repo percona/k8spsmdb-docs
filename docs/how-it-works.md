@@ -40,4 +40,4 @@ Ready to get started? Continue to the [quickstart guide](quickstart.md) to deplo
 ## Useful links
 
 - [Design and architecture](architecture.md)
-- [Features and capabilities](features-and-capabilities.md) 
+- [Features and capabilities](features.md) 

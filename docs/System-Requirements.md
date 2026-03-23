@@ -41,11 +41,5 @@ is not enabled.
 
 Choose how you wish to install the Operator:
 
-* [with Helm](helm.md)
-* [with `kubectl`](kubectl.md)
-* [on Minikube](minikube.md)
-* [on Google Kubernetes Engine (GKE)](gke.md)
-* [on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
-* [on Microsoft Azure Kubernetes Service (AKS)](aks.md)
-* [on Openshift](openshift.md)
-* [in a Kubernetes-based environment](kubernetes.md)
+[With Helm](helm.md){.md-button}
+[Using manifests with kubectl](kubectl.md){.md-button}
