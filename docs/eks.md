@@ -16,20 +16,26 @@ Configure the AWS CLI with your credentials using the [official guide  :octicons
 
 ## Create the EKS cluster
 
-1. Decide the following:
+1. Decide on the following:
 
-   * EKS cluster name
-   * AWS region
-   * Number of nodes
-   * Mix of [on-demand  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html) and [spot  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances (if any). Spot instances are not recommended for production but can be useful for testing.
+    * EKS cluster name
+    * AWS region
+    * Number of nodes
+    * Mix of [on-demand  :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html) and [spot :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html) instances (if any). Spot instances are not recommended for production but can be useful for  testing.
 
 2. Create the cluster by following the [official EKS cluster creation instructions  :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html).
 
 3. Install the [Amazon EBS CSI driver  :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on the cluster so you can use EBS volumes for persistent storage. See [Managing the Amazon EBS CSI add-on  :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html).
 
+## Delete EKS cluster
+
+To remove the Kubernetes cluster and all resources, see [Delete the Operator and database](delete.md#delete-the-kubernetes-cluster-platform-specific).
+
 ## Next steps
 
-* Deploy the Operator and Percona Server for MongoDB in [single-namespace mode](kubectl.md) (using [kubectl](kubectl.md) or [Helm](helm.md)) or [cluster-wide mode](cluster-wide.md).
-* [Verify the cluster operation](verify-cluster.md).
-* If the cluster does not become ready, see [Initial troubleshooting](debug.md).
-* To remove the Kubernetes cluster and all resources, see [Delete the Operator and database](delete.md#delete-the-kubernetes-cluster-platform-specific).
+Deploy the Operator and Percona Server for MongoDB.
+
+[Single-namespace deployment](kubectl.md){.md-button}
+[Multi-namespace deployment](cluster-wide.md){.md-button}
+
+

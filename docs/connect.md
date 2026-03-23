@@ -73,7 +73,7 @@ Here's how to do it:
 
 Congratulations! You have connected to Percona Server for MongoDB.
 
-To connect from your own application (connection string, credentials, code examples), see [Get started](get-started.md) (developer path) or [Connect your application](connect-from-app.md).
+To connect from your own application (connection string, credentials, code examples), see [Get started](get-a-cluster.md) (developer path) or [Connect your application](connect-from-app.md).
 
 ## Next steps
 
