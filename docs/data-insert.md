@@ -61,7 +61,7 @@ MongoDB provides [multiple methods for data insert  :octicons-link-external-16:]
 
 Now your cluster has some data in it.
 
-To connect from your application, see [Get started](get-started.md) (developer path) or [Connect your application](connect-from-app.md).
+To connect from your application, see [Connect your application](connect-from-app.md).
 
 ## Next steps
 

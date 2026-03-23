@@ -14,21 +14,25 @@ Install Minikube using the [official install guide  :octicons-link-external-16:]
 
 1. Start Minikube with enough resources for the Operator and MongoDB (adjust memory, CPUs, and disk as needed):
 
-   ```bash
-   minikube start --memory=5120 --cpus=4 --disk-size=30g
-   ```
+     ```bash
+     minikube start --memory=5120 --cpus=4 --disk-size=30g
+     ```
 
-   This downloads images, initializes the cluster, and starts it. Optionally run `minikube dashboard` to open the Kubernetes dashboard in your browser.
+     This downloads images, initializes the cluster, and starts it.   Optionally run `minikube dashboard` to open the Kubernetes dashboard in your browser.
 
 2. Verify the cluster is up:
 
-   ```bash
-   kubectl get nodes
-   ```
+     ```bash
+     kubectl get nodes
+     ```
+
+## Delete Minikube 
+
+To stop or remove the Minikube cluster, see [Delete the Operator and database](delete.md#delete-the-kubernetes-cluster-platform-specific).
 
 ## Next steps
 
-* Deploy the Operator and Percona Server for MongoDB in [single-namespace mode](kubectl.md) or [cluster-wide mode](cluster-wide.md). For a minimal local deployment, use `deploy/cr-minimal.yaml` from the Operator repository instead of the default `deploy/cr.yaml`.
-* [Verify the cluster operation](verify-cluster.md).
-* If the cluster does not become ready, see [Initial troubleshooting](debug.md).
-* To stop or remove the Minikube cluster, see [Delete the Operator and database](delete.md#delete-the-kubernetes-cluster-platform-specific).
+Deploy the Operator and Percona Server for MongoDB. For a minimal local deployment, use `deploy/cr-minimal.yaml` from the Operator repository instead of the default `deploy/cr.yaml`.
+
+[Single-namespace deployment](kubectl.md){.md-button} 
+[Multi-namespace deployment](cluster-wide.md){.md-button}

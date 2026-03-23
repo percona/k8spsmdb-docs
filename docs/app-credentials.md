@@ -1,6 +1,10 @@
 # Get credentials for your app
 
-For production and for most applications, you should use a dedicated **application-level (unprivileged) user** instead of the [database admin account](system-users.md). The Operator can create this user for you and store the credentials in a Kubernetes Secret that your app can read.
+When the Operator creates a database cluster, it creates the Secret with the admin user credentials. This Secret is referenced in the `.spec.secrets.users` option in the Custom Resource. Read more about these users in [System users](system-users.md). 
+
+For testing purposes you can reuse the database admin user and use its credentials to construct the connection string. Refer to [connect to Percona Server for MongoDB](connect.md) tutorial for the steps. 
+
+For production and for most applications, you should use a dedicated **application-level (unprivileged) user** instead of the database admin account. The Operator can create this user for you and store the credentials in a Kubernetes Secret that your app can read.
 
 ## Create one application user via Custom Resource
 
@@ -43,3 +47,7 @@ You define the user in the Percona Server for MongoDB Custom Resource. The Opera
 !!! note "More options"
 
     For manually created passwords, multiple users, custom roles, and other options, see [Application-level (unprivileged) users](app-users.md).
+
+## Next steps
+
+[Connect from your laptop or CI](connect-from-outside.md){.md-button}

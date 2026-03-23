@@ -36,6 +36,5 @@ Use the same URI in your application code. If TLS is enabled in your cluster, ch
 
 ## Next steps
 
-* To use a dedicated user for your app (instead of the admin user), see [Get credentials for your app](app-credentials.md).
-* If your application runs **outside** the cluster (for example on your laptop or in CI), see [Connect from your laptop or CI](connect-from-outside.md).
-* For minimal code examples in Node.js, Python, and Go, see [Connection examples](connection-examples.md).
+[Get credentials for your app](app-credentials.md){.md-button}
+

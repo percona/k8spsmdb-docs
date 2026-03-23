@@ -39,7 +39,7 @@ Understand how the Operator works, how it’s designed, and how it compares to o
 
 Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes? Install the Operator and learn how to easily manage daily operations.
 
-* [Installation](install-overview.md)
+* [Installation](namespace-mode.md)
 * [Manage users](users.md)
 * [Configure backups](backups.md)
 * [Scale your cluster](scaling.md)
@@ -75,8 +75,8 @@ Take control of your cluster's lifecycle. Follow these guides to keep your envir
 Explore Custom Resource, backup and restore options, certified images and version compatibility.
 
 * [Custom Resource options :material-arrow-right:](operator.md)
-* [Backup Resource options](backup-resource-options.md.)
-* [Restore Resource options](restore-options.md.)
+* [Backup Resource options](backup-resource-options.md)
+* [Restore Resource options](restore-options.md)
 * [Percona certified images](images.md)
 * [Version compatibility matrix](versions.md)
 
