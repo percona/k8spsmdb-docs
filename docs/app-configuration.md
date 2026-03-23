@@ -24,5 +24,4 @@ MongoDB drivers support automatic retries and connection pooling. For replica se
 
 ## Next steps
 
-* [Get credentials for your app](app-credentials.md) — Create and use an application user.
-* [Troubleshoot connection issues](troubleshoot-connection.md) — Fix common connection errors.
+* [Troubleshoot connection issues](troubleshoot-connection.md){.md-button}

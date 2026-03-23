@@ -5,6 +5,14 @@ A Helm [chart  :octicons-link-external-16:](https://helm.sh/docs/topics/charts/)
 
 You can find Percona Helm charts in [percona/percona-helm-charts  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts) repository in GitHub.
 
+## Assumptions
+
+This guide walks you through installing Percona Operator for MongoDB in a [single-namespace mode](namespace-mode.md#single-namespace-deployment) with default parameters. 
+
+For how to install Percona Operator for MongoDB in a multi-namespace mode, see [Install in a multi-namespace mode](cluster-wide.md). For how ton install Percona Operator for MongoDB with customized parameters, see [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
+
+--8<-- "what-you-install.md"
+
 ## Prerequisites
 
 To install and deploy the Operator, you need the following:
@@ -19,8 +27,6 @@ To install and deploy the Operator, you need the following:
         * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
         * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
-
---8<-- "what-you-install.md"
 
 ## Installation 
 

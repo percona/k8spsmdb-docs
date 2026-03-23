@@ -70,3 +70,7 @@ Use the following guides depending on how you install the Operator:
 * **Custom Resource Definitions (CRDs)** — CRDs are cluster-scoped and shared by all Operator instances. Install them once per cluster. Do not delete CRDs while any Operator or Percona Server for MongoDB cluster is still running.
 * **WATCH_NAMESPACE when using a list** — When you set `WATCH_NAMESPACE` to a comma-separated list, it must include the namespace where the Operator Pod runs. For example, if the Operator is in `psmdb-operator` and you want it to manage `psmdb` and `psmdb-prod`, set `WATCH_NAMESPACE=psmdb-operator,psmdb,psmdb-prod`. If you omit the Operator’s namespace, it will not manage resources in its own namespace.
 * **Recommendation** — Prefer single-namespace mode for better isolation and a smaller blast radius. Use multi-namespace mode only when you need one Operator to manage clusters in several namespaces.
+
+## Next steps
+
+[System requirements](System-Requirements.md){.md-button}

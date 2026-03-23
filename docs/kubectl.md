@@ -1,12 +1,18 @@
 # Install Percona Server for MongoDB using kubectl
 
-A Kubernetes Operator is a special type of controller introduced to simplify complex deployments. The Operator extends the Kubernetes API with custom resources.
-
-The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) and [Percona Backup for MongoDB :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) in a Kubernetes-based environment on-premises or in the cloud.
+Percona Operator for MongoDB is a special type of controller introduced to automate deployment and management of Percona Server for MongoDB in Kubernetes. The Operator extends the Kubernetes API with custom resources. Learn more about [how the Operator works](how-it-works.md) and its [architecture](architecture.md).
 
 We recommend installing the Operator with the [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm  :octicons-link-external-16:](https://github.com/helm/helm) package manager.
 
 [Install with kubectl :material-arrow-down:](#prerequisites){.md-button} [Install with Helm :material-arrow-right:](helm.md){.md-button}
+
+## Assumptions
+
+This guide walks you through installing Percona Operator for MongoDB in a [single-namespace mode](namespace-mode.md#single-namespace-deployment) with default parameters.
+
+For how to install Percona Operator for MongoDB in a multi-namespace mode, see [Install in a multi-namespace mode](cluster-wide.md). For how ton install Percona Operator for MongoDB with customized parameters, see [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
+
+--8<-- "what-you-install.md"
 
 ## Prerequisites
 
@@ -23,7 +29,6 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Create an EKS cluster](eks.md#create-the-eks-cluster)
         * [Create an AKS cluster](aks.md#create-the-aks-cluster)
 
---8<-- "what-you-install.md"
 
 ## Procedure 
 

@@ -105,7 +105,4 @@ Use the same URI for replica set (with `replicaSet=rs0`); the driver handles rep
 
 ## Next steps
 
-* Build your URI from [Connect your application](connect-from-app.md).
-* For a dedicated app user and credentials, see [Get credentials for your app](app-credentials.md).
-* If your app runs outside the cluster, see [Connect from your laptop or CI](connect-from-outside.md).
-* For configuration tips, see [App configuration](app-configuration.md).
+[App configuration best practices](app-configuration.md){.md-button}
