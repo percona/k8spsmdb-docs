@@ -50,7 +50,7 @@ data:
     * Specify the bucket name for the `minio.bucket` option
     * Specify the location of the bucket for the `minio.region` option
     * Specify the name of the Secret you created previously for the `minio.credentialsSecret` option
-    * Specify the `minio.endpointUrl` option if your storage requires it. This points to your storage service and is specific to your cloud provider. For example, the endpoint value for MinIO is `minio.psmdb.svc.cluster.local:9000/minio/`
+    * Specify the `minio.endpointUrl` option if your storage requires it. This points to your storage service and is specific to your cloud provider. For example, the endpoint value for MinIO is `minio.psmdb.svc.cluster.local:9000/minio/`. Don't use 'http://' or 'https://' prefixes.
 
     !!! tip "Organizing backups"
 
@@ -67,7 +67,10 @@ data:
             bucket: MINIO-BACKUP-BUCKET-NAME-HERE
             credentialsSecret: my-cluster-name-backup-minio
             endpointUrl: minio.psmdb.svc.cluster.local:9000/minio/
+            forcePathStyle: true
+            insecureSkipTLSVerify: true
             region: us-east-1
+            secure: true
     ```
 
 3. Apply the configuration:
