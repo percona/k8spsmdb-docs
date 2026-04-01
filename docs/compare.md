@@ -17,7 +17,7 @@ Here is the review of generic features, such as supported MongoDB versions, open
 | Feature/Product   | Percona Operator for MongoDB | Bitnami Helm Chart | KubeDB for MongoDB | MongoDB Controllers for Kubernetes (MCK) | 
 |:------------------|:-----------------------------|:-------------------|:-------------------|:-----------------------------------------|
 | Open source model | Apache 2.0                   | Apache 2.0         | Open core          | Open core                          |
-| Kubernetes conformance | ÇNCF-certified distributions | No guarantee  | No guarantee       | No guarantee                       |
+| Kubernetes conformance | CNCF-certified distributions | No guarantee  | No guarantee       | No guarantee                       |
 | Cluster-wide mode | Yes                          | Not an operator    | Enterprise only    | Yes                                |
 | Network exposure  | Yes                          | Yes                | No, only through manual config | Yes (Enterprise); limited (Community) |
 | Web-based GUI     | [OpenEverest](https://openeverest.io/) | :no_entry_sign: | [kubedb-ui](https://kubedb.com/datasheet/) | [Ops Manager / Cloud Manager](https://www.mongodb.com/products/self-managed/enterprise-advanced/ops-manager) (Enterprise)|
