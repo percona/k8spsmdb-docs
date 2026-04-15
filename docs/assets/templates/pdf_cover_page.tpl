@@ -3,7 +3,7 @@
 {{ config.extra.added_key }}
 
 <p>
-<img src="assets/images/Percona_Logo_Color.png" />
+<img src="assets/images/Percona_Color_Dark.svg" />
 </p>
 
 <h1>Operator for MongoDB</h1>

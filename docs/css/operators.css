@@ -5,7 +5,7 @@
 :root {
     --operators-brand: rgb(42, 166, 223);
     /* Sidebar / repo nav strip — solid, no gradient */
-    --operators-brand-dark: rgb(36, 141, 189);
+    --operators-brand-dark: rgb(40, 39, 39);
     --md-primary-fg-color--dark: var(--operators-brand-dark);
 }
 .md-header,
