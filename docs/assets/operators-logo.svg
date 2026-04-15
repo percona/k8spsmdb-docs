@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_12" data-name="Layer 12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1123.51 1123.51">
+<svg id="Layer_12" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1123.5 1123.5">
+  <!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->
   <defs>
     <style>
-      .cls-1 {
+      .st0 {
         fill: #fff;
       }
     </style>
   </defs>
   <g id="Background">
     <g>
-      <path class="cls-1" d="M1079.79,1010.89H43.71L561.75,113.62l518.04,897.27ZM72.03,994.54h979.44L561.75,146.32,72.03,994.54Z"/>
-      <g>
-        <path class="cls-1" d="M285.46,815.31l31.02,82.63h452.56l68.58-82.63H285.46Z"/>
-        <polyline class="cls-1" points="338.58 786.24 485.24 528.52 504.78 562.26 376.93 786.24"/>
-        <polygon class="cls-1" points="607.11 706.43 653.19 786.24 801.39 786.24 607.11 449.74 412.83 786.24 561.03 786.24 607.11 706.43"/>
-        <polygon class="cls-1" points="471.65 449.74 521.09 535.38 570.54 449.74 471.65 449.74"/>
-      </g>
+      <path class="st0" d="M212.1,740.9l39.3,104.6h573.1l86.8-104.6H212.1Z"/>
+      <polyline class="st0" points="279.4 704.1 465.1 377.7 489.9 420.5 328 704.1"/>
+      <polygon class="st0" points="619.5 603 677.8 704.1 865.5 704.1 619.5 278 373.4 704.1 561.1 704.1 619.5 603"/>
+      <polygon class="st0" points="447.9 278 510.5 386.4 573.1 278 447.9 278"/>
     </g>
   </g>
 </svg>
