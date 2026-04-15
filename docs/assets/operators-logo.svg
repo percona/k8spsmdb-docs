@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_12" data-name="Layer 12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1123.51 1123.51">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Background">
+    <g>
+      <path class="cls-1" d="M1079.79,1010.89H43.71L561.75,113.62l518.04,897.27ZM72.03,994.54h979.44L561.75,146.32,72.03,994.54Z"/>
+      <g>
+        <path class="cls-1" d="M285.46,815.31l31.02,82.63h452.56l68.58-82.63H285.46Z"/>
+        <polyline class="cls-1" points="338.58 786.24 485.24 528.52 504.78 562.26 376.93 786.24"/>
+        <polygon class="cls-1" points="607.11 706.43 653.19 786.24 801.39 786.24 607.11 449.74 412.83 786.24 561.03 786.24 607.11 706.43"/>
+        <polygon class="cls-1" points="471.65 449.74 521.09 535.38 570.54 449.74 471.65 449.74"/>
+      </g>
+    </g>
+  </g>
+</svg>
