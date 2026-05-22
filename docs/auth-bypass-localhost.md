@@ -10,7 +10,7 @@ The Percona Server for MongoDB parameter `enableLocalhostAuthBypass` controls wh
 
 Here's what you need to know before disabling the localhost exception:
 
-1. Never disable localhost exception when you create a new cluster. Setting `enableLocalhostAuthBypass: false` **before** the Operator created system users prevents it from initializing the replica set. You will see repeated failures logged in the Operator.
+1. Never disable the localhost exception when you create a new cluster. Setting `enableLocalhostAuthBypass: false` **before** the Operator creates system users prevents it from initializing the replica set. You will see repeated failures logged in the Operator.
 2. Disabling localhost exception means you can no longer use it as a recovery mechanism if you lost all your admin credentials. Therefore, ensure you have working backups of the cluster data and the Kubernetes Secrets containing the cluster credentials. See [About backups](backups.md) and [System users](system-users.md). 
 
 ## Disable localhost authentication bypass on running clusters
