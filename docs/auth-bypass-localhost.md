@@ -4,7 +4,7 @@ By default, you can connect to Percona Server for MongoDB from `localhost` witho
 
 After the Operator sets up the cluster and creates the system users, Percona Server for MongoDB itself closes the localhost exception. You can make the closure permanent, protecting against scenarios where the exception could otherwise re-open.
 
-The Percona Server for MongoDB parameter `enableLocalhostAuthBypass` controls whether the localhost exception is available. It is `true` by default. To disable it, pass it as the `serverParameter` in the custom configuration block of the Custom Resource.
+The Percona Server for MongoDB parameter `enableLocalhostAuthBypass` controls whether the localhost exception is available. It is `true` by default. To disable it, set it in the `setParameter` block within the custom `configuration` section of the Custom Resource.
 
 ## Considerations
 
