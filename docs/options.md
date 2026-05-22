@@ -8,7 +8,9 @@ Then you pass these options to MongoDB instances in the cluster in one of the fo
 - [Use a ConfigMap](#use-a-configmap)
 - [Use a Secret object](#use-a-secret-object)
 
-Note that you can't change options that may break the behavior of the Operator. For example, TLS/SSL options. If you try changing such options, your changes will be ignored.  
+Note that you can't change options that may break the behavior of the Operator. For example, TLS/SSL options. If you try changing such options, your changes will be ignored.
+
+Some options, such as `enableLocalhostAuthBypass`, can be set via `replsets.configuration` but only on running clusters. Setting them before the cluster has bootstrapped prevents initialization. See [Disable localhost authentication bypass](auth-bypass-localhost.md) for details.
 
 ## Edit the `deploy/cr.yaml` file
 
