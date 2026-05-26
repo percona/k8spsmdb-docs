@@ -5,11 +5,23 @@ A Helm [chart  :octicons-link-external-16:](https://helm.sh/docs/topics/charts/)
 
 You can find Percona Helm charts in [percona/percona-helm-charts  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts) repository in GitHub.
 
+Helm charts for Percona Server for MongoDB include:
+
+* [Percona Server for MongoDB Operator CRDs :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator-crds)
+* [Percona Server for MongoDB Operator Deployment :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator)
+* [Percona Server for MongoDB Database :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db)
+
+For a typical installation, you first install the Operator CRDs, then the Operator Deployment, and finally you use the Operator to deploy a Percona Server for MongoDB cluster.
+
+This guide walks you through installing the Percona Server for MongoDB Operator with default parameters and names.
+
+To install the Operator with custom parameters or resource names, refer to [Install Percona Server for MongoDB with customized parameters](custom-install.md).
+
 ## Prerequisites
 
 To install and deploy the Operator, you need the following:
 
-1. [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm).
+1. [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm). Run `helm version` to check the version.
 2. [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility.
 3. A Kubernetes environment. You can deploy it locally on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
@@ -20,6 +32,8 @@ To install and deploy the Operator, you need the following:
         * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
 
+4. Privileges to create Custom Resource Definitions (CRDs), RBAC resources, and deploy the Operator.
+   
 --8<-- "what-you-install.md"
 
 ## Installation 
@@ -117,8 +131,7 @@ Here's a sequence of steps to follow:
 
 You have successfully installed and deployed the Operator with default parameters. 
 
-You can find in the documentation for the charts which [Operator :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart) and [database :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) parameters can be customized during installation.
-Also, you can check the rest of the Operator's parameters in the [Custom Resource options reference](operator.md).
+
 
 ## Next steps
 
