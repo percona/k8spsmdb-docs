@@ -379,12 +379,12 @@ Now you are ready to configure Percona Server for MongoDB to use IRSA for backup
         ```yaml
         ...
         backup:
-        enabled: true
-        ...
-        storages:
+          enabled: true
+          ...
+          storages:
             aws-s3:
-            type: s3
-            s3:
+              type: s3
+              s3:
                 bucket: <s3_bucket>
                 region: <aws-region>
                 prefix: data/pbm
