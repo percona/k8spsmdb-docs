@@ -148,7 +148,13 @@ export namespace=<my-namespace>
         https://oidc.eks.us-west-2.amazonaws.com/id/4B2D5F8C1A2B3C4D5E6F7A8B9C0D1E2F
         ```
 
-    Save the OIDC ID from the URL (the part after `/id/`). 
+    Save the OIDC ID from the URL (the part after `/id/`) and export it as an environment variable:
+
+    ```bash
+    export oidc_id=<oidc-id>
+    ```
+
+    For example, if the issuer URL is `https://oidc.eks.us-west-2.amazonaws.com/id/4B2D5F8C1A2B3C4D5E6F7A8B9C0D1E2F`, set `oidc_id` to `4B2D5F8C1A2B3C4D5E6F7A8B9C0D1E2F`.
 
     If the command returns no issuer URL, create the OIDC provider:
 
@@ -328,8 +334,8 @@ export namespace=<my-namespace>
 3. Annotate both service accounts with the needed IAM role ARN:
 
         ```bash
-        kubectl -n $namespace annotate serviceaccount default eks.amazonaws.com/role-arn: $role-arn --overwrite
-        kubectl -n $namespace annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn: $role-arn --overwrite
+        kubectl -n $namespace annotate serviceaccount default eks.amazonaws.com/role-arn=$role_arn --overwrite
+        kubectl -n $namespace annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role-arn --overwrite
         ```
 
 4. Annotating a Service Account does not restart existing Pods automatically. Restart the Operator and database Pods so they pick up the new `AWS_ROLE_ARN` environment variable:
