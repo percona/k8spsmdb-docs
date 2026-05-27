@@ -49,10 +49,10 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
     ```yaml
     pmm:
-    enabled: false
-    image:
-      repository: percona/pmm-client
-      tag: {{pmm3recommended}}
+      enabled: false
+      image:
+        repository: percona/pmm-client
+        tag: {{ pmm3recommended }}
     ```
 
     ## Naming conventions for Helm resources
