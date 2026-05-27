@@ -639,7 +639,7 @@ Defines whether this [external replset instance](replication-main.md) acts as an
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: true     | `0` |
+| :material-toggle-switch-outline: boolean     | `true` |
 
 ### `replsets.configuration`
 
