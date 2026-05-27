@@ -100,7 +100,7 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
     !!! note "Cluster name length"
 
-        For the pg-db chart, the cluster name is limited to 21 characters, must consist of lowercase alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character. Keep this in mind when using `fullnameOverride` or long release names.
+        For the psmdb-db chart, keep release names and overrides short enough to satisfy Kubernetes resource name limits (for example, many DNS-label resource names such as Services are limited to 63 characters).
 
     ## Common Helm values reference
 
