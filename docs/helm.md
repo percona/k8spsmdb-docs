@@ -15,7 +15,7 @@ For a typical installation, you first install the Operator CRDs, then the Operat
 
 This guide walks you through installing the Percona Server for MongoDB Operator with default parameters and names.
 
-To install the Operator with custom parameters or resource names, refer to [Install Percona Server for MongoDB with customized parameters](custom-install.md).
+To install the Operator with custom parameters or resource names, refer to [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
 
 ## Prerequisites
 
