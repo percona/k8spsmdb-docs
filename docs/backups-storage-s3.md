@@ -58,11 +58,11 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
     apiVersion: v1
     kind: Secret
     metadata:
-    name: my-cluster-name-backup-s3
+      name: my-cluster-name-backup-s3
     type: Opaque
     data:
-    AWS_ACCESS_KEY_ID: <base64-encoded-access-key>
-    AWS_SECRET_ACCESS_KEY: <base64-encoded-secret>
+      AWS_ACCESS_KEY_ID: <base64-encoded-access-key>
+      AWS_SECRET_ACCESS_KEY: <base64-encoded-secret>
     ```
 
 3. Create the Kubernetes Secret object with this file:
