@@ -33,7 +33,6 @@ To install and deploy the Operator, you need the following:
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
 
 4. Privileges to create Custom Resource Definitions (CRDs), RBAC resources, and deploy the Operator.
-   
 --8<-- "what-you-install.md"
 
 ## Installation 
