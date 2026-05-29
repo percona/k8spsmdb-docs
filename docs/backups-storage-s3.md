@@ -227,7 +227,7 @@ export namespace=<my-namespace>
         {
           "Effect": "Allow",
           "Principal": {
-            "Federated": "arn:aws:iam::<account-id>:oidc-provider/oidc.eks.<region>.amazonaws.com/id/<oidc-id>"
+            "Federated": "arn:aws:iam::<account-id>:oidc-provider/oidc.eks.<aws-region>.amazonaws.com/id/<oidc-id>"
           },
           "Action": "sts:AssumeRoleWithWebIdentity",
           "Condition": {
