@@ -69,7 +69,7 @@ When you create the Restore object, the following occurs:
    * It terminates `mongos` Pods (for sharded clusters) and arbiter nodes to prevent clients from accessing the database during the restore.
    * It prepares StatefulSets for restore (as for a physical backup) and starts the restore with `pbm restore --external`.
 
-2. PBM shuts down `mongod`, wipes the `dbPath` on each data-bearing node, and exits,leaving nodes in **`copyReady`** state waiting for data files.
+2. PBM shuts down `mongod`, wipes the `dbPath` on each data-bearing node, and exits, leaving nodes in **`copyReady`** state waiting for data files.
 
 3. The Operator scales database StatefulSets to zero and runs `pbm-agent restore-finish` on every node, passing the PBM config, replica set name, node name, and (when needed) MongoDB `db` config for encryption at rest.
 
