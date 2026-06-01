@@ -36,6 +36,8 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
     * `spec.type` is the [backup type](backups.md#backup-types). If you leave it empty, the Operator makes a logical backup by default.
 
+    * `spec.volumeSnapshotClass` is the Kubernetes `VolumeSnapshotClass` name. You must specify it when you [make a PVC snapshot backup](backups-pvc-backup.md).
+
     **Examples**
 
     === "Logical"
@@ -107,6 +109,25 @@ To create a Backup resource, you need a special custom resource manifest. The [d
           storageName: s3-us-west
           type: incremental
         ```
+
+    === "PVC snapshot (external)"
+
+        As a precondition, you must ensure at least one `VolumeSnapshotClass` exists in your Kubernetes cluster and is compatible with the storage class used by your MongoDB data volumes. See [Confgure PVC snapshots](backups-pvc-setup.md) for steps.
+
+        ```yaml
+        apiVersion: psmdb.percona.com/v1
+        kind: PerconaServerMongoDBBackup
+        metadata:
+          finalizers:
+          - percona.com/delete-backup
+          name: my-snapshot-backup
+        spec:
+          clusterName: my-cluster-name
+          type: external
+          volumeSnapshotClass: gke-snapshot-class
+        ```
+
+        See [Make a PVC snapshot backup](backups-pvc-backup.md) for prerequisites and monitoring.
 
 
 2. Apply the `backup.yaml` manifest to start a backup:

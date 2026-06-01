@@ -271,6 +271,10 @@ nav:
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - "PVC snapshot backups":
+                  - Overview: backups-pvc-snapshots.md
+                  - "Configure PVC snapshots": backups-pvc-setup.md
+                  - "Use PVC snapshots": backups-pvc-usage.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md

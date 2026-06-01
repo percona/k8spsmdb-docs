@@ -3694,11 +3694,19 @@ The backup compression level ([higher values result in better but slower compres
 
 ### `backup.tasks.type`
 
-The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#backup-types) for details.
+The backup type. Can be `logical` (default), `physical`, `incremental`, `incremental-base`, or `external` (PVC snapshot). See [backup types](backups.md#backup-types).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
+
+### `backup.tasks.volumeSnapshotClass`
+
+The name of the Kubernetes `VolumeSnapshotClass` for scheduled PVC snapshot backups. **Required** when `backup.tasks.type` is `external`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `gke-snapshot-class` |
 
 ## <a name="operator-logcollector-section"></a>Log Collector section
 
