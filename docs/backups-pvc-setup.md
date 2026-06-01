@@ -6,7 +6,7 @@ For a high-level explanation of PVC snapshots, see [PVC snapshot support](backup
 
 !!! note "Amazon EKS users"
 
-    If you run your cluster on Amazon EKS, refer to the [Set up PVC snapshots on EKS] section. EKS requires specific addons, a `gp3` storage class, and a matching `VolumeSnapshotClass` before you can use PVC snapshots.
+    If you run your cluster on Amazon EKS, refer to the [Add a VolumeSnapshotClass on EKS](#add-a-volumesnapshotclass-on-eks) section. EKS requires specific addons, a `gp3` storage class, and a matching `VolumeSnapshotClass` before you can use PVC snapshots.
 
 ## Prerequisites
 
