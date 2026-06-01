@@ -79,7 +79,7 @@ When you create the Restore object, the following occurs:
 
 6. After a successful restore, the Operator cleans up temporary restore configuration and returns the cluster to normal operation.
 
-For step-by-step instructions, see [Restore from a PVC snapshot backup](backups-pvc-restore.md).
+For step-by-step instructions, see [Restore from a PVC snapshot backup](backups-pvc-usage.md#make-an-in-place-restore-from-a-pvc-snapshot-backup).
 
 **Point-in-time recovery from a physical backup**
 
