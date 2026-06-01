@@ -96,7 +96,7 @@ spec:
     * Set the schedule, 
     * Specify the `type` as `external`
     * Reference the VolumeSnapshot Class for the `volumeSnapshotClass`
-    * Configure the [retention policy](backup-resource-options.md#retention)
+    * Configure the [retention policy](backups-scheduled.md#configure-retention)
 
     ```yaml
     backup:
@@ -123,7 +123,7 @@ spec:
 2. Start the backup:
 
     ```bash
-    kubectl apply -f deploy/backup/backup.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
 The Operator creates a `PerconaServerMongoDBBackup` resource for each scheduled run. Retention with `deleteFromStorage: true` removes old `VolumeSnapshot` objects and PBM metadata when backups age out.
@@ -176,7 +176,7 @@ To make an in-place restore, do the following:
     | --- | --- |
     | `waiting` | Operator prepares PBM config and cluster for physical-style restore |
     | `requested` | `pbm restore --external` started; waiting for **`copyReady`** |
-    | `running` | PVCs recreated from snapshots; `pbm-agent restore-finish` and `pbm     restore-finish` run |
+    | `running` | PVCs recreated from snapshots; `pbm-agent restore-finish` and `pbm restore-finish` run |
     | `ready` | Restore completed |
 
 4. Inspect restore conditions:
@@ -254,7 +254,7 @@ To make a restore to a new cluster, do the following:
     | --- | --- |
     | `waiting` | Operator prepares PBM config and cluster for physical-style restore |
     | `requested` | `pbm restore --external` started; waiting for **`copyReady`** |
-    | `running` | PVCs recreated from snapshots; `pbm-agent restore-finish` and `pbm     restore-finish` run |
+    | `running` | PVCs recreated from snapshots; `pbm-agent restore-finish` and `pbm restore-finish` run |
     | `ready` | Restore completed |
 
 4. Inspect restore conditions:

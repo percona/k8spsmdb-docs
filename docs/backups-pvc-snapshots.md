@@ -69,7 +69,7 @@ Track progress in the Restore resource `status.conditions` field. See [PVC snaps
 2. Your Kubernetes cluster must have the `VolumeSnapshot` CRDs installed. Verify if they are installed with this command:
     
     ```bash
-    kubectl get crd volumesnapshots.snapshot.storage.k8s.io
+    kubectl get crd | grep volumesnapshot
     ```
     
     ??? example "Expected output"
@@ -84,7 +84,7 @@ Track progress in the Restore resource `status.conditions` field. See [PVC snaps
     kubectl get volumesnapshotclasses
     ```
 
-See how to add it in the [Add a VolumeSnapshotClass]() section.
+See how to add it in the [Add a VolumeSnapshotClass](backups-pvc-setup.md#add-a-volumesnapshotclass) section.
 
 
 ## Limitations
