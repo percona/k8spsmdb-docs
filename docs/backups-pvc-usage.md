@@ -1,6 +1,6 @@
 # Use PVC snapshots for backups and restores
 
-Once you [configured a PVC snapshots](backups-pvc-setup.md), you can use them for backups and restore.
+Once you [configure PVC snapshots](backups-pvc-setup.md), you can use them for backups and restores.
 
 ## Configure remote backup storage in the cluster
 
