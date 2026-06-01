@@ -181,9 +181,9 @@ Common fields:
 | `ready` | Restore completed successfully. |
 | `error` | Restore failed. |
 
-### Restore conditions
+### PVC snapshot restore conditions
 
-For restores from PVC snapshot  backups, the Operator sets `status.conditions` as each phase completes. These conditions appear only for snapshot restores of the type `external`. Use them with `status.state` to see where a long-running restore is stuck.
+For restores from PVC snapshot backups, the Operator sets `status.conditions` as each phase completes. These conditions appear only for snapshot restores of the type `external`. Use them with `status.state` to see where a long-running restore is stuck.
 
 Each condition uses the standard Kubernetes fields (`type`, `status`, `reason`, `message`, `lastTransitionTime`). When a phase succeeds, the Operator sets the matching condition to `status: "True"`.
 
