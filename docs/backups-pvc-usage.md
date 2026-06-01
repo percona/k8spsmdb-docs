@@ -109,15 +109,15 @@ spec:
             region: us-west-2
             credentialsSecret: my-cluster-name-backup-s3
       tasks:
-      - name: daily-snapshot
-        enabled: true
-        schedule: "0 2 * * *"
-        type: external
-        volumeSnapshotClass: gke-snapshot-class
-        retention:
-          count: 7
-          type: count
-          deleteFromStorage: true
+        - name: daily-snapshot
+          enabled: true
+          schedule: "0 2 * * *"
+          type: external
+          volumeSnapshotClass: gke-snapshot-class
+          retention:
+            count: 7
+            type: count
+            deleteFromStorage: true
     ```
 
 2. Start the backup:
