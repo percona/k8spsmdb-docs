@@ -127,7 +127,7 @@ To create a Backup resource, you need a special custom resource manifest. The [d
           volumeSnapshotClass: gke-snapshot-class
         ```
 
-        See [Make a PVC snapshot backup](backups-pvc-backup.md) for prerequisites and monitoring.
+        See [Make an on-demand PVC snapshot backup](backups-pvc-usage.md#make-an-on-demand-backup-from-a-pvc-snapshot) for prerequisites and monitoring.
 
 
 2. Apply the `backup.yaml` manifest to start a backup:
