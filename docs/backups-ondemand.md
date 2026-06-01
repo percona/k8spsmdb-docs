@@ -36,7 +36,7 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
     * `spec.type` is the [backup type](backups.md#backup-types). If you leave it empty, the Operator makes a logical backup by default.
 
-    * `spec.volumeSnapshotClass` is the Kubernetes `VolumeSnapshotClass` name. You must specify it when you [make a PVC snapshot backup](backups-pvc-backup.md).
+    * `spec.volumeSnapshotClass` is the Kubernetes `VolumeSnapshotClass` name. You must specify it when you [make an on-demand PVC snapshot backup](backups-pvc-usage.md#make-an-on-demand-backup-from-a-pvc-snapshot).
 
     **Examples**
 
