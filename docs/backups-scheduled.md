@@ -148,16 +148,15 @@ Use the `backup.tasks.retention` subsection to configure the retention policy fo
             region: us-west-2
             credentialsSecret: my-cluster-name-backup-s3
       tasks:
-      - name: daily-snapshot
-        enabled: true
-        schedule: "0 2 * * *"
-        type: external
-        volumeSnapshotClass: gke-snapshot-class
-        retention:
-          count: 7
-          type: count
-          deleteFromStorage: true
-    ...
+        - name: daily-snapshot
+          enabled: true
+          schedule: "0 2 * * *"
+          type: external
+          volumeSnapshotClass: gke-snapshot-class
+          retention:
+            count: 7
+            type: count
+            deleteFromStorage: true
     ```
 
     See [Make a scheduled PVC snapshot backup](backups-pvc-backup.md).
