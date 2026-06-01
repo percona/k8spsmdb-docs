@@ -159,6 +159,6 @@ Use the `backup.tasks.retention` subsection to configure the retention policy fo
             deleteFromStorage: true
     ```
 
-    See [Make a scheduled PVC snapshot backup](backups-pvc-backup.md).
+    See [Make a scheduled snapshot-based backup](backups-pvc-usage.md#make-a-scheduled-snapshot-based-backup).
 
 --8<-- "restore-new-k8s-env.md"
