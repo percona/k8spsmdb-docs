@@ -132,8 +132,8 @@ Example:
 backupSource:
   type: external
   snapshots:
-  - replsetName: rs0
-    snapshotName: my-snapshot-backup-rs0-0
+    - replsetName: rs0
+      snapshotName: my-snapshot-backup-rs0-0
 ```
 
 When you use `spec.backupName` instead, the Operator reads snapshots from the Backup resource `status.snapshots`.
