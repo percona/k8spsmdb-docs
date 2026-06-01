@@ -112,7 +112,7 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
     === "PVC snapshot (external)"
 
-        As a precondition, you must ensure at least one `VolumeSnapshotClass` exists in your Kubernetes cluster and is compatible with the storage class used by your MongoDB data volumes. See [Confgure PVC snapshots](backups-pvc-setup.md) for steps.
+        As a precondition, you must ensure at least one `VolumeSnapshotClass` exists in your Kubernetes cluster and is compatible with the storage class used by your MongoDB data volumes. See [Configure PVC snapshots](backups-pvc-setup.md) for steps.
 
         ```yaml
         apiVersion: psmdb.percona.com/v1
