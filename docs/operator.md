@@ -1885,7 +1885,7 @@ Address of the PMM Server to collect data from the Cluster.
 
 ### `pmm.authenticationMechanism`
 
-The authentication mechanism to use when establishing a connection to PMM for monitoring. Supported values are `SCRAM-SHA-256`, `SCRAM-SHA-1`. Available with the Operator version 1.23.0.
+The authentication mechanism to use when establishing a connection to MongoDB for monitoring with PMM. Supported values are `SCRAM-SHA-256` and `SCRAM-SHA-1`. Available starting with Operator version 1.23.0.
 
 | Value type  | Example    |
 | ----------- | ---------- |
