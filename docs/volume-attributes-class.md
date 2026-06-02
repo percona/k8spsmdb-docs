@@ -37,12 +37,12 @@ To use `VolumeAttributesClass`, your environment must meet the following require
 
     ??? example "Expected output"
 
-      ```{.text .no-copy}
-      NAME                     PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
-      premium-rwo              pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   5h18m
-      standard                 kubernetes.io/gce-pd    Delete          Immediate              true                   5h18m
-      standard-rwo (default)   pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   5h18m
-      ```
+        ```{.text .no-copy}
+        NAME                     PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+        premium-rwo              pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   5h18m
+        standard                 kubernetes.io/gce-pd    Delete          Immediate              true                   5h18m
+        standard-rwo (default)   pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   5h18m
+        ```
 
 * `PersistentVolumes` provisioned through that CSI driver. 
 
@@ -103,6 +103,7 @@ To configure a VolumeAttributesClass, you need to create a `VolumeAttributesClas
     ```
 
     !!! note "Behavior"
+
         The Operator applies `VolumeAttributesClass` only to new PVCs when they are created. It does not update existing PVCs automatically. To apply a `VolumeAttributesClass` to an existing PVC, either patch the PVC manually or trigger the Operator to recreate the PVC.
 
 6. Verify that the `VolumeAttributesClass` was applied to the PVC:
@@ -113,19 +114,19 @@ To configure a VolumeAttributesClass, you need to create a `VolumeAttributesClas
 
     ??? example "Expected output"
 
-    ```{.text .no-copy}
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: my-cluster-name-rs0-0
-      ...
-    spec:
-     accessModes:
-     - ReadWriteOnce
-     resources:
-       requests:
-         storage: 3Gi
-     storageClassName: standard-rwo
-     volumeAttributesClassName: silver
-     volumeMode: Filesystem    
-     ```
+        ```{.text .no-copy}
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: my-cluster-name-rs0-0
+          ...
+        spec:
+         accessModes:
+         - ReadWriteOnce
+         resources:
+           requests:
+             storage: 3Gi
+         storageClassName: standard-rwo
+         volumeAttributesClassName: silver
+         volumeMode: Filesystem    
+        ```
