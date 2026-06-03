@@ -196,7 +196,8 @@ To use External DNS, ensure you have:
 
     | Component | Hostname pattern |
     | --------- | ---------------- |
-    | Replica sets and config servers | `{prefix}-{replsetName}-{podIndex}.{domain}` |
+    | Replica sets | `{prefix}-{replsetName}-{podIndex}.{domain}` |
+    | Config servers | `{prefix}-cfgsvr-{podIndex}.{domain}` |
     | Mongos with [`servicePerPod`](operator.md#shardingmongosexposeserviceperpod) enabled | `{prefix}-mongos-{podIndex}.{domain}` |
     | Mongos with `servicePerPod` disabled | `{prefix}-mongos.{domain}` |
 
