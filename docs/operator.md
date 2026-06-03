@@ -1159,7 +1159,7 @@ Base domain for automatically generated hostnames by the External DNS Controller
 
 ### `replsets.expose.externalDNS.ttl`
 
-Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-pod Service.
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
 
 | Value type  | Example    |
 | ----------- | ---------- |
