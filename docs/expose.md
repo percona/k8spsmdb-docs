@@ -144,9 +144,9 @@ To use External DNS, ensure you have:
           enabled: true
           type: LoadBalancer
           externalDNS:
-        prefix: db-prod               # optional; defaults     to the CR metadata.name
+            prefix: db-prod              # optional; defaults to the CR metadata.name
             domain: mongo.example.com    # required
-        ttl: 300                     # optional; seconds,  passed to External DNS
+            ttl: 300                     # optional; seconds, passed to External DNS
     ```
 
     After you apply the configuration, the Operator annotates each per-Pod Service for the cluster named `my-cluster-name` like this:
