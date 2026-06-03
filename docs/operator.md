@@ -2958,7 +2958,7 @@ Specifies whether Service for the mongos instances [should route external traffi
 
 ### `sharding.mongos.expose.externalDNS.prefix`
 
-DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the ExternalDNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
