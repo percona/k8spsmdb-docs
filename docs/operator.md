@@ -2394,7 +2394,7 @@ Specifies whether Service for config servers [should route external traffic :oct
 
 ### `sharding.configsvrReplSet.expose.externalDNS.prefix`
 
-DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using ExternalDNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
