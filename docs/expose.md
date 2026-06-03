@@ -129,8 +129,8 @@ You can use External DNS for both replica sets and sharded clusters. By assignin
 
 To use External DNS, ensure you have:
 
-- Services exposed with the type `LoadBalancer`.  (typically `expose.type:  with`expose.enabled: true` for replica sets and config servers)
-* A DNS zone that External DNS can manage for the `domain` you specify
+- Services exposed with the type `LoadBalancer` (typically `expose.enabled: true` with `expose.type: LoadBalancer` for replica sets and config servers)
+- A DNS zone that External DNS can manage for the `domain` you specify
 
 ### Configuration example
 
