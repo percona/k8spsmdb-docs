@@ -1143,7 +1143,7 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 
 ### `replsets.expose.externalDNS.prefix`
 
-DNS label prefix for automatically generated hostnames for each per-Pod Service using ExternalDNS controller. The hostames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
+DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
