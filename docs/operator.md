@@ -2966,7 +2966,7 @@ DNS label prefix for automatically generated hostnames for each per-Pod Service 
 
 ### `sharding.mongos.expose.externalDNS.domain`
 
-Base domain for automatically generated hostnames by the ExternalDNS controller for mongos. Must be a valid domain name.
+Base domain for automatically generated hostnames by the External DNS controller for mongos. Must be a valid domain name.
 
 | Value type  | Example    |
 | ----------- | ---------- |
