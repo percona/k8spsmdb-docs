@@ -2402,7 +2402,7 @@ DNS label prefix for automatically generated hostnames for each per-Pod Service 
 
 ### `sharding.configsvrReplSet.expose.externalDNS.domain`
 
-Base domain for automatically generated hostnames by the ExternalDNS controller for config servers. Must be a valid domain name.
+Base domain for automatically generated hostnames by the External DNS controller for config servers. Must be a valid domain name.
 
 | Value type  | Example    |
 | ----------- | ---------- |
