@@ -167,9 +167,9 @@ To use External DNS, ensure you have:
           enabled: true
           type: LoadBalancer
           externalDNS:
-        prefix: db-prod               # optional; defaults     to the CR metadata.name
+            prefix: db-prod              # optional; defaults to the CR metadata.name
             domain: mongo.example.com    # required
-        ttl: 300                     # optional; seconds,
+            ttl: 300                     # optional; DNS TTL in seconds
     sharding:
       enabled: true
       configsvrReplSet:
