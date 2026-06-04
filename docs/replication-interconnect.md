@@ -1,11 +1,13 @@
 # Interconnect sites for replication
 
-At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site's nodes as external nodes for the Main site. In the same way, you add the Main's site nodes as external ones for the Replica site. 
+At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site's nodes as external nodes for the Main site. In the same way, you add the Main's site nodes as external ones for the Replica site.
+.  At this step, you interconnect Main and Replica sites by adding remote members through `replsets.externalNodes` (and `sharding.configsvrReplSet.externalNodes` for sharded clusters).
 
 Every site has three replica set members and three config server replica set members. But you add only two of them as voting members, while the third member is added as a non-voting one. In doing so, you avoid split-brain situations and prevent the primary elections if the Replica site is down or there is a network disruption between the sites.
 
-In this way, the `main` cluster managed by the Operator is able to reach the 
-the `replica` nodes.
+In this way, the `main` cluster managed by the Operator is able to reach the the `replica` nodes.
+
+If you deploy the cross-site replication using an external arbiter node, refer to the [Multi-cluster setup with an external arbiter](replication-external-arbiter.md) guide.
 
 ## List the services
 
@@ -45,21 +47,17 @@ kubectl get services
     main-cluster-rs0-2    ClusterIP      34.118.225.3     <none>          27017/TCP         42m
     ```
 
-## Add the Replica site nodes to the Main site 
+## Add the Replica site nodes to the Main site
 
-1. Modify the `deploy/cr-main.yaml` file of the Main site and define the exposed nodes of the Replica site in the 
-`replsets.externalNodes` and `sharding.configsvrReplset.externalNodes`
-subsections. For each node, specify the following:
+1. Modify the `deploy/cr-main.yaml` file of the Main site and define the exposed nodes of the Replica site in the
+`replsets.externalNodes` and `sharding.configsvrReplSet.externalNodes` subsections. For each node, specify the following:
 
     - set `host` to the URL of the external replset instance. When exposed, a node has its own service, recognized by the domain name `<service-name>.<namespace>.svc.clusterset.local`
-    - set `port` to the port number of the external node. If not set, the default `27017`
-       port is used,
-    - set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority)
-        of the external node. The default priority for local members of the cluster is `2`. When you add external nodes, set the lower priority to avoid an unmanaged node being elected
-        as a primary. A zero `0` priority adds the node as a [non-voting member](arbiter.md#non-voting-nodes).
-    - set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes)
-        an external node can cast in a replica set election (`0` is default and
-        should be used for non-voting members of the cluster).
+    - set `port` to the port number of the external node. If not set, the default `27017` port is used,
+    - set `priority` to define the [priority  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the external node. The default priority for local members of the cluster is `2`. When you add external nodes, set the lower priority to avoid an unmanaged node being elected
+    as a primary. A zero `0` priority adds the node as a [non-voting member](arbiter.md#non-voting-nodes).
+    - set `votes` to the number of [votes  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) an external node can cast in a replica set election (`0` is default and
+    should be used for non-voting members of the cluster).
 
     Here is an example:
 
@@ -83,6 +81,9 @@ subsections. For each node, specify the following:
       replsets:
       - name: rs0
         size: 3
+        expose:
+          enabled: true
+          type: ClusterIP
         externalNodes:
         - host: replica-cluster-rs0-0.psmdb.svc.clusterset.local
           votes: 1
@@ -92,13 +93,13 @@ subsections. For each node, specify the following:
           priority: 1
         - host: replica-cluster-rs0-2.psmdb.svc.clusterset.local
           votes: 0
-          priority: 0
-          expose:
-          enabled: true
-          type: ClusterIP   
+          priority: 0  
 
       sharding:
         enabled: true
+        expose:
+          enabled: true
+          type: ClusterIP
         configsvrReplSet:
           size: 3
           externalNodes:
@@ -111,15 +112,12 @@ subsections. For each node, specify the following:
           - host: replica-cluster-cfg-2.psmdb.svc.clusterset.local
             votes: 0
             priority: 0
-          expose:
-            enabled: true
-            type: ClusterIP
 
         mongos:
           size: 3
           expose:
+            enabled: true
             type: ClusterIP
-
     ```
 
 2. Apply the changes:
@@ -128,45 +126,45 @@ subsections. For each node, specify the following:
     kubectl apply -f deploy/cr-main.yaml
     ```
 
-## Add Main site nodes to the Replica site
+### Add Main site nodes to the Replica site
 
-1. Modify the `deploy/cr-main.yaml` file of the Replica site and define the exposed nodes of the Main site in the
-`replsets.externalNodes` and `sharding.configsvrReplset.externalNodes`
-subsections. For each node, specify the following:
-    
+1. Modify the `deploy/cr-replica.yaml` file of the Replica site and define the exposed nodes of the Main site in the
+`replsets.externalNodes` and `sharding.configsvrReplSet.externalNodes`
+subsections.
+
     ```yaml
     apiVersion: psmdb.percona.com/v1
     kind: PerconaServerMongoDB
     metadata:
       name: replica-cluster
     spec:
-    ... 
+    ...
       replsets:
       - name: rs0
         size: 3
         externalNodes:
         - host: main-cluster-rs0-0.psmdb.svc.clusterset.local
-            votes: 1
-            priority: 1
+          votes: 1
+          priority: 1
         - host: main-cluster-rs0-1.psmdb.svc.clusterset.local
-            votes: 1
-            priority: 1
+          votes: 1
+          priority: 1
         - host: main-cluster-rs0-2.psmdb.svc.clusterset.local
-            votes: 0
-            priority: 0
+          votes: 0
+          priority: 0
 
       sharding:
         configsvrReplSet:
-            externalNodes:
-            - host: main-cluster-cfg-0.psmdb.svc.clusterset.local
-              votes: 1
-              priority: 1
-            - host: main-cluster-cfg-1.psmdb.svc.clusterset.local
-              votes: 1
-              priority: 1
-            - host: main-cluster-cfg-2.psmdb.svc.clusterset.local
-              votes: 0
-              priority: 0
+          externalNodes:
+          - host: main-cluster-cfg-0.psmdb.svc.clusterset.local
+            votes: 1
+            priority: 1
+          - host: main-cluster-cfg-1.psmdb.svc.clusterset.local
+            votes: 1
+            priority: 1
+          - host: main-cluster-cfg-2.psmdb.svc.clusterset.local
+            votes: 0
+            priority: 0
     ```
 
 2. Apply the configuration:

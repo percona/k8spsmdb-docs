@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" fill-rule="evenodd" stroke-linejoin="round">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#092257"/>
+    </marker>
+    <marker id="arrow-muted" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#597fa7"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="420" fill="#ffffff"/>
+
+  <!-- Main site -->
+  <g id="main-site">
+    <rect x="20" y="30" width="250" height="330" rx="12" fill="#d4edfb" stroke="#729fcf" stroke-width="2"/>
+    <text x="145" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#597fa7">Main site</text>
+
+    <text x="40" y="58" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#3465a4">Operator</text>
+    <polygon points="55,78 75,68 95,78 95,98 75,108 55,98" fill="#326ce5" stroke="#326ce5"/>
+    <rect x="48" y="82" width="54" height="12" fill="#ffffff"/>
+
+    <text x="40" y="135" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#3465a4">ReplicaSet</text>
+    <g transform="translate(40,145)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 0</text>
+    </g>
+    <g transform="translate(110,145)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 1</text>
+    </g>
+
+    <text x="40" y="245" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#3465a4">Config Server ReplicaSet</text>
+    <g transform="translate(40,255)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 0</text>
+    </g>
+    <g transform="translate(110,255)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 1</text>
+    </g>
+  </g>
+
+  <!-- Replica site -->
+  <g id="replica-site">
+    <rect x="300" y="30" width="250" height="330" rx="12" fill="#d4edfb" stroke="#729fcf" stroke-width="2"/>
+    <text x="425" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#597fa7">Replica site</text>
+    <text x="320" y="58" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#092257">unmanaged: true</text>
+
+    <text x="320" y="135" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#3465a4">ReplicaSet</text>
+    <g transform="translate(320,145)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 0</text>
+    </g>
+    <g transform="translate(390,145)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 1</text>
+    </g>
+
+    <text x="320" y="245" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#3465a4">Config Server ReplicaSet</text>
+    <g transform="translate(320,255)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 0</text>
+    </g>
+    <g transform="translate(390,255)">
+      <rect x="0" y="0" width="52" height="52" rx="6" fill="#326ce5"/>
+      <path d="M10,18 L26,10 L42,18 L42,34 L26,42 L10,34 Z" fill="#ffffff"/>
+      <text x="26" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#3465a4">DB Pod 1</text>
+    </g>
+  </g>
+
+  <!-- External arbiter site -->
+  <g id="external-arbiter-site">
+    <rect x="620" y="30" width="280" height="330" rx="12" fill="#eef3f8" stroke="#597fa7" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="760" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#597fa7">External site</text>
+    <text x="640" y="58" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#092257">Outside Kubernetes</text>
+
+    <rect x="690" y="130" width="140" height="110" rx="10" fill="#ffffff" stroke="#729fcf" stroke-width="2"/>
+    <circle cx="760" cy="165" r="22" fill="none" stroke="#3465a4" stroke-width="3"/>
+    <text x="760" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3465a4">A</text>
+    <text x="760" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#3465a4">External arbiter</text>
+    <text x="760" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#092257">arbiterOnly: true</text>
+    <text x="760" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#092257">votes: 1, priority: 0</text>
+  </g>
+
+  <!-- Data replication arrows -->
+  <path d="M145,190 C220,120 300,120 375,190" fill="none" stroke="#092257" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M375,230 C300,300 220,300 145,230" fill="none" stroke="#092257" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="260" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#092257">Data replication</text>
+
+  <!-- Arbiter election links -->
+  <path d="M270,320 C430,360 560,360 690,320" fill="none" stroke="#597fa7" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow-muted)"/>
+  <text x="480" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#597fa7">Shared external arbiter (Operator 1.23.0+)</text>
+</svg>
