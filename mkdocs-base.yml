@@ -292,6 +292,7 @@ nav:
               - Deployment:
                  - "Configure Main site for replication": replication-main.md
                  - "Configure Replica site for replication": replication-replica.md
+                 - "Multi-cluster setup with external arbiter": replication-external-arbiter.md
                  - "Interconnect sites": replication-interconnect.md
                  - "Fail over workload to the Replica site": replication-failover.md
                  - "Backups with cross-site replication": replication-backups.md
@@ -336,6 +337,7 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md

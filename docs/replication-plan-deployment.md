@@ -57,8 +57,37 @@ The setup steps are:
 4. Deploy the _Replica_ cluster on a Kubernetes cluster using the Secrets you created.
 5. Interconnect sites by adding nodes from the _Replica_ cluster to the _Main_ cluster using the MongoDB client.
 
+## Choose a voting topology 
+
+Before you deploy Main and Replica clusters, decide how each replica set will reach an odd number of voters across sites.
+
+### Topology A — Without external arbiter
+
+Deploy **three data-bearing members** on each site. When interconnecting, register **two remote members as voting** and **one as non-voting**.
+
+**Member layout (single replica set):**
+
+| Location | Members | Role |
+|----------|---------|------|
+| Main site | 3 Pods | Data-bearing, voting (priority 2) |
+| Replica site | 3 Pods | Data-bearing; 2 voting + 1 non-voting when added as external nodes |
+
+**Pros:** Each site holds a full three-member copy of the data.
+
+**Cons:** Six data-bearing nodes per replica set; the non-voting member still stores a full data copy.
+
+### Topology B — With external arbiter
+
+Deploy **two data-bearing members** on each site and run a **single MongoDB arbiter outside both Kubernetes clusters** in a third location. Reference the same arbiter from both sites with `replsets.externalNodes` and `arbiterOnly: true` (Operator 1.23.0+).
+
+**Pros:** Fewer data-bearing nodes; arbiters stay off data-bearing hosts.
+
+**Cons:** You operate the external arbiter yourself; it stores no data and cannot serve reads or backups.
+
+See [Multi-cluster setup with an external arbiter](replication-external-arbiter.md) for the full guide: when to use it, architecture, setup and failover.
+
 ## Next steps
 
 [Multi-cluster services](replication-mcs.md){.md-button}
-[Deploy the Main site](replication-main.md){.md-button}
+
 

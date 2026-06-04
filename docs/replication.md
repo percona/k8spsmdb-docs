@@ -17,7 +17,7 @@ While the underlying mechanics such as replica sets, TLS, and service exposure a
 
 To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the cross-site replication. This means that one cluster is the Main site and another one(s) - the Replica site(s).
 
-The following diagram shows how the data is replicated between the sites
+The following diagram shows how the data is replicated between the sites.
 
 ![image](assets/images/replication-pods.svg)
 
@@ -25,6 +25,19 @@ The following diagram shows how the data is replicated between the sites
 * **Replica site**: These are secondary clusters that host MongoDB nodes and replicate data from the Main site. The Operator deploys this site in passive mode and doesn't control the replica set configuration there. The passive mode is set by the `unmanaged: true` flag in the Custom Resource.
 
 This separation ensures consistency and avoids conflicts when managing distributed deployments.
+
+### Voting topologies for cross-site replication
+
+When you interconnect Main and Replica sites, you must keep an **odd number of voting members** in each replica set. 
+
+You can achieve it with the following approaches:
+
+1. **Have the a data-bearing member on the Secondary site as non-voting** - Reduce the number of voting members on the Secondary site to an even number when you connect both Main and Replica sites. This setup ensures that the combined total voting members across both sites is always **odd**, enabling proper primary elections.
+2. **Use an external arbiter node** to break election ties. In this setup, you deploy Main and Replica sites and run a separate arbiter node in a third location. Then, add an even number of data-bearing nodes as voting members and this arbiter as a voting member when you interconnect sites. So when an election occurs, the arbiter helps elect the primary. This keeps the total number of votes odd, preventing split-brain situations.
+
+The Deployment section in this guide focuses on the first approach. For the setup steps of using the external arbiter, see [Multi-cluster setup with an external arbiter](replication-external-arbiter.md).
+
+See [Choose a voting topology](replication-plan-deployment.md#choose-a-voting-topology) to compare models.
 
 ## Why to use multi-cluster or multi-region?
 

@@ -52,11 +52,11 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
 
 4. Create the same namespace on both clusters and set the context to point to this namespace. The namespace must be the same because it is a part of the shared DNS used to identify and resolve services across clusters.
 
-    Run this command on both clusters to create the `example` namespace. Use your own value:
+    Run this command on both clusters to create the `psmdb` namespace. Use your own value:
 
     ```bash
-    kubectl create namespace example
-    kubectl config set-context --current --namespace=example
+    kubectl create namespace psmdb
+    kubectl config set-context --current --namespace=psmdb
     ```
 
 ## Install the Operator and Percona Server for MongoDB
