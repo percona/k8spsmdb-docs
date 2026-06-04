@@ -97,7 +97,7 @@ To set up monitoring of Kubernetes, you need the following:
         === ":simple-linux: Linux"     
 
             ````bash
-            $ echo -n <API-key> | base64 --wrap=0
+            echo -n <API-key> | base64 --wrap=0
             ````    
 
         === ":simple-apple: macOS" 
@@ -121,7 +121,7 @@ To set up monitoring of Kubernetes, you need the following:
         kind: Secret
         metadata:
           name: pmm-token-vmoperator
-          #namespace: default
+          namespace: monitoring-system
         type: Opaque
         ```    
 
