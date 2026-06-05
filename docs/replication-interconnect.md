@@ -5,7 +5,7 @@ At this step, you should let the clusters know about each other and interconnect
 
 Every site has three replica set members and three config server replica set members. But you add only two of them as voting members, while the third member is added as a non-voting one. In doing so, you avoid split-brain situations and prevent the primary elections if the Replica site is down or there is a network disruption between the sites.
 
-In this way, the `main` cluster managed by the Operator is able to reach the the `replica` nodes.
+In this way, the `main` cluster managed by the Operator is able to reach the `replica` nodes.
 
 If you deploy the cross-site replication using an external arbiter node, refer to the [Multi-cluster setup with an external arbiter](replication-external-arbiter.md) guide.
 
