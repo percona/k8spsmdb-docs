@@ -635,7 +635,7 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 
 ### `replsets.externalNodes.arbiterOnly`
 
-Defines whether this [external replset instance](replication-external-arbiter.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup. Available with the Operator version 1.23.0.
+Defines whether this [external replset instance](replication-external-arbiter.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup. Available with the Operator version 1.23.0+.
 
 | Value type  | Example    |
 | ----------- | ---------- |
