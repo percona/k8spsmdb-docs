@@ -337,7 +337,6 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
-          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
