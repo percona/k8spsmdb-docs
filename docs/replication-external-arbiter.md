@@ -65,7 +65,7 @@ For sharded clusters, you must deploy three config server members per site. This
 
 ### Deploy the Replica site
 
-Follow the [Deploy the Replica site fore replication](replication-replica.md) tutorial for the deployment steps. 
+Follow the [Deploy the Replica site for replication](replication-replica.md) tutorial for the deployment steps.
 
 Set `replsets.size` to **2** (not 3) for each shard replica set.
 
