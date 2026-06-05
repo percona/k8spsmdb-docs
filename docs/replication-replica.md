@@ -108,6 +108,7 @@ For the Main and Replica sites to communicate, they must have the same the user 
                     type: ClusterIP
     ```
 
+
 4. Apply the configuration to deploy the Replica site
 
     ```bash

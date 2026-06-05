@@ -18,7 +18,7 @@ Besides the primary and regular secondaries in a MongoDB replica set, you can ha
 
 ### Arbiter nodes
 
-An Arbiter node participates in the replica set elections but does not store any data. Its primary role is to act as a tiebreaker in a replica set with an even number of data-bearing nodes, ensuring that a primary can always be elected. By not storing data, Arbiter nodes require minimal resources, which can help reduce your overall costs. An does not demand a persistent volume.
+An Arbiter node participates in the replica set elections but does not store any data. Its primary role is to act as a tiebreaker in a replica set with an even number of data-bearing nodes, ensuring that a primary can always be elected. By not storing data, Arbiter nodes require minimal resources, which can help reduce your overall costs. An arbiter does not demand a persistent volume.
 
 To add an Arbiter node, you can update your `deploy/cr.yaml` file by adding an `arbiter` section under `replsets` and setting the `enabled` and `size` options to your desired values.
 
@@ -90,7 +90,7 @@ replsets:
 
 Find the description of other available options in the [replsets.nonvoting section](operator.md#replsetsnonvotingenabled) of the [Custom Resource options reference](operator.md).
 
-Note that you can add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md) for details.
+Note that you can add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md#voting-topologies-for-cross-site-replication) for details.
 
 ## Hidden nodes
 
