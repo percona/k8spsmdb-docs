@@ -19,8 +19,8 @@ The Operator has two policies to manage TLS certificates when it cannot find the
 
 * `userProvidedOnly` - the Operator skips creating new certificates. The certificate lifecycle management is fully under your control and you are responsible for restoring the access to the Secret.  
   
-    This policy is useful if you manage TLS certificates outside the Operator, such as through Kubernetes Secrets synced from AWS Secrets Manager or via[External Secrets Operator :octicons-link-external-16:](https://external-secrets.io/), as it prevents a service outage. The new certificates have the new CA and clients that still trust the previous CA, can lose connectivity to the cluster.
-
+    This policy is useful if you manage TLS certificates outside the Operator, such as through Kubernetes Secrets synced from AWS Secrets Manager or via [External Secrets Operator :octicons-link-external-16:](https://external-secrets.io/). 
+    Using this approach prevents an unexpected certificate regeneration with a different CA, which can otherwise cause clients that rely on the original CA to lose connectivity, potentially leading to service outages.
 
 ## When to use each policy
 
@@ -113,14 +113,14 @@ The cluster may still show Pods as running while `TLSSecretsReady` is `False`. T
 
 Check Operator logs for errors mentioning `certManagementPolicy is userProvidedOnly`.
 
-See [Custom resource statuses](cr-statuses.md#tlssecretsready) for more on cluster conditions.
+See [Custom resource statuses](cr-statuses.md#conditions) for more on cluster conditions.
 
 ## Restore TLS Secrets
 
 1. Confirm which Secret is missing:
 
     ```bash
-    kubectl get secret my-cluster-name-ssl my-cluster-name-ssl-internal
+    kubectl -n <namespace> get secret my-cluster-name-ssl my-cluster-name-ssl-internal
     ```
 
 2. Recreate or re-sync the Secret (from backup, External Secrets, or your certificate pipeline).

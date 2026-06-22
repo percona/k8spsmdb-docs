@@ -141,7 +141,7 @@ Common condition fields:
 | `True` | The condition is currently true. |
 | `False` | The condition is currently false. |
 
-The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`,  `TLSSecretNotFound`.
+The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`.
 
 ## PerconaServerMongoDBBackup status
 

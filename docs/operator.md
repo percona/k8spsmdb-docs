@@ -332,10 +332,10 @@ If `true`, the mongo shell will not attempt to validate the server certificates.
 
 ### `tls.certManagementPolicy`
 
-Controls how the operator manages external TLS certificates when it loses the access to the Secret that stores them. Supported values are:
+Controls how the Operator manages TLS certificates when it loses access to the Secret that stores them. Supported values are:
 
 * `auto` (default) — Keeps the existing behavior. If TLS Secrets are missing, the Operator creates new certificates automatically.
-* `userProvidedOnly` — The Operator does not create or replace TLS certificates, if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
+* `userProvidedOnly` — The Operator does not create or replace TLS certificates if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
 
 | Value type  | Example    |
 | ----------- | ---------- |
