@@ -1883,6 +1883,14 @@ Address of the PMM Server to collect data from the Cluster.
 | ----------- | ---------- |
 | :material-code-string: string     | `monitoring-service` |
 
+### `pmm.authenticationMechanism`
+
+The authentication mechanism to use when establishing a connection to MongoDB for monitoring with PMM. Supported values are `SCRAM-SHA-256` and `SCRAM-SHA-1`. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `SCRAM-SHA-256` |
+
 ### `pmm.containerSecurityContext`
 
 A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
