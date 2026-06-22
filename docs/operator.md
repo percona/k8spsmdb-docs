@@ -633,6 +633,14 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 | ----------- | ---------- |
 | :material-code-string: string     | `0` |
 
+### `replsets.externalNodes.arbiterOnly`
+
+Defines whether this [external replset instance](replication-main.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
+
 ### `replsets.configuration`
 
 Custom configuration options for mongod. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
