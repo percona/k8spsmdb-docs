@@ -69,6 +69,22 @@ kubectl get psmdb-backup <backup-name> -n <namespace> \
     2026-01-27T12:22:17Z
     ```
 
+**Example 3. View the TLS Secrets readiness condition:**
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> \
+  -o jsonpath='{range .status.conditions[?(@.type=="TLSSecretsReady")]}{.lastTransitionTime}{"\n"}{.reason}{"\n"}{.status}{"\n"}{.message}{"\n"}{end}'
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    2026-06-10T14:22:01Z
+    TLSSecretNotFound
+    False
+    TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
+    ```
+
 ## PerconaServerMongoDB status
 
 The main cluster state is recorded in the `status.state` section. For component-level states, see the `status.replsets` and `status.mongos` sections.
@@ -116,6 +132,7 @@ Common condition fields:
 | `sharding` | Sharding changes are in progress. |
 | `PBMReady` | PBM agents and storage are ready. |
 | `pendingSmartUpdate` | A smart update is pending but has not started. |
+| `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. |
 
 `status.conditions[].status` values:
 
@@ -124,7 +141,7 @@ Common condition fields:
 | `True` | The condition is currently true. |
 | `False` | The condition is currently false. |
 
-The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`.
+The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`,  `TLSSecretNotFound`.
 
 ## PerconaServerMongoDBBackup status
 

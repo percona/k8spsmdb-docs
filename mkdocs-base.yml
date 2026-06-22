@@ -243,6 +243,7 @@ nav:
              - Configure TLS using cert-manager: tls-cert-manager.md
              - Generate certificates manually: tls-manual.md
              - Update certificates: tls-update.md
+             - "Configure the TLS certificate management policy": tls-cert-management-policy.md
              - Disable TLS: tls-disable.md
           - Data at rest encryption: 
             - About data-at-rest encryption: encryption.md
