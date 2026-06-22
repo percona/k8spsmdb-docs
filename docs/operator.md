@@ -330,6 +330,17 @@ If `true`, the mongo shell will not attempt to validate the server certificates.
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`    |
 
+### `tls.certManagementPolicy`
+
+Controls how the Operator manages TLS certificates when it loses access to the Secret that stores them. Supported values are:
+
+* `auto` (default) — Keeps the existing behavior. If TLS Secrets are missing, the Operator creates new certificates automatically.
+* `userProvidedOnly` — The Operator does not create or replace TLS certificates if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |  `auto` |
+
 ### `tls.issuerConf.name`
 
 A [cert-manager issuer name :octicons-link-external-16:](https://cert-manager.io/docs/concepts/issuer/).
@@ -632,6 +643,14 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0` |
+
+### `replsets.externalNodes.arbiterOnly`
+
+Defines whether this [external replset instance](replication-main.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
 
 ### `replsets.configuration`
 
