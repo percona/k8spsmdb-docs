@@ -1,58 +1,109 @@
-# How to integrate Percona Operator for MongoDB with an OIDC identity provider
+# OIDC authentication in Percona Operator for MongoDB 
 
-OpenID Connect (OIDC) is an identity authentication protocol built on top of the OAuth 2.0 framework.
+OpenID Connect (OIDC) is an identity authentication protocol built on top of the OAuth 2.0 framework. OIDC is designed to verify user identities and provide authentication, ensuring that users are who they claim to be. OAuth 2.0 is used for user authorization to access resources.
 
-This guide covers integrating an already-configured OIDC identity provider with Percona Server for MongoDB and the Operator. OIDC authentication has been tested with Okta, Microsoft Entra ID, Ping Identity, and Keycloak.
+If your organization already uses an identity provider (IdP) such as Okta or Microsoft Entra ID, you can connect Percona Server for MongoDB to it through OpenID Connect (OIDC). This lets your users to sign in with familiar corporate credentials while you can manage user credentials, access policies and roles in a centralized place - on the IdP side.
 
-!!! note
+This guide walks you through integrating an already-configured 
+identity provider with Percona Server for MongoDB managed by the Operator. 
 
-    OIDC authentication is available in Percona Server for MongoDB 8.0.12-4 and
-    later (on the [8.0 line  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc.html)),
-    and on the [7.0 release line  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/7.0/oidc.html).
+The flow has been tested with Okta, Microsoft Entra ID, Ping Identity, and Keycloak. The IdP configuration is out of scope of this document. Please refer to [Percona Server for MongoDB documentation :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/oidc.html) and upstream documentation of your IdP for the configuration guidelines.
+
+Use OIDC authentication only for application level users. The Operator's system users (`clusterAdmin`, `clusterMonitor`, the backup user, and others) authenticate with SCRAM. Therefore, keep `SCRAM-SHA-256` together with `MONGODB-OIDC` authentication mechanisms in Percona Server for MongoDB configuration. Remonong the SCRAM authentication mechanism locks the Operator out of the cluster.
+
+## Version availability
+
+OIDC authentication is available with the following software versions:
+
+* Percona Server for MongoDB 8.0.12-4 and later
+* Percona Server for MongoDB 7.0.24-13 and later
+* Percona Operator for MongoDB 1.21.0 and later
 
 ## Configure OIDC authentication
 
-Each provider tutorial below shows the `mongod` configuration to apply. In a standalone Percona Server for MongoDB you would add these options to `/etc/mongod.conf`; with the Operator you put the same `security` and `setParameter` options into the `configuration` field of the custom resource in `deploy/cr.yaml`:
+### Where to add OIDC configuration
 
-* `replsets.configuration` — for the replica set (`mongod`) nodes;
-* `sharding.mongos.configuration` — for `mongos`. Required on a sharded cluster, since clients authenticate through `mongos`;
-* `sharding.configsvrReplSet.configuration` — for the config servers (only needed if clients connect to them directly).
+The configuration examples in each provider tutorial are provided for `mongod` instances.
 
-After editing the custom resource, apply it with `kubectl apply -f deploy/cr.yaml`.
+You must add these configuration options to the `configuration` subsection of the custom resource in `deploy/cr.yaml`.
 
-!!! important
+- For a **replica set**, add the configuration only to `replsets.configuration`.
+- For a **sharded cluster**, add the configuration to all of the following:
 
-    Always keep `SCRAM-SHA-256` enabled together with `MONGODB-OIDC` in `authenticationMechanisms`. The Operator's system users (`clusterAdmin`, `clusterMonitor`, the backup user, and others) authenticate with SCRAM, so removing it locks the Operator out of the cluster.
+    - `replsets.configuration` for each shard (`mongod` nodes)
+    - `sharding.mongos.configuration` for `mongos`. In the cluster, the clients authenticate through `mongos`
+    - `sharding.configsvrReplSet.configuration` for the config servers (only needed if clients connect to them directly).
+
+Each provider tutorial below explains the details for your identity provider.
+
+To apply the configuration, run:
+
+```bash
+kubectl apply -f deploy/cr.yaml -n <namespace>
+```
+
+### Set up an Identity Provider and configure authentication in the Operator
 
 Pick your identity provider:
 
 === "Okta"
 
-    Set up the Okta side as described in [Configure OIDC authentication with Okta  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-okta.html). Once it is configured, add the following to the `configuration` field (see above):
+    On the Okta side, you need to complete the following steps as part of your IdP setup:
+
+    - Create and configure an OIDC application with Okta
+    - Configure the authorization server
+    - Create users and groups
+
+    For detailed, step-by-step instructions, follow [Configure OIDC authentication with Okta  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/oidc-okta.html).
+    
+    Once the IdP is configured, add the following to the `configuration` field. 
+    
+    This example shows the configuration for database Pods. 
+    For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
 
     ```yaml
-    security:
-      authorization: "enabled"
-    setParameter:
-      authenticationMechanisms: SCRAM-SHA-256,MONGODB-OIDC
-      oidcIdentityProviders: '[
-        {
-          "issuer": "https://<your-org>.okta.com/oauth2/default",
-          "audience": "api://default",
-          "clientId": "<client-id>",
-          "authNamePrefix": "okta",
-          "useAuthorizationClaim": true,
-          "authorizationClaim": "groups",
-          "supportsHumanFlows": true
-        }
-      ]'
+    spec:
+      replsets:
+        - name: rs0
+          configuration:
+            security:
+              authorization: "enabled"
+            setParameter:
+              authenticationMechanisms: SCRAM-SHA-256,MONGODB-OIDC
+              oidcIdentityProviders: '[
+                {
+                  "issuer": "https://<your-org>.okta.com/oauth2/default",
+                  "audience": "api://default",
+                  "clientId": "<client-id>",
+                  "authNamePrefix": "okta",
+                  "useAuthorizationClaim": true,
+                  "authorizationClaim": "groups",
+                  "supportsHumanFlows": true
+                }
+              ]'
+ 
     ```
 
     Okta puts the user's email in `sub`, so the MongoDB user appears as `okta/<email>`.
 
 === "Microsoft Entra ID"
 
-    Set up the Entra side as described in [Configure OIDC authentication with Microsoft Entra  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-entra.html). Once it is configured, add the following to the `configuration` field (see above):
+    On the Microfost Entra side, you need to complete the following steps as part of your IdP setup:
+
+    - Create and configure an OIDC application with Okta
+    - Create users and groups
+
+    For detailed, step-by-step instructions, follow the [Configure OIDC authentication with Microsoft Entra  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-entra.html) tutorial. 
+    
+    Once the IdP is configured, add the following Percona Server for MongoDB configuration to the `configuration` field. 
+     
+    Key points to consider:
+
+    * `requestScopes` must be an **array**. Entra emits group **object IDs** in the `groups` claim, so the role is named `entra/<group-object-id>`. 
+    * `principalName: preferred_username` gives a readable user name (Entra's `sub` is an opaque ID).
+    
+    This example shows the configuration for database Pods. 
+    For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
 
     ```yaml
     security:
@@ -74,11 +125,20 @@ Pick your identity provider:
       ]'
     ```
 
-    `requestScopes` must be an **array**. Entra emits group **object IDs** in the `groups` claim, so the role is named `entra/<group-object-id>`. `principalName: preferred_username` gives a readable user name (Entra's `sub` is an opaque ID).
-
 === "Ping Identity"
 
-    Set up the Ping side as described in [Configure OIDC authentication with Ping Identity  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-ping.html). Once it is configured, add the following to the `configuration` field (see above):
+    On the Ping Identity side, you need to complete the following steps as part of your IdP setup:
+
+    * Create a new environment with Ping Identity
+    * Configure an OIDC application
+    * Create users and groups
+    
+    For detailed, step-by-step instructions, follow the  [Configure OIDC authentication with Ping Identity  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-ping.html) tutorial.
+    
+    Once you configured the IdP, add the following Percona Server for MongoDB configuration to the `configuration` field of the Custom Resource. 
+
+    This example shows the configuration for database Pods. 
+    For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
 
     ```yaml
     security:
@@ -98,11 +158,25 @@ Pick your identity provider:
       ]'
     ```
 
-    Ping requires the extra `--oidcIdTokenAsAccessToken` flag for `mongosh` at login (see below).
+    Ping requires the extra `--oidcIdTokenAsAccessToken` flag for `mongosh` at login. Refer to the [Log in](#log-in) for details.
 
 === "Keycloak"
 
-    Set up the Keycloak side as described in [Configure OIDC authentication with Keycloak  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-keycloak.html). Once it is configured, add the following to the `configuration` field (see above):
+    On the Keykloak side, you need to complete the following steps as part of your IdP setup:
+
+    * Create a new realm in KeyCloak
+    * Create and configure an OIDC client
+    * Create users and groups
+    
+    !!! important
+
+        When using Keycloak, you must provide the certificate signed by the trusted CA. Otherwise, Percona Server for MongoDB cannot verify the connection and login attempts fail. See [Limitations](#limitations).
+    
+    For detailed, step-by-step instructions, follow the [Configure OIDC authentication with Keycloak  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-keycloak.html) tutorial.
+    
+    Once it is configured, the following Percona Server for MongoDB configuration to the `configuration` field of the Custom Resource. 
+     
+    This example shows the configuration for database Pods.    For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
 
     ```yaml
     security:
@@ -122,11 +196,15 @@ Pick your identity provider:
       ]'
     ```
 
-    Keycloak must present a publicly trusted certificate — see [Limitations](#limitations).
+### Map identity-provider groups to MongoDB roles
 
-## Map identity-provider groups to MongoDB roles
+To enable users to access Percona Server for MongoDB, you must create roles and define privileges for them.
 
-A user authenticated through the identity provider gets the MongoDB role named `<authNamePrefix>/<group>`, where `<group>` is the value the provider puts into the authorization claim. Declare the role in the `roles` subsection of `deploy/cr.yaml`, so the Operator creates and reconciles it (here the Okta group `mongodb-users`):
+The role name must match the identity provider group name and must have the prefix that matches the `authNamePrefix` in Percona Server for MongoDB configuration. The role name format is therefore `<authNamePrefix>/<group>`, where `<group>` is the value the provider puts into the authorization claim.
+
+Declare the role in the `roles` subsection of `deploy/cr.yaml`, so the Operator creates and reconciles it.
+
+This configuration example shows the role for Okta group `mongodb-users`:
 
 ```yaml
 spec:
@@ -155,8 +233,8 @@ mongosh "mongodb://<your_cluster_name>-rs0.<your_namespace>.svc.cluster.local/ad
 
 Verify that the user and roles are recognized:
 
-``` {.json data-prompt=">" }
-> db.runCommand({connectionStatus:1})
+```json
+db.runCommand({connectionStatus:1})
 ```
 
 The output should be like the following:
