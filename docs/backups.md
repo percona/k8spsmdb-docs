@@ -1,9 +1,10 @@
 # About backups
 
-You can back up your data in two ways:
+You can back up your data in several ways:
 
 * *On-demand*. You can do them manually at any moment.
 * *Scheduled backups*. Configure backups and their schedule in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml). The Operator makes them automatically according to the specified schedule.
+* *PVC snapshot backups*. Starting with Operator version 1.23.0, you can use Kubernetes volume snapshots for fast, storage-level copies without uploading data to object storage. See [PVC snapshot backups](backups-pvc-snapshots.md).
 
 To make backups and restores, the Operator uses the [Percona Backup for MongoDB (PBM) :octicons-link-external-16:](https://github.com/percona/percona-backup-mongodb) tool. The Operator runs PBM as [a sidecar container](sidecar.md) to the database Pods. It configures PBM in the following cases:
 
@@ -25,6 +26,7 @@ The `pbm-agent` reads the backup type from the document, copies data based on th
 
    * Logical backup: PBM reads database data and uploads it.
    * Physical backup: PBM copies data files from `dbPath` and uploads them.
+   * External (PVC snapshot) backup: PBM prepares the database for a consistent copy; the Operator creates CSI `VolumeSnapshot` objects for each data PVC. See [PVC snapshot backups](backups-pvc-snapshots.md#backup-flow).
 
 ### Restore flow
 
@@ -55,6 +57,29 @@ To restore the database from a physical backup, a `pbm-agent` requires the acces
 3. The `pbm-agent` wipes the `dbPath`, downloads the backup files from the storage, and copies the files into the data directory. It also applies oplog chunks from the backup snapshot to maintain data consistency.
 4. During the restore, PBM restarts the `mongod` process several times as it switches between restore phases and starts `mongod` with the newly restored data files.
 5. After a successful restore, the Operator recreates the StatefulSet with the regular configuration so PBM runs as a sidecar again. All database Pods are terminated and recreated. The Operator also restarts arbiter nodes and `mongos` Pods.
+
+**From PVC snapshot (`external`) backup**
+
+Snapshot restores use PBM’s [external restore :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-external-agent-restart.html) workflow. At **`copyReady`**, `mongod` is stopped and data directories are empty, so the Operator recreates PVCs from volume snapshots and runs `pbm-agent restore-finish` before PBM can complete the restore.
+
+When you create the Restore object, the following occurs:
+
+1. The Operator prepares the cluster:
+
+   * It terminates `mongos` Pods (for sharded clusters) and arbiter nodes to prevent clients from accessing the database during the restore.
+   * It prepares StatefulSets for restore (as for a physical backup) and starts the restore with `pbm restore --external`.
+
+2. PBM shuts down `mongod`, wipes the `dbPath` on each data-bearing node, and exits, leaving nodes in **`copyReady`** state waiting for data files.
+
+3. The Operator scales database StatefulSets to zero and runs `pbm-agent restore-finish` on every node, passing the PBM config, replica set name, node name, and (when needed) MongoDB `db` config for encryption at rest.
+
+4. The Operator recreates each data PVC from the `VolumeSnapshot` recorded in the backup or listed in `backupSource.snapshots`, one PVC at a time.
+
+5. The Operator scales StatefulSets back up and runs `pbm restore-finish` so PBM applies backup metadata and brings the cluster to a consistent state.
+
+6. After a successful restore, the Operator cleans up temporary restore configuration and returns the cluster to normal operation.
+
+For step-by-step instructions, see [Restore from a PVC snapshot backup](backups-pvc-usage.md#make-an-in-place-restore-from-a-pvc-snapshot-backup).
 
 **Point-in-time recovery from a physical backup**
 
@@ -96,4 +121,5 @@ Find more information in the [Multiple storages for backups](multi-storage.md) c
 | Full logical | Initial | GA | Queries Percona Server for MongoDB for database data and writes this data to the remote storage | - Uses less storage but is slower than physical backups<br>- Supports selective restore since [1.18.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md)<br>- Supports point-in-time recovery <br>- Incompatible for restores with backups made with Operator versions before 1.9.0. Make a new backup after the upgrade to the Operator 1.9.0. |
 | Full physical | [1.14.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md) | GA ([1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md)) | Copies physical files from MongoDB `dbPath` data directory to remote storage | - Faster backup/restore than logical<br>- Better for large datasets<br>- Supports point-in-time recovery since [1.15.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md)|
 | Physical incremental | [1.20.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md) | Tech preview | Copies only data changed after the previous backup | - Speeds up backup/restore<br>- Reduces network load and storage consumption<br>- Requires a base incremental backup to start the incremental chain <br>- Base backup and increments must bet taken from the same node<br>- New base backup is needed if a node is down or if the cluster was restored from a backup|
+| PVC snapshot (`external`) | 1.23.0 | GA | PBM prepares the database; the Operator creates CSI volume snapshots of data PVCs | - Fast for large datasets; no data upload to object storage<br>- Requires Volume Snapshot API and `VolumeSnapshotClass` per backup<br>- No point-in-time recovery or selective restore<br>- See [PVC snapshot backups](backups-pvc-snapshots.md) |
 
