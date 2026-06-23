@@ -1141,6 +1141,30 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
+### `replsets.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `replsets.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS Controller. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `replsets.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
+
 ### `replsets.nonvoting.enabled`
 
 Enable or disable creation of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
@@ -2376,6 +2400,30 @@ Specifies whether Service for config servers [should route external traffic :oct
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
+### `sharding.configsvrReplSet.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for config servers. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
+
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
@@ -2915,6 +2963,30 @@ Specifies whether Service for the mongos instances [should route external traffi
 !!! note "Service protocol configuration"
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.mongos.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.mongos.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for mongos. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.mongos.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
 
 ### `sharding.mongos.hostAliases.ip`
 
