@@ -9,7 +9,7 @@ identity provider with Percona Server for MongoDB managed by the Operator.
 
 The flow has been tested with Okta, Microsoft Entra ID, Ping Identity, and Keycloak. The IdP configuration is out of scope of this document. Please refer to [Percona Server for MongoDB documentation :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/oidc.html) and upstream documentation of your IdP for the configuration guidelines.
 
-Use OIDC authentication only for application level users. The Operator's system users (`clusterAdmin`, `clusterMonitor`, the backup user, and others) authenticate with SCRAM. Therefore, keep `SCRAM-SHA-256` together with `MONGODB-OIDC` authentication mechanisms in Percona Server for MongoDB configuration. Remonong the SCRAM authentication mechanism locks the Operator out of the cluster.
+Use OIDC authentication only for application level users. The Operator's system users (`clusterAdmin`, `clusterMonitor`, the backup user, and others) authenticate with SCRAM. Therefore, keep `SCRAM-SHA-256` together with `MONGODB-OIDC` authentication mechanisms in Percona Server for MongoDB configuration. Removing the SCRAM authentication mechanism locks the Operator out of the cluster.
 
 ## Version availability
 
@@ -90,7 +90,7 @@ Pick your identity provider:
 
     On the Microfost Entra side, you need to complete the following steps as part of your IdP setup:
 
-    - Create and configure an OIDC application with Okta
+    - Create and configure an OIDC application with Microsoft Entra
     - Create users and groups
 
     For detailed, step-by-step instructions, follow the [Configure OIDC authentication with Microsoft Entra  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-entra.html) tutorial. 
