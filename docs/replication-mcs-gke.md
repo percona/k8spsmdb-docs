@@ -50,9 +50,9 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
        ```bash
        gcloud container clusters create main-cluster \
          --zone us-central1-a \
-         --cluster-version {{ gkerecommended }} \
          --machine-type n1-standard-4 \
          --num-nodes=3 \
+         --workload-metadata=GKE_METADATA \
          --workload-pool=$PROJECT_ID.svc.id.goog
        ```
        
@@ -60,10 +60,10 @@ The recommended approach is to use [Workload Identity Federation :octicons-link-
       
        ```bash
        gcloud container clusters create replica-cluster \
-         --zone us-central1-a \
-         --cluster-version {{ gkerecommended }} \
+         --zone us-central1-a \         
          --machine-type n1-standard-4 \
          --num-nodes=3 \
+         --workload-metadata=GKE_METADATA \
          --workload-pool=$PROJECT_ID.svc.id.goog
        ```
     
