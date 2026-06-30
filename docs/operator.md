@@ -70,7 +70,7 @@ Enables or disables [storage scaling / volume expansion](scaling.md#storage-resi
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`  |  
-|
+
 This option is deprecated and will be removed in version 1.25.0. Use the 
 [`storageScaling.enableVolumeScaling`](#storagescalingenablevolumescaling) option instead.
 
