@@ -102,6 +102,34 @@ env:
     value: "3"
 ```
 
+### `CERTMANAGER_NAMESPACE`
+
+Specifies the namespace where the Operator creates the intermediate CA
+`Certificate` when [`tls.issuerConf.kind`](operator.md#tlsissuerconfkind) is
+`ClusterIssuer` and the Operator manages the CA chain.
+
+|Value type|Default|Example|
+|---|---|---|
+|string|`cert-manager`|`my-cert-manager`|
+
+**Notes:**
+
+- This variable applies only when the Operator creates cert-manager resources for
+  a `ClusterIssuer`-based CA chain. It does not affect database Pods or TLS Secrets,
+  which remain in the database namespace.
+- Change this value only if cert-manager is installed in a non-default namespace.
+- When you use an existing organizational `ClusterIssuer`, you typically do not
+  need to change this variable. See
+  [Use an existing ClusterIssuer](tls-cert-manager.md#use-an-existing-clusterissuer).
+
+**Example configuration:**
+
+```yaml
+env:
+  - name: CERTMANAGER_NAMESPACE
+    value: "cert-manager"
+```
+
 ## Automatic environment variables
 
 The following values are set by Kubernetes or the deployment manifest and should not be changed:
