@@ -40,6 +40,8 @@ users:
 
 After you apply the configuration, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user, and sets it by the key named after the user name.
 
+Starting with Operator version 1.23.0, the Operator also creates a `<cluster-name>-custom-user-secret-conn-str` Secret with ready-to-use connection strings for the user. If you provide your own password Secret via `passwordSecretRef`, the connection Secret is named `<passwordSecretRef.name>-conn-str` instead. See [Connection secrets](connection-secrets.md) for details.
+
 ### Generate user passwords manually
 
 If you don't want the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
