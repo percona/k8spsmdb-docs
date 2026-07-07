@@ -40,7 +40,7 @@ kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
 ??? example "Sample output"
     
     ```{.text .no-copy}
-    mongosh "mongodb://databaseAdmin:databaseAdminPassword@34.118.227.158:27017/admin?authSource=admin"
+    mongodb://databaseAdmin:databaseAdminPassword@34.118.227.158:27017/admin?authSource=admin
     ```
 
 Alternatively, you can construct the MongoDB connection string URI manually. For the sharded cluster, specify the `mongos` endpoint. This is the example format:
