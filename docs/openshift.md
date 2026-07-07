@@ -146,7 +146,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
         ...
         ```
 
-    2. (optional) In you’re using minishift, please adjust anti-affinity policy to `none`
+    2. (optional) If you're using minishift, please adjust anti-affinity policy to `none`
 
         ```yaml
            affinity:
