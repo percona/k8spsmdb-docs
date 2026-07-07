@@ -55,7 +55,7 @@ To use `mongolog`, do the following:
    When using mongolog, configure [log rotation](logrotate.md) carefully. Avoid moving or renaming active log files during rotation, as this can interrupt mongolog collection.
 
 * Set `pmm.querySource` to `mongolog`
-* Configure MongoDB to write slow operations to the diagnostic log.
+* Configure MongoDB to write slow operations to the mongod log.
 
 Here's the example configuration:
 
