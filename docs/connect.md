@@ -49,7 +49,7 @@ Here's how to do it:
 
             ```{.text .no-copy}
             mongodb+srv://databaseAdmin:password123456@my-cluster-name-rs0.mongodb-operator.svc.cluster.local/?authSource=admin&replicaSet=rs0
-
+            ```
     See [Connection secrets](connection-secrets.md) for other key names (standard URI, exposed endpoints, custom users).
 
 3. Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod `percona-client`:
