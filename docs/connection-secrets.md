@@ -53,7 +53,7 @@ The following is the example of the `data` map for the sharded cluster:
     data:
       databaseAdmin_cfg_connectionString: <base64>           # config server — internal Pod addresses
       databaseAdmin_cfg_connectionStringSrv: <base64>        # config server — via Service DNS (mongodb+srv)
-      databaseAdmin_cfr_connectionStringExposed: <base64>  # shard config server — external endpoints (when exposed)
+      databaseAdmin_cfg_connectionStringExposed: <base64>  # config server — external endpoints (when exposed)
       databaseAdmin_rs0_connectionString: <base64>           # shard rs0 — internal Pod addresses
       databaseAdmin_rs0_connectionStringSrv: <base64>        # shard rs0 — via Service DNS (mongodb+srv)
       databaseAdmin_rs0_connectionStringExposed: <base64>  # shard rs0 — external endpoints (when exposed)
