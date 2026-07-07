@@ -43,7 +43,7 @@ Keys follow the pattern `<user>_<target>_<suffix>`:
 
   * `_connectionString` - for internal connection using internal replica-set addresses.
   * `_connectionStringSrv` - for connection using the replica set Service hostname 
-  * `_connectionStringSrvExposed` - for external access when a replica set or `mongos` Service is [exposed](expose.md) and its exposed endpoint differs from its internal URI.
+  * `_connectionStringExposed` - for external access when a replica set or `mongos` Service is [exposed](expose.md) and its exposed endpoint differs from its internal URI.
 
 The following is the example of the `data` map for the sharded cluster:
 
