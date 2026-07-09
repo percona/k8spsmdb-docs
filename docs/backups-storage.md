@@ -12,7 +12,10 @@ The Operator provides several storage types for different storages. To help you 
 * **azure** - Use this storage type for Microsoft Azure Blob storage.
 * **filesystem** - Use this storage type for uploading backups to a remote file server.
 
-For each backup storage, create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials and reference it in the Custom Resource.
+For most backup storages, create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials and reference it in the Custom Resource. On cloud platforms, you can instead use identity-based access and omit the Secret:
+
+* [Amazon S3 with IRSA or an IAM instance profile](backups-storage-s3.md#choose-the-authentication-method)
+* [Google Cloud Storage with Workload Identity](backups-storage-gcp.md#automate-access-to-google-cloud-storage-using-workload-identity)
 
 ## Storage setup guides
 
