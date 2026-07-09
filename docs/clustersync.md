@@ -11,7 +11,7 @@ You can use Percona ClusterSync for MongoDB for:
 
 You can replicate the full data set or exclude specific namespaces. In either case, PCSM creates the required indexes on the target.
 
-For more information on PCSM, refer to [PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-`PerconaServerMongoDBClusterSync`-for-mongodb/index.html#features).
+For more information on PCSM, refer to [PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/index.html#features).
 
 ## How it works with the Operator
 
