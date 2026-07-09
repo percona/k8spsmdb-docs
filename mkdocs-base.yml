@@ -299,6 +299,9 @@ nav:
                  - "Fail over workload to the Replica site": replication-failover.md
                  - "Backups with cross-site replication": replication-backups.md
                  - "Splitting replica set across multiple data centers": replication-multi-dc.md
+          - Real-time replication with Percona ClusterSync for MongoDB:
+              - "About PCSM integration": clustersync.md
+              - "Set up and use PCSM": clustersync-setup.md
               
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
@@ -321,20 +324,25 @@ nav:
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Configure concurrent reconciliation": reconciliation-concurrency.md
           - "Monitor Kubernetes": monitor-kubernetes.md
-          - "Retrieve Percona certified images": image-query.md
           - "Delete the Operator": delete.md
 
     - Reference:
-          - "Custom Resource options": operator.md
-          - backup-resource-options.md
-          - restore-options.md
+          - Custom Resource reference:
+            - "PerconaServerMongoDB options": operator.md
+            - "Backup options": backup-resource-options.md
+            - "Restore options": restore-options.md
+            - "ClusterSync options": clustersync-options.md
           - "Custom resource statuses": cr-statuses.md
-          - "Percona certified images": images.md
+          - Certified images:
+             - "Percona certified images": images.md
+             - "Retrieve Percona certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          - "Copyright and licensing information": copyright.md
-          - "Trademark policy": trademark-policy.md
+          - Legal:
+            - "Copyright and licensing information": copyright.md
+            - "Trademark policy": trademark-policy.md
+            
       
     - Release notes:
           - "Release notes index": RN/index.md

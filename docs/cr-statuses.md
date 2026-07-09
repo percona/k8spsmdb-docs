@@ -16,6 +16,7 @@ List your resources and check their high-level STATUS:
 kubectl get psmdb -n <namespace>
 kubectl get psmdb-backup -n <namespace>
 kubectl get psmdb-restore -n <namespace>
+kubectl get psmdb-clustersync -n <namespace>
 ```
 
 ??? example "Sample output for PerconaServerMongoDB"
@@ -178,3 +179,80 @@ Common fields:
 | `running` | Restore is in progress. |
 | `ready` | Restore completed successfully. |
 | `error` | Restore failed. |
+
+## PerconaServerMongoDBClusterSync status
+
+ClusterSync progress and results are on the `PerconaServerMongoDBClusterSync` Custom Resource. Use these fields to track replication intent, runtime state, lag, and failures.
+
+`spec.mode` is your lifecycle intent. `status.state` is what PCSM is doing. For configuration options, see [ClusterSync Resource options](clustersync-options.md). For concepts, see [Real-time replication with PCSM](clustersync.md).
+
+Common fields:
+
+- `status.mode` – last lifecycle intent the Operator successfully applied (`running`, `paused`, `finalized`)
+- `status.state` – PCSM-reported runtime state
+- `status.lagTimeSeconds` – replication lag in seconds
+- `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
+- `status.startedAt` – timestamp of the first time PCSM reported `running`
+- `status.conditions` – condition list with reason and message
+
+### ClusterSync mode values
+
+`status.mode` mirrors `spec.mode` after the Operator applies the matching PCSM command:
+
+| Value | Meaning |
+| --- | --- |
+| `running` | The Operator started or resumed replication. |
+| `paused` | The Operator paused replication. |
+| `finalized` | The Operator finalized replication. Further `spec.mode` changes are ignored. |
+
+### ClusterSync state values
+
+`status.state` values are:
+
+| Value | Meaning |
+| --- | --- |
+| `idle` | PCSM is deployed but has not started replication yet. |
+| `running` | PCSM is performing initial sync or real-time replication. PCSM does not distinguish these phases in this field. Use `lagTimeSeconds` to judge catch-up. |
+| `paused` | Replication is paused. |
+| `finalizing` | PCSM is completing finalization. |
+| `finalized` | Replication is complete. Indexes are finalized and the cluster lease is released. |
+| `failed` | Replication failed. Check `status.error`. When `spec.mode` is `running`, the Operator retries recoverable failures with `pcsm resume --from-failure`. |
+
+### Conditions
+
+Conditions show more detail about ClusterSync state changes in `status.conditions[]`.
+
+`status.conditions[].type` values:
+
+| Value | Meaning |
+| --- | --- |
+| `Running` | `True` while `status.state` is `running`; otherwise `False` with reason such as `PCSMNotRunning`. |
+| `Finalized` | `True` once `status.state` is `finalized`. Remains set afterwards. |
+
+### Example status
+
+```yaml
+status:
+  mode: running
+  state: running
+  lagTimeSeconds: 72
+  startedAt: "2026-07-01T12:00:00Z"
+  conditions:
+    - type: Running
+      status: "True"
+      reason: PCSMReplicating
+      message: PCSM is applying changes from source
+```
+
+On failure:
+
+```yaml
+status:
+  mode: running
+  state: failed
+  error: "clone: copy: mydb.mycoll: connection refused"
+  conditions:
+    - type: Running
+      status: "False"
+      reason: PCSMNotRunning
+```

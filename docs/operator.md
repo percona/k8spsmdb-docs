@@ -7,6 +7,7 @@ There are the following Custom Resources:
 * `PerconaServerMongoDB` contains options to configure Percona Server for MongoDB.
 * `PerconaServerMongoDBBackup` contains options for PBM to make backups.
 * `PerconaServerMongoDBRestore` contains options to restore Percona Server for MongoDB from backups.
+* `PerconaServerMongoDBClusterSync` contains options to deploy and manage Percona ClusterSync for MongoDB (PCSM). See [ClusterSync Resource options](clustersync-options.md).
 
 ## PerconaServerMongoDB Custom Resource options
 
