@@ -50,8 +50,7 @@ Replace them with your values, if needed.
 Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:
 
 ```bash
-kubectl apply -server-side -f deploy/cw-bundle.yaml
-```
+kubectl apply --server-side -f deploy/cw-bundle.yaml
 
 Refer to the [Install the Operator in the cluster-wide mode](cluster-wide.md#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode) for how to install the Operator in another namespace.
 
@@ -62,7 +61,7 @@ Refer to the [Install the Operator in the cluster-wide mode](cluster-wide.md#ins
 2. Apply the configuration:
     
     ```bash
-    kubectl apply -f deploy/cr-source -n $NAMESPACE
+    kubectl apply -f deploy/cr-source.yaml -n $NAMESPACE
     ```
 
 3. Wait for the cluster to report the `Ready` state
@@ -78,11 +77,8 @@ You manage the source cluster regardless how it is deployed. Create a MongoDB us
 1. Find the Secret name referenced in your source cluster's CR under `spec.secrets.users` and export it as environment variable. Run this command to check your cluster's configuration:
 
     ```bash
-    export SOURCESECRET="$(kubectl get psmdb my-source-cluster \
-     -n $NAMESPACE -o yaml | grep users | awk '{print $2}' \ 
-     | tr -d '\n' | xargs)"
-    echo $SOURCESECRET
-    ```
+    export SOURCESECRET="$(kubectl get psmdb my-source-cluster -n $NAMESPACE -o jsonpath='{.spec.secrets.users}')"
+    echo "$SOURCESECRET"
     
     ??? example "Sample output"
 
@@ -177,13 +173,13 @@ spec:
   replsets:
     - name: rs0
       size: 3
-    resources:
-      limits:
-        cpu: "600m"
-        memory: "1Gi"
-      requests:
-        cpu: "300m"
-        memory: "1Gi"
+      resources:
+        limits:
+          cpu: "600m"
+          memory: "1Gi"
+        requests:
+          cpu: "300m"
+          memory: "1Gi"
       volumeSpec:
         persistentVolumeClaim:
           resources:
@@ -225,7 +221,7 @@ spec:
 Apply the manifest and wait until the cluster is ready:
 
 ```bash
-kubectl apply -f target-cluster-rs.yaml -n $NAMESPACE
+kubectl apply -f deploy/cr-target.yaml -n $NAMESPACE
 kubectl get psmdb my-target-cluster -n $NAMESPACE -w
 ```
 
@@ -233,7 +229,7 @@ The cluster status must be `ready` before you create the Percona ClusterSync for
 
 ### 6. Set up Percona ClusterSync for MongoDB
 
-Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clusterset.yaml` configuration file. Specify the following keys:
+Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clustersync.yaml` configuration file. Specify the following keys:
 
 * `spec.clusterName` - specify the name of the target cluster
 * `spec.source.uri` - specify the endpoint to the source cluster.

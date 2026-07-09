@@ -34,8 +34,7 @@ then replicates the changes from source to target in real time
 finalizes the replication depending on your settings
 * Surfaces replication state and lag on the
 `PerconaServerMongoDBClusterSync` Custom Resource
-* Coordinates backup and restore operations on the target
-cluster so they do not interfere the active replication
+* Coordinates backup and restore operations on the target cluster so they do not interfere with active replication
 
 You can monitor the replication progress. When the replication
 lag is acceptable for cutover, finalize the replication. Then
@@ -66,8 +65,8 @@ Replication between sharded clusters is in the tech preview stage and is not rec
 You control the replication flow through the `PerconaServerMongoDBClusterSync` custom resource. Supported modes are:
 
 * `running` – Start or resume replication. On start, PCSM runs initial sync, then replicates changes occurred on the source to the target. On resume, PCSM starts from the last saved checkpoint.
-* `paused` – The replication is paused. PSCM saves the checkpoint in the change stream so that it can resume the replication without re-running the initial sync
-* `finalized` – PCSM completes the replication, creates required indexes on the target and stops. This is one-time operation. Setting the replication mode to `running`, nothing has no effect to prevent accidental data resync. To start over, run [`pcsm reset` :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/pcsm-commands.html#reset) inside the PCSM Pod.
+* `paused` – The replication is paused. PCSM saves the checkpoint in the change stream so it can resume replication without re-running the initial sync.
+* `finalized` – PCSM completes the replication, creates required indexes on the target, and stops. This is a one-time operation. Setting the replication mode to `running` again has no effect, to prevent accidental data resync. To start over, run [`pcsm reset` :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/pcsm-commands.html#reset) inside the PCSM Pod.
 
 
 PCSM also reports a runtime **state**, which the Operator stores in `status.state`: `idle`, `running`, `paused`, `finalizing`, `finalized`, `failed`.
