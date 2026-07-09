@@ -2,7 +2,7 @@
 
 !!! note "Version added: 1.23.0"
 
-You can control what the Operator does when it loses access to TLS Secrets.
+You can control how the Operator behaves when it cannot find TLS Secrets.
 
 The Operator expects and uses two Secrets for TLS communication. They are referenced in the following Custom Resource options:
 
@@ -11,7 +11,7 @@ The Operator expects and uses two Secrets for TLS communication. They are refere
 
 To learn more, see [TLS Certificates](TLS.md#tls-certificates)
 
-The Operator has two policies to manage TLS certificates when it cannot find the TLS Secrets. You define a policy via the `spec.tls.certManagementPolicy` option in the Custom Resource:
+The Operator has two policies to manage TLS certificates. You define a policy via the `spec.tls.certManagementPolicy` option in the Custom Resource:
 
 * `auto` (default) - the Operator creates new certificates, either self-signed or via cert-manager, and restarts the database Pods. The new certificates have a new CA so client applications must reconnect to use it. 
   
