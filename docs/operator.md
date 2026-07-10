@@ -253,6 +253,30 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 | ----------- | ---------- |
 | :material-code-string: string     | `svc.clusterset.local` |
 
+### `defaultRWConcern.readConcern`
+
+The default [read concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/read-concern/) level that the Operator sets cluster-wide with MongoDB's [`setDefaultRWConcern`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`. If this option and `defaultRWConcern.writeConcern.w` are not set, the Operator doesn't change this value, except for replica sets with an [Arbiter](arbiter.md#default-read-and-write-concern-for-replica-sets-with-an-arbiter) node, for which it defaults to `majority` (MongoDB's own implicit default write concern can otherwise fall back to `w: 1` once an Arbiter is added, risking silent rollback of acknowledged writes on failover). The default read/write concern is set for every sharded cluster (via `mongos`), and for individual replica sets whenever an Arbiter is enabled or this section is configured explicitly.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.w`
+
+The `w` field of the default [write concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/write-concern/) that the Operator sets cluster-wide. Accepts `majority`, a whole number of nodes, or a custom [`getLastErrorModes`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.settings.getLastErrorModes) tag name. Defaults to `majority`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.wtimeout`
+
+The `wtimeout` field (in milliseconds) of the default write concern: how long to wait for the write concern to be satisfied before the write is considered failed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `5000`      |
+
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
 The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. 

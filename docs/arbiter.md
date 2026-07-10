@@ -39,6 +39,23 @@ replsets:
 
 Find the description of other available options in the [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the [Custom Resource options reference](operator.md).
 
+### Default read and write concern for replica sets with an Arbiter
+
+MongoDB's [implicit default write concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/write-concern/#implicit-default-write-concern) falls back to `w: 1` instead of `w: "majority"` when a replica set has an Arbiter and the number of data-bearing voting members alone isn't enough to reach a voting majority — for example, 2 data nodes plus 1 Arbiter, which is exactly the kind of configuration this Operator's Arbiter feature is meant for. With `w: 1`, the primary acknowledges a write as soon as it applies it locally. If the primary then fails over before that write replicates to the secondary, the write is silently [rolled back  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-rollbacks/) once the old primary rejoins the set, even though the client already received a success response. To close this gap, the Operator always sets the cluster-wide default read and write concern to `majority` whenever a replica set has an Arbiter enabled, regardless of the exact node count.
+
+Note the trade-off: with `w: "majority"` in a Primary-Secondary-Arbiter (PSA) replica set, the Arbiter holds no data and therefore can never acknowledge a write, so `majority` effectively requires both the primary and the secondary to be up. If the secondary becomes unavailable, `majority`-write-concern operations can stall or time out. You can override the Operator's defaults using the [`defaultRWConcern`](operator.md#defaultrwconcernreadconcern) section in your `deploy/cr.yaml` file if you'd rather favor availability over this durability guarantee:
+
+```yaml
+spec:
+  defaultRWConcern:
+    readConcern: majority
+    writeConcern:
+      w: majority
+      wtimeout: 5000
+```
+
+Setting `defaultRWConcern` also applies the specified default read and write concern to replica sets without an Arbiter, and to sharded clusters.
+
 ### Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members
 
 By default, Arbiter nodes are allowed to run on the same Kubernetes hosts as your data nodes. This may be reasonable in terms of the number of
