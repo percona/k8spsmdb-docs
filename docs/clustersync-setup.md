@@ -370,9 +370,9 @@ To finalize replication, change the replication mode to `finalized`.
 
     !!! warning
     
-        This is a one-time operation. If you update PCSM again and change the mode to `running`, nothing happens to prevent accidental resync.
+        This is a one-time operation. If you update the PerconaServerMongoDBClusterSync resource again and change the mode to `running`, this has no effect. 
 
-        To start over, you need to reset PSCM by running `pcsm reset` command manually inside the PCSM Pod.
+        To start over, you need to delete the `PerconaServerMongoDBClusterSync` object and recreate it. PCSM starts from the initial data sync.
  
 
 4. Point your applications to the target cluster. See [Connect to Percona Server for MongoDB](connect.md).

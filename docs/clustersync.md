@@ -7,7 +7,7 @@
 You can use Percona ClusterSync for MongoDB for:
 
 * One-time migration with near-zero downtime
-* A live replica of your data for testing or disaster recovery
+* A live replica of your data for testing purposes or geographically distributed environments
 
 You can replicate the full data set or exclude specific namespaces. In either case, PCSM creates the required indexes on the target.
 
@@ -66,7 +66,7 @@ You control the replication flow through the `PerconaServerMongoDBClusterSync` c
 
 * `running` – Start or resume replication. On start, PCSM runs initial sync, then replicates changes occurred on the source to the target. On resume, PCSM starts from the last saved checkpoint.
 * `paused` – The replication is paused. PCSM saves the checkpoint in the change stream so it can resume replication without re-running the initial sync.
-* `finalized` – PCSM completes the replication, creates required indexes on the target, and stops. This is a one-time operation. Setting the replication mode to `running` again has no effect, to prevent accidental data resync. To start over, run [`pcsm reset` :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/pcsm-commands.html#reset) inside the PCSM Pod.
+* `finalized` – PCSM completes the replication, creates required indexes on the target, and stops. This is a one-time operation. Setting the replication mode to `running` again has no effect. This is done to prevent accidental data resync. To start over, delete the `PerconaServerMongoDBClusterSync` object and recreate it. PCSM starts from the initial data sync.
 
 
 PCSM also reports a runtime **state**, which the Operator stores in `status.state`: `idle`, `running`, `paused`, `finalizing`, `finalized`, `failed`.
