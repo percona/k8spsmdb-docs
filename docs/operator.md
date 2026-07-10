@@ -221,6 +221,14 @@ A strategy the Operator uses for [upgrades](update.md). Possible values are [Sma
 | ----------- | ---------- |
 | :material-code-string: string     | `SmartUpdate` |
 
+### `revisionHistoryLimit`
+
+The maximum number of [revisions  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#revision-history-limit) the Operator keeps for Percona Server for MongoDB StatefulSets (replica set members, config servers, and `mongos` Pods). Kubernetes uses this history when you roll a StatefulSet back to a previous Pod template. Lower values reduce the number of retained revisions and help keep the cluster namespace tidy; higher values keep more rollback points. When unset, the default number of revisions is `10`. Available since Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10` |
+
 ### `ignoreAnnotations`
 
 The list of annotations [to be ignored](annotations.md#specifying-labels-and-annotations-ignored-by-the-operator) by the Operator.
