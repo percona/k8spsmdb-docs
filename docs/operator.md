@@ -1989,6 +1989,54 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-code-string: string     | `256M`     |
 
+### `pmm.livenessProbe.httpGet`
+
+A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `pmm-client` sidecar container. When not set, the Operator uses its built-in HTTP GET call on its status page on port 7777 (`:7777/local/Status`). Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | <pre> path: /local/Status <br> port: 7777 </pre> |
+
+### `pmm.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `60` |
+
+### `pmm.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the liveness probe times out
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
+
+### `pmm.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `10` |
+
+### `pmm.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the liveness probe to be undertaken before giving up.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
+
+### `pmm.readinessProbe`
+
+A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `pmm-client` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `tcpSocket: { port: 7777 }` |
+
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
@@ -3200,6 +3248,22 @@ A custom [Kubernetes Security Context for a Container :octicons-link-external-16
 | ----------- | ---------- |
 | :material-text-long: subdoc      | `privileged: false`          |
 
+### `backup.livenessProbe`
+
+A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `backup-agent` sidecar container. When not set, the container has no liveness probe. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
+
+### `backup.readinessProbe`
+
+A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `backup-agent` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
+
 ### `backup.storages.STORAGE-NAME.main`
 
 Marks the storage as main. All other storages you define are added as profiles. The Operator saves backups to all storages but it saves oplog chunks for point-in-time recovery only to the main storage. You can define only one storage as main. Read more about [multiple storages for backups](multi-storage.md).
@@ -3801,6 +3865,22 @@ The name of a Secret from where environment variables will be loaded for the log
 | ----------- | ---------- |
 | :material-code-string: string     | `my-secret` |
 
+### `logcollector.livenessProbe`
+
+A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no liveness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`[HTTP_SERVER] On`). Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `tcpSocket: { port: 2020 }` |
+
+### `logcollector.readinessProbe`
+
+A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no readiness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`[HTTP_SERVER] On`). Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `tcpSocket: { port: 2020 }` |
+
 ### `logcollector.logrotate.configuration`
 
 Overrides the default logrotate configuration used by the log collector sidecar container.
@@ -3824,6 +3904,22 @@ Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `"0 0 0 * * *"` |
+
+### `logcollector.logrotate.livenessProbe`
+
+A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logrotate` sidecar container. When not set, the container has no liveness probe. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
+
+### `logcollector.logrotate.readinessProbe`
+
+A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logrotate` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
 
 ### `logcollector.resources.requests.memory`
 
