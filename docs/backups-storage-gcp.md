@@ -9,8 +9,8 @@ To use [Google Cloud Storage (GCS) :octicons-link-external-16:](https://cloud.go
 
 You can use one of the following options to authenticate to GCS:
 
-* **Workload Identity (recommended on GKE)**. Bind a Google service account to the Kubernetes Service Account used by your database Pods. You do not store service account JSON keys in a Kubernetes Secret. Google provides short-lived credentials automatically. This is the recommended approach on Google Kubernetes Engine (GKE) and for environments that forbid exporting service account keys.
-* **Service account JSON keys**. Store the service account email and private key in a Kubernetes Secret and reference it in your cluster configuration. This method works on any Kubernetes platform and requires that you manage the credentials yourself.
+* [**Workload Identity (recommended on GKE)**](#automate-access-to-google-cloud-storage-using-workload-identity). Bind a Google service account to the Kubernetes Service Account used by your database Pods. You do not store service account JSON keys in a Kubernetes Secret. Google provides short-lived credentials automatically. This is the recommended approach on Google Kubernetes Engine (GKE) and for environments that forbid exporting service account keys.
+* [**Service account JSON keys**](#set-up-google-cloud-storage-access-with-service-account-keys). Store the service account email and private key in a Kubernetes Secret and reference it in your cluster configuration. This method works on any Kubernetes platform and requires that you manage the credentials yourself.
 
 !!! note
 
@@ -25,9 +25,9 @@ You can use one of the following options to authenticate to GCS:
 
 ## Automate access to Google Cloud Storage using Workload Identity
 
-[GKE Workload Identity :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) lets Pods authenticate to Google Cloud as a Google service account. You do not store JSON private keys in a Kubernetes Secret. Instead, Percona Backup for MongoDB uses Application Default Credentials and receives short-lived tokens automatically.
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
-This feature is available starting with Operator version 1.23.0 and requires Percona Backup for MongoDB 2.13.0 or later. For how PBM uses Workload Identity and ADC, see the [PBM documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/workload-identity-auth.html).
+[GKE Workload Identity :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) lets Pods authenticate to Google Cloud as a Google service account. Percona Backup for MongoDB uses Application Default Credentials and receives short-lived tokens automatically. For how PBM uses Workload Identity and ADC, see the [PBM documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/workload-identity-auth.html).
 
 ### Prerequisites
 
@@ -93,9 +93,7 @@ export KSA_NAME=default
 
     ```bash
     export DBCLUSTER=my-cluster-name
-    for i in 0 1 2; do
-      kubectl delete pod $DBCLUSTER-rs0-$i -n $NAMESPACE
-    done
+    kubectl rollout restart sts/$DBCLUSTER-rs0 -n $NAMESPACE
     ```
 
 ### Configure Percona Server for MongoDB cluster
@@ -162,40 +160,16 @@ Now you are ready to configure Percona Server for MongoDB to use Workload Identi
             done
             ```
 
-    3. Remove the credentials Secret from the Custom Resource. The storage name in the following command is `gcs-wi`. Replace it with your value if you use another name:
+    3. Remove the credentials Secret from the Custom Resource. The storage name in the following command is `gcs`. Replace it with your value if you use another name:
 
         ```bash
         kubectl -n $NAMESPACE patch psmdb $DBCLUSTER --type=json \
-          -p '[{"op":"remove","path":"/spec/backup/storages/gcs-wi/gcs/credentialsSecret"}]'
+          -p '[{"op":"remove","path":"/spec/backup/storages/gcs/gcs/credentialsSecret"}]'
         ```
 
 ### Verify access to GCS using Workload Identity
 
-1. Run an on-demand backup to confirm that the cluster can write to the GCS bucket. Here's an example backup object:
-
-    ```yaml title="deploy/backup/backup.yaml"
-    apiVersion: psmdb.percona.com/v1
-    kind: PerconaServerMongoDBBackup
-    metadata:
-      name: backup1
-      finalizers:
-        - percona.com/delete-backup
-    spec:
-      clusterName: my-cluster-name
-      storageName: gcs-wi
-    ```
-
-2. Apply the configuration to start the backup:
-
-    ```bash
-    kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
-    ```
-
-3. Check the backup progress:
-
-    ```bash
-    kubectl get psmdb-backup -n $NAMESPACE
-    ```
+[Run an on-demand backup](backups-ondemand.md) to confirm that the cluster can write to the GCS bucket. 
 
 ### Troubleshooting
 
