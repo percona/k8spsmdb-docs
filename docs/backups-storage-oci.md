@@ -70,22 +70,27 @@ When you use the user principal authentication method, you need an API signing k
 
 ## Configure OKE workload identity authentication
 
-With the OKE workload identity method, the Operator authenticates as the Kubernetes Service Account of the cluster pods, so you don't need a Kubernetes Secret with credentials. This method requires an enhanced OKE cluster. Follow these steps:
+With the OKE workload identity method, you need a Kubernetes Secret with OCI credentials. Database pods (PBM agents)authenticate as the replica set Kubernetes Service Account to run backups and restores. The Operator uses its own Service Account (`percona-server-mongodb-operator`) to validate a backup before a restore. To grant access to OCI, you must add an OCI IAM policy statement for each Service Account. 
+
+Using the OKE workload identity method requires an enhanced OKE cluster with Workload Identity enabled.
+
+Follow these steps:
 {.power-number}
 
-1. Create a namespace for your cluster, for example `psmdb-workload-identity`:
+1. Create a namespace for your cluster, for example `psmdb-workload-identity`. Export it as an environment variable:
 
     ```bash
     kubectl create namespace psmdb-workload-identity
+    export NAMESPACE=psmdb-workload-identity
     ```
 
 2. Create a Service Account that the database pods will use, for example `backup-service-account`:
 
     ```bash
-    kubectl create serviceaccount backup-service-account -n psmdb-workload-identity
+    kubectl create serviceaccount backup-service-account -n $NAMESPACE
     ```
 
-3. Add an OCI policy that grants this Service Account access to Object Storage. Replace the namespace, Service Account, and cluster OCID with your own values:
+3. Add this statement to an OCI policy that grants this Service Account access to Object Storage. Replace the namespace, Service Account, and cluster OCID with your own values:
 
     ```text
     Allow any-user to manage objects in tenancy where all {request.principal.type='workload', request.principal.namespace='psmdb-workload-identity', request.principal.service_account='backup-service-account', request.principal.cluster_id='<cluster-ocid>'}
@@ -101,7 +106,13 @@ With the OKE workload identity method, the Operator authenticates as the Kuberne
         ...
     ```
 
-5. Configure the storage with the `okeWorkloadIdentity` credentials type in the `backup.storages` subsection:
+5. Add this statement to the an OCI policy for the `percona-server-mongodb-operator` Service Account Replace the namespace and cluster OCID with your own values:
+
+    ```text
+    Allow any-user to manage objects in tenancy where all {request.principal.type='workload', request.principal.namespace='<operator-namespace>', request.principal.service_account='percona-server-mongodb-operator', request.principal.cluster_id='<cluster-ocid>'}
+    ```
+
+6. Configure the storage with the `okeWorkloadIdentity` credentials type in the `backup.storages` subsection:
 
     ```yaml
     backup:
@@ -116,12 +127,6 @@ With the OKE workload identity method, the Operator authenticates as the Kuberne
             credentials:
               type: okeWorkloadIdentity
     ```
-
-The Operator also authenticates to the storage to validate a backup before starting a restore. Because it runs under its own Service Account (`percona-server-mongodb-operator`), add a policy for that Service Account as well. Replace the namespace and cluster OCID with your own values:
-
-```text
-Allow any-user to manage objects in tenancy where all {request.principal.type='workload', request.principal.namespace='<operator-namespace>', request.principal.service_account='percona-server-mongodb-operator', request.principal.cluster_id='<cluster-ocid>'}
-```
 
 !!! warning
 
