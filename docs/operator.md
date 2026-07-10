@@ -255,7 +255,11 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 
 ### `defaultRWConcern.readConcern`
 
-The default [read concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/read-concern/) level that the Operator sets cluster-wide with MongoDB's [`setDefaultRWConcern`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`. If this option and `defaultRWConcern.writeConcern.w` are not set, the Operator doesn't change this value, except for replica sets with an [Arbiter](arbiter.md#default-read-and-write-concern-for-replica-sets-with-an-arbiter) node, for which it defaults to `majority` (MongoDB's own implicit default write concern can otherwise fall back to `w: 1` once an Arbiter is added, risking silent rollback of acknowledged writes on failover). The default read/write concern is set for every sharded cluster (via `mongos`), and for individual replica sets whenever an Arbiter is enabled or this section is configured explicitly.
+The default [read concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/read-concern/) level for the cluster. The Operator applies it with MongoDB's [`setDefaultRWConcern`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`.
+
+If you leave this option and `defaultRWConcern.writeConcern.w` unset, the Operator does not change the current value—except for replica sets with an [Arbiter](arbiter.md#default-read-and-write-concern-for-replica-sets-with-an-arbiter). For those, it defaults to `majority`. Without that, MongoDB can fall back to write concern `w: 1` after you add an Arbiter, which risks silent rollback of acknowledged writes on failover.
+
+The Operator sets the default read/write concern for every sharded cluster (through `mongos`). For individual replica sets, it sets them when an Arbiter is enabled or when you configure this section explicitly.
 
 | Value type  | Example    |
 | ----------- | ---------- |
