@@ -12,9 +12,10 @@ This document focuses on the restore to the same cluster.
 
 You can make the following restores:
 
-* [Restore to a specific point in time](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
-* [Restore from a backup](#restore-from-a-backup)
+* [Make a point-in-time recovery](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
+* [Restore from a full backup](#restore-from-a-backup)
 * [Selective restore from a full logical backup](#selective-restore)
+* [Restore a collection from a logical backup under a different name](backups-restore-new-name.md)
 
 For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.
 
@@ -202,23 +203,4 @@ You can specify several "namespaces" (subsets of data) as a list for the `select
 * as a single star "*" to restore all databases and collections
 
 Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup. Read more about this functionality in [PBM documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-selective.html#restore-with-users-and-roles).
-
-### Restore a namespace under a different name
-
-Starting with version 1.23.0, you can remap a namespace during a selective restore. This means you can restore a collection from the backup under a different database and/or collection name. Use the `selective.nsFrom` and `selective.nsTo` fields for this:
-
-```yaml
-spec:
-  selective:
-    nsFrom: "myApp.test"
-    nsTo: "myApp.test_remapped"
-```
-
-In this example, the `test` collection from the `myApp` database is restored as the `test_remapped` collection in the same database.
-
-Keep the following in mind when remapping a namespace:
-
-* Both `selective.nsFrom` and `selective.nsTo` must be set together. Setting only one of them is not allowed.
-* The source (`selective.nsFrom`) and the target (`selective.nsTo`) namespaces can't be the same.
-* A namespace has the format `<db.collection>`.
 

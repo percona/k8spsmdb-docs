@@ -16,6 +16,7 @@ List your resources and check their high-level STATUS:
 kubectl get psmdb -n <namespace>
 kubectl get psmdb-backup -n <namespace>
 kubectl get psmdb-restore -n <namespace>
+kubectl get psmdb-clustersync -n <namespace>
 ```
 
 ??? example "Sample output for PerconaServerMongoDB"
@@ -163,7 +164,7 @@ Common fields:
 - `status.pbmName` – PBM restore identifier
 - `status.pitrTarget` – PITR target time (if set)
 - `status.completed` – completion timestamp
-- `status.error` – error details when the restore fails
+- `status.error` – error details when the restore is in the `error` state
 
 ### Restore state values
 
@@ -177,4 +178,97 @@ Common fields:
 | `rejected` | The Operator rejected the restore request. |
 | `running` | Restore is in progress. |
 | `ready` | Restore completed successfully. |
-| `error` | Restore failed. |
+| `error` | The restore cannot proceed yet. Check `status.error`, fix the Restore CR if needed, and wait for the Operator to reconcile again. |
+
+### `error` vs `failed`
+
+The Restore Custom Resource uses `error`, not `failed`.
+
+* **`error`** – Recoverable. The Operator sets this state when restore field validation fails (for example, missing `clusterName`, missing both `backupName` and `backupSource`, invalid `backupSource` storage settings, invalid PITR settings, or using `selective.nsFrom` / `selective.nsTo` with a non-logical backup). The Operator keeps reconciling the Restore object, so you can correct the CR and unblock the restore without creating a new one. The same state is also used when a restore operation itself fails; check `status.error` for details.
+* **`failed`** – Not used for restores. On other resources (for example, [PerconaServerMongoDBClusterSync](#perconaservermongodbclustersync-status)), `failed` is a terminal failure: the Operator does not treat it as a fix-and-retry path, and you typically need a new object or an explicit recovery action.
+
+When a restore is in `error`, inspect the message:
+
+```bash
+kubectl get psmdb-restore <restore-name> -n <namespace> \
+  -o jsonpath='{.status.state}{"\n"}{.status.error}{"\n"}'
+```
+
+Fix the Restore CR (for example, add the missing field or correct `backupSource`), then confirm that `status.state` moves out of `error` after the next reconcile.
+
+## PerconaServerMongoDBClusterSync status
+
+Percona ClusterSync for MongoDB (PCSM) progress and results are on the `PerconaServerMongoDBClusterSync` Custom Resource. Use these fields to track replication intent, runtime state, lag, and failures.
+
+`spec.mode` is your lifecycle intent. `status.state` is what PCSM is doing. For configuration options, see [ClusterSync Resource options](clustersync-options.md). For concepts, see [Real-time replication with PCSM](clustersync.md).
+
+Common fields:
+
+- `status.mode` – last lifecycle intent the Operator successfully applied (`running`, `paused`, `finalized`)
+- `status.state` – PCSM-reported runtime state
+- `status.lagTimeSeconds` – replication lag in seconds
+- `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
+- `status.startedAt` – timestamp of the first time PCSM reported `running`
+- `status.conditions` – condition list with reason and message
+
+### ClusterSync mode values
+
+`status.mode` mirrors `spec.mode` after the Operator applies the matching PCSM command:
+
+| Value | Meaning |
+| --- | --- |
+| `running` | The Operator started or resumed replication. |
+| `paused` | The Operator paused replication. |
+| `finalized` | The Operator finalized replication. Further `spec.mode` changes are ignored. |
+
+### ClusterSync state values
+
+`status.state` values are:
+
+| Value | Meaning |
+| --- | --- |
+| `idle` | PCSM is deployed but has not started replication yet. |
+| `running` | PCSM is performing initial sync or real-time replication. PCSM does not distinguish these phases in this field. Use `lagTimeSeconds` to judge catch-up. |
+| `paused` | Replication is paused. |
+| `finalizing` | PCSM is completing finalization. |
+| `finalized` | Replication is complete. Indexes are finalized and the cluster lease is released. |
+| `failed` | Replication failed. Check `status.error`. When `spec.mode` is `running`, the Operator retries recoverable failures with `pcsm resume --from-failure`. |
+
+### Conditions
+
+Conditions show more detail about ClusterSync state changes in `status.conditions[]`.
+
+`status.conditions[].type` values:
+
+| Value | Meaning |
+| --- | --- |
+| `Running` | `True` while `status.state` is `running`; otherwise `False` with reason such as `PCSMNotRunning`. |
+| `Finalized` | `True` once `status.state` is `finalized`. Remains set afterwards. |
+
+### Example status
+
+```yaml
+status:
+  mode: running
+  state: running
+  lagTimeSeconds: 72
+  startedAt: "2026-07-01T12:00:00Z"
+  conditions:
+    - type: Running
+      status: "True"
+      reason: PCSMReplicating
+      message: PCSM is applying changes from source
+```
+
+On failure:
+
+```yaml
+status:
+  mode: running
+  state: failed
+  error: "clone: copy: mydb.mycoll: connection refused"
+  conditions:
+    - type: Running
+      status: "False"
+      reason: PCSMNotRunning
+```

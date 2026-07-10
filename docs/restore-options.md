@@ -69,7 +69,7 @@ Specifies the list of namespaces to restore. The namespace has the format `<db.c
 
 ### `selective.nsFrom`
 
-Specifies the source namespace to restore from when remapping a namespace during a selective restore. The namespace has the format `<db.collection>`. Use it together with the `selective.nsTo` option: both must be set, and they must not be the same.
+Specifies the source namespace to restore from when remapping a namespace during a selective restore. The namespace has the format `<db.collection>`. Use it together with the `selective.nsTo` option: both must be set, and they must not be the same. Read more about [restoring a collection under a different name](backups-restore-namespace-remap.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -77,7 +77,7 @@ Specifies the source namespace to restore from when remapping a namespace during
 
 ### `selective.nsTo`
 
-Specifies the target namespace to restore to when remapping a namespace during a selective restore. The collection from `selective.nsFrom` is restored under this name. The namespace has the format `<db.collection>`. Use it together with the `selective.nsFrom` option: both must be set, and they must not be the same.
+Specifies the target namespace to restore to when remapping a namespace during a selective restore. The collection from `selective.nsFrom` is restored under this name. The namespace has the format `<db.collection>`. Use it together with the `selective.nsFrom` option: both must be set, and they must not be the same. Read more about [restoring a collection under a different name](backups-restore-namespace-remap.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
