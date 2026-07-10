@@ -1926,6 +1926,20 @@ A custom name to define for a cluster. PMM Server uses this name to properly par
 | ----------- | ---------- |
 | :material-code-string: string     | `mongo-cluster` |
 
+### `pmm.querySource`
+
+Defines the source for Query Analytics (QAN) data collection. The Operator passes this value to PMM Client as the `--query-source` flag when adding the MongoDB service. Available starting with Operator version 1.23.0.
+
+Supported values:
+
+* `profiler` — collect queries via the MongoDB profiler (default). Requires profiling to be enabled in PMM and in MongoDB. See [Configure the profiler query source](monitoring.md#configure-the-profiler-query-source).
+* `mongolog` — collect queries from mongod log files. Requires [log collector](persistent-logging.md) to be enabled so that logs are written to `/data/db/logs/`. See [Configure the mongolog query source](monitoring.md#configure-the-mongolog-query-source).
+
+If omitted, the Operator does not pass the `--query-source` flag and PMM uses the profiler method.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongolog` |
 
 ### `pmm.mongodParams`
 
