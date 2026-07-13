@@ -2,13 +2,13 @@
 
 !!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
-If you operate in Asia-Pacific or China region, or already run workloads on Alibaba Cloud, you can use Alibaba Cloud Object Storage Service (OSS) as the remote backup storage. This way  you can keep backup traffic in the same cloud, which helps reduce latency and simplifies compliance.
+If you operate in the Asia-Pacific or China region, or already run workloads on Alibaba Cloud, you can use Alibaba Cloud Object Storage Service (OSS) as the remote backup storage. This way you can keep backup traffic in the same cloud, which helps reduce latency and simplifies compliance.
 
 To use [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](https://www.alibabacloud.com/product/object-storage-service) as a remote store for backups, you need the following:
 
 * An Alibaba Cloud account with the Object Storage Service (OSS) enabled for it
 * An OSS bucket. Refer to the [bucket naming conventions :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/bucket-naming-conventions) for requirements
-* An access to the Resource Access Management (RAM) console and sufficient permissions to create and manage access policies and users. Read more about using RAM with Alibaba Cloud OSS in the [official documentation :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/how-oss-works-with-ram).
+* Access to the Resource Access Management (RAM) console and sufficient permissions to create and manage access policies and users. Read more about using RAM with Alibaba Cloud OSS in the [official documentation :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/how-oss-works-with-ram).
 
 **Configuration steps**
 {.power-number}
@@ -52,9 +52,9 @@ To use [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](
 
 6. Configure the OSS storage in the `deploy/cr.yaml` Custom Resource. Specify the following information:
 
-    * Set `storages.NAME.type` to `oss`.  Substitute the `NAME` part with a name you will later use to refer to this storage when making backups and restores
+    * Set `storages.NAME.type` to `oss`. Substitute the `NAME` part with a name you will later use to refer to this storage when making backups and restores.
     * Specify the bucket name for the `storages.NAME.oss.bucket` option
-    * Specify the Secrets object name for the `storages.NAME.oss.credentialsSecret` option
+    * Specify the Secret name for the `storages.NAME.oss.credentialsSecret` option
     * Specify the OSS endpoint for the `storages.NAME.oss.endpointUrl` option
     * Specify the bucket region for the `storages.NAME.oss.region` option
     * Optionally, set `storages.NAME.oss.prefix` to store backups in a sub-folder. If you don't set a prefix, backups are stored in the root of the bucket

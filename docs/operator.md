@@ -3585,15 +3585,15 @@ The maximum number of retries to upload data to Alibaba Cloud OSS.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-numeric-1-box: int     | `3`|
+| :material-numeric-1-box: int     | `3` |
 
 ### `backup.storages.STORAGE-NAME.oss.retryer.maxBackoff`
 
-The maximum time to wait till the next retry.
+The maximum time to wait until the next retry.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `5m`|
+| :material-code-string: string     | `5m` |
 
 ### `backup.storages.STORAGE-NAME.oss.retryer.baseDelay`
 
@@ -3601,7 +3601,7 @@ The base delay before the first retry. Later retries use exponential backoff up 
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `1s`|
+| :material-code-string: string     | `1s` |
 
 ### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.secretName`
 
