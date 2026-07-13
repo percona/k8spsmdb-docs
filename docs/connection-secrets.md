@@ -96,7 +96,7 @@ Replace `<cluster-name>`, `<namespace>`, and the key name with your values.
     ??? example "Sample output"
 
         ```{.text .no-copy}
-        mongodb://databaseAdmin:databaseAdmin123456@34.118.227.158:27017/?authSource=admin&tls=true
+        mongodb://databaseAdmin:databaseAdmin123456@my-cluster-name-mongos.<namespace>.svc.cluster.local:27017/?authSource=admin&tls=true
         ```
 
 === "Replica set (standard URI)"
@@ -109,7 +109,7 @@ Replace `<cluster-name>`, `<namespace>`, and the key name with your values.
     ??? example "Sample output"
 
         ```{.text .no-copy}
-        mongodb://databaseAdmin:databaseAdmin123456@my-cluster-name-rs0-0.my-cluster-name-rs0.mongodb-operator.svc.cluster.local:27017,my-cluster-name-rs0-1.my-cluster-name-rs0.mongodb-operator.svc.cluster.local:27017,my-cluster-name-rs0-2.my-cluster-name-rs0.mongodb-operator.svc.cluster.local:27017/?authSource=admin&replicaSet=rs0&tls=true
+        mongodb://databaseAdmin:databaseAdmin123456@my-cluster-name-rs0-0.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017,my-cluster-name-rs0-1.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017,my-cluster-name-rs0-2.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017/?authSource=admin&replicaSet=rs0&tls=true
         ```
 
 === "Replica set (SRV URI)"
@@ -143,6 +143,20 @@ To inspect all available keys:
 ```bash
 kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> -o jsonpath='{.data}' | jq 'keys'
 ```
+
+??? example "Expected output"
+
+    ```{.text .no-copy}
+    [
+      "databaseAdmin_cfg_connectionString",
+      "databaseAdmin_cfg_connectionStringExposed",
+      "databaseAdmin_cfg_connectionStringSrv",
+      "databaseAdmin_mongos_connectionString",
+      "databaseAdmin_rs0_connectionString",
+      "databaseAdmin_rs0_connectionStringExposed",
+      "databaseAdmin_rs0_connectionStringSrv"
+    ]
+    ```
 
 ## Use in an application Deployment
 
