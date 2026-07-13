@@ -3442,6 +3442,22 @@ Additional configuration options (see [Fluent Bit official documentation :octico
 | ----------- | ---------- |
 | :material-text-long: subdoc     | |
 
+### `logcollector.livenessProbe`
+
+Sets a custom [liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for the logs (Fluent Bit) container. When not set, the container has no liveness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via [`logcollector.configuration`](#logcollectorconfiguration) (`[HTTP_SERVER] On`).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
+### `logcollector.readinessProbe`
+
+Sets a custom [readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for the logs (Fluent Bit) container. When not set, the container has no readiness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via [`logcollector.configuration`](#logcollectorconfiguration) (`[HTTP_SERVER] On`).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
 ### `logcollector.logrotate.configuration`
 
 Overrides the default logrotate configuration used by the log collector sidecar container.
@@ -3465,6 +3481,22 @@ Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `"0 0 0 * * *"` |
+
+### `logcollector.logrotate.livenessProbe`
+
+Sets a custom [liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for the `logrotate` container. When not set, the container has no liveness probe.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
+
+### `logcollector.logrotate.readinessProbe`
+
+Sets a custom [readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for the `logrotate` container. When not set, the container has no readiness probe.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | |
 
 ### `logcollector.resources.requests.memory`
 
