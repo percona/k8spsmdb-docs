@@ -2037,6 +2037,29 @@ A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubern
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `tcpSocket: { port: 7777 }` |
 
+### `pmm.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `60` |
+
+### `pmm.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `10` |
+
+### `pmm.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the readiness probe to be undertaken before giving up.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
 
 ## <a name="operator-sharding-section"></a>Sharding Section
 
@@ -3256,6 +3279,31 @@ A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
 
+### `backup.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `30` |
+
+
+### `backup.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
+
+### `backup.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the liveness probe to be undertaken before giving up.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
+
 ### `backup.readinessProbe`
 
 A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `backup-agent` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
@@ -3263,6 +3311,30 @@ A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubern
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
+
+### `backup.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `30` |
+
+### `backup.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
+
+### `backup.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the readiness probe to be undertaken before giving up.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
 
 ### `backup.storages.STORAGE-NAME.main`
 
@@ -3867,19 +3939,71 @@ The name of a Secret from where environment variables will be loaded for the log
 
 ### `logcollector.livenessProbe`
 
-A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no liveness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`[HTTP_SERVER] On`). Available starting with Operator version 1.23.0.
+A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no liveness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration`:
+
+```yaml
+logcollector:
+  enabled: true
+  configuration: |
+    [SERVICE]
+        HTTP_Server  On
+```
+
+Available starting with Operator version 1.23.0.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `tcpSocket: { port: 2020 }` |
+
+### `logcollector.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `30` |
+
+### `logcollector.livenessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
 
 ### `logcollector.readinessProbe`
 
-A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no readiness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`[HTTP_SERVER] On`). Available starting with Operator version 1.23.0.
+A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no readiness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`HTTP_Server On` under `[SERVICE]`):
+
+```yaml
+logcollector:
+  enabled: true
+  configuration: |
+    [SERVICE]
+        HTTP_Server  On
+```
+
+Available starting with Operator version 1.23.0.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `tcpSocket: { port: 2020 }` |
+
+### `logcollector.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
+
+### `logcollector.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
 
 ### `logcollector.logrotate.configuration`
 
@@ -3913,6 +4037,22 @@ A custom [Kubernetes liveness probe :octicons-link-external-16:](https://kuberne
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
 
+### `logcollector.logrotate.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `30` |
+
+### `logcollector.logrotate.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
+
 ### `logcollector.logrotate.readinessProbe`
 
 A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logrotate` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
@@ -3920,6 +4060,22 @@ A custom [Kubernetes readiness probe :octicons-link-external-16:](https://kubern
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | `exec: { command: [/bin/true] }` |
+
+### `logcollector.logrotate.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `5` |
+
+### `logcollector.logrotate.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `15` |
 
 ### `logcollector.resources.requests.memory`
 
