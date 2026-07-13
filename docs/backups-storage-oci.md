@@ -106,7 +106,7 @@ Follow these steps:
         ...
     ```
 
-5. Add this statement to the an OCI policy for the `percona-server-mongodb-operator` Service Account Replace the namespace and cluster OCID with your own values:
+5. Add this statement to the an OCI policy for the `percona-server-mongodb-operator` Service Account. Replace the namespace and cluster OCID with your own values:
 
     ```text
     Allow any-user to manage objects in tenancy where all {request.principal.type='workload', request.principal.namespace='<operator-namespace>', request.principal.service_account='percona-server-mongodb-operator', request.principal.cluster_id='<cluster-ocid>'}
