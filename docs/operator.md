@@ -1145,6 +1145,10 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 
 DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
 
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster` |
@@ -2396,6 +2400,10 @@ Specifies whether Service for config servers [should route external traffic :oct
 
 DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
 
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster` |
@@ -2959,6 +2967,10 @@ Specifies whether Service for the mongos instances [should route external traffi
 ### `sharding.mongos.expose.externalDNS.prefix`
 
 DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
 
 | Value type  | Example    |
 | ----------- | ---------- |

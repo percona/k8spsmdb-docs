@@ -78,6 +78,7 @@ Use **Annotations** when:
 | `percona.com/ssl-hash` | Pods | Stores the hash of the most recent TLS configuration | 
 | `percona.com/ssl-internal-hash` | Pods | Stores the hash of the most recent TLS configuration for internal communication |
 | `percona.com/passwords-updated`| Secrets | Indicates when passwords were last updated in the Secret |
+| `percona.com/external-dns-managed` | Services | Set by the Operator when External DNS `/hostname` and `/ttl` annotations are generated from values defined in `expose.externalDNS`. Marks ownership of those annotations.  Do not set or remove it manually. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations). | `"true"` |
 | `kubectl.kubernetes.io/restartedAt` | PVC | Records the most recent timestamp when the associated resource was intentionally restarted. This annotation is typically used to trigger rolling restarts of StatefulSets, ensuring Pods or PVCs are refreshed according to Kubernetes best practices. | `2026-02-01T12:34:56Z` |
 
 ## Setting labels and annotations in the Custom Resource
@@ -183,3 +184,5 @@ spec:
 ```
 
 The label and annotation values must exactly match the ones defined for the Service to be kept.
+
+External DNS annotations follow separate ownership rules. The Operator manages `external-dns.alpha.kubernetes.io/hostname` and `/ttl` only on Services marked with `percona.com/external-dns-managed`. Manual External DNS annotations on unmarked Services, and other External DNS keys such as `/target` or `/alias`, are preserved and do not need to be listed in `ignoreAnnotations`. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations) for details.
