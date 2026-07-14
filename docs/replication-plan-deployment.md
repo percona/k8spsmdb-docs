@@ -53,7 +53,7 @@ The setup steps are:
 
 1. Deploy the _Main_ cluster wherever you want (or use an existing one)
 2. Export the TLS certificates and user credentials from the main site. 
-3. Create the Kubernetes Secrets objects: [for TLS certificates](tls-manual.md) and [for User secrets](users.md#create-users-via-custom-resource). You will use these Secrets to deploy the Replica site.
+3. Create the Kubernetes Secrets objects: [for TLS certificates](tls-manual.md) and [for User secrets](app-users.md#create-users-via-custom-resource). You will use these Secrets to deploy the Replica site.
 4. Deploy the _Replica_ cluster on a Kubernetes cluster using the Secrets you created.
 5. Interconnect sites by adding nodes from the _Replica_ cluster to the _Main_ cluster using the MongoDB client.
 

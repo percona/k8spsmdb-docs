@@ -3,11 +3,11 @@
 {{ config.extra.added_key }}
 
 <p>
-<img src="assets/images/Percona_Logo_Color.png" />
+<img src="assets/images/Percona_Color_Dark.svg" />
 </p>
 
 <h1>Operator for MongoDB</h1>
 {% if config.site_description %}
 <h1>{{ config.site_description }}</h1>
 {% endif %} 
-<h2> 1.21.2 (January 12, 2026)</h2>
+<h2> 1.22.0 (February 25, 2026)</h2>

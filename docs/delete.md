@@ -11,14 +11,12 @@ You may have different reasons to clean up your Kubernetes environment: moving f
 
 To delete the database cluster means to delete the Custom Resource associated with it.
 
-!!! note
+There are two [finalizers  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which are related to cluster deletion:
 
-    There are two [finalizers  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which are related to cluster deletion:
+* `percona.com/delete-psmdb-pods-in-order`: it is enabled by default and it ensures the Pods are deleted in order on cluster deletion. PVCs are not deleted.
+* `percona.com/delete-psmdb-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
 
-    * `percona.com/delete-psmdb-pods-in-order`: if present, ensures the proper Pods deletion order at cluster deletion (on by default).
-    * `percona.com/delete-psmdb-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
-
-    Second one is off by default in the `deploy/cr.yaml` configuration file, allowing you to recreate the cluster without losing data. Also, you can [delete TLS-related objects and PVCs manually](#clean-up-resources), if needed. 
+    This finalizer is off by default in the `deploy/cr.yaml` configuration file, allowing you to recreate the cluster without losing data. If you need, you can [delete TLS-related objects and PVCs manually](#clean-up-resources). 
 
 The steps are the following:
 {.power-number}
@@ -142,9 +140,29 @@ To delete the Operator, do the following:
     helm uninstall my-op --namespace <namespace>
     ```
 
+    This command deletes only the Operator deployment. The CRDs remain in the Kubernetes environment, allowing other clusters in other namespaces to run.
+
+4. Delete Custom Resource Definitions:
+
+     !!! warning
+    
+         Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them. 
+
+         If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+
+     ```bash
+     helm uninstall psmdb-operator-crds --namespace <namespace>
+     ```
+
 ## Clean up resources
  
-By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. If you wish to delete them, do the following:
+By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. 
+
+You can automate resource cleanup by turning on `percona.com/delete-psmdb-pvc` [finalizer](operator.md#metadata). Note that in this case user Secrets will also be deleted.
+
+You can also delete TLS-related objects and PVCs manually.
+
+To manually clean up resources, do the following:
 {.power-number}
 
 1. Delete Persistent Volume Claims.

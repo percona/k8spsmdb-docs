@@ -50,7 +50,7 @@ To use Google Cloud Storage for backups with service account keys, you need to d
 2. Create a Secrets object with this key
 3. Configure the storage in the Custom Resource
 
-See the [Configure Google Cloud Storage](../backups-storage.md#configure-storage-for-backups) documentation for detailed steps.
+See the [Configure Google Cloud Storage](../backups-storage-gcp.md) documentation for detailed steps.
 
 The configuration of Google Cloud Storage with HMAC keys remains unchanged.
 However, PBM has a known issue for using HMAC keys with GCS, which was
@@ -185,7 +185,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 
 * The [Data-at-rest encryption](../encryption.md) topic is updated with the correct steps for using HashiCorp Vault.
 
-* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#considerations-for-kubernetes-cluster-versions-and-upgrades) before updating any Operator.
+* New documentation is available detailing [important considerations for upgrading your Kubernetes cluster](../update-operator.md#for-kubernetes-cluster-versions-and-upgrades) before updating any Operator.
 
 ## Supported software
 

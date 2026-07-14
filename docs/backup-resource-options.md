@@ -71,6 +71,8 @@ Specifies the compression level. Note that the higher value you specify, the mor
 
 The maximum time in seconds for a backup to start. The Operator compares the timestamp of the backup object against the current time. If the backup is not started within the set time, the Operator automatically marks it as “failed”.
 
+If undefined, the Operator uses the value specified in the Custom Resource, or defaults to 120 seconds. Minimum allowed value is 1 second.
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int     | `300` |

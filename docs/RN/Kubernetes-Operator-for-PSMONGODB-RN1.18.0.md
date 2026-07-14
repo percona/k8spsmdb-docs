@@ -12,7 +12,7 @@
 
 ### Enhancements of the declarative user management
 
-The [declarative management of custom MongoDB users](../users.md#application-level-unprivileged-users) was improved compared to its initial implementation in the previous release, where the Operator did not track and sync user-related changes in the Custom Resource and the database. Also, starting from now you can create custom MongoDB roles on various databases just like users in the `deploy/cr.yaml` manifest:
+The [declarative management of custom MongoDB users](../app-users.md) was improved compared to its initial implementation in the previous release, where the Operator did not track and sync user-related changes in the Custom Resource and the database. Also, starting from now you can create custom MongoDB roles on various databases just like users in the `deploy/cr.yaml` manifest:
 
 ```yaml
 ...
@@ -23,7 +23,7 @@ roles:
     db: admin
 ```
 
-See [the documentation](../users.md#custom-mongodb-roles) to find more details about this feature.
+See [the documentation](../app-users.md#custom-mongodb-roles) to find more details about this feature.
 
 ### Support for selective restores 
 

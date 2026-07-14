@@ -1,67 +1,24 @@
-/* Overrides */
+/* Overrides
+   Kubernetes brand: RGB 42 / 166 / 223 (#2aa6df)
+   Print: CMYK 72 / 17 / 0 / 0 · PMS 6120 C */
 
 :root {
-    --md-primary-fg-color--dark: var(--sky700)
+    --operators-brand: rgb(42, 166, 223);
+    /* Sidebar / repo nav strip — solid, no gradient */
+    --operators-brand-dark: rgb(40, 39, 39);
+    --md-primary-fg-color--dark: var(--operators-brand-dark);
 }
 .md-header,
 .md-tabs {
-    background:
-        -o-linear-gradient(
-            340deg,
-            rgba(0,0,0,0) 33%,
-            rgba(0,0,0,0.2) 95%
-        ),
-        -o-linear-gradient(
-            340deg,
-            rgb(11,39,140) 33%,
-            rgb(20,142,255) 95%
-        );
-    background:
-        linear-gradient(
-            110deg,
-            rgba(0,0,0,0) 33%,
-            rgba(0,0,0,0.2) 95%
-        ),
-        linear-gradient(
-            110deg,
-            rgb(11,39,140) 33%,
-            rgb(20,142,255) 95%
-        );
+    background: var(--operators-brand);
 }
 @media screen and (max-width: 76.1875em) {
     .md-nav--primary .md-nav__title[for="__drawer"],
     .md-nav--primary .md-nav__title {
-        background:
-            -o-linear-gradient(
-                340deg,
-                rgba(0,0,0,0) 33%,
-                rgba(0,0,0,0.2) 95%
-            ),
-            -o-linear-gradient(
-                340deg,
-                rgb(11,39,140) 33%,
-                rgb(20,142,255) 95%
-            );
-        background:
-            linear-gradient(
-                110deg,
-                rgba(0,0,0,0) 33%,
-                rgba(0,0,0,0.2) 95%
-            ),
-            linear-gradient(
-                110deg,
-                rgb(11,39,140) 33%,
-                rgb(20,142,255) 95%
-            );
+        background: var(--operators-brand);
     }
 }
 .superNav,
 .md-nav__source {
-    background-color: rgb(11,39,140);
-    background-image:
-        linear-gradient(
-            110deg,
-            rgba(0,0,0,0.3) 33%,
-            rgba(0,0,0,0.3) 95%
-        );
+    background-color: var(--operators-brand-dark);
 }

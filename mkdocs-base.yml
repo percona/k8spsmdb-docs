@@ -4,7 +4,7 @@ site_name: Percona Operator for MongoDB
 site_description: Documentation
 site_author: Percona LLC
 site_url: ""
-copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2025
+copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2026
 use_directory_urls: false
 repo_name: percona/k8spsmdb-docs
 repo_url: https://github.com/percona/k8spsmdb-docs
@@ -12,8 +12,8 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: assets/operators-mark.svg
-  favicon: assets/operators-fav.svg
+  logo: assets/operators-logo.svg
+  favicon: assets/operators_fav.svg
   custom_dir: _resource/overrides/
   font:
     text: Roboto
@@ -198,7 +198,7 @@ nav:
     - Installation:
           - "System requirements": System-Requirements.md
           - "Install on Minikube": minikube.md
-          - "Install with Everest": everest.md
+          - "Install with OpenEverest": everest.md
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
@@ -207,7 +207,11 @@ nav:
           
     - Upgrade:
           - About upgrades: update.md
-          - Upgrade CRD and the Operator: update-operator.md
+          - Upgrade CRD and the Operator: 
+              - "Considerations": update-operator.md
+              - "Manually": update-crd-manual.md
+              - "With Helm": update-crd-helm.md
+              - "Via OLM": update-crd-olm.md
           - Database upgrade overview: update-db.md
           - Minor upgrade:
                - "To a specific version": update-minor-set-version.md
@@ -217,7 +221,13 @@ nav:
           - "Upgrade Percona Server for MongoDB on OpenShift": update_openshift.md
 
     - Configuration:
-          - "Application and system users": users.md
+          - Manage users: 
+             - "About application and system users": users.md
+             - "Application-level (unprivileged) users": app-users.md
+             - "System users": system-users.md
+             - Manage system users with Vault: 
+                - "Overview": system-users-vault.md
+                - "Configuration": system-users-vault-setup.md
           - "Disable authentication": auth-disable.md
           - "Changing MongoDB options": options.md
           - options-pbm.md
@@ -234,8 +244,16 @@ nav:
              - Generate certificates manually: tls-manual.md
              - Update certificates: tls-update.md
              - Disable TLS: tls-disable.md
-          - "Data at rest encryption": encryption.md
+          - Data at rest encryption: 
+            - About data-at-rest encryption: encryption.md
+            - Configure encryption using an encryption key Secret: encryption-keyfile.md
+            - Configure encryption with HashiCorp Vault:
+               - without TLS: encryption-vault.md
+               - with TLS: encryption-vault-tls.md
           - "Telemetry": telemetry.md
+          - "Operator environment variables": env-vars-operator.md
+          - "Cluster component environment variables": env-vars-cluster.md
+          - "Define custom environment variables": env-vars-custom.md
           - reconciliation-concurrency.md
           - Logging:
             - "Persistent logging": persistent-logging.md
@@ -244,7 +262,13 @@ nav:
     - Management:
           - Backup and restore:
               - "About backups": backups.md
-              - "Configure storage for backups": backups-storage.md
+              - "Configure storage for backups":
+                  - Overview: backups-storage.md
+                  - "Amazon S3 storage": backups-storage-s3.md
+                  - "MinIO and S3-compatible storages": backups-storage-minio.md
+                  - "Google Cloud storage": backups-storage-gcp.md
+                  - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
               - Make a backup:
@@ -276,12 +300,15 @@ nav:
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
+          - volume-attributes-class.md
           
     - Troubleshooting:
+          - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
           - "Initial troubleshooting": debug.md
           - "Exec into the container": debug-shell.md
           - "Check the logs": debug-logs.md
           - "Special debug images": debug-images.md
+          - "Storage resizing": debug-storage.md
 
     - HOWTOs:
           - Install the database with customized parameters: custom-install.md 
@@ -309,6 +336,7 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.md

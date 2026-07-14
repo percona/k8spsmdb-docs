@@ -52,13 +52,13 @@ Here's how to do it:
     === "sharding is on"
 
         ```
-        mongosh "mongodb://databaseAdmin:<databaseAdminPassword>@<cluster-name>-mongos.<namespace>.svc.cluster.local/admin?ssl=false"
+        mongosh "mongodb://<databaseAdminUser>:<databaseAdminPassword>@<cluster-name>-mongos.<namespace>.svc.cluster.local/admin?ssl=false"
         ```
 
     === "sharding is off"
 
         ```
-        mongosh  "mongodb://databaseAdmin:<databaseAdminPassword>@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        mongosh  "mongodb://<databaseAdminUser>:<databaseAdminPassword>@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```
 
     If you run MongoDB 5.0 and earlier, use the old `mongo` client instead of `mongosh`.

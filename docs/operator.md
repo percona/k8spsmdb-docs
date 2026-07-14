@@ -63,6 +63,28 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
+### `enableVolumeExpansion`
+
+Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`  |  
+
+This option is deprecated and will be removed in version 1.25.0. Use the 
+[`storageScaling.enableVolumeScaling`](#storagescalingenablevolumescaling) option instead.
+
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`    |
+
+This option is deprecated and will be removed in version 1.25.0. Use the
+[`storageScaling.enableExternalAutoscaling`](#storagescalingenableexternalautoscaling) option instead.
+
 ### `unmanaged`
 
 Setting it to `true` instructs the Operator to run the cluster in unmanaged state - the Operator does not form replica sets, and does not generate TLS certificates or user credentials. This can be useful for migration scenarios and for [cross-site replication](replication.md). 
@@ -71,7 +93,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`    |
 
-### `enableVolumeExpansion`
+### `storageScaling.enableVolumeScaling`
 
 Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
@@ -79,13 +101,45 @@ Enables or disables [storage scaling / volume expansion](scaling.md#storage-resi
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
 
-### `enableExternalVolumeAutoscaling`
+### `storageScaling.enableExternalAutoscaling`
 
 Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling.md#storage-resizing-with-volume-expansion-capability)
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.enabled`
+
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling.md#automatic-storage-resizing).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.autoscaling.triggerThresholdPercent`
+
+The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `80`        |
+
+### `storageScaling.autoscaling.growthStep`
+
+The amount to increase the storage during automatic resizing. Default value is 2Gi
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `2Gi`        |
+
+### `storageScaling.autoscaling.maxSize`
+
+The maximum size to which storage can be automatically resized.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string        | `10Gi`        |
 
 ### `crVersion`
 
@@ -145,7 +199,7 @@ The (non-standard) cluster domain to be used as a suffix of the Service name.
 
 ### `clusterServiceDNSMode`
 
-Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](expose.md#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (use a [special FQDN based on the Pod name](expose.md#servicemesh)). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](expose.md#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (use a [special FQDN based on the Pod name](expose.md#application-protocol-support-for-service-mesh-integrations)). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -198,6 +252,34 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `svc.clusterset.local` |
+
+### `defaultRWConcern.readConcern`
+
+The default [read concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/read-concern/) level for the cluster. The Operator applies it with MongoDB's [`setDefaultRWConcern`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`.
+
+If you leave this option and `defaultRWConcern.writeConcern.w` unset, the Operator does not change the current value—except for replica sets with an [Arbiter](arbiter.md#default-read-and-write-concern-for-replica-sets-with-an-arbiter). For those, it defaults to `majority`. Without that, MongoDB can fall back to write concern `w: 1` after you add an Arbiter, which risks silent rollback of acknowledged writes on failover.
+
+The Operator sets the default read/write concern for every sharded cluster (through `mongos`). For individual replica sets, it sets them when an Arbiter is enabled or when you configure this section explicitly.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.w`
+
+The `w` field of the default [write concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/write-concern/) that the Operator sets cluster-wide. Accepts `majority`, a whole number of nodes, or a custom [`getLastErrorModes`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.settings.getLastErrorModes) tag name. Defaults to `majority`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.wtimeout`
+
+The `wtimeout` field (in milliseconds) of the default write concern: how long to wait for the write concern to be satisfied before the write is considered failed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `5000`      |
 
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
@@ -388,7 +470,7 @@ Specifies a secret object with the [encryption key  :octicons-link-external-16:]
 
 ### `secrets.vault`
 
-Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-storage-for-encryption-keys).
+Specifies a secret object [to provide integration with HashiCorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -401,6 +483,59 @@ Specifies a secret object for [LDAP over TLS](ldap.md#using-ldap-over-tls-connec
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-ldap-secret` |
+
+## <a name="operator-vault-section"></a>Vault section
+
+The Vault section defines how the Operator connects to HashiCorp Vault to sync system user credentials. Read more about this feature in [Manage system users with Vault](system-users-vault.md)
+
+### `vault.endpointUrl`
+
+The Vault server address.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `https://vault-service:8200` |
+
+### `vault.tlsSecret`
+
+The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses these certificates for TLS connections to Vault.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-tls-vault-secret` |
+
+### `vault.syncUsers.role`
+
+The Vault Kubernetes auth role name. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `operator` |
+
+### `vault.syncUsers.mountPath`
+
+The root path where a specific secrets engine is enabled inside Vault.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `secret` |
+
+### `vault.syncUsers.keyPath`
+
+The Vault path where system user credentials are stored. 
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `psmdb/operator/{namespace}/my-cluster-name/users` |
+
+### `vault.syncUsers.tokenSecret`
+
+The Kubernetes Secret that contains a Vault token for token-based
+authentication. If this value is set, the Operator uses the provided token to authenticate with Vault. If this value is not set and authentication with Kubernetes service account is also enabled, the Operator will use its service account with Vault Kubernetes authentication.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `vault-token-operator` |
 
 ## <a name="operator-replsets-section"></a>Replsets Section
 
@@ -526,6 +661,14 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 | ----------- | ---------- |
 | :material-code-string: string     | `0` |
 
+### `replsets.externalNodes.arbiterOnly`
+
+Defines whether this [external replset instance](replication-main.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
+
 ### `replsets.configuration`
 
 Custom configuration options for mongod. Please refer to the [official manual  :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs  :octicons-link-external-16:](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html).
@@ -533,6 +676,38 @@ Custom configuration options for mongod. Please refer to the [official manual  :
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1<br>storage:<br>  engine: wiredTiger<br>  wiredTiger:<br>    engineConfig:<br>      directoryForIndexes: false<br>      journalCompressor: snappy<br>    collectionConfig:<br>      blockCompressor: snappy<br>    indexConfig:<br>      prefixCompression: true</pre> |
+
+### `replsets.env.name`
+
+The name of a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `replsets.env.value`
+
+The vallue for a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `replsets.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `replsets.envFrom.secretRef.name`
+
+The name of a Sexcret object from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `custom-secret` |
 
 ### `replsets.affinity.antiAffinityTopologyKey`
 
@@ -997,6 +1172,10 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
+
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
 ### `replsets.nonvoting.enabled`
 
@@ -1916,6 +2095,38 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 
+### `sharding.configsvrReplSet.env.name`
+
+The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `sharding.configsvrReplSet.env.value`
+
+The value of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `sharding.configsvrReplSet.envFrom.ConfigMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `sharding.configsvrReplSet.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-secret` |
+
 ### `sharding.configsvrReplSet.livenessProbe.failureThreshold`
 
 Number of consecutive unsuccessful tries of the [liveness probe  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
@@ -2189,6 +2400,10 @@ Specifies whether Service for config servers [should route external traffic :oct
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
@@ -2356,6 +2571,38 @@ Custom configuration options for mongos. Please refer to the [official manual  :
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>systemLog:<br>  verbosity: 1</pre> |
+
+### `sharding.mongos.env.name`
+
+The name of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `sharding.mongos.env.value`
+
+The value of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `sharding.mongos.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-configmap` |
+
+### `sharding.mongos.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: | `my-secret` |
 
 ### `sharding.mongos.affinity.antiAffinityTopologyKey`
 
@@ -2693,6 +2940,9 @@ Specifies whether Service for the mongos instances [should route external traffi
 | ----------- | ---------- |
 | :material-code-string: string     | `Local` |
 
+!!! note "Service protocol configuration"
+
+    Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
 ### `sharding.mongos.hostAliases.ip`
 
@@ -2712,7 +2962,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 ## Roles section
 
-The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](users.md#create-users-via-custom-resource).
+The `roles` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](app-users.md#create-users-via-custom-resource).
 
 ### `roles.role`
 
@@ -2788,7 +3038,7 @@ An array of roles (with names of the role and the database) from which this role
 
 ## <a name="operator-users-section"></a>Users section
 
-The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](users.md#create-users-via-custom-resource).
+The `users` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](app-users.md#create-users-via-custom-resource).
 
 ### `users.name`
 
@@ -2808,7 +3058,7 @@ Database that the user authenticates against.
 
 ### `users.passwordSecretRef.name`
 
-Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](users.md#create-users-manually).
+Name of the secret that contains the user's password. If `passwordSecretRef` is not present, password will be [generated automatically](app-users.md#create-users-manually).
 
 | Value type | Example |
 | ---------- | ------- |
@@ -3091,6 +3341,78 @@ The locally-stored base64-encoded custom encryption key used by the Operator for
 | ----------- | ---------- |
 | :material-code-string: string     | `""`       |
 
+### `backup.storages.STORAGE-NAME.minio.insecureSkipTLSVerify`
+
+Disables verification of the storage server TLS certificate. This enables data upload to S3-compatible storage with a self-issued certificate bypassing TLS verification for private. Read more about [using custom CA certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage)
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`     |
+
+### `backup.storages.STORAGE-NAME.minio.credentialsSecret`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the  `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-minio` |
+
+### `backup.storages.STORAGE-NAME.minio.bucket`
+
+The bucket name for backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |            |
+
+### `backup.storages.STORAGE-NAME.minio.prefix`
+
+The path (sub-folder) to the backups inside the bucket.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.minio.region`
+
+The region name of the bucket. This is where the bucket is located
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `us-east-1` |
+
+### `backup.storages.STORAGE-NAME.minio.endpointUrl`
+
+The endpoint URL of the S3-compatible storage service. This points to your storage service and is specific to your cloud provider.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `minio.psmdb.svc.cluster.local:9000/minio/` |
+
+### `backup.storages.STORAGE-NAME.minio.secure`
+
+Defines whether to use HTTP or HTTPS protocol for communication with the S3 storage.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.name`
+
+The name of the Secret that stores custom TLS certificates for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `minio-ca-bundle` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.key`
+
+The custom CA certificate for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](backups-storage-minio.md#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `ca.crt` |
+
 ### `backup.storages.STORAGE-NAME.gcs.bucket`
 
 The name of the storage bucket. See the [GCS bucket naming guidelines :octicons-link-external-16:](https://cloud.google.com/storage/docs/naming-buckets#requirements) for bucket name requirements.
@@ -3190,7 +3512,7 @@ The mount point for a remote filesystem configured to store backups.
 
 ### `backup.volumeMounts.mountPath`
 
-Mount path for the [remote backup storage](backups-storage.md#remote-file-server).
+Mount path for the [remote backup storage](backups-storage-filesystem.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3198,7 +3520,7 @@ Mount path for the [remote backup storage](backups-storage.md#remote-file-server
 
 ### `backup.volumeMounts.name`
 
-Name of the [remote backup storage](backups-storage.md#remote-file-server).
+Name of the [remote backup storage](backups-storage-filesystem.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3441,6 +3763,38 @@ Additional configuration options (see [Fluent Bit official documentation :octico
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc     | |
+
+### `logcollector.env.name`
+
+The name of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_ENV` |
+
+### `logcollector.env.value`
+
+The value of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `MY_VALUE` |
+
+### `logcollector.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-configmap` |
+
+### `logcollector.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-secret` |
 
 ### `logcollector.livenessProbe`
 

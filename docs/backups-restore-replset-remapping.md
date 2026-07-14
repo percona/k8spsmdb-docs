@@ -1,6 +1,6 @@
 # Restore to a new cluster with different replica set names
 
-!!! admonition "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)
+!!! admonition "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
 
 You can restore from a backup to a cluster that has different replica set names. The number of shards in the target cluster depends on the restore type:
 

@@ -44,11 +44,11 @@ backup:
     name: backup-nfs
 ```
 
-See more in our [documentation about this storage type](../backups-storage.md#remote-file-server).
+See more in our [documentation about this storage type](../backups-storage-filesystem.md).
 
 ### Generated passwords for custom MongoDB users
 
-A new improvement for the [declarative management of custom MongoDB users](../users.md#application-level-unprivileged-users) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can omit specifying a reference to an already existing Secret with the user’s password, and the Operator will generate it automatically:
+A new improvement for the [declarative management of custom MongoDB users](../app-users.md) brings the possibility to use automatic generation of users passwords. When you specify a new user in `deploy/cr.yaml` configuration file, you can omit specifying a reference to an already existing Secret with the user’s password, and the Operator will generate it automatically:
 
 ```yaml
 ...
@@ -62,7 +62,7 @@ users:
         db: admin
 ```
 
-Find more details on this automatically created Secret [in our documentation](../users.md#custom-mongodb-roles).
+Find more details on this automatically created Secret [in our documentation](../app-users.md#custom-mongodb-roles).
 
 ### Percona Server for MongoDB 8.0 support
 
@@ -71,15 +71,15 @@ See [this blogpost :octicons-link-external-16:](https://www.percona.com/blog/per
 
 ## New Features
 
-* {{ k8spsmdbjira(1109) }}: Backups can now be [stored on a remote file server](../backups-storage.md#remote-file-server)
-* {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](../backups-storage.md#__tabbed_2_2) allow automating access to AWS S3 buckets based on Identity Access Management with no need to specify the S3 credentials explicitly
+* {{ k8spsmdbjira(1109) }}: Backups can now be [stored on a remote file server](../backups-storage-filesystem.md)
+* {{ k8spsmdbjira(921) }}: [IAM Roles for Service Accounts (IRSA)](../backups-storage-s3.md#automating-access-to-amazon-s3-based-on-iam-roles) allow automating access to AWS S3 buckets based on Identity Access Management with no need to specify the S3 credentials explicitly
 * {{ k8spsmdbjira(1133) }}: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator [is now possible](../operator.md#replsetsreplsetoverridesmember-namepriority) with the new `replsetOverrides.MEMBER-NAME.priority` Custom Resource option
 * {{ k8spsmdbjira(1164) }}: Add the possibility to create users in the `$external` database for external authentication purposes 
 
 ## Improvements
 
 * {{ k8spsmdbjira(1123) }}: Percona Server for MongoDB 8.0 is now supported
-* {{ k8spsmdbjira(1171) }}: The [declarative user management](../users.md#create-users-via-custom-resource) was enchanced with the possibility to automatically generate passwords
+* {{ k8spsmdbjira(1171) }}: The [declarative user management](../app-users.md#create-users-via-custom-resource) was enchanced with the possibility to automatically generate passwords
 * {{ k8spsmdbjira(1174) }}: [Telemetry](../telemetry.md) was improved to to track whether the custom users and roles management, automatic volume expansion, and multi-cluster services features are enabled
 * {{ k8spsmdbjira(1179) }}: It is now possible to configure externalTrafficPolicy for [mongod](../operator.md#replsetsexposeexternaltrafficpolicy), [configsvr](../operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy) and [mongos](../operator.md#shardingmongosexternaltrafficpolicy) instances
 * {{ k8spsmdbjira(1205) }}: Backups in unmanaged clusters [are now supported](../replication-backups.md), removing a long-standing limitation of [cross-site replication](../replication.md) that didn’t allow backups on replica clusters
