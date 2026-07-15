@@ -89,7 +89,7 @@ export KSA_NAME=default
       --overwrite
     ```
 
-5. Annotating a Service Account does not restart existing Pods automatically. Restart the database Pods so they pick up the Workload Identity configuration. For a replica set named `rs0`:
+5. Annotating a Service Account does not restart existing Pods automatically. Restart the database Pods so they pick up the Workload Identity configuration. For a replica set named `rs0`, run the following:
 
     ```bash
     export DBCLUSTER=my-cluster-name
@@ -152,12 +152,10 @@ Now you are ready to configure Percona Server for MongoDB to use Workload Identi
             export DBCLUSTER=my-cluster-name
             ```
 
-        * Restart the Pods (adjust the replica set name and Pod count for your cluster):
+        * Restart the Pods:
 
             ```bash
-            for i in 0 1 2; do
-              kubectl delete pod $DBCLUSTER-rs0-$i -n $NAMESPACE
-            done
+            kubectl rollout restart sts/$DBCLUSTER-rs0 -n $NAMESPACE
             ```
 
     3. Remove the credentials Secret from the Custom Resource. The storage name in the following command is `gcs`. Replace it with your value if you use another name:

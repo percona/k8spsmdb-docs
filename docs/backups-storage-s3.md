@@ -33,7 +33,13 @@ You can use one of the following options to authenticate to S3:
 
 Follow these steps to authenticate using an AWS S3 access key and secret key. This method works on any Kubernetes environment.
 
-1. Encode your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys using base64:
+1. Export the namespace as an environment variable:
+    
+    ```bash
+    export NAMESPACE=<namespace>
+    ```
+
+2. Encode your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys using base64:
 
     === ":simple-linux: in Linux"
 
@@ -47,7 +53,7 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
         echo -n 'plain-text-string' | base64
         ```
 
-2. Create a Secret manifest with your access credentials. Use the [deploy/backup-s3.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as an example. You must specify the following information:
+3. Create a Secret manifest with your access credentials. Use the [deploy/backup-s3.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as an example. You must specify the following information:
 
     * `metadata.name` is the name of the Kubernetes secret which you will reference in the Custom Resource
     * Base64-encoded credentials to access S3 storage.
@@ -65,13 +71,13 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
       AWS_SECRET_ACCESS_KEY: <base64-encoded-secret>
     ```
 
-3. Create the Kubernetes Secret object with this file:
+4. Create the Kubernetes Secret object with this file:
 
     ```bash
     kubectl apply -f deploy/backup-s3.yaml -n <namespace>
     ```
 
-4. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give your storage a name (the default name is `s3-us-west`) and define the following information:
+5. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give your storage a name (the default name is `s3-us-west`) and define the following information:
 
     * `type` - make sure the type is `s3`
     * `bucket` - where the data will be stored
@@ -334,8 +340,8 @@ export namespace=<my-namespace>
 3. Annotate both service accounts with the needed IAM role ARN:
 
         ```bash
-        kubectl -n $namespace annotate serviceaccount default eks.amazonaws.com/role-arn=$role_arn --overwrite
-        kubectl -n $namespace annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role-arn --overwrite
+        kubectl -n $NAMESPACE annotate serviceaccount default eks.amazonaws.com/role-arn=$role_arn --overwrite
+        kubectl -n $NAMESPACE annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role-arn --overwrite
         ```
 
 4. Annotating a Service Account does not restart existing Pods automatically. Restart the Operator and database Pods so they pick up the new `AWS_ROLE_ARN` environment variable:
@@ -350,14 +356,14 @@ export namespace=<my-namespace>
     * Check the annotation on both Service Accounts:
 
         ```bash
-        kubectl -n $namespace get sa default -o yaml
-        kubectl -n $namespace get sa percona-server-mongodb-operator -o yaml
+        kubectl -n $NAMESPACE get sa default -o yaml
+        kubectl -n $NAMESPACE get sa percona-server-mongodb-operator -o yaml
         ```
 
     * Confirm that `AWS_ROLE_ARN` is set inside the Operator Pods:
 
         ```bash
-        kubectl -n $namespace exec -it deploy/percona-server-mongodb-operator -- printenv | grep AWS_ROLE_ARN
+        kubectl -n $NAMESPACE exec -it deploy/percona-server-mongodb-operator -- printenv | grep AWS_ROLE_ARN
         ```
 
         ??? example "Sample output"
@@ -437,12 +443,10 @@ Now you are ready to configure Percona Server for MongoDB to use IRSA for backup
             export DBCLUSTER=my-cluster-name
             ```
 
-        * Use the following for loop:
+        * Use the following command:
         
             ```bash
-            for i in 0 1 2; do    
-              kubectl delete pod $DBCLUSTER-rs0-$i -n $namespace
-            done
+            kubectl rollout restart sts/$DBCLUSTER-rs0 -n $NAMESPACE
             ```
 
     3. Restart the Operator Deployment:
@@ -454,7 +458,7 @@ Now you are ready to configure Percona Server for MongoDB to use IRSA for backup
     4. Confirm that AWS_ROLE_ARN is set inside the Operator and database Pods:
 
         ```bash
-        kubectl -n $namespace exec -it deploy/percona-server-mongodb-operator -- printenv | grep AWS_ROLE_ARN
+        kubectl -n $NAMESPACE exec -it deploy/percona-server-mongodb-operator -- printenv | grep AWS_ROLE_ARN
         kubectl exec -it $DBCLUSTER-rs0-0 -- printenv | grep AWS_ROLE_ARN
         ```
 
@@ -467,7 +471,7 @@ Now you are ready to configure Percona Server for MongoDB to use IRSA for backup
     5. Remove the credentials Secret by patching the cluster. The storage name in the following command is `aws-s3`. Replace it with your value if you use another name:
 
         ```bash 
-        kubectl -n $namespace patch psmdb $DBCLUSTER --type=json \
+        kubectl -n $NAMESPACE patch psmdb $DBCLUSTER --type=json \
         -p '[{"op":"remove","path":"/spec/backup/storages/aws-s3/s3/credentialsSecret"}]'
         sleep 30
         ```
