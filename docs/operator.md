@@ -1909,6 +1909,170 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
 
+### `replsets.search.size`
+
+Per-replica-set override for the number of `mongot` pods for this replica set
+or shard. Fully replaces [`search.size`](#searchsize) for this replica set.
+The value must be `1`. Has no effect unless
+[`search.enabled`](#searchenabled) is `true`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `replsets.search.storage.persistentVolumeClaim.resources.requests.storage`
+
+Per-replica-set override for the `mongot` PVC size. Fully replaces the
+cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage)
+value for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `20Gi`     |
+
+### `replsets.search.resources.requests.cpu`
+
+Per-replica-set override for `mongot` CPU requests. Fully replaces the
+cluster-wide [`search.resources`](#searchresourcesrequestscpu) value for this
+replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"2"`      |
+
+### `replsets.search.resources.requests.memory`
+
+Per-replica-set override for `mongot` memory requests. Fully replaces the
+cluster-wide value for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `2Gi`      |
+
+### `replsets.search.resources.limits.cpu`
+
+Per-replica-set override for `mongot` CPU limits. Fully replaces the
+cluster-wide value for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"2"`      |
+
+### `replsets.search.resources.limits.memory`
+
+Per-replica-set override for `mongot` memory limits. Fully replaces the
+cluster-wide value for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `2Gi`      |
+
+### `replsets.search.jvmFlags`
+
+Per-replica-set override for `mongot` JVM flags. Fully replaces the
+cluster-wide [`search.jvmFlags`](#searchjvmflags) value for this replica set
+or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-application-array-outline: array       | `["-Xmx1g", "-Xms1g"]` |
+
+### `replsets.search.affinity.antiAffinityTopologyKey`
+
+Per-replica-set override for the `mongot`
+[topologyKey :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature).
+Fully replaces the cluster-wide affinity for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `kubernetes.io/hostname` |
+
+### `replsets.search.affinity.advanced`
+
+Per-replica-set override that allows advanced Kubernetes affinity constraints
+for this replica set's `mongot` Pods. Fully replaces the cluster-wide affinity.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc      |            |
+
+### `replsets.search.nodeSelector`
+
+Per-replica-set override for the `mongot` node selector. Fully replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | `disktype: ssd` |
+
+### `replsets.search.tolerations.key`
+
+Per-replica-set override for `mongot` Pod tolerations. Setting tolerations here
+replaces the full cluster-wide tolerations list for this replica set or shard.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.search.tolerations.operator`
+
+The tolerations operator for this replica set’s `mongot` Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Exists` |
+
+### `replsets.search.tolerations.effect`
+
+The tolerations effect for this replica set’s `mongot` Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `NoExecute` |
+
+### `replsets.search.tolerations.tolerationSeconds`
+
+The toleration seconds for this replica set’s `mongot` Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `6000`     |
+
+### `replsets.search.annotations`
+
+Per-replica-set override for `mongot` Pod annotations. Fully replaces the
+cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | |
+
+### `replsets.search.labels`
+
+Per-replica-set override for `mongot` Pod labels. Fully replaces the
+cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | |
+
+### `replsets.search.containerSecurityContext`
+
+Per-replica-set override for the `mongot` container security context. Fully
+replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `replsets.search.podSecurityContext`
+
+Per-replica-set override for the `mongot` Pod security context. Fully replaces
+the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
 ## <a name="operator-pmm-section"></a>PMM Section
 
 The `pmm` section in the deploy/cr.yaml file contains configuration
@@ -2024,6 +2188,247 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `256M`     |
+
+
+## <a name="operator-search-section"></a>Search section
+
+The `search` section in the `deploy/cr.yaml` file contains configuration
+options for [Vector Search](vector-search.md) process called `mongot`.
+
+### `search.enabled`
+
+Enables or disables vector search for the cluster. 
+Default: `false`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`    |
+
+### `search.image`
+
+`mongot` Docker image to use. **Required** when `search.enabled` is `true`.
+The same image applies to every `mongot` pod in the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `percona/percona-server-mongodb-search:1.70.1` |
+
+### `search.imagePullPolicy`
+
+The image pull policy for the `mongot` image. Applies to every `mongot` pod in
+the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `Always` |
+
+### `search.configuration`
+
+Raw `mongot` YAML merged on top of the Operator-generated `mongot.conf`. Only
+the fields you set are overridden; other generated defaults are preserved.
+Applies to every `mongot` pod in the cluster.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | <pre> server: <br>     grpc:<br>       tls: <br>         mode: Disabled </pre>|
+
+### `search.size`
+
+Number of `mongot` pods per replica set or shard. Default: `1`. Per-replica-set overrides are accepted for forward
+compatibility, but every effective value must equal `1`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `1`        |
+
+### `search.storage.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `10Gi`     |
+
+### `search.resources.requests.cpu`
+
+The [Kubernetes CPU requests :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+for the `mongot` container. Per-replica-set override is allowed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"2"`      |
+
+### `search.resources.requests.memory`
+
+The [Kubernetes Memory requests :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+for the `mongot` container. Per-replica-set override is allowed. Default is 2Gi.
+
+If you do not
+set `-Xmx` / `-Xms` in [`search.jvmFlags`](#searchjvmflags), the Operator sets the JVM heap to
+50% of the effective memory request or limit.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `2Gi`      |
+
+### `search.resources.limits.cpu`
+
+[Kubernetes CPU limit :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+for the `mongot` container. Per-replica-set override is allowed. Default is 2 CPU.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"2"`      |
+
+### `search.resources.limits.memory`
+
+[Kubernetes Memory limit :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+for the `mongot` container. Per-replica-set override is allowed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `2Gi`      |
+
+### `search.jvmFlags`
+
+Extra JVM flags for `mongot`. If you do not set `-Xmx` or `-Xms`, the Operator
+sets both to half of the effective `resources` memory. Per-replica-set override
+is allowed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-application-array-outline: array       | <pre>"-XX:+UseG1GC"<br> "-XX:MaxGCPauseMillis=200"</pre> |
+
+### `search.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature)
+node affinity constraint for `mongot` Pods. Per-replica-set override replaces
+the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `kubernetes.io/hostname` |
+
+### `search.affinity.advanced`
+
+In cases where the pods require complex tuning the advanced option turns off the topologykey effect. This setting allows using the standard Kubernetes affinity constraints of any complexity.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     |  |
+
+
+### `search.annotations`
+
+[Kubernetes annotations :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)
+for `mongot` Pods. Per-replica-set override replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | |
+
+### `search.labels`
+
+[Kubernetes labels :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+for `mongot` Pods. Per-replica-set override replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-label-outline: label       | |
+
+### `search.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+for `mongot`. If omitted, the Operator sets a default non-root context
+(`runAsUser` / `runAsGroup` `1001` on Kubernetes). Per-replica-set override
+replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `search.podSecurityContext`
+
+A custom [Kubernetes Security Context :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+for `mongot` Pod. If omitted, the Operator sets a default context (`runAsUser` /
+`runAsGroup` / `fsGroup` `1001` on Kubernetes). Per-replica-set override
+replaces the cluster-wide value.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-text-long: subdoc     | `{}` |
+
+### `search.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the
+[liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes)
+before giving up. Applies to every `mongot` pod. When no probe handler is set,
+the Operator keeps the default HTTP GET against `/health` on port `8080`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `4`        |
+
+### `search.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the
+liveness probe.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `60`       |
+
+### `search.livenessProbe.periodSeconds`
+
+How often to perform a liveness probe (in seconds).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `30`       |
+
+### `search.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the liveness probe times out.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `5`        |
+
+### `search.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the
+[readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes)
+before marking the container not ready.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `3`        |
+
+### `search.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the
+readiness probe.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10`       |
+
+### `search.readinessProbe.periodSeconds`
+
+How often to perform a readiness probe (in seconds).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10`       |
+
+### `search.readinessProbe.timeoutSeconds`
+
+Number of seconds after which the readiness probe times out.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `2`        |
 
 
 ## <a name="operator-sharding-section"></a>Sharding Section

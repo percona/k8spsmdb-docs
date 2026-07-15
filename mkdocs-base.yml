@@ -241,6 +241,7 @@ nav:
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
           - "MongoDB sharding": sharding.md
+
           - "Transport encryption (TLS/SSL)": 
              - About TLS security: TLS.md
              - Configure TLS using cert-manager: tls-cert-manager.md
@@ -305,7 +306,9 @@ nav:
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
           - volume-attributes-class.md
-          
+    - Vector search:
+          - About vector search: vector-search.md
+          - Configure vector search: vector-search-setup.md      
     - Troubleshooting:
           - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
           - "Initial troubleshooting": debug.md
