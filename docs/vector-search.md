@@ -69,7 +69,7 @@ results, or ENN (Exact Nearest Neighbor) for exact matches.
 Each `mongot` serves one replica set (or one shard) and keeps search indexes
 on its own persistent volume, separate from database data. Those indexes are
 Lucene-style structures built for search workloads. Index *definitions* (what
-to index) live in Percona Server for MongoDB whiile the index *data* lives on the
+to index) live in Percona Server for MongoDB while the index *data* lives on the
 `mongot` volume.
 
 To stay in sync with the database, `mongot` opens a long-lived change-stream
