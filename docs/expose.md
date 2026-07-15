@@ -134,6 +134,109 @@ To expose Pods externally, configure the following option in the Custom Resource
 
 When replica sets or `mongos` Pods are exposed, the Operator adds `_connectionStringExposed` keys to the connection Secret. Use them instead of building external URIs manually. See [Connection secrets](connection-secrets.md).
 
+## Automatic DNS records with External DNS
+
+Starting from Operator version 1.23.0, you can configure the Operator and [External DNS :octicons-link-external-16:](https://github.com/kubernetes-sigs/external-dns) to work together. 
+
+In the cluster Custom Resource, define how External DNS should create records: specify your `domain` (required) and optionally `prefix` and `ttl` under `expose.externalDNS`. The Operator then adds the `external-dns.alpha.kubernetes.io/hostname` annotation to each exposed per-Pod Service with a unique value in the format `<prefix>-<replset-name>-<pod-index>.<domain>`. External DNS reads this annotation and automatically creates a DNS record in your external DNS server: Amazon Route53, Cloud DNS, Azure DNS, or others.
+
+If you set `ttl`, the Operator also adds `external-dns.alpha.kubernetes.io/ttl` on each Service. The value is the DNS record lifetime in **seconds**. External DNS passes this TTL to your DNS provider when it creates or updates records. Omit `ttl` to let External DNS and the provider use their defaults.
+
+External DNS continuously watches for resource changes and updates the DNS records automatically when a new Service is created or its configuration or state changes. This automation simplifies connectivity for applications that must reach Percona Server for MongoDB from outside Kubernetes, reduces the risk of misconfiguration and supports environments that scale or change frequently. With `prefix`, you can enforce consistent DNS naming across clusters and environments.
+
+You can use External DNS for both replica sets and sharded clusters. By assigning DNS hostnames to each `mongod`, `mongos`, and `configsvrReplSet` Pod, you enable applications to connect to any node using simple, human-readable domain names.
+
+### Prerequisites
+
+To use External DNS, ensure you have:
+
+- Services exposed with the type `LoadBalancer`. Check your configuration to have `expose.enabled: true` with `expose.type: LoadBalancer` for replica sets and config servers
+- A DNS zone that External DNS can manage for the `domain` you specify
+
+### Configuration example
+
+=== "Replica set"
+
+    ```yaml
+    replsets:
+      - name: rs0
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: db-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com    # required
+            ttl: 300                     # optional; seconds, passed to External DNS
+    ```
+
+    After you apply the configuration, the Operator annotates each per-Pod Service for the cluster named `my-cluster-name` like this:
+
+    | Service (example) | `external-dns.alpha.kubernetes.io/hostname` (example) |
+    | ----------------- | ----------------------------------------------------- |
+    | `my-cluster-name-rs0-0` | `db-prod-rs0-0.mongo.example.com` |
+    | `my-cluster-name-rs0-1` | `db-prod-rs0-1.mongo.example.com` |
+    | `my-cluster-name-rs0-2` | `db-prod-rs0-2.mongo.example.com` |
+
+=== "Sharded cluster"
+
+    ```yaml
+    replsets:
+      - name: rs0
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: db-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com    # required
+            ttl: 300                     # optional; DNS TTL in seconds
+    sharding:
+      enabled: true
+      configsvrReplSet:
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: shard-prod                # optional; defaults to the CR metadata.name
+            domain: mongo.example.com         # required
+            ttl: 300                         # optional; DNS TTL in seconds
+      mongos:
+        expose:
+          enabled: true
+          type: LoadBalancer
+          servicePerPod: true                # optional, enables service for each mongos pod
+          externalDNS:
+            prefix: mongos-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com        # required
+            ttl: 300                        # optional; DNS TTL in seconds
+    ```
+
+    You can set `expose.externalDNS` under [`sharding.configsvrReplSet`](operator.md#shardingconfigsvrreplsetexposeexternaldnsprefix) and [`sharding.mongos`](operator.md#shardingmongosexposeexternaldnsprefix). Hostname patterns depend on the component:
+
+    | Component | Hostname pattern |
+    | --------- | ---------------- |
+    | Replica sets | `{prefix}-{replsetName}-{podIndex}.{domain}` |
+    | Config servers | `{prefix}-cfgsvr-{podIndex}.{domain}` |
+    | Mongos with [`servicePerPod`](operator.md#shardingmongosexposeserviceperpod) enabled | `{prefix}-mongos-{podIndex}.{domain}` |
+    | Mongos with `servicePerPod` disabled | `{prefix}-mongos.{domain}` |
+
+If you omit `prefix`, the Operator uses `metadata.name` from the custom resource instead. With `metadata.name: my-cluster-name` and no `prefix` field, the hostname for the first Pod would be `my-cluster-name-rs0-0.mongo.example.com`.
+
+With `ttl: 300`, each Service also gets `external-dns.alpha.kubernetes.io/ttl: "300"`. External DNS uses that value when publishing the record; check your DNS provider for allowed TTL ranges and minimums.
+
+### How the Operator manages External DNS annotations
+
+The Operator owns the External DNS annotations it generates. The rules are:
+
+- When the Operator annotates the Service with the `external-dns.alpha.kubernetes.io/hostname` (and `/ttl`, if set) annotations defined via the Custom Resource, it also adds the `percona.com/external-dns-managed: "true"` annotation to this Service. The Operator uses this marker to track its ownership over the Service. Do not set or remove the `percona.com/external-dns-managed: "true"` annotation manually.
+- For the Service annotated with `percona.com/external-dns-managed: "true"`, the `/hostname` and `/ttl` always follow the Custom Resource. The Operator overwrites manual edits of these two annotations on the next reconcile. To customize them, use the `externalDNS` section of the Custom Resource.
+* If you edit or remove the `expose.externalDNS` configuration in the Custom Resource, the operator-written `/hostname` and `/ttl` annotations on the Services are edited or removed accordingly. External DNS then deletes the DNS records for the disabled or changed configuration.
+* External DNS annotations that you add manually on Services without the `percona.com/external-dns-managed: "true"` marker, and any other External DNS keys (for example `/target` or `/alias`) on any Service, are never modified by the Operator. The manual per-Service annotation workflow keeps working.
+* If `expose.annotations` already contains `external-dns.alpha.kubernetes.io/hostname`, the Operator replaces it with the hostname from `expose.externalDNS`.
+* If `externalDNS` is set while `expose.enabled` is `false` (replica sets and config servers), the Operator does not add DNS annotations.
+
 ## Service per Pod
 
 To make all database Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod. This Service per Pod option allows your application to handle Cursor tracking instead of relying on a single Service. This solves the problem of `CursorNotFound` errors that occur when a Service transparently cycles between mongos instances while your client is still iterating a cursor on a large collection.

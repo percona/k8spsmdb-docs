@@ -221,6 +221,14 @@ A strategy the Operator uses for [upgrades](update.md). Possible values are [Sma
 | ----------- | ---------- |
 | :material-code-string: string     | `SmartUpdate` |
 
+### `revisionHistoryLimit`
+
+The maximum number of [revisions  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#revision-history-limit) the Operator keeps for Percona Server for MongoDB StatefulSets (replica set members, config servers, and `mongos` Pods). Kubernetes uses this history when you roll a StatefulSet back to a previous Pod template. Lower values reduce the number of retained revisions and help keep the cluster namespace tidy; higher values keep more rollback points. When unset, the default number of revisions is `10`. Available since Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10` |
+
 ### `ignoreAnnotations`
 
 The list of annotations [to be ignored](annotations.md#specifying-labels-and-annotations-ignored-by-the-operator) by the Operator.
@@ -329,6 +337,17 @@ If `true`, the mongo shell will not attempt to validate the server certificates.
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`    |
+
+### `tls.certManagementPolicy`
+
+Controls how the Operator manages TLS certificates when it loses access to the Secret that stores them. Supported values are:
+
+* `auto` (default) — Keeps the existing behavior. If TLS Secrets are missing, the Operator creates new certificates automatically.
+* `userProvidedOnly` — The Operator does not create or replace TLS certificates if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |  `auto` |
 
 ### `tls.issuerConf.name`
 
@@ -632,6 +651,14 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0` |
+
+### `replsets.externalNodes.arbiterOnly`
+
+Defines whether this [external replset instance](replication-main.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true` |
 
 ### `replsets.configuration`
 
@@ -1140,6 +1167,34 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 !!! note "Service protocol configuration"
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `replsets.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `replsets.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS Controller. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `replsets.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
 
 ### `replsets.nonvoting.enabled`
 
@@ -1907,6 +1962,20 @@ A custom name to define for a cluster. PMM Server uses this name to properly par
 | ----------- | ---------- |
 | :material-code-string: string     | `mongo-cluster` |
 
+### `pmm.querySource`
+
+Defines the source for Query Analytics (QAN) data collection. The Operator passes this value to PMM Client as the `--query-source` flag when adding the MongoDB service. Available starting with Operator version 1.23.0.
+
+Supported values:
+
+* `profiler` — collect queries via the MongoDB profiler (default). Requires profiling to be enabled in PMM and in MongoDB. See [Configure the profiler query source](monitoring.md#configure-the-profiler-query-source).
+* `mongolog` — collect queries from mongod log files. Requires [log collector](persistent-logging.md) to be enabled so that logs are written to `/data/db/logs/`. See [Configure the mongolog query source](monitoring.md#configure-the-mongolog-query-source).
+
+If omitted, the Operator does not pass the `--query-source` flag and PMM uses the profiler method.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongolog` |
 
 ### `pmm.mongodParams`
 
@@ -2375,6 +2444,34 @@ Specifies whether Service for config servers [should route external traffic :oct
 !!! note "Service protocol configuration"
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.configsvrReplSet.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for config servers. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
 
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
@@ -2915,6 +3012,34 @@ Specifies whether Service for the mongos instances [should route external traffi
 !!! note "Service protocol configuration"
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.mongos.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.mongos.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for mongos. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.mongos.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
 
 ### `sharding.mongos.hostAliases.ip`
 
