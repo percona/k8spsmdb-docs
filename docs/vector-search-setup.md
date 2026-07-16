@@ -15,7 +15,7 @@ This setup uses the following software versions:
 
 * Percona Operator for MongoDB 1.23.0
 * Percona Server for MongoDB 8.3
-* mongot 1.70.1.
+* mongot {{mongot}}.
 
 To learn how vector search works with the Operator, see
 [Vector search](vector-search.md).
@@ -33,6 +33,7 @@ To learn how vector search works with the Operator, see
 3. Create the namespace and export it as environment variable. Replace the `<namespace>` placeholder with your value:
 
     ```bash
+    kubectl create namespace <namespace>
     export NAMESPACE=<namespace>
     ```
 
@@ -70,7 +71,7 @@ As the result you will have the Operator Pod up and running.
       image: perconalab/percona-server-mongodb:8.3
       search:
         enabled: true
-        image: percona/percona-server-mongodb-mongot:1.70.1
+        image: percona/percona-server-mongodb-mongot:{{mongot}}
         size: 1
         storage:
           persistentVolumeClaim:
