@@ -104,11 +104,11 @@ kubectl get services
 
       sharding:
         enabled: true
-        expose:
-          enabled: true
-          type: ClusterIP
         configsvrReplSet:
           size: 3
+          expose:
+            enabled: true
+            type: ClusterIP
           externalNodes:
           - host: replica-cluster-cfg-0.psmdb.svc.clusterset.local
             votes: 1
@@ -123,7 +123,6 @@ kubectl get services
         mongos:
           size: 3
           expose:
-            enabled: true
             type: ClusterIP
     ```
 
@@ -133,7 +132,7 @@ kubectl get services
     kubectl apply -f deploy/cr-main.yaml
     ```
 
-### Add Main site nodes to the Replica site
+## Add Main site nodes to the Replica site
 
 1. Modify the `deploy/cr-replica.yaml` file of the Replica site and define the exposed nodes of the Main site in the
 `replsets.externalNodes` and `sharding.configsvrReplSet.externalNodes`
