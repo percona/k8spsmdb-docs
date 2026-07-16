@@ -26,18 +26,14 @@ The following diagram shows how the data is replicated between the sites.
 
 This separation ensures consistency and avoids conflicts when managing distributed deployments.
 
-### Voting topologies for cross-site replication
+### Voting members across sites
 
-When you interconnect Main and Replica sites, you must keep an **odd number of voting members** in each replica set. 
+MongoDB needs an **odd number of voting members** in each replica set for reliable primary elections. When you interconnect Main and Replica sites, you typically add remote members through `replsets.externalNodes` and keep the total voter count odd. Common approaches:
 
-You can achieve it with the following approaches:
+* Add an even number of remote data-bearing members as voting, and one remote member as non-voting (`votes: 0`, `priority: 0`). The main [Interconnect sites](replication-interconnect.md) guide uses this pattern.
+* Add an **external arbiter** as a voting member (`arbiterOnly: true`, `votes: 1`, `priority: 0`). The arbiter stores no data and cannot become primary, but it participates in elections. This is useful for a Primary-Secondary-Arbiter (PSA) layout distributed across data centers, or for two data-bearing sites plus a third arbiter site.
 
-1. **Make one data-bearing member on the Replica site non-voting** — Reduce the number of voting members on the Replica site to an even number when you connect both Main and Replica sites. This setup ensures that the combined total voting members across both sites is always **odd**, enabling proper primary elections.
-2. **Use an external arbiter node** to break election ties. In this setup, you deploy Main and Replica sites and run a separate arbiter node in a third location. Then, add an even number of data-bearing nodes as voting members and this arbiter as a voting member when you interconnect sites. So when an election occurs, the arbiter helps elect the primary. This keeps the total number of votes odd, preventing split-brain situations.
-
-The Deployment section in this guide focuses on the first approach. For the setup steps of using the external arbiter, see [Multi-cluster setup with an external arbiter](replication-external-arbiter.md).
-
-See [Choose a voting topology](replication-plan-deployment.md#choose-a-voting-topology) to compare models.
+For a full example that deploys two data-bearing clusters and an arbiter site, then registers the arbiter on the Main site, see [Splitting a replica set across multiple data centers](replication-multi-dc.md).
 
 ## Why to use multi-cluster or multi-region?
 

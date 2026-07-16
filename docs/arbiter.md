@@ -107,7 +107,7 @@ replsets:
 
 Find the description of other available options in the [replsets.nonvoting section](operator.md#replsetsnonvotingenabled) of the [Custom Resource options reference](operator.md).
 
-Note that you can add a non-voting node in the edge location through the `externalNodes` option. Please see [cross-site replication documentation](replication.md#voting-topologies-for-cross-site-replication) for details.
+Note that you can add a non-voting node or an external arbiter in another location through the `externalNodes` option. See [cross-site replication](replication.md#voting-members-across-sites) and [Splitting a replica set across multiple data centers](replication-multi-dc.md) for details.
 
 ## Hidden nodes
 

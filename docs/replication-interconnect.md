@@ -1,13 +1,20 @@
 # Interconnect sites for replication
 
 At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site's nodes as external nodes for the Main site. In the same way, you add the Main's site nodes as external ones for the Replica site.
-.  At this step, you interconnect Main and Replica sites by adding remote members through `replsets.externalNodes` (and `sharding.configsvrReplSet.externalNodes` for sharded clusters).
 
 Every site has three replica set members and three config server replica set members. But you add only two of them as voting members, while the third member is added as a non-voting one. In doing so, you avoid split-brain situations and prevent the primary elections if the Replica site is down or there is a network disruption between the sites.
 
 In this way, the `main` cluster managed by the Operator is able to reach the `replica` nodes.
 
-If you deploy the cross-site replication using an external arbiter node, refer to the [Multi-cluster setup with an external arbiter](replication-external-arbiter.md) guide.
+!!! admonition "Using the arbiter node"
+
+    You can also add an **external arbiter** as a voting member when you interconnect sites. For example, if you run the arbiter node in the third location. This ability requires the Operator version 1.23.0 and above.
+    
+    Set `arbiterOnly: true` with `votes: 1` and `priority: 0` on that `externalNodes` entry. 
+    
+    The requirements to the site with the arbiter are the same as for the replica site. 
+    
+    To learn more how to deploy the Primary-Secondary-Arbiter setup across data centers (two data-bearing sites plus an arbiter site), see [Splitting a replica set across multiple data centers](replication-multi-dc.md).
 
 ## List the services
 
