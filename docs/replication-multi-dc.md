@@ -2,7 +2,7 @@
 
 Splitting a replica set over multiple Kubernetes clusters gives you a fault-tolerant system where members live in different data centers.
 
-The Operator cannot place MongoDB Pods in other data centers by itself. You achieve this with by deploying an Operator on each site: the Operator on the _Main_ site manages the replica set configuration through cross-site replication. Operators on other sites bootstrap the unmanaged clusters whose members you register on the Main site as `externalNodes`. You configure hostnames, TLS, and membership manually.
+The Operator cannot place MongoDB Pods in other data centers by itself. You achieve this by deploying an Operator on each site: the Operator on the _Main_ site manages the replica set configuration through cross-site replication. Operators on other sites bootstrap the unmanaged clusters whose members you register on the Main site as `externalNodes`. You configure hostnames, TLS, and membership manually.
 
 This solution has the following limitations:
 
