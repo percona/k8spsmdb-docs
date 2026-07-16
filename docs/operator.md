@@ -607,7 +607,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 ### `replsets.replsetOverrides.MEMBER-NAME.host`
 
-Use if you need to [override the replica set members FQDNs with custom host names](replication-multi-dc.md). Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
+Use if you need to override the replica set members FQDNs with custom host names. Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
 
 | Value type  | Example    |
 | ----------- | ---------- |

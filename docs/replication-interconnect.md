@@ -14,7 +14,7 @@ In this way, the `main` cluster managed by the Operator is able to reach the `re
     
     The requirements to the site with the arbiter are the same as for the replica site. 
     
-    To learn more how to deploy the Primary-Secondary-Arbiter setup across data centers (two data-bearing sites plus an arbiter site), see [Splitting a replica set across multiple data centers](replication-multi-dc.md).
+    To learn how to deploy the site with the arbiter node, see [Deploy the Arbiter site](replication-multi-dc.md#deploy-the-arbiter-site).
 
 ## List the services
 
