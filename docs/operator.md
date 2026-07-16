@@ -2211,7 +2211,7 @@ The same image applies to every `mongot` pod in the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `percona/percona-server-mongodb-search:1.70.1` |
+| :material-code-string: string     | `percona/percona-server-mongodb-mongot:1.70.1` |
 
 ### `search.imagePullPolicy`
 
@@ -2312,7 +2312,7 @@ the cluster-wide value.
 
 ### `search.affinity.advanced`
 
-In cases where the pods require complex tuning the advanced option turns off the topologykey effect. This setting allows using the standard Kubernetes affinity constraints of any complexity.
+In cases where the pods require complex tuning, the advanced option turns off the topologyKey effect. This setting allows using the standard Kubernetes affinity constraints of any complexity.
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -53,9 +53,8 @@ As the result you will have the Operator Pod up and running.
 
     * Set the database image to Percona Server for MongoDB 8.3 in `spec.image`
     * Set `spec.search.enabled` to `true`
-    * specify the `mongot` image in `spec.search.image`
-    * Keep `size: 1`  as one `mongot` is allowed pod per replica set
-    or shard.
+    * Specify the `mongot` image in `spec.search.image`
+    * Keep `size: 1` as only one `mongot` pod is allowed per replica set or shard.
     * Configure storage for `mongot` based on your data set. Check [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size.
 
     Here's the example configuration:
