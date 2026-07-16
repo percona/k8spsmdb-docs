@@ -191,7 +191,13 @@ options in the Custom Resource.
     kubectl apply -f cr.yaml
     ```
 
-The storage size change takes some time. When it starts, the Operator automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.
+The storage size change takes some time. When it starts, the Operator does the following:
+
+* automatically adds the `pvc-resize-in-progress` annotation to the `PerconaServerMongoDB` Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running 
+* records the new size in the currentSize field
+* updates the resizeCount field.
+  
+After the resize finishes, the Operator deletes this annotation.
 
 #### Manual scaling without Volume Expansion capability
 
