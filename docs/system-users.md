@@ -6,7 +6,7 @@ Credentials for these users are stored in a [Kubernetes Secrets :octicons-link-e
 
 ## System users Secrets
 
-The default name of the Secrets object for the system users is `my-cluster-name-secrets`. It is referenced in the `spec.secrets.users` field of the Custom Resource.
+The default name of the Secrets object for the system users is `percona-server-mongodb-users`. It is referenced in the `spec.secrets.users` field of the Custom Resource.
 
 Aside from this Secret, the Operator creates an internal secret for its own internal purposes. See [Internal Secret and its usage](#internal-secret-and-its-usage) to learn more.
 
@@ -49,7 +49,7 @@ When you create the Secret object yourself, your YAML file should match the foll
 apiVersion: v1
 kind: Secret
 metadata:
-  name: my-cluster-name-secrets
+  name: percona-server-mongodb-users
 type: Opaque
 stringData:
   MONGODB_BACKUP_USER: backup
@@ -93,18 +93,18 @@ Here's how to do it:
         echo -n "new_password" | base64
         ```
 
-2. Update the Secrets object. For example, the following command updates the Database Admin user's password to `new_password` in the `my-cluster-name-secrets` object can be done with the following command:
+2. Update the Secrets object. For example, the following command updates the Database Admin user's password to `new_password` in the `percona-server-mongodb-users` object can be done with the following command:
 
     === "in Linux"
 
         ```bash
-        kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
+        kubectl patch secret/percona-server-mongodb-users -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64 --wrap=0)'"}}'
         ```
 
     === "in macOS"
 
         ```bash
-        kubectl patch secret/my-cluster-name-secrets -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
+        kubectl patch secret/percona-server-mongodb-users -p '{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'$(echo -n new_password | base64)'"}}'
         ```
 
 
@@ -179,4 +179,4 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 
 The Operator creates and updates an additional Secrets object which is named based on the cluster name, like `internal-my-cluster-name-users`. This Secrets object is used only by the Operator. Users must not change it.
 
-This object contains secrets with the same passwords as the one specified in `spec.secrets.users` (e.g., `my-cluster-name-secrets`). When the user updates the `my-cluster-name-secrets` Secret, the Operator propagates these changes to the internal `internal-my-cluster-name-users` Secrets object.
+This object contains secrets with the same passwords as the one specified in `spec.secrets.users` (e.g., `percona-server-mongodb-users`). When the user updates the `percona-server-mongodb-users` Secret, the Operator propagates these changes to the internal `internal-my-cluster-name-users` Secrets object.
