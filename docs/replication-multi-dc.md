@@ -128,7 +128,7 @@ All replica set sites must share the same user credentials and TLS certificates.
     Also, update the namespace in each Secret to point to the `$REPLICA` namespace. Use the following command:
 
     ```bash
-    sed -i '' "s/namespace: $MAIN/namespace: $REPLICA/" "<cluster-name>-<secret-name>.yaml"
+    sed -i.bak "s/namespace: $MAIN/namespace: $REPLICA/" "<cluster-name>-<secret-name>.yaml"
     ```
 
     where:
