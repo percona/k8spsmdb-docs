@@ -143,7 +143,7 @@ Find more information about available options and their accepted values in the [
 
 ### Delete users and roles
 
-You can unassign a role from a user by updating the Custom resource. Upon reconciliation, the Operator updates the user record in the database.
+You can unassign a role from a user by updating the Custom Resource. Upon reconciliation, the Operator updates the user record in the database.
 
 However, the Operator does not delete users when they are removed from the Custom Resource. This prevents accidental removal of pre-existing users.
 
