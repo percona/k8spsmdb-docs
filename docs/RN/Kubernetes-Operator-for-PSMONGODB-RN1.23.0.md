@@ -35,7 +35,7 @@
 
 You can now run [Percona ClusterSync for MongoDB (PCSM) :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/) through the Operator. PCSM clones existing data from source MongoDB deployment to target one and uses MongoDB change stream events to track the changes on the source and replicate them to the target in real time.
 
-You could use PSCM with the Operator before but you had to deploy it yourself, wire up connection strings and run `pcsm` commands manually. Now you declare the source, target, and replication mode in a dedicated `PerconaServerMongoDBClusterSync` Custom Resource. The Operator deploys PCSM, connects the clusters, manages the replication lifecycle, and reports lag and status in the same way it manages your Percona Server for MongoDB.
+You could use PCSM with the Operator before but you had to deploy it yourself, wire up connection strings and run `pcsm` commands manually. Now you declare the source, target, and replication mode in a dedicated `PerconaServerMongoDBClusterSync` Custom Resource. The Operator deploys PCSM, connects the clusters, manages the replication lifecycle, and reports lag and status in the same way it manages your Percona Server for MongoDB.
 
 With Percona ClusterSync for MongoDB available in the Operator you can:
 
@@ -134,7 +134,7 @@ You can now store backups made through the Operator in [Alibaba Cloud Object Sto
 
 With the new `oss` storage type, configure backups the same way as for other cloud storages: create a Secret with Alibaba credentials, point the Custom Resource at your OSS bucket and endpoint, then run on-demand or scheduled backups and restores as usual.
 
-```yaml
+~~~yaml
 backup:
   storages:
     alibaba-oss:
@@ -143,9 +143,9 @@ backup:
         bucket: OSS-BACKUP-BUCKET-NAME-HERE
         prefix: "some-prefix"
         credentialsSecret: my-cluster-name-backup-oss
-        endpointUrl: <https://oss-eu-central-1.aliyuncs.com>
+        endpointUrl: https://oss-eu-central-1.aliyuncs.com
         region: eu-central-1
-```
+~~~
 
 The Secret must include `ALIBABA_ACCESS_KEY_ID` and `ALIBABA_ACCESS_KEY_SECRET`. Optional settings cover upload retries, multipart upload size, and server-side encryption (SSE-OSS or SSE-KMS) via a per-storage SSE Secret.
 
@@ -393,7 +393,7 @@ All Operator images are now available for ARM64, giving you native support on AR
 
 * [K8SPSMDB-1547](https://perconadev.atlassian.net/browse/K8SPSMDB-1547) - Fixed Helm chart installs that failed when users defined additional replica sets without repeating `volumeSpec` in every override. The chart now supplies the required volume configuration so multi-replica-set installs validate successfully.
 
-* [K8SPSMDB-1575](https://perconadev.atlassian.net/browse/K8SPSMDB-1575) - Fixed Operator errors after creating custom users with long names caused by user annotation key exceeding the the Kubernetes 63-character limit. The Operator now calculates the sha256 sum of `<crName>-<userName>` and encodes it in base32 this way ensuring the annotation key adheres to the 63-character limit. User creation succeeds without secret annotation validation failures during password or role updates.
+* [K8SPSMDB-1575](https://perconadev.atlassian.net/browse/K8SPSMDB-1575) - Fixed Operator errors after creating custom users with long names caused by user annotation key exceeding the Kubernetes 63-character limit. The Operator now calculates the sha256 sum of `<crName>-<userName>` and encodes it in base32 this way ensuring the annotation key adheres to the 63-character limit. User creation succeeds without secret annotation validation failures during password or role updates.
 
 * [K8SPSMDB-1583](https://perconadev.atlassian.net/browse/K8SPSMDB-1583) - Fixed an Operator panic that occurred when PMM was enabled but the required PMM token or API key was missing from the Secret. The Operator now reports a clear configuration error and continues reconciliation safely.
 
@@ -444,8 +444,7 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 * [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.33 - 1.36
 * [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.18 - 4.22 
 * [Rancher :octicons-link-external-16:](https://www.rancher.com/) with Rancher Kubernetes Engine (RKE2) 1.33 - 1.35  
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.35.1 based on Kubernetes v1.30.0
-* 
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.38.1 based on Kubernetes v1.35.0
 --8<-- [end:platforms]
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
