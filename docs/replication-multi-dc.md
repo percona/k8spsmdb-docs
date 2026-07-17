@@ -22,6 +22,8 @@ For either options, you must do these [Common steps](#common-steps) first:
 2. Deploy the main site
 3. Export Secrets from the main site
 
+In the following example setups we deploy sites in separate namespaces within a single Kubernetes cluster to emulate isolation and communication boundaries between data centers. In production, you will use separate Kubernetes clusters or physically distinct data centers to achieve true fault isolation, scalability, and resilience.
+
 ## Common steps
 
 ### Initial preparation
