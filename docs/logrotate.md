@@ -92,8 +92,8 @@ For example, you want to also rotate audit log files. Here's how to provide this
     metadata:
       name: logrotate-custom
     data:
-      audit.conf: |
-        /data/db/audit/*.json {
+      custom.conf: |
+        /data/db/logs/*.json {
            minsize 10K
            maxsize 20K
            rotate 10
