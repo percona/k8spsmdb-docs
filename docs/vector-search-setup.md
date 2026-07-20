@@ -70,7 +70,7 @@ As the result you will have the Operator Pod up and running.
       image: perconalab/percona-server-mongodb:8.3
       search:
         enabled: true
-        image: perconalab/percona-server-mongodb-mongot:{{mongot}}
+        image: perconalab/percona-search-mongodb:{{mongot}}
         size: 1
         storage:
           persistentVolumeClaim:
