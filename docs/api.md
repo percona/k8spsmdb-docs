@@ -61,122 +61,122 @@ For general Kubernetes API access and authentication, see the [official Kubernet
 
 Create a `PerconaServerMongoDB` object. The usual path is to maintain `deploy/cr.yaml` and apply it. The same object can be posted as JSON to the API.
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl apply -f deploy/cr.yaml -n $NAMESPACE
-```
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XPOST \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d @cluster.json
-```
+    ```bash
+    curl -k -XPOST \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d @cluster.json
+    ```
 
-Minimal `cluster.json` shape (expand with the options you need from [Custom Resource options](operator.md)). Update the `"namespace"` field with your value:
+    Minimal `cluster.json` shape (expand with the options you need from [Custom Resource options](operator.md)). Update the `"namespace"` field with your value:
 
-```json
-{
-  "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
-  "kind": "PerconaServerMongoDB",
-  "metadata": {
-    "name": "my-cluster-name",
-    "namespace": "my-namespace-name"
-  },
-  "spec": {
-    "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
-    "replsets": [
-      {
-        "name": "rs0",
-        "size": 3,
-        "volumeSpec": {
-          "persistentVolumeClaim": {
-            "resources": {
-              "requests": {
-                "storage": "3Gi"
-              }
-            }
-          }
-        }
-      }
-    ],
-    "sharding": {
-      "enabled": true,
-      "configsvrReplSet": {
-        "size": 3,
-        "volumeSpec": {
-          "persistentVolumeClaim": {
-            "resources": {
-              "requests": {
-                "storage": "3Gi"
-              }
-            }
-          }
-        }
+    ```json
+    {
+      "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
+      "kind": "PerconaServerMongoDB",
+      "metadata": {
+        "name": "my-cluster-name",
+        "namespace": "my-namespace-name"
       },
-      "mongos": {
-        "size": 3
+      "spec": {
+        "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+        "replsets": [
+          {
+            "name": "rs0",
+            "size": 3,
+            "volumeSpec": {
+              "persistentVolumeClaim": {
+                "resources": {
+                  "requests": {
+                    "storage": "3Gi"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "sharding": {
+          "enabled": true,
+          "configsvrReplSet": {
+            "size": 3,
+            "volumeSpec": {
+              "persistentVolumeClaim": {
+                "resources": {
+                  "requests": {
+                    "storage": "3Gi"
+                  }
+                }
+              }
+            }
+          },
+          "mongos": {
+            "size": 3
+          }
+        },
+        "backup": {
+          "enabled": true,
+          "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}"
+        }
       }
-    },
-    "backup": {
-      "enabled": true,
-      "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}"
     }
-  }
-}
-```
+    ```
 
 ### List clusters
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl get psmdb -n $NAMESPACE
-```
+    ```bash
+    kubectl get psmdb -n $NAMESPACE
+    ```
 
-**curl** (with pagination)
+=== "curl"
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs?limit=100" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs?limit=100" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
-Kubernetes list responses can include a `metadata.continue` token when more results remain. Pass it on the next request:
+    Kubernetes list responses can include a `metadata.continue` token when more results remain. Pass it on the next request:
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs?limit=100&continue=$CONTINUE_TOKEN" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs?limit=100&continue=$CONTINUE_TOKEN" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
-See [Kubernetes paginated lists :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/api-concepts/#retrieving-large-results-sets-in-chunks) for details.
+    See [Kubernetes paginated lists :octicons-link-external-16:](https://kubernetes.io/docs/reference/using-api/api-concepts/#retrieving-large-results-sets-in-chunks) for details.
 
 
 ### Get cluster details and status
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl get psmdb my-cluster-name -n $NAMESPACE -o json
-kubectl get psmdb my-cluster-name -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}{.status.host}{"\n"}'
-```
+    ```bash
+    kubectl get psmdb my-cluster-name -n $NAMESPACE -o json
+    kubectl get psmdb my-cluster-name -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}{.status.host}{"\n"}'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
 Useful fields in the response:
 
@@ -191,26 +191,26 @@ Full state values and conditions are documented in [Custom resource statuses](cr
 
 Prefer a JSON Patch that changes only `size`, so you do not overwrite the rest of the replica set spec.
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
-  {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}
-]'
-```
+    ```bash
+    kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
+      {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}
+    ]'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XPATCH \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json-patch+json" \
-  -H "Accept: application/json" \
-  -d '[
-    {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}
-  ]'
-```
+    ```bash
+    curl -k -XPATCH \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json-patch+json" \
+      -H "Accept: application/json" \
+      -d '[
+        {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}
+      ]'
+    ```
 
 Replace `/spec/replsets/0` with the index of the replica set you want to change.
 
@@ -224,125 +224,133 @@ To remove the cluster itself, [delete the Custom Resource](#delete-a-cluster).
 
 ### Add a replica set
 
-**kubectl**
+The following command adds a new shard (deployed as the replica set) to the sharded cluster. This command is available only for sharded clusters. To expand the replica set deployment, see [Scale a replica set](#scale-a-replica-set).
 
-```bash
-kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
-  {
-    "op": "add",
-    "path": "/spec/replsets/-",
-    "value": {
-      "name": "rs1",
-      "size": 3,
-      "volumeSpec": {
-        "persistentVolumeClaim": {
-          "resources": {
-            "requests": {
-              "storage": "3Gi"
-            }
-          }
-        }
-      }
-    }
-  }
-]'
-```
+=== "kubectl"
 
-**curl**
-
-```bash
-curl -k -XPATCH \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json-patch+json" \
-  -H "Accept: application/json" \
-  -d '[
-    {
-      "op": "add",
-      "path": "/spec/replsets/-",
-      "value": {
-        "name": "rs1",
-        "size": 3,
-        "volumeSpec": {
-          "persistentVolumeClaim": {
-            "resources": {
-              "requests": {
-                "storage": "3Gi"
+    ```bash
+    kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
+      {
+        "op": "add",
+        "path": "/spec/replsets/-",
+        "value": {
+          "name": "rs1",
+          "size": 3,
+          "volumeSpec": {
+            "persistentVolumeClaim": {
+              "resources": {
+                "requests": {
+                  "storage": "3Gi"
+                }
               }
             }
           }
         }
       }
-    }
-  ]'
-```
+    ]'
+    ```
+
+=== "curl"
+
+    ```bash
+    curl -k -XPATCH \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json-patch+json" \
+      -H "Accept: application/json" \
+      -d '[
+        {
+          "op": "add",
+          "path": "/spec/replsets/-",
+          "value": {
+            "name": "rs1",
+            "size": 3,
+            "volumeSpec": {
+              "persistentVolumeClaim": {
+                "resources": {
+                  "requests": {
+                    "storage": "3Gi"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]'
+    ```
 
 ### Remove a replica set
 
+To remove a shard (deployed as a replica set) from a sharded cluster, you must first drain the shard of all data. Follow this process:
+
+1. **Drain the shard:** Use [MongoDB's drain procedure](https://www.mongodb.com/docs/manual/tutorial/remove-shards-from-cluster/) to remove all data and move chunks from the shard you want to remove. Wait until MongoDB reports that the shard is fully drained and safe for removal.
+
+2. **Remove the shard from the cluster:** After the shard is fully drained, remove the replica set from the cluster specification.
+
 Remove by array index (check the current order with `kubectl get psmdb my-cluster-name -o json` first):
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
-  {"op": "remove", "path": "/spec/replsets/1"}
-]'
-```
+    ```bash
+    kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
+      {"op": "remove", "path": "/spec/replsets/1"}
+    ]'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XPATCH \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json-patch+json" \
-  -H "Accept: application/json" \
-  -d '[
-    {"op": "remove", "path": "/spec/replsets/1"}
-  ]'
-```
+    ```bash
+    curl -k -XPATCH \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json-patch+json" \
+      -H "Accept: application/json" \
+      -d '[
+        {"op": "remove", "path": "/spec/replsets/1"}
+      ]'
+    ```
 
 ### Update the MongoDB image
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
-  {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
-]'
-```
+    ```bash
+    kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
+      {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
+    ]'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XPATCH \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json-patch+json" \
-  -H "Accept: application/json" \
-  -d '[
-    {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
-  ]'
-```
+    ```bash
+    curl -k -XPATCH \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json-patch+json" \
+      -H "Accept: application/json" \
+      -d '[
+        {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
+      ]'
+    ```
 
 ### Delete a cluster
 
 Deleting the `PerconaServerMongoDB` Custom Resource deletes the cluster. Finalizers control whether PVCs and related objects are removed. By default, PVCs are kept so you can recreate the cluster without losing data. See [Delete the database cluster](delete.md#delete-the-database-cluster).
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl delete psmdb my-cluster-name -n $NAMESPACE
-```
+    ```bash
+    kubectl delete psmdb my-cluster-name -n $NAMESPACE
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XDELETE \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XDELETE \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbs/my-cluster-name" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
 ### Connection details
 
@@ -350,24 +358,24 @@ Starting with Operator version 1.23.0, the Operator creates a Kubernetes Secret 
 
 Example for a sharded cluster:
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl get secret my-cluster-name-databaseadmin-conn-str -n $NAMESPACE \
-  -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
-```
+    ```bash
+    kubectl get secret my-cluster-name-databaseadmin-conn-str -n $NAMESPACE \
+      -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/api/v1/namespaces/$NAMESPACE/secrets/my-cluster-name-databaseadmin-conn-str" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json" \
-  | grep '"databaseAdmin_mongos_connectionString"' \
-  | awk -F '"' '{print $4}' \
-  | base64 --decode && echo
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/api/v1/namespaces/$NAMESPACE/secrets/my-cluster-name-databaseadmin-conn-str" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json" \
+      | grep '"databaseAdmin_mongos_connectionString"' \
+      | awk -F '"' '{print $4}' \
+      | base64 --decode && echo
+    ```
 
 For a non-sharded replica set, use the `databaseAdmin_rs0_connectionStringSrv` key instead. See [Connection secrets](connection-secrets.md) for all available keys.
 
@@ -380,8 +388,6 @@ To manage backups, you must configure the backup storage. See [Configure storage
 ### Configure backup settings and retention
 
 Patch `spec.backup` on the cluster. Example: enable backups, set a schedule, and keep the last 3 successful backups:
-
-**kubectl**
 
 ```bash
 kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=merge -p '{
@@ -424,75 +430,75 @@ For every backup option, see [Custom Resource options](operator.md#operator-back
 
 ### Create a backup
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
-```
+    ```bash
+    kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
+    ```
 
-Example Backup object:
+    Example Backup object:
 
-```yaml
-apiVersion: psmdb.percona.com/v{{ apiversion }}
-kind: PerconaServerMongoDBBackup
-metadata:
-  name: backup1
-  finalizers:
-    - percona.com/delete-backup
-spec:
-  clusterName: my-cluster-name
-  storageName: s3-us-west
-  type: logical
-```
+    ```yaml
+    apiVersion: psmdb.percona.com/v{{ apiversion }}
+    kind: PerconaServerMongoDBBackup
+    metadata:
+      name: backup1
+      finalizers:
+        - percona.com/delete-backup
+    spec:
+      clusterName: my-cluster-name
+      storageName: s3-us-west
+      type: logical
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XPOST \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbbackups" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d @backup.json
-```
+    ```bash
+    curl -k -XPOST \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbbackups" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d @backup.json
+    ```
 
-`backup.json`:
+    `backup.json`:
 
-```json
-{
-  "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
-  "kind": "PerconaServerMongoDBBackup",
-  "metadata": {
-    "name": "backup1",
-    "finalizers": [
-      "percona.com/delete-backup"
-    ]
-  },
-  "spec": {
-    "clusterName": "my-cluster-name",
-    "storageName": "s3-us-west",
-    "type": "logical"
-  }
-}
-```
+    ```json
+    {
+      "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
+      "kind": "PerconaServerMongoDBBackup",
+      "metadata": {
+        "name": "backup1",
+        "finalizers": [
+          "percona.com/delete-backup"
+        ]
+      },
+      "spec": {
+        "clusterName": "my-cluster-name",
+        "storageName": "s3-us-west",
+        "type": "logical"
+      }
+    }
+    ```
 
 ### List backups and check status
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl get psmdb-backup -n $NAMESPACE
-kubectl get psmdb-backup backup1 -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}{.status.size}{"\n"}{.status.destination}{"\n"}'
-```
+    ```bash
+    kubectl get psmdb-backup -n $NAMESPACE
+    kubectl get psmdb-backup backup1 -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}{.status.size}{"\n"}{.status.destination}{"\n"}'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbbackups/backup1" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbbackups/backup1" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
 Useful status fields: `status.state` (`waiting`, `running`, `ready`, `error`, …), `status.size`, `status.destination`, `status.type`, `status.completed`. See [Backup status](cr-statuses.md#perconaservermongodbbackup-status).
 
@@ -506,48 +512,50 @@ Restores are `PerconaServerMongoDBRestore` objects. You can restore onto the sam
 
 ### Restore to the same cluster
 
-```yaml
-apiVersion: psmdb.percona.com/v{{ apiversion }}
-kind: PerconaServerMongoDBRestore
-metadata:
-  name: restore1
-spec:
-  clusterName: my-cluster-name
-  backupName: backup1
-```
+=== "kubectl"
 
-**kubectl**
+    ```bash
+    kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
+    ```
 
-```bash
-kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
-```
+    Example Restore object:
 
-**curl**
+    ```yaml
+    apiVersion: psmdb.percona.com/v{{ apiversion }}
+    kind: PerconaServerMongoDBRestore
+    metadata:
+      name: restore1
+    spec:
+      clusterName: my-cluster-name
+      backupName: backup1
+    ```
 
-```bash
-curl -k -XPOST \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbrestores" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d @restore.json
-```
+=== "curl"
 
-`restore.json`:
+    ```bash
+    curl -k -XPOST \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbrestores" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d @restore.json
+    ```
 
-```json
-{
-  "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
-  "kind": "PerconaServerMongoDBRestore",
-  "metadata": {
-    "name": "restore1"
-  },
-  "spec": {
-    "clusterName": "my-cluster-name",
-    "backupName": "backup1"
-  }
-}
-```
+    `restore.json`:
+
+    ```json
+    {
+      "apiVersion": "psmdb.percona.com/v{{ apiversion }}",
+      "kind": "PerconaServerMongoDBRestore",
+      "metadata": {
+        "name": "restore1"
+      },
+      "spec": {
+        "clusterName": "my-cluster-name",
+        "backupName": "backup1"
+      }
+    }
+    ```
 
 ### Restore to a new cluster
 
@@ -577,21 +585,21 @@ spec:
 
 ### Check restore status
 
-**kubectl**
+=== "kubectl"
 
-```bash
-kubectl get psmdb-restore -n $NAMESPACE
-kubectl get psmdb-restore restore1 -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}'
-```
+    ```bash
+    kubectl get psmdb-restore -n $NAMESPACE
+    kubectl get psmdb-restore restore1 -n $NAMESPACE -o jsonpath='{.status.state}{"\n"}'
+    ```
 
-**curl**
+=== "curl"
 
-```bash
-curl -k -XGET \
-  "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbrestores/restore1" \
-  -H "Authorization: Bearer $KUBE_TOKEN" \
-  -H "Accept: application/json"
-```
+    ```bash
+    curl -k -XGET \
+      "https://$API_SERVER/apis/psmdb.percona.com/v{{ apiversion }}/namespaces/$NAMESPACE/perconaservermongodbrestores/restore1" \
+      -H "Authorization: Bearer $KUBE_TOKEN" \
+      -H "Accept: application/json"
+    ```
 
 See [Restore status](cr-statuses.md#perconaservermongodbrestore-status).
 
