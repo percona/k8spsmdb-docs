@@ -192,7 +192,8 @@ requirements:
    the source data size, with 2× headroom recommended for rebuilds. `mongot`
    becomes read-only at about 90% disk usage. The default PVC size of `10Gi` is
    enough for small datasets; tune storage for larger workloads.
-3. **Kubernetes resources.** Default requests are 2 CPU and 2Gi memory per
+3. **Resource requirements**. The Operator follows upstream [resource requirements :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/deployment/deployment-options/#resource-usage)
+4. **Kubernetes resources.** Default requests are 2 CPU and 2Gi memory per
    `mongot` pod. Size resources for your index and query load.
 
 ## Implementation specifics
