@@ -14,7 +14,7 @@ Before you start, make sure that:
 * The PCSM Pod can reach the source cluster endpoint over the network.
 * You understand the [limitations](clustersync.md#limitations), including that users and roles are not synchronized and initial sync is not resumable after a hard failure.
 
-This tutorial demonstrates how to set up PCSM with both the source and target clusters deployed as sharded clusters in Kubernetes within the same namespace. This configuration is useful for testing or demonstration purposes. In production environments, source and target clusters—often sharded—are typically deployed in separate environments or networks. In such scenarios, ensure that the PCSM Deployment managed by the Operator has network connectivity to the source cluster.
+This tutorial demonstrates how to set up PCSM with both the source and target clusters deployed as sharded clusters in Kubernetes within the same namespace. This configuration is useful for testing or demonstration purposes. In production environments, source and target clusters are typically deployed in separate environments or networks. In such scenarios, ensure that the PCSM Deployment managed by the Operator has network connectivity to the source cluster.
 
 Names used in this tutorial are:
 
@@ -27,6 +27,12 @@ Names used in this tutorial are:
 | Namespace | `psmdb-operator` |
 
 Replace them with your values, if needed.
+
+Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:
+
+```
+percona/percona-clustersync-for-mongodb:0.9.0
+```
 
 ## Configuration
 
