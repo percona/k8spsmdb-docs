@@ -39,7 +39,7 @@ Versions of the cluster components and platforms tested with different Operator 
 
 | Operator | [GKE  :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine)         | [EKS  :octicons-link-external-16:](https://aws.amazon.com)         | [Openshift  :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) | [AKS  :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) | [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube)| [Rancher Kubernetes Engine :octicons-link-external-16:](https://docs.rke2.io/)|
 |:--------|:------------|:------------|:------------|:------------|:-------------------|:---------------|
-| [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md) | 1.33 - 1.35 | 1.33 - 1.36 | 4.18 - 4.22 | 1.33 - 1.36 | 1.38.1 | 1.33 - 1.35 |
+| [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md) | 1.33 - 1.35 | 1.33 - 1.36 | 4.18 - 4.22 | 1.34 - 1.36 | 1.38.1 | 1.33 - 1.35 |
 | [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md) | 1.32 - 1.33 | 1.32 - 1.35 | 4.17 - 4.21 | 1.32 - 1.34 | 1.38.0 | |
 | [1.21.2](RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md) | 1.31 - 1.33 | 1.31 - 1.34 | 4.16 - 4.19 | 1.31 - 1.33 | 1.37.0 | |
 | [1.21.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md) | 1.31 - 1.33 | 1.31 - 1.34 | 4.16 - 4.19 | 1.31 - 1.33 | 1.37.0 | |

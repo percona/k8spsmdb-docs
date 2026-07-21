@@ -315,8 +315,6 @@ All Operator images are now available for ARM64, giving you native support on AR
 * Added a new chapter to the documentation covering how to configure OIDC authentication in the Operator.
 * Added instructions how to install the Operator with customized parameters using Helm as well as how to override release names.
   
-## Deprecation, rename and removal
-
 ## CRD Changes
 
 * A new CRD `PerconaServerMongoDBClusterSync` is added
@@ -428,7 +426,7 @@ The Operator was developed and tested with the following software:
 * Percona Backup for MongoDB 2.15.0
 * PMM Client: 2.44.1-1
 * PMM3 Client: 3.8.1
-* cert-manager: 1.20.2
+* cert-manager: 1.21.0
 * LogCollector based on fluent-bit: 5.0.9-1
 
 Other options may also work but have not been tested.
@@ -441,10 +439,10 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 
 * [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.33 - 1.35
 * [Amazon Elastic Kubernetes Service (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.33 - 1.36
-* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.33 - 1.36
+* [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.34 - 1.36
 * [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.18 - 4.22 
 * [Rancher :octicons-link-external-16:](https://www.rancher.com/) with Rancher Kubernetes Engine (RKE2) 1.33 - 1.35  
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.38.1 based on Kubernetes v1.35.0
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.38.1 with Kubernetes v1.35.1
 --8<-- [end:platforms]
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
@@ -457,22 +455,22 @@ Find Percona's certified Docker images that you can use with the Percona Operato
 
 | Image                                                  | Digest                                                           |
 |:-------------------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb:8.0.19-7                | 779378a9f52cd9e617d0c356053b4b9c97209b0b759aa819300427836f6f2c66 |
-| percona/percona-server-mongodb:8.0.19-7 (ARM64)        | 531793543992d2e502d3187b778f8468462dd9cdb16a58fa157fe86626594ede |
-| percona/percona-server-mongodb:7.0.30-16               | 32bc384e2af367e4261bdf1d2b09211bb210425f292494e5837e5a05f6805768 |
-| percona/percona-server-mongodb:7.0.30-16 (ARM64)       | d333516c8b912d25b12759ab9c6d27d1ae4567e940f7922bd05c8dc06ae3228b |
-| percona/percona-server-mongodb:6.0.27-21               | 2bd82853fd207ecadc8e5cd3ee598db7b9943f6976d9ae2140f5bdc997b0e8bb |
-| percona/percona-server-mongodb:6.0.27-21 (ARM64)       | a23e4fa1b956299fb7403eef70082b13b3ecf75e51bba12f674f552508a42d61 |
-| percona/fluentbit:4.0.1-2                              | d732be16b7f3d0eea8d9c0a50f72136db83c2aed74262300d97abd2cfaefbc26 |
-| percona/fluentbit:4.0.1-2 (ARM64)                      | 805c102d3646b8499b74ea9864d4c29137f94e4603470c23da1c032276193a36 |
-| percona/pmm-client:3.6.0                               | 174fa4675d3ea4d95fd7b45d11f2bcc98b98b703662e6b2614dfe886a7187b23 |
-| percona/pmm-client:3.6.0 (ARM64)                       | 435a9af2083adb68ddab6a97e6d02bd6d31c54562e919ebc09618e886d58d1ae |
+| percona/percona-server-mongodb:8.0.26-11               | e258e1faf74fb3d521bb2732d2a05fe3b7318335974ef3ddf33783746f6c084f |
+| percona/percona-server-mongodb:8.0.26-11 (ARM64)       | 2515c4680c8945febea98de5333a9a9895e39e2bf7f9ec0f240f04b1fe1dc645 |
+| percona/percona-server-mongodb:7.0.37-20               | 2762037db63934fa15e20a1fa03258ccfb457633bac7a02cdfbff594d1639c4b |
+| percona/percona-server-mongodb:7.0.37-20 (ARM64)       | 392b90cc2e8e67c16bff3885c38819439d7db58ad4a7e734ae8a7cfe24a19a14 |
+| percona/percona-server-mongodb:6.0.29-23               | cf9254f6d05f7f64b6295a7d96c6b4591d02e521a68488cb99eb54f9720714c1 |
+| percona/percona-server-mongodb:6.0.29-23 (ARM64)       | 62fbdebb132307ced293ad30eeb597e7f4f7f9bf05ccc222a436c7f2b71d5cbc |
+| percona/fluentbit:5.0.9-1                              | 1ca02c2c820697ea943b39ab3e033446eca383343bb61acc71981548d31f4c7f |
+| percona/fluentbit:5.0.9-1 (ARM64)                      | 1814577514a49b851c59d1bf6ad5ec360ebd04d53ce9f5ece5209498b5c6a64b |
+| percona/pmm-client:3.8.1                               | a92cfb7f912bd85d8245575c3ee5c423664ad2baedb674d159a87b113dbd4de2 |
+| percona/pmm-client:3.8.1 (ARM64)                       | 3fe427c0666337df7613824da5f3b5fb7397e849f70402ac557c1324c5d996e6 |
 | percona/pmm-client:2.44.1-1                            | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
 | percona/pmm-client:2.44.1-1 (ARM64)                    | 390bfd12f981e8b3890550c4927a3ece071377065e001894458047602c744e3b |
-| percona/percona-backup-mongodb:2.12.0                  | 6d56b787c2dc532c9c19cc607a2bc1855a722cdaa52024ea38d4de4aae777f8a |
-| percona/percona-backup-mongodb:2.12.0 (ARM64)          | e2177fa6fef0e47ee8392ca7044a6781150ccf7297383239f813558323aa0a8e |
-| percona/percona-server-mongodb-operator:1.23.0         | d4384b3853dc5026cc33de1dfd68ac11aaf5d54f4e84b115e05d7d473f4c6188 |
-| percona/percona-server-mongodb-operator:1.23.0 (ARM64) | be97aad4c0642bc4e2e5c7c31b4d123d9f6135070682b8fbd6024c7620315e72 |
+| percona/percona-backup-mongodb:2.15.0                  | 2c69ec2dbd5be02df31577869df97c72781bf6fe6456471e8087b0e03136f672 |
+| percona/percona-backup-mongodb:2.15.0 (ARM64)          | 188c38f60e54b9864e74e346209c0a924b6c8b0829062a31d44a5abb42626703 |
+| percona/percona-server-mongodb-operator:1.23.0         | 21e9fed2c4309d3e88c6ec64ddf5dce6c0e86ce4be20531ab83c0b838739f89b |
+| percona/percona-server-mongodb-operator:1.23.0 (ARM64) | 9747f69b64119ce343cb01ac47fa4b7af8050266852f4faef612908b02d554a2 |
 
 --8<-- [end:images]
 
