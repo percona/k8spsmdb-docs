@@ -63,14 +63,13 @@ extra_css:
   - css/extra.css
   - css/operators.css
   - css/rating.css
+  - css/kapa.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
   - js/rating.js
-#  - js/version-select.js
-#  - js/toctree.js
-#  - js/lightgallery.min.js
+  - js/kapa.js
 
 markdown_extensions:
   attr_list: {}
