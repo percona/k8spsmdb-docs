@@ -324,6 +324,7 @@ nav:
           - "Percona certified images": images.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md
+          - about-docs.md
           - "Frequently asked questions": faq.md
           - "Copyright and licensing information": copyright.md
           - "Trademark policy": trademark-policy.md
