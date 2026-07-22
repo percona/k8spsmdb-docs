@@ -243,8 +243,6 @@ To make all database Pods accessible, Percona Operator for MongoDB can assign a 
 
 This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](operator.md#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
-When `servicePerPod` is enabled, the Operator adds `databaseAdmin_mongos_connectionStringExposed` keys to the connection Secret. See [Connection secrets](connection-secrets.md).
-
 If this feature is enabled with the `expose.type: NodePort`, the created Services look like this:
 
 ```bash
