@@ -55,11 +55,11 @@ Add users to your LDAP directory. To do that, use [LDIF  :octicons-link-external
 
 !!! note
 
-    If you are not sure about the approach to make references between user and group objects, [OpenDAP overlays  :octicons-link-external-16:](https://www.openldap.org/doc/admin24/overlays.html) provide one of the possible ways to go.
+    If you are not sure about the approach to make references between user and group objects, [OpenLDAP overlays  :octicons-link-external-16:](https://www.openldap.org/doc/admin24/overlays.html) provide one of the possible ways to go.
 
 ## Configure the Operator and Percona Server for MongoDB
 
-The following steps will look different depending your MongoDB topology.
+The following steps will look different depending on your MongoDB topology.
 
 ### Replica set
 
@@ -94,7 +94,7 @@ The steps are the following:
       authenticationMechanisms: 'PLAIN,SCRAM-SHA-256'
     ```
 
-2. Put the snippet on you local machine and create a Kubernetes Secret object named `<cluster-name>-<replicaset-name>-mongod`. Find the cluster name in the `metadata.name` field and the replica set name in the `spec.replsets.name` field of your Custom Resource. The following command creates a Secret for the cluster named `my-cluster-name` and `rs0` replica set:
+2. Put the snippet on your local machine and create a Kubernetes Secret object named `<cluster-name>-<replicaset-name>-mongod`. Find the cluster name in the `metadata.name` field and the replica set name in the `spec.replsets.name` field of your Custom Resource. The following command creates a Secret for the cluster named `my-cluster-name` and `rs0` replica set:
 
     ```bash
     kubectl create secret generic my-cluster-name-rs0-mongod --from-file=mongod.conf=my_mongod.conf
@@ -115,8 +115,8 @@ The steps are the following:
 
     When logged in, execute the following:
 
-    ``` {.json data-prompt="mongosh>" }
-    mongosh> db.getSiblingDB("admin").createRole(
+    ``` {.javascript data-prompt="admin>"}
+    admin> db.getSiblingDB("admin").createRole(
     {
     role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
     privileges: [],
@@ -162,8 +162,8 @@ The steps are the following:
 
     When logged in, execute the following:
 
-    ``` {.json data-prompt="mongosh>" }
-    mongosh> db.runCommand({connectionStatus:1})
+    ``` {.javascript data-prompt="admin>"}
+    admin> db.runCommand({connectionStatus:1})
     ```
 
     ??? example "Sample output"
@@ -222,10 +222,10 @@ The steps are the following:
 
 ### Sharded cluster
 
-To connect MongoDB to OpenLDAP in a non-sharded (replica set) cluster, you need to configure the following components:
+To connect MongoDB to OpenLDAP in a sharded cluster, you need to configure the following components:
 
 * `mongod`
-* Internal mongodb role
+* An internal MongoDB role
 * `mongos`
 
 You must configure both `mongos` and the configuration server replica set (`mongod`) to make the LDAP server a part of the Authentication/Authorization chain.
@@ -281,9 +281,9 @@ You must configure both `mongos` and the configuration server replica set (`mong
 
     Both files are pretty much the same except the `authz` subsection, which is only present for the configuration server replica set.
 
-2. Put the snippets on you local machine and create Kubernetes Secret objects. The Secret for `mongos` is named `<cluster-name>-mongos`. The Secret for the configuration server replica set is named `<cluster-name>-cfg-mongod`.
+2. Put the snippets on your local machine and create Kubernetes Secret objects. The Secret for `mongos` is named `<cluster-name>-mongos`. The Secret for the configuration server replica set is named `<cluster-name>-cfg-mongod`.
    
-    Find the cluster name in the `metadata.name` field of your Custom Resource. The following commands creates Secrets for the cluster named `my-cluster-name`:
+Find the cluster name in the `metadata.name` field of your Custom Resource. The following commands create Secrets for the cluster named `my-cluster-name`:
 
     ```bash
     kubectl create secret generic my-cluster-name-mongos --from-file=mongos.conf=my_mongos.conf
@@ -304,7 +304,7 @@ You must configure both `mongos` and the configuration server replica set (`mong
 
       When logged in, execute the following:
 
-      ``` {.json data-prompt="mongos>" }
+      ``` {.javascript data-prompt="mongos>" }
       mongos> db.getSiblingDB("admin").createRole(
       {
       role: "cn=admin,ou=perconadba,dc=ldap,dc=local",
@@ -351,7 +351,7 @@ You must configure both `mongos` and the configuration server replica set (`mong
 
     When logged in, execute the following:
 
-    ``` {.json data-prompt="mongos>" }
+    ``` {.javascript data-prompt="mongos>" }
     mongos> db.runCommand({connectionStatus:1})
     ```
 
