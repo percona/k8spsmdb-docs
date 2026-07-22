@@ -181,3 +181,5 @@ If you are still running into issues, check with your Kubernetes cluster adminis
 9. If the pods are not running, it may not be possible to execute commands or open an interactive shell. In such cases, consider using a `sleep-forever` script to prevent the containers from restarting repeatedly. 
    
    See the [Avoid the restart-on-fail loop for Percona Server for MongoDB containers](debug-shell.md#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) section for steps.
+
+For backup and restore failures, see [Troubleshoot backups and restores](debug-backup-restore.md).
