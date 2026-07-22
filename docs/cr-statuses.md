@@ -116,7 +116,7 @@ When [vector search is enabled](operator.md#searchenabled), the cluster is not m
 
 !!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
-If [`spec.search.enabled`](operator.md#searchenabled) is set to `true`, the Operator shows the search status in the `status.search` field. This field lists the status for each replica set  or for each shard in the sharded cluster, except for config server replica set. If search is turned off, the `status.search` is cleared out.
+If [`spec.search.enabled`](operator.md#searchenabled) is set to `true`, the Operator shows the search status in the `status.search` field. This field lists the status of each replica set or shard in the sharded cluster, except for the config server replica set. If search is turned off, `status.search` is cleared.
 
 Common fields under `status.search.<rs-name>`:
 
