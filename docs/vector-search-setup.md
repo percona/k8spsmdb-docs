@@ -15,7 +15,7 @@ This setup uses the following software versions:
 
 * Percona Operator for MongoDB 1.23.0
 * Percona Server for MongoDB 8.3
-* mongot {{mongot}}.
+* Percona Search for MongoDB {{mongot}}.
 
 To learn how vector search works with the Operator, see
 [Vector search](vector-search.md).
@@ -53,9 +53,9 @@ As the result you will have the Operator Pod up and running.
 
     * Set the database image to Percona Server for MongoDB 8.3 in `spec.image`
     * Set `spec.search.enabled` to `true`
-    * Specify the `mongot` image in `spec.search.image`
-    * Keep `size: 1` as only one `mongot` pod is allowed per replica set or shard.
-    * Configure storage for `mongot` based on your data set. Check [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size.
+    * Specify the Percona Search for MongoDB image in `spec.search.image`
+    * Keep `size: 1` as only one Percona Search for MongoDB pod is allowed per replica set or shard.
+    * Configure storage for Percona Search for MongoDB based on your data set. Check [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size.
 
     Here's the example configuration:
 

@@ -34,11 +34,11 @@ Typical use cases include:
 
 ## Architecture and components
 
-Vector search is provided by a separate process called `mongot`.
+Vector search is provided by a separate tool called Percona Search for MongoDB.
 You manage vector search declaratively through the cluster Custom
 Resource. 
 
-When you enable vector search, the Operator deploys `mongot` as a dedicated
+When you enable vector search, the Operator deploys Percona Search for MongoDB as a dedicated
 StatefulSet — one per data-bearing replica set or shard. 
 
 The StatefulSet is
@@ -51,12 +51,12 @@ Existing deployments continue to work as before after you upgrade the
 Operator: if you haven't enabled vector search for the cluster, the Operator does not deploy
 search components.
 
-## How the database (`mongod`) and search (`mongot`) communicate
+## How the Percona Server for MongoDB (`mongod`) and Percona Search for MongoDB (`mongot`) communicate
 
-`mongot` is a separate search process. Your applications never connect to it
-directly. They still connect to `mongod` (or to `mongos` in a sharded
+Percona Search for MongoDB runs as a separate `mongot` process. Your applications never connect to it
+directly. They still connect to Percona Server for MongoDB (to  `mongod` or to `mongos` in a sharded
 cluster). The database acts as a proxy: it forwards search commands to
-`mongot`, then returns the results to the client.
+Percona Search for MongoDB (`mongot`), then returns the results to the client.
 
 When a client runs `$search`, `$vectorSearch`, or `$searchMeta`, this is what
 happens:
@@ -69,10 +69,10 @@ results, or ENN (Exact Nearest Neighbor) for exact matches.
 Each `mongot` serves one replica set (or one shard) and keeps search indexes
 on its own persistent volume, separate from database data. Those indexes are
 Lucene-style structures built for search workloads. Index *definitions* (what
-to index) live in Percona Server for MongoDB while the index *data* lives on the
-`mongot` volume.
+to index) live in Percona Server for MongoDB while the index *data* lives on
+Percona Search for MongoDB volume.
 
-To stay in sync with the database, `mongot` opens a long-lived change-stream
+To stay in sync with the database, Percona Search for MongoDB opens a long-lived change-stream
 connection to a `mongod` in the same replica set — usually a secondary — and
 reads data changes as they happen.
 
@@ -130,10 +130,6 @@ flowchart TD
 
     B -- merge by $searchScore --> A
 ```
-<!-- Description:
-- client sends query to mongos
-- mongos sends to N shards (shard0...shardN), each shard's mongod contacts its mongot over gRPC, mongot returns to mongod, mongod returns to mongos.
-- mongos merges by $searchScore and returns to client. -->
 
 Each shard's `mongod` members point at that shard's `mongot`. For index
 management, `mongos` is configured with the `mongot` endpoint of the first
@@ -146,11 +142,11 @@ When you enable vector search, the Operator creates a dedicated MongoDB system u
 stored in the cluster users Secret under `MONGODB_SEARCH_USER` and
 `MONGODB_SEARCH_PASSWORD`.
 
-`mongot` uses this user to authenticate to `mongod` (and to `mongos` in sharded
+Percona Search for MongoDB uses this user to authenticate to `mongod` (and to `mongos` in sharded
 clusters) over the cluster's existing internal authentication method. The
 Operator does not require a separate auth mechanism for search.
 
-When cluster TLS is enabled (the Operator default), `mongot` reuses the
+When cluster TLS is enabled (the Operator default), Percona Search for MongoDB reuses the
 cluster's internal TLS material. The Operator extends the TLS certificate SANs so they cover the  `<cluster>-<rs>-search` Service names.
 
 Don't use the `searchCoordinator` system user from your applications. Create
@@ -159,14 +155,14 @@ other MongoDB feature.
 
 ## Backups and restores
 
-Percona Backup for MongoDB (PBM) does **not** back up `mongot` PVCs. Search
+Percona Backup for MongoDB (PBM) does **not** back up Percona Search for MongoDB PVCs. Search
 indexes are derivable from `mongod` data through change streams, so only
 database data is included in backups.
 
-After a PBM restores `mongod` data, the Operator restarts `mongot` pods. Each new `mongot` performs a full initial sync from the restored `mongod` and
+After a PBM restores `mongod` data, the Operator restarts Percona Search for MongoDB pods. Each new Percona Search for MongoDB Pod performs a full initial sync from the restored `mongod` and
    rebuilds its indexes.
 
-Restore completion does **not** wait for `mongot` to become ready. Database
+Restore completion does **not** wait for Percona Search for MongoDB to become ready. Database
 availability returns when the restore finishes; search availability is eventual
 and depends on how long index rebuild takes for your dataset.
 
@@ -187,28 +183,28 @@ requirements:
    starting with MongoDB 8.3. The Operator uses [experimental
    images of Percona Server for MongoDB 8.3](https://hub.docker.com/r/perconalab/percona-server-mongodb/tags?name=8.3). You must explicitly specify them in
    the Custom Resource to use vector search. 
-2. **Dedicated persistent storage for each `mongot` pod.** Each `mongot` needs
+2. **Dedicated persistent storage for each Percona Search for MongoDB pod.** Each Percona Search for MongoDB needs
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
-   the source data size, with 2× headroom recommended for rebuilds. `mongot`
+   the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
    becomes read-only at about 90% disk usage. The default PVC size of `10Gi` is
    enough for small datasets; tune storage for larger workloads.
 3. **Resource requirements**. The Operator follows upstream [resource requirements :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/deployment/deployment-options/#resource-usage)
 4. **Kubernetes resources.** Default requests are 2 CPU and 2Gi memory per
-   `mongot` pod. Size resources for your index and query load.
+   Percona Search for MongoDB pod. Size resources for your index and query load.
 
 ## Implementation specifics
 
-* One `mongot` deployment per data-bearing replica set (or per shard in a
+* One Percona Search for MongoDB deployment per data-bearing replica set (or per shard in a
   sharded cluster).
-* The config server replica set has no `mongot` StatefulSet.
+* The config server replica set has no Percona Search for MongoDB StatefulSet.
 * The Operator injects the required `setParameter` values that point to the search endpoint into `mongod` and
   `mongos` configuration. Operator-managed keys override conflicting user values
   so the search endpoint does not drift.
 * You configure cluster-wide defaults under `spec.search` and can fine-tune
   resources, storage, and placement per replica set or shard with
-  `spec.replsets[].search`. Enable/disable, image, and raw `mongot`
+  `spec.replsets[].search`. Enable/disable, image, and raw Percona Search for MongoDB
   configuration stay cluster-wide.
-* You can supply a partial `mongot` YAML under `spec.search.configuration`. The
+* You can supply a partial Percona Search for MongoDB YAML under `spec.search.configuration`. The
   Operator merges it onto the generated defaults and overrides only the fields
   you set.
 * Cluster status exposes `status.search` keyed by replica set or shard name
@@ -217,10 +213,10 @@ requirements:
 
 ## Limitations
 
-* **Single `mongot` pod per replica set or shard.** The search StatefulSet is
+* **Single Percona Search for MongoDB pod per replica set or shard.** The search StatefulSet is
   limited to `size: 1`. Kubernetes `Service` ClusterIP load balancing is L4-only
   and cannot correctly distribute long-lived gRPC streams across multiple
-  backends. Multi-replica `mongot` HA (which needs an L7 gRPC-aware load
+  backends. Multi-replica Percona Search for MongoDB HA (which needs an L7 gRPC-aware load
   balancer) is postponed to a later release.
 * **No automated embedding.** Generating and managing embeddings through an
   external embedding API (for example automated / Voyage AI embedding) is not supported. You provide and store vector embeddings yourself.
