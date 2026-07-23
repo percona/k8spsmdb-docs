@@ -1,25 +1,22 @@
-# Vector search
+# About search and vector search
 
 !!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
-    Vector search is in the tech preview stage. We don't recommend using it in
+    Search capabilities feature is in the tech preview stage. We don't recommend using it in
     production yet, but we encourage you to try it in a staging or testing
     environment and share your feedback. Your feedback helps us shape the
     feature in future releases.
 
-[Vector search :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/)
-is a search method that retrieves results based on meaning rather than exact
-word matches. With vector search, you can store vector data (for example,
-numerical representations of text, images, or other content) alongside
-traditional data and run vector search queries in Percona Server for MongoDB
-managed by the Operator.  
+Percona Search for MongoDB is a search engine that enables you to run [vector search :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/) and [full-text search :octicons-link-external-16:](https://www.mongodb.com/docs/atlas/atlas-search/tutorial/) queries in Percona Server for MongoDB managed by the Operator.
 
-You get the same capability that MongoDB Atlas customers and
-self-managed upstream users already have. The Operator automates the deployment and overall lifecycle of vector search, providing the same experience it offers for Percona Server for MongoDB clusters.
+* **Full-text search** finds documents by matching keywords and phrases in the text.
+* **Vector search** finds documents by meaning. It compares numerical representations (embeddings) of content, such as text or images so that results can be relevant even when they don’t share the same words.
 
-## What you can achieve with vector search
+You get the same capability that MongoDB Atlas customers and self-managed upstream users already have. The Operator automates the deployment and lifecycle of search, providing the same experience it offers for Percona Server for MongoDB clusters.
+
+## What you can achieve with Percona Search for MongoDB
 
 Typical use cases include:
 
@@ -30,25 +27,25 @@ Typical use cases include:
 * **Generative AI / RAG** — retrieve the most relevant context for large
   language models and AI agents from data already stored in MongoDB
 
-[Configure vector search](vector-search-setup.md){.md-button}
+[Configure vector search](search-setup.md){.md-button}
 
 ## Architecture and components
 
-Vector search is provided by a separate tool called Percona Search for MongoDB.
-You manage vector search declaratively through the cluster Custom
+Full-text and vector search are provided by a separate tool called Percona Search for MongoDB.
+You manage Percona Search for MongoDB declaratively through the cluster Custom
 Resource. 
 
-When you enable vector search, the Operator deploys Percona Search for MongoDB as a dedicated
+When you enable full-text and vector search, the Operator deploys Percona Search for MongoDB as a dedicated
 StatefulSet — one per data-bearing replica set or shard. 
 
 The StatefulSet is
 named `<cluster-name>-<rs-name>-search` and has its own PVC and headless Service. 
 
-![image](assets/images/vector-search-arch.svg)
+![image](assets/images/vector-search-arch-2.svg)
 
 
 Existing deployments continue to work as before after you upgrade the
-Operator: if you haven't enabled vector search for the cluster, the Operator does not deploy
+Operator: if you haven't enabled search for the cluster, the Operator does not deploy
 search components.
 
 ## How the Percona Server for MongoDB (`mongod`) and Percona Search for MongoDB (`mongot`) communicate
@@ -84,7 +81,7 @@ So the connection works both ways:
 
 ### Replica set workflow
 
-From the client's perspective, a vector search query looks like any other
+From the client's perspective, a search query looks like any other
 aggregation against `mongod`:
 
 ```mermaid
@@ -106,7 +103,7 @@ flowchart LR
 ### Sharded cluster workflow
 
 In a sharded cluster, the Operator deploys one `mongot` StatefulSet per shard.
-`mongos` is the client entry point and coordinates cross-shard vector queries.
+`mongos` is the client entry point and coordinates cross-shard search queries.
 It scatter-gathers the search across shards and merges results by
 `$searchScore`:
 
@@ -137,7 +134,7 @@ shard (`shard0`).
 
 ## Authentication
 
-When you enable vector search, the Operator creates a dedicated MongoDB system user with the built-in
+When you enable search, the Operator creates a dedicated MongoDB system user with the built-in
 `searchCoordinator` role. Credentials are
 stored in the cluster users Secret under `MONGODB_SEARCH_USER` and
 `MONGODB_SEARCH_PASSWORD`.
@@ -176,10 +173,10 @@ Custom Resource for readiness.
 
 ## Availability and requirements
 
-To use vector search with the Operator, you must meet the following
+To use full-text and vector search with the Operator, you must meet the following
 requirements:
 
-1. **Percona Server for MongoDB 8.3 or later.** Vector search is available only
+1. **Percona Server for MongoDB 8.3 or later.** Percona Search for MongoDB is available only
    starting with MongoDB 8.3. The Operator uses [experimental
    images of Percona Server for MongoDB 8.3](https://hub.docker.com/r/perconalab/percona-server-mongodb/tags?name=8.3). You must explicitly specify them in
    the Custom Resource to use vector search. 
@@ -222,7 +219,7 @@ requirements:
   external embedding API (for example automated / Voyage AI embedding) is not supported. You provide and store vector embeddings yourself.
 * **No migration from externally managed `mongot`.** Deployments that already
   run `mongot` outside the Operator are not imported. Manage them manually, or
-  switch to Operator-managed vector search.
+  switch to Operator-managed Percona Search for MongoDB.
 * **Logical restores on sharded clusters with MongoDB 8.3 can leave the
   cluster broken.** This is a known PBM limitation tracked in
   [PBM-1764 :octicons-link-external-16:](https://perconadev.atlassian.net/browse/PBM-1764).

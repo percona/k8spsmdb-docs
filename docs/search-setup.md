@@ -1,15 +1,18 @@
-# Configure vector search
+# Configure full-text / vector search
 
 !!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
-    Vector search is in the tech preview stage. Use it in staging or testing
+    Search capabilities feature is in the tech preview stage. Use it in staging or testing
     environments and share your feedback. 
 
 This guide shows how to enable vector search on a cluster managed by
 Percona Operator for MongoDB, insert sample vector data, create a vector search
 index, and run a `$vectorSearch` query.
+
+Vector search is implemented via Percona Search for MongoDB search engine that runs the `mongot` search process. To learn how it works with the Operator and what use cases you can implement, see
+[About search and vector search](search-overview.md).
 
 This setup uses the following software versions:
 
@@ -17,12 +20,10 @@ This setup uses the following software versions:
 * Percona Server for MongoDB 8.3
 * Percona Search for MongoDB {{mongot}}.
 
-To learn how vector search works with the Operator, see
-[Vector search](vector-search.md).
 
 ## Before you start
 
-1. Make sure you understand [requirements](vector-search.md#availability-and-requirements) and [limitations](vector-search.md#limitations) of using vector search.
+1. Make sure you understand [requirements](search-overview.md#availability-and-requirements) and [limitations](search-overview.md#limitations) of using Percona Search for MongoDB.
 2. Clone the repository with all manifests and source code:
   
     ```bash
@@ -47,7 +48,7 @@ kubectl apply --server-side -f deploy/bundle.yaml
 
 As the result you will have the Operator Pod up and running.
 
-## Install Percona Server for MongoDB and enable vector search
+## Install Percona Server for MongoDB and enable Percona Search for MongoDB
 
 1. Edit the `deploy/cr.yaml` Custom Resource. Specify the following keys:
 
@@ -55,7 +56,7 @@ As the result you will have the Operator Pod up and running.
     * Set `spec.search.enabled` to `true`
     * Specify the Percona Search for MongoDB image in `spec.search.image`
     * Keep `size: 1` as only one Percona Search for MongoDB pod is allowed per replica set or shard.
-    * Configure storage for Percona Search for MongoDB based on your data set. Check [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size.
+    * Configure storage for Percona Search for MongoDB based on your data set. Check [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size.
 
     Here's the example configuration:
 
@@ -106,9 +107,9 @@ As the result you will have the Operator Pod up and running.
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
-### Verify that search is ready
+### Verify that Percona Search for MongoDB is ready
 
-Wait until the search pod is running. For a cluster named `my-cluster-name`
+Wait until the Percona Search for MongoDB pod is running. For a cluster named `my-cluster-name`
 with replica set `rs0`, the pod is `my-cluster-name-rs0-search-0`:
 
 ```bash

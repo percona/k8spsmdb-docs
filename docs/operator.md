@@ -2193,7 +2193,7 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 ## <a name="operator-search-section"></a>Search section
 
 The `search` section in the `deploy/cr.yaml` file contains configuration
-options for [Vector Search](vector-search.md) process called `mongot`.
+options for [Search](search-overview.md) process called `mongot`.
 
 ### `search.enabled`
 
@@ -2244,7 +2244,7 @@ compatibility, but every effective value must equal `1`.
 ### `search.storage.persistentVolumeClaim.resources.requests.storage`
 
 The [Kubernetes Persistent Volume :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](vector-search.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
 
 | Value type  | Example    |
 | ----------- | ---------- |
