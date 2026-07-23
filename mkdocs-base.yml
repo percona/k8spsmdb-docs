@@ -267,6 +267,7 @@ nav:
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
