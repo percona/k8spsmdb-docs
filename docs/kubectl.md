@@ -22,6 +22,7 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
         * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
         * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
+        * [Create the RKE2 cluster](rke2.md#create-the-rke2-cluster)
 
 --8<-- "what-you-install.md"
 

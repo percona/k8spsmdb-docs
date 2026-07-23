@@ -12,7 +12,6 @@ Regardless of how you create users, their usernames must be unique.
 ## Create users via Custom Resource
 
 Starting from Operator version 1.17.0, you can create users in Percona Server for MongoDB via the `users` subsection in the Custom Resource. This is called declarative user management.
-{.power-number}
 
 You can modify the `users` section in the `deploy/cr.yaml` configuration file either at cluster creation time or adjust it over time.
 
@@ -40,13 +39,12 @@ users:
 
 After you apply the configuration, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user, and sets it by the key named after the user name.
 
-Starting with Operator version 1.23.0, the Operator also creates a `<cluster-name>-custom-user-secret-conn-str` Secret with ready-to-use connection strings for the user. If you provide your own password Secret via `passwordSecretRef`, the connection Secret is named `<passwordSecretRef.name>-conn-str` instead. See [Connection secrets](connection-secrets.md) for details.
-
 ### Generate user passwords manually
 
 If you don't want the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
 
 Here's how to do it:
+{.power-number}
 
 1. Create a Secret configuration file: 
 
@@ -95,6 +93,7 @@ Here's how to do it:
 
     Such users are used for authentication via an external authentication source, such as an LDAP server. The user credentials are stored in an external authentication source, and their usernames are mapped to those in the `$external` database during authentication.
 
+
 The Operator tracks password changes in the Secret object and updates the user password in the database. This applies to [manually created users](#create-users-manually) as well: if a user was created manually in the database before creating the user via Custom Resource, the existing user is updated.
 
 However, manual password updates in the database are not tracked: the Operator doesn't overwrite changed passwords with the old ones from the users Secret.
@@ -142,6 +141,14 @@ roles:
 ```
 
 Find more information about available options and their accepted values in the [roles subsection of the Custom Resource reference](operator.md#roles-section).
+
+### Delete users and roles
+
+You can unassign a role from a user by updating the Custom Resource. Upon reconciliation, the Operator updates the user record in the database.
+
+However, the Operator does not delete users when they are removed from the Custom Resource. This prevents accidental removal of pre-existing users.
+
+To delete a user or a role, remove its entry from the Custom Resource and delete it from the database.
 
 ## Create users manually
 
