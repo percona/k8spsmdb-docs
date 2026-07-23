@@ -17,7 +17,8 @@ To configure scheduled backups, modify the `backups` section of the [deploy/cr.y
     * `name` - specify a backup name. You will need this name when you [restore from this backup](backups-restore.md).
     * `schedule` - specify the desired backup schedule in [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron).
     * `enabled` - set this key to `true`. This enables making the `<backup name>` backup along with the specified schedule.
-    * `storageName` - specify the name of your [already configured storage](backups-storage.md).
+    * `storageName` - specify the name of your [already configured storage](backups-storage.md). Omit for PVC snapshot (`external`) tasks.
+    * `volumeSnapshotClass` - specify the `VolumeSnapshotClass` name when `type` is `external`. See [Configure PVC snapshots](backups-pvc-setup.md) how to check if `VolumeSnapshotClass` exists in your cluster and how to add it if it doesn't.
     * `retention` - configure the retention policy: how many backups to keep in the storage. This setting is optional. It applies to base incremental backups but is ignored for increments. Read more about it in the [Configure retention](#configure-retention) section.
     * `type` - specify what [type of backup](backups.md#backup-types) to make. If you leave it empty, the Operator makes a **logical** backup by default.
 
@@ -130,5 +131,34 @@ Use the `backup.tasks.retention` subsection to configure the retention policy fo
          compressionLevel: 6
       ...
     ```
+
+=== "PVC snapshot (external)"
+
+    This example runs a daily PVC snapshot at 2:00 a.m. and keeps the seven most recent snapshots:
+
+    ```yaml
+    ...
+    backup:
+      enabled: true
+      storages:
+        s3-us-west:
+          type: s3
+          s3:
+            bucket: S3-BACKUP-BUCKET-NAME-HERE
+            region: us-west-2
+            credentialsSecret: my-cluster-name-backup-s3
+      tasks:
+        - name: daily-snapshot
+          enabled: true
+          schedule: "0 2 * * *"
+          type: external
+          volumeSnapshotClass: gke-snapshot-class
+          retention:
+            count: 7
+            type: count
+            deleteFromStorage: true
+    ```
+
+    See [Make a scheduled snapshot-based backup](backups-pvc-usage.md#make-a-scheduled-snapshot-based-backup).
 
 --8<-- "restore-new-k8s-env.md"

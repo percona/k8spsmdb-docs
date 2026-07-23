@@ -70,6 +70,22 @@ kubectl get psmdb-backup <backup-name> -n <namespace> \
     2026-01-27T12:22:17Z
     ```
 
+**Example 3. View the TLS Secrets readiness condition:**
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> \
+  -o jsonpath='{range .status.conditions[?(@.type=="TLSSecretsReady")]}{.lastTransitionTime}{"\n"}{.reason}{"\n"}{.status}{"\n"}{.message}{"\n"}{end}'
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    2026-06-10T14:22:01Z
+    TLSSecretNotFound
+    False
+    TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
+    ```
+
 ## PerconaServerMongoDB status
 
 The main cluster state is recorded in the `status.state` section. For component-level states, see the `status.replsets` and `status.mongos` sections.
@@ -117,6 +133,7 @@ Common condition fields:
 | `sharding` | Sharding changes are in progress. |
 | `PBMReady` | PBM agents and storage are ready. |
 | `pendingSmartUpdate` | A smart update is pending but has not started. |
+| `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. |
 
 `status.conditions[].status` values:
 
@@ -125,7 +142,7 @@ Common condition fields:
 | `True` | The condition is currently true. |
 | `False` | The condition is currently false. |
 
-The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`.
+The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`.
 
 ## PerconaServerMongoDBBackup status
 
@@ -134,7 +151,8 @@ Backup progress and results are in `status.state`. You also get destination and 
 Common fields:
 
 - `status.state` – backup job state
-- `status.type` – backup type (`logical`, `physical`, `incremental`, `incremental-base`)
+- `status.type` – backup type (`logical`, `physical`, `incremental`, `incremental-base`, `external`)
+- `status.snapshots` – for `external` backups, list of `VolumeSnapshot` names per replica set (`replsetName`, `snapshotName`)
 - `status.destination` – backup path or URL
 - `status.size` – backup size
 - `status.start` / `status.completed` – start and completion timestamps
@@ -165,6 +183,7 @@ Common fields:
 - `status.pitrTarget` – PITR target time (if set)
 - `status.completed` – completion timestamp
 - `status.error` – error details when the restore fails
+- `status.conditions` – restore progress for PVC snapshot restores. See [PVC snapshot restore conditions](#pvc-snapshot-restore-conditions)
 
 ### Restore state values
 
@@ -179,6 +198,29 @@ Common fields:
 | `running` | Restore is in progress. |
 | `ready` | Restore completed successfully. |
 | `error` | Restore failed. |
+
+### PVC snapshot restore conditions
+
+For restores from PVC snapshot backups, the Operator sets `status.conditions` as each phase completes. These conditions appear only for snapshot restores of the type `external`. Use them with `status.state` to see where a long-running restore is stuck.
+
+Each condition uses the standard Kubernetes fields (`type`, `status`, `reason`, `message`, `lastTransitionTime`). When a phase succeeds, the Operator sets the matching condition to `status: "True"`.
+
+| Condition | Meaning |
+| --- | --- |
+| `PBMAgentConfiguredForSnapshot` | Database StatefulSets are scaled to zero. Pods are configured to run `pbm-agent restore-finish` with the PBM config, replica set name, node name, and (if needed) encryption-related MongoDB config. |
+| `ReplsetPVCsRestoredFromSnapshot` | All data PVCs are recreated from the `VolumeSnapshot` objects in the backup or in `backupSource.snapshots`. PVCs are rolled out one at a time. |
+| `PBMAgentAwaitingRestoreFinish` | StatefulSets are scaled back up. `pbm-agent` processes on every node are running and waiting at PBM **`copyReady`** for the restore to finish. |
+| `PBMRestoreFinishing` | The Operator started `pbm restore-finish` to apply backup metadata. |
+| `PBMRestoreFinished` | PBM completed the external restore. The Operator can clean up temporary restore configuration. |
+
+Example: list restore conditions:
+
+```bash
+kubectl get psmdb-restore <restore-name> -n <namespace> \
+  -o jsonpath='{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'
+```
+
+For the full restore workflow, see [PVC snapshot backups — Restore flow](backups-pvc-snapshots.md#restore-flow).
 
 ## PerconaServerMongoDBClusterSync status
 

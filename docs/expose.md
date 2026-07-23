@@ -26,17 +26,36 @@ kubectl get psmdb
     my-cluster-name   my-cluster-name-mongos.<namespace>.svc.cluster.local     ready    85m
     ```
 
-To connect to MongoDB, you need to construct the MongoDB connection string URI. For the sharded cluster, specify the `mongos` endpoint for the connection string URI. This is the example format:
+To connect to MongoDB, you need the MongoDB connection string URI. The Operator automatically constructs it for the `databaseAdmin` user and stores it in the connection Secret `<cluster-name>-databaseadmin-conn-str`. To learn more about connection secrets, see [Connection secrets](connection-secrets.md).
+
+For a sharded cluster, use the value from the `databaseAdmin_mongos_connectionString` key of the connection Secret. 
+
+Run the following command to retrieve the value:
 
 ```bash
-mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+```
+
+??? example "Sample output"
+    
+    ```{.text .no-copy}
+    mongodb://databaseAdmin:databaseAdminPassword@34.118.227.158:27017/admin?authSource=admin
+    ```
+
+Alternatively, you can construct the MongoDB connection string URI manually. For the sharded cluster, specify the `mongos` endpoint. This is the example format:
+
+```bash
+mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace>.svc.cluster.local/admin?authSource=admin"
 ```
 
 Make sure every part of the connection string reflects your environment:
 
-- **userAdmin** and **userAdminPassword**: replace with your admin username and the actual admin password. Get the username and password from the Kubernetes Secret created for your cluster.
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
-- **<namespace name>**: the Kubernetes namespace where your cluster is deployed
+- **<namespace>**: the Kubernetes namespace where your cluster is deployed
+
+If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically.
 
 
 !!! warning
@@ -67,15 +86,17 @@ kubectl get psmdb
     my-cluster-name   my-cluster-name-rs0.<namespace>.svc.cluster.local        ready    2m19s
     ```
 
-To connect to a MongoDB replica set, you need to specify each replica set member for the MongoDB connection string URI. This is the example format:
+To connect to a MongoDB replica set, use the `databaseAdmin_<replset>_connectionString` or `databaseAdmin_<replset>_connectionStringSrv` key from the `<cluster-name>-databaseadmin-conn-str` Secret. See [Connection secrets](connection-secrets.md).
+
+Alternatively, construct the URI manually. This is the example format:
 
 ```bash
-mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?authSource=admin&replicaSet=rs0"
 ```
 
 Make sure every part of the connection string reflects your environment:
 
-- **userAdmin** and **userAdminPassword**: replace with your admin username and the actual admin password. Get the username and password from the Kubernetes Secret created for your cluster.
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command  
 - **<namespace name>**: the Kubernetes namespace where your cluster is deployed
 
@@ -96,6 +117,14 @@ To expose Pods externally, configure the following option in the Custom Resource
     * **`ClusterIP`**: Exposes the Pod with an internal static IP address. This makes the Service reachable only from within the Kubernetes cluster.
     * **`NodePort`**: Exposes the Pod on each Kubernetes Node’s IP address at a static port.  A ClusterIP Service is automatically created, and the Node port routes traffic to it. The Service is reachable from outside the cluster using the Node address and port number, but the address is bound to a specific Kubernetes Node.
         
+        If the NodePort type is used, the URI looks like this:
+
+        ```
+        mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false
+        ```
+
+        All Node addresses should be *directly* reachable by the application.
+
         The `expose.externalTrafficPolicy` Custom Resource option in [`replsets`](operator.md#replsetsexposeexternaltrafficpolicy), [`sharding.configsvrReplSet`](operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy), and [`sharding.mongos`](operator.md#shardingmongosexternaltrafficpolicy) subsections controls how external traffic is routed:
 
         * `Local`: Traffic is routed to node-local endpoints. External requests will be dropped if there is no available Pod on the Node.
@@ -103,11 +132,110 @@ To expose Pods externally, configure the following option in the Custom Resource
 
     * **`LoadBalancer`**: Exposes the Pod externally using a cloud provider’s load balancer. Both [ClusterIP and NodePort Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant.
 
-If the NodePort type is used, the URI looks like this:
+When replica sets or `mongos` Pods are exposed, the Operator adds `_connectionStringExposed` keys to the connection Secret. Use them instead of building external URIs manually. See [Connection secrets](connection-secrets.md).
 
-```mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false```
+## Automatic DNS records with External DNS
 
-All Node addresses should be *directly* reachable by the application.
+Starting from Operator version 1.23.0, you can configure the Operator and [External DNS :octicons-link-external-16:](https://github.com/kubernetes-sigs/external-dns) to work together. 
+
+In the cluster Custom Resource, define how External DNS should create records: specify your `domain` (required) and optionally `prefix` and `ttl` under `expose.externalDNS`. The Operator then adds the `external-dns.alpha.kubernetes.io/hostname` annotation to each exposed per-Pod Service with a unique value in the format `<prefix>-<replset-name>-<pod-index>.<domain>`. External DNS reads this annotation and automatically creates a DNS record in your external DNS server: Amazon Route53, Cloud DNS, Azure DNS, or others.
+
+If you set `ttl`, the Operator also adds `external-dns.alpha.kubernetes.io/ttl` on each Service. The value is the DNS record lifetime in **seconds**. External DNS passes this TTL to your DNS provider when it creates or updates records. Omit `ttl` to let External DNS and the provider use their defaults.
+
+External DNS continuously watches for resource changes and updates the DNS records automatically when a new Service is created or its configuration or state changes. This automation simplifies connectivity for applications that must reach Percona Server for MongoDB from outside Kubernetes, reduces the risk of misconfiguration and supports environments that scale or change frequently. With `prefix`, you can enforce consistent DNS naming across clusters and environments.
+
+You can use External DNS for both replica sets and sharded clusters. By assigning DNS hostnames to each `mongod`, `mongos`, and `configsvrReplSet` Pod, you enable applications to connect to any node using simple, human-readable domain names.
+
+### Prerequisites
+
+To use External DNS, ensure you have:
+
+- Services exposed with the type `LoadBalancer`. Check your configuration to have `expose.enabled: true` with `expose.type: LoadBalancer` for replica sets and config servers
+- A DNS zone that External DNS can manage for the `domain` you specify
+
+### Configuration example
+
+=== "Replica set"
+
+    ```yaml
+    replsets:
+      - name: rs0
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: db-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com    # required
+            ttl: 300                     # optional; seconds, passed to External DNS
+    ```
+
+    After you apply the configuration, the Operator annotates each per-Pod Service for the cluster named `my-cluster-name` like this:
+
+    | Service (example) | `external-dns.alpha.kubernetes.io/hostname` (example) |
+    | ----------------- | ----------------------------------------------------- |
+    | `my-cluster-name-rs0-0` | `db-prod-rs0-0.mongo.example.com` |
+    | `my-cluster-name-rs0-1` | `db-prod-rs0-1.mongo.example.com` |
+    | `my-cluster-name-rs0-2` | `db-prod-rs0-2.mongo.example.com` |
+
+=== "Sharded cluster"
+
+    ```yaml
+    replsets:
+      - name: rs0
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: db-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com    # required
+            ttl: 300                     # optional; DNS TTL in seconds
+    sharding:
+      enabled: true
+      configsvrReplSet:
+        size: 3
+        expose:
+          enabled: true
+          type: LoadBalancer
+          externalDNS:
+            prefix: shard-prod                # optional; defaults to the CR metadata.name
+            domain: mongo.example.com         # required
+            ttl: 300                         # optional; DNS TTL in seconds
+      mongos:
+        expose:
+          enabled: true
+          type: LoadBalancer
+          servicePerPod: true                # optional, enables service for each mongos pod
+          externalDNS:
+            prefix: mongos-prod              # optional; defaults to the CR metadata.name
+            domain: mongo.example.com        # required
+            ttl: 300                        # optional; DNS TTL in seconds
+    ```
+
+    You can set `expose.externalDNS` under [`sharding.configsvrReplSet`](operator.md#shardingconfigsvrreplsetexposeexternaldnsprefix) and [`sharding.mongos`](operator.md#shardingmongosexposeexternaldnsprefix). Hostname patterns depend on the component:
+
+    | Component | Hostname pattern |
+    | --------- | ---------------- |
+    | Replica sets | `{prefix}-{replsetName}-{podIndex}.{domain}` |
+    | Config servers | `{prefix}-cfgsvr-{podIndex}.{domain}` |
+    | Mongos with [`servicePerPod`](operator.md#shardingmongosexposeserviceperpod) enabled | `{prefix}-mongos-{podIndex}.{domain}` |
+    | Mongos with `servicePerPod` disabled | `{prefix}-mongos.{domain}` |
+
+If you omit `prefix`, the Operator uses `metadata.name` from the custom resource instead. With `metadata.name: my-cluster-name` and no `prefix` field, the hostname for the first Pod would be `my-cluster-name-rs0-0.mongo.example.com`.
+
+With `ttl: 300`, each Service also gets `external-dns.alpha.kubernetes.io/ttl: "300"`. External DNS uses that value when publishing the record; check your DNS provider for allowed TTL ranges and minimums.
+
+### How the Operator manages External DNS annotations
+
+The Operator owns the External DNS annotations it generates. The rules are:
+
+- When the Operator annotates the Service with the `external-dns.alpha.kubernetes.io/hostname` (and `/ttl`, if set) annotations defined via the Custom Resource, it also adds the `percona.com/external-dns-managed: "true"` annotation to this Service. The Operator uses this marker to track its ownership over the Service. Do not set or remove the `percona.com/external-dns-managed: "true"` annotation manually.
+- For the Service annotated with `percona.com/external-dns-managed: "true"`, the `/hostname` and `/ttl` always follow the Custom Resource. The Operator overwrites manual edits of these two annotations on the next reconcile. To customize them, use the `externalDNS` section of the Custom Resource.
+* If you edit or remove the `expose.externalDNS` configuration in the Custom Resource, the operator-written `/hostname` and `/ttl` annotations on the Services are edited or removed accordingly. External DNS then deletes the DNS records for the disabled or changed configuration.
+* External DNS annotations that you add manually on Services without the `percona.com/external-dns-managed: "true"` marker, and any other External DNS keys (for example `/target` or `/alias`) on any Service, are never modified by the Operator. The manual per-Service annotation workflow keeps working.
+* If `expose.annotations` already contains `external-dns.alpha.kubernetes.io/hostname`, the Operator replaces it with the hostname from `expose.externalDNS`.
+* If `externalDNS` is set while `expose.enabled` is `false` (replica sets and config servers), the Operator does not add DNS annotations.
 
 ## Service per Pod
 

@@ -202,6 +202,7 @@ nav:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
+          - "Install on Rancher Kubernetes Engine (RKE2)": rke2.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           
@@ -225,6 +226,7 @@ nav:
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
              - "System users": system-users.md
+             - "Connection secrets": connection-secrets.md
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
@@ -246,6 +248,7 @@ nav:
              - Configure TLS using cert-manager: tls-cert-manager.md
              - Generate certificates manually: tls-manual.md
              - Update certificates: tls-update.md
+             - "Configure the TLS certificate management policy": tls-cert-management-policy.md
              - Disable TLS: tls-disable.md
           - Data at rest encryption: 
             - About data-at-rest encryption: encryption.md
@@ -271,9 +274,14 @@ nav:
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Alibaba Cloud OSS storage": backups-storage-oss.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - "PVC snapshot backups":
+                  - Overview: backups-pvc-snapshots.md
+                  - "Configure PVC snapshots": backups-pvc-setup.md
+                  - "Use PVC snapshots": backups-pvc-usage.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md

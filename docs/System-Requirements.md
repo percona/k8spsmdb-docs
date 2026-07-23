@@ -47,5 +47,6 @@ Choose how you wish to install the Operator:
 * [on Google Kubernetes Engine (GKE)](gke.md)
 * [on Amazon Elastic Kubernetes Service (AWS EKS)](eks.md)
 * [on Microsoft Azure Kubernetes Service (AKS)](aks.md)
+* [on Rancher Kubernetes Engine (RKE2)](rke2.md)
 * [on Openshift](openshift.md)
 * [in a Kubernetes-based environment](kubernetes.md)

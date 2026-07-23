@@ -50,7 +50,19 @@ To select an update strategy, set the `updateStrategy` key in the [Custom Resour
 * `OnDelete`
 
 For a manual update of your database cluster using the `RollingUpdate` or `OnDelete` strategies, refer to [the low-level Kubernetes way of database upgrades](update_manually.md) guide.
- 
+
+## Revision history limit
+
+Each time the Operator updates a StatefulSet Pod template, Kubernetes stores a revision in the StatefulSet history. You can control how many of these revisions are kept by setting [`spec.revisionHistoryLimit`](operator.md#revisionhistorylimit) in the Custom Resource. This is useful when you want fewer stale revisions in the namespace, or when you need to keep more rollback points after frequent configuration changes.
+
+```yaml
+spec:
+  updateStrategy: SmartUpdate
+  revisionHistoryLimit: 10
+```
+
+When you omit this option, Kubernetes keeps the default of 10 revisions.
+
 ## Update on OpenShift
 
-If you run the Operator on [Red Hat Marketplace :octicons-link-external-16:](https://marketplace.redhat.com) or you run Red Hat certified Operators on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift), you need to do additional steps during the upgrade. See [Upgrade Percona Server for MongoDB on OpenShift](update_openshift.md) for details.
+If you run the Operator on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift), you need to do additional steps during the upgrade. See [Upgrade Percona Server for MongoDB on OpenShift](update_openshift.md) for details.

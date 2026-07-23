@@ -180,3 +180,13 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 The Operator creates and updates an additional Secrets object which is named based on the cluster name, like `internal-my-cluster-name-users`. This Secrets object is used only by the Operator. Users must not change it.
 
 This object contains secrets with the same passwords as the one specified in `spec.secrets.users` (e.g., `my-cluster-name-secrets`). When the user updates the `my-cluster-name-secrets` Secret, the Operator propagates these changes to the internal `internal-my-cluster-name-users` Secrets object.
+
+## Connection string Secret
+
+Starting with Operator version 1.23.0, the Operator creates a `<cluster-name>-databaseadmin-conn-str` Secret with ready-to-use MongoDB connection strings for the **`databaseAdmin`** user. The Secret includes URIs for internal cluster access, SRV-style endpoints, and exposed endpoints when applicable.
+
+The Operator updates this Secret when cluster topology, exposure settings, or the `databaseAdmin` password change. Do not edit it manually.
+
+Use this Secret to connect to the cluster or wire applications to MongoDB. See [Connection secrets](connection-secrets.md) for key names and usage examples.
+
+Connection string Secrets are created for `databaseAdmin` only. Other system users do not have dedicated connection string Secrets.

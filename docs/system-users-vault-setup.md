@@ -382,39 +382,42 @@ To verify that the Operator retrieves passwords from Vault, we'll do the followi
 
 Here's how to do it:
 
-1. Get the user credentials from the Secret `<cluster-name>-secrets`. Run the following commands to retrieve the username and password for the database admin user:
+1. Get the connection string from the `<cluster-name>-databaseadmin-conn-str` Secret:
 
-    ```bash
-    kubectl get secret my-cluster-name-secrets -n $CLUSTER_NAMESPACE -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_USER}' | base64 --decode | tr '\n' ' ' && echo " "
-    kubectl get secret my-cluster-name-secrets -n $CLUSTER_NAMESPACE -o yaml -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 --decode | tr '\n' ' ' && echo " "
-    ```
-    
+    === "sharding is on"
+
+        ```bash
+        kubectl get secret my-cluster-name-databaseadmin-conn-str -n $CLUSTER_NAMESPACE \
+          -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+        ```
+
+    === "sharding is off"
+
+        ```bash
+        kubectl get secret my-cluster-name-databaseadmin-conn-str -n $CLUSTER_NAMESPACE \
+          -o jsonpath='{.data.databaseAdmin_rs0_connectionString}' | base64 --decode && echo
+        ```
+
+    See [Connection secrets](connection-secrets.md) for other key names.
+
 2. Spin up a `mongo` client Pod:
 
     ```bash
     kubectl -n $CLUSTER_NAMESPACE run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
     ```
 
-3. Inside the Pod, run the following command:
+3. Inside the Pod, connect using the connection string from step 1:
 
-    === "sharding is on"
+    ```bash
+    mongosh "<connection-string>"
+    ```
 
+    ??? example "Expected output"
+
+        ```{.text .no-copy}
+        .....
+        [direct: mongos] admin>
         ```
-        mongosh "mongodb://<databaseAdminUser>:<databaseAdminPassword>@my-cluster-name-mongos.<namespace>.svc.cluster.local/admin?ssl=false"
-        ```
-
-    === "sharding is off"
-
-        ```
-        mongosh  "mongodb://<databaseAdminUser>:<databaseAdminPassword>@my-cluster-name-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-        ```
-
-        ??? example "Expected output"
-
-            ```{.text .no-copy}
-            .....
-            [direct: mongos] admin>
-            ```
 
 4. Update the password for the `MONGODB_DATABASE_ADMIN_PASSWORD` user:
 
