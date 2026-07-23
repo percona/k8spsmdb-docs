@@ -2,7 +2,7 @@
 
 OpenID Connect (OIDC) is an identity authentication protocol built on top of the OAuth 2.0 framework. OIDC is designed to verify user identities and provide authentication, ensuring that users are who they claim to be. OAuth 2.0 is used for user authorization to access resources.
 
-If your organization already uses an identity provider (IdP) such as Okta or Microsoft Entra ID, you can connect Percona Server for MongoDB to it through OpenID Connect (OIDC). This lets your users to sign in with familiar corporate credentials while you can manage user credentials, access policies and roles in a centralized place - on the IdP side.
+If your organization already uses an identity provider (IdP) such as Okta or Microsoft Entra ID, you can connect Percona Server for MongoDB to it through OpenID Connect (OIDC). This lets your users sign in with familiar corporate credentials while you manage user credentials, access policies, and roles in a centralized place — on the IdP side.
 
 This guide walks you through integrating an already-configured 
 identity provider with Percona Server for MongoDB managed by the Operator. 
