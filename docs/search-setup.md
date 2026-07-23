@@ -1,11 +1,13 @@
-# Configure full-text / vector search
+# Configure vector search with Percona Search for MongoDB
 
 !!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
-    Search capabilities feature is in the tech preview stage. Use it in staging or testing
-    environments and share your feedback. 
+    Search capabilities feature is in the tech preview stage. We don't recommend using it in
+    production yet, but we encourage you to try it in a staging or testing
+    environment and share your feedback. Your feedback helps us shape the
+    feature in future releases.
 
 This guide shows how to enable vector search on a cluster managed by
 Percona Operator for MongoDB, insert sample vector data, create a vector search

@@ -223,6 +223,6 @@ requirements:
 * **Logical restores on sharded clusters with MongoDB 8.3 can leave the
   cluster broken.** This is a known PBM 2.15.0 limitation tracked in
   [PBM-1764 :octicons-link-external-16:](https://perconadev.atlassian.net/browse/PBM-1764).
-* **Search indexes are not included in backups.** Plan for reindex time after
+* **Search index data are not included in backups.** Plan for reindex time after
   restore when you estimate recovery objectives for the search surface.
 
