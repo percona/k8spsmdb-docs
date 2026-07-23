@@ -317,7 +317,7 @@ nav:
           - "Restart or pause the cluster": pause.md
           - volume-attributes-class.md
     - Search and Vector search:
-          - About Percona Search for MongoDB: search-overview.md
+          - About full-text and vector search: search-overview.md
           - Configure search and vector search: search-setup.md      
     - Troubleshooting:
           - "Troubleshoot the Operator installation issues": troubleshoot-operator.md

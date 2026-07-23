@@ -72,7 +72,7 @@ Using PVC snapshots, you benefit from:
 
 The Operator uses the PBM workflow for external backups and restores, automating all required steps. You only need to create the `VolumeSnapshotClass`, reference it in the backup object for on demand backups or in the Custom Resource for scheduled backups, and specify the backup type as `external`.
 
-You can find details about the workflow, requirements, and limitations in the [PVC snapshot support documentation](../backups-snapshots.md). For setup and usage instructions, refer to our [tutorial](backups-snapshots-setup.md).
+You can find details about the workflow, requirements, and limitations in the [PVC snapshot support documentation](../backups-pvc-snapshots.md). For setup and usage instructions, refer to our [tutorial](../backups-pvc-setup.md).
 
 ### Connect applications using operator-generated connection string Secrets
 
@@ -90,7 +90,7 @@ For details about connection Secrets, see [connection Secrets documentation](../
 
 ### Workload Identity authentication support for GCS backups
 
-You can now make backup to Google Cloud Storage without storing service account JSON keys in Kubernetes Secrets. This unblocks GKE environments that use [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) and policies that forbid exporting service account keys.
+You can now make backup to Google Cloud Storage without storing service account JSON keys in Kubernetes Secrets. This unblocks GKE environments that use [Workload Identity :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) and policies that forbid exporting service account keys.
 
 To use it:
 
@@ -111,7 +111,7 @@ backup:
         # credentialsSecret omitted — PBM uses Workload Identity / ADC
 ```
 
-This improvement makes keyless GCS backups a first-class option in the Operator.
+This improvement makes keyless GCS backups a first-class option in the Operator. For configuration guidelines, refer to [documentation](../backups-storage-gcp.md#automate-access-to-google-cloud-storage-using-workload-identity).
 
 ### Native backups to Oracle Cloud Infrastructure Object Storage
 
@@ -128,13 +128,15 @@ You can also encrypt backups at rest with OCI Vault or a customer-provided key.
 
 With the support of OCI Object Storage, you get the same Operator-managed backup and restore experience on Oracle Cloud as with the other [supported storage services](../backups-storage.md). When you use workload identity, you also benefit from less credential handling.
 
+Read more about OCI support in our [documentation](../backups-storage-oci.md).
+
 ### Support of Alibaba Cloud OSS for backups
 
 You can now store backups made through the Operator in [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](https://www.alibabacloud.com/en/product/object-storage-service). If you operate in Asia-Pacific or China region or already use Alibaba Cloud infrastructure, this ability lets you reduce latency, simplify compliance, and achieve fewer cross-cloud hops.
 
 With the new `oss` storage type, configure backups the same way as for other cloud storages: create a Secret with Alibaba credentials, point the Custom Resource at your OSS bucket and endpoint, then run on-demand or scheduled backups and restores as usual.
 
-~~~yaml
+```yaml
 backup:
   storages:
     alibaba-oss:
@@ -145,7 +147,7 @@ backup:
         credentialsSecret: my-cluster-name-backup-oss
         endpointUrl: https://oss-eu-central-1.aliyuncs.com
         region: eu-central-1
-~~~
+```
 
 The Secret must include `ALIBABA_ACCESS_KEY_ID` and `ALIBABA_ACCESS_KEY_SECRET`. Optional settings cover upload retries, multipart upload size, and server-side encryption (SSE-OSS or SSE-KMS) via a per-storage SSE Secret.
 
