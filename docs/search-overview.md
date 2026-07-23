@@ -50,7 +50,7 @@ search components.
 
 ## How the Percona Server for MongoDB (`mongod`) and Percona Search for MongoDB (`mongot`) communicate
 
-Percona Search for MongoDB runs as a separate `mongot` process. Your applications never connect to it
+Percona Search for MongoDB runs as a separate `mongot` process. Your applications and users never connect to it
 directly. They still connect to Percona Server for MongoDB (to  `mongod` or to `mongos` in a sharded
 cluster). The database acts as a proxy: it forwards search commands to
 Percona Search for MongoDB (`mongot`), then returns the results to the client.
