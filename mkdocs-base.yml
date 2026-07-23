@@ -296,7 +296,7 @@ nav:
                  - "Interconnect sites": replication-interconnect.md
                  - "Fail over workload to the Replica site": replication-failover.md
                  - "Backups with cross-site replication": replication-backups.md
-                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
+                 - "Splitting a replica set across multiple data centers": replication-multi-dc.md
               
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md

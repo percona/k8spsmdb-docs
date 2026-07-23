@@ -607,7 +607,7 @@ What to do with a Pod if it doesn't satisfy the [Kubernetes Pod Topology Spread 
 
 ### `replsets.replsetOverrides.MEMBER-NAME.host`
 
-Use if you need to [override the replica set members FQDNs with custom host names](replication-multi-dc.md). Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
+Use if you need to [override the replica set members FQDNs with custom host names](expose.md#override-hostnames-with-external-domain-names) (for example, external domain names). Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it's the user’s responsibility to ensure connectivity.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -663,7 +663,7 @@ The [priority :octicons-link-external-16:](https://docs.mongodb.com/manual/refer
 
 ### `replsets.externalNodes.arbiterOnly`
 
-Defines whether this [external replset instance](replication-main.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup.
+Defines whether this [external replset instance](replication-multi-dc.md) acts as an [arbiter :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup. Available with the Operator version 1.23.0+.
 
 | Value type  | Example    |
 | ----------- | ---------- |
