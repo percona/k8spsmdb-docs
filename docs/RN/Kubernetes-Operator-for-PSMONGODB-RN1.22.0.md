@@ -269,7 +269,7 @@ Learn more about the workflow and the setup in our [documentation](../system-use
 
 The Operator deprecates the support of Percona Server for MongoDB 6.0 as this major version entered end-of-life stage. You can still run Percona Server for MongoDB 6.0 in the Operator and existing functionality remains compatible. However, we will no longer test new features and improvements against this version.
 
-Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.23.0.
+Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.24.0.
 
 ### Deprecated support for PMM2 
 

@@ -14,7 +14,7 @@ Percona Operator for MongoDB, insert sample vector data, create a vector search
 index, and run a `$vectorSearch` query.
 
 Vector search is implemented via Percona Search for MongoDB search engine that runs the `mongot` search process. To learn how it works with the Operator and what use cases you can implement, see
-[About search and vector search](search-overview.md).
+[About full-text and vector search](search-overview.md).
 
 This setup uses the following software versions:
 

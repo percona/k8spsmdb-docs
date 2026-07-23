@@ -1,4 +1,4 @@
-# About search and vector search
+# About full-text and vector search
 
 !!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 

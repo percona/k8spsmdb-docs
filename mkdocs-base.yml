@@ -318,7 +318,7 @@ nav:
           - "Restart or pause the cluster": pause.md
           - volume-attributes-class.md
     - Search and Vector search:
-          - About Percona Search for MongoDB: search-overview.md
+          - About full-text and vector search: search-overview.md
           - Configure search and vector search: search-setup.md      
     - Troubleshooting:
           - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
@@ -359,6 +359,7 @@ nav:
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
