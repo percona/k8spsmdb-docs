@@ -2,7 +2,7 @@
 
 If you have [installed the Operator on the OpenShift platform using OLM](openshift.md#install-the-operator-via-the-operator-lifecycle-manager-olm), you can upgrade the Operator within it.
 
-If you know the OLM upgrade workflow, jump to the [update Deployment steps](#upgrade-the-operator).
+If you know the OLM upgrade workflow, jump to the [update Deployment steps](#upgrade-the-operator-via-olm).
 
 ### Understand how OLM applies Operator upgrades
 

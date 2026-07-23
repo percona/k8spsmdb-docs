@@ -410,7 +410,7 @@ Find the cluster name in the `metadata.name` field of your Custom Resource. The 
         mongos>
         ```
 
-### OIDC authentication and LDAP authorization
+## OIDC authentication and LDAP authorization
 
 A configuration file provided via a Secret takes precedence over Custom Resource settings (`spec.configuration`).
 
@@ -439,7 +439,7 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
 
 3. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection:
 
-Changed mongod configuration should look as follows:
+    Changed mongod configuration should look as follows:
 
     ``` yaml title="my_mongod.conf"  hl_lines="7"
     security:

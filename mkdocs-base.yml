@@ -355,6 +355,7 @@ nav:
           - Legal:
             - "Copyright and licensing information": copyright.md
             - "Trademark policy": trademark-policy.md
+            - legal-notice.md
             
       
     - Release notes:

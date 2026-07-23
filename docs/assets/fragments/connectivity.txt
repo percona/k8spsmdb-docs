@@ -1,4 +1,4 @@
-To connect to Percona Server for MongoDB, use the connection string Secret that the Operator creates for the `databaseAdmin` user. This Secret is available starting with Operator version 1.23.0 and newer. For previous versions, refer to the [Connect manually](#connect-manually) section.
+To connect to Percona Server for MongoDB, use the connection string Secret that the Operator creates for the `databaseAdmin` user. This Secret is available starting with Operator version 1.23.0 and newer. For previous versions, refer to the [Connect manually](#connect-manually-alternative) section.
 
 1. List the Secrets objects:
 
@@ -10,21 +10,22 @@ To connect to Percona Server for MongoDB, use the connection string Secret that 
     
 2. Retrieve the connection string
 
-    === "if sharding is on"
+    === "Sharding is on"
 
         ```bash
         {{ commandName }} get secret <clusterName>-databaseadmin-conn-str -n <namespace> \
-          -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+         -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
         ```
 
-    === "if sharding is off"
+    === "Sharding is off"
 
         ```bash
         {{ commandName }} get secret <clusterName>-databaseadmin-conn-str -n <namespace> \
-          -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
+        -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
         ```
 
-    See [Connection secrets](connection-secrets.md) for other available keys.
+    
+     See [Connection secrets](connection-secrets.md) for other available keys.
 
 3. Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
@@ -71,15 +72,15 @@ If you need to build a connection URI yourself, retrieve credentials from the us
 
 4. Now run `mongosh` tool inside the `percona-client` command shell using the admin user credentials you obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder. The command will look different depending on whether sharding is on (the default behavior) or off:
 
-   === "sharding is on"
+    === "sharding is on"
 
-       ```bash
-       mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
-       ```
+        ```bash
+        mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+        ```
 
-   === "sharding is off"
+    === "sharding is off"
  
-       ```bash
-       mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-       ```
+        ```bash
+        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        ```
 

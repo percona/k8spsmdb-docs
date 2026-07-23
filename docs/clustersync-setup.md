@@ -57,6 +57,7 @@ Since source and target clusters are in the same namespace, deploy the Operator 
 
 ```bash
 kubectl apply --server-side -f deploy/cw-bundle.yaml
+```
 
 Refer to the [Install the Operator in the cluster-wide mode](cluster-wide.md#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode) for how to install the Operator in another namespace.
 
@@ -85,6 +86,7 @@ You manage the source cluster regardless how it is deployed. Create a MongoDB us
     ```bash
     export SOURCESECRET="$(kubectl get psmdb my-source-cluster -n $NAMESPACE -o jsonpath='{.spec.secrets.users}')"
     echo "$SOURCESECRET"
+    ```
     
     ??? example "Sample output"
 
