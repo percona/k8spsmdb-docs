@@ -115,6 +115,8 @@ The Operator cannot guarantee data consistency after a failed restore because it
 
 You can inspect restore logs by executing into the `mongod` container and checking the PBM logs. PBM keeps only the latest restore logs because it cleans up the data directory during the process.
 
+For step-by-step diagnostics, see [Troubleshoot backups and restores](debug-backup-restore.md).
+
 ## Make a point-in-time recovery
 
 1. Check a time to restore for a backup. Use the command below to find the latest restorable timestamp:
