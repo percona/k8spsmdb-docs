@@ -47,15 +47,15 @@ See the [documentation](../clustersync.md) for setup and day-2 operations.
 
 ### Run AI and semantic search workloads with vector search available in Percona Operator for MongoDB (tech preview)
 
-You can now use vector search with Percona Operator for MongoDB. Vector search retrieves results based on meaning rather than exact word matches, so you can store and query vector data alongside traditional data in Percona Server for MongoDB. Use it for AI and retrieval-augmented generation (RAG) workloads, semantic search and similarity queries. As a result, you have the same capability that MongoDB Atlas customers and self-managed upstream users already have.
+You can now use full-text and vector search with Percona Operator for MongoDB. Full-text search finds documents by matching keywords and phrases in the text. Vector search retrieves results based on meaning rather than exact word matches, so you can store and query vector data alongside traditional data in Percona Server for MongoDB. Use it for AI and retrieval-augmented generation (RAG) workloads, semantic search and similarity queries. As a result, you have the same capability that MongoDB Atlas customers and self-managed upstream users already have.
 
-Enable it declaratively in the Custom Resource. The Operator deploys and manages the `mongot` search process alongside your cluster, wires authentication and TLS, and keeps search in sync with your data for both replica set and sharded deployments. Existing clusters that don’t enable search continue to run unchanged after you upgrade.
+Full-text and vector search are provided by a separate tool called Percona Search for MongoDB that runs the `mongot` search process. You manage it declaratively in the Custom Resource. The Operator deploys and manages the `mongot` alongside your cluster, wires authentication and TLS, and keeps search in sync with your data for both replica set and sharded deployments. Existing clusters that don’t enable search continue to run unchanged after you upgrade.
 
-Vector search requires Percona Server for MongoDB 8.3 or later. The Operator uses experimental 8.3 images that you must explicitly specify in the Custom Resource.
+Full-text and vector search require Percona Server for MongoDB 8.3 or later. The Operator uses experimental 8.3 images that you must explicitly specify in the Custom Resource.
 
 This feature is available as a tech preview and is not recommended for production use yet. Try it in staging or testing environments and share your feedback to help us shape its future.
 
-Learn more in the [documentation](../vector-search.md) and [setup tutorial](../vector-search-setup.md).
+Learn more in the [documentation](../search-overview.md) and [setup tutorial](../search-setup.md).
 
 ### Boost backup and restore performance with PVC snapshot support (tech preview)
 
