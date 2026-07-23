@@ -88,7 +88,7 @@ Pick your identity provider:
 
 === "Microsoft Entra ID"
 
-    On the Microfost Entra side, you need to complete the following steps as part of your IdP setup:
+    On the Microsoft Entra side, you need to complete the following steps as part of your IdP setup:
 
     - Create and configure an OIDC application with Microsoft Entra
     - Create users and groups
@@ -162,21 +162,21 @@ Pick your identity provider:
 
 === "Keycloak"
 
-    On the Keykloak side, you need to complete the following steps as part of your IdP setup:
+    On the Keycloak side, you need to complete the following steps as part of your IdP setup:
 
-    * Create a new realm in KeyCloak
+    * Create a new realm in Keycloak
     * Create and configure an OIDC client
     * Create users and groups
     
     !!! important
 
-        When using Keycloak, you must provide the certificate signed by the trusted CA. Otherwise, Percona Server for MongoDB cannot verify the connection and login attempts fail. See [Limitations](#limitations).
+        When using Keycloak, you must provide a certificate signed by a publicly trusted CA. Otherwise, Percona Server for MongoDB cannot verify the connection and login attempts fail. See [Limitations](#limitations).
     
     For detailed, step-by-step instructions, follow the [Configure OIDC authentication with Keycloak  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/oidc-keycloak.html) tutorial.
     
-    Once it is configured, the following Percona Server for MongoDB configuration to the `configuration` field of the Custom Resource. 
-     
-    This example shows the configuration for database Pods.    For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
+    Once it is configured, add the following Percona Server for MongoDB configuration to the `configuration` field of the Custom Resource.
+
+    This example shows the configuration for database Pods. For instructions on how to configure a sharded cluster, refer to the [Where to add OIDC configuration](#where-to-add-oidc-configuration) section above.
 
     ```yaml
     security:
