@@ -104,6 +104,7 @@ cluster using the following remote backup storages:
 * [MinIO and S3-compatible storages](backups-storage-minio.md)
 * [Microsoft Azure Blob storage](backups-storage-azure.md)
 * [Alibaba Cloud OSS storage](backups-storage-oss.md)
+* [Oracle Cloud Infrastructure Object Storage](backups-storage-oci.md)
 * [Remote file server](backups-storage-filesystem.md)
 
 ![image](assets/images/backup-cloud.svg)

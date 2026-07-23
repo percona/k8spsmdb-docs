@@ -17,7 +17,7 @@ While the underlying mechanics such as replica sets, TLS, and service exposure a
 
 To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the cross-site replication. This means that one cluster is the Main site and another one(s) - the Replica site(s).
 
-The following diagram shows how the data is replicated between the sites
+The following diagram shows how the data is replicated between the sites.
 
 ![image](assets/images/replication-pods.svg)
 
@@ -25,6 +25,15 @@ The following diagram shows how the data is replicated between the sites
 * **Replica site**: These are secondary clusters that host MongoDB nodes and replicate data from the Main site. The Operator deploys this site in passive mode and doesn't control the replica set configuration there. The passive mode is set by the `unmanaged: true` flag in the Custom Resource.
 
 This separation ensures consistency and avoids conflicts when managing distributed deployments.
+
+### Voting members across sites
+
+MongoDB needs an **odd number of voting members** in each replica set for reliable primary elections. When you interconnect Main and Replica sites, you typically add remote members through `replsets.externalNodes` and keep the total voter count odd. Common approaches:
+
+* Add an even number of remote data-bearing members as voting, and one remote member as non-voting (`votes: 0`, `priority: 0`). The main [Interconnect sites](replication-interconnect.md) guide uses this pattern.
+* Add an **external arbiter** as a voting member (`arbiterOnly: true`, `votes: 1`, `priority: 0`). The arbiter stores no data and cannot become primary, but it participates in elections. This is useful for a Primary-Secondary-Arbiter (PSA) layout distributed across data centers, or for two data-bearing sites plus a third arbiter site.
+
+For a full example that deploys two data-bearing clusters and an arbiter site, then registers the arbiter on the Main site, see [Splitting a replica set across multiple data centers](replication-multi-dc.md).
 
 ## Why to use multi-cluster or multi-region?
 

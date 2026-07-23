@@ -66,7 +66,7 @@ cd percona-server-mongodb-operator
 	kubectl apply -f deploy/backup-s3.yaml -n <namespace>
 	```
 
-4. Update your `deploy/cr.yaml` configuration. Specify the following parameters in the `backups` section:
+4. Update your `deploy/cr.yaml` configuration. Specify the following parameters in the `backup` section:
 
     * set the `storages.<NAME>.type` to `s3`. Substitute the `<NAME>` part with some arbitrary name that you will later use to refer this storage when making backups and restores.
     * set the `storages.<NAME>.s3.credentialsSecret` to the name you used to refer your Kubernetes Secret (`my-cluster-name-backup-s3` in the previous step).
@@ -150,19 +150,7 @@ cd percona-server-mongodb-operator
 
 ## Troubleshooting 
 
-You may face issues with the backup. To identify the issue, you can do the following:
-
-* View the information about the backup with the following command:
-
-   ```bash
-   kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml
-   ```
-
-* [View the backup-agent logs](debug-logs.md). Use the previous command to find the name of the pod where the backup was made:
-  
-  ```bash
-  kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
-  ```
+If you face issues with the backup, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
 Congratulations! You have made the first backup manually. Want to learn more about backups? See the [Backup and restore](backups.md) section for how to [configure point-in-time recovery](backups-pitr.md), [enable server-side encryption](backups-encryption.md) and how to [automatically make backups according to the schedule](backups-scheduled.md).
 

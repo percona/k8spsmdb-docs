@@ -11,6 +11,7 @@ The Operator provides several storage types for different storages. To help you 
 * **gcp** - Use this storage type for Google Cloud Storage.
 * **azure** - Use this storage type for Microsoft Azure Blob storage.
 * **oss** - Use this storage type for Alibaba Cloud Object Storage Service (OSS).
+* **oci** - Use this storage type for Oracle Cloud Infrastructure Object Storage.
 * **filesystem** - Use this storage type for uploading backups to a remote file server.
 
 For most backup storages, create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials and reference it in the Custom Resource. On cloud platforms, you can instead use identity-based access and omit the Secret:
@@ -27,4 +28,5 @@ Use the page for your storage type:
 * [Google Cloud storage](backups-storage-gcp.md)
 * [Microsoft Azure Blob storage](backups-storage-azure.md)
 * [Alibaba Cloud OSS storage](backups-storage-oss.md)
+* [Oracle Cloud Infrastructure Object Storage](backups-storage-oci.md)
 * [Remote file server](backups-storage-filesystem.md)

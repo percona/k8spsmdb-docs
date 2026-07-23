@@ -63,14 +63,13 @@ extra_css:
   - css/extra.css
   - css/operators.css
   - css/rating.css
+  - css/kapa.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
   - js/rating.js
-#  - js/version-select.js
-#  - js/toctree.js
-#  - js/lightgallery.min.js
+  - js/kapa.js
 
 markdown_extensions:
   attr_list: {}
@@ -231,7 +230,8 @@ nav:
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
           - Authentication:
-            - OpenLDAP integration: ldap.md
+            - "OpenLDAP integration": ldap.md
+            - "OIDC authentication": oidc.md
             - "Disable authentication": auth-disable.md
             - "Disable localhost authentication bypass": auth-bypass-localhost.md
           - "Changing MongoDB options": options.md
@@ -243,7 +243,6 @@ nav:
           - "Local storage support": storage.md
           - "Arbiter and non-voting nodes": arbiter.md
           - "MongoDB sharding": sharding.md
-
           - "Transport encryption (TLS/SSL)": 
              - About TLS security: TLS.md
              - Configure TLS using cert-manager: tls-cert-manager.md
@@ -276,6 +275,7 @@ nav:
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
                   - "Alibaba Cloud OSS storage": backups-storage-oss.md
+                  - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
@@ -291,6 +291,7 @@ nav:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
+                 - "Restore a collection under a different name": backups-restore-new-name.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
@@ -324,6 +325,7 @@ nav:
           - "Initial troubleshooting": debug.md
           - "Exec into the container": debug-shell.md
           - "Check the logs": debug-logs.md
+          - "Troubleshoot backups and restores": debug-backup-restore.md
           - "Special debug images": debug-images.md
           - "Storage resizing": debug-storage.md
 

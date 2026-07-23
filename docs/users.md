@@ -18,8 +18,6 @@ When the Operator creates application-level (unprivileged) users, it uses the us
 
 For system users, the Operator creates the required Secret automatically when it creates the cluster. If a Secret with the expected name already exists (as specified in the CR), the Operator will reuse it. Starting with version 1.22.0, you can also [store and manage system user credentials in HashiCorp Vault](system-users-vault.md). In this case, the Operator retrieves the passwords from Vault and creates or updates the relevant Secrets based on the Vault-stored credentials.
 
-Starting with version 1.23.0, the Operator also creates [connection Secrets](connection-secrets.md) with ready-to-use MongoDB URIs for the `databaseAdmin` user and for operator-managed application-level users.
-
 ## Authentication 
 
 Authentication is enabled in Percona Server for MongoDB clusters by default. If you need to disable authentication for development, testing, or migration purposes, see [Disable authentication](auth-disable.md).

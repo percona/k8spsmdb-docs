@@ -257,12 +257,13 @@ my-cluster-name-mongos-1   NodePort       10.38.155.250   <none>         27017:3
 
 Starting from v1.14, the Operator configures replica set members using local fully-qualified domain names (FQDN), which are resolvable and available only from inside the Kubernetes cluster. Exposing the replica set using the options described above will not affect hostname usage in the replica set configuration.
 
-
 !!! note
 
     Before v1.14, the Operator used the exposed IP addresses in the replica set configuration in the case of the exposed replica set.
 
-It is still possible to restore the old behavior. For example, it may be useful to have the replica set configured with external IP addresses for [multi-cluster deployments](replication.md). The `clusterServiceDNSMode` field in the Custom Resource controls this Operator behavior. You can set `clusterServiceDNSMode` to one of the following values:
+You can still restore the previous behavior. For example, to configure the replica set with external IP addresses for [multi-cluster deployments](replication.md). 
+
+The `clusterServiceDNSMode` field in the Custom Resource controls which addresses the Operator writes into the replica set configuration. You can set it to one of the following values:
 
 1. **`Internal`**: Use local FQDNs (i.e., `cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local`) in replica set configuration even if the replica set is exposed. **This is the default value.**
 
@@ -270,7 +271,7 @@ It is still possible to restore the old behavior. For example, it may be useful 
 
 3. **`External`**: Use exposed IP addresses in replica set configuration if the replica set is exposed; otherwise, use local FQDN. **This copies the behavior of the Operator v1.13.**
 
-   !!! warning
+!!! warning
 
     Be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make reconfiguration and recovery more complicated, and are **generally problematic in scenarios where IP addresses change**. In particular, if you delete and recreate the cluster with `clusterServiceDNSMode=External` without deleting its volumes (having `percona.com/delete-psmdb-pvc` finalizer unset), your cluster will crash and there will be no straightforward way to recover it.
 
@@ -284,7 +285,52 @@ To make a manual restart, run the `kubectl rollout restart sts
 Alternatively, you can simply
 [restart your cluster](pause.md).
 
+### Override hostnames with external domain names
 
+When members must be reachable by externally resolvable DNS names such as through an Ingress, TransportServer, LoadBalancer hostname, or another cross-cluster DNS entry — use [`replsets.replsetOverrides`](operator.md#replsetsreplsetoverridesmember-namehost) instead of relying on `clusterServiceDNSMode=External` and IP addresses.
+
+With `replsetOverrides`, you replace the default local FQDN of each Pod with a custom host and, optionally, port in the MongoDB replica set configuration. Typical use cases include:
+
+* Cross-cluster or multi-data-center replica sets where sites reach each other by external domain names
+* Ingress or TLS passthrough endpoints (for example `r1.example.com:443`) in front of each Pod’s Service
+
+**Important considerations:**
+
+- The Operator does **not** validate overridden hostnames. **You must ensure DNS resolution and network connectivity from every replica set member to those names**.
+- Include every overridden hostname in your TLS certificates. Operator-generated certificates usually are not enough for external domain names; [generate certificates manually](tls-manual.md) when needed.
+- [Expose the Pods](#connecting-from-outside-kubernetes) so the external name can route to the correct Service.
+- After you set replica set name overrides, the Operator updates replica set hosts one by one (secondaries first, primary last).
+
+Set `replsetOverrides` under the replica set in `deploy/cr.yaml`. Each key must be the **Pod name**. The value of `host` is the external domain name. Also include the port if it is not the default `27017` port:
+
+```yaml
+...
+replsets:
+- name: rs0
+  size: 3
+  expose:
+    enabled: true
+    type: ClusterIP
+  replsetOverrides:
+    my-cluster-name-rs0-0:
+      host: rs0-0.example.com:27017
+    my-cluster-name-rs0-1:
+      host: rs0-1.example.com:27017
+    my-cluster-name-rs0-2:
+      host: rs0-2.example.com:27017
+```
+
+You can also add custom tags to members under the same override:
+
+```yaml
+replsetOverrides:
+  my-cluster-name-rs0-0:
+    host: rs0-0.example.com:27017
+    tags:
+      team: cloud
+```
+
+You can use these external domain names when you [split a replica set across multiple data centers](replication-multi-dc.md). Override each local member with `replsetOverrides`, and register remote members with `externalNodes` using the same style of externally reachable hostnames.
 
 ### Application protocol support for service mesh integrations
 

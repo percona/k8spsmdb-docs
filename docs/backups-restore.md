@@ -12,10 +12,10 @@ This document focuses on the restore to the same cluster.
 
 You can make the following restores:
 
-* [Restore to a specific point in time](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
-* [Restore from a backup](#restore-from-a-backup)
-* [Restore from a PVC snapshot backup](backups-pvc-usage.md#make-an-in-place-restore-from-a-pvc-snapshot-backup)
+* [Make a point-in-time recovery](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
+* [Restore from a full backup](#restore-from-a-backup)
 * [Selective restore from a full logical backup](#selective-restore)
+* [Restore a collection from a logical backup under a different name](backups-restore-new-name.md)
 
 For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.
 
@@ -114,6 +114,8 @@ If a physical restore fails, the Operator does not roll back the changes it made
 The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.
 
 You can inspect restore logs by executing into the `mongod` container and checking the PBM logs. PBM keeps only the latest restore logs because it cleans up the data directory during the process.
+
+For step-by-step diagnostics, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
 ## Make a point-in-time recovery
 
