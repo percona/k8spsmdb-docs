@@ -3685,7 +3685,11 @@ The path to the data directory in the bucket. If undefined, backups are stored i
 
 ### `backup.storages.STORAGE-NAME.gcs.credentialsSecret`
 
-The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the GCS credentials as either the service account and JSON keys or HMAC keys. 
+The [Kubernetes Secret :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) with GCS credentials (service account email and JSON private key, or HMAC keys).
+
+This option is optional. Omit it when you use [GKE Workload Identity](backups-storage-gcp.md#automate-access-to-google-cloud-storage-using-workload-identity). 
+
+If both a Secret and Workload Identity are available, a defined `credentialsSecret` takes precedence.
 
 | Value type  | Example    |
 | ----------- | ---------- |
