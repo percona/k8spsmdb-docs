@@ -202,6 +202,7 @@ nav:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
+          - "Install on Rancher Kubernetes Engine (RKE2)": rke2.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           
