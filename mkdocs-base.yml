@@ -63,14 +63,13 @@ extra_css:
   - css/extra.css
   - css/operators.css
   - css/rating.css
+  - css/kapa.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
   - js/rating.js
-#  - js/version-select.js
-#  - js/toctree.js
-#  - js/lightgallery.min.js
+  - js/kapa.js
 
 markdown_extensions:
   attr_list: {}
@@ -268,6 +267,7 @@ nav:
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md

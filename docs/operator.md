@@ -253,6 +253,34 @@ The cluster domain to be used as a suffix for [multi-cluster Services](replicati
 | ----------- | ---------- |
 | :material-code-string: string     | `svc.clusterset.local` |
 
+### `defaultRWConcern.readConcern`
+
+The default [read concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/read-concern/) level for the cluster. The Operator applies it with MongoDB's [`setDefaultRWConcern`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`.
+
+If you leave this option and `defaultRWConcern.writeConcern.w` unset, the Operator does not change the current value—except for replica sets with an [Arbiter](arbiter.md#default-read-and-write-concern-for-replica-sets-with-an-arbiter). For those, it defaults to `majority`. Without that, MongoDB can fall back to write concern `w: 1` after you add an Arbiter, which risks silent rollback of acknowledged writes on failover.
+
+The Operator sets the default read/write concern for every sharded cluster (through `mongos`). For individual replica sets, it sets them when an Arbiter is enabled or when you configure this section explicitly.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.w`
+
+The `w` field of the default [write concern  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/write-concern/) that the Operator sets cluster-wide. Accepts `majority`, a whole number of nodes, or a custom [`getLastErrorModes`  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.settings.getLastErrorModes) tag name. Defaults to `majority`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `majority` |
+
+### `defaultRWConcern.writeConcern.wtimeout`
+
+The `wtimeout` field (in milliseconds) of the default write concern: how long to wait for the write concern to be satisfied before the write is considered failed.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `5000`      |
+
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
 The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. 
@@ -3481,6 +3509,110 @@ The mount point for a remote filesystem configured to store backups.
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `/mnt/nfs/` |
+
+### `backup.storages.STORAGE-NAME.oci.bucket`
+
+The name of the Oracle Cloud Infrastructure Object Storage bucket for backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.oci.namespace`
+
+The Object Storage namespace that the bucket belongs to.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.oci.region`
+
+The region where the bucket is located.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `us-ashburn-1` |
+
+### `backup.storages.STORAGE-NAME.oci.prefix`
+
+The path (sub-folder) to the backups inside the bucket. If undefined, backups are stored in the bucket's root directory.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.oci.credentials.type`
+
+The authentication method used to access OCI Object Storage. Possible values are `userPrincipal` and `okeWorkloadIdentity`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `userPrincipal` |
+
+### `backup.storages.STORAGE-NAME.oci.credentials.secretName`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the OCI user principal credentials (`OCI_TENANCY`, `OCI_USER`, `OCI_FINGERPRINT`, `OCI_PRIVATE_KEY`, and optionally `OCI_PRIVATE_KEY_PASSPHRASE`). Required when `credentials.type` is `userPrincipal`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-oci` |
+
+### `backup.storages.STORAGE-NAME.oci.serverSideEncryption.kmsKeyID`
+
+The OCID of the OCI Vault key used for server-side encryption of backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.oci.serverSideEncryption.secretName`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) that contains the customer-provided (SSE-C) encryption key in the `OCI_SSE_CUSTOMER_KEY` field.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-oci-sse` |
+
+### `backup.storages.STORAGE-NAME.oci.retryer.maxAttempts`
+
+The total number of attempts, including the first call, to make when uploading a backup. The value `0` uses the PBM default, and `1` disables retries. Unlimited retries are not supported.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `3`       |
+
+### `backup.storages.STORAGE-NAME.oci.retryer.maxBackoff`
+
+The maximum time to wait between retries. The value `0` uses the PBM default.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `5m`       |
+
+### `backup.storages.STORAGE-NAME.oci.uploadPartSize`
+
+The size of data chunks in bytes to be uploaded to the bucket in a single request.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `10485760`       |
+
+### `backup.storages.STORAGE-NAME.oci.maxObjSizeGB`
+
+The maximum size in gigabytes of an object stored in the bucket.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: number     | `10`       |
+
+### `backup.storages.STORAGE-NAME.oci.uploadConcurrency`
+
+The number of concurrent upload requests. Increasing this value is not recommended by the OCI SDK because it can cause `409` responses or client timeouts.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-int: int     | `1`       |
 
 ### `backup.volumeMounts.mountPath`
 
