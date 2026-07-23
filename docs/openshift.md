@@ -124,7 +124,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
     oc create -f deploy/secrets.yaml
     ```
 
-    More details about secrets can be found in [Users](users.md).
+    Learn more about secrets in [Users](users.md). After the cluster reaches the `ready` status, the Operator also creates [connection secrets](connection-secrets.md) with ready-to-use MongoDB URIs.
 
 2. Now certificates should be generated. By default, the Operator generates
     certificates automatically, and no actions are required at this step. Still,
@@ -146,7 +146,7 @@ Following steps will allow you to deploy the Operator and Percona Server for Mon
         ...
         ```
 
-    2. (optional) In you’re using minishift, please adjust antiaffinity policy to `none`
+    2. (optional) If you're using minishift, please adjust anti-affinity policy to `none`
 
         ```yaml
            affinity:

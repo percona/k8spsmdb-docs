@@ -39,12 +39,6 @@ users:
 
 After you apply the configuration, the Operator creates a Secret named `<cluster-name>-custom-user-secret`, generates a password for the user, and sets it by the key named after the user name.
 
-!!! note "External database users"
-
-    The Operator doesn't generate passwords for users created in the **`$external`** database. You can't set the `passwordSecretRef` for these users either.
-
-    Such users are used for authentication via an external authentication source, such as an LDAP server. The user credentials are stored in an external authentication source, and their usernames are mapped to those in the `$external` database during authentication.
-
 ### Generate user passwords manually
 
 If you don't want the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the `passwordSecretRef` key. You can find a detailed description of the corresponding options in the [Custom Resource reference](operator.md#operator-users-section).
@@ -92,6 +86,13 @@ Here's how to do it:
     ```bash
     kubectl apply -f deploy/cr.yaml
     ```
+
+!!! note "External database users"
+
+    The Operator doesn't generate passwords for users created in the **`$external`** database. You can't set the `passwordSecretRef` for these users either.
+
+    Such users are used for authentication via an external authentication source, such as an LDAP server. The user credentials are stored in an external authentication source, and their usernames are mapped to those in the `$external` database during authentication.
+
 
 The Operator tracks password changes in the Secret object and updates the user password in the database. This applies to [manually created users](#create-users-manually) as well: if a user was created manually in the database before creating the user via Custom Resource, the existing user is updated.
 

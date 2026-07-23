@@ -226,6 +226,7 @@ nav:
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
              - "System users": system-users.md
+             - "Connection secrets": connection-secrets.md
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md

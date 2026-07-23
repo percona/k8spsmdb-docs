@@ -26,17 +26,36 @@ kubectl get psmdb
     my-cluster-name   my-cluster-name-mongos.<namespace>.svc.cluster.local     ready    85m
     ```
 
-To connect to MongoDB, you need to construct the MongoDB connection string URI. For the sharded cluster, specify the `mongos` endpoint for the connection string URI. This is the example format:
+To connect to MongoDB, you need the MongoDB connection string URI. The Operator automatically constructs it for the `databaseAdmin` user and stores it in the connection Secret `<cluster-name>-databaseadmin-conn-str`. To learn more about connection secrets, see [Connection secrets](connection-secrets.md).
+
+For a sharded cluster, use the value from the `databaseAdmin_mongos_connectionString` key of the connection Secret. 
+
+Run the following command to retrieve the value:
 
 ```bash
-mongosh "mongodb://userAdmin:userAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+```
+
+??? example "Sample output"
+    
+    ```{.text .no-copy}
+    mongodb://databaseAdmin:databaseAdminPassword@34.118.227.158:27017/admin?authSource=admin
+    ```
+
+Alternatively, you can construct the MongoDB connection string URI manually. For the sharded cluster, specify the `mongos` endpoint. This is the example format:
+
+```bash
+mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace>.svc.cluster.local/admin?authSource=admin"
 ```
 
 Make sure every part of the connection string reflects your environment:
 
-- **userAdmin** and **userAdminPassword**: replace with your admin username and the actual admin password. Get the username and password from the Kubernetes Secret created for your cluster.
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
-- **<namespace name>**: the Kubernetes namespace where your cluster is deployed
+- **<namespace>**: the Kubernetes namespace where your cluster is deployed
+
+If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically.
 
 
 !!! warning
@@ -67,15 +86,17 @@ kubectl get psmdb
     my-cluster-name   my-cluster-name-rs0.<namespace>.svc.cluster.local        ready    2m19s
     ```
 
-To connect to a MongoDB replica set, you need to specify each replica set member for the MongoDB connection string URI. This is the example format:
+To connect to a MongoDB replica set, use the `databaseAdmin_<replset>_connectionString` or `databaseAdmin_<replset>_connectionStringSrv` key from the `<cluster-name>-databaseadmin-conn-str` Secret. See [Connection secrets](connection-secrets.md).
+
+Alternatively, construct the URI manually. This is the example format:
 
 ```bash
-mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?authSource=admin&replicaSet=rs0"
 ```
 
 Make sure every part of the connection string reflects your environment:
 
-- **userAdmin** and **userAdminPassword**: replace with your admin username and the actual admin password. Get the username and password from the Kubernetes Secret created for your cluster.
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command  
 - **<namespace name>**: the Kubernetes namespace where your cluster is deployed
 
@@ -96,6 +117,14 @@ To expose Pods externally, configure the following option in the Custom Resource
     * **`ClusterIP`**: Exposes the Pod with an internal static IP address. This makes the Service reachable only from within the Kubernetes cluster.
     * **`NodePort`**: Exposes the Pod on each Kubernetes Node’s IP address at a static port.  A ClusterIP Service is automatically created, and the Node port routes traffic to it. The Service is reachable from outside the cluster using the Node address and port number, but the address is bound to a specific Kubernetes Node.
         
+        If the NodePort type is used, the URI looks like this:
+
+        ```
+        mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false
+        ```
+
+        All Node addresses should be *directly* reachable by the application.
+
         The `expose.externalTrafficPolicy` Custom Resource option in [`replsets`](operator.md#replsetsexposeexternaltrafficpolicy), [`sharding.configsvrReplSet`](operator.md#shardingconfigsvrreplsetexposeexternaltrafficpolicy), and [`sharding.mongos`](operator.md#shardingmongosexternaltrafficpolicy) subsections controls how external traffic is routed:
 
         * `Local`: Traffic is routed to node-local endpoints. External requests will be dropped if there is no available Pod on the Node.
@@ -103,15 +132,7 @@ To expose Pods externally, configure the following option in the Custom Resource
 
     * **`LoadBalancer`**: Exposes the Pod externally using a cloud provider’s load balancer. Both [ClusterIP and NodePort Services are automatically created :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant.
 
-        Cloud load balancers often assign long, auto-generated hostnames (for example, `a1b2c3d4e5.elb.amazonaws.com`). To publish stable, human-readable hostnames, configure [External DNS](expose.md#automatic-dns-records-with-external-dns), available in the Operator 1.23.0 and later. To learn more, see [Automatic DNS records with External DNS](#automatic-dns-records-with-external-dns).
-
-If the NodePort type is used, the URI looks like this:
-
-```
-mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false
-```
-
-All Node addresses should be *directly* reachable by the application.
+When replica sets or `mongos` Pods are exposed, the Operator adds `_connectionStringExposed` keys to the connection Secret. Use them instead of building external URIs manually. See [Connection secrets](connection-secrets.md).
 
 ## Automatic DNS records with External DNS
 
