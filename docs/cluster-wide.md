@@ -119,25 +119,25 @@ It may take ten minutes to get the cluster started. When `kubectl get psmdb`
 command finally shows you the cluster status as `ready`, you can try to connect
 to the cluster.
 
-1. You will need the login and password for the admin user to access the
-    cluster. Use `kubectl get secrets` command to see the list of Secrets
-    objects (by default the Secrets object you are interested in has
-    `my-cluster-name-secrets` name). Then
-    `kubectl get secret my-cluster-name-secrets -o yaml` command will return
-    the YAML file with generated Secrets, including the `MONGODB_DATABASE_ADMIN`
-    and `MONGODB_DATABASE_ADMIN_PASSWORD` strings, which should look as follows:
+1. You will need a connection string to access the cluster. Starting with Operator version 1.23.0, retrieve it from the `<cluster-name>-databaseadmin-conn-str` Secret:
 
-    ```yaml
-    ...
-    data:
-      ...
-      MONGODB_DATABASE_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
-      MONGODB_DATABASE_ADMIN_USER: ZGF0YWJhc2VBZG1pbg==
-    ```
+    === "if sharding is on"
 
-    Here the actual login name and password are base64-encoded. Use 
-    `echo 'aDAzQ0pCY3NSWEZ2ZUIzS1I=' | base64 --decode` command to bring it
-    back to a human-readable form.
+        ```bash
+        kubectl get secret my-cluster-name-databaseadmin-conn-str -n psmdb \
+          -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+        ```
+
+    === "if sharding is off"
+
+        ```bash
+        kubectl get secret my-cluster-name-databaseadmin-conn-str -n psmdb \
+          -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
+        ```
+
+    See [Connection secrets](connection-secrets.md) for other key names.
+
+    Alternatively, retrieve the login and password for the admin user from the `my-cluster-name-secrets` Secret using `kubectl get secrets` and `kubectl get secret my-cluster-name-secrets -o yaml`. Decode base64-encoded values as described in [System users](system-users.md).
 
 2. Run a container with a MongoDB client and connect its console output to your
     terminal. The following command will do this, naming the new Pod
@@ -149,17 +149,8 @@ to the cluster.
 
     Executing it may require some time to deploy the correspondent Pod.
 
-3. Now run `mongo` tool in the percona-client command shell using the login
-    (which is normally `databaseAdmin`) and a proper password obtained from the
-    Secret. The command will look different depending on whether sharding
-    is on (the default behavior) or off:
+3. Connect using the connection string from step 1:
 
-    === "if sharding is on"
-        ```bash
-        mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.psmdb.svc.cluster.local/admin?ssl=false"
-        ```
-
-    === "if sharding is off"
-        ```bash
-        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.psmdb.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
-        ```
+    ```bash
+    mongosh "<connection-string>"
+    ```

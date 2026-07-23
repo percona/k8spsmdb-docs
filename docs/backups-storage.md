@@ -10,10 +10,14 @@ The Operator provides several storage types for different storages. To help you 
 * **minio** - Use this storage type for MinIO and other S3-compatible services that don't support SigV4 or require endpoint configuration that works better with the `minio` storage type.
 * **gcp** - Use this storage type for Google Cloud Storage.
 * **azure** - Use this storage type for Microsoft Azure Blob storage.
+* **oss** - Use this storage type for Alibaba Cloud Object Storage Service (OSS).
 * **oci** - Use this storage type for Oracle Cloud Infrastructure Object Storage.
 * **filesystem** - Use this storage type for uploading backups to a remote file server.
 
-For each backup storage, create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials and reference it in the Custom Resource.
+For most backup storages, create a [Kubernetes Secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object with credentials and reference it in the Custom Resource. On cloud platforms, you can instead use identity-based access and omit the Secret:
+
+* [Amazon S3 with IRSA or an IAM instance profile](backups-storage-s3.md#choose-the-authentication-method)
+* [Google Cloud Storage with Workload Identity](backups-storage-gcp.md#automate-access-to-google-cloud-storage-using-workload-identity)
 
 ## Storage setup guides
 
@@ -23,5 +27,6 @@ Use the page for your storage type:
 * [MinIO and S3-compatible storages](backups-storage-minio.md)
 * [Google Cloud storage](backups-storage-gcp.md)
 * [Microsoft Azure Blob storage](backups-storage-azure.md)
+* [Alibaba Cloud OSS storage](backups-storage-oss.md)
 * [Oracle Cloud Infrastructure Object Storage](backups-storage-oci.md)
 * [Remote file server](backups-storage-filesystem.md)

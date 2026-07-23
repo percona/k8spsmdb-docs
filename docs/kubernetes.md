@@ -81,7 +81,7 @@
     kubectl create -f deploy/secrets.yaml
     ```
 
-    More details about secrets can be found in [Users](users.md).
+    More details about secrets can be found in [Users](users.md). After the cluster reaches the `ready` status, the Operator also creates [connection secrets](connection-secrets.md) with ready-to-use MongoDB URIs.
 
 7. Now certificates should be generated. By default, the Operator generates
     certificates automatically, and no actions are required at this step. Still,
