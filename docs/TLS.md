@@ -54,6 +54,31 @@ certificate secrets available and no cert-manager is installed. When generating 
 `deploy/ssl-secrets.yaml` file. But we strongly recommend
 **to not use them on any production system**!
 
+### Certificate management policy
+
+Starting with Operator version 1.23.0, you can control what happens when TLS Secrets are missing via the `spec.tls.certManagementPolicy` option in the Custom Resource:
+
+* `auto` (default) — If Secrets are not found, the Operator creates new certificates automatically (self-signed or via cert-manager). New certificates can replace a lost user-managed Secret with a **new CA**, which triggers a rolling restart of all database Pods, and can disconnect clients that trust the original CA.
+* `userProvidedOnly` — The Operator skips auto-creation or replacement of unavailable TLS certificates, so that you control the certificate lifecycle management (manually, via External Secrets, GitOps, or your own cert-manager workflow). If a Secret is missing, Pods keep running with existing certificates where possible, and the Operator sets the `TLSSecretsReady=False` condition until you restore the Secret.
+
+| Your setup | Recommended policy |
+|------------|-------------------|
+| Operator self-signed or Operator-driven cert-manager | `auto` |
+| Manual, External Secrets, or GitOps-managed TLS Secrets in production | `userProvidedOnly` |
+
+Example:
+
+```yaml
+spec:
+  tls:
+    mode: preferTLS
+    certManagementPolicy: userProvidedOnly
+  secrets:
+    ssl: my-cluster-name-ssl
+    sslInternal: my-cluster-name-ssl-internal
+```
+
+See [Configure the TLS certificate management policy](tls-cert-management-policy.md) for setup steps, monitoring, recovery, and policy switching.
 
 ## TLS configuration
 
@@ -62,17 +87,9 @@ The following sections provide guidelines how to:
 * [Configure TLS security with the Operator using cert-manager](tls-cert-manager.md)
 * [Generate certificates manually](tls-manual.md)
 * [Update certificates](tls-update.md)
+* [Configure the TLS certificate management policy](tls-cert-management-policy.md)
 * [Disable TLS temporarily](tls-disable.md)
 
 To use TLS for external traffic, you need to additionally configure your client application. See [this blog post :octicons-link-external-16:](https://www.percona.com/blog/authenticating-your-clients-to-mongodb-on-kubernetes-using-x509-certificates/) for detailed instruction with examples. Also, you can check the [official MongoDB documentation :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/configure-ssl-clients/). 
 
 For clients outside of your Kubernetes-based environment, you must also [expose your cluster](expose.md).
-
-
-
-
-
-
-
-
-

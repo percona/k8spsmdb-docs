@@ -107,15 +107,40 @@ Contains the configuration options to restore from a backup made in a different 
 
 ### `backupSource.type`
 
-Specifies the backup type. Available options: physical, logical, incremental
+Specifies the backup type. Available options: `logical`, `physical`, `incremental`, `external`.
+
+Use `external` when restoring from [PVC snapshot backups](backups-pvc-usage.md#make-a-restore-to-a-new-cluster).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
 
+### `backupSource.snapshots`
+
+Lists `VolumeSnapshot` objects to restore from when `backupSource.type` is `external`. Required for cross-cluster or manual snapshot restores when no `PerconaServerMongoDBBackup` exists in the target namespace.
+
+Each item includes:
+
+| Field | Description |
+| --- | --- |
+| `replsetName` | Replica set name. |
+| `snapshotName` | `VolumeSnapshot` name in the restore namespace. |
+
+Example:
+
+```yaml
+backupSource:
+  type: external
+  snapshots:
+    - replsetName: rs0
+      snapshotName: my-snapshot-backup-rs0-0
+```
+
+When you use `spec.backupName` instead, the Operator reads snapshots from the Backup resource `status.snapshots`.
+
 ### `backupSource.destination`
 
-Specifies the path to the backup on the storage
+Specifies the path to the backup on the storage.
 
 | Value type  | Example    |
 | ----------- | ---------- |

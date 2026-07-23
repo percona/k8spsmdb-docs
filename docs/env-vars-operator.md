@@ -1,6 +1,6 @@
 # Configure Operator environment variables
 
-You can configure the Percona Operator for MongoDB by setting environment variables in the Operator Deployment. This lets you tune logging, scope the namespaces that are watched, and adjust reconciliation concurrency without rebuilding images.
+You can configure the Percona Operator for MongoDB by setting environment variables in the Operator Deployment. This lets you tune logging, scope the namespaces that are watched, and adjust reconciliation behavior without rebuilding images.
 
 You can set environment variables in the following ways:
 
@@ -84,6 +84,28 @@ Disables telemetry data collection.
 env:
   - name: DISABLE_TELEMETRY
     value: "true"
+```
+
+### `RECONCILE_INTERVAL`
+
+Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).
+
+|Value type|Default|Example|
+|---|---|---|
+|duration string|`"5s"`|`"30s"` or `"1m"`|
+
+**Notes:**
+
+- The value must be a Go duration string (for example, `30s`, `1m`, `5m`).
+- The minimum allowed value is `5s`. Values below `5s`, zero, negative, or unparseable values fall back to `5s`. The Operator logs a message when it rejects a value.
+- Increasing the interval reduces the number of Kubernetes API requests the Operator generates. The default of `5s` can produce a high request rate in large deployments.
+
+**Example configuration:**
+
+```yaml
+env:
+  - name: RECONCILE_INTERVAL
+    value: "30s"
 ```
 
 ### `MAX_CONCURRENT_RECONCILES`

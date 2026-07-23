@@ -39,17 +39,29 @@ Specifies the name of the MongoDB cluster to back up.
 
 Specifies the name of the storage where to save a backup. It must match the name you specified in the `spec.backup.storages` subsection of the `deploy/cr.yaml` file.
 
+Not required when `type` is `external` (PVC snapshot backups). PBM still uses the cluster backup configuration for metadata.
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `s3-us-west` |
 
 ### `type`
 
-Specifies the backup type. Supported types are: `logical`, `physical`, `incremental-base`, `incremental`.
+Specifies the backup type. Supported types are: `logical`, `physical`, `incremental-base`, `incremental`, `external`.
+
+Use `external` for [PVC snapshot backups](backups-pvc-snapshots.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
+
+### `volumeSnapshotClass`
+
+The name of the Kubernetes `VolumeSnapshotClass` to use when creating [PVC snapshot backups](backups-pvc-snapshots.md). **Required** when the `type` is `external`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `gke-snapshot-class` |
 
 ### `compressionType`
 
@@ -76,3 +88,4 @@ If undefined, the Operator uses the value specified in the Custom Resource, or d
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-numeric-1-box: int     | `300` |
+

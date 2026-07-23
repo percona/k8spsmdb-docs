@@ -221,6 +221,14 @@ A strategy the Operator uses for [upgrades](update.md). Possible values are [Sma
 | ----------- | ---------- |
 | :material-code-string: string     | `SmartUpdate` |
 
+### `revisionHistoryLimit`
+
+The maximum number of [revisions  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#revision-history-limit) the Operator keeps for Percona Server for MongoDB StatefulSets (replica set members, config servers, and `mongos` Pods). Kubernetes uses this history when you roll a StatefulSet back to a previous Pod template. Lower values reduce the number of retained revisions and help keep the cluster namespace tidy; higher values keep more rollback points. When unset, the default number of revisions is `10`. Available since Operator version 1.23.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10` |
+
 ### `ignoreAnnotations`
 
 The list of annotations [to be ignored](annotations.md#specifying-labels-and-annotations-ignored-by-the-operator) by the Operator.
@@ -333,6 +341,17 @@ If `true`, the mongo shell will not attempt to validate the server certificates.
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `true`    |
+
+### `tls.certManagementPolicy`
+
+Controls how the Operator manages TLS certificates when it loses access to the Secret that stores them. Supported values are:
+
+* `auto` (default) — Keeps the existing behavior. If TLS Secrets are missing, the Operator creates new certificates automatically.
+* `userProvidedOnly` — The Operator does not create or replace TLS certificates if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |  `auto` |
 
 ### `tls.issuerConf.name`
 
@@ -1170,6 +1189,34 @@ Specifies whether Service for MongoDB instances [should route external traffic :
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
+### `replsets.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `replsets.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS Controller. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `replsets.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
+
 ### `replsets.nonvoting.enabled`
 
 Enable or disable creation of [Replica Set non-voting instances](arbiter.md#non-voting-nodes) within the cluster.
@@ -1936,6 +1983,20 @@ A custom name to define for a cluster. PMM Server uses this name to properly par
 | ----------- | ---------- |
 | :material-code-string: string     | `mongo-cluster` |
 
+### `pmm.querySource`
+
+Defines the source for Query Analytics (QAN) data collection. The Operator passes this value to PMM Client as the `--query-source` flag when adding the MongoDB service. Available starting with Operator version 1.23.0.
+
+Supported values:
+
+* `profiler` — collect queries via the MongoDB profiler (default). Requires profiling to be enabled in PMM and in MongoDB. See [Configure the profiler query source](monitoring.md#configure-the-profiler-query-source).
+* `mongolog` — collect queries from mongod log files. Requires [log collector](persistent-logging.md) to be enabled so that logs are written to `/data/db/logs/`. See [Configure the mongolog query source](monitoring.md#configure-the-mongolog-query-source).
+
+If omitted, the Operator does not pass the `--query-source` flag and PMM uses the profiler method.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongolog` |
 
 ### `pmm.mongodParams`
 
@@ -2404,6 +2465,34 @@ Specifies whether Service for config servers [should route external traffic :oct
 !!! note "Service protocol configuration"
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.configsvrReplSet.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for config servers. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
 
 ### `sharding.configsvrReplSet.volumeSpec.emptyDir`
 
@@ -2945,6 +3034,34 @@ Specifies whether Service for the mongos instances [should route external traffi
 
     Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
 
+### `sharding.mongos.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+
+!!! note
+
+    The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster` |
+
+### `sharding.mongos.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for mongos. Must be a valid domain name.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `mongo.example.com` |
+
+### `sharding.mongos.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `300`        |
+
 ### `sharding.mongos.hostAliases.ip`
 
 The IP address for [Kubernetes host aliases  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods.
@@ -3208,7 +3325,7 @@ Marks the storage as main. All other storages you define are added as profiles. 
 
 ### `backup.storages.STORAGE-NAME.type`
 
-The cloud storage type used for backups. Only `s3`, `gcs`, `minio`, `azure`, and `filesystem` types are supported.
+The cloud storage type used for backups. Supported types are: `s3`, `gcs`, `minio`, `azure`, `oss`, and `filesystem`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3503,6 +3620,126 @@ The [private endpoint URL :octicons-link-external-16:](https://learn.microsoft.c
 | ----------- | ---------- |
 | :material-code-string: string     | `https://accountName.blob.core.windows.net` |
 
+### `backup.storages.STORAGE-NAME.oss.credentialsSecret`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `ALIBABA_ACCESS_KEY_ID` and `ALIBABA_ACCESS_KEY_SECRET` keys. See [Alibaba Cloud OSS storage](backups-storage-oss.md) for setup steps.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-oss` |
+
+### `backup.storages.STORAGE-NAME.oss.bucket`
+
+The [Alibaba Cloud OSS bucket :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/bucket-overview) name for backups.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     |            |
+
+### `backup.storages.STORAGE-NAME.oss.prefix`
+
+The path (sub-folder) to the backups inside the bucket. If undefined, backups are stored in the bucket's root directory.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
+### `backup.storages.STORAGE-NAME.oss.endpointUrl`
+
+The endpoint URL of the Alibaba Cloud OSS service for the selected region.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `https://oss-eu-central-1.aliyuncs.com` |
+
+### `backup.storages.STORAGE-NAME.oss.region`
+
+The [Alibaba Cloud OSS region :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/regions-and-endpoints) where the bucket is located.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `eu-central-1` |
+
+### `backup.storages.STORAGE-NAME.oss.connectTimeout`
+
+The timeout for establishing a connection to Alibaba Cloud OSS.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `10s`      |
+
+### `backup.storages.STORAGE-NAME.oss.uploadPartSize`
+
+The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10485760` |
+
+### `backup.storages.STORAGE-NAME.oss.maxUploadParts`
+
+The maximum number of data chunks to be uploaded to the storage bucket (10000 by default).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `10000`    |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.maxAttempts`
+
+The maximum number of retries to upload data to Alibaba Cloud OSS.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int     | `3` |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.maxBackoff`
+
+The maximum time to wait until the next retry.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `5m` |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.baseDelay`
+
+The base delay before the first retry. Later retries use exponential backoff up to `maxBackoff`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `1s` |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.secretName`
+
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) that stores the encryption key for [OSS server-side encryption](backups-storage-oss.md#server-side-encryption). It must contain the `SSE_CUSTOMER_KEY` key. Use either `secretName` or [`encryptionKeyId`](#backupstoragesstorage-nameossserversideencryptionencryptionkeyid).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-backup-oss-sse` |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionMethod`
+
+The encryption method used for [OSS server-side encryption](backups-storage-oss.md#server-side-encryption). Supported value: `sse`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `sse`      |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionAlgorithm`
+
+The encryption algorithm used for [OSS server-side encryption](backups-storage-oss.md#server-side-encryption). Use `AES256` for OSS-managed keys (SSE-OSS) or `KMS` for Alibaba Cloud Key Management Service (SSE-KMS).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `KMS`      |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionKeyId`
+
+The ID of the customer master key in [Alibaba Cloud Key Management Service :octicons-link-external-16:](https://www.alibabacloud.com/help/en/kms/product-overview/what-is-key-management-service) used for [OSS server-side encryption](backups-storage-oss.md#server-side-encryption). Use either `encryptionKeyId` or [`secretName`](#backupstoragesstorage-nameossserversideencryptionsecretname).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `""`       |
+
 ### `backup.storages.STORAGE-NAME.filesystem.path`
 
 The mount point for a remote filesystem configured to store backups.
@@ -3731,11 +3968,19 @@ The backup compression level ([higher values result in better but slower compres
 
 ### `backup.tasks.type`
 
-The backup type: (can be either `logical` (default) or `physical`; see [the Operator backups official documentation](backups.md#backup-types) for details.
+The backup type. Can be `logical` (default), `physical`, `incremental`, `incremental-base`, or `external` (PVC snapshot). See [backup types](backups.md#backup-types).
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `physical` |
+
+### `backup.tasks.volumeSnapshotClass`
+
+The name of the Kubernetes `VolumeSnapshotClass` for scheduled PVC snapshot backups. **Required** when `backup.tasks.type` is `external`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `gke-snapshot-class` |
 
 ## <a name="operator-logcollector-section"></a>Log Collector section
 
