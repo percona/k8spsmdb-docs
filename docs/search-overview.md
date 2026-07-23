@@ -9,7 +9,7 @@
     environment and share your feedback. Your feedback helps us shape the
     feature in future releases.
 
-Percona Search for MongoDB is a search engine that enables you to run [vector search :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/) and [full-text search :octicons-link-external-16:](https://www.mongodb.com/docs/atlas/atlas-search/tutorial/) queries in Percona Server for MongoDB managed by the Operator.
+Percona Search for MongoDB is a search engine that enables you to run [vector search :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/) and [full-text search :octicons-link-external-16:](https://www.mongodb.com/docs/search/) queries in Percona Server for MongoDB managed by the Operator.
 
 * **Full-text search** finds documents by matching keywords and phrases in the text.
 * **Vector search** finds documents by meaning. It compares numerical representations (embeddings) of content, such as text or images so that results can be relevant even when they don’t share the same words.
