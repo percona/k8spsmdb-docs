@@ -88,7 +88,7 @@ kubectl get psmdb <cluster-name> -n <namespace> \
 
 ## PerconaServerMongoDB status
 
-The main cluster state is recorded in the `status.state` section. For component-level states, see the `status.replsets` and `status.mongos` sections.
+The main cluster state is recorded in the `status.state` section. For component-level states, see the `status.replsets`, `status.mongos`, and `status.search` sections.
 
 Common fields:
 
@@ -96,6 +96,7 @@ Common fields:
 - `status.ready` / `status.size` – number of ready pods and the size of the database cluster
 - `status.host` – connection endpoint
 - `status.conditions` – detailed condition list with reason and message
+- `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
 
 ### Cluster state values
 
@@ -109,6 +110,34 @@ Common fields:
 | `paused` | The cluster is paused. |
 | `ready` | The cluster is up and healthy. |
 | `error` | The Operator detected an error; check conditions and events. |
+
+When [vector search is enabled](operator.md#searchenabled), the cluster is not marked `ready` until every entry in `status.search` is also `ready`.
+
+### Vector search status
+
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
+
+If [`spec.search.enabled`](operator.md#searchenabled) is set to `true`, the Operator shows the search status in the `status.search` field. This field lists the status of each replica set or shard in the sharded cluster, except for the config server replica set. If search is turned off, `status.search` is cleared.
+
+Common fields under `status.search.<rs-name>`:
+
+- `size` – desired number of `mongot` pods for that replica set or shard
+- `ready` – number of ready `mongot` pods
+- `status` – search state. The states are: `initializing`, `ready`, `paused`, `stopping`, `error`
+- `message` – optional human-readable details
+
+**Example. View vector search status:**
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> \
+  -o jsonpath='{.status.search}' && echo
+```
+
+??? example "Sample output"
+
+    ```{.json .no-copy}
+    {"rs0":{"size":1,"ready":1,"status":"ready"}}
+    ```
 
 ### Conditions 
 
