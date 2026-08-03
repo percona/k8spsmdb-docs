@@ -1,6 +1,6 @@
 # Configure Operator environment variables
 
-You can configure the Percona Operator for MongoDB by setting environment variables in the Operator Deployment. This lets you tune logging, scope the namespaces that are watched, and adjust reconciliation concurrency without rebuilding images.
+You can configure the Percona Operator for MongoDB by setting environment variables in the Operator Deployment. This lets you tune logging, scope the namespaces that are watched, and adjust reconciliation behavior without rebuilding images.
 
 You can set environment variables in the following ways:
 
@@ -86,6 +86,28 @@ env:
     value: "true"
 ```
 
+### `RECONCILE_INTERVAL`
+
+Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).
+
+|Value type|Default|Example|
+|---|---|---|
+|duration string|`"5s"`|`"30s"` or `"1m"`|
+
+**Notes:**
+
+- The value must be a Go duration string (for example, `30s`, `1m`, `5m`).
+- The minimum allowed value is `5s`. Values below `5s`, zero, negative, or unparseable values fall back to `5s`. The Operator logs a message when it rejects a value.
+- Increasing the interval reduces the number of Kubernetes API requests the Operator generates. The default of `5s` can produce a high request rate in large deployments.
+
+**Example configuration:**
+
+```yaml
+env:
+  - name: RECONCILE_INTERVAL
+    value: "30s"
+```
+
 ### `MAX_CONCURRENT_RECONCILES`
 
 Controls the maximum number of concurrent reconciliation operations.
@@ -100,6 +122,34 @@ Controls the maximum number of concurrent reconciliation operations.
 env:
   - name: MAX_CONCURRENT_RECONCILES
     value: "3"
+```
+
+### `CERTMANAGER_NAMESPACE`
+
+Specifies the namespace where the Operator creates the intermediate CA
+`Certificate` when [`tls.issuerConf.kind`](operator.md#tlsissuerconfkind) is
+`ClusterIssuer` and the Operator manages the CA chain.
+
+|Value type|Default|Example|
+|---|---|---|
+|string|`cert-manager`|`my-cert-manager`|
+
+**Notes:**
+
+- This variable applies only when the Operator creates cert-manager resources for
+  a `ClusterIssuer`-based CA chain. It does not affect database Pods or TLS Secrets,
+  which remain in the database namespace.
+- Change this value only if cert-manager is installed in a non-default namespace.
+- When you use an existing organizational `ClusterIssuer`, you typically do not
+  need to change this variable. See
+  [Use an existing ClusterIssuer](tls-cert-manager.md#use-an-existing-clusterissuer).
+
+**Example configuration:**
+
+```yaml
+env:
+  - name: CERTMANAGER_NAMESPACE
+    value: "cert-manager"
 ```
 
 ## Automatic environment variables

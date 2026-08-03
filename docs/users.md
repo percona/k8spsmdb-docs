@@ -22,6 +22,8 @@ For system users, the Operator creates the required Secret automatically when it
 
 Authentication is enabled in Percona Server for MongoDB clusters by default. If you need to disable authentication for development, testing, or migration purposes, see [Disable authentication](auth-disable.md).
 
+Percona Server for MongoDB allows bypassing authentication by connecting from `localhost` to create the first user. To permanently disable the MongoDB localhost authentication bypass on a running cluster, see [Disable localhost authentication bypass](auth-bypass-localhost.md).
+
 ### MongoDB internal authentication key (optional)
 
 *Default Secret name:* `my-cluster-name-mongodb-keyfile`

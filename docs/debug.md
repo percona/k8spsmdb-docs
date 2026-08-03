@@ -6,6 +6,8 @@ Percona Operator for MongoDB uses [Custom Resources  :octicons-link-external-16:
 
 * `PerconaServerMongoDBBackup` and `PerconaServerMongoDBRestore` Custom Resources contain options for Percona Backup for MongoDB used to backup Percona Server for MongoDB and to restore it from backups (`psmdb-backup` and `psmdb-restore` shortnames are available for them).
 
+* `PerconaServerMongoDBClusterSync` Custom Resource contains options for Percona ClusterSync for MongoDB (`psmdb-clustersync` shortname).
+
 The first thing you can check for the Custom Resource is to query it with `kubectl get` command:
 
 
@@ -33,9 +35,10 @@ The Custom Resource should have `Ready` status.
     ??? example "Expected output"
 
         ``` {.text .no-copy}
-        perconaservermongodbbackups       psmdb-backup    psmdb.percona.com/v1                   true         PerconaServerMongoDBBackup
-        perconaservermongodbrestores      psmdb-restore   psmdb.percona.com/v1                   true         PerconaServerMongoDBRestore
-        perconaservermongodbs             psmdb           psmdb.percona.com/v1                   true         PerconaServerMongoDB
+        perconaservermongodbbackups       psmdb-backup       psmdb.percona.com/v1                   true         PerconaServerMongoDBBackup
+        perconaservermongodbclustersyncs  psmdb-clustersync  psmdb.percona.com/v1                   true         PerconaServerMongoDBClusterSync
+        perconaservermongodbrestores      psmdb-restore      psmdb.percona.com/v1                   true         PerconaServerMongoDBRestore
+        perconaservermongodbs             psmdb              psmdb.percona.com/v1                   true         PerconaServerMongoDB
         ```
 
 ## Check the Pods
