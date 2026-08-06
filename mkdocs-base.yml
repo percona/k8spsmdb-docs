@@ -208,6 +208,7 @@ nav:
           - "Google Kubernetes Engine (GKE)": gke.md
           - "Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Microsoft Azure Kubernetes Service (AKS)": aks.md
+          - "Rancher Kubernetes Engine (RKE2)": rke2.md
        - Install in a single namespace:
           - From Helm charts: helm.md
           - Using manifests: kubernetes.md
@@ -221,6 +222,7 @@ nav:
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
              - "System users": system-users.md
+             - "Connection secrets": connection-secrets.md
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
@@ -232,9 +234,15 @@ nav:
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Alibaba Cloud OSS storage": backups-storage-oss.md
+                  - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - "PVC snapshot backups":
+                  - Overview: backups-pvc-snapshots.md
+                  - "Configure PVC snapshots": backups-pvc-setup.md
+                  - "Use PVC snapshots": backups-pvc-usage.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md
@@ -243,6 +251,7 @@ nav:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
+                 - "Restore a collection under a different name": backups-restore-new-name.md
               - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
               - "Delete the unneeded backup": backups-delete.md
           - scaling.md
@@ -292,6 +301,7 @@ nav:
                     - Configure TLS using cert-manager: tls-cert-manager.md
                     - Generate certificates manually: tls-manual.md
                     - Update certificates: tls-update.md
+                    - "Configure the TLS certificate management policy": tls-cert-management-policy.md
                     - Disable TLS: tls-disable.md
                 - Data at rest encryption: 
                     - "About data-at-rest encryption": encryption.md
@@ -314,9 +324,17 @@ nav:
                     - "Fail over workload to the Replica site": replication-failover.md
                     - "Backups with cross-site replication": replication-backups.md
                     - "Splitting replica set across multiple data centers": replication-multi-dc.md
+            - Real-time replication with Percona ClusterSync for MongoDB:
+                - "About PCSM integration": clustersync.md
+                - "Set up and use PCSM": clustersync-setup.md
             - Authentication:
                 - "OpenLDAP integration": ldap.md
+                - "OIDC authentication": oidc.md
                 - "Disable authentication": auth-disable.md
+                - "Disable localhost authentication bypass": auth-bypass-localhost.md
+            - Search and vector search:
+                - "About full-text and vector search": search-overview.md
+                - "Configure search and vector search": search-setup.md
             - Environment variables:
                 - "Operator environment variables": env-vars-operator.md
                 - "Cluster component environment variables": env-vars-cluster.md
@@ -328,16 +346,18 @@ nav:
 
     - Troubleshooting:
         - Troubleshoot the Operator installation issues: troubleshoot-operator.md    
+        - "Initial troubleshooting": debug.md
         - "Exec into the container": debug-shell.md
+        - "Check the logs": debug-logs.md
+        - "Troubleshoot backups and restores": debug-backup-restore.md
         - "Special debug images": debug-images.md
         - "Storage resizing": debug-storage.md
-        - "Initial troubleshooting": debug.md
-        - "Check the logs": debug-logs.md
     - Reference:
           - Custom Resource reference:
               - "Custom Resource options": operator.md
               - "Backup resource options": backup-resource-options.md
               - "Restore resource options": restore-options.md
+              - "ClusterSync options": clustersync-options.md
           - "Custom resource statuses": cr-statuses.md
           - "Operator API": api.md           
           - "Certified images":
@@ -348,9 +368,11 @@ nav:
           - Legal:
               - "Copyright and licensing information": copyright.md
               - "Trademark policy": trademark-policy.md
+              - legal-notice.md
 
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
