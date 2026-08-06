@@ -1,0 +1,24 @@
+/* Overrides
+   Kubernetes brand: RGB 42 / 166 / 223 (#2aa6df)
+   Print: CMYK 72 / 17 / 0 / 0 · PMS 6120 C */
+
+:root {
+    --operators-brand: rgb(42, 166, 223);
+    /* Sidebar / repo nav strip — solid, no gradient */
+    --operators-brand-dark: rgb(40, 39, 39);
+    --md-primary-fg-color--dark: var(--operators-brand-dark);
+}
+.md-header,
+.md-tabs {
+    background: var(--operators-brand);
+}
+@media screen and (max-width: 76.1875em) {
+    .md-nav--primary .md-nav__title[for="__drawer"],
+    .md-nav--primary .md-nav__title {
+        background: var(--operators-brand);
+    }
+}
+.superNav,
+.md-nav__source {
+    background-color: var(--operators-brand-dark);
+}
