@@ -60,7 +60,7 @@ Optimize your Kubernetes and database workflows with the Operator.
 
 </div><div data-banner markdown>
 
-### :fontawesome-solid-user-tie: Manage cluster lifecycle {.title}
+## :fontawesome-solid-user-tie: Manage cluster lifecycle {.title}
 
 Take control of your cluster's lifecycle. Follow these guides to keep your environment running smoothly with minimal downtime.
 
@@ -70,11 +70,11 @@ Take control of your cluster's lifecycle. Follow these guides to keep your envir
 
 </div><div data-banner markdown>
 
-### :material-book-education: Look up reference materials { .title }
+## :material-book-education: Reference materials { .title }
 
 Explore Custom Resource, backup and restore options, certified images and version compatibility.
 
-* [Custom Resource options :material-arrow-right:](operator.md)
+* [Custom Resource options](operator.md)
 * [Backup Resource options](backup-resource-options.md)
 * [Restore Resource options](restore-options.md)
 * [Percona certified images](images.md)

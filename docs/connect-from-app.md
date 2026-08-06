@@ -1,40 +1,62 @@
 # Connect your application
 
-You can use the same MongoDB connection URI in your application that you use with `mongosh`. Any [MongoDB driver](https://www.mongodb.com/docs/drivers/) accepts this URI, so your app connects to Percona Server for MongoDB the same way whether it runs inside the cluster or outside it.
 
-## Connection string format
+The Operator creates Kubernetes Secrets with ready-to-use MongoDB connection strings. Use those URIs in your application instead of building the connection string by hand. Any [MongoDB driver](https://www.mongodb.com/docs/drivers/) accepts the URI, so your app connects the same way whether it runs inside the cluster or outside it.
 
-The format depends on whether the cluster is **sharded** (default) or a **replica set only**.
+For Secret names, key layout, and exposed endpoints, see [Connection secrets](connection-secrets.md).
 
-=== "Sharded cluster (default)"
+## Get a connection string
 
-    Use the `mongos` service as the host:
+1. List Secrets in your namespace:
 
-    ```
-    mongodb://<username>:<password>@<cluster-name>-mongos.<namespace>.svc.cluster.local/admin?ssl=false
-    ```
-
-    Replace `<cluster-name>` with your cluster name and `<namespace>` with the Kubernetes namespace. Get the cluster name with `kubectl get psmdb`.
-
-=== "Replica set (sharding off)"
-
-    Use the replica set service and include the replica set name:
-
-    ```
-    mongodb://<username>:<password>@<cluster-name>-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false
+    ```bash
+    kubectl get secrets -n <namespace>
     ```
 
-Use the same URI in your application code. If TLS is enabled in your cluster, change `ssl=false` to `ssl=true` and ensure your client uses the correct CA; see [Transport encryption (TLS/SSL)](TLS.md).
+2. Retrieve the URI for the user your app should use.
 
-## Where to get the URI parts
+    === "`databaseAdmin` (sharded cluster)"
 
-| Part | How to get it |
-|------|----------------|
-| **Username and password** | From the cluster Secret (admin user) or from an [application user](app-credentials.md) you created. See [Connect to Percona Server for MongoDB](connect.md) for the `kubectl` commands to read the admin credentials from the Secret. |
-| **Cluster name** | Run `kubectl get psmdb -n <namespace>`. The name is in the `NAME` column. |
-| **Namespace** | The namespace where you installed the Operator and database (for example `default` or `mongodb-operator`). |
+        Secret: `<cluster-name>-databaseadmin-conn-str`
+
+        ```bash
+        kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+          -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+        ```
+
+    === "`databaseAdmin` (replica set, sharding off)"
+
+        Secret: `<cluster-name>-databaseadmin-conn-str`
+
+        ```bash
+        kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+          -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
+        ```
+
+    === "Application user"
+
+        For an Operator-managed application user, use that user’s connection string Secret (for example `<cluster-name>-custom-user-secret-conn-str`, or `<passwordSecretRef.name>-conn-str` when you supply the password Secret).
+
+        Keys follow `<username>_mongos_connectionString` on sharded clusters. See [Connection secrets](connection-secrets.md#secret-names) for naming details.
+
+        ```bash
+        kubectl get secret <connection-secret-name> -n <namespace> \
+          -o jsonpath='{.data.<username>_mongos_connectionString}' | base64 --decode && echo
+        ```
+
+For testing you can use `databaseAdmin`. For production, create a dedicated [application user](app-credentials.md) and use its connection string Secret.
+
+## Use the URI in your application
+
+Pass the decoded URI to your MongoDB driver as the connection string. Example shape (values come from the Secret; do not hardcode passwords):
+
+```
+mongodb://user:password@host:27017/?authSource=admin
+```
+
+If the cluster has [TLS enabled](TLS.md), the Operator includes the TLS parameters in the generated URI. Use an `_connectionStringExposed` key when your app connects from outside the cluster through an [exposed](expose.md) Service.
 
 ## Next steps
 
 [Get credentials for your app](app-credentials.md){.md-button}
-
+[Connection examples (Node, Python, Go)](connection-examples.md){.md-button}

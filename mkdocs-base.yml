@@ -293,8 +293,6 @@ nav:
             - "Use a private registry": custom-registry.md
 
         - Percona Server for MongoDB:
-            - "Arbiter, non-voting and hidden nodes": arbiter.md
-            - "MongoDB sharding": sharding.md
             - Security:
                 - Transport encryption (TLS/SSL):
                     - About TLS security: TLS.md
@@ -303,13 +301,21 @@ nav:
                     - Update certificates: tls-update.md
                     - "Configure the TLS certificate management policy": tls-cert-management-policy.md
                     - Disable TLS: tls-disable.md
-                - Data at rest encryption: 
+                - Data-at-rest encryption: 
                     - "About data-at-rest encryption": encryption.md
                     - Configure encryption using an encryption key Secret: encryption-keyfile.md
                     - Configure encryption with HashiCorp Vault:
                        - "without TLS": encryption-vault.md
                        - "with TLS": encryption-vault-tls.md
-            - Multi-cluster and multi-region deployment:
+                - Enable authentication:
+                    - "OpenLDAP integration": ldap.md
+                    - "OIDC authentication": oidc.md
+                    - "Disable authentication": auth-disable.md
+                    - "Disable localhost authentication bypass": auth-bypass-localhost.md
+            - Manage topology:
+                - "Sharding": sharding.md
+                - "Arbiter, non-voting and hidden nodes": arbiter.md
+            - Disaster recovery with multi-cluster and multi-region deployment:
                 - "About multi-cluster and multi-region deployments": replication.md
                 - "Plan your deployment": replication-plan-deployment.md
                 - Multi-cluster Services:
@@ -324,14 +330,9 @@ nav:
                     - "Fail over workload to the Replica site": replication-failover.md
                     - "Backups with cross-site replication": replication-backups.md
                     - "Splitting replica set across multiple data centers": replication-multi-dc.md
-            - Real-time replication with Percona ClusterSync for MongoDB:
+            - Data migration with Percona ClusterSync for MongoDB:
                 - "About PCSM integration": clustersync.md
                 - "Set up and use PCSM": clustersync-setup.md
-            - Authentication:
-                - "OpenLDAP integration": ldap.md
-                - "OIDC authentication": oidc.md
-                - "Disable authentication": auth-disable.md
-                - "Disable localhost authentication bypass": auth-bypass-localhost.md
             - Search and vector search:
                 - "About full-text and vector search": search-overview.md
                 - "Configure search and vector search": search-setup.md

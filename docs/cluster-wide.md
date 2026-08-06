@@ -2,7 +2,7 @@
 
 This document walks you through installing the Operator and Percona Server for MongoDB in multi-namespace (luster-wide) mode with default parameters. 
 
-To learn more about available deployment modes, see [](namespace-mode.md).
+To learn more about available deployment modes, see [Single-namespace and multi-namespace deployment modes](namespace-mode.md).
 
 To install Percona Operator for MongoDB with custom parameters, see [Install Percona Operator for MongoDB with custom parameters](custom-install.md).
 
@@ -18,7 +18,7 @@ Edit the Operator deployment section of the `deploy/cw-bundle.yaml` and specify 
 
 Below is a streamlined example for cluster-wide setup on Kubernetes:
 
-1. Clone the percona-server-mongodb-operator repository:
+1. Clone the `percona-server-mongodb-operator` repository:
 
     ```bash
     git clone -b v{{ release }} https://github.com/percona/percona-server-mongodb-operator
