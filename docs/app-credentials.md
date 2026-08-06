@@ -1,14 +1,16 @@
 # Get credentials for your app
 
-When the Operator creates a database cluster, it creates the Secret with the admin user credentials. This Secret is referenced in the `.spec.secrets.users` option in the Custom Resource. Read more about these users in [System users](system-users.md). 
+When the Operator creates a database cluster, it creates the Secret with the admin user credentials. This Secret is referenced in the `.spec.secrets.users` option in the Custom Resource. Read more about these users in [System users](system-users.md).
 
-For testing purposes you can reuse the database admin user and use its credentials to construct the connection string. Refer to [connect to Percona Server for MongoDB](connect.md) tutorial for the steps. 
+The Operator also creates the [connection Secret](connection-secrets.md) for the `databaseAdmin` user that contains auto-generated connection string URIs. You can use them directly in your app. 
 
-For production and for most applications, you should use a dedicated **application-level (unprivileged) user** instead of the database admin account. The Operator can create this user for you and store the credentials in a Kubernetes Secret that your app can read.
+For testing, you can reuse the `databaseAdmin` connection string Secret. See [Connect to Percona Server for MongoDB](connect.md) for the steps.
+
+For production and for most applications, create a dedicated **application-level (unprivileged) user** instead of using `databaseAdmin`. The Operator creates the user, a password Secret, and a connection string Secret that your app can read.
 
 ## Create one application user via Custom Resource
 
-You define the user in the Percona Server for MongoDB Custom Resource. The Operator creates the user in the database and a Secret with the password.
+You define the user in the Percona Server for MongoDB Custom Resource. The Operator creates the user in the database, a Secret with the password, and a connection string Secret.
 
 1. Edit the Custom Resource (for example `deploy/cr.yaml`). Add a `users` section with your application user:
 
@@ -31,18 +33,34 @@ You define the user in the Percona Server for MongoDB Custom Resource. The Opera
     kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
-3. The Operator creates a Secret named `<cluster-name>-custom-user-secret`. The password is stored under a key with the same name as the user (for example `my-app-user`). To read the password:
+3. The Operator creates:
+
+    * A password Secret named `<cluster-name>-custom-user-secret` (password key matches the username, for example `my-app-user`)
+    * A connection string Secret named `<cluster-name>-custom-user-secret-conn-str`
+
+    Retrieve the ready-to-use URI (sharded cluster example):
 
     ```bash
-    kubectl get secret <cluster-name>-custom-user-secret -n <namespace> -o jsonpath='{.data.my-app-user}' | base64 --decode
+    kubectl get secret <cluster-name>-custom-user-secret-conn-str -n <namespace> \
+      -o jsonpath='{.data.my-app-user_mongos_connectionString}' | base64 --decode && echo
     ```
 
-    Use this username and password in your application connection string. The URI format is the same as in [Connect your application](connect-from-app.md); only the username and password change.
+    If you set `passwordSecretRef.name`, the connection Secret is named `<passwordSecretRef.name>-conn-str` instead. See [Connection secrets](connection-secrets.md#secret-names) for naming and key patterns (including replica set and exposed endpoints).
 
-## Use the credentials in your app
+## Use the connection string in your app
 
-* **Inside Kubernetes:** Mount the Secret as environment variables or a file in your app's Pod, and build the connection URI from those values. For example, set `MONGODB_USER` and `MONGODB_PASSWORD` from the Secret and use them in the URI.
-* **Outside Kubernetes:** Read the Secret with `kubectl` (as above). Then pass the credentials into your app via config or environment variables.
+* **Inside Kubernetes:** Mount the connection string Secret as an environment variable or file in your app’s Pod. Prefer the full URI over separate username/password fields. Example pattern:
+
+    ```yaml
+    env:
+    - name: MONGODB_URI
+      valueFrom:
+        secretKeyRef:
+          name: my-cluster-name-custom-user-secret-conn-str
+          key: my-app-user_mongos_connectionString
+    ```
+
+* **Outside Kubernetes:** Decode the URI with `kubectl` (as above), then pass it into your app via config or environment variables. For access from outside the cluster, see [Connect from your laptop or CI](connect-from-outside.md).
 
 !!! note "More options"
 

@@ -2,8 +2,8 @@
 
 **Start here.** Choose your path based on what you want to do:
 
-* **Building an application?** Follow the **developer path** to get a cluster, connect from your code, and run locally.
-* **Deploying or operating the cluster?** Follow the **deployment and operations path** to install the Operator, connect with the shell, and run backups and monitoring.
+* **Building an application?** Follow the [**developer path**](#developer-path) to get a cluster, connect from your code, and run locally.
+* **Deploying or operating the cluster?** Follow the [**deployment and operations path**](#deployment-and-operations-path) to install the Operator, connect with the shell, and run backups and monitoring.
 
 ---
 

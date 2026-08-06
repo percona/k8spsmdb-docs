@@ -4,7 +4,7 @@ The Operator was developed and tested with Percona Server for MongoDB
 {{ mongodb60recommended }}, 
 {{ mongodb70recommended }}, and {{ mongodb80recommended }}. Other options may also work but have not been
 tested. The Operator {{ release }} also uses Percona Backup for MongoDB
-{{ pbmrecommended }}.
+{{ pbmrecommended }} and Percona ClusterSync for MongoDB.
 
 ## Officially supported platforms
 
