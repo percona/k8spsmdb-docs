@@ -155,7 +155,7 @@ The Operator requires additional permissions to create and manage the `ClusterIs
     kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
-    The Operator creates the CA `Certificate` and the `ClusterIssuer` resource in the cert-manager namespace (`cert-manager` by default). The cert-manager generates signed certificates using the ClusterIssuer.
+    The Operator creates the CA `Certificate` and the `ClusterIssuer` resource in the cert-manager namespace (`cert-manager` by default). The cert-manager generates signed certificates using the `ClusterIssuer`.
 
 If you installed cert-manager in a custom namespace, set the [`CERTMANAGER_NAMESPACE`](env-vars-operator.md#certmanager_namespace) environment variable on the Operator Deployment.
 
