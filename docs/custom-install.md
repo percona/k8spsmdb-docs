@@ -1,4 +1,4 @@
-# Install Percona Server for MongoDB with customized parameters
+# Install Percona Operator for MongoDB with customized parameters
 
 You can customize the configuration of Percona Server for MongoDB and install it with customized parameters.
 
@@ -22,53 +22,96 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
 
 === "Helm"
 
-    To install Percona Server for MongoDB with custom parameters, use the following command:
+    You can install the Operator deployment and Percona Server for MongoDB clusters with custom parameters using Helm. You can review the available configuration options for the [Operator chart :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart) and the [Database chart :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart).
+
+    You can provide custom parameters to Helm using either the `--set` flag or a `values.yaml` file. The `--set` flag is suitable for overriding a small number of parameters directly from the command line, while a `values.yaml` file is ideal when you want to manage many custom settings together. Both methods are fully supported by Helm and can be used as preferred for your deployment.
     
+    **Using `--set` flags**
+
+    To pass a custom parameter to Helm, use the `--set key=value` flag with the `helm install` command.
+
+    For example, to enable [Percona Monitoring and Management (PMM) :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/index.html) for the database cluster, run:
+
     ```bash
-    helm install --set key=value
+    helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace \
+      --set pmm.enabled=true
     ```
 
-    You can pass any of the Operator’s [Custom Resource options  :octicons-link-external-16:](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) as a
-    `--set key=value[,key=value]` argument.
+    **Using a `values.yaml` file**
 
-    The following example deploys a Percona Server for MongoDB Cluster in the
-    `psmdb` namespace, with disabled backups and 20 Gi storage:
+    Create a `values.yaml` file with your custom parameters and pass it to `helm install` with the `-f` or `--values` flag:
 
-    === "Command line"
+    ```bash
+    helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace -f values.yaml
+    ```
 
-        ```bash
-        helm install my-db percona/psmdb-db --version {{ release }} --namespace psmdb \
-          --set "replsets.rs0.name=rs0" --set "replsets.rs0.size=3" \
-          --set "replsets.rs0.volumeSpec.pvc.resources.requests.storage=20Gi" \
-          --set backup.enabled=false --set sharding.enabled=false
-        ``` 
+    Example `values.yaml`:
 
-    === "YAML file"
+    ```yaml
+    pmm:
+      enabled: false
+      image:
+        repository: percona/pmm-client
+        tag: {{ pmm3recommended }}
+    ```
 
-        You can specify customized options in a YAML file instead of using separate command line parameters. The resulting
-        file similar to the following example looks as follows:        
+    ## Naming conventions for Helm resources
 
-        ``` yaml title="values.yaml"
-        allowUnsafeConfigurations: true
-        sharding:
-          enabled: false
-        replsets:
-        - name: rs0
-          size: 3
-          volumeSpec:
-            pvc:
-              resources:
-                requests:
-                  storage: 2Gi
-        backup:
-          enabled: false
-        ```        
+    When you install a chart, Helm creates a release and uses the release name and chart name to generate resource names. By default, resources are named `release-name-chart-name`.
 
-        Apply the resulting YAML file as follows:        
+    You can override the default naming with the `nameOverride` or `fullnameOverride` options. Pass them using the `--set` flag or in your `values.yaml` file.
 
-        ```bash
-        helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
-        ```
+    | Option | Effect | Example |
+    | ------ | ------ | ------- |
+    | `nameOverride` | Replaces the chart name but keeps the release name in the generated name | `release-name-name-override` |
+    | `fullnameOverride` | Replaces the entire generated name with the specified value | `fullname-override` |
+
+    *Using `nameOverride`* — replaces the chart name but keeps the release name:
+
+    ```bash
+    helm install my-operator percona/psmdb-operator --namespace my-namespace \
+      --set nameOverride=mongo-operator
+    ```
+
+    Deployment name: `my-operator-mongo-operator`.
+
+    ```bash
+    helm install cluster1 percona/psmdb-db -n my-namespace \
+      --set nameOverride=mongodb
+    ```
+
+    Cluster name: `cluster1-mongodb`.
+
+    *Using `fullnameOverride`* — replaces the full resource name:
+
+    ```bash
+    helm install my-operator percona/psmdb-operator --namespace my-namespace \
+      --set fullnameOverride=percona-mongodb-operator
+    ```
+
+    Deployment name: `percona-mongodb-operator`.
+
+    ```bash
+    helm install cluster1 percona/psmdb-db -n my-namespace \
+      --set fullnameOverride=my-db
+    ```
+
+    Cluster name: `my-db`.
+
+    !!! note "Cluster name length"
+
+        For the psmdb-db chart, keep release names and overrides short enough to satisfy Kubernetes resource name limits (for example, many DNS-label resource names such as Services are limited to 63 characters).
+
+    ## Common Helm values reference
+
+    The following table lists commonly used values for the Operator and database charts. For the full list of options, see the chart values files.
+
+    | Value | Charts | Description |
+    | ----- | ------ | ----------- |
+    | `nameOverride` | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml), [psmdb-db](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-db/values.yaml) | Replaces the chart name in generated resource names |
+    | `fullnameOverride` | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml), [psmdb-db](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-db/values.yaml) | Replaces the entire generated resource name |
+    | `watchAllNamespaces` | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml) | Deploy the Operator in cluster-wide mode to watch all namespaces |
+    | `disableTelemetry` | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml) | Disable telemetry collection. See [Telemetry](telemetry.md) for details |
 
 ## Configure ports for MongoDB cluster components
 

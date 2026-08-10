@@ -84,7 +84,7 @@ The upgrade includes the following steps.
               "crVersion":"{{ release }}",
               "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
-              "pmm": { "image": "percona/pmm-client:{{ pmm2recommended }}" },
+              "pmm": { "image": "percona/pmm-client:{{ pmm3recommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
         ```

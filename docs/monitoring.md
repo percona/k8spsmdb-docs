@@ -2,30 +2,92 @@
 
 {% include 'assets/fragments/monitor-db.txt' %}
 
-## Enable profiling
+## Configure Query Analytics
 
-Starting from the Operator version 1.12.0, MongoDB operation profiling is
-disabled by default. To analyze query execution on the [PMM Query Analytics  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/qan/index.html) dashboard, you
-[should enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods) explicitly. You can pass options to MongoDB [in several ways](options.md).
+To analyze query execution on the [PMM Query Analytics (QAN)  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/qan/index.html) dashboard, you must configure how PMM collects query data. Starting with Operator version 1.23.0, use the [`pmm.querySource`](operator.md#pmmquerysource) option to choose the collection method:
 
-This example shows how to pass the configuration via the `configuration` subsection of the `deploy/cr.yaml` manifest. 
+* `profiler` (default) — PMM reads query performance data from each database's `system.profile` collection. This method requires you to [enable profiling  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods) explicitly.
+* `mongolog` — PMM reads slow-query data directly from mongod log files. This method has minimal impact on the database and scales better in clusters with many databases. It requires [PMM 3.3.0 or newer  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods) and the [log collector](persistent-logging.md) enabled so that logs are written to `/data/db/logs/`.
 
-   ```yaml
-   spec:
-     ...
-     replsets:
-       - name: rs0
-         size: 3
-         configuration: |
-           operationProfiling:
-             slowOpThresholdMs: 200
-             mode: slowOp
-             rateLimit: 100
-   ```
+See the [PMM documentation on query source methods  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods) for a detailed comparison.
 
-Optionally, you can specify additional parameters for the [`pmm-admin add mongodb`  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html?h=pmm+admin#__tabbed_1_1) command in the  `pmm.mongodParams` and `pmm.mongosParams` keys for `mongod` and `mongos` Pods respectively.
+### Configure the profiler query source
 
-<i info>:material-information: Info: </i> Note that the Operator automatically manages common MongoDB Service Monitoring parameters such as username, password, service-name, host, etc. Assigning values to these parameters is not recommended and can negatively affect the functionality of the PMM setup carried out by the Operator.
+To use the default `profiler` query source, do the following:
+
+* [enable profiling in PMM :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#compare-query-source-methods)
+* Configure the Operator:
+
+  * set the `pmm.querySource` option to `profiler`
+  * enable profiling in the Percona Server for MongoDB, so PMM can collect query data. You can pass MongoDB options in several ways: edit the Custom Resource, via the ConfigMap or a Secret. Read more about [changing MongoDB options](options.md).
+
+This example shows how to configure `profiler` and pass the configuration via the `configuration` subsection of the `deploy/cr.yaml` manifest:
+
+```yaml
+spec:
+  pmm:
+    enabled: true
+    querySource: profiler
+  replsets:
+    - name: rs0
+      size: 3
+      configuration: |
+        operationProfiling:
+          slowOpThresholdMs: 200
+          mode: slowOp
+          rateLimit: 100
+```
+
+Apply the configuration:
+
+```bash
+kubectl apply -f deploy/cr.yaml -n <namespace>
+```
+
+### Configure the mongolog query source
+
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
+
+To use `mongolog`, do the following:
+
+* Enable [log collector](persistent-logging.md) so that mongod logs are available at `/data/db/logs/` for the PMM Client
+
+   When using mongolog, configure [log rotation](logrotate.md) carefully. Avoid moving or renaming active log files during rotation, as this can interrupt mongolog collection.
+
+* Set `pmm.querySource` to `mongolog`
+* Configure MongoDB to write slow operations to the mongod log.
+
+Here's the example configuration:
+
+```yaml
+spec:
+  pmm:
+    enabled: true
+    querySource: mongolog
+  logcollector:
+    enabled: true
+  replsets:
+    - name: rs0
+      size: 3
+      configuration: |
+        operationProfiling:
+          mode: off
+          slowOpThresholdMs: 200
+```
+
+Apply the configuration:
+
+```bash
+kubectl apply -f deploy/cr.yaml -n <namespace>
+```
+
+### Additional PMM Client parameters
+
+Optionally, you can specify additional parameters for the [`pmm-admin add mongodb`  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html?h=pmm+admin#__tabbed_1_1) command in the `pmm.mongodParams` and `pmm.mongosParams` keys for `mongod` and `mongos` Pods respectively.
+
+!!! warning
+
+    Do not pass username, password, service name, host, or query source in `pmm.mongodParams` or `pmm.mongosParams`. The Operator automatically manages these settings for you. Overriding them can break PMM monitoring.
 
 When done, apply the edited `deploy/cr.yaml` file:
 

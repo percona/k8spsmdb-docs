@@ -63,14 +63,13 @@ extra_css:
   - css/extra.css
   - css/operators.css
   - css/rating.css
+  - css/kapa.css
 
 extra_javascript:
   - js/promptremover.js
   - js/consent.js
   - js/rating.js
-#  - js/version-select.js
-#  - js/toctree.js
-#  - js/lightgallery.min.js
+  - js/kapa.js
 
 markdown_extensions:
   attr_list: {}
@@ -144,11 +143,6 @@ plugins:
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
-  mike:
-    version_selector: true
-    css_dir: css
-    javascript_dir: js
-    canonical_version: null
   print-site:
     add_to_navigation: false
     print_page_title: 'Percona Operator for MongoDB documentation'
@@ -202,6 +196,7 @@ nav:
           - "Install on Google Kubernetes Engine (GKE)": gke.md
           - "Install on Amazon Elastic Kubernetes Service (AWS EKS)": eks.md
           - "Install on Microsoft Azure Kubernetes Service (AKS)": aks.md
+          - "Install on Rancher Kubernetes Engine (RKE2)": rke2.md
           - "Generic Kubernetes installation": kubernetes.md
           - "Install on OpenShift": openshift.md
           
@@ -225,10 +220,15 @@ nav:
              - "About application and system users": users.md
              - "Application-level (unprivileged) users": app-users.md
              - "System users": system-users.md
+             - "Connection secrets": connection-secrets.md
              - Manage system users with Vault: 
                 - "Overview": system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
-          - "Disable authentication": auth-disable.md
+          - Authentication:
+            - "OpenLDAP integration": ldap.md
+            - "OIDC authentication": oidc.md
+            - "Disable authentication": auth-disable.md
+            - "Disable localhost authentication bypass": auth-bypass-localhost.md
           - "Changing MongoDB options": options.md
           - options-pbm.md
           - hookscript.md
@@ -243,6 +243,7 @@ nav:
              - Configure TLS using cert-manager: tls-cert-manager.md
              - Generate certificates manually: tls-manual.md
              - Update certificates: tls-update.md
+             - "Configure the TLS certificate management policy": tls-cert-management-policy.md
              - Disable TLS: tls-disable.md
           - Data at rest encryption: 
             - About data-at-rest encryption: encryption.md
@@ -268,9 +269,15 @@ nav:
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
                   - "Microsoft Azure Blob storage": backups-storage-azure.md
+                  - "Alibaba Cloud OSS storage": backups-storage-oss.md
+                  - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
+              - "PVC snapshot backups":
+                  - Overview: backups-pvc-snapshots.md
+                  - "Configure PVC snapshots": backups-pvc-setup.md
+                  - "Use PVC snapshots": backups-pvc-usage.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md
@@ -279,6 +286,7 @@ nav:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
+                 - "Restore a collection under a different name": backups-restore-new-name.md
               - "Delete the unneeded backup": backups-delete.md
           - "Horizontal and vertical scaling": scaling.md
           - "Multi-cluster and multi-region deployment":
@@ -296,46 +304,58 @@ nav:
                  - "Fail over workload to the Replica site": replication-failover.md
                  - "Backups with cross-site replication": replication-backups.md
                  - "Splitting replica set across multiple data centers": replication-multi-dc.md
+          - Real-time replication with Percona ClusterSync for MongoDB:
+              - "About PCSM integration": clustersync.md
+              - "Set up and use PCSM": clustersync-setup.md
               
           - "Monitor with Percona Monitoring and Management (PMM)": monitoring.md
           - "Add sidecar containers": sidecar.md
           - "Restart or pause the cluster": pause.md
           - volume-attributes-class.md
-          
+    - Search and Vector search:
+          - About full-text and vector search: search-overview.md
+          - Configure search and vector search: search-setup.md      
     - Troubleshooting:
           - "Troubleshoot the Operator installation issues": troubleshoot-operator.md
           - "Initial troubleshooting": debug.md
           - "Exec into the container": debug-shell.md
           - "Check the logs": debug-logs.md
+          - "Troubleshoot backups and restores": debug-backup-restore.md
           - "Special debug images": debug-images.md
           - "Storage resizing": debug-storage.md
 
     - HOWTOs:
           - Install the database with customized parameters: custom-install.md 
-          - "OpenLDAP integration": ldap.md
           - "How to use private registry": custom-registry.md
           - "Creating a private S3-compatible cloud for backups": private.md
           - "How to use backups to move the external database to Kubernetes": backups-move-from-external-db.md
           - "Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode": cluster-wide.md
           - "Configure concurrent reconciliation": reconciliation-concurrency.md
           - "Monitor Kubernetes": monitor-kubernetes.md
-          - "Retrieve Percona certified images": image-query.md
           - "Delete the Operator": delete.md
 
     - Reference:
-          - "Custom Resource options": operator.md
-          - backup-resource-options.md
-          - restore-options.md
+          - Custom Resource reference:
+            - "PerconaServerMongoDB options": operator.md
+            - "Backup options": backup-resource-options.md
+            - "Restore options": restore-options.md
+            - "ClusterSync options": clustersync-options.md
           - "Custom resource statuses": cr-statuses.md
-          - "Percona certified images": images.md
+          - Certified images:
+             - "Percona certified images": images.md
+             - "Retrieve Percona certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Operator API": api.md
           - "Frequently asked questions": faq.md
-          - "Copyright and licensing information": copyright.md
-          - "Trademark policy": trademark-policy.md
+          - Legal:
+            - "Copyright and licensing information": copyright.md
+            - "Trademark policy": trademark-policy.md
+            - legal-notice.md
+            
       
     - Release notes:
           - "Release notes index": RN/index.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md

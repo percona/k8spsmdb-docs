@@ -1,61 +1,86 @@
-To connect to Percona Server for MongoDB you need to construct the MongoDB connection URI string. It includes the credentials of the admin user, which are stored in the [Secrets :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) object.
+To connect to Percona Server for MongoDB, use the connection string Secret that the Operator creates for the `databaseAdmin` user. This Secret is available starting with Operator version 1.23.0 and newer. For previous versions, refer to the [Connect manually](#connect-manually-alternative) section.
 
-1. List the Secrets objects
+1. List the Secrets objects:
 
     ```bash
     {{ commandName }} get secrets -n <namespace>
     ```
     
-    The Secrets object you are interested in has the
-    `{{ clusterName }}-secrets` name by default.
+    The connection string Secret is named `{{ clusterName }}-databaseadmin-conn-str` by default.
     
-2. View the Secret contents to retrieve the admin user credentials.
+2. Retrieve the connection string
 
-    ```bash
-    {{ commandName }} get secret {{ clusterName }}-secrets -o yaml
-    ``` 
-    The command returns the YAML file with generated Secrets, including the `MONGODB_DATABASE_ADMIN_USER`
-    and `MONGODB_DATABASE_ADMIN_PASSWORD` strings, which should look as follows:
+    === "Sharding is on"
 
-    ??? example "Sample output"
-        
-        ```{.yaml .no-copy}
-        ...
-        data:
-          ...
-          MONGODB_DATABASE_ADMIN_PASSWORD: aDAzQ0pCY3NSWEZ2ZUIzS1I=
-          MONGODB_DATABASE_ADMIN_USER: ZGF0YWJhc2VBZG1pbg==
+        ```bash
+        {{ commandName }} get secret <clusterName>-databaseadmin-conn-str -n <namespace> \
+         -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
         ```
 
-    The actual login name and password on the output are base64-encoded. To bring it
-    back to a human-readable form, run:
+    === "Sharding is off"
 
-    ```bash
-    echo 'MONGODB_DATABASE_ADMIN_USER' | base64 --decode
-    echo 'MONGODB_DATABASE_ADMIN_PASSWORD' | base64 --decode
-    ```
+        ```bash
+        {{ commandName }} get secret <clusterName>-databaseadmin-conn-str -n <namespace> \
+        -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
+        ```
+
+    
+     See [Connection secrets](connection-secrets.md) for other available keys.
 
 3. Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     `percona-client`:
 
     ```bash
-    {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb70recommended }} --restart=Never -- bash -il
+    {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
     ```
 
     Executing it may require some time to deploy the corresponding Pod.
 
-3. Now run `mongosh` tool inside the `percona-client` command shell using the admin user credentialds you obtained from the
-    Secret, and a proper namespace name instead of the `<namespace name>`
-    placeholder. The command will look different depending on whether sharding
-    is on (the default behavior) or off:
+4. Connect using the connection string from step 2:
 
-    === "if sharding is on"
+    ```bash
+    mongosh "<connection-string>"
+    ```
+
+## Connect manually (alternative)
+
+If you need to build a connection URI yourself, retrieve credentials from the user Secret and construct the URI.
+
+1. List the Secrets objects:
+
+    ```bash
+    {{ commandName }} get secrets -n <namespace>
+    ```
+    
+    The Secrets object you are interested in has the `<cluster-name>-secrets` name. (For the cluster `my-cluster-name`, the Secret name is `my-cluster-name-secrets`).
+
+2. Retrieve the admin username and password:
+
+    ```bash
+    {{ commandName }} get secret <secret-name> -n <namespace> -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_USER}' | base64 --decode && echo
+    {{ commandName }} get secret <secret-name> -n <namespace> -o jsonpath='{.data.MONGODB_DATABASE_ADMIN_PASSWORD}' | base64 --decode && echo
+    ```
+
+3. Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod `percona-client`:
+
+    ```bash
+    kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    ```
+
+    It may take some time to deploy the corresponding Pod.
+
+4. Now run `mongosh` tool inside the `percona-client` command shell using the admin user credentials you obtained from the Secret, and a proper namespace name instead of the `<namespace name>` placeholder. The command will look different depending on whether sharding is on (the default behavior) or off:
+
+    === "sharding is on"
+
         ```bash
-        mongosh "mongodb://databaseAdmin:databaseAdminPassword@{{ clusterName }}-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
+        mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace name>.svc.cluster.local/admin?ssl=false"
         ```
 
-    === "if sharding is off"
+    === "sharding is off"
+ 
         ```bash
-        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@{{ clusterName }}-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
+        mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?replicaSet=rs0&ssl=false"
         ```
+
