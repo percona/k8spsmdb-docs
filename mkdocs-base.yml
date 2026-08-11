@@ -177,6 +177,7 @@ nav:
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
+          - "Known limitations": limitations.md
           
     - Quickstart guides:
           - Overview: quickstart.md
