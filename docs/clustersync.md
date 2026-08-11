@@ -94,6 +94,8 @@ On the **target**, the Operator holds a lease while PCSM is active, so backups a
 
 ## Limitations
 
+--8<-- [start:pcsmlimitations]
+
 PCSM follows upstream [known issues and limitations :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html). 
 
 Notable constraints:
@@ -106,6 +108,8 @@ Notable constraints:
 * Users, roles, and `system.*` collections are not synchronized.
 * Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.
 * External authentication (LDAP, Kerberos, AWS IAM) is not supported for PCSM connections.
+
+--8<-- [end:pcsmlimitations]
 
 ## Next steps
 

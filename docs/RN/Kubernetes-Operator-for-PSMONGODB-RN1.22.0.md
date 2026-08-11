@@ -312,7 +312,7 @@ These options are deprecated and will be removed in version 1.25.0:
 
 * [K8SPSMDB-1410](https://perconadev.atlassian.net/browse/K8SPSMDB-1410) - Enhanced backup status visibility by adding a specific condition to indicate when PBM initialization and storage resync are complete. This enables external tools to safely trigger backups
 
-* [K8SPSMDB-1445](https://perconadev.atlassian.net/browse/K8SPSMDB-1445) - Updated base images to RHEL 10, ensuring the Operator benefits from the latest OS-level security patches and performance improvements.
+* [K8SPSMDB-1445](https://perconadev.atlassian.net/browse/K8SPSMDB-1445) - Updated base images to RHEL 10, ensuring the Operator benefits from the latest OS-level security patches and performance improvements. On `amd64`, UBI 10 requires the x86-64-v3 CPU microarchitecture. 
 
 * [K8SPSMDB-1448](https://perconadev.atlassian.net/browse/K8SPSMDB-1448) - Integrated HashiCorp Vault for system user credentials management, enabling you to store and manage them in a centralized place. The Operator securely fetches and manages database passwords from a central Vault instance during cluster creation.
 
