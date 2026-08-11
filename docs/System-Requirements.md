@@ -18,9 +18,9 @@ Other Kubernetes platforms may also work but have not been tested.
 
 ## CPU microarchitecture
 
-Starting from version 1.22.0, the Operator base image was upgraded from UBI 9 to UBI 10 
+Starting with version 1.22.0, the Operator base image was upgraded from UBI 9 to UBI 10.
 
-RHEL 10 / UBI 10 enforces a minimum CPU microarchitecture of **x86-64-v3** (requires AVX2, BMI1, BMI2, FMA — Intel Haswell 2013+ / AMD Excavator 2015+). 
+RHEL 10 / UBI 10 enforces a minimum CPU microarchitecture of **x86-64-v3** on `amd64` (requires AVX2, BMI1, BMI2, FMA — Intel Haswell 2013+ / AMD Excavator 2015+).
 
 ## Resource Limits
 
