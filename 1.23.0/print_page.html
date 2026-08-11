@@ -563,6 +563,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="limitations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known limitations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7348,6 +7376,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Known limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10195,7 +10234,57 @@ appropriate settings to provide a properly operating replica set.</p></section><
 <td style="text-align: left;">Yes</td>
 </tr>
 </tbody>
-</table></section></section>
+</table></section><section class="print-page" id="limitations" heading-number="3.3"><h1 id="limitations-known-limitations">Known limitations<a class="headerlink" href="#limitations-known-limitations" title="Permanent link">&para;</a></h1>
+<p>This page describes known limitations of Percona Operator for MongoDB. Understanding these constraints helps you plan deployments and avoid unexpected behavior.</p>
+<h2 id="limitations-hardware-and-cpu-requirements">Hardware and CPU requirements<a class="headerlink" href="#limitations-hardware-and-cpu-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="limitations-x86-64-v3-cpu-microarchitecture-operator-1220-and-later">x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)<a class="headerlink" href="#limitations-x86-64-v3-cpu-microarchitecture-operator-1220-and-later" title="Permanent link">&para;</a></h3>
+<p>Starting with Operator version <a href="#rn-kubernetes-operator-for-psmongodb-rn1.22.0">1.22.0</a>, the Operator image is based on <a href="https://catalog.redhat.com/software/base-images">Red Hat Universal Base Image (UBI) 10 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. RHEL 10 / UBI 10 requires the <strong>x86-64-v3</strong> CPU microarchitecture on <code>amd64</code> hosts. That level includes AVX2, BMI1, BMI2, and FMA (roughly Intel Haswell 2013 or newer, or AMD Excavator 2015 or newer).</p>
+<p>This requirement is stricter than the <a href="https://docs.percona.com/percona-server-for-mongodb/8.0/install/system-requirements.html">AVX requirement for MongoDB 5.0 and later <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.</p>
+<h2 id="limitations-backups-and-restores">Backups and restores<a class="headerlink" href="#limitations-backups-and-restores" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Point-in-time recovery and selective restore are not available for <a href="#backups-pvc-snapshots">PVC snapshot backups</a> (type <code>external</code>).</li>
+<li>When you delete an incremental base backup, Percona Backup for MongoDB also deletes all increments that derived from it from the backup storage. The <code>percona.com/delete-backup</code> finalizer applies to the base backup and is ignored for increments. This means that the Operator deletes the Backup resource for the base incremental backup but the Backup resources for increments remain because the Operator doesn&rsquo;t control their deletion.</li>
+<li>Restoring a collection under a different name is supported only on replica set clusters for unsharded collections from a full logical backup. It is not supported on sharded clusters. See <a href="#backups-restore-new-name-limitations">Restore a collection under a different name</a>.</li>
+<li>Selective restores have additional constraints in Percona Backup for MongoDB. See the <a href="https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores">selective restore limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</li>
+<li>After a failed restore, the Operator cannot guarantee data consistency because it does not know at which stage the failure happened. See <a href="#backups-restore">Restore from a backup</a>.</li>
+</ul>
+<h2 id="limitations-multi-cluster-and-multi-region-deployments">Multi-cluster and multi-region deployments<a class="headerlink" href="#limitations-multi-cluster-and-multi-region-deployments" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The Operator cannot place MongoDB Pods in other data centers by itself. Cross-site topologies need an Operator deployment on each site, with unmanaged clusters registered as <code>externalNodes</code> on the Main site. Setup and scaling require manual operations. See <a href="#replication-multi-dc">Splitting a replica set across multiple data centers</a>.</li>
+<li>Backups are supported on the Main site only, not on Replica sites in a multi-datacenter replica set split.</li>
+<li>Multi-cluster Services (MCS) can add cloud-provider limits. For example, on GKE all participating Pods must be in the same project. Avoid exporting Services from the <code>default</code> and <code>kube-system</code> namespaces. See <a href="#replication-mcs">Multi-cluster Services</a>.</li>
+<li>Setting <code>replsets.clusterServiceDNSMode</code> to <code>ServiceMesh</code> supersedes multi-cluster settings. You cannot combine <code>ServiceMesh</code> DNS mode with multi-cluster Services. See the <a href="#operator-replsetsclusterservicednsmode">Custom Resource options</a>.</li>
+</ul>
+<h2 id="limitations-networking-and-exposure">Networking and exposure<a class="headerlink" href="#limitations-networking-and-exposure" title="Permanent link">&para;</a></h2>
+<p>Split horizon DNS has these MongoDB constraints:</p>
+<ul>
+<li>You cannot duplicate domain names in horizons</li>
+<li>You cannot use IP addresses in horizons</li>
+<li>You must set horizons for all Pods of a replica set, or for none of them</li>
+</ul>
+<p>See <a href="#expose">Exposing the cluster</a>.</p>
+<h2 id="limitations-search-and-vector-search">Search and vector search<a class="headerlink" href="#limitations-search-and-vector-search" title="Permanent link">&para;</a></h2>
+<p>Percona Search for MongoDB is in the tech preview stage. Notable limits include:</p>
+<ul>
+<li>a single search Pod per replica set or shard, </li>
+<li>no automated embedding, </li>
+<li>no migration from externally managed <code>mongot</code>, and</li>
+<li>search index data is not included in backups. </li>
+</ul>
+<p>See <a href="#search-overview-limitations">Limitations</a> in the search overview.</p>
+<h2 id="limitations-real-time-replication-with-percona-clustersync-for-mongodb">Real-time replication with Percona ClusterSync for MongoDB<a class="headerlink" href="#limitations-real-time-replication-with-percona-clustersync-for-mongodb" title="Permanent link">&para;</a></h2>
+<p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. </p>
+<p>Notable constraints:</p>
+<ul>
+<li>Same <strong>major</strong> MongoDB version required on source and target.</li>
+<li>Single source / single target pair only.</li>
+<li>Reverse synchronization is not supported.</li>
+<li>Initial sync is <strong>not resumable</strong>. If PCSM failed during initial sync, it restarts it from scratch.</li>
+<li>PCSM connects to the <strong>primary</strong> only; <code>directConnection</code> to secondaries is ignored.</li>
+<li>Users, roles, and <code>system.*</code> collections are not synchronized.</li>
+<li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
+<li>External authentication (LDAP, Kerberos, AWS IAM) is not supported for PCSM connections.</li>
+</ul></section></section>
                     <section class='print-page md-section' id='section-4' heading-number='4'>
                         <h1>Quickstart guides<a class='headerlink' href='#section-4' title='Permanent link'></a>
                         </h1>
@@ -10878,6 +10967,9 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 1.38.1 with Kubernetes v1.35.1</li>
 </ul>
 <p>Other Kubernetes platforms may also work but have not been tested.</p>
+<h2 id="system-requirements-cpu-microarchitecture">CPU microarchitecture<a class="headerlink" href="#system-requirements-cpu-microarchitecture" title="Permanent link">&para;</a></h2>
+<p>Starting with version 1.22.0, the Operator base image was upgraded from UBI 9 to UBI 10.</p>
+<p>RHEL 10 / UBI 10 enforces a minimum CPU microarchitecture of <strong>x86-64-v3</strong> on <code>amd64</code> (requires AVX2, BMI1, BMI2, FMA — Intel Haswell 2013+ / AMD Excavator 2015+).</p>
 <h2 id="system-requirements-resource-limits">Resource Limits<a class="headerlink" href="#system-requirements-resource-limits" title="Permanent link">&para;</a></h2>
 <p>A cluster running an officially supported platform contains at least 3 Nodes
 and the following resources (if <a href="#sharding">sharding</a> is
@@ -41809,7 +41901,7 @@ we will do our very best to be helpful.</p></section><section class="print-page"
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1410">K8SPSMDB-1410</a> - Enhanced backup status visibility by adding a specific condition to indicate when PBM initialization and storage resync are complete. This enables external tools to safely trigger backups</p>
 </li>
 <li>
-<p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1445">K8SPSMDB-1445</a> - Updated base images to RHEL 10, ensuring the Operator benefits from the latest OS-level security patches and performance improvements.</p>
+<p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1445">K8SPSMDB-1445</a> - Updated base images to RHEL 10, ensuring the Operator benefits from the latest OS-level security patches and performance improvements. On <code>amd64</code>, UBI 10 requires the x86-64-v3 CPU microarchitecture. </p>
 </li>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1448">K8SPSMDB-1448</a> - Integrated HashiCorp Vault for system user credentials management, enabling you to store and manage them in a centralized place. The Operator securely fetches and manages database passwords from a central Vault instance during cluster creation.</p>
@@ -44905,6 +44997,8 @@ applications or code.</p>
 .print-site-enumerate-headings #architecture > h1:before { content: '3.1 ' }
 
 .print-site-enumerate-headings #compare > h1:before { content: '3.2 ' }
+
+.print-site-enumerate-headings #limitations > h1:before { content: '3.3 ' }
 
 .print-site-enumerate-headings #section-4 > h1:before { content: '4 ' }
 .print-site-enumerate-headings #quickstart > h1:before { content: '4.1 ' }

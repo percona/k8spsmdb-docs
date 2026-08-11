@@ -10,23 +10,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The Operator was developed and tested with Percona Server for MongoDB
-6.0.29-23, 
-7.0.37-20, and 8.0.26-11. Other options may also work but have not been
-tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
-2.15.0.">
+        <meta name="description" content="This page describes known limitations of Percona Operator for MongoDB. Understanding these constraints helps you plan deployments and avoid unexpected behavior.">
       
       
         <meta name="author" content="Percona LLC">
       
       
-        <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.0/System-Requirements.html">
+        <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.0/limitations.html">
       
       
-        <link rel="prev" href="what-next.html">
+        <link rel="prev" href="compare.html">
       
       
-        <link rel="next" href="minikube.html">
+        <link rel="next" href="quickstart.html">
       
       
         
@@ -37,7 +33,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
     
     
       
-        <title>System requirements - Percona Operator for MongoDB</title>
+        <title>Known limitations - Percona Operator for MongoDB</title>
       
     
     
@@ -109,7 +105,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
                  
                  
                  <meta property="og:type" content="website" />
-                 <meta property="og:title" content="Percona Operator for MongoDB - System requirements" />
+                 <meta property="og:title" content="Percona Operator for MongoDB - Known limitations" />
                  <meta property="og:image" content="https://docs.percona.com/percona-operator-for-mongodb/latest/assets/images/kubernetes-operators.png">
                  <meta property="og:url" content="https://docs.percona.com/percona-operator-for-mongodb/latest/index.html">
                 </head>
@@ -136,7 +132,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
     <div data-md-component="skip">
       
         
-        <a href="#system-requirements" class="md-skip">
+        <a href="#known-limitations" class="md-skip">
           Skip to content
         </a>
       
@@ -243,7 +239,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              System requirements
+              Known limitations
             
           </span>
         </div>
@@ -460,18 +456,20 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -492,7 +490,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -563,10 +561,37 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="limitations.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known limitations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="limitations.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -582,6 +607,109 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-and-cpu-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware and CPU requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware and CPU requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#x86-64-v3-cpu-microarchitecture-operator-1220-and-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backups-and-restores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups and restores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-cluster-and-multi-region-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-cluster and multi-region deployments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-and-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking and exposure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-and-vector-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search and vector search
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-replication-with-percona-clustersync-for-mongodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-time replication with Percona ClusterSync for MongoDB
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -931,20 +1059,18 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -965,7 +1091,7 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -980,37 +1106,10 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System requirements
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="System-Requirements.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="System-Requirements.html" class="md-nav__link">
         
   
   
@@ -1026,70 +1125,6 @@ tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#officially-supported-platforms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Officially supported platforms
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cpu-microarchitecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CPU microarchitecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resource-limits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource Limits
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installation guidelines
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -7353,7 +7388,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
                     <div data-banner="data-banner" class="edit-contrib-banner">
     <div class="banner-content">
       <!-- Edit link centered -->
-      <a href="https://github.com/percona/k8spsmdb-docs/edit/main/docs/System-Requirements.md" title="Edit this page on GitHub" class="edit-page-link">
+      <a href="https://github.com/percona/k8spsmdb-docs/edit/main/docs/limitations.md" title="Edit this page on GitHub" class="edit-page-link">
         <span class="edit-page-icon">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
@@ -7412,10 +7447,38 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#officially-supported-platforms" class="md-nav__link">
+  <a href="#hardware-and-cpu-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Officially supported platforms
+        Hardware and CPU requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware and CPU requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#x86-64-v3-cpu-microarchitecture-operator-1220-and-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backups-and-restores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups and restores
       
     </span>
   </a>
@@ -7423,10 +7486,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#cpu-microarchitecture" class="md-nav__link">
+  <a href="#multi-cluster-and-multi-region-deployments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CPU microarchitecture
+        Multi-cluster and multi-region deployments
       
     </span>
   </a>
@@ -7434,10 +7497,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#resource-limits" class="md-nav__link">
+  <a href="#networking-and-exposure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resource Limits
+        Networking and exposure
       
     </span>
   </a>
@@ -7445,10 +7508,21 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation-guidelines" class="md-nav__link">
+  <a href="#search-and-vector-search" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation guidelines
+        Search and vector search
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-replication-with-percona-clustersync-for-mongodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-time replication with Percona ClusterSync for MongoDB
       
     </span>
   </a>
@@ -7501,75 +7575,74 @@ window.addEventListener('afterprint', (event) => {
     
       
     
-    <a href="https://github.com/percona/k8spsmdb-docs/raw/main/docs/System-Requirements.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/percona/k8spsmdb-docs/raw/main/docs/limitations.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="system-requirements">System Requirements<a class="headerlink" href="#system-requirements" title="Permanent link">&para;</a></h1>
-<p>The Operator was developed and tested with Percona Server for MongoDB
-6.0.29-23, 
-7.0.37-20, and 8.0.26-11. Other options may also work but have not been
-tested. The Operator 1.23.0 also uses Percona Backup for MongoDB
-2.15.0.</p>
-<h2 id="officially-supported-platforms">Officially supported platforms<a class="headerlink" href="#officially-supported-platforms" title="Permanent link">&para;</a></h2>
-<p>The following platforms were tested and are officially supported by the Operator
-1.23.0:</p>
+<h1 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h1>
+<p>This page describes known limitations of Percona Operator for MongoDB. Understanding these constraints helps you plan deployments and avoid unexpected behavior.</p>
+<h2 id="hardware-and-cpu-requirements">Hardware and CPU requirements<a class="headerlink" href="#hardware-and-cpu-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="x86-64-v3-cpu-microarchitecture-operator-1220-and-later">x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)<a class="headerlink" href="#x86-64-v3-cpu-microarchitecture-operator-1220-and-later" title="Permanent link">&para;</a></h3>
+<p>Starting with Operator version <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a>, the Operator image is based on <a href="https://catalog.redhat.com/software/base-images">Red Hat Universal Base Image (UBI) 10 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. RHEL 10 / UBI 10 requires the <strong>x86-64-v3</strong> CPU microarchitecture on <code>amd64</code> hosts. That level includes AVX2, BMI1, BMI2, and FMA (roughly Intel Haswell 2013 or newer, or AMD Excavator 2015 or newer).</p>
+<p>This requirement is stricter than the <a href="https://docs.percona.com/percona-server-for-mongodb/8.0/install/system-requirements.html">AVX requirement for MongoDB 5.0 and later <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.</p>
+<h2 id="backups-and-restores">Backups and restores<a class="headerlink" href="#backups-and-restores" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 1.33 - 1.35</li>
-<li><a href="https://aws.amazon.com">Amazon Elastic Kubernetes Service (EKS) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 1.33 - 1.36</li>
-<li><a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 1.34 - 1.36</li>
-<li><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">OpenShift Container Platform <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 4.18 - 4.22 </li>
-<li><a href="https://www.rancher.com/">Rancher <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> with Rancher Kubernetes Engine (RKE2) 1.33 - 1.35  </li>
-<li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> 1.38.1 with Kubernetes v1.35.1</li>
+<li>Point-in-time recovery and selective restore are not available for <a href="backups-pvc-snapshots.html">PVC snapshot backups</a> (type <code>external</code>).</li>
+<li>When you delete an incremental base backup, Percona Backup for MongoDB also deletes all increments that derived from it from the backup storage. The <code>percona.com/delete-backup</code> finalizer applies to the base backup and is ignored for increments. This means that the Operator deletes the Backup resource for the base incremental backup but the Backup resources for increments remain because the Operator doesn&rsquo;t control their deletion.</li>
+<li>Restoring a collection under a different name is supported only on replica set clusters for unsharded collections from a full logical backup. It is not supported on sharded clusters. See <a href="backups-restore-new-name.html#limitations">Restore a collection under a different name</a>.</li>
+<li>Selective restores have additional constraints in Percona Backup for MongoDB. See the <a href="https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores">selective restore limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</li>
+<li>After a failed restore, the Operator cannot guarantee data consistency because it does not know at which stage the failure happened. See <a href="backups-restore.html">Restore from a backup</a>.</li>
 </ul>
-<p>Other Kubernetes platforms may also work but have not been tested.</p>
-<h2 id="cpu-microarchitecture">CPU microarchitecture<a class="headerlink" href="#cpu-microarchitecture" title="Permanent link">&para;</a></h2>
-<p>Starting with version 1.22.0, the Operator base image was upgraded from UBI 9 to UBI 10.</p>
-<p>RHEL 10 / UBI 10 enforces a minimum CPU microarchitecture of <strong>x86-64-v3</strong> on <code>amd64</code> (requires AVX2, BMI1, BMI2, FMA — Intel Haswell 2013+ / AMD Excavator 2015+).</p>
-<h2 id="resource-limits">Resource Limits<a class="headerlink" href="#resource-limits" title="Permanent link">&para;</a></h2>
-<p>A cluster running an officially supported platform contains at least 3 Nodes
-and the following resources (if <a href="sharding.html">sharding</a> is
-turned off):</p>
+<h2 id="multi-cluster-and-multi-region-deployments">Multi-cluster and multi-region deployments<a class="headerlink" href="#multi-cluster-and-multi-region-deployments" title="Permanent link">&para;</a></h2>
 <ul>
-<li>2GB of RAM,</li>
-<li>2 CPU threads per Node for Pods provisioning,</li>
-<li>at least 60GB of available storage for Private Volumes provisioning.</li>
+<li>The Operator cannot place MongoDB Pods in other data centers by itself. Cross-site topologies need an Operator deployment on each site, with unmanaged clusters registered as <code>externalNodes</code> on the Main site. Setup and scaling require manual operations. See <a href="replication-multi-dc.html">Splitting a replica set across multiple data centers</a>.</li>
+<li>Backups are supported on the Main site only, not on Replica sites in a multi-datacenter replica set split.</li>
+<li>Multi-cluster Services (MCS) can add cloud-provider limits. For example, on GKE all participating Pods must be in the same project. Avoid exporting Services from the <code>default</code> and <code>kube-system</code> namespaces. See <a href="replication-mcs.html">Multi-cluster Services</a>.</li>
+<li>Setting <code>replsets.clusterServiceDNSMode</code> to <code>ServiceMesh</code> supersedes multi-cluster settings. You cannot combine <code>ServiceMesh</code> DNS mode with multi-cluster Services. See the <a href="operator.html#replsetsclusterservicednsmode">Custom Resource options</a>.</li>
 </ul>
-<p>Consider using 4 CPU and 6 GB of RAM if <a href="sharding.html">sharding</a>
-is turned on (the default behavior).</p>
-<p>Also, the number of Replica Set Nodes should not be odd if <a href="arbiter.html">Arbiter</a>
-is not enabled.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Use Storage Class with XFS as the default filesystem if possible
-<a href="https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb">to achieve better MongoDB performance  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</p>
-</div>
-<h2 id="installation-guidelines">Installation guidelines<a class="headerlink" href="#installation-guidelines" title="Permanent link">&para;</a></h2>
-<p>Choose how you wish to install the Operator:</p>
+<h2 id="networking-and-exposure">Networking and exposure<a class="headerlink" href="#networking-and-exposure" title="Permanent link">&para;</a></h2>
+<p>Split horizon DNS has these MongoDB constraints:</p>
 <ul>
-<li><a href="helm.html">with Helm</a></li>
-<li><a href="kubectl.html">with <code>kubectl</code></a></li>
-<li><a href="minikube.html">on Minikube</a></li>
-<li><a href="gke.html">on Google Kubernetes Engine (GKE)</a></li>
-<li><a href="eks.html">on Amazon Elastic Kubernetes Service (AWS EKS)</a></li>
-<li><a href="aks.html">on Microsoft Azure Kubernetes Service (AKS)</a></li>
-<li><a href="rke2.html">on Rancher Kubernetes Engine (RKE2)</a></li>
-<li><a href="openshift.html">on Openshift</a></li>
-<li><a href="kubernetes.html">in a Kubernetes-based environment</a></li>
+<li>You cannot duplicate domain names in horizons</li>
+<li>You cannot use IP addresses in horizons</li>
+<li>You must set horizons for all Pods of a replica set, or for none of them</li>
+</ul>
+<p>See <a href="expose.html">Exposing the cluster</a>.</p>
+<h2 id="search-and-vector-search">Search and vector search<a class="headerlink" href="#search-and-vector-search" title="Permanent link">&para;</a></h2>
+<p>Percona Search for MongoDB is in the tech preview stage. Notable limits include:</p>
+<ul>
+<li>a single search Pod per replica set or shard, </li>
+<li>no automated embedding, </li>
+<li>no migration from externally managed <code>mongot</code>, and</li>
+<li>search index data is not included in backups. </li>
+</ul>
+<p>See <a href="search-overview.html#limitations">Limitations</a> in the search overview.</p>
+<h2 id="real-time-replication-with-percona-clustersync-for-mongodb">Real-time replication with Percona ClusterSync for MongoDB<a class="headerlink" href="#real-time-replication-with-percona-clustersync-for-mongodb" title="Permanent link">&para;</a></h2>
+<p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. </p>
+<p>Notable constraints:</p>
+<ul>
+<li>Same <strong>major</strong> MongoDB version required on source and target.</li>
+<li>Single source / single target pair only.</li>
+<li>Reverse synchronization is not supported.</li>
+<li>Initial sync is <strong>not resumable</strong>. If PCSM failed during initial sync, it restarts it from scratch.</li>
+<li>PCSM connects to the <strong>primary</strong> only; <code>directConnection</code> to secondaries is ignored.</li>
+<li>Users, roles, and <code>system.*</code> collections are not synchronized.</li>
+<li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
+<li>External authentication (LDAP, Kerberos, AWS IAM) is not supported for PCSM connections.</li>
 </ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 11, 2026 09:08:32 UTC">August 11, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 11, 2026 08:56:00 UTC">August 11, 2026</span>
       
         <br>
         Created:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 8, 2022 16:41:31 UTC">August 8, 2022</span>
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 11, 2026 08:56:00 UTC">August 11, 2026</span>
       
     
   </small>
