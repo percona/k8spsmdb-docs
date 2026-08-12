@@ -2,682 +2,682 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/index.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/System-Requirements.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/TLS.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/aks.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/annotations.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/api.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/app-users.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/arbiter.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/architecture.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/auth-bypass-localhost.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/auth-disable.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backup-resource-options.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backup-tutorial.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-delete.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-encryption.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-move-from-external-db.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-ondemand.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-pitr.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-pvc-setup.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-pvc-snapshots.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-pvc-usage.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-restore-new-name.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-restore-replset-remapping.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-restore-to-new-cluster.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-restore.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-scheduled.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-azure.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-filesystem.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-gcp.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-minio.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-oci.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-oss.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage-s3.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups-storage.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/backups.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/cluster-wide.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/clustersync-options.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/clustersync-setup.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/clustersync.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/compare.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/connect.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/connection-secrets.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/constraints.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/copyright.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/cr-statuses.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/custom-install.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/custom-registry.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/data-insert.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug-backup-restore.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug-images.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug-logs.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug-shell.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug-storage.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/debug.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/delete.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/eks.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/encryption-keyfile.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/encryption-vault-tls.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/encryption-vault.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/encryption.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/env-vars-cluster.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/env-vars-custom.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/env-vars-operator.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/everest.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/expose.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/faq.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/get-help.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/gke.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/helm.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/hookscript.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/image-query.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/images.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/kubectl.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/kubernetes.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/ldap.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/legal-notice.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/limitations.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/logrotate.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/minikube.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/monitor-kubernetes.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/monitoring-tutorial.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/monitoring.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/multi-storage.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/oidc.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/openshift.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/operator.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/options-pbm.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/options.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/pause.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/persistent-logging.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/private.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/quickstart.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/reconciliation-concurrency.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-apply-mcs-existing.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-backups.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-failover.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-interconnect.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-main.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-mcs-eks.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-mcs-gke.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-mcs.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-multi-dc.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-plan-deployment.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication-replica.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/replication.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/restore-options.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/rke2.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/scaling.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/search-overview.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/search-setup.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/sharding.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/sidecar.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/storage.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/system-users-vault-setup.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/system-users-vault.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/system-users.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/telemetry.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/tls-cert-management-policy.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/tls-cert-manager.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/tls-disable.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/tls-manual.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/tls-update.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/trademark-policy.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/troubleshoot-operator.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-crd-helm.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-crd-manual.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-crd-olm.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-db.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-major.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-minor-automatic.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-minor-set-version.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update-operator.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update_manually.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/update_openshift.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/users.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/versions.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/volume-attributes-class.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/what-next.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/index.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.0/RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.html</loc>
-         <lastmod>2026-08-11</lastmod>
+         <lastmod>2026-08-12</lastmod>
     </url>
 </urlset>

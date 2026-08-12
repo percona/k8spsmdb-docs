@@ -7700,6 +7700,24 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 </div>
 </div>
 <h2 id="install-the-victoria-metrics-kubernetes-monitoring-stack">Install the Victoria Metrics Kubernetes monitoring stack<a class="headerlink" href="#install-the-victoria-metrics-kubernetes-monitoring-stack" title="Permanent link">&para;</a></h2>
+<details class="admonition">
+<summary>Install on OpenShift</summary>
+<p>When installing the chart on OpenShift, some components might require additional Security Context Constraints (SCCs), depending on the permissions they need at runtime.</p>
+<p>The <code>prometheus-node-exporter</code> component runs as a DaemonSet and requires access to host-level resources such as <code>/proc</code>, <code>/sys</code>, and other node-level paths. Because these are exposed through <code>hostPath</code> mounts, the service account used by <code>prometheus-node-exporter</code> must be granted an SCC that allows host access, such as <code>hostaccess</code>, <code>hostmount-anyuid</code>, or a custom SCC with equivalent permissions.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </span>add-scc-to-user<span class="w"> </span>node-exporter<span class="w"> </span><span class="se">\</span>
+-z<span class="w"> </span>prometheus-node-exporter<span class="w"> </span><span class="se">\</span>
+-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>Similarly, for <code>kube-state-metrics</code>, if the <code>restricted</code> SCC is enforced, avoid setting fixed user, group, or filesystem group IDs. Allow OpenShift to assign these values from the namespace UID/GID range by either adding the service account to the required SCC or by adding the following entries to the values YAML file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">kube-state-metrics</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">    </span><span class="nt">runAsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">    </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+</code></pre></div>
+<p>Next, follow the steps to install Victoria Metrics Kubernetes Monitoring stack.</p>
+</details>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 5.5a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2m-3.6 13.9 1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3A7.3 7.3 0 0 0 22 13v-2c-1.76.03-3.4-.89-4.3-2.4l-1-1.6c-.36-.6-1-1-1.7-1-.3 0-.5.1-.8.1L9 8.3V13h2V9.6l1.8-.7-1.6 8.1-4.9-1-.4 2zM4 9a1 1 0 0 1-1-1 1 1 0 0 1 1-1h3v2zm1-4a1 1 0 0 1-1-1 1 1 0 0 1 1-1h5v2zm-2 8a1 1 0 0 1-1-1 1 1 0 0 1 1-1h4v2z"/></svg></span> Quick install</label><label for="__tabbed_3_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256.5 8a120 120 0 1 1 0 240 120 120 0 1 1 0-240m-29.8 296h60.9c-12.9 26.8-7.8 58.2 11.5 79.5-20.2 22.3-24.8 55.8-9.4 83.4l22.5 40.4c.9 1.6 1.9 3.2 2.9 4.7h-237c-16.4 0-29.7-13.3-29.7-29.7 0-98.5 79.8-178.3 178.3-178.3m205.9-56.4c0-13.3 10.7-24 24-24h48c13.3 0 24 10.7 24 24v6.1c0 18.9 24.1 32.8 40.5 23.4l5-2.9c11.6-6.7 26.5-2.6 33 9.1l22.4 40.2c6.2 11.2 2.6 25.2-8.2 32l-4.7 2.9c-16.2 10.1-16.2 39.9 0 50.1l4.6 2.9c10.8 6.8 14.5 20.8 8.3 32L607 483.8c-6.5 11.7-21.4 15.9-33 9.1l-4.9-2.9c-16.4-9.5-40.5 4.5-40.5 23.4v6.1c0 13.3-10.7 24-24 24h-48c-13.3 0-24-10.7-24-24v-5.9c0-19-24.2-33-40.7-23.5l-4.8 2.8c-11.6 6.7-26.4 2.6-33-9.1l-22.6-40.4c-6.2-11.2-2.6-25.3 8.3-32.1l4.4-2.7c16.3-10.1 16.3-40.1 0-50.2l-4.5-2.8c-10.9-6.8-14.5-20.9-8.3-32.1l22.5-40.3c6.5-11.7 21.4-15.8 32.9-9.1l4.8 2.8c16.5 9.5 40.7-4.5 40.7-23.5v-5.9zm99.9 136.2a52 52 0 1 0-104 0 52 52 0 1 0 104 0"/></svg></span> Install manually</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -7716,12 +7734,12 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 <li><code>NAMESPACE</code> - The namespace where the Victoria metrics Kubernetes stack will be installed. If you haven&rsquo;t created the namespace before, it will be created during the command execution.</li>
 </ul>
 <p>We recommend to use a separate namespace like <code>monitoring-system</code>.</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsL<span class="w">  </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/quick-install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--api-key<span class="w"> </span>&lt;PMM-SERVER-TOKEN&gt;<span class="w"> </span>--pmm-server-url<span class="w"> </span>&lt;PMM-SERVER-URL&gt;<span class="w"> </span>--k8s-cluster-id<span class="w"> </span>&lt;UNIQUE-K8s-CLUSTER-IDENTIFIER&gt;<span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsL<span class="w">  </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/quick-install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--api-key<span class="w"> </span>&lt;PMM-SERVER-TOKEN&gt;<span class="w"> </span>--pmm-server-url<span class="w"> </span>&lt;PMM-SERVER-URL&gt;<span class="w"> </span>--k8s-cluster-id<span class="w"> </span>&lt;UNIQUE-K8s-CLUSTER-IDENTIFIER&gt;<span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Prometheus node exporter is not installed by default since it requires privileged containers with the access to the host file system. If you need the metrics for Nodes, add the <code>--node-exporter-enabled</code> flag as follows:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsL<span class="w">  </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/quick-install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--api-key<span class="w"> </span>&lt;PMM-SERVER-TOKEN&gt;<span class="w"> </span>--pmm-server-url<span class="w"> </span>&lt;PMM-SERVER-URL&gt;<span class="w"> </span>--k8s-cluster-id<span class="w"> </span>&lt;UNIQUE-K8s-CLUSTER-IDENTIFIER&gt;<span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>--node-exporter-enabled
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsL<span class="w">  </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/quick-install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>--api-key<span class="w"> </span>&lt;PMM-SERVER-TOKEN&gt;<span class="w"> </span>--pmm-server-url<span class="w"> </span>&lt;PMM-SERVER-URL&gt;<span class="w"> </span>--k8s-cluster-id<span class="w"> </span>&lt;UNIQUE-K8s-CLUSTER-IDENTIFIER&gt;<span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>--node-exporter-enabled
 </code></pre></div>
 </div>
 </li>
@@ -7782,8 +7800,8 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 <h4 id="create-a-configmap-to-mount-for-kube-state-metrics">Create a ConfigMap to mount for <code>kube-state-metrics</code><a class="headerlink" href="#create-a-configmap-to-mount-for-kube-state-metrics" title="Permanent link">&para;</a></h4>
 <p>The <a href="https://github.com/kubernetes/kube-state-metrics"><code>kube-state-metrics</code> (KSM) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> is a simple service that listens to the Kubernetes API server and generates metrics about the state of various objects - Pods, Deployments, Services and Custom Resources.</p>
 <p>To define what metrics the <code>kube-state-metrics</code> should capture, create the <a href="https://github.com/kubernetes/kube-state-metrics/blob/main/docs/customresourcestate-metrics.md#configuration">ConfigMap <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> and mount it to a container.</p>
-<p>Use the <a href="https://github.com/Percona-Lab/k8s-monitoring/blob/refs/tags/v0.1.2/vm-operator-k8s-stack/ksm-configmap.yaml">example <code>configmap.yaml</code> configuration file <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> to create the ConfigMap.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/ksm-configmap.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+<p>Use the <a href="https://github.com/Percona-Lab/k8s-monitoring/blob/refs/tags/v0.1.3/vm-operator-k8s-stack/ksm-configmap.yaml">example <code>configmap.yaml</code> configuration file <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> to create the ConfigMap.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/ksm-configmap.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>As a result, you have the <code>customresource-config-ksm</code> ConfigMap created.</p>
 <h4 id="install-the-victoria-metrics-kubernetes-monitoring-stack_1">Install the Victoria Metrics Kubernetes monitoring stack<a class="headerlink" href="#install-the-victoria-metrics-kubernetes-monitoring-stack_1" title="Permanent link">&para;</a></h4>
@@ -7807,20 +7825,20 @@ helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </sp
 <li>
 <p>Install the Victoria Metrics Kubernetes monitoring stack Helm chart. You need to specify the following configuration:</p>
 <ul>
-<li>the URL to access the PMM server in the <code>externalVM.write.url</code> option in the format <code>&lt;PMM-SERVER-URL&gt;/victoriametrics/api/v1/write</code>. The URL can contain either the IP address or the hostname of the PMM server.</li>
+<li>the URL to access the PMM server in the <code>external.vm.write.url</code> option is in the format <code>&lt;PMM-SERVER-URL&gt;/victoriametrics/api/v1/write</code>. The URL can contain either the IP address or the hostname of the PMM server.</li>
 <li>the unique name or an ID of the Kubernetes cluster in the <code>vmagent.spec.externalLabels.k8s_cluster_id</code> option. Ensure to set different values if you are sending metrics from multiple Kubernetes clusters to the same PMM Server. </li>
 <li>the <code>&lt;namespace&gt;</code> placeholder with your value. The Namespace must be the same as the Namespace for the Secret and ConfigMap</li>
 </ul>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>vm-k8s<span class="w"> </span>vm/victoria-metrics-k8s-stack<span class="w"> </span><span class="se">\</span>
--f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/values.yaml<span class="w"> </span><span class="se">\</span>
---set<span class="w"> </span>externalVM.write.url<span class="o">=</span>&lt;PMM-SERVER-URL&gt;/victoriametrics/api/v1/write<span class="w"> </span><span class="se">\</span>
+-f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/values.yaml<span class="w"> </span><span class="se">\</span>
+--set<span class="w"> </span>external.vm.write.url<span class="o">=</span>&lt;PMM-SERVER-URL&gt;/victoriametrics/api/v1/write<span class="w"> </span><span class="se">\</span>
 --set<span class="w"> </span>vmagent.spec.externalLabels.k8s_cluster_id<span class="o">=</span>&lt;UNIQUE-CLUSTER-IDENTIFIER/NAME&gt;<span class="w"> </span><span class="se">\</span>
 -n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>To illustrate, say your PMM Server URL is <code>https://pmm-example.com</code>, the cluster ID is <code>test-cluster</code> and the Namespace is <code>monitoring-system</code>. Then the command would look like this:</p>
 <div class="no-copy highlight"><pre><span></span><code>$<span class="w"> </span>helm<span class="w"> </span>install<span class="w"> </span>vm-k8s<span class="w"> </span>vm/victoria-metrics-k8s-stack<span class="w"> </span><span class="se">\</span>
--f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/values.yaml<span class="w"> </span><span class="se">\</span>
---set<span class="w"> </span>externalVM.write.url<span class="o">=</span>https://pmm-example.com/victoriametrics/api/v1/write<span class="w"> </span><span class="se">\</span>
+-f<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/values.yaml<span class="w"> </span><span class="se">\</span>
+--set<span class="w"> </span>external.vm.write.url<span class="o">=</span>https://pmm-example.com/victoriametrics/api/v1/write<span class="w"> </span><span class="se">\</span>
 --set<span class="w"> </span>vmagent.spec.externalLabels.k8s_cluster_id<span class="o">=</span>test-cluster<span class="w"> </span><span class="se">\</span>
 -n<span class="w"> </span>monitoring-system
 </code></pre></div>
@@ -7877,12 +7895,12 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Replace the <code>&lt;NAMESPACE&gt;</code> placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: </p>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-fsL<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/cleanup.sh<span class="o">)</span><span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-fsL<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/cleanup.sh<span class="o">)</span><span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <p>Replace the <code>&lt;NAMESPACE&gt;</code> placeholder with the namespace you specified during the Victoria metrics Kubernetes stack installation: </p>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-fsL<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.2/vm-operator-k8s-stack/cleanup.sh<span class="o">)</span><span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>--keep-crd<span class="w"> </span>
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-fsL<span class="w"> </span>https://raw.githubusercontent.com/Percona-Lab/k8s-monitoring/refs/tags/v0.1.3/vm-operator-k8s-stack/cleanup.sh<span class="o">)</span><span class="w"> </span>--namespace<span class="w"> </span>&lt;NAMESPACE&gt;<span class="w"> </span>--keep-crd<span class="w"> </span>
 </code></pre></div>
 </div>
 </div>
@@ -7899,7 +7917,7 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="February 13, 2026 13:26:11 UTC">February 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 11, 2026 13:48:39 UTC">August 11, 2026</span>
       
         <br>
         Created:
