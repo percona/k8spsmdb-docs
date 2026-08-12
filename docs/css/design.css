@@ -214,10 +214,13 @@
 .md-tabs__link {
     margin-top: 0.55rem;
 }
-.md-header__topic {
+/* Fade only the site/page title text. Do not set opacity on
+   .md-header__topic itself — Material mounts .md-version inside it,
+   and parent opacity makes the version dropdown translucent. */
+.md-header__topic > .md-ellipsis {
     transition: opacity .25s;
 }
-.md-header__topic:hover {
+.md-header__topic:hover > .md-ellipsis {
     opacity: 0.7;
 }
 
