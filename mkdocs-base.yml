@@ -122,10 +122,10 @@ plugins:
   git-revision-date-localized:
     enable_creation_date: true
     enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
-  git-committers:
-    enabled: !ENV [CI, false]
-    repository: k8spsmdb-docs
-    branch: "main"
+#  git-committers:
+  #  enabled: !ENV [CI, false]
+  #  repository: k8spsmdb-docs
+  #  branch: "main"
   open-in-new-tab: {}
   meta-descriptions:
     export_csv: false
@@ -177,6 +177,7 @@ nav:
     - Features:
           - "Design and architecture": architecture.md
           - "Comparison with other solutions": compare.md
+          - "Known limitations": limitations.md
           
     - Quickstart guides:
           - Overview: quickstart.md

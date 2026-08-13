@@ -70,3 +70,12 @@
 .md-banner * {
   font-family: "Poppins", sans-serif !important;
 }
+
+/* Version switcher: keep dropdown surface solid in light/dark.
+   Material already sets background-color; reinforce it here so
+   custom header styles cannot wash it out. Parent .md-header__topic
+   must not use opacity (see design.css) or this still looks translucent. */
+.md-version__list {
+  background-color: var(--md-default-bg-color);
+  color: var(--md-typeset-color);
+}
