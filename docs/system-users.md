@@ -6,7 +6,7 @@ Credentials for these users are stored in a [Kubernetes Secrets :octicons-link-e
 
 ## System users Secrets
 
-The default name of the Secrets object for the system users is `percona-server-mongodb-users`. It is referenced in the `spec.secrets.users` field of the Custom Resource.
+The default name of the Secrets object for the system users is `percona-server-mongodb-users`. If `spec.secrets.users` is defined in the Custom Resource, the Operator uses that name instead. The sample configuration sets this field to `<cluster-name>-secrets` (for example, `my-cluster-name-secrets`).
 
 Aside from this Secret, the Operator creates an internal secret for its own internal purposes. See [Internal Secret and its usage](#internal-secret-and-its-usage) to learn more.
 
