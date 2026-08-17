@@ -7603,8 +7603,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name</span>
 <span class="w">  </span><span class="nt">backupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup1</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test&quot;</span>
-<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test_remapped&quot;</span>
+<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test"</span>
+<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>In this example, PBM restores <code>myApp.test</code> from the backup as <code>myApp.test_remapped</code>. The original <code>myApp.test</code> collection on the cluster is unchanged.</p>
 <p>Start the restore:</p>
@@ -7616,8 +7616,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name</span>
 <span class="w">  </span><span class="nt">backupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup1</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test&quot;</span>
-<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;analytics.test_copy&quot;</span>
+<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test"</span>
+<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"analytics.test_copy"</span>
 </code></pre></div>
 <p>Here, data from <code>myApp.test</code> in the backup is restored as <code>analytics.test_copy</code>. The Operator creates the target database if it does not exist. Ensure that <code>analytics.test_copy</code> does not already exist before you start the restore.</p>
 <h2 id="point-in-time-recovery-with-namespace-remapping">Point-in-time recovery with namespace remapping<a class="headerlink" href="#point-in-time-recovery-with-namespace-remapping" title="Permanent link">&para;</a></h2>
@@ -7631,10 +7631,10 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">backupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup1</span>
 <span class="w">  </span><span class="nt">pitr</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date</span>
-<span class="w">    </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-03-01</span><span class="nv"> </span><span class="s">14:30:00&quot;</span>
+<span class="w">    </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-03-01</span><span class="nv"> </span><span class="s">14:30:00"</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test&quot;</span>
-<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test_remapped&quot;</span>
+<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test"</span>
+<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>PBM restores the collection from the backup and replays oplog events for that namespace up to the specified time, writing the result to <code>nsTo</code>.</p>
 <h2 id="restore-to-a-different-cluster">Restore to a different cluster<a class="headerlink" href="#restore-to-a-different-cluster" title="Permanent link">&para;</a></h2>
@@ -7660,8 +7660,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-west-2</span>
 <span class="w">      </span><span class="nt">endpointUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://URL-OF-THE-S3-COMPATIBLE-STORAGE</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test&quot;</span>
-<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test_remapped&quot;</span>
+<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test"</span>
+<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>You can also define storage on the target cluster’s <code>cr.yaml</code> and reference it with <code>storageName</code> instead of embedding credentials in <code>backupSource</code>. See <a href="backups-restore-to-new-cluster.html">Restore to a new Kubernetes-based environment</a> for storage configuration details.</p>
 <p>This restore adds one collection to the target cluster. It does not replace the whole cluster data.</p>

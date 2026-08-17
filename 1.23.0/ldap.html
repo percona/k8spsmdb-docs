@@ -7608,7 +7608,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Create a read-only user for the database-issued user lookups. Use the following command, resetting the percona user password:</p>
-<div class="highlight"><pre><span></span><code>ldappasswd<span class="w"> </span>-s<span class="w"> </span>percona<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;cn=admin,dc=ldap,dc=local&quot;</span><span class="w"> </span>-w<span class="w"> </span>password<span class="w"> </span>-x<span class="w"> </span><span class="s2">&quot;uid=percona,ou=perconadba,dc=ldap,dc=local&quot;</span>
+<div class="highlight"><pre><span></span><code>ldappasswd<span class="w"> </span>-s<span class="w"> </span>percona<span class="w"> </span>-D<span class="w"> </span><span class="s2">"cn=admin,dc=ldap,dc=local"</span><span class="w"> </span>-w<span class="w"> </span>password<span class="w"> </span>-x<span class="w"> </span><span class="s2">"uid=percona,ou=perconadba,dc=ldap,dc=local"</span>
 </code></pre></div>
 </li>
 </ol>
@@ -7629,24 +7629,24 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p>Create a configuration Secret for mongod. This fragment provides <code>mongod</code> configuration with LDAP-specific parameters, such as the FQDN of the LDAP server (<code>servers</code>), the explicit lookup user, domain rules, and more.</p>
 <div class="highlight"><span class="filename">my_mongod.conf</span><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="w">  </span><span class="nt">ldap</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">authz</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">queryTemplate</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{USER}?memberOf?base&#39;</span>
-<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openldap&quot;</span>
+<span class="w">      </span><span class="nt">queryTemplate</span><span class="p">:</span><span class="w"> </span><span class="s">'{USER}?memberOf?base'</span>
+<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">"openldap"</span>
 <span class="w">    </span><span class="nt">transportSecurity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
 <span class="w">    </span><span class="nt">bind</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cn=readonly,dc=ldap,dc=local&quot;</span>
-<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;password&quot;</span>
+<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">"cn=readonly,dc=ldap,dc=local"</span>
+<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">"password"</span>
 <span class="w">    </span><span class="nt">userToDNMapping</span><span class="p">:</span>
-<span class="w">      </span><span class="s">&#39;[</span>
+<span class="w">      </span><span class="s">'[</span>
 <span class="w">          </span><span class="s">{</span>
-<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">&quot;(.+)&quot;,</span>
-<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">&quot;OU=perconadba,DC=ldap,DC=local??sub?(uid={0})&quot;</span>
+<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">"(.+)",</span>
+<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">"OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"</span>
 <span class="w">          </span><span class="s">}</span>
-<span class="w">  </span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="s">]'</span>
 <span class="nt">setParameter</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PLAIN,SCRAM-SHA-256&#39;</span>
+<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">'PLAIN,SCRAM-SHA-256'</span>
 </code></pre></div>
 </li>
 <li>
@@ -7661,37 +7661,37 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Create roles for the ‘external’ user inside the MongoDB. This user is managed by LDAP. For this, log into MongoDB as administrator:</p>
-<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span><span class="s2">&quot;mongodb+srv://userAdmin:&lt;userAdmin_password&gt;@&lt;your_cluster_name&gt;-rs0.&lt;your_namespace&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false&quot;</span>
+<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span><span class="s2">"mongodb+srv://userAdmin:&lt;userAdmin_password&gt;@&lt;your_cluster_name&gt;-rs0.&lt;your_namespace&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false"</span>
 </code></pre></div>
 <p>When logged in, execute the following:</p>
-<div class="highlight" data-prompt="admin>"><pre><span></span><code><span class="nx">admin</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">).</span><span class="nx">createRole</span><span class="p">(</span>
+<div class="highlight" data-prompt="admin>"><pre><span></span><code><span class="nx">admin</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">).</span><span class="nx">createRole</span><span class="p">(</span>
 <span class="p">{</span>
-<span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cn=admin,ou=perconadba,dc=ldap,dc=local&quot;</span><span class="p">,</span>
+<span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">"cn=admin,ou=perconadba,dc=ldap,dc=local"</span><span class="p">,</span>
 <span class="nx">privileges</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
 <span class="nx">roles</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;readAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"readAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dbAdminAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"dbAdminAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;clusterMonitor&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"clusterMonitor"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;readWriteAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"readWriteAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"restore"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"backup"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">],</span>
 <span class="p">}</span>
@@ -7706,7 +7706,7 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Now the new <code>percona</code> user created inside OpenLDAP is able to login to MongoDB as administrator. Verify whether the user role has been identified correctly with the following command:</p>
-<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span>--username<span class="w"> </span>percona<span class="w"> </span>--password<span class="w"> </span><span class="s1">&#39;percona&#39;</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span><span class="s1">&#39;PLAIN&#39;</span><span class="w"> </span>--authenticationDatabase<span class="w"> </span><span class="s1">&#39;$external&#39;</span><span class="w"> </span>--host<span class="w"> </span>&lt;mongodb-rs-endpoint&gt;<span class="w"> </span>--port<span class="w"> </span><span class="m">27017</span>
+<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span>--username<span class="w"> </span>percona<span class="w"> </span>--password<span class="w"> </span><span class="s1">'percona'</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span><span class="s1">'PLAIN'</span><span class="w"> </span>--authenticationDatabase<span class="w"> </span><span class="s1">'$external'</span><span class="w"> </span>--host<span class="w"> </span>&lt;mongodb-rs-endpoint&gt;<span class="w"> </span>--port<span class="w"> </span><span class="m">27017</span>
 </code></pre></div>
 <p>When logged in, execute the following:</p>
 <div class="highlight" data-prompt="admin>"><pre><span></span><code><span class="nx">admin</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">runCommand</span><span class="p">({</span><span class="nx">connectionStatus</span><span class="o">:</span><span class="mf">1</span><span class="p">})</span>
@@ -7714,53 +7714,53 @@ window.addEventListener('afterprint', (event) => {
 <details class="example">
 <summary>Sample output</summary>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="nt">&quot;authInfo&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;authenticatedUsers&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="nt">"authInfo"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"authenticatedUsers"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;user&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;percona&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$external&quot;</span>
+<span class="w">      </span><span class="nt">"user"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"percona"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"$external"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;authenticatedUserRoles&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"authenticatedUserRoles"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"restore"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;readAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"readAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;clusterMonitor&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"clusterMonitor"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dbAdminAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"dbAdminAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"backup"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cn=admin,ou=perconadba,dc=ldap,dc=local&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"cn=admin,ou=perconadba,dc=ldap,dc=local"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;readWriteAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"readWriteAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">},</span>
-<span class="nt">&quot;ok&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="nt">&quot;$clusterTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;clusterTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;signature&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;hash&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Bi</span><span class="kc">n</span><span class="err">Da</span><span class="kc">ta</span><span class="err">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;ZaLGSVj4ZwZrngXZSOqXB5rx+oo=&quot;</span><span class="err">)</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;keyId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">NumberLo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;7142816031004688408&quot;</span><span class="err">)</span>
+<span class="nt">"ok"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">"$clusterTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"clusterTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"signature"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"hash"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Bi</span><span class="kc">n</span><span class="err">Da</span><span class="kc">ta</span><span class="err">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">"ZaLGSVj4ZwZrngXZSOqXB5rx+oo="</span><span class="err">)</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"keyId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">NumberLo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">"7142816031004688408"</span><span class="err">)</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">},</span>
-<span class="nt">&quot;operationTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span>
+<span class="nt">"operationTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span>
 <span class="p">}</span>
 </code></pre></div>
 </details>
@@ -7779,47 +7779,47 @@ window.addEventListener('afterprint', (event) => {
 <li>Create configuration Secrets for the <code>mongos</code> and the configuration server replica set respectively.</li>
 </ol>
 <p>Example Secret for <code>mongos</code>:</p>
-<div class="highlight"><pre><span></span><code>```yaml title=&quot;my_mongos.conf&quot;
+<div class="highlight"><pre><span></span><code>```yaml title="my_mongos.conf"
 security:
   ldap:
-    servers: &quot;openldap&quot;
+    servers: "openldap"
     transportSecurity: none
     bind:
-      queryUser: &quot;cn=readonly,dc=ldap,dc=local&quot;
-      queryPassword: &quot;password&quot;
+      queryUser: "cn=readonly,dc=ldap,dc=local"
+      queryPassword: "password"
     userToDNMapping:
-      &#39;[
+      '[
           {
-            match : &quot;(.+)&quot;,
-            ldapQuery: &quot;OU=perconadba,DC=ldap,DC=local??sub?(uid={0})&quot;
+            match : "(.+)",
+            ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
           }
-    ]&#39;
+    ]'
 setParameter:
-  authenticationMechanisms: &#39;PLAIN,SCRAM-SHA-256&#39;
+  authenticationMechanisms: 'PLAIN,SCRAM-SHA-256'
 ```
 
 Example Secret for the configuration server replica set:
 
-```yaml title=&quot;my_mongod.conf&quot;
+```yaml title="my_mongod.conf"
 security:
-  authorization: &quot;enabled&quot;
+  authorization: "enabled"
   ldap:
     authz:
-      queryTemplate: &#39;{USER}?memberOf?base&#39;
-    servers: &quot;openldap&quot;
+      queryTemplate: '{USER}?memberOf?base'
+    servers: "openldap"
     transportSecurity: none
     bind:
-      queryUser: &quot;cn=readonly,dc=ldap,dc=local&quot;
-      queryPassword: &quot;password&quot;
+      queryUser: "cn=readonly,dc=ldap,dc=local"
+      queryPassword: "password"
     userToDNMapping:
-      &#39;[
+      '[
           {
-            match : &quot;(.+)&quot;,
-            ldapQuery: &quot;OU=perconadba,DC=ldap,DC=local??sub?(uid={0})&quot;
+            match : "(.+)",
+            ldapQuery: "OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"
           }
-    ]&#39;
+    ]'
 setParameter:
-  authenticationMechanisms: &#39;PLAIN,SCRAM-SHA-256&#39;
+  authenticationMechanisms: 'PLAIN,SCRAM-SHA-256'
 ```
 
 Both files are pretty much the same except the `authz` subsection, which is only present for the configuration server replica set.
@@ -7841,37 +7841,37 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 </li>
 <li>
 <p>Create roles for the ‘external’ user inside the MongoDB. This user is managed by LDAP. For this, log into MongoDB as administrator:</p>
-<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span><span class="s2">&quot;mongodb://userAdmin:&lt;userAdmin_password&gt;@&lt;your_cluster_name&gt;-mongos.&lt;your_namespace&gt;.svc.cluster.local/admin?ssl=false&quot;</span>
+<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span><span class="s2">"mongodb://userAdmin:&lt;userAdmin_password&gt;@&lt;your_cluster_name&gt;-mongos.&lt;your_namespace&gt;.svc.cluster.local/admin?ssl=false"</span>
 </code></pre></div>
 <p>When logged in, execute the following:</p>
-<div class="highlight" data-prompt="mongos>"><pre><span></span><code><span class="nx">mongos</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">).</span><span class="nx">createRole</span><span class="p">(</span>
+<div class="highlight" data-prompt="mongos>"><pre><span></span><code><span class="nx">mongos</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">).</span><span class="nx">createRole</span><span class="p">(</span>
 <span class="p">{</span>
-<span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cn=admin,ou=perconadba,dc=ldap,dc=local&quot;</span><span class="p">,</span>
+<span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">"cn=admin,ou=perconadba,dc=ldap,dc=local"</span><span class="p">,</span>
 <span class="nx">privileges</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
 <span class="nx">roles</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;readAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"readAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dbAdminAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"dbAdminAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;clusterMonitor&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"clusterMonitor"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;readWriteAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"readWriteAnyDatabase"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"restore"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;role&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;db&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">    </span><span class="s2">"role"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"backup"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"db"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">],</span>
 <span class="p">}</span>
@@ -7883,7 +7883,7 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 </li>
 <li>
 <p>Now the new <code>percona</code> user created inside OpenLDAP is able to login to MongoDB as administrator. Verify whether the user role has been identified correctly with the following command:</p>
-<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span>--username<span class="w"> </span>percona<span class="w"> </span>--password<span class="w"> </span><span class="s1">&#39;percona&#39;</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span><span class="s1">&#39;PLAIN&#39;</span><span class="w"> </span>--authenticationDatabase<span class="w"> </span><span class="s1">&#39;$external&#39;</span><span class="w"> </span>--host<span class="w"> </span>&lt;your_cluster_name&gt;-mongos<span class="w"> </span>--port<span class="w"> </span><span class="m">27017</span>
+<div class="highlight"><pre><span></span><code>mongo<span class="w"> </span>--username<span class="w"> </span>percona<span class="w"> </span>--password<span class="w"> </span><span class="s1">'percona'</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span><span class="s1">'PLAIN'</span><span class="w"> </span>--authenticationDatabase<span class="w"> </span><span class="s1">'$external'</span><span class="w"> </span>--host<span class="w"> </span>&lt;your_cluster_name&gt;-mongos<span class="w"> </span>--port<span class="w"> </span><span class="m">27017</span>
 </code></pre></div>
 <p>When logged in, execute the following:</p>
 <div class="highlight" data-prompt="mongos>"><pre><span></span><code><span class="nx">mongos</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">runCommand</span><span class="p">({</span><span class="nx">connectionStatus</span><span class="o">:</span><span class="mf">1</span><span class="p">})</span>
@@ -7891,53 +7891,53 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 <details class="example">
 <summary>Sample output</summary>
 <div class="highlight" data-prompt="mongos>"><pre><span></span><code><span class="p">{</span>
-<span class="nt">&quot;authInfo&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;authenticatedUsers&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="nt">"authInfo"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"authenticatedUsers"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;user&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;percona&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$external&quot;</span>
+<span class="w">      </span><span class="nt">"user"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"percona"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"$external"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;authenticatedUserRoles&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"authenticatedUserRoles"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"restore"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;readAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"readAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;clusterMonitor&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"clusterMonitor"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dbAdminAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"dbAdminAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"backup"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cn=admin,ou=perconadba,dc=ldap,dc=local&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"cn=admin,ou=perconadba,dc=ldap,dc=local"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;readWriteAnyDatabase&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;db&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"readWriteAnyDatabase"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"db"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">},</span>
-<span class="nt">&quot;ok&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="nt">&quot;$clusterTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;clusterTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;signature&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;hash&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Bi</span><span class="kc">n</span><span class="err">Da</span><span class="kc">ta</span><span class="err">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;ZaLGSVj4ZwZrngXZSOqXB5rx+oo=&quot;</span><span class="err">)</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;keyId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">NumberLo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;7142816031004688408&quot;</span><span class="err">)</span>
+<span class="nt">"ok"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">"$clusterTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"clusterTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"signature"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"hash"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Bi</span><span class="kc">n</span><span class="err">Da</span><span class="kc">ta</span><span class="err">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">"ZaLGSVj4ZwZrngXZSOqXB5rx+oo="</span><span class="err">)</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"keyId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">NumberLo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">"7142816031004688408"</span><span class="err">)</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">},</span>
-<span class="nt">&quot;operationTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span>
+<span class="nt">"operationTime"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="mi">1663067287</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="err">)</span>
 <span class="p">}</span>
 <span class="err">mo</span><span class="kc">n</span><span class="err">gos&gt;</span>
 </code></pre></div>
@@ -7968,42 +7968,42 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 <p>It is also necessary to change the value of transportSecurity to <code>tls</code> in mongod and mongos configurations. The configuration is similar to one described at the <a href="https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side">The MongoDB and Operator side</a> subsection:</p>
 <p>Changed mongod configuration should look as follows:</p>
 <div class="highlight"><span class="filename">my_mongod.conf</span><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="w">  </span><span class="nt">ldap</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">authz</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">queryTemplate</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{USER}?memberOf?base&#39;</span>
-<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openldap&quot;</span>
+<span class="w">      </span><span class="nt">queryTemplate</span><span class="p">:</span><span class="w"> </span><span class="s">'{USER}?memberOf?base'</span>
+<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">"openldap"</span>
 <span class="hll"><span class="w">    </span><span class="nt">transportSecurity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls</span>
 </span><span class="w">    </span><span class="nt">bind</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cn=readonly,dc=ldap,dc=local&quot;</span>
-<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;password&quot;</span>
+<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">"cn=readonly,dc=ldap,dc=local"</span>
+<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">"password"</span>
 <span class="w">    </span><span class="nt">userToDNMapping</span><span class="p">:</span>
-<span class="w">      </span><span class="s">&#39;[</span>
+<span class="w">      </span><span class="s">'[</span>
 <span class="w">          </span><span class="s">{</span>
-<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">&quot;(.+)&quot;,</span>
-<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">&quot;OU=perconadba,DC=ldap,DC=local??sub?(uid={0})&quot;</span>
+<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">"(.+)",</span>
+<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">"OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"</span>
 <span class="w">          </span><span class="s">}</span>
-<span class="w">   </span><span class="s">]&#39;</span>
+<span class="w">   </span><span class="s">]'</span>
 <span class="nt">setParameter</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PLAIN,SCRAM-SHA-256&#39;</span>
+<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">'PLAIN,SCRAM-SHA-256'</span>
 </code></pre></div>
 <p>If <strong>sharding is on</strong>, you will also need to change mongos configuration:</p>
 <div class="highlight"><span class="filename">my_mongos.conf</span><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ldap</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openldap&quot;</span>
+<span class="w">    </span><span class="nt">servers</span><span class="p">:</span><span class="w"> </span><span class="s">"openldap"</span>
 <span class="hll"><span class="w">    </span><span class="nt">transportSecurity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls</span>
 </span><span class="w">    </span><span class="nt">bind</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cn=readonly,dc=ldap,dc=local&quot;</span>
-<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;password&quot;</span>
+<span class="w">      </span><span class="nt">queryUser</span><span class="p">:</span><span class="w"> </span><span class="s">"cn=readonly,dc=ldap,dc=local"</span>
+<span class="w">      </span><span class="nt">queryPassword</span><span class="p">:</span><span class="w"> </span><span class="s">"password"</span>
 <span class="w">    </span><span class="nt">userToDNMapping</span><span class="p">:</span>
-<span class="w">      </span><span class="s">&#39;[</span>
+<span class="w">      </span><span class="s">'[</span>
 <span class="w">          </span><span class="s">{</span>
-<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">&quot;(.+)&quot;,</span>
-<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">&quot;OU=perconadba,DC=ldap,DC=local??sub?(uid={0})&quot;</span>
+<span class="w">            </span><span class="s">match</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">"(.+)",</span>
+<span class="w">            </span><span class="s">ldapQuery:</span><span class="nv"> </span><span class="s">"OU=perconadba,DC=ldap,DC=local??sub?(uid={0})"</span>
 <span class="w">          </span><span class="s">}</span>
-<span class="w">    </span><span class="s">]&#39;</span>
+<span class="w">    </span><span class="s">]'</span>
 <span class="nt">setParameter</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PLAIN,SCRAM-SHA-256&#39;</span>
+<span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="s">'PLAIN,SCRAM-SHA-256'</span>
 </code></pre></div>
 </li>
 </ol>

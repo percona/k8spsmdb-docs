@@ -7510,7 +7510,7 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Pause the cluster. Since the cluster is running, run the <code>kubectl patch</code> command to update the cluster configuration. Replace the <code>&lt;namespace&gt;</code> placeholder with your namespace. For example, for the cluster with the name <code>my-cluster-name</code>, the command is:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="w"> </span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/pause&quot;,&quot;value&quot;:true}]&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="w"> </span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[{"op":"add","path":"/spec/pause","value":true}]'</span>
 </code></pre></div>
 </li>
 <li>
@@ -7543,7 +7543,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local:27017   pause
 </li>
 <li>
 <p>Now resume the cluster with the <code>kubectl patch</code> command: </p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="w"> </span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/pause&quot;,&quot;value&quot;:false}]&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="w"> </span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[{"op":"add","path":"/spec/pause","value":false}]'</span>
 </code></pre></div>
 </li>
 <li>

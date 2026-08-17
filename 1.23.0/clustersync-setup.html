@@ -7931,7 +7931,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Set namespace as environment variable:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span><span class="s2">&quot;psmdb-operator&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span><span class="s2">"psmdb-operator"</span>
 </code></pre></div>
 </li>
 </ol>
@@ -7961,8 +7961,8 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Find the Secret name referenced in your source cluster&rsquo;s CR under <code>spec.secrets.users</code> and export it as environment variable. Run this command to check your cluster&rsquo;s configuration:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">SOURCESECRET</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-source-cluster<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.secrets.users}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SOURCESECRET</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">SOURCESECRET</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-source-cluster<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.secrets.users}'</span><span class="k">)</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$SOURCESECRET</span><span class="s2">"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7973,7 +7973,7 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p>Connect to the <code>mongos</code> Primary Pod as the <code>databaseAdmin</code> user:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-it<span class="w"> </span>my-source-cluster-mongos-0<span class="w"> </span>-c<span class="w"> </span>mongos<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-mongosh<span class="w"> </span>admin<span class="w"> </span>-u<span class="w"> </span>databaseAdmin<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="nv">$SOURCESECRET</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.MONGODB_DATABASE_ADMIN_PASSWORD}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+mongosh<span class="w"> </span>admin<span class="w"> </span>-u<span class="w"> </span>databaseAdmin<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="nv">$SOURCESECRET</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.MONGODB_DATABASE_ADMIN_PASSWORD}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">'\n'</span><span class="k">)</span><span class="s2">"</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -7982,10 +7982,10 @@ mongosh<span class="w"> </span>admin<span class="w"> </span>-u<span class="w"> <
 </li>
 <li>
 <p>Create the source user with these roles: <code>backup</code>, <code>clusterMonitor</code>, and <code>readAnyDatabase</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">).</span><span class="nx">createUser</span><span class="p">({</span>
-<span class="w">  </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;pcsmSource&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">pwd</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;s3cretPassw0rd&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">roles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;backup&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;clusterMonitor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;readAnyDatabase&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">).</span><span class="nx">createUser</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="s2">"pcsmSource"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">pwd</span><span class="o">:</span><span class="w"> </span><span class="s2">"s3cretPassw0rd"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">roles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"backup"</span><span class="p">,</span><span class="w"> </span><span class="s2">"clusterMonitor"</span><span class="p">,</span><span class="w"> </span><span class="s2">"readAnyDatabase"</span><span class="p">]</span>
 <span class="p">})</span>
 </code></pre></div>
 <p>For more details, see <a href="https://docs.percona.com/percona-clustersync-for-mongodb/install/docker.html">Configure authentication in PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</p>
@@ -8041,18 +8041,18 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 <span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
 <span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">crVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.23.0&quot;</span>
+<span class="w">  </span><span class="nt">crVersion</span><span class="p">:</span><span class="w"> </span><span class="s">"1.23.0"</span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-server-mongodb:8.0.26-11</span>
 <span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;600m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"600m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 <span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;300m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"300m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 <span class="w">      </span><span class="nt">volumeSpec</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
@@ -8063,16 +8063,16 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 <span class="w">    </span><span class="nt">configsvrReplSet</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">      </span><span class="nt">affinity</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes.io/hostname&quot;</span>
+<span class="w">        </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 <span class="w">      </span><span class="nt">podDisruptionBudget</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;600m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"600m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 <span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;300m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"300m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 <span class="w">      </span><span class="nt">volumeSpec</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
@@ -8081,14 +8081,14 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 <span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">      </span><span class="nt">affinity</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes.io/hostname&quot;</span>
+<span class="w">        </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 <span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;600m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"600m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 <span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;300m&quot;</span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+<span class="w">          </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"300m"</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
 </code></pre></div>
 <p>Apply the manifest and wait until the cluster is ready:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr-target.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -8182,12 +8182,12 @@ my-cluster-sync   my-target-cluster   running   running            39m
 <h3 id="pause-replication">Pause replication<a class="headerlink" href="#pause-replication" title="Permanent link">&para;</a></h3>
 <p>To pause replication, change the replication mode to <code>paused</code> in the Custom Resource. Since it is a running deployment, a recommended way is to patch it.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;mode&quot;:&quot;paused&quot;}}&#39;</span>
+<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"paused"}}'</span>
 </code></pre></div>
 <h3 id="resume-replication">Resume replication<a class="headerlink" href="#resume-replication" title="Permanent link">&para;</a></h3>
 <p>To resume replication, change the replication mode to <code>running</code>.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;mode&quot;:&quot;running&quot;}}&#39;</span>
+<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"running"}}'</span>
 </code></pre></div>
 <h3 id="finalize-the-replication">Finalize the replication<a class="headerlink" href="#finalize-the-replication" title="Permanent link">&para;</a></h3>
 <p>To finalize replication, change the replication mode to <code>finalized</code>.</p>
@@ -8200,7 +8200,7 @@ my-cluster-sync   my-target-cluster   running   running            39m
 <li>
 <p>When the <code>LAG(S)</code> value is acceptable and you are ready to complete the migration, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;mode&quot;:&quot;finalized&quot;}}&#39;</span>
+<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"finalized"}}'</span>
 </code></pre></div>
 </li>
 <li>
@@ -8237,7 +8237,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <h3 id="status-shows-failed">Status shows <code>failed</code><a class="headerlink" href="#status-shows-failed" title="Permanent link">&para;</a></h3>
 <p>Inspect the error:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}{&quot;\n&quot;}{.status.error}{&quot;\n&quot;}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.error}{"\n"}'</span>
 </code></pre></div>
 <p>If <code>spec.mode</code> is <code>running</code>, the Operator retries with <code>pcsm resume --from-failure</code> for recoverable failures after initial sync.</p>
 <p>If the failure keeps recurring:</p>
@@ -8245,7 +8245,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <li>
 <p>Pause replication to stop retries:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;mode&quot;:&quot;paused&quot;}}&#39;</span>
+<span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"paused"}}'</span>
 </code></pre></div>
 </li>
 <li>

@@ -7917,7 +7917,7 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <p>Also, update the namespace in each Secret to point to the target namespace. Depending on the topology you chose, the target namespaces are: <code>$REPLICA1</code>/<code>$REPLICA2</code> for the replica clusters, or <code>$REPLICA</code>/ <code>$ARBITER</code> for the PSA. </p>
 <p>Replace the <code>&lt;target-namespace&gt;</code>, <code>&lt;cluster-name&gt;-&lt;secret-name&gt;</code> placeholders as needed in the following command:</p>
 <div class="highlight"><pre><span></span><code>```bash
-sed -i.bak &quot;s/namespace: $MAIN/namespace: $REPLICA/&quot; &quot;&lt;cluster-name&gt;-&lt;secret-name&gt;.yaml&quot;
+sed -i.bak "s/namespace: $MAIN/namespace: $REPLICA/" "&lt;cluster-name&gt;-&lt;secret-name&gt;.yaml"
 ```
 </code></pre></div>
 <p>As a result you should have the full set of Secret files for each unmanaged site you will deploy: </p>
@@ -8197,7 +8197,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <ol>
 <li>
 <p>Get the <code>databaseAdmin</code> password from the Main site:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>main-cluster-secrets<span class="w"> </span>-n<span class="w"> </span><span class="nv">$MAIN</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.data.MONGODB_DATABASE_ADMIN_PASSWORD}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>main-cluster-secrets<span class="w"> </span>-n<span class="w"> </span><span class="nv">$MAIN</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">"{.data.MONGODB_DATABASE_ADMIN_PASSWORD}"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
 </code></pre></div>
 </li>
 <li>

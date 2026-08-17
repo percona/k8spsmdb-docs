@@ -7468,7 +7468,7 @@ window.addEventListener('afterprint', (event) => {
 <p>The <strong>Version Service</strong> is a centralized repository that the Percona Operator for MySQL connects to at scheduled times to get the latest information on compatible versions and valid image paths. This service is a crucial part of the automatic upgrade process, and it is enabled by default. Its landing page, <code>check.percona.com</code>, provides more details about the service itself.</p>
 <h3 id="how-to-query-the-version-service">How to query the Version Service<a class="headerlink" href="#how-to-query-the-version-service" title="Permanent link">&para;</a></h3>
 <p>You can manually query the Version Service using the <code>curl</code> command. The basic syntax is:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/&lt;operator-version&gt;/&lt;psmdb-version&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.versions[].matrix&#39;</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/&lt;operator-version&gt;/&lt;psmdb-version&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.versions[].matrix'</span>
 </code></pre></div>
 <p>where:</p>
 <ul>
@@ -7476,51 +7476,51 @@ window.addEventListener('afterprint', (event) => {
 <li><strong><code>&lt;psmdb-version&gt;</code></strong> is the version of Percona Server for MongoDB you want to get images for. This part is optional and helps filter the results. It can be a specific Percona Server for MongoDB version (e.g. 8.0.8-3), a recommended version (e.g. 7.0-recommended), or the latest available version (e.g. 8.0-latest).</li>
 </ul>
 <p>For example, to retrieve the list of images for the Operator version <code>1.20.0</code> and the latest version of Percona Server for MongoDB 8.0, use the following command:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/1.20.0/8.0-latest<span class="w"> </span><span class="p">|</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.versions[].matrix&#39;</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/1.20.0/8.0-latest<span class="w"> </span><span class="p">|</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.versions[].matrix'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>{
-&quot;mongod&quot;: {
-    &quot;8.0.8-3&quot;: {
-        &quot;imagePath&quot;: &quot;percona/percona-server-mongodb:8.0.8-3&quot;,
-        &quot;imageHash&quot;: &quot;e4580ca292f07fd7800e139121aea4b2c1dfa6aa34f3657d25a861883fd3de41&quot;,
-        &quot;imageHashArm64&quot;: &quot;96cfee2102499aba05e63ca7862102c2b1da1cf9f4eea0cbea3793a07c183925&quot;,
-        &quot;status&quot;: &quot;available&quot;,
-        &quot;critical&quot;: false
+"mongod": {
+    "8.0.8-3": {
+        "imagePath": "percona/percona-server-mongodb:8.0.8-3",
+        "imageHash": "e4580ca292f07fd7800e139121aea4b2c1dfa6aa34f3657d25a861883fd3de41",
+        "imageHashArm64": "96cfee2102499aba05e63ca7862102c2b1da1cf9f4eea0cbea3793a07c183925",
+        "status": "available",
+        "critical": false
     }
 },
-&quot;pmm&quot;: {
-    &quot;2.44.1&quot;: {
-        &quot;imagePath&quot;: &quot;percona/pmm-client:2.44.1&quot;,
-        &quot;imageHash&quot;: &quot;8b2eaddffd626f02a2d5318ffebc0c277fe8457da6083b8cfcada9b6e6168616&quot;,
-        &quot;imageHashArm64&quot;: &quot;337fecd4afdb3f6daf2caa2b341b9fe41d0418a0e4ec76980c7f29be9d08b5ea&quot;,
-        &quot;status&quot;: &quot;recommended&quot;,
-        &quot;critical&quot;: false
+"pmm": {
+    "2.44.1": {
+        "imagePath": "percona/pmm-client:2.44.1",
+        "imageHash": "8b2eaddffd626f02a2d5318ffebc0c277fe8457da6083b8cfcada9b6e6168616",
+        "imageHashArm64": "337fecd4afdb3f6daf2caa2b341b9fe41d0418a0e4ec76980c7f29be9d08b5ea",
+        "status": "recommended",
+        "critical": false
     }
 },
-&quot;backup&quot;: {
-    &quot;2.9.1&quot;: {
-        &quot;imagePath&quot;: &quot;percona/percona-backup-mongodb:2.9.1&quot;,
-        &quot;imageHash&quot;: &quot;976bfbaa548eb70dd90bf0bd2dcfe40b2994d749ef644af3a0590f4856e4d7e2&quot;,
-        &quot;imageHashArm64&quot;: &quot;ebc6e5c5aa3ed97991d3fd90e9201597b485ddc0eae8d7ee4311ecb785c03bf0&quot;,
-        &quot;status&quot;: &quot;recommended&quot;,
-        &quot;critical&quot;: false
+"backup": {
+    "2.9.1": {
+        "imagePath": "percona/percona-backup-mongodb:2.9.1",
+        "imageHash": "976bfbaa548eb70dd90bf0bd2dcfe40b2994d749ef644af3a0590f4856e4d7e2",
+        "imageHashArm64": "ebc6e5c5aa3ed97991d3fd90e9201597b485ddc0eae8d7ee4311ecb785c03bf0",
+        "status": "recommended",
+        "critical": false
     }
 },
-&quot;operator&quot;: {
-    &quot;1.20.0&quot;: {
-        &quot;imagePath&quot;: &quot;percona/percona-server-mongodb-operator:1.20.0&quot;,
-        &quot;imageHash&quot;: &quot;01da3139b0f7f64a27f3642ca06581ea065a02891b13ce2375d61471011d6dd4&quot;,
-        &quot;imageHashArm64&quot;: &quot;26d885398af42d18928f51f070aff770df900eb5ddf46e3e0bc2570720089bb1&quot;,
-        &quot;status&quot;: &quot;recommended&quot;,
-        &quot;critical&quot;: false
+"operator": {
+    "1.20.0": {
+        "imagePath": "percona/percona-server-mongodb-operator:1.20.0",
+        "imageHash": "01da3139b0f7f64a27f3642ca06581ea065a02891b13ce2375d61471011d6dd4",
+        "imageHashArm64": "26d885398af42d18928f51f070aff770df900eb5ddf46e3e0bc2570720089bb1",
+        "status": "recommended",
+        "critical": false
     }
 },
 </code></pre></div>
 </details>
 <p>To narrow down the search and check the Percona Server for MySQL images available for a specific Operator version (<code>1.20.1</code> in the following example), use the following command:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/1.20.1<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.versions[0].matrix.mongod | to_entries[] | &quot;\(.key)\t\(.value.imagePath)\t\(.value.status)&quot;&#39;</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/1.20.1<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.versions[0].matrix.mongod | to_entries[] | "\(.key)\t\(.value.imagePath)\t\(.value.status)"'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>

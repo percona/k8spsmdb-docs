@@ -7971,14 +7971,14 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Export the namespaces and other variables as environment variables to simplify further configuration:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span><span class="s2">&quot;vault&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_NAMESPACE</span><span class="o">=</span><span class="s2">&quot;psmdb&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_HELM_VERSION</span><span class="o">=</span><span class="s2">&quot;0.30.0&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">SERVICE</span><span class="o">=</span><span class="s2">&quot;vault&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">CSR_NAME</span><span class="o">=</span><span class="s2">&quot;vault-csr&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">SECRET_NAME_VAULT</span><span class="o">=</span><span class="s2">&quot;vault-secret&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">POLICY_NAME</span><span class="o">=</span><span class="s2">&quot;operator&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">WORKDIR</span><span class="o">=</span><span class="s2">&quot;/tmp/vault&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span><span class="s2">"vault"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_NAMESPACE</span><span class="o">=</span><span class="s2">"psmdb"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_HELM_VERSION</span><span class="o">=</span><span class="s2">"0.30.0"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SERVICE</span><span class="o">=</span><span class="s2">"vault"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CSR_NAME</span><span class="o">=</span><span class="s2">"vault-csr"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SECRET_NAME_VAULT</span><span class="o">=</span><span class="s2">"vault-secret"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">POLICY_NAME</span><span class="o">=</span><span class="s2">"operator"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">WORKDIR</span><span class="o">=</span><span class="s2">"/tmp/vault"</span>
 </code></pre></div>
 </li>
 <li>
@@ -8023,7 +8023,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Certificate extensions</strong> (<code>[v3_req]</code>): Defines how the certificate can be used. <code>serverAuth</code> allows the certificate for server authentication, while <code>keyUsage</code> specifies the cryptographic operations the certificate supports (non-repudiation, digital signature, and key encipherment).</li>
 <li><strong>Subject Alternative Names</strong> (<code>[alt_names]</code>): Lists all DNS names and IP addresses where your Vault service can be accessed. This includes the service name, fully qualified domain names (FQDNs) for different Kubernetes DNS contexts (namespace-scoped, cluster-scoped with <code>.svc</code>, and fully qualified with <code>.svc.cluster.local</code>), and the localhost IP address.</li>
 </ul>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/csr.conf&quot;</span><span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/csr.conf"</span><span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 <span class="s">[req]</span>
 <span class="s">default_bits = 2048</span>
 <span class="s">prompt = no</span>
@@ -8054,7 +8054,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Generate the CSR. The following command creates the Certificate Signing Request file using your private key and the configuration file.</p>
 <p>The <code>-subj</code> parameter specifies the distinguished name directly: the Common Name (CN) identifies your Vault service using the Kubernetes node naming convention (<code>system:node:${SERVICE}.${NAMESPACE}.svc</code>), and the Organization (O) field is set to <code>system:nodes</code>, which Kubernetes requires to recognize and sign the certificate. The command combines these subject fields with the certificate extensions defined in the configuration file to produce the complete CSR.</p>
 <div class="highlight"><pre><span></span><code>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-key<span class="w"> </span><span class="nv">$WORKDIR</span>/vault.key<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=system:node:</span><span class="si">${</span><span class="nv">SERVICE</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">.svc;/O=system:nodes&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-subj<span class="w"> </span><span class="s2">"/CN=system:node:</span><span class="si">${</span><span class="nv">SERVICE</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">.svc;/O=system:nodes"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-out<span class="w"> </span><span class="nv">$WORKDIR</span>/server.csr<span class="w"> </span>-config<span class="w"> </span><span class="nv">$WORKDIR</span>/csr.conf
 </code></pre></div>
 </li>
@@ -8078,7 +8078,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="s">spec:</span>
 <span class="s">  groups:</span>
 <span class="s">  - system:authenticated</span>
-<span class="s">  request: $(cat $WORKDIR/server.csr | base64 | tr -d &#39;\n&#39;)</span>
+<span class="s">  request: $(cat $WORKDIR/server.csr | base64 | tr -d '\n')</span>
 <span class="s">  signerName: kubernetes.io/kubelet-serving</span>
 <span class="s">  usages:</span>
 <span class="s">  - digital signature</span>
@@ -8114,7 +8114,7 @@ vault-csr   16s   kubernetes.io/kubelet-serving   minikube-user   &lt;none&gt;  
 <ol>
 <li>
 <p>Retrieve the signed certificate from the CertificateSigningRequest object. The certificate is base64-encoded in Kubernetes, so you decode it and save it to a file.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>csr<span class="w"> </span><span class="si">${</span><span class="nv">CSR_NAME</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.certificate}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$WORKDIR</span>/vault.crt
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>csr<span class="w"> </span><span class="si">${</span><span class="nv">CSR_NAME</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.certificate}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$WORKDIR</span>/vault.crt
 </code></pre></div>
 </li>
 <li>
@@ -8124,7 +8124,7 @@ vault-csr   16s   kubernetes.io/kubelet-serving   minikube-user   &lt;none&gt;  
 <span class="w">  </span>--raw<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--minify<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--flatten<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.clusters[].cluster.certificate-authority-data}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.clusters[].cluster.certificate-authority-data}'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span>/vault.ca
 </code></pre></div>
 </li>
@@ -8152,37 +8152,37 @@ helm<span class="w"> </span>repo<span class="w"> </span>update
 <span class="w">  </span>--disable-openapi-validation<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--version<span class="w"> </span><span class="si">${</span><span class="nv">VAULT_HELM_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--namespace<span class="w"> </span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;global.enabled=true&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;global.tlsDisable=false&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;global.platform=kubernetes&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"global.enabled=true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"global.tlsDisable=false"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"global.platform=kubernetes"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--set<span class="w"> </span>server.extraEnvironmentVars.VAULT_CACERT<span class="o">=</span>/vault/userconfig/<span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span>/vault.ca<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.extraEnvironmentVars.VAULT_TLSCERT=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.crt&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.extraEnvironmentVars.VAULT_TLSKEY=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.key&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumes[0].name=userconfig-</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumes[0].secret.secretName=</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumes[0].secret.defaultMode=420&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumeMounts[0].mountPath=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumeMounts[0].name=userconfig-</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.volumeMounts[0].readOnly=true&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.ha.enabled=true&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.ha.replicas=3&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.ha.raft.enabled=true&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span><span class="s2">&quot;server.ha.raft.setNodeId=true&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set-string<span class="w"> </span><span class="s2">&quot;server.ha.raft.config=cluster_name = \&quot;vault-integrated-storage\&quot;</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.extraEnvironmentVars.VAULT_TLSCERT=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.crt"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.extraEnvironmentVars.VAULT_TLSKEY=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.key"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumes[0].name=userconfig-</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumes[0].secret.secretName=</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumes[0].secret.defaultMode=420"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumeMounts[0].mountPath=/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumeMounts[0].name=userconfig-</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.volumeMounts[0].readOnly=true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.ha.enabled=true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.ha.replicas=3"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.ha.raft.enabled=true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span><span class="s2">"server.ha.raft.setNodeId=true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set-string<span class="w"> </span><span class="s2">"server.ha.raft.config=cluster_name = \"vault-integrated-storage\"</span>
 <span class="s2">ui = true</span>
-<span class="s2">listener \&quot;tcp\&quot; {</span>
+<span class="s2">listener \"tcp\" {</span>
 <span class="s2">  tls_disable = 0</span>
-<span class="s2">  address = \&quot;[::]:8200\&quot;</span>
-<span class="s2">  cluster_address = \&quot;[::]:8201\&quot;</span>
-<span class="s2">  tls_cert_file = \&quot;/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.crt\&quot;</span>
-<span class="s2">  tls_key_file  = \&quot;/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.key\&quot;</span>
-<span class="s2">  tls_client_ca_file = \&quot;/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.ca\&quot;</span>
+<span class="s2">  address = \"[::]:8200\"</span>
+<span class="s2">  cluster_address = \"[::]:8201\"</span>
+<span class="s2">  tls_cert_file = \"/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.crt\"</span>
+<span class="s2">  tls_key_file  = \"/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.key\"</span>
+<span class="s2">  tls_client_ca_file = \"/vault/userconfig/</span><span class="si">${</span><span class="nv">SECRET_NAME_VAULT</span><span class="si">}</span><span class="s2">/vault.ca\"</span>
 <span class="s2">}</span>
-<span class="s2">storage \&quot;raft\&quot; {</span>
-<span class="s2">  path = \&quot;/vault/data\&quot;</span>
+<span class="s2">storage \"raft\" {</span>
+<span class="s2">  path = \"/vault/data\"</span>
 <span class="s2">}</span>
 <span class="s2">disable_mlock = true</span>
-<span class="s2">service_registration \&quot;kubernetes\&quot; {}&quot;</span>
+<span class="s2">service_registration \"kubernetes\" {}"</span>
 </code></pre></div>
 <p>This command does the following:</p>
 <ul>
@@ -8209,7 +8209,7 @@ https://developer.hashicorp.com/vault/docs
 </li>
 <li>
 <p>Retrieve the Pod name where Vault is running:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span><span class="si">${</span><span class="nv">SERVICE</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .items[*]}{.metadata.name}{&quot;\n&quot;}{end}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span><span class="si">${</span><span class="nv">SERVICE</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .items[*]}{.metadata.name}{"\n"}{end}'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8237,10 +8237,10 @@ vault-2
 <li>
 <p>Vault is started in a sealed state. In this state Vault can access the storage but it cannot decrypt data. In order to use Vault, you need to unseal it.</p>
 <p>Retrieve the unseal key from the file:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">unsealKey</span><span class="o">=</span><span class="k">$(</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;.unseal_keys_b64[]&quot;</span><span class="w"> </span>&lt;<span class="w"> </span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span>/vault-init<span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nv">unsealKey</span><span class="o">=</span><span class="k">$(</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">".unseal_keys_b64[]"</span><span class="w"> </span>&lt;<span class="w"> </span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span>/vault-init<span class="k">)</span>
 </code></pre></div>
 <p>Now, unseal Vault. Run the following command:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>vault<span class="w"> </span>operator<span class="w"> </span>unseal<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$unsealKey</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>vault<span class="w"> </span>operator<span class="w"> </span>unseal<span class="w"> </span><span class="s2">"</span><span class="nv">$unsealKey</span><span class="s2">"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8269,13 +8269,13 @@ Raft Applied Index      37
 <li>
 <p>Add the remaining Pods to the Vault cluster. If you have another secret name, replace the <code>vault-secret</code> with your value in the following for loop:</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>POD<span class="w"> </span><span class="k">in</span><span class="w"> </span>vault-1<span class="w"> </span>vault-2<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$POD</span><span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;</span>
+<span class="w">  </span>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$POD</span><span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
 <span class="s1">    vault operator raft join -address=https://${HOSTNAME}.vault-internal:8200 \</span>
-<span class="s1">      -leader-ca-cert=&quot;$(cat /vault/userconfig/vault-secret/vault.ca)&quot; \</span>
-<span class="s1">      -leader-client-cert=&quot;$(cat /vault/userconfig/vault-secret/vault.crt)&quot; \</span>
-<span class="s1">      -leader-client-key=&quot;$(cat /vault/userconfig/vault-secret/vault.key)&quot; \</span>
+<span class="s1">      -leader-ca-cert="$(cat /vault/userconfig/vault-secret/vault.ca)" \</span>
+<span class="s1">      -leader-client-cert="$(cat /vault/userconfig/vault-secret/vault.crt)" \</span>
+<span class="s1">      -leader-client-key="$(cat /vault/userconfig/vault-secret/vault.key)" \</span>
 <span class="s1">      https://vault-0.vault-internal:8200;</span>
-<span class="s1">  &#39;</span>
+<span class="s1">  '</span>
 <span class="k">done</span>
 </code></pre></div>
 <p>The command connects to each Vault Pod (<code>vault-1</code> and <code>vault-2</code>) and issues the <code>vault operator raft join</code> command, which:
@@ -8293,9 +8293,9 @@ Joined    true
 <li>
 <p>Unseal the remaining Pods. Use this for loop:</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>POD<span class="w"> </span><span class="k">in</span><span class="w"> </span>vault-1<span class="w"> </span>vault-2<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$POD</span><span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
-<span class="s2">        vault operator unseal \&quot;</span><span class="nv">$unsealKey</span><span class="s2">\&quot;</span>
-<span class="s2">    &quot;</span>
+<span class="w">    </span>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$POD</span><span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">        vault operator unseal \"</span><span class="nv">$unsealKey</span><span class="s2">\"</span>
+<span class="s2">    "</span>
 <span class="k">done</span>
 </code></pre></div>
 <details class="example">
@@ -8326,7 +8326,7 @@ HA Enabled              true
 <ol>
 <li>
 <p>Extract the Vault root token from the file where you saved the init response output:</p>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span>/vault-init<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;.root_token&quot;</span>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span>/vault-init<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s2">".root_token"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8362,15 +8362,15 @@ HA Enabled              true
 </ol>
 <h3 id="create-the-access-policy-for-the-operator">Create the access policy for the Operator<a class="headerlink" href="#create-the-access-policy-for-the-operator" title="Permanent link">&para;</a></h3>
 <p>Create a policy for accessing the kv engine path and define the required permissions in the <code>capabilities</code> parameter:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault policy write </span><span class="nv">$POLICY_NAME</span><span class="s2"> - &lt;&lt; &#39;EOF&#39;</span>
-<span class="s2">path \&quot;secret/psmdb/operator/*\&quot; {</span>
-<span class="s2">  capabilities = [\&quot;read\&quot;]</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault policy write </span><span class="nv">$POLICY_NAME</span><span class="s2"> - &lt;&lt; 'EOF'</span>
+<span class="s2">path \"secret/psmdb/operator/*\" {</span>
+<span class="s2">  capabilities = [\"read\"]</span>
 <span class="s2">}</span>
 
-<span class="s2">path \&quot;secret/data/psmdb/operator/*\&quot; {</span>
-<span class="s2">  capabilities = [\&quot;read\&quot;]</span>
+<span class="s2">path \"secret/data/psmdb/operator/*\" {</span>
+<span class="s2">  capabilities = [\"read\"]</span>
 <span class="s2">}</span>
-<span class="s2">EOF&quot;</span>
+<span class="s2">EOF"</span>
 </code></pre></div>
 <h3 id="configure-authentication-in-vault">Configure authentication in Vault<a class="headerlink" href="#configure-authentication-in-vault" title="Permanent link">&para;</a></h3>
 <p>Depending on your Vault setup, configure one of the authentication methods:</p>
@@ -8389,7 +8389,7 @@ HA Enabled              true
 <ol>
 <li>
 <p>Enable the Kubernetes authentication method in Vault:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault auth enable kubernetes&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault auth enable kubernetes"</span>
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
@@ -8399,7 +8399,7 @@ HA Enabled              true
 </li>
 <li>
 <p>Configure the Kubernetes endpoint in Vault:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault write auth/kubernetes/config kubernetes_host=https://</span><span class="nv">$KUBERNETES_SERVICE_HOST</span><span class="s2">:</span><span class="nv">$KUBERNETES_SERVICE_PORT</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault write auth/kubernetes/config kubernetes_host=https://</span><span class="nv">$KUBERNETES_SERVICE_HOST</span><span class="s2">:</span><span class="nv">$KUBERNETES_SERVICE_PORT</span><span class="s2">"</span>
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
@@ -8409,7 +8409,7 @@ HA Enabled              true
 </li>
 <li>
 <p>Discover the service account issuer and export it as an environment variable:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">ISSUER</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>--raw<span class="w"> </span>/.well-known/openid-configuration<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.issuer&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">ISSUER</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>--raw<span class="w"> </span>/.well-known/openid-configuration<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.issuer'</span><span class="k">)</span><span class="s2">"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output for GKE</summary>
@@ -8420,12 +8420,12 @@ https://container.googleapis.com/v1/projects/&lt;project-ID&gt;/locations/&lt;re
 </li>
 <li>
 <p>Create a Vault role bound to the Operator Service Account:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NAMESPACE</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault write auth/kubernetes/role/operator \</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$NAMESPACE</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault write auth/kubernetes/role/operator \</span>
 <span class="s2"> bound_service_account_names=percona-server-mongodb-operator \</span>
 <span class="s2"> bound_service_account_namespaces=</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2"> \</span>
 <span class="s2"> policies=operator \</span>
-<span class="s2"> audience=&quot;</span><span class="nv">$ISSUER</span><span class="s2">&quot; \</span>
-<span class="s2"> ttl=1h&quot;</span>
+<span class="s2"> audience="</span><span class="nv">$ISSUER</span><span class="s2">" \</span>
+<span class="s2"> ttl=1h"</span>
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
@@ -8469,18 +8469,18 @@ service-account-percona-server-mongodb-operator   Role/percona-server-mongodb-op
 <ol>
 <li>
 <p>Create a non-root token in Vault using the <a href="#create-the-access-policy-for-the-operator">access policy</a> you created before:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>pod/vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault token create -policy=&quot;</span>operator<span class="s2">&quot; -format=json&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/vault-token.json&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="nb">exec</span><span class="w"> </span>pod/vault-0<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault token create -policy="</span>operator<span class="s2">" -format=json"</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/vault-token.json"</span>
 </code></pre></div>
 </li>
 <li>
 <p>Export a token as an environment variable:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NEW_TOKEN</span><span class="o">=</span><span class="k">$(</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.auth.client_token&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/vault-token.json&quot;</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NEW_TOKEN</span><span class="o">=</span><span class="k">$(</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.auth.client_token'</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">WORKDIR</span><span class="si">}</span><span class="s2">/vault-token.json"</span><span class="k">)</span>
 </code></pre></div>
 </li>
 <li>
 <p>Create a Kubernetes Secret with the token for the namespace where Percona Server for MongoDB is deployed</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>vault-sync-secret<span class="w"> </span><span class="se">\</span>
-<span class="w"> </span>--from-literal<span class="o">=</span><span class="nv">token</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NEW_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span>
+<span class="w"> </span>--from-literal<span class="o">=</span><span class="nv">token</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NEW_TOKEN</span><span class="s2">"</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8502,16 +8502,16 @@ service-account-percona-server-mongodb-operator   Role/percona-server-mongodb-op
 <p>Create a file in JSON format:</p>
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | tee $WORKDIR/passwords.json</span>
 <span class="s">{</span>
-<span class="s">    &quot;MONGODB_USER_ADMIN_USER&quot;: &quot;userAdmin&quot;,</span>
-<span class="s">    &quot;MONGODB_USER_ADMIN_PASSWORD&quot;: &quot;strongPass&quot;,</span>
-<span class="s">    &quot;MONGODB_DATABASE_ADMIN_USER&quot;: &quot;dbAdmin&quot;,</span>
-<span class="s">    &quot;MONGODB_DATABASE_ADMIN_PASSWORD&quot;: &quot;strongPass&quot;,</span>
-<span class="s">    &quot;MONGODB_BACKUP_USER&quot;: &quot;backup&quot;,</span>
-<span class="s">    &quot;MONGODB_BACKUP_PASSWORD&quot;: &quot;strongPass&quot;,</span>
-<span class="s">    &quot;MONGODB_CLUSTER_ADMIN_USER&quot;: &quot;clusterAdmin&quot;,</span>
-<span class="s">    &quot;MONGODB_CLUSTER_ADMIN_PASSWORD&quot;: &quot;strongPass&quot;,</span>
-<span class="s">    &quot;MONGODB_CLUSTER_MONITOR_USER&quot;: &quot;clusterMonitor&quot;,</span>
-<span class="s">    &quot;MONGODB_CLUSTER_MONITOR_PASSWORD&quot;: &quot;strongPass&quot;</span>
+<span class="s">    "MONGODB_USER_ADMIN_USER": "userAdmin",</span>
+<span class="s">    "MONGODB_USER_ADMIN_PASSWORD": "strongPass",</span>
+<span class="s">    "MONGODB_DATABASE_ADMIN_USER": "dbAdmin",</span>
+<span class="s">    "MONGODB_DATABASE_ADMIN_PASSWORD": "strongPass",</span>
+<span class="s">    "MONGODB_BACKUP_USER": "backup",</span>
+<span class="s">    "MONGODB_BACKUP_PASSWORD": "strongPass",</span>
+<span class="s">    "MONGODB_CLUSTER_ADMIN_USER": "clusterAdmin",</span>
+<span class="s">    "MONGODB_CLUSTER_ADMIN_PASSWORD": "strongPass",</span>
+<span class="s">    "MONGODB_CLUSTER_MONITOR_USER": "clusterMonitor",</span>
+<span class="s">    "MONGODB_CLUSTER_MONITOR_PASSWORD": "strongPass"</span>
 <span class="s">}</span>
 <span class="s">EOF</span>
 </code></pre></div>
@@ -8523,7 +8523,7 @@ service-account-percona-server-mongodb-operator   Role/percona-server-mongodb-op
 </li>
 <li>
 <p>Upload the file in Vault:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault kv put -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users/ @/tmp/passwords.json&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault kv put -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users/ @/tmp/passwords.json"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8542,7 +8542,7 @@ version            1
 </li>
 <li>
 <p>Verify the insertion:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault kv get -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users/databaseAdmin&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault kv get -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users/databaseAdmin"</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8647,12 +8647,12 @@ MONGODB_USER_ADMIN_USER             userAdmin
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_mongos_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_mongos_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_rs0_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_rs0_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
 </div>
@@ -8666,7 +8666,7 @@ MONGODB_USER_ADMIN_USER             userAdmin
 </li>
 <li>
 <p>Inside the Pod, connect using the connection string from step 1:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;&lt;connection-string&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span>
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
@@ -8677,7 +8677,7 @@ MONGODB_USER_ADMIN_USER             userAdmin
 </li>
 <li>
 <p>Update the password for the <code>MONGODB_DATABASE_ADMIN_PASSWORD</code> user:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;vault kv patch -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users MONGODB_DATABASE_ADMIN_PASSWORD=&quot;</span>newStrongPass<span class="s2">&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>vault-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">"vault kv patch -mount=secret psmdb/operator/</span><span class="nv">$CLUSTER_NAMESPACE</span><span class="s2">/my-cluster-name/users MONGODB_DATABASE_ADMIN_PASSWORD="</span>newStrongPass<span class="s2">""</span>
 </code></pre></div>
 </li>
 <li>

@@ -7734,7 +7734,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_STRUCTURED</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
 <h3 id="log_level"><code>LOG_LEVEL</code><a class="headerlink" href="#log_level" title="Permanent link">&para;</a></h3>
 <p>Sets the verbosity level of Operator logs.</p>
@@ -7764,7 +7764,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_LEVEL</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DEBUG&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"DEBUG"</span>
 </code></pre></div>
 <h3 id="watch_namespace"><code>WATCH_NAMESPACE</code><a class="headerlink" href="#watch_namespace" title="Permanent link">&para;</a></h3>
 <p>Specifies which namespaces the Operator watches for Custom Resources.</p>
@@ -7792,7 +7792,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration for multi-namespace mode:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WATCH_NAMESPACE</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;psmdb,psmdb-prod&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"psmdb,psmdb-prod"</span>
 </code></pre></div>
 <h3 id="disable_telemetry"><code>DISABLE_TELEMETRY</code><a class="headerlink" href="#disable_telemetry" title="Permanent link">&para;</a></h3>
 <p>Disables telemetry data collection.</p>
@@ -7815,7 +7815,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DISABLE_TELEMETRY</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
 <h3 id="reconcile_interval"><code>RECONCILE_INTERVAL</code><a class="headerlink" href="#reconcile_interval" title="Permanent link">&para;</a></h3>
 <p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).</p>
@@ -7844,7 +7844,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECONCILE_INTERVAL</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;30s&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div>
 <h3 id="max_concurrent_reconciles"><code>MAX_CONCURRENT_RECONCILES</code><a class="headerlink" href="#max_concurrent_reconciles" title="Permanent link">&para;</a></h3>
 <p>Controls the maximum number of concurrent reconciliation operations.</p>
@@ -7867,7 +7867,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAX_CONCURRENT_RECONCILES</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"3"</span>
 </code></pre></div>
 <h3 id="certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code><a class="headerlink" href="#certmanager_namespace" title="Permanent link">&para;</a></h3>
 <p>Specifies the namespace where the Operator creates the intermediate CA
@@ -7902,7 +7902,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CERTMANAGER_NAMESPACE</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cert-manager&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"cert-manager"</span>
 </code></pre></div>
 <h2 id="automatic-environment-variables">Automatic environment variables<a class="headerlink" href="#automatic-environment-variables" title="Permanent link">&para;</a></h2>
 <p>The following values are set by Kubernetes or the deployment manifest and should not be changed:</p>
@@ -7914,11 +7914,11 @@ window.addEventListener('afterprint', (event) => {
 <h3 id="using-kubectl-patch">Using <code>kubectl patch</code><a class="headerlink" href="#using-kubectl-patch" title="Permanent link">&para;</a></h3>
 <p>To update environment variables and keep the existing ones, use the full <code>env</code> list in your patch:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>percona-server-mongodb-operator<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;spec&quot;:{&quot;containers&quot;:[{&quot;name&quot;:&quot;percona-server-mongodb-operator&quot;,&quot;env&quot;:[</span>
-<span class="s1">    {&quot;name&quot;:&quot;POD_NAME&quot;,&quot;valueFrom&quot;:{&quot;fieldRef&quot;:{&quot;fieldPath&quot;:&quot;metadata.name&quot;}}},</span>
-<span class="s1">    {&quot;name&quot;:&quot;OPERATOR_NAME&quot;,&quot;value&quot;:&quot;percona-server-mongodb-operator&quot;},</span>
-<span class="s1">    {&quot;name&quot;:&quot;LOG_LEVEL&quot;,&quot;value&quot;:&quot;DEBUG&quot;}</span>
-<span class="s1">  ]}}]}}}&#39;</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","env":[</span>
+<span class="s1">    {"name":"POD_NAME","valueFrom":{"fieldRef":{"fieldPath":"metadata.name"}}},</span>
+<span class="s1">    {"name":"OPERATOR_NAME","value":"percona-server-mongodb-operator"},</span>
+<span class="s1">    {"name":"LOG_LEVEL","value":"DEBUG"}</span>
+<span class="s1">  ]}}]}}}'</span>
 </code></pre></div>
 <h3 id="using-kubectl-edit">Using <code>kubectl edit</code><a class="headerlink" href="#using-kubectl-edit" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>edit<span class="w"> </span>deployment<span class="w"> </span>percona-server-mongodb-operator

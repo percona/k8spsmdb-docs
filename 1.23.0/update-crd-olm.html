@@ -7548,7 +7548,7 @@ However, OLM doesn&rsquo;t modify the <code>PerconaServerMongoDB</code> Custom R
 <p>Here&rsquo;s how you can customize the Operator Deployment. This example command sets an environment variable for the Operator:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>subscription<span class="w"> </span>percona-server-mongodb-operator<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--type<span class="w"> </span>merge<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;config&quot;:{&quot;env&quot;:[{&quot;name&quot;:&quot;LOG_LEVEL&quot;,&quot;value&quot;:&quot;DEBUG&quot;}]}}}&#39;</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="s1">'{"spec":{"config":{"env":[{"name":"LOG_LEVEL","value":"DEBUG"}]}}}'</span>
 </code></pre></div>
 <p>OLM supports overriding only the following fields through the Subscription:</p>
 <ul>
@@ -7571,17 +7571,17 @@ However, OLM doesn&rsquo;t modify the <code>PerconaServerMongoDB</code> Custom R
 <details class="example">
 <summary>Expected output</summary>
 <div class="no-copy highlight"><pre><span></span><code>...
-&quot;containerImage&quot;: &quot;registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:201092cf97c9ceaaaf3b60dd1b24c7c5228d35aab2674345893f4cd4d9bb0e2e&quot;,
+"containerImage": "registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:201092cf97c9ceaaaf3b60dd1b24c7c5228d35aab2674345893f4cd4d9bb0e2e",
 ...
 </code></pre></div>
 </details>
 </li>
 <li>
 <p><a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">Apply a patch <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> to update the <code>initImage</code> option of your cluster Custom Resource with this value taken from <code>containerImage</code>. Supposing that your cluster name is <code>my-cluster-name</code>, the command should look as follows:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;spec&quot;: {</span>
-<span class="s1">        &quot;initImage&quot;:&quot;registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:201092cf97c9ceaaaf3b60dd1b24c7c5228d35aab2674345893f4cd4d9bb0e2e&quot;</span>
-<span class="s1">        }}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "spec": {</span>
+<span class="s1">        "initImage":"registry.connect.redhat.com/percona/percona-server-mongodb-operator@sha256:201092cf97c9ceaaaf3b60dd1b24c7c5228d35aab2674345893f4cd4d9bb0e2e"</span>
+<span class="s1">        }}'</span>
 </code></pre></div>
 </li>
 <li>

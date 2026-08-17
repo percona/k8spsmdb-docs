@@ -7725,7 +7725,7 @@ my-cluster-name   my-cluster-name-mongos.&lt;namespace&gt;.svc.cluster.local    
 <p>For a sharded cluster, use the value from the <code>databaseAdmin_mongos_connectionString</code> key of the connection Secret. </p>
 <p>Run the following command to retrieve the value:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_mongos_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_mongos_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7733,7 +7733,7 @@ my-cluster-name   my-cluster-name-mongos.&lt;namespace&gt;.svc.cluster.local    
 </code></pre></div>
 </details>
 <p>Alternatively, you can construct the MongoDB connection string URI manually. For the sharded cluster, specify the <code>mongos</code> endpoint. This is the example format:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.&lt;namespace&gt;.svc.cluster.local/admin?authSource=admin&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.&lt;namespace&gt;.svc.cluster.local/admin?authSource=admin"</span>
 </code></pre></div>
 <p>Make sure every part of the connection string reflects your environment:</p>
 <ul>
@@ -7763,7 +7763,7 @@ my-cluster-name   my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local       
 </details>
 <p>To connect to a MongoDB replica set, use the <code>databaseAdmin_&lt;replset&gt;_connectionString</code> or <code>databaseAdmin_&lt;replset&gt;_connectionStringSrv</code> key from the <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code> Secret. See <a href="connection-secrets.html">Connection secrets</a>.</p>
 <p>Alternatively, construct the URI manually. This is the example format:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.&lt;namespace name&gt;.svc.cluster.local/admin?authSource=admin&amp;replicaSet=rs0&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.&lt;namespace name&gt;.svc.cluster.local/admin?authSource=admin&amp;replicaSet=rs0"</span>
 </code></pre></div>
 <p>Make sure every part of the connection string reflects your environment:</p>
 <ul>

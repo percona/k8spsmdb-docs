@@ -7641,8 +7641,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 <span class="w">      </span><span class="nt">privileges</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resource</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
-<span class="w">            </span><span class="nt">collection</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">            </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
+<span class="w">            </span><span class="nt">collection</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
 <span class="w">          </span><span class="nt">actions</span><span class="p">:</span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">find</span>
 <span class="w">      </span><span class="nt">authenticationRestrictions</span><span class="p">:</span>
@@ -7679,15 +7679,15 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Start the <code>mongosh</code> session and create a user:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.&lt;namespace name&gt;.svc.cluster.local/admin?ssl=false&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://userAdmin:userAdmin123456@my-cluster-name--mongos.&lt;namespace name&gt;.svc.cluster.local/admin?ssl=false"</span>
 rs0:PRIMARY&gt;<span class="w"> </span>db.createUser<span class="o">({</span>
-<span class="w">    </span>user:<span class="w"> </span><span class="s2">&quot;myApp&quot;</span>,
-<span class="w">    </span>pwd:<span class="w"> </span><span class="s2">&quot;myAppPassword&quot;</span>,
+<span class="w">    </span>user:<span class="w"> </span><span class="s2">"myApp"</span>,
+<span class="w">    </span>pwd:<span class="w"> </span><span class="s2">"myAppPassword"</span>,
 <span class="w">    </span>roles:<span class="w"> </span><span class="o">[</span>
-<span class="w">      </span><span class="o">{</span><span class="w"> </span>db:<span class="w"> </span><span class="s2">&quot;myApp&quot;</span>,<span class="w"> </span>role:<span class="w"> </span><span class="s2">&quot;readWrite&quot;</span><span class="w"> </span><span class="o">}</span>
+<span class="w">      </span><span class="o">{</span><span class="w"> </span>db:<span class="w"> </span><span class="s2">"myApp"</span>,<span class="w"> </span>role:<span class="w"> </span><span class="s2">"readWrite"</span><span class="w"> </span><span class="o">}</span>
 <span class="w">    </span><span class="o">]</span>,
 <span class="w">    </span>mechanisms:<span class="w"> </span><span class="o">[</span>
-<span class="w">       </span><span class="s2">&quot;SCRAM-SHA-1&quot;</span>
+<span class="w">       </span><span class="s2">"SCRAM-SHA-1"</span>
 <span class="w">    </span><span class="o">]</span>
 <span class="o">})</span>
 </code></pre></div>
@@ -7715,15 +7715,15 @@ rs0:PRIMARY&gt; db.test.findOne()
 </li>
 <li>
 <p>Start the <code>mongosh</code> session and create a user:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.&lt;namespace name&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb+srv://userAdmin:userAdmin123456@my-cluster-name-rs0.&lt;namespace name&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false"</span>
 rs0:PRIMARY&gt;<span class="w"> </span>db.createUser<span class="o">({</span>
-<span class="w">    </span>user:<span class="w"> </span><span class="s2">&quot;myApp&quot;</span>,
-<span class="w">    </span>pwd:<span class="w"> </span><span class="s2">&quot;myAppPassword&quot;</span>,
+<span class="w">    </span>user:<span class="w"> </span><span class="s2">"myApp"</span>,
+<span class="w">    </span>pwd:<span class="w"> </span><span class="s2">"myAppPassword"</span>,
 <span class="w">    </span>roles:<span class="w"> </span><span class="o">[</span>
-<span class="w">      </span><span class="o">{</span><span class="w"> </span>db:<span class="w"> </span><span class="s2">&quot;myApp&quot;</span>,<span class="w"> </span>role:<span class="w"> </span><span class="s2">&quot;readWrite&quot;</span><span class="w"> </span><span class="o">}</span>
+<span class="w">      </span><span class="o">{</span><span class="w"> </span>db:<span class="w"> </span><span class="s2">"myApp"</span>,<span class="w"> </span>role:<span class="w"> </span><span class="s2">"readWrite"</span><span class="w"> </span><span class="o">}</span>
 <span class="w">    </span><span class="o">]</span>,
 <span class="w">    </span>mechanisms:<span class="w"> </span><span class="o">[</span>
-<span class="w">       </span><span class="s2">&quot;SCRAM-SHA-1&quot;</span>
+<span class="w">       </span><span class="s2">"SCRAM-SHA-1"</span>
 <span class="w">    </span><span class="o">]</span>
 <span class="o">})</span>
 </code></pre></div>

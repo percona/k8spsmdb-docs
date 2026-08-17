@@ -7577,14 +7577,14 @@ dns.googleapis.com<span class="w"> </span><span class="se">\</span>
 <ul>
 <li>Extract the Project number and set it as the environment variable:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nv">PROJECT_NUMBER</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>projects<span class="w"> </span>describe<span class="w"> </span><span class="nv">$PROJECT_ID</span><span class="w"> </span>--format<span class="o">=</span><span class="s2">&quot;value(projectNumber)&quot;</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nv">PROJECT_NUMBER</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>projects<span class="w"> </span>describe<span class="w"> </span><span class="nv">$PROJECT_ID</span><span class="w"> </span>--format<span class="o">=</span><span class="s2">"value(projectNumber)"</span><span class="k">)</span>
 </code></pre></div>
 <ul>
 <li>Enable IAM permissions:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>projects<span class="w"> </span>add-iam-policy-binding<span class="w"> </span><span class="nv">$PROJECT_ID</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--member<span class="w"> </span><span class="s2">&quot;principal://iam.googleapis.com/projects/</span><span class="nv">$PROJECT_NUMBER</span><span class="s2">/locations/global/workloadIdentityPools/</span><span class="nv">$PROJECT_ID</span><span class="s2">.svc.id.goog/subject/ns/gke-mcs/sa/gke-mcs-importer&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--role<span class="w"> </span><span class="s2">&quot;roles/compute.networkViewer&quot;</span>
+<span class="w">  </span>--member<span class="w"> </span><span class="s2">"principal://iam.googleapis.com/projects/</span><span class="nv">$PROJECT_NUMBER</span><span class="s2">/locations/global/workloadIdentityPools/</span><span class="nv">$PROJECT_ID</span><span class="s2">.svc.id.goog/subject/ns/gke-mcs/sa/gke-mcs-importer"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--role<span class="w"> </span><span class="s2">"roles/compute.networkViewer"</span>
 </code></pre></div>
 </li>
 <li>
@@ -7593,23 +7593,23 @@ dns.googleapis.com<span class="w"> </span><span class="se">\</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
-<div class="no-copy highlight"><pre><span></span><code>createTime: &#39;2021-11-10T09:31:41.578155328Z&#39;
+<div class="no-copy highlight"><pre><span></span><code>createTime: '2021-11-10T09:31:41.578155328Z'
 membershipStates:
   projects/166042509722/locations/us-central1/memberships/main-cluster:
     state:
       code: OK
       description: Firewall successfully updated
-      updateTime: &#39;2025-09-26T11:01:09.038866570Z&#39;
+      updateTime: '2025-09-26T11:01:09.038866570Z'
   projects/166042509722/locations/us-central1/memberships/replica-cluster:
     state:
       code: OK
       description: Firewall successfully updated
-      updateTime: &#39;2025-09-26T11:01:44.661916334Z&#39;
+      updateTime: '2025-09-26T11:01:44.661916334Z'
 name: projects/cloud-dev-112233/locations/global/features/multiclusterservicediscovery
 resourceState:
   state: ACTIVE
 spec: {}
-updateTime: &#39;2024-05-16T08:02:36.718079209Z&#39;
+updateTime: '2024-05-16T08:02:36.718079209Z'
 </code></pre></div>
 </details>
 </li>

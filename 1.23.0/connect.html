@@ -7465,7 +7465,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_mongos_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_mongos_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7475,7 +7475,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_rs0_connectionStringSrv}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_rs0_connectionStringSrv}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7494,12 +7494,12 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Connect to Percona Server for MongoDB using the connection string from step 2:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;&lt;connection-string&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span>
 </code></pre></div>
 <details class="example">
 <summary>Example</summary>
 <p>The following example connects to the <code>admin</code> database of a Percona Server for MongoDB 8.0 sharded cluster named <code>my-cluster-name</code> in the <code>mongodb-operator</code> namespace:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.mongodb-operator.svc.cluster.local/admin?authSource=admin&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.mongodb-operator.svc.cluster.local/admin?authSource=admin"</span>
 </code></pre></div>
 <p>The exact URI depends on your cluster configuration. Use the value retrieved from the connection string Secret.</p>
 </details>

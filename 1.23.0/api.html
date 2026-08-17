@@ -7982,8 +7982,8 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <li>
 <p>Set the API server address:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># set correct API address</span>
-<span class="nv">KUBE_CLUSTER</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>--minify<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.clusters[0].name}&#39;</span><span class="k">)</span>
-<span class="nv">API_SERVER</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.clusters[?(@.name==\&quot;</span><span class="nv">$KUBE_CLUSTER</span><span class="s2">\&quot;)].cluster.server}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s#https://##&#39;</span><span class="k">)</span>
+<span class="nv">KUBE_CLUSTER</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>--minify<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.clusters[0].name}'</span><span class="k">)</span>
+<span class="nv">API_SERVER</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">"{.clusters[?(@.name==\"</span><span class="nv">$KUBE_CLUSTER</span><span class="s2">\")].cluster.server}"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">'s#https://##'</span><span class="k">)</span>
 </code></pre></div>
 </li>
 <li>
@@ -8008,58 +8008,58 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPOST<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span>@cluster.json
 </code></pre></div>
 <p>Minimal <code>cluster.json</code> shape (expand with the options you need from <a href="operator.html">Custom Resource options</a>). Update the <code>"namespace"</code> field with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;psmdb.percona.com/v1&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PerconaServerMongoDB&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-cluster-name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;namespace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-namespace-name&quot;</span>
+<span class="w">  </span><span class="nt">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"psmdb.percona.com/v1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PerconaServerMongoDB"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-cluster-name"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"namespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-namespace-name"</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;percona/percona-server-mongodb:8.0.26-11&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;replsets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percona/percona-server-mongodb:8.0.26-11"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"replsets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rs0&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;volumeSpec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;persistentVolumeClaim&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">              </span><span class="nt">&quot;requests&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3Gi&quot;</span>
+<span class="w">        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs0"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"volumeSpec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"persistentVolumeClaim"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">"requests"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">"storage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3Gi"</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;sharding&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;configsvrReplSet&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;volumeSpec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;persistentVolumeClaim&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">              </span><span class="nt">&quot;requests&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3Gi&quot;</span>
+<span class="w">    </span><span class="nt">"sharding"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"configsvrReplSet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"volumeSpec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"persistentVolumeClaim"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">"requests"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">"storage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3Gi"</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;mongos&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">      </span><span class="nt">"mongos"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;backup&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;percona/percona-backup-mongodb:2.15.0&quot;</span>
+<span class="w">    </span><span class="nt">"backup"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percona/percona-backup-mongodb:2.15.0"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -8076,15 +8076,15 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs?limit=100&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs?limit=100"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 <p>Kubernetes list responses can include a <code>metadata.continue</code> token when more results remain. Pass it on the next request:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs?limit=100&amp;continue=</span><span class="nv">$CONTINUE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs?limit=100&amp;continue=</span><span class="nv">$CONTINUE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 <p>See <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#retrieving-large-results-sets-in-chunks">Kubernetes paginated lists <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> for details.</p>
 </div>
@@ -8095,14 +8095,14 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span>json
-kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}{&quot;\n&quot;}{.status.host}{&quot;\n&quot;}&#39;</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.host}{"\n"}'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 </div>
 </div>
@@ -8120,20 +8120,20 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">kubectl</label><label for="__tabbed_4_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[</span>
-<span class="s1">  {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/replsets/0/size&quot;, &quot;value&quot;: 5}</span>
-<span class="s1">]&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
+<span class="s1">  {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}</span>
+<span class="s1">]'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPATCH<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json-patch+json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;[</span>
-<span class="s1">    {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/replsets/0/size&quot;, &quot;value&quot;: 5}</span>
-<span class="s1">  ]&#39;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json-patch+json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'[</span>
+<span class="s1">    {"op": "replace", "path": "/spec/replsets/0/size", "value": 5}</span>
+<span class="s1">  ]'</span>
 </code></pre></div>
 </div>
 </div>
@@ -8148,52 +8148,52 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">kubectl</label><label for="__tabbed_5_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
 <span class="s1">  {</span>
-<span class="s1">    &quot;op&quot;: &quot;add&quot;,</span>
-<span class="s1">    &quot;path&quot;: &quot;/spec/replsets/-&quot;,</span>
-<span class="s1">    &quot;value&quot;: {</span>
-<span class="s1">      &quot;name&quot;: &quot;rs1&quot;,</span>
-<span class="s1">      &quot;size&quot;: 3,</span>
-<span class="s1">      &quot;volumeSpec&quot;: {</span>
-<span class="s1">        &quot;persistentVolumeClaim&quot;: {</span>
-<span class="s1">          &quot;resources&quot;: {</span>
-<span class="s1">            &quot;requests&quot;: {</span>
-<span class="s1">              &quot;storage&quot;: &quot;3Gi&quot;</span>
+<span class="s1">    "op": "add",</span>
+<span class="s1">    "path": "/spec/replsets/-",</span>
+<span class="s1">    "value": {</span>
+<span class="s1">      "name": "rs1",</span>
+<span class="s1">      "size": 3,</span>
+<span class="s1">      "volumeSpec": {</span>
+<span class="s1">        "persistentVolumeClaim": {</span>
+<span class="s1">          "resources": {</span>
+<span class="s1">            "requests": {</span>
+<span class="s1">              "storage": "3Gi"</span>
 <span class="s1">            }</span>
 <span class="s1">          }</span>
 <span class="s1">        }</span>
 <span class="s1">      }</span>
 <span class="s1">    }</span>
 <span class="s1">  }</span>
-<span class="s1">]&#39;</span>
+<span class="s1">]'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPATCH<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json-patch+json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;[</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json-patch+json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'[</span>
 <span class="s1">    {</span>
-<span class="s1">      &quot;op&quot;: &quot;add&quot;,</span>
-<span class="s1">      &quot;path&quot;: &quot;/spec/replsets/-&quot;,</span>
-<span class="s1">      &quot;value&quot;: {</span>
-<span class="s1">        &quot;name&quot;: &quot;rs1&quot;,</span>
-<span class="s1">        &quot;size&quot;: 3,</span>
-<span class="s1">        &quot;volumeSpec&quot;: {</span>
-<span class="s1">          &quot;persistentVolumeClaim&quot;: {</span>
-<span class="s1">            &quot;resources&quot;: {</span>
-<span class="s1">              &quot;requests&quot;: {</span>
-<span class="s1">                &quot;storage&quot;: &quot;3Gi&quot;</span>
+<span class="s1">      "op": "add",</span>
+<span class="s1">      "path": "/spec/replsets/-",</span>
+<span class="s1">      "value": {</span>
+<span class="s1">        "name": "rs1",</span>
+<span class="s1">        "size": 3,</span>
+<span class="s1">        "volumeSpec": {</span>
+<span class="s1">          "persistentVolumeClaim": {</span>
+<span class="s1">            "resources": {</span>
+<span class="s1">              "requests": {</span>
+<span class="s1">                "storage": "3Gi"</span>
 <span class="s1">              }</span>
 <span class="s1">            }</span>
 <span class="s1">          }</span>
 <span class="s1">        }</span>
 <span class="s1">      }</span>
 <span class="s1">    }</span>
-<span class="s1">  ]&#39;</span>
+<span class="s1">  ]'</span>
 </code></pre></div>
 </div>
 </div>
@@ -8212,20 +8212,20 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">kubectl</label><label for="__tabbed_6_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[</span>
-<span class="s1">  {&quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/spec/replsets/1&quot;}</span>
-<span class="s1">]&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
+<span class="s1">  {"op": "remove", "path": "/spec/replsets/1"}</span>
+<span class="s1">]'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPATCH<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json-patch+json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;[</span>
-<span class="s1">    {&quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/spec/replsets/1&quot;}</span>
-<span class="s1">  ]&#39;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json-patch+json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'[</span>
+<span class="s1">    {"op": "remove", "path": "/spec/replsets/1"}</span>
+<span class="s1">  ]'</span>
 </code></pre></div>
 </div>
 </div>
@@ -8234,20 +8234,20 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">kubectl</label><label for="__tabbed_7_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[</span>
-<span class="s1">  {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/image&quot;, &quot;value&quot;: &quot;percona/percona-server-mongodb:8.0.26-11&quot;}</span>
-<span class="s1">]&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
+<span class="s1">  {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.0.26-11"}</span>
+<span class="s1">]'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPATCH<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json-patch+json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;[</span>
-<span class="s1">    {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/image&quot;, &quot;value&quot;: &quot;percona/percona-server-mongodb:8.0.26-11&quot;}</span>
-<span class="s1">  ]&#39;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json-patch+json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'[</span>
+<span class="s1">    {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.0.26-11"}</span>
+<span class="s1">  ]'</span>
 </code></pre></div>
 </div>
 </div>
@@ -8262,9 +8262,9 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XDELETE<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbs/my-cluster-name"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 </div>
 </div>
@@ -8276,16 +8276,16 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_mongos_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_mongos_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/api/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/secrets/my-cluster-name-databaseadmin-conn-str&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;&quot;databaseAdmin_mongos_connectionString&quot;&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="s1">&#39;{print $4}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/api/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/secrets/my-cluster-name-databaseadmin-conn-str"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">'"databaseAdmin_mongos_connectionString"'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="w"> </span><span class="s1">'"'</span><span class="w"> </span><span class="s1">'{print $4}'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
@@ -8297,36 +8297,36 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <p>To manage backups, you must configure the backup storage. See <a href="backups-storage.html">Configure storage for backups</a> for details.</p>
 <h3 id="configure-backup-settings-and-retention">Configure backup settings and retention<a class="headerlink" href="#configure-backup-settings-and-retention" title="Permanent link">&para;</a></h3>
 <p>Patch <code>spec.backup</code> on the cluster. Example: enable backups, set a schedule, and keep the last 3 successful backups:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">  &quot;spec&quot;: {</span>
-<span class="s1">    &quot;backup&quot;: {</span>
-<span class="s1">      &quot;enabled&quot;: true,</span>
-<span class="s1">      &quot;storages&quot;: {</span>
-<span class="s1">        &quot;s3-us-west&quot;: {</span>
-<span class="s1">          &quot;type&quot;: &quot;s3&quot;,</span>
-<span class="s1">          &quot;s3&quot;: {</span>
-<span class="s1">            &quot;bucket&quot;: &quot;my-bucket&quot;,</span>
-<span class="s1">            &quot;region&quot;: &quot;us-west-2&quot;,</span>
-<span class="s1">            &quot;credentialsSecret&quot;: &quot;my-cluster-name-backup-s3&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">  "spec": {</span>
+<span class="s1">    "backup": {</span>
+<span class="s1">      "enabled": true,</span>
+<span class="s1">      "storages": {</span>
+<span class="s1">        "s3-us-west": {</span>
+<span class="s1">          "type": "s3",</span>
+<span class="s1">          "s3": {</span>
+<span class="s1">            "bucket": "my-bucket",</span>
+<span class="s1">            "region": "us-west-2",</span>
+<span class="s1">            "credentialsSecret": "my-cluster-name-backup-s3"</span>
 <span class="s1">          }</span>
 <span class="s1">        }</span>
 <span class="s1">      },</span>
-<span class="s1">      &quot;tasks&quot;: [</span>
+<span class="s1">      "tasks": [</span>
 <span class="s1">        {</span>
-<span class="s1">          &quot;name&quot;: &quot;daily-s3&quot;,</span>
-<span class="s1">          &quot;enabled&quot;: true,</span>
-<span class="s1">          &quot;schedule&quot;: &quot;0 0 * * *&quot;,</span>
-<span class="s1">          &quot;storageName&quot;: &quot;s3-us-west&quot;,</span>
-<span class="s1">          &quot;retention&quot;: {</span>
-<span class="s1">            &quot;type&quot;: &quot;count&quot;,</span>
-<span class="s1">            &quot;count&quot;: 3,</span>
-<span class="s1">            &quot;deleteFromStorage&quot;: true</span>
+<span class="s1">          "name": "daily-s3",</span>
+<span class="s1">          "enabled": true,</span>
+<span class="s1">          "schedule": "0 0 * * *",</span>
+<span class="s1">          "storageName": "s3-us-west",</span>
+<span class="s1">          "retention": {</span>
+<span class="s1">            "type": "count",</span>
+<span class="s1">            "count": 3,</span>
+<span class="s1">            "deleteFromStorage": true</span>
 <span class="s1">          }</span>
 <span class="s1">        }</span>
 <span class="s1">      ]</span>
 <span class="s1">    }</span>
 <span class="s1">  }</span>
-<span class="s1">}&#39;</span>
+<span class="s1">}'</span>
 </code></pre></div>
 <p>For every backup option, see <a href="operator.html#operator-backup-section">Custom Resource options</a> and <a href="backups-scheduled.html">Make scheduled backups</a>.</p>
 <div class="admonition note">
@@ -8354,26 +8354,26 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPOST<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbbackups&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbbackups"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span>@backup.json
 </code></pre></div>
 <p><code>backup.json</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;psmdb.percona.com/v1&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PerconaServerMongoDBBackup&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backup1&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;finalizers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;percona.com/delete-backup&quot;</span>
+<span class="w">  </span><span class="nt">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"psmdb.percona.com/v1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PerconaServerMongoDBBackup"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"backup1"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"finalizers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"percona.com/delete-backup"</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;clusterName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-cluster-name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;storageName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3-us-west&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logical&quot;</span>
+<span class="w">  </span><span class="nt">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"clusterName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-cluster-name"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"storageName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3-us-west"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logical"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -8385,14 +8385,14 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
-kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}{&quot;\n&quot;}{.status.size}{&quot;\n&quot;}{.status.destination}{&quot;\n&quot;}&#39;</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.size}{"\n"}{.status.destination}{"\n"}'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbbackups/backup1&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbbackups/backup1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 </div>
 </div>
@@ -8423,22 +8423,22 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XPOST<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbrestores&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbrestores"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span>@restore.json
 </code></pre></div>
 <p><code>restore.json</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;psmdb.percona.com/v1&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PerconaServerMongoDBRestore&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;restore1&quot;</span>
+<span class="w">  </span><span class="nt">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"psmdb.percona.com/v1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PerconaServerMongoDBRestore"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"restore1"</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;clusterName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-cluster-name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;backupName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backup1&quot;</span>
+<span class="w">  </span><span class="nt">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"clusterName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-cluster-name"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"backupName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"backup1"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -8463,22 +8463,22 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">withUsersAndRoles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;db1.collection1&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;db2.*&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db1.collection1"</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db2.*"</span>
 </code></pre></div>
 <h3 id="check-restore-status">Check restore status<a class="headerlink" href="#check-restore-status" title="Permanent link">&para;</a></h3>
 <div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><div class="tabbed-labels"><label for="__tabbed_13_1">kubectl</label><label for="__tabbed_13_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
-kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>restore1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}{&quot;\n&quot;}&#39;</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>restore1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-k<span class="w"> </span>-XGET<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbrestores/restore1&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span>
+<span class="w">  </span><span class="s2">"https://</span><span class="nv">$API_SERVER</span><span class="s2">/apis/psmdb.percona.com/v1/namespaces/</span><span class="nv">$NAMESPACE</span><span class="s2">/perconaservermongodbrestores/restore1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$KUBE_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span>
 </code></pre></div>
 </div>
 </div>

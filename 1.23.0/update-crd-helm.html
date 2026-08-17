@@ -7538,9 +7538,9 @@ Operator with the <code>helm upgrade</code> command.</p>
 <span class="w">  </span>perconaservermongodbrestores.psmdb.percona.com
 <span class="o">)</span>
 
-kubectl<span class="w"> </span>label<span class="w"> </span>crds<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>Helm<span class="w"> </span>--overwrite
-kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>meta.helm.sh/release-name<span class="o">=</span>psmdb-operator-crds<span class="w"> </span>--overwrite
-kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>meta.helm.sh/release-namespace<span class="o">=</span><span class="nv">$NAMESPACE</span><span class="w"> </span>--overwrite
+kubectl<span class="w"> </span>label<span class="w"> </span>crds<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>app.kubernetes.io/managed-by<span class="o">=</span>Helm<span class="w"> </span>--overwrite
+kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>meta.helm.sh/release-name<span class="o">=</span>psmdb-operator-crds<span class="w"> </span>--overwrite
+kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">CRDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>meta.helm.sh/release-namespace<span class="o">=</span><span class="nv">$NAMESPACE</span><span class="w"> </span>--overwrite
 </code></pre></div>
 </li>
 <li>

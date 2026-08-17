@@ -7659,20 +7659,20 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">      </span><span class="nt">configuration</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">security</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">          </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="w">        </span><span class="nt">setParameter</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SCRAM-SHA-256,MONGODB-OIDC</span>
-<span class="w">          </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span>
+<span class="w">          </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span>
 <span class="w">            </span><span class="s">{</span>
-<span class="w">              </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://&lt;your-org&gt;.okta.com/oauth2/default&quot;,</span>
-<span class="w">              </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;api://default&quot;,</span>
-<span class="w">              </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">              </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;okta&quot;,</span>
-<span class="w">              </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">              </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;groups&quot;,</span>
-<span class="w">              </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<span class="w">              </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://&lt;your-org&gt;.okta.com/oauth2/default",</span>
+<span class="w">              </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"api://default",</span>
+<span class="w">              </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">              </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"okta",</span>
+<span class="w">              </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">              </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"groups",</span>
+<span class="w">              </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true</span>
 <span class="w">            </span><span class="s">}</span>
-<span class="w">          </span><span class="s">]&#39;</span>
+<span class="w">          </span><span class="s">]'</span>
 </code></pre></div>
 <p>Okta puts the user&rsquo;s email in <code>sub</code>, so the MongoDB user appears as <code>okta/&lt;email&gt;</code>.</p>
 </div>
@@ -7692,22 +7692,22 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <p>This example shows the configuration for database Pods. 
 For instructions on how to configure a sharded cluster, refer to the <a href="#where-to-add-oidc-configuration">Where to add OIDC configuration</a> section above.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="nt">setParameter</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SCRAM-SHA-256,MONGODB-OIDC</span>
-<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span>
+<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span>
 <span class="w">    </span><span class="s">{</span>
-<span class="w">      </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0&quot;,</span>
-<span class="w">      </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;entra&quot;,</span>
-<span class="w">      </span><span class="s">&quot;principalName&quot;:</span><span class="nv"> </span><span class="s">&quot;preferred_username&quot;,</span>
-<span class="w">      </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;groups&quot;,</span>
-<span class="w">      </span><span class="s">&quot;requestScopes&quot;:</span><span class="nv"> </span><span class="s">[&quot;api://&lt;client-id&gt;/&lt;scope-name&gt;&quot;],</span>
-<span class="w">      </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<span class="w">      </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0",</span>
+<span class="w">      </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"entra",</span>
+<span class="w">      </span><span class="s">"principalName":</span><span class="nv"> </span><span class="s">"preferred_username",</span>
+<span class="w">      </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"groups",</span>
+<span class="w">      </span><span class="s">"requestScopes":</span><span class="nv"> </span><span class="s">["api://&lt;client-id&gt;/&lt;scope-name&gt;"],</span>
+<span class="w">      </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true</span>
 <span class="w">    </span><span class="s">}</span>
-<span class="w">  </span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="s">]'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -7722,20 +7722,20 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <p>This example shows the configuration for database Pods. 
 For instructions on how to configure a sharded cluster, refer to the <a href="#where-to-add-oidc-configuration">Where to add OIDC configuration</a> section above.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="nt">setParameter</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SCRAM-SHA-256,MONGODB-OIDC</span>
-<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span>
+<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span>
 <span class="w">    </span><span class="s">{</span>
-<span class="w">      </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://auth.pingone.&lt;region&gt;/&lt;environment-id&gt;/as&quot;,</span>
-<span class="w">      </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;ping&quot;,</span>
-<span class="w">      </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;auth_claims&quot;,</span>
-<span class="w">      </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<span class="w">      </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://auth.pingone.&lt;region&gt;/&lt;environment-id&gt;/as",</span>
+<span class="w">      </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"ping",</span>
+<span class="w">      </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"auth_claims",</span>
+<span class="w">      </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true</span>
 <span class="w">    </span><span class="s">}</span>
-<span class="w">  </span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="s">]'</span>
 </code></pre></div>
 <p>Ping requires the extra <code>--oidcIdTokenAsAccessToken</code> flag for <code>mongosh</code> at login. Refer to the <a href="#log-in">Log in</a> for details.</p>
 </div>
@@ -7754,20 +7754,20 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <p>Once it is configured, add the following Percona Server for MongoDB configuration to the <code>configuration</code> field of the Custom Resource.</p>
 <p>This example shows the configuration for database Pods. For instructions on how to configure a sharded cluster, refer to the <a href="#where-to-add-oidc-configuration">Where to add OIDC configuration</a> section above.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="nt">setParameter</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SCRAM-SHA-256,MONGODB-OIDC</span>
-<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span>
+<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span>
 <span class="w">    </span><span class="s">{</span>
-<span class="w">      </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://&lt;keycloak-host&gt;:8443/realms/&lt;realm&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;keycloak&quot;,</span>
-<span class="w">      </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;groups&quot;,</span>
-<span class="w">      </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<span class="w">      </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://&lt;keycloak-host&gt;:8443/realms/&lt;realm&gt;",</span>
+<span class="w">      </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"keycloak",</span>
+<span class="w">      </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"groups",</span>
+<span class="w">      </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true</span>
 <span class="w">    </span><span class="s">}</span>
-<span class="w">  </span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="s">]'</span>
 </code></pre></div>
 </div>
 </div>
@@ -7789,7 +7789,7 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <p>Apply the change with <code>kubectl apply -f deploy/cr.yaml</code>. See <a href="app-users.html#custom-mongodb-roles">Custom MongoDB roles</a> for the full <code>roles</code> reference.</p>
 <h2 id="log-in">Log in<a class="headerlink" href="#log-in" title="Permanent link">&para;</a></h2>
 <p>OIDC uses an interactive (human) flow: with <code>--oidcFlows auth-code</code> <code>mongosh</code> opens a browser, with <code>--oidcFlows device-auth</code> it prints a URL and a code to enter from any browser:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;mongodb://&lt;your_cluster_name&gt;-rs0.&lt;your_namespace&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false&quot;</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span>MONGODB-OIDC<span class="w"> </span>--oidcFlows<span class="w"> </span>auth-code
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://&lt;your_cluster_name&gt;-rs0.&lt;your_namespace&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false"</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span>MONGODB-OIDC<span class="w"> </span>--oidcFlows<span class="w"> </span>auth-code
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -7802,11 +7802,11 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <div class="highlight" data-prompt=">"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="err">au</span><span class="kc">t</span><span class="err">hI</span><span class="kc">nf</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="err">au</span><span class="kc">t</span><span class="err">he</span><span class="kc">nt</span><span class="err">ica</span><span class="kc">te</span><span class="err">dUsers</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">user</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;ok</span><span class="kc">ta</span><span class="err">/user@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;$ex</span><span class="kc">ternal</span><span class="err">&#39;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">user</span><span class="p">:</span><span class="w"> </span><span class="err">'ok</span><span class="kc">ta</span><span class="err">/user@example.com'</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">'$ex</span><span class="kc">ternal</span><span class="err">'</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">],</span>
 <span class="w">    </span><span class="err">au</span><span class="kc">t</span><span class="err">he</span><span class="kc">nt</span><span class="err">ica</span><span class="kc">te</span><span class="err">dUserRoles</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">role</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;ok</span><span class="kc">ta</span><span class="err">/mo</span><span class="kc">n</span><span class="err">godb</span><span class="mi">-</span><span class="err">users&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;admi</span><span class="kc">n</span><span class="err">&#39;</span><span class="w"> </span><span class="p">},</span>
-<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">role</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;readWri</span><span class="kc">te</span><span class="err">A</span><span class="kc">n</span><span class="err">yDa</span><span class="kc">ta</span><span class="err">base&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;admi</span><span class="kc">n</span><span class="err">&#39;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">role</span><span class="p">:</span><span class="w"> </span><span class="err">'ok</span><span class="kc">ta</span><span class="err">/mo</span><span class="kc">n</span><span class="err">godb</span><span class="mi">-</span><span class="err">users'</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">'admi</span><span class="kc">n</span><span class="err">'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="err">role</span><span class="p">:</span><span class="w"> </span><span class="err">'readWri</span><span class="kc">te</span><span class="err">A</span><span class="kc">n</span><span class="err">yDa</span><span class="kc">ta</span><span class="err">base'</span><span class="p">,</span><span class="w"> </span><span class="err">db</span><span class="p">:</span><span class="w"> </span><span class="err">'admi</span><span class="kc">n</span><span class="err">'</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="err">ok</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
@@ -7816,33 +7816,33 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <p>You can configure more than one provider on a single cluster — <code>oidcIdentityProviders</code> is a JSON array. MongoDB routes a login to a provider by matching the supplied user name against each provider&rsquo;s <code>matchPattern</code> (a regular expression); the order of the array sets the priority (the first match wins).</p>
 <p>The example below routes <code>@example.com</code> users to Okta and <code>@corp.com</code> users to Microsoft Entra:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="nt">authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"enabled"</span>
 <span class="nt">setParameter</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authenticationMechanisms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SCRAM-SHA-256,MONGODB-OIDC</span>
-<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span>
+<span class="w">  </span><span class="nt">oidcIdentityProviders</span><span class="p">:</span><span class="w"> </span><span class="s">'[</span>
 <span class="w">    </span><span class="s">{</span>
-<span class="w">      </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://&lt;your-org&gt;.okta.com/oauth2/default&quot;,</span>
-<span class="w">      </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;api://default&quot;,</span>
-<span class="w">      </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;okta-client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;okta&quot;,</span>
-<span class="w">      </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;groups&quot;,</span>
-<span class="w">      </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;matchPattern&quot;:</span><span class="nv"> </span><span class="s">&quot;@example\\.com$&quot;</span>
+<span class="w">      </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://&lt;your-org&gt;.okta.com/oauth2/default",</span>
+<span class="w">      </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"api://default",</span>
+<span class="w">      </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;okta-client-id&gt;",</span>
+<span class="w">      </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"okta",</span>
+<span class="w">      </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"groups",</span>
+<span class="w">      </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"matchPattern":</span><span class="nv"> </span><span class="s">"@example\\.com$"</span>
 <span class="w">    </span><span class="s">},</span>
 <span class="w">    </span><span class="s">{</span>
-<span class="w">      </span><span class="s">&quot;issuer&quot;:</span><span class="nv"> </span><span class="s">&quot;https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0&quot;,</span>
-<span class="w">      </span><span class="s">&quot;audience&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;clientId&quot;:</span><span class="nv"> </span><span class="s">&quot;&lt;client-id&gt;&quot;,</span>
-<span class="w">      </span><span class="s">&quot;authNamePrefix&quot;:</span><span class="nv"> </span><span class="s">&quot;entra&quot;,</span>
-<span class="w">      </span><span class="s">&quot;principalName&quot;:</span><span class="nv"> </span><span class="s">&quot;preferred_username&quot;,</span>
-<span class="w">      </span><span class="s">&quot;useAuthorizationClaim&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;authorizationClaim&quot;:</span><span class="nv"> </span><span class="s">&quot;groups&quot;,</span>
-<span class="w">      </span><span class="s">&quot;requestScopes&quot;:</span><span class="nv"> </span><span class="s">[&quot;api://&lt;client-id&gt;/&lt;scope-name&gt;&quot;],</span>
-<span class="w">      </span><span class="s">&quot;supportsHumanFlows&quot;:</span><span class="nv"> </span><span class="s">true,</span>
-<span class="w">      </span><span class="s">&quot;matchPattern&quot;:</span><span class="nv"> </span><span class="s">&quot;@corp\\.com$&quot;</span>
+<span class="w">      </span><span class="s">"issuer":</span><span class="nv"> </span><span class="s">"https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0",</span>
+<span class="w">      </span><span class="s">"audience":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"clientId":</span><span class="nv"> </span><span class="s">"&lt;client-id&gt;",</span>
+<span class="w">      </span><span class="s">"authNamePrefix":</span><span class="nv"> </span><span class="s">"entra",</span>
+<span class="w">      </span><span class="s">"principalName":</span><span class="nv"> </span><span class="s">"preferred_username",</span>
+<span class="w">      </span><span class="s">"useAuthorizationClaim":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"authorizationClaim":</span><span class="nv"> </span><span class="s">"groups",</span>
+<span class="w">      </span><span class="s">"requestScopes":</span><span class="nv"> </span><span class="s">["api://&lt;client-id&gt;/&lt;scope-name&gt;"],</span>
+<span class="w">      </span><span class="s">"supportsHumanFlows":</span><span class="nv"> </span><span class="s">true,</span>
+<span class="w">      </span><span class="s">"matchPattern":</span><span class="nv"> </span><span class="s">"@corp\\.com$"</span>
 <span class="w">    </span><span class="s">}</span>
-<span class="w">  </span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="s">]'</span>
 </code></pre></div>
 <p>Two rules matter once there is more than one human-flow provider:</p>
 <ul>

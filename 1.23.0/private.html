@@ -7411,12 +7411,12 @@ choice).</p>
 <li>
 <p>Create an S3 bucket for backups:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>aws-cli<span class="w"> </span>--image<span class="o">=</span>perconalab/awscli<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;AWS_ACCESS_KEY_ID=some-access-key \</span>
+<span class="w">  </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'AWS_ACCESS_KEY_ID=some-access-key \</span>
 <span class="s1">  AWS_SECRET_ACCESS_KEY=some-secret-key \</span>
 <span class="s1">  AWS_DEFAULT_REGION=us-east-1 \</span>
 <span class="s1">  /usr/bin/aws \</span>
 <span class="s1">  --endpoint-url http://minio-service:9000 \</span>
-<span class="s1">  s3 mb s3://operator-testing&#39;</span>
+<span class="s1">  s3 mb s3://operator-testing'</span>
 </code></pre></div>
 <p>This command creates the bucket named <code>operator-testing</code> with
 the selected access and secret keys (substitute <code>some-access-key</code>

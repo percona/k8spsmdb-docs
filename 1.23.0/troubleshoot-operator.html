@@ -7530,8 +7530,8 @@ CoreDNS is running at https://&lt;control-plane-ip&gt;:49475/api/v1/namespaces/k
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>Checking privileges to install Percona Operators in kubernetes cluster...
-Warning: Unable to check the privileges for resource &#39;issuers&#39;, check if the resource &#39;issuers&#39; is present in the cluster
-Warning: Unable to check the privileges for resource &#39;certificates&#39;, check if the resource &#39;certificates&#39; is present in the cluster    
+Warning: Unable to check the privileges for resource 'issuers', check if the resource 'issuers' is present in the cluster
+Warning: Unable to check the privileges for resource 'certificates', check if the resource 'certificates' is present in the cluster    
 
 Warning: Some resources are not found in the kubernetes cluster.Check the Warning messages before you proceed
 ------------------------------------------------------------------------------------------
@@ -7549,7 +7549,7 @@ https://docs.percona.com/percona-operator-for-mongodb/index.html
 </li>
 <li>
 <p>If you have the necessary privileges but the installation is still failing, review the Kubernetes Events for more details. Keep in mind that Kubernetes Events are retained for only 60 minutes.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">&quot;.lastTimestamp&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">".lastTimestamp"</span>
 </code></pre></div>
 <p>Events provide good information about affinity issues, resource issues etc.</p>
 </li>
@@ -7577,7 +7577,7 @@ https://docs.percona.com/percona-operator-for-mongodb/index.html
 </li>
 <li>
 <p>Check the events</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">&quot;.lastTimestamp&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">".lastTimestamp"</span>
 </code></pre></div>
 <p>Events can provide information like storage class issues, PVC binding issues etc</p>
 </li>

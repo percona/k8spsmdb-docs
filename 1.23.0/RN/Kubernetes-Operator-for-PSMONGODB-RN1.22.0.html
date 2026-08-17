@@ -8240,7 +8240,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">credentialsSecret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-backup-minio</span>
 <span class="w">    </span><span class="nt">endpointUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minio.psmdb.svc.cluster.local:9000/minio/</span>
 <span class="w">    </span><span class="nt">insecureSkipTLSVerify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">    </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">""</span>
 <span class="w">    </span><span class="nt">secure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>The use of the <code>minio</code> storage type offers a more stable and straightforward configuration for custom S3 storage services. It also keeps your Operator setup aligned with PBM&rsquo;s current behavior.</p>
@@ -8287,7 +8287,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">triggerThresholdPercent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 <span class="w">      </span><span class="nt">growthStep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
-<span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10Gi&quot;</span>
+<span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">"10Gi"</span>
 </code></pre></div>
 <p>Learn more about the workflow and troubleshooting tips in our <a href="../scaling.html#automatic-storage-resizing">documentation</a>.</p>
 <h3 id="cluster-readiness-now-reflects-pbm-state">Cluster readiness now reflects PBM state<a class="headerlink" href="#cluster-readiness-now-reflects-pbm-state" title="Permanent link">&para;</a></h3>
@@ -8295,15 +8295,15 @@ window.addEventListener('afterprint', (event) => {
 <p>To check the status, use either the <code>kubectl describe psmdb &lt;cluster-name&gt;</code> or <code>kubectl get psmdb &lt;cluster-name&gt; -o yaml</code> command.</p>
 <p>During initialization or configuration changes, the <code>PBMReady</code> condition is <code>false</code> and you clearly see the reason.</p>
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PBMReady</span>
-<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;False&quot;</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"False"</span>
 <span class="w">  </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PBMConfigurationIsChanged</span>
-<span class="w">  </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-12-24T09:06:20Z&quot;</span>
+<span class="w">  </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">"2025-12-24T09:06:20Z"</span>
 </code></pre></div>
 <p>Once PBM is fully configured and any required resync is complete, the condition changes to <code>true</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PBMReady</span>
-<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"True"</span>
 <span class="w">  </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PBMConfigurationIsUpToDate</span>
-<span class="w">  </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-12-24T09:06:40Z&quot;</span>
+<span class="w">  </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">"2025-12-24T09:06:40Z"</span>
 </code></pre></div>
 <h3 id="vault-integration-for-system-user-password-management">Vault integration for system user password management<a class="headerlink" href="#vault-integration-for-system-user-password-management" title="Permanent link">&para;</a></h3>
 <p>You can now integrate the Operator with HashiCorp Vault for system user password management. This allows organizations to centralize password management while keeping the Operator responsible for applying those passwords to the database.</p>

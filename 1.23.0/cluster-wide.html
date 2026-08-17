@@ -7544,11 +7544,11 @@ if not exist. Let’s say the Operator should watch the <code>psmdb</code> names
 <span class="nt">subjects</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona-server-mongodb-operator</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;psmdb-operator&quot;</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">"psmdb-operator"</span>
 <span class="nn">...</span>
 <span class="nt">env</span><span class="p">:</span>
 <span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WATCH_NAMESPACE</span>
-<span class="w">           </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;psmdb&quot;</span>
+<span class="w">           </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"psmdb"</span>
 <span class="nn">...</span>
 </code></pre></div>
 </li>
@@ -7588,12 +7588,12 @@ to the cluster.</p>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>psmdb<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_mongos_connectionString}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_mongos_connectionString}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>psmdb<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.databaseAdmin_rs0_connectionStringSrv}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.databaseAdmin_rs0_connectionStringSrv}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 </div>
 </div>
@@ -7605,13 +7605,13 @@ to the cluster.</p>
 <p>Run a container with a MongoDB client and connect its console output to your
     terminal. The following command will do this, naming the new Pod
     <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:6.0.29-23<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--env<span class="o">=</span><span class="s2">&quot;POD_NAMESPACE=psmdb&quot;</span><span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:6.0.29-23<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--env<span class="o">=</span><span class="s2">"POD_NAMESPACE=psmdb"</span><span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>Executing it may require some time to deploy the correspondent Pod.</p>
 </li>
 <li>
 <p>Connect using the connection string from step 1:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">&quot;&lt;connection-string&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span>
 </code></pre></div>
 </li>
 </ol>

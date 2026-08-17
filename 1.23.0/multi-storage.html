@@ -7581,23 +7581,23 @@ window.addEventListener('afterprint', (event) => {
 <h2 id="upgrade-considerations">Upgrade considerations<a class="headerlink" href="#upgrade-considerations" title="Permanent link">&para;</a></h2>
 <p>You must specify the main storage during the upgrade. If you use a single storage, it will automatically be marked as main in the Custom Resource manifest. If you use multiple storages, you must define one of them as main. </p>
 <p>The following command shows how to set the <code>s3-us-west</code> storage as the main one:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;spec&quot;: {</span>
-<span class="s1">      &quot;crVersion&quot;: &quot;1.20.0&quot;,</span>
-<span class="s1">      &quot;image&quot;: &quot;percona/percona-server-mongodb:7.0.18-11&quot;,</span>
-<span class="s1">      &quot;backup&quot;: {</span>
-<span class="s1">        &quot;image&quot;: &quot;percona/percona-backup-mongodb:2.9.1&quot;,</span>
-<span class="s1">        &quot;storages&quot;: {</span>
-<span class="s1">          &quot;s3-us-west&quot;: {</span>
-<span class="s1">            &quot;main&quot;: true</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "spec": {</span>
+<span class="s1">      "crVersion": "1.20.0",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:7.0.18-11",</span>
+<span class="s1">      "backup": {</span>
+<span class="s1">        "image": "percona/percona-backup-mongodb:2.9.1",</span>
+<span class="s1">        "storages": {</span>
+<span class="s1">          "s3-us-west": {</span>
+<span class="s1">            "main": true</span>
 <span class="s1">          }</span>
 <span class="s1">        }</span>
 <span class="s1">      },</span>
-<span class="s1">      &quot;pmm&quot;: {</span>
-<span class="s1">        &quot;image&quot;: &quot;percona/pmm-client:2.44.1&quot;</span>
+<span class="s1">      "pmm": {</span>
+<span class="s1">        "image": "percona/pmm-client:2.44.1"</span>
 <span class="s1">      }</span>
 <span class="s1">    }</span>
-<span class="s1">  }&#39;</span>
+<span class="s1">  }'</span>
 </code></pre></div>
 <p>For more information about the upgrades, see the <a href="update.html">Update documentation</a></p>
 <hr>

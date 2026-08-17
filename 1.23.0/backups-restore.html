@@ -7699,7 +7699,7 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Check a time to restore for a backup. Use the command below to find the latest restorable timestamp:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup_name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.latestRestorableTime}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup_name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.latestRestorableTime}'</span>
 </code></pre></div>
 </li>
 <li>
@@ -7777,8 +7777,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">withUsersAndRoles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;db1.collection1&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;db2.collection2&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db1.collection1"</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db2.collection2"</span>
 </code></pre></div>
 <p>You can specify several &ldquo;namespaces&rdquo; (subsets of data) as a list for the <code>selective.namespaces</code> field. You can specify a namespace as follows:</p>
 <ul>

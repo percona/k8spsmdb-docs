@@ -7632,7 +7632,7 @@ window.addEventListener('afterprint', (event) => {
 <p>To automate the deployment and management of cluster components, the Operator requires system-level MongoDB users.</p>
 <p>Credentials for these users are stored in a <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes Secrets <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> object. The Operator first checks if a Secret already exists with the name specified in the <code>spec.secrets.users</code> field of your <code>deploy/cr.yaml</code> configuration file and reuses it if found. If no matching Secret exists, the Operator automatically creates a new Secret with randomly generated passwords during cluster creation.</p>
 <h2 id="system-users-secrets">System users Secrets<a class="headerlink" href="#system-users-secrets" title="Permanent link">&para;</a></h2>
-<p>The default name of the Secrets object for the system users is <code>my-cluster-name-secrets</code>. It is referenced in the <code>spec.secrets.users</code> field of the Custom Resource.</p>
+<p>The default name of the Secrets object for the system users is <code>percona-server-mongodb-users</code>. If <code>spec.secrets.users</code> is defined in the Custom Resource, the Operator uses that name instead. The sample configuration sets this field to <code>&lt;cluster-name&gt;-secrets</code> (for example, <code>my-cluster-name-secrets</code>).</p>
 <p>Aside from this Secret, the Operator creates an internal secret for its own internal purposes. See <a href="#internal-secret-and-its-usage">Internal Secret and its usage</a> to learn more.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -7722,7 +7722,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-secrets</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona-server-mongodb-users</span>
 <span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
 <span class="nt">stringData</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">MONGODB_BACKUP_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup</span>
@@ -7751,26 +7751,26 @@ window.addEventListener('afterprint', (event) => {
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Linux</label><label for="__tabbed_1_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;new_password&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"new_password"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;new_password&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"new_password"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
 </code></pre></div>
 </div>
 </div>
 </div>
 </li>
 <li>
-<p>Update the Secrets object. For example, the following command updates the Database Admin user&rsquo;s password to <code>new_password</code> in the <code>my-cluster-name-secrets</code> object can be done with the following command:</p>
+<p>Update the Secrets object. For example, the following command updates the Database Admin user&rsquo;s password to <code>new_password</code> in the <code>percona-server-mongodb-users</code> object can be done with the following command:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">in Linux</label><label for="__tabbed_2_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>secret/my-cluster-name-secrets<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;data&quot;:{&quot;MONGODB_DATABASE_ADMIN_PASSWORD&quot;: &quot;&#39;</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>new_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span><span class="k">)</span><span class="s1">&#39;&quot;}}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>secret/percona-server-mongodb-users<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>new_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span><span class="k">)</span><span class="s1">'"}}'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>secret/my-cluster-name-secrets<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;data&quot;:{&quot;MONGODB_DATABASE_ADMIN_PASSWORD&quot;: &quot;&#39;</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>new_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="k">)</span><span class="s1">&#39;&quot;}}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>secret/percona-server-mongodb-users<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>new_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="k">)</span><span class="s1">'"}}'</span>
 </code></pre></div>
 </div>
 </div>
@@ -7787,29 +7787,29 @@ window.addEventListener('afterprint', (event) => {
 <p>In some situations, you may need to reproduce system users in a bare-bones MongoDB. For example, this is a required step in <a href="https://www.percona.com/blog/migrating-mongodb-to-kubernetes">migration scenarios <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> to move existing on-premises MongoDB databases to Kubernetes-based MongoDB clusters managed by the Operator. You can use the following example script that produces a text file with mongo shell commands to create the needed system users with appropriate roles:</p>
 <details class="example">
 <summary>gen_users.sh</summary>
-<div class="highlight"><pre><span></span><code><span class="nv">clusterAdminPass</span><span class="o">=</span><span class="s2">&quot;clusterAdmin&quot;</span>
-<span class="nv">userAdminPass</span><span class="o">=</span><span class="s2">&quot;userAdmin&quot;</span>
-<span class="nv">clusterMonitorPass</span><span class="o">=</span><span class="s2">&quot;clusterMonitor&quot;</span>
-<span class="nv">backupPass</span><span class="o">=</span><span class="s2">&quot;backup&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nv">clusterAdminPass</span><span class="o">=</span><span class="s2">"clusterAdmin"</span>
+<span class="nv">userAdminPass</span><span class="o">=</span><span class="s2">"userAdmin"</span>
+<span class="nv">clusterMonitorPass</span><span class="o">=</span><span class="s2">"clusterMonitor"</span>
+<span class="nv">backupPass</span><span class="o">=</span><span class="s2">"backup"</span>
 
 <span class="c1"># mongo shell</span>
 cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt</span>
 <span class="s">use admin</span>
 <span class="s">db.createRole({</span>
-<span class="s">    &quot;roles&quot; : [],</span>
-<span class="s">    &quot;role&quot; : &quot;pbmAnyAction&quot;,</span>
-<span class="s">    &quot;privileges&quot; : [</span>
+<span class="s">    "roles" : [],</span>
+<span class="s">    "role" : "pbmAnyAction",</span>
+<span class="s">    "privileges" : [</span>
 <span class="s">        {</span>
-<span class="s">            &quot;resource&quot; : { &quot;anyResource&quot; : true },</span>
-<span class="s">            &quot;actions&quot; : [ &quot;anyAction&quot; ]</span>
+<span class="s">            "resource" : { "anyResource" : true },</span>
+<span class="s">            "actions" : [ "anyAction" ]</span>
 <span class="s">        }</span>
 <span class="s">    ]        </span>
 <span class="s">})</span>
 
-<span class="s">db.createUser( { user: &quot;clusterMonitor&quot;, pwd: &quot;$clusterMonitorPass&quot;, roles: [ &quot;clusterMonitor&quot; ] } )</span>
-<span class="s">db.createUser( { user: &quot;userAdmin&quot;, pwd: &quot;$userAdminPass&quot;, roles: [ &quot;userAdminAnyDatabase&quot; ] } )</span>
-<span class="s">db.createUser( { user: &quot;clusterAdmin&quot;, pwd: &quot;$clusterAdminPass&quot;, roles: [ &quot;clusterAdmin&quot; ] } )</span>
-<span class="s">db.createUser( { user: &quot;backup&quot;, pwd: &quot;$backupPass&quot;, roles: [ &quot;readWrite&quot;, &quot;backup&quot;, &quot;clusterMonitor&quot;, &quot;restore&quot;, &quot;pbmAnyAction&quot; ] } )</span>
+<span class="s">db.createUser( { user: "clusterMonitor", pwd: "$clusterMonitorPass", roles: [ "clusterMonitor" ] } )</span>
+<span class="s">db.createUser( { user: "userAdmin", pwd: "$userAdminPass", roles: [ "userAdminAnyDatabase" ] } )</span>
+<span class="s">db.createUser( { user: "clusterAdmin", pwd: "$clusterAdminPass", roles: [ "clusterAdmin" ] } )</span>
+<span class="s">db.createUser( { user: "backup", pwd: "$backupPass", roles: [ "readWrite", "backup", "clusterMonitor", "restore", "pbmAnyAction" ] } )</span>
 <span class="s">EOF</span>
 </code></pre></div>
 </details>
@@ -7884,7 +7884,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
 </div>
 <h2 id="internal-secret-and-its-usage">Internal Secret and its usage<a class="headerlink" href="#internal-secret-and-its-usage" title="Permanent link">&para;</a></h2>
 <p>The Operator creates and updates an additional Secrets object which is named based on the cluster name, like <code>internal-my-cluster-name-users</code>. This Secrets object is used only by the Operator. Users must not change it.</p>
-<p>This object contains secrets with the same passwords as the one specified in <code>spec.secrets.users</code> (e.g., <code>my-cluster-name-secrets</code>). When the user updates the <code>my-cluster-name-secrets</code> Secret, the Operator propagates these changes to the internal <code>internal-my-cluster-name-users</code> Secrets object.</p>
+<p>This object contains secrets with the same passwords as the one specified in <code>spec.secrets.users</code> (e.g., <code>percona-server-mongodb-users</code>). When the user updates the <code>percona-server-mongodb-users</code> Secret, the Operator propagates these changes to the internal <code>internal-my-cluster-name-users</code> Secrets object.</p>
 <h2 id="connection-string-secret">Connection string Secret<a class="headerlink" href="#connection-string-secret" title="Permanent link">&para;</a></h2>
 <p>Starting with Operator version 1.23.0, the Operator creates a <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code> Secret with ready-to-use MongoDB connection strings for the <strong><code>databaseAdmin</code></strong> user. The Secret includes URIs for internal cluster access, SRV-style endpoints, and exposed endpoints when applicable.</p>
 <p>The Operator updates this Secret when cluster topology, exposure settings, or the <code>databaseAdmin</code> password change. Do not edit it manually.</p>
@@ -7895,7 +7895,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 23, 2026 09:27:38 UTC">July 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 13, 2026 17:01:16 UTC">August 13, 2026</span>
       
         <br>
         Created:

@@ -7686,7 +7686,7 @@ my-snapshot-backup   my-cluster-name             external             ready    5
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ready</span>
-<span class="w">  </span><span class="nt">pbmName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-05-29T10:15:00Z&quot;</span>
+<span class="w">  </span><span class="nt">pbmName</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-05-29T10:15:00Z"</span>
 <span class="w">  </span><span class="nt">snapshots</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">replsetName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">    </span><span class="nt">snapshotName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-snapshot-backup-rs0-0</span>
@@ -7729,7 +7729,7 @@ my-snapshot-backup   my-cluster-name             external             ready    5
 <span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily-snapshot</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span>
+<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*"</span>
 <span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external</span>
 <span class="w">      </span><span class="nt">volumeSnapshotClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gke-snapshot-class</span>
 <span class="w">      </span><span class="nt">retention</span><span class="p">:</span>
@@ -7828,7 +7828,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-restore<spa
 </li>
 <li>
 <p>Inspect restore conditions:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>my-snapshot-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[*]}{.type}{&quot;\t&quot;}{.status}{&quot;\t&quot;}{.reason}{&quot;\n&quot;}{end}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>my-snapshot-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'</span>
 </code></pre></div>
 <p>Expected conditions when finished include <code>ReplsetPVCsRestoredFromSnapshot</code> and <code>PBMRestoreFinished</code>.</p>
 </li>
@@ -7927,7 +7927,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-restore<spa
 </li>
 <li>
 <p>Inspect restore conditions:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>my-snapshot-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[*]}{.type}{&quot;\t&quot;}{.status}{&quot;\t&quot;}{.reason}{&quot;\n&quot;}{end}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>my-snapshot-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'</span>
 </code></pre></div>
 <p>Expected conditions when finished include <code>ReplsetPVCsRestoredFromSnapshot</code> and <code>PBMRestoreFinished</code>.</p>
 </li>

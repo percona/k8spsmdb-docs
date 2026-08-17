@@ -7798,7 +7798,7 @@ backup2   my-cluster-name   s3-us-west                                       log
 Namespace:    default
 ...
 Status:
-  Error:         unable to get storage &#39;missing-storage&#39;
+  Error:         unable to get storage 'missing-storage'
   State:         error
   Storage Name:  missing-storage
   Type:          logical
@@ -7814,12 +7814,12 @@ Status:
 <h3 id="check-pbm-readiness-on-the-cluster">Check PBM readiness on the cluster<a class="headerlink" href="#check-pbm-readiness-on-the-cluster" title="Permanent link">&para;</a></h3>
 <p>Before you start a backup, confirm that PBM is ready on the cluster:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[?(@.type==&quot;PBMReady&quot;)]}{.type}{&quot;\n&quot;}{.status}{&quot;\n&quot;}{.reason}{&quot;\n&quot;}{.message}{&quot;\n&quot;}{end}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[?(@.type=="PBMReady")]}{.type}{"\n"}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'</span>
 </code></pre></div>
 <p>If <code>PBMReady</code> is <code>False</code>, resolve the reported reason before retrying the backup. See <a href="cr-statuses.html#conditions">Custom resource statuses</a> for condition details.</p>
 <h3 id="find-the-pod-that-ran-the-backup">Find the Pod that ran the backup<a class="headerlink" href="#find-the-pod-that-ran-the-backup" title="Permanent link">&para;</a></h3>
 <p>Each backup object records which Pod ran PBM for the operation. Retrieve the Pod map as follows:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.pbmPods}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.pbmPods}'</span>
 </code></pre></div>
 <p>You can also inspect the full status:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml

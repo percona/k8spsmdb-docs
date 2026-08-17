@@ -7554,13 +7554,13 @@ option while cloning the code on this step. Please be careful.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">on Linux</label><label for="__tabbed_1_2">on MacOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
-<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'AWS_ACCESS_KEY_ID'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
+<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'AWS_SECRET_ACCESS_KEY'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>
-<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'AWS_ACCESS_KEY_ID'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>
+<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'AWS_SECRET_ACCESS_KEY'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>
 </code></pre></div>
 </div>
 </div>
@@ -7602,8 +7602,8 @@ option while cloning the code on this step. Please be careful.</p>
 <span class="w">    </span><span class="nt">s3-us-west</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span>
 <span class="w">      </span><span class="nt">s3</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;S3-BACKUP-BUCKET-NAME-HERE&quot;</span>
-<span class="w">        </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;AWS_S3_REGION&gt;&quot;</span>
+<span class="w">        </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="s">"S3-BACKUP-BUCKET-NAME-HERE"</span>
+<span class="w">        </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;AWS_S3_REGION&gt;"</span>
 <span class="w">        </span><span class="nt">credentialsSecret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-backup-s3</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div>

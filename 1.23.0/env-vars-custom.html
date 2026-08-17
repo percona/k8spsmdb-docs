@@ -7539,7 +7539,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">    </span><span class="nt">env</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TZ</span>
-<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"UTC"</span>
 </code></pre></div>
 </li>
 <li>
@@ -7565,7 +7565,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb-env-config</span>
 <span class="nt">data</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">MONGODB_EXTRA_FLAGS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;--setParameter</span><span class="nv"> </span><span class="s">diagnosticDataCollectionEnabled=false&quot;</span>
+<span class="w">  </span><span class="nt">MONGODB_EXTRA_FLAGS</span><span class="p">:</span><span class="w"> </span><span class="s">"--setParameter</span><span class="nv"> </span><span class="s">diagnosticDataCollectionEnabled=false"</span>
 </code></pre></div>
 </li>
 <li>
@@ -7598,7 +7598,7 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p>Encode your sensitive values before adding them to a Secret, as Kubernetes stores Secret data in base64-encoded form. This helps prevent accidental exposure of sensitive information in plaintext, even though it is not a secure encryption method.</p>
 <p>To encode an API token, run:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;your-token&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"your-token"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
 </code></pre></div>
 <p>Copy the encoded string for use in your Secret manifest.</p>
 </li>
@@ -7615,7 +7615,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb-env-secrets</span>
 <span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
 <span class="nt">stringData</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">LOG_EXPORT_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-base64-encoded-token&quot;</span>
+<span class="w">  </span><span class="nt">LOG_EXPORT_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="s">"your-base64-encoded-token"</span>
 </code></pre></div>
 </li>
 <li>

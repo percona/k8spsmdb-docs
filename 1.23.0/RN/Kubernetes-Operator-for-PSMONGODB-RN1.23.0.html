@@ -8285,7 +8285,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oss</span>
 <span class="w">      </span><span class="nt">oss</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OSS-BACKUP-BUCKET-NAME-HERE</span>
-<span class="w">        </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;some-prefix&quot;</span>
+<span class="w">        </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">"some-prefix"</span>
 <span class="w">        </span><span class="nt">credentialsSecret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-backup-oss</span>
 <span class="w">        </span><span class="nt">endpointUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://oss-eu-central-1.aliyuncs.com</span>
 <span class="w">        </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-central-1</span>
@@ -8305,8 +8305,8 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name</span>
 <span class="w">  </span><span class="nt">backupName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup1</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test&quot;</span>
-<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myApp.test_remapped&quot;</span>
+<span class="w">    </span><span class="nt">nsFrom</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test"</span>
+<span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>The feature is supported for replica sets and unsharded collections. Refer to our <a href="../backups-restore-new-name.html">documentation</a> for configuration examples and workflows.</p>
 <h3 id="configure-external-nodes-as-arbiters">Configure external nodes as arbiters<a class="headerlink" href="#configure-external-nodes-as-arbiters" title="Permanent link">&para;</a></h3>
@@ -8350,7 +8350,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Set the value as a Go duration string (for example, <code>30s</code> or <code>1m</code>):
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECONCILE_INTERVAL</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;30s&quot;</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div></p>
 <p>To learn more, see the documentation for <a href="../env-vars-operator.html">Operator environment variables</a> and <a href="../reconciliation-concurrency.html">Configure concurrent reconciliation</a>.</p>
 <h3 id="control-statefulset-revision-history-from-your-custom-resource">Control StatefulSet revision history from your Custom Resource<a class="headerlink" href="#control-statefulset-revision-history-from-your-custom-resource" title="Permanent link">&para;</a></h3>

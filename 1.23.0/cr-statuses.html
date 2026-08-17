@@ -7922,7 +7922,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb<span class=
 <p>You can extract specific status fields using <code>jsonpath</code>.</p>
 <p><strong>Example 1. View the status of the PBM configuration:</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .items[0].status.conditions[?(@.type==&quot;PBMReady&quot;)]}{.lastTransitionTime}{&quot;\n&quot;}{.reason}{&quot;\n&quot;}{.status}{&quot;\n&quot;}{.type}{&quot;\n&quot;}{end}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .items[0].status.conditions[?(@.type=="PBMReady")]}{.lastTransitionTime}{"\n"}{.reason}{"\n"}{.status}{"\n"}{.type}{"\n"}{end}'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7934,7 +7934,7 @@ PBMReady
 </details>
 <p><strong>Example 2. Get the latest restorable backup time:</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].status.latestRestorableTime}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[0].status.latestRestorableTime}'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -7943,7 +7943,7 @@ PBMReady
 </details>
 <p><strong>Example 3. View the TLS Secrets readiness condition:</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[?(@.type==&quot;TLSSecretsReady&quot;)]}{.lastTransitionTime}{&quot;\n&quot;}{.reason}{&quot;\n&quot;}{.status}{&quot;\n&quot;}{.message}{&quot;\n&quot;}{end}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[?(@.type=="TLSSecretsReady")]}{.lastTransitionTime}{"\n"}{.reason}{"\n"}{.status}{"\n"}{.message}{"\n"}{end}'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -8014,11 +8014,11 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </ul>
 <p><strong>Example. View vector search status:</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.search}&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.search}'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
-<div class="no-copy highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;rs0&quot;</span><span class="p">:{</span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;ready&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;ready&quot;</span><span class="p">}}</span>
+<div class="no-copy highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"rs0"</span><span class="p">:{</span><span class="nt">"size"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">"ready"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"ready"</span><span class="p">}}</span>
 </code></pre></div>
 </details>
 <h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">&para;</a></h3>
@@ -8205,7 +8205,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </ul>
 <p>When a restore is in <code>error</code>, inspect the message:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>&lt;restore-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}{&quot;\n&quot;}{.status.error}{&quot;\n&quot;}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.error}{"\n"}'</span>
 </code></pre></div>
 <p>Fix the Restore CR (for example, add the missing field or correct <code>backupSource</code>), then confirm that <code>status.state</code> moves out of <code>error</code> after the next reconcile.</p>
 <h3 id="pvc-snapshot-restore-conditions">PVC snapshot restore conditions<a class="headerlink" href="#pvc-snapshot-restore-conditions" title="Permanent link">&para;</a></h3>
@@ -8243,7 +8243,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </table>
 <p>Example: list restore conditions:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>&lt;restore-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[*]}{.type}{&quot;\t&quot;}{.status}{&quot;\t&quot;}{.reason}{&quot;\n&quot;}{end}&#39;</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'</span>
 </code></pre></div>
 <p>For the full restore workflow, see <a href="backups-pvc-snapshots.html#restore-flow">PVC snapshot backups — Restore flow</a>.</p>
 <h2 id="perconaservermongodbclustersync-status">PerconaServerMongoDBClusterSync status<a class="headerlink" href="#perconaservermongodbclustersync-status" title="Permanent link">&para;</a></h2>
@@ -8344,10 +8344,10 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">lagTimeSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">72</span>
-<span class="w">  </span><span class="nt">startedAt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-07-01T12:00:00Z&quot;</span>
+<span class="w">  </span><span class="nt">startedAt</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-07-01T12:00:00Z"</span>
 <span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span>
-<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"True"</span>
 <span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMReplicating</span>
 <span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSM is applying changes from source</span>
 </code></pre></div>
@@ -8355,10 +8355,10 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">failed</span>
-<span class="w">  </span><span class="nt">error</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clone:</span><span class="nv"> </span><span class="s">copy:</span><span class="nv"> </span><span class="s">mydb.mycoll:</span><span class="nv"> </span><span class="s">connection</span><span class="nv"> </span><span class="s">refused&quot;</span>
+<span class="w">  </span><span class="nt">error</span><span class="p">:</span><span class="w"> </span><span class="s">"clone:</span><span class="nv"> </span><span class="s">copy:</span><span class="nv"> </span><span class="s">mydb.mycoll:</span><span class="nv"> </span><span class="s">connection</span><span class="nv"> </span><span class="s">refused"</span>
 <span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span>
-<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;False&quot;</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"False"</span>
 <span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMNotRunning</span>
 </code></pre></div>
 <hr>

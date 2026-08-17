@@ -7571,10 +7571,10 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <span class="w">           </span><span class="no">copytruncate</span>
 <span class="w">           </span><span class="no">sharedscripts</span>
 <span class="w">           </span><span class="no">prerotate</span>
-<span class="w">               </span><span class="no"># rotate mongod.log using &#39;db.adminCommand({ logRotate: 1 })&#39;</span>
-<span class="w">               </span><span class="no">mongosh &quot;mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin&quot; \</span>
-<span class="w">                       </span><span class="no">--eval &#39;db.adminCommand({ logRotate: 1 })&#39;</span>
-<span class="w">               </span><span class="no">find /data/db/logs/ -type f -name &#39;mongod.log.*&#39; -mtime +7 -delete</span>
+<span class="w">               </span><span class="no"># rotate mongod.log using 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">mongosh "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin" \</span>
+<span class="w">                       </span><span class="no">--eval 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">find /data/db/logs/ -type f -name 'mongod.log.*' -mtime +7 -delete</span>
 <span class="w">           </span><span class="no">endscript</span>
 <span class="w">        </span><span class="no">}</span>
 </code></pre></div>
@@ -7644,7 +7644,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">logcollector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logrotate</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0&quot;</span>
+<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0"</span>
 </code></pre></div>
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;

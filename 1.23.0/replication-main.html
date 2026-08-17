@@ -7631,7 +7631,7 @@ deployment.apps/percona-server-mongodb-operator serverside-applied
 <span class="nt">upgradeOptions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">versionServiceEndpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://check.percona.com</span>
 <span class="w">  </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disabled</span>
-<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*"</span>
 <span class="w">  </span><span class="nt">setFCV</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="nt">secrets</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">users</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-secrets</span>
@@ -7706,18 +7706,18 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 <code>selfLink</code>, and <code>uid</code> metadata fields from the resulting file to make it
 ready for the <code>replica</code> site.</p>
 <p>Use the following scripts:</p>
-<div class="highlight"><pre><span></span><code>yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">&#39;del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)&#39;</span><span class="w"> </span>my-cluster-secrets.yml<span class="w"> </span>&gt;<span class="w"> </span>my-cluster-secrets-replica.yaml
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="s1">&#39;s/main-cluster/replica-cluster/g&#39;</span><span class="w"> </span>my-cluster-secrets-replica.yaml
+<div class="highlight"><pre><span></span><code>yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)'</span><span class="w"> </span>my-cluster-secrets.yml<span class="w"> </span>&gt;<span class="w"> </span>my-cluster-secrets-replica.yaml
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="s1">'s/main-cluster/replica-cluster/g'</span><span class="w"> </span>my-cluster-secrets-replica.yaml
 
-yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">&#39;del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)&#39;</span><span class="w"> </span>main-cluster-ssl.yml<span class="w"> </span>&gt;<span class="w"> </span>replica-cluster-ssl.yml
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="s1">&#39;s/main-cluster/replica-cluster/g&#39;</span><span class="w"> </span>replica-cluster-ssl.yml
+yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)'</span><span class="w"> </span>main-cluster-ssl.yml<span class="w"> </span>&gt;<span class="w"> </span>replica-cluster-ssl.yml
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="s1">'s/main-cluster/replica-cluster/g'</span><span class="w"> </span>replica-cluster-ssl.yml
 
-yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">&#39;del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)&#39;</span><span class="w"> </span>main-cluster-ssl-internal.yml<span class="w"> </span>&gt;<span class="w"> </span>replica-cluster-ssl-internal.yml
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="s1">&#39;s/main-cluster/replica-cluster/g&#39;</span><span class="w"> </span>replica-cluster-ssl-internal.yml
+yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)'</span><span class="w"> </span>main-cluster-ssl-internal.yml<span class="w"> </span>&gt;<span class="w"> </span>replica-cluster-ssl-internal.yml
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="s1">'s/main-cluster/replica-cluster/g'</span><span class="w"> </span>replica-cluster-ssl-internal.yml
 
 
-yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">&#39;del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)&#39;</span><span class="w"> </span>my-cluster-name-mongodb-encryption-key.yml<span class="w"> </span>&gt;<span class="w"> </span>my-cluster-name-mongodb-encryption-key2.yml
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="s1">&#39;s/main-cluster/replica-cluster/g&#39;</span><span class="w"> </span>my-cluster-name-mongodb-encryption-key2.yml
+yq<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s1">'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)'</span><span class="w"> </span>my-cluster-name-mongodb-encryption-key.yml<span class="w"> </span>&gt;<span class="w"> </span>my-cluster-name-mongodb-encryption-key2.yml
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="s1">'s/main-cluster/replica-cluster/g'</span><span class="w"> </span>my-cluster-name-mongodb-encryption-key2.yml
 </code></pre></div>
 <p>The commands do the following for each file:</p>
 <ul>

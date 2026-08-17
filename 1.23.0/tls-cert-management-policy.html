@@ -7790,7 +7790,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <h2 id="monitor-the-cluster-state">Monitor the cluster state<a class="headerlink" href="#monitor-the-cluster-state" title="Permanent link">&para;</a></h2>
 <p>If a TLS Secret is missing and <code>spec.tls.certManagementPolicy</code> is set to <code>userProvidedOnly</code>, the Operator updates the <code>TLSSecretsReady</code> cluster condition to <code>False</code> and sets the reason to <code>TLSSecretNotFound</code>.</p>
 <p>To check the condition, run:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .status.conditions[?(@.type==&quot;TLSSecretsReady&quot;)]}{.status}{&quot;\n&quot;}{.reason}{&quot;\n&quot;}{.message}{&quot;\n&quot;}{end}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[?(@.type=="TLSSecretsReady")]}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output when a Secret is missing</summary>
@@ -7814,7 +7814,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </li>
 <li>
 <p>Wait for the next reconciliation cycle, then verify:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;TLSSecretsReady&quot;)].status}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.conditions[?(@.type=="TLSSecretsReady")].status}'</span>
 </code></pre></div>
 <p>The output should be <code>True</code>.</p>
 </li>

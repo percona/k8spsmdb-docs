@@ -7653,7 +7653,7 @@ may have one of the following values:</p>
 <p>The following example forces Percona Server for MongoDB Pods to avoid occupying
 the same node:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">affinity</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes.io/hostname&quot;</span>
+<span class="w">  </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 </code></pre></div>
 <h3 id="advanced-approach-use-standard-kubernetes-constraints">Advanced approach - use standard Kubernetes constraints<a class="headerlink" href="#advanced-approach-use-standard-kubernetes-constraints" title="Permanent link">&para;</a></h3>
 <p>The previous method can be used without special knowledge of the Kubernetes way
@@ -7737,9 +7737,9 @@ configured to not tolerating this <em>taint</em> is removed from the node. This 
 can be immediate or after the <code>tolerationSeconds</code> interval. The following
 example defines this effect and the removal interval:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">tolerations</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;node.alpha.kubernetes.io/unreachable&quot;</span>
-<span class="w">  </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Exists&quot;</span>
-<span class="w">  </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;NoExecute&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"node.alpha.kubernetes.io/unreachable"</span>
+<span class="w">  </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">"Exists"</span>
+<span class="w">  </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s">"NoExecute"</span>
 <span class="w">  </span><span class="nt">tolerationSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6000</span>
 </code></pre></div>
 <p>The <a href="https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/">Kubernetes Taints and Toleratins  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>

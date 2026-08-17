@@ -7477,7 +7477,7 @@ window.addEventListener('afterprint', (event) => {
 <ol>
 <li>
 <p>Confirm that your cluster is running:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.state}&#39;</span><span class="w"> </span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}'</span><span class="w"> </span>
 </code></pre></div>
 <p>The command should return <code>ready</code>. See <a href="cr-statuses.html">Custom resource statuses</a> for other possible values.</p>
 </li>

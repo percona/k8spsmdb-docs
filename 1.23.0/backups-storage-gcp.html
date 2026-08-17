@@ -7691,14 +7691,14 @@ window.addEventListener('afterprint', (event) => {
 <p>Create a Google service account (GSA), if you don&rsquo;t have one already:</p>
 <div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>create<span class="w"> </span><span class="nv">$GSA_NAME</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--project<span class="o">=</span><span class="nv">$PROJECT_ID</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--display-name<span class="o">=</span><span class="s2">&quot;Percona MongoDB GCS backups&quot;</span>
+<span class="w">  </span>--display-name<span class="o">=</span><span class="s2">"Percona MongoDB GCS backups"</span>
 </code></pre></div>
 </li>
 <li>
 <p>Grant the GSA permissions on the backup bucket. For example, grant object read and write access:</p>
 <div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>storage<span class="w"> </span>buckets<span class="w"> </span>add-iam-policy-binding<span class="w"> </span>gs://<span class="nv">$GCS_BUCKET</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--member<span class="o">=</span><span class="s2">&quot;serviceAccount:</span><span class="si">${</span><span class="nv">GSA_NAME</span><span class="si">}</span><span class="s2">@</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">.iam.gserviceaccount.com&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--role<span class="o">=</span><span class="s2">&quot;roles/storage.objectUser&quot;</span>
+<span class="w">  </span>--member<span class="o">=</span><span class="s2">"serviceAccount:</span><span class="si">${</span><span class="nv">GSA_NAME</span><span class="si">}</span><span class="s2">@</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">.iam.gserviceaccount.com"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--role<span class="o">=</span><span class="s2">"roles/storage.objectUser"</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -7710,7 +7710,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>add-iam-policy-binding<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="si">${</span><span class="nv">GSA_NAME</span><span class="si">}</span>@<span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span>.iam.gserviceaccount.com<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--role<span class="w"> </span>roles/iam.workloadIdentityUser<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--member<span class="w"> </span><span class="s2">&quot;serviceAccount:</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">.svc.id.goog[</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">KSA_NAME</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">  </span>--member<span class="w"> </span><span class="s2">"serviceAccount:</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">.svc.id.goog[</span><span class="si">${</span><span class="nv">NAMESPACE</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">KSA_NAME</span><span class="si">}</span><span class="s2">]"</span>
 </code></pre></div>
 </li>
 <li>
@@ -7790,7 +7790,7 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 <li>
 <p>Remove the credentials Secret from the Custom Resource. The storage name in the following command is <code>gcs</code>. Replace it with your value if you use another name:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span><span class="nv">$DBCLUSTER</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;[{&quot;op&quot;:&quot;remove&quot;,&quot;path&quot;:&quot;/spec/backup/storages/gcs/gcs/credentialsSecret&quot;}]&#39;</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="s1">'[{"op":"remove","path":"/spec/backup/storages/gcs/gcs/credentialsSecret"}]'</span>
 </code></pre></div>
 </li>
 </ol>
@@ -7820,7 +7820,7 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 <li>
 <p>Encode your keys in base64 format. You need to encode the service account email and the private key. You can get these values from the service account key file you downloaded when you created the service account keys.</p>
 <p>The following command shows how to encode a private key. Replace the placeholder with your private key and service account email:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nPRIVATE_KEY\n-----END PRIVATE KEY-----\n&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"-----BEGIN PRIVATE KEY-----\nPRIVATE_KEY\n-----END PRIVATE KEY-----\n"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
 </code></pre></div>
 </li>
 <li>

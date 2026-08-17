@@ -7531,7 +7531,7 @@ Set <code>upgradeOptions.versionServiceEndpoint</code> to <code>https://check.pe
 <div class="tabbed-block">
 <p>Alternatively, you can run Version Service inside your cluster. This
 can be done with the <code>kubectl</code> command as follows:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>version-service<span class="w"> </span>--image<span class="o">=</span>perconalab/version-service<span class="w"> </span>--env<span class="o">=</span><span class="s2">&quot;SERVE_HTTP=true&quot;</span><span class="w"> </span>--port<span class="w"> </span><span class="m">11000</span><span class="w"> </span>--expose
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>version-service<span class="w"> </span>--image<span class="o">=</span>perconalab/version-service<span class="w"> </span>--env<span class="o">=</span><span class="s2">"SERVE_HTTP=true"</span><span class="w"> </span>--port<span class="w"> </span><span class="m">11000</span><span class="w"> </span>--expose
 </code></pre></div>
 </div>
 </div>
@@ -7546,7 +7546,7 @@ Percona’s Version Service:</p>
 <span class="w">  </span><span class="nt">upgradeOptions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Recommended</span>
 <span class="w">    </span><span class="nt">versionServiceEndpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://check.percona.com</span>
-<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span>
+<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*"</span>
 <span class="nn">...</span>
 </code></pre></div>
 <div class="admonition note">

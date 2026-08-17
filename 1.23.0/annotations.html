@@ -7875,10 +7875,10 @@ perconaservermongodbs.psmdb.percona.com   2025-09-18T08:27:53Z   app.kubernetes.
 </code></pre></div>
 </details>
 <p>To check <strong>annotations</strong> associated with an object, use the following command:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>&lt;resource&gt;<span class="w"> </span>&lt;resource-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>&lt;resource&gt;<span class="w"> </span>&lt;resource-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.annotations}'</span>
 </code></pre></div>
 <p>For example:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations}&#39;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.annotations}'</span>
 </code></pre></div>
 <h2 id="specifying-labels-and-annotations-ignored-by-the-operator">Specifying labels and annotations ignored by the Operator<a class="headerlink" href="#specifying-labels-and-annotations-ignored-by-the-operator" title="Permanent link">&para;</a></h2>
 <p>Sometimes various Kubernetes flavors can add their own annotations to the

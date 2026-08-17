@@ -7648,8 +7648,8 @@ follows:</p>
 <p class="admonition-title">Note</p>
 <p>Similarly, you can read the list of options from a Base64 encoded
 string:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\</span>
-<span class="s2">AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">"ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\</span>
+<span class="s2">AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg=="</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
 </code></pre></div>
 </div>
 <p>Finally, use a yaml file to create the Secret object. For example, you can
@@ -7659,8 +7659,8 @@ create a <code>deploy/my-mongod-secret.yaml</code> file with the following conte
 <span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-rs0-mongod</span>
 <span class="nt">data</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">mongod.conf</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\</span>
-<span class="w">   </span><span class="s">AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg==&quot;</span>
+<span class="w">  </span><span class="nt">mongod.conf</span><span class="p">:</span><span class="w"> </span><span class="s">"ICAgICAgb3BlcmF0aW9uUHJvZmlsaW5nOgogICAgICAgIG1vZGU6IHNsb3dPc\</span>
+<span class="w">   </span><span class="s">AogICAgICBzeXN0ZW1Mb2c6CiAgICAgICAgdmVyYm9zaXR5OiAxCg=="</span>
 </code></pre></div>
 <p>When ready, apply it with the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>deploy/my-mongod-secret.yaml
