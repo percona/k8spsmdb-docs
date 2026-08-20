@@ -75,7 +75,7 @@
 }
 
 :root,
-[data-md-color-scheme="percona-light"] {
+[data-md-color-scheme="default"] {
 
     /* Primitives */
     --md-hue: 220;
@@ -87,6 +87,7 @@
 
     /* Defaults */
     --md-default-bg-color: var(--white);
+    --md-default-fg-color: var(--stone900);
     --md-default-fg-color--light: rgba(44,50,62,0.72);
     --md-default-fg-color--lighter: rgba(44,50,62,0.40);
     --md-default-fg-color--lightest: rgba(44,50,62,0.25);
@@ -109,7 +110,7 @@
     --md-typeset-table-color: hsla(var(--md-hue),17%,21%,0.25)
 }
 
-[data-md-color-scheme="percona-dark"] {
+[data-md-color-scheme="slate"] {
 
     /* Primitives */
     --md-hue: 0;
@@ -121,6 +122,7 @@
 
     /* Defaults */
     --md-default-bg-color: var(--stone900);
+    --md-default-fg-color: var(--white);
     --md-default-fg-color--light: rgba(251,251,251,0.72);
     --md-default-fg-color--lighter: rgba(251,251,251,0.4);
     --md-default-fg-color--lightest: rgba(209,213,222,0.25);
@@ -139,6 +141,9 @@
     /* Code */
     --md-code-bg-color: var(--stone50);
     --md-code-bg-color: var(--stone800);
+
+    /* Tables */
+    --md-typeset-table-color: hsla(var(--md-hue),0%,100%,0.25)
 }
 
 /* Typography */
@@ -268,7 +273,7 @@
     color: var(--md-typeset-color);
 }
 .md-button code,
-[data-md-color-scheme="percona-dark"] .md-button:not(.md-button--primary) code {
+[data-md-color-scheme="slate"] .md-button:not(.md-button--primary) code {
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) inset;
 }
