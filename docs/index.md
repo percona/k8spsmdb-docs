@@ -18,4 +18,11 @@ The Operator simplifies and automates tasks related to MongoDB cluster managemen
 
 * High Availability: Manages replica sets and failover mechanisms to ensure your database remains available.
 
-[What's new in version {{release}}](RN/Kubernetes-Operator-for-PSMONGODB-RN{{release}}.md){.md-button}
+[Get started](quickstart.md){.md-button}
+[What's new in {{release}}](RN/Kubernetes-Operator-for-PSMONGODB-RN{{release}}.md){.md-button}
+
+## Stay updated
+
+Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
+
+

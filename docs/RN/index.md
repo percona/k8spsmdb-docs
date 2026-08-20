@@ -1,5 +1,7 @@
 # Percona Operator for MongoDB Release Notes
 
+Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
+
 - [Percona Operator for MongoDB 1.23.0 ({{date.1_23_0}})](Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)
 - [Percona Operator for MongoDB 1.22.0 ({{date.1_22_0}})](Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)
 - [Percona Operator for MongoDB 1.21.2 ({{date.1_21_2}})](Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md)
