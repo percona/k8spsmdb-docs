@@ -21,6 +21,14 @@ Choose how you want to use the Operator:
 
 ---
 
+## Stay updated
+
+[What's new in {{release}}](RN/Kubernetes-Operator-for-PSMONGODB-RN{{release}}.md)
+
+Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
+
+---
+
 <div data-grid markdown>
 <div data-banner markdown>
 
