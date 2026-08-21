@@ -1,6 +1,6 @@
 # Telemetry
 
-The Telemetry function enables the Operator gathering and sending basic anonymous data to Percona, which helps us to determine where to focus the development and what is the uptake for each release of Operator.
+The Telemetry function enables the Operator to gather and send basic anonymous data to Percona, which helps us to determine where to focus the development and what is the uptake for each release of Operator.
 
 The following information is gathered:
 

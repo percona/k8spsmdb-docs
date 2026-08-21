@@ -1,6 +1,6 @@
-# Install Percona Server for MongoDB on Rancher Kubernetes Engine (RKE2)
+# Create a Rancher Kubernetes Engine (RKE2) cluster
 
-This guide shows you how to deploy Percona Operator for MongoDB on
+This guide walks you through creating a Kubernetes cluster on
 [Rancher Kubernetes Engine (RKE2) :octicons-link-external-16:](https://docs.rke2.io/).
 RKE2 is a CNCF-certified Kubernetes distribution that you can run standalone or
 manage with the [Rancher :octicons-link-external-16:](https://ranchermanager.docs.rancher.com/)
@@ -31,7 +31,6 @@ The following tools and access are required:
 You can create the cluster [with the RKE2 installation script :octicons-link-external-16:](https://docs.rke2.io/install/quickstart) or [provision it
 through Rancher :octicons-link-external-16:](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher). Both approaches give you a standard Kubernetes API endpoint
 that the Operator uses.
-
 
 ## Configure kubectl access
 
@@ -68,106 +67,11 @@ the [Local Path Provisioner :octicons-link-external-16:](https://github.com/ranc
 For production, use a CSI driver appropriate for your infrastructure, such as
 [Longhorn :octicons-link-external-16:](https://longhorn.io/) when you manage the cluster with Rancher.
 
-## Install the Operator and deploy your MongoDB cluster
-
-1. Deploy the Operator. By default deployment will be done in the `default`
-    namespace. If that's not the desired one, you can create a new namespace
-    and/or set the context for the namespace as follows (replace the `<namespace name>` placeholder with some descriptive name):
-
-    ```bash
-    kubectl create namespace <namespace name>
-    kubectl config set-context $(kubectl config current-context) --namespace=<namespace name>
-    ```
-
-    At success, you will see the message that `namespace/<namespace name>` was created, and the context was modified.
-
-    Deploy the Operator, using the following command:
-
-    ```bash
-    kubectl apply --server-side -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/bundle.yaml
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbs.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbbackups.psmdb.percona.com serverside-applied
-        customresourcedefinition.apiextensions.k8s.io/perconaservermongodbrestores.psmdb.percona.com serverside-applied
-        role.rbac.authorization.k8s.io/percona-server-mongodb-operator serverside-applied
-        serviceaccount/percona-server-mongodb-operator serverside-applied    
-        rolebinding.rbac.authorization.k8s.io/service-account-percona-server-mongodb-operator serverside-applied
-        deployment.apps/percona-server-mongodb-operator serverside-applied
-        ```
-
-2. The Operator has been started, and you can deploy your MongoDB cluster:
-
-    ```bash
-    kubectl apply -f https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/cr.yaml
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        perconaservermongodb.psmdb.percona.com/my-cluster-name created
-        ```
-
-3. The creation process may take some time. When the process is over your
-    cluster will obtain the `ready` status. You can check it with the following
-    command:
-
-    ```bash
-    kubectl get psmdb
-    ```
-
-    ??? example "Expected output"
-
-        ``` {.text .no-copy}
-        NAME              ENDPOINT                                           STATUS   AGE
-        my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
-        ```
-
-Congratulations! You have deployed Percona Server for MongoDB with the default configuration, which includes three mongod, three mongos, and three config server instances. 
-
-For how to install Percona Server for MongoDB with customize parameters, see [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
-    
-## Verifying the cluster operation
-
-It may take ten minutes to get the cluster started. When `kubectl get psmdb`
-command finally shows you the cluster status as `ready`, you can try to connect
-to the cluster.
-
-{% include 'assets/fragments/connectivity.txt' %}
-
-## Troubleshooting
-
-If `kubectl get psmdb` command doesn't show `ready` status too long, you can 
-check the creation process with the `kubectl get pods` command:
-
-```bash
-kubectl get pods
-```
-
-??? example "Expected output"
-
-    --8<-- "cli/kubectl-get-pods-response.md"
-
-If the command output had shown some errors, you can examine the problematic
-Pod with the `kubectl describe <pod name>` command as follows:
-
-```bash
-kubectl describe pod my-cluster-name-rs0-2
-```
-
-Review the detailed information for `Warning` statements and then correct the
-configuration. An example of a warning is as follows:
-
-`Warning  FailedScheduling  68s (x4 over 2m22s)  default-scheduler  0/1 nodes are available: 1 node(s) didn’t match pod affinity/anti-affinity, 1 node(s) didn’t satisfy existing pods anti-affinity rules.`
-
-If Pods stay in the `Pending` state because volumes cannot be provisioned,
+If Pods later stay in the `Pending` state because volumes cannot be provisioned,
 confirm that a StorageClass exists and that your Custom Resource references the
 correct one.
 
-## Removing the RKE2 cluster
+## Delete the RKE2 cluster
 
 To tear down a manually installed RKE2 cluster, run the uninstall script on each
 node (agent nodes first, then server nodes):
@@ -182,3 +86,11 @@ UI instead.
 !!! warning
 
     After deleting the cluster, all data stored in it will be lost!
+
+## Next steps
+
+Deploy the Operator and Percona Server for MongoDB.
+
+[Single-namespace deployment](kubectl.md){.md-button}
+[Multi-namespace deployment](cluster-wide.md){.md-button}
+[Install with Helm](helm.md){.md-button}
