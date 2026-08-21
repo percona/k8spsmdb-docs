@@ -47,6 +47,7 @@ theme:
     #- navigation.tabs.sticky
     #- navigation.sections
     - navigation.tracking
+    - navigation.indexes
     - content.tabs.link
     #- content.action.edit
     - content.action.view
@@ -110,15 +111,8 @@ markdown_extensions:
         - _resource/overrides/.icons
 
 plugins:
-  section-index: {}
   search: 
     separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-#  placeholder:
-#    enabled: True
-#    js_output_dir: assets/javascripts/
-#    placeholder_css: assets/javascripts/placeholder-plugin.css
-#    placeholder_extra_js: ""
-#    placeholder_file: placeholder-plugin.yaml
   git-revision-date-localized:
     enable_creation_date: true
     enabled: !ENV [ENABLED_GIT_REVISION_DATE, True]
@@ -143,6 +137,7 @@ plugins:
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
+  section-index: {}
   print-site:
     add_to_navigation: false
     print_page_title: 'Percona Operator for MongoDB documentation'
@@ -174,13 +169,13 @@ nav:
     - Welcome: index.md
     - Get help from Percona: get-help.md
     - Understand the Operator:
-       - "How it works": how-it-works.md
+       - how-it-works.md
        - "Features and capabilities": features.md
        - "Design and architecture": architecture.md
        - "Comparison with other solutions": compare.md
        - "Known limitations": limitations.md
-    - Get started: 
-       - Choose your path: quickstart.md
+    - Get started:
+       - quickstart.md
        - Application development quickstart:
           - "1. Get a cluster": get-a-cluster.md
           - "2. Connect your application": connect-from-app.md
@@ -217,19 +212,26 @@ nav:
        - "Install in multi-namespace (cluster-wide) mode": cluster-wide.md
        - Install with OpenEverest: everest.md
        - Verify the cluster operation: verify-cluster.md
+    - Upgrade:
+          - update.md
+          - Upgrade CRD and the Operator:
+              - update-operator.md
+              - update-crd-manual.md
+              - update-crd-helm.md
+              - update-crd-olm.md
     - Manage your cluster:
-          - Manage users: 
-             - "About application and system users": users.md
+          - Manage users:
+             - users.md
              - "Application-level (unprivileged) users": app-users.md
              - "System users": system-users.md
              - "Connection secrets": connection-secrets.md
-             - Manage system users with Vault: 
-                - "Overview": system-users-vault.md
+             - Manage system users with Vault:
+                - system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
           - Backup and restore:
-              - "About backups": backups.md
+              - backups.md
               - "Configure storage for backups":
-                  - Overview: backups-storage.md
+                  - backups-storage.md
                   - "Amazon S3 storage": backups-storage-s3.md
                   - "MinIO and S3-compatible storages": backups-storage-minio.md
                   - "Google Cloud storage": backups-storage-gcp.md
@@ -240,7 +242,7 @@ nav:
               - multi-storage.md
               - "Store operations logs for point-in-time recovery": backups-pitr.md
               - "PVC snapshot backups":
-                  - Overview: backups-pvc-snapshots.md
+                  - backups-pvc-snapshots.md
                   - "Configure PVC snapshots": backups-pvc-setup.md
                   - "Use PVC snapshots": backups-pvc-usage.md
               - Make a backup:
@@ -261,21 +263,6 @@ nav:
           - Logging:
               - "Persistent logging": persistent-logging.md
               - "Log rotation": logrotate.md
-          - Upgrade:
-              - About upgrades: update.md
-              - Upgrade CRD and the Operator: 
-                  - "Considerations": update-operator.md
-                  - "Manually": update-crd-manual.md
-                  - "Via Helm": update-crd-helm.md
-                  - "Via OLM": update-crd-olm.md
-              - Upgrade Percona Server for MongoDB:
-                  - "Overview": update-db.md
-                  - Minor upgrade:
-                       - "To a specific version": update-minor-set-version.md
-                       - "Automatic minor upgrades": update-minor-automatic.md
-                       - "Manual upgrade": update_manually.md
-                  - "Major upgrade": update-major.md
-                  - "Upgrade on OpenShift": update_openshift.md
           - "Pause or restart the cluster": pause.md
           - "Delete the Operator and database": delete.md
 
@@ -288,21 +275,21 @@ nav:
             - "Labels and annotations": annotations.md
             - "Extend startup logic (hook script)": hookscript.md
             - Manage local storage:
-                - "Local storage support": storage.md
+                - storage.md
                 - "Configure VolumeAttributesClass for persistent volumes": volume-attributes-class.md
             - "Use a private registry": custom-registry.md
 
         - Percona Server for MongoDB:
             - Security:
                 - Transport encryption (TLS/SSL):
-                    - About TLS security: TLS.md
+                    - TLS.md
                     - Configure TLS using cert-manager: tls-cert-manager.md
                     - Generate certificates manually: tls-manual.md
                     - Update certificates: tls-update.md
                     - "Configure the TLS certificate management policy": tls-cert-management-policy.md
                     - Disable TLS: tls-disable.md
-                - Data-at-rest encryption: 
-                    - "About data-at-rest encryption": encryption.md
+                - Data-at-rest encryption:
+                    - encryption.md
                     - Configure encryption using an encryption key Secret: encryption-keyfile.md
                     - Configure encryption with HashiCorp Vault:
                        - "without TLS": encryption-vault.md
@@ -316,10 +303,10 @@ nav:
                 - "Sharding": sharding.md
                 - "Arbiter, non-voting and hidden nodes": arbiter.md
             - Disaster recovery with multi-cluster and multi-region deployment:
-                - "About multi-cluster and multi-region deployments": replication.md
+                - replication.md
                 - "Plan your deployment": replication-plan-deployment.md
                 - Multi-cluster Services:
-                    - About Multi-cluster Services: replication-mcs.md
+                    - replication-mcs.md
                     - "Enable Multi-cluster Services on GKE": replication-mcs-gke.md
                     - "Enable Multi-cluster Services on EKS": replication-mcs-eks.md
                     - "Apply MCS to an existing cluster": replication-apply-mcs-existing.md
@@ -331,10 +318,10 @@ nav:
                     - "Backups with cross-site replication": replication-backups.md
                     - "Splitting replica set across multiple data centers": replication-multi-dc.md
             - Data migration with Percona ClusterSync for MongoDB:
-                - "About PCSM integration": clustersync.md
+                - clustersync.md
                 - "Set up and use PCSM": clustersync-setup.md
             - Search and vector search:
-                - "About full-text and vector search": search-overview.md
+                - search-overview.md
                 - "Configure search and vector search": search-setup.md
             - Environment variables:
                 - "Operator environment variables": env-vars-operator.md
@@ -346,8 +333,8 @@ nav:
             - "Telemetry": telemetry.md
 
     - Troubleshooting:
-        - Troubleshoot the Operator installation issues: troubleshoot-operator.md    
-        - "Initial troubleshooting": debug.md
+        - debug.md
+        - Troubleshoot the Operator installation issues: troubleshoot-operator.md
         - "Exec into the container": debug-shell.md
         - "Check the logs": debug-logs.md
         - "Troubleshoot backups and restores": debug-backup-restore.md
@@ -362,7 +349,7 @@ nav:
           - "Custom resource statuses": cr-statuses.md
           - "Operator API": api.md           
           - "Certified images":
-                  - "Percona certified images": images.md
+                  - images.md
                   - "Retrieve certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Frequently asked questions": faq.md
@@ -372,7 +359,7 @@ nav:
               - legal-notice.md
 
     - Release notes:
-          - "Release notes index": RN/index.md
+          - RN/index.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
