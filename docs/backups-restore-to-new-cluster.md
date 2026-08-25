@@ -6,7 +6,7 @@ You can restore from a backup as follows:
 * On a new cluster deployed in a different Kubernetes-based environment.
 * On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
 
-This document focuses on the restore on a new cluster deployed in a different Kubernetes environment.
+This document focuses on the restore on a new cluster deployed in a different Kubernetes environment. For a comparison of restore options, see [Backup and restore](backups.md#restore-options).
 
 To restore from a backup, you create a Restore object using a special restore configuration file. The
 example of such file is [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/backup/restore.yaml).

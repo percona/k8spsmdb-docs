@@ -1,5 +1,7 @@
 # Configure storage for backups
 
+For the list of supported storages and when to use each type, see [Backup storage](backups.md#backup-storage). This page explains how to add storage to the cluster Custom Resource.
+
 You can configure storage for backups in the `backup.storages` subsection of the
 Custom Resource, using the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 configuration file.

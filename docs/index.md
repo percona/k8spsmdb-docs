@@ -37,9 +37,9 @@ Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/per
 Understand how the Operator works, how it’s designed, and how it compares to other ways to run MongoDB on Kubernetes.
 
 * [How the Operator works](how-it-works.md)
-* [Features](features.md)
 * [Architecture](architecture.md)
 * [Compare with other solutions](compare.md)
+* [Features](features.md)
 
 </div><div data-banner markdown>
 
@@ -49,7 +49,7 @@ Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes? 
 
 * [Installation](namespace-mode.md)
 * [Manage users](users.md)
-* [Configure backups](backups.md)
+* [Configure backups](backups-configure.md)
 * [Scale your cluster](scaling.md)
 * [Monitor database health](monitoring.md)
 * [Upgrade](update.md)

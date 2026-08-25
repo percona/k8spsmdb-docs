@@ -21,4 +21,4 @@ If storage is not scaling, check if any PVC has reached the max size. Thresholds
 
 ## PVC resize is one-way
 
-PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to the old size without recreating it. Recreating PVCs can cause data loss, so make sure you have a backup strategy in place. See [About backups](backups.md).
+PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to the old size without recreating it. Recreating PVCs can cause data loss, so make sure you have a backup strategy in place. See [Backup and restore](backups.md).
