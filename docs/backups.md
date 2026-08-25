@@ -11,7 +11,7 @@ Use this page to choose a backup type, storage, restore method, and whether you 
 | Nightly or scheduled protection | Scheduled logical or physical backup | [Configure storage](backups-storage.md), then [scheduled backup](backups-scheduled.md) |
 | A one-off copy before a change | On-demand backup | [Configure storage](backups-storage.md), then make an [on-demand backup](backups-ondemand.md) |
 | Large dataset, fast backup and restore | PVC snapshot (`external`) | [Configure PVC snapshots](backups-pvc-setup.md) |
-| Undo a bad write to a specific time | Point-in-time recovery (PITR) (logical or physical only) | [Enable PITR](backups-pitr.md), then [restore](backups-restore.md#make-a-point-in-time-recovery) |
+| Undo a bad write to a specific time | Point-in-time recovery (PITR) (logical or physical only) | [Enable PITR](backups-pitr.md), then [restore to a point in time](backups-pitr-restore.md) |
 | Clone data to another environment | Restore to a new cluster | [Restore on a new cluster](backups-restore-to-new-cluster.md) |
 | Restore one database or collection | Selective restore from a logical backup | [Restore on the same cluster](backups-restore.md#selective-restore) |
 
@@ -145,7 +145,7 @@ For steps, see [Restore from a PVC snapshot](backups-pvc-usage.md#make-an-in-pla
 3. PBM restores the backup, then applies oplog to the target time.
 4. After success, the Operator recreates the StatefulSet with its regular configuration.
 
-For steps, see [Restore the cluster from a previously saved backup](backups-restore.md).
+For steps, see [Restore to a point in time](backups-pitr-restore.md).
 
 ## Next steps
 

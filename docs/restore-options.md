@@ -94,7 +94,7 @@ Defines mapping between source and target replica set names during a restore. Th
 
 ## The `pitr` subsection
 
-Controls how to make a point-in-time restore
+Controls how to make a point-in-time restore. Read more about [restoring to a point in time](backups-pitr-restore.md).
 
 ### `pitr.type`
 
