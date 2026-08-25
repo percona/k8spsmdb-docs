@@ -2,7 +2,7 @@
 
 This guide provides step-by-step instructions for configuring and using Persistent Volume Claim (PVC) Snapshots with Percona Operator for MongoDB.
 
-For a high-level explanation of PVC snapshots, see [PVC snapshot support](backups-pvc-snapshots.md).
+For when to use snapshots compared with other backup types, see [Backup types](backups.md#backup-types). For requirements, see [PVC snapshots](backups-pvc-snapshots.md).
 
 !!! note "Amazon EKS users"
 

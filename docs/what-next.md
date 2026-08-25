@@ -10,14 +10,14 @@ Move beyond the basics and get production-ready:
 * **[Create and manage application users](app-users.md)** — Use dedicated, least-privilege users instead of the default admin.
 * **[Expose the cluster for production access](expose.md)** — Connect from outside the cluster (load balancer or ingress) instead of port-forward.
 * **[Scale the replica set](scaling.md)** — Add nodes for read capacity and high availability; understand how your driver uses secondaries.
-* **[Understand backups and restore](backups.md)** — See how scheduled backups and point-in-time recovery work and what they mean for your app.
+* **[Understand backups and restore](backups.md)** — See backup types, point-in-time recovery, and what they mean for your app.
 * **[Test your disaster recovery and failover strategies]()** - 
 
 ## If you're operating the cluster
 
 Run the database and Operator reliably in production:
 
-* **[Set up scheduled backups](backups-scheduled.md)** — Automate backups and define retention.
+* **[Configure backups](backups-configure.md)** — Set up storage, then [run scheduled backups](backups-scheduled.md) and define retention.
 * **[Restore from a backup](backups-restore.md)** — Restore on the same cluster or [provision a new cluster from a backup](backups-restore-to-new-cluster.md).
 * **[Scale the cluster](scaling.md)** — Add replica set members or plan for [sharding](sharding.md) when you need more capacity.
 * **[Upgrade the Operator and database](update.md)** — Keep the [Operator](update-operator.md) and [Percona Server for MongoDB](update-db.md) up to date.

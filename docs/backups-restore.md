@@ -6,7 +6,7 @@ You can restore from a backup as follows:
 * On [a new cluster deployed in a different Kubernetes-based environment](backups-restore-to-new-cluster.md).
 * On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
 
-This document focuses on the restore to the same cluster.
+This document focuses on the restore to the same cluster. For a comparison of restore options, see [Backup and restore](backups.md#restore-options).
 
 ## Restore scenarios
 

@@ -1,6 +1,6 @@
 # 4. Make a backup
 
-In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backups, see the [Backup and restore](backups.md) section.
+In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backup types and storages, see [Backup and restore](backups.md).
 
 ## Considerations and prerequisites
 
@@ -152,7 +152,7 @@ cd percona-server-mongodb-operator
 
 If you face issues with the backup, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
-Congratulations! You have made the first backup manually. Want to learn more about backups? See the [Backup and restore](backups.md) section for how to [configure point-in-time recovery](backups-pitr.md), [enable server-side encryption](backups-encryption.md) and how to [automatically make backups according to the schedule](backups-scheduled.md).
+Congratulations! You have made the first backup manually. Continue with [Configure backups](backups-configure.md) to [enable point-in-time recovery](backups-pitr.md), [encrypt backups](backups-encryption.md), and [run backups on a schedule](backups-scheduled.md).
 
 ## Next steps
 

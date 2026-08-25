@@ -17,16 +17,14 @@ Here is what the Operator brings to your infrastructure:
 * **Rolling upgrades** — [Upgrade the Operator](update-operator.md) and [Percona Server for MongoDB](update-db.md) with minimal or no downtime.
 * **Multi-cluster and multi-region** — Use [multi-cluster or multi-region deployments](replication.md) (including [Multi-cluster Services (MCS)](replication-mcs.md) where supported) for disaster recovery, cross-site replication, and migration. You can replicate data across clusters or regions so that if one site fails, another can serve traffic.
 
-### Automated backup and restore flows
+### Backup and restore
 
-Protect your data with [Percona Backup for MongoDB (PBM)](backups.md), which runs as a sidecar in your database Pods:
+Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The [Backup and restore](backups.md) overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow [Configure backups](backups-configure.md).
 
-* **Scheduled backups** — [Configure scheduled backups](backups-scheduled.md) with [remote storage](backups-storage.md) (S3, GCS, Azure, MinIO, or a file server) and retention policies.
-* **On-demand backups** — [Create a backup](backups-ondemand.md) at any time for critical operations.
-* **Logical and physical backups** — Use logical backups for portability or physical backups (including [physical incremental](backups.md#backup-types)) for faster restore on large datasets.
-* **PVC snapshots** to boost your backup and restore performance.
-* **Point-in-time recovery** — [Store oplog and restore to a point in time](backups-pitr.md).
-* **Restore** — [Restore on the same cluster or a new cluster](backups-restore.md); [replica set name remapping](backups-restore-replset-remapping.md) is supported when needed.
+* **Scheduled and on-demand backups** — [Run backups on a schedule](backups-scheduled.md) or [create one when you need it](backups-ondemand.md).
+* **Logical, physical, incremental, and PVC snapshots** — See [backup types](backups.md#backup-types) to pick the right one.
+* **Point-in-time recovery** — [Enable saving oplog](backups-pitr.md) and restore to a specific time.
+* **Restore** — [Restore on the same cluster or a new cluster](backups-restore.md).
 
 ### Automated scaling and resource management
 
@@ -56,25 +54,12 @@ Gain visibility into your database and cluster:
 * **Custom options** — [Tune MongoDB options](options.md) and [PBM options](options-pbm.md) via the custom resource.
 * **Sidecars** — Add [sidecar containers](sidecar.md) (e.g. custom exporters or tools) to replica set, config server, or mongos Pods.
 
-## How the Operator works
+## Understand how it works
 
-The Operator extends Kubernetes with a custom resource that represents your MongoDB cluster’s desired state.
-
-Here is what happens under the hood:
-
-1. You define your cluster in a **PerconaServerMongoDB** custom resource (replica set or sharded cluster, size, storage, backups, and so on).
-2. The Operator watches for changes and **reconciles** the actual state with your desired state.
-3. Kubernetes resources are created and updated automatically: StatefulSets, Services, Secrets, PersistentVolumeClaims, and PBM configuration.
-4. The cluster **self-heals** when Pods or nodes fail: Kubernetes reschedules Pods, and the replica set holds elections to choose a new primary.
-5. **Updates and scaling** happen when you change the custom resource; the Operator applies the changes in a controlled way.
-
-This declarative approach means you describe what you want, and the Operator handles the orchestration so your database cluster matches your specification.
-
-[Explore the architecture](architecture.md){.md-button}
-[Compare with other solutions](compare.md){.md-button}
+The [How the Operator works](how-it-works.md) and [Design and architecture](architecture.md) pages explain the controller model and the components it manages.
 
 ## Next steps
 
-Get up and running in minutes, whether you build and application or need to deploy and operate the database.
+Get up and running in minutes, whether you build an application or need to deploy and operate the database.
 
 [Get started](quickstart.md){.md-button}

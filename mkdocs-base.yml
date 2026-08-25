@@ -170,10 +170,12 @@ nav:
     - Get help from Percona: get-help.md
     - Understand the Operator:
        - how-it-works.md
-       - "Features and capabilities": features.md
        - "Design and architecture": architecture.md
        - "Comparison with other solutions": compare.md
        - "Known limitations": limitations.md
+    - Features:
+       - features.md
+       - "Backup and restore": backups.md
     - Get started:
        - quickstart.md
        - Application development quickstart:
@@ -228,8 +230,8 @@ nav:
              - Manage system users with Vault:
                 - system-users-vault.md
                 - "Configuration": system-users-vault-setup.md
-          - Backup and restore:
-              - backups.md
+          - Configure backups:
+              - backups-configure.md
               - "Configure storage for backups":
                   - backups-storage.md
                   - "Amazon S3 storage": backups-storage-s3.md
@@ -239,21 +241,21 @@ nav:
                   - "Alibaba Cloud OSS storage": backups-storage-oss.md
                   - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
-              - multi-storage.md
-              - "Store operations logs for point-in-time recovery": backups-pitr.md
-              - "PVC snapshot backups":
-                  - backups-pvc-snapshots.md
-                  - "Configure PVC snapshots": backups-pvc-setup.md
-                  - "Use PVC snapshots": backups-pvc-usage.md
+              - "Enable point-in-time recovery": backups-pitr.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md
+              - "Use PVC snapshots":
+                  - backups-pvc-snapshots.md
+                  - "Configure PVC snapshots": backups-pvc-setup.md
+                  - "Restore from a PVC snapshot": backups-pvc-usage.md
               - "Enable server-side encryption": backups-encryption.md
               - Restore from a backup:
                  - "On the same cluster": backups-restore.md
                  - "On a new cluster": backups-restore-to-new-cluster.md
                  - "On a new cluster with different replica set names": backups-restore-replset-remapping.md
                  - "Restore a collection under a different name": backups-restore-new-name.md
+              - multi-storage.md
               - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
               - "Delete the unneeded backup": backups-delete.md
           - scaling.md
