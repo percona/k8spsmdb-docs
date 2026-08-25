@@ -23,7 +23,7 @@ Protect your data with Percona Backup for MongoDB, which runs as a sidecar in yo
 
 * **Scheduled and on-demand backups** — [Run backups on a schedule](backups-scheduled.md) or [create one when you need it](backups-ondemand.md).
 * **Logical, physical, incremental, and PVC snapshots** — See [backup types](backups.md#backup-types) to pick the right one.
-* **Point-in-time recovery** — [Enable saving oplog](backups-pitr.md) and restore to a specific time.
+* **Point-in-time recovery** — Roll back the database to a specific time.
 * **Restore** — [Restore on the same cluster or a new cluster](backups-restore.md).
 
 ### Automated scaling and resource management

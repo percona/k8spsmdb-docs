@@ -12,7 +12,7 @@ This document focuses on the restore to the same cluster. For a comparison of re
 
 You can make the following restores:
 
-* [Make a point-in-time recovery](#make-a-point-in-time-recovery). A precondition for this restore is to [enable saving oplog operations](backups-pitr.md)
+* [Restore to a point in time](backups-pitr-restore.md#on-the-same-cluster). A precondition is to [enable oplog collection](backups-pitr.md).
 * [Restore from a full backup](#restore-from-a-backup)
 * [Selective restore from a full logical backup](#selective-restore)
 * [Restore a collection from a logical backup under a different name](backups-restore-new-name.md)
@@ -34,9 +34,9 @@ You can specify the backup to restore from in two ways: using the `backupName` o
     * *Logical restore in a sharded cluster* causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
     * *Physical and incremental restore* causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
 
---8<-- [start:backup-prepare]
-
 ## Before you begin
+
+--8<-- [start:backup-prepare]
 
 1. Make sure that the cluster is running.
    
@@ -119,67 +119,7 @@ For step-by-step diagnostics, see [Troubleshoot backups and restores](debug-back
 
 ## Make a point-in-time recovery
 
-1. Check a time to restore for a backup. Use the command below to find the latest restorable timestamp:
-    
-    ```bash
-    kubectl get psmdb-backup <backup_name> -n $NAMESPACE -o jsonpath='{.status.latestRestorableTime}'
-    ```
-    
-2. Modify the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest and specify the following configuration:
-
-    * set the `spec.clusterName` key to the name of your cluster. When restoring to the same cluster where the backup was created, the cluster name will be identical in both the Backup and Restore objects.
-    * set the `spec.backupName` key to the name of your backup
-    * configure point-in-time recovery settings in the `pitr` section:
-    
-        * `type` - specify one of the following options
-        
-            * `date` - roll back to a specific date
-            * `latest` - recover to the latest possible transaction
-           
-        * `date` - specify the target datetime in the format `YYYY-MM-DD HH:MM:SS` when `type` is set to `date`
-
-    Here is the example configuration of the `restore.yaml` file:
-
-3. Pass this configuration to the Operator.
-
-    === "via the YAML manifest"
-    
-        1. Edit the [deploy/backup/restore.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{release}}/deploy/backup/restore.yaml) file. 
-
-            ```yaml
-            apiVersion: psmdb.percona.com/v1
-            kind: PerconaServerMongoDBRestore
-            metadata:
-              name: restore1
-            spec:
-              clusterName: my-cluster-name
-              backupName: backup1
-              pitr:
-                type: date
-                date: YYYY-MM-DD hh:mm:ss
-            ```
-
-        2. Start the restore with this command:
-
-            ```bash
-            kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
-            ```
-
-    === "via the command line"
-
-        You can skip editing the YAML file and pass its contents to the Operator via the command line. For example:
-
-        ```bash
-        cat <<EOF | kubectl apply -n $NAMESPACE -f-
-        apiVersion: psmdb.percona.com/v1
-        kind: PerconaServerMongoDBRestore
-        metadata:
-          name: restore1
-        spec:
-          clusterName: my-cluster-name
-          backupName: backup1
-        EOF 
-        ```
+To restore to a specific date and time on this cluster, see [Restore to a point in time](backups-pitr-restore.md#on-the-same-cluster).
 
 ## Selective restore
 

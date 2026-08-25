@@ -241,7 +241,9 @@ nav:
                   - "Alibaba Cloud OSS storage": backups-storage-oss.md
                   - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
                   - "Remote file server": backups-storage-filesystem.md
-              - "Enable point-in-time recovery": backups-pitr.md
+              - "Enable point-in-time recovery (PITR)":
+                  - backups-pitr.md
+                  - "Restore to a point in time": backups-pitr-restore.md
               - Make a backup:
                  - Scheduled backup: backups-scheduled.md
                  - On-demand backup: backups-ondemand.md
