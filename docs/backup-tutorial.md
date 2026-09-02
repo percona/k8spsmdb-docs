@@ -11,7 +11,7 @@ In this tutorial we use the [AWS S3  :octicons-link-external-16:](https://aws.am
 * the region - the location of the bucket
 * the S3 credentials to be used to access the storage. 
 
-If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO  :octicons-link-external-16:](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-storage).
+If you don’t have access to AWS, you can use any S3-compatible storage like [MinIO  :octicons-link-external-16:](https://min.io/docs/minio/linux/index.html). Also [check the list of supported storages](backups.md#backup-cycle-and-backup-storage).
 
 Also, we will use some files from the Operator repository for setting up 
 backups. So, clone the percona-server-mongodb-operator repository:
