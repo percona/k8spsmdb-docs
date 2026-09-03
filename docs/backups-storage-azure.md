@@ -1,6 +1,11 @@
 # Microsoft Azure Blob storage
 
-To use Azure Blob storage, create a Secret object with your access credentials. Use the `deploy/backup-azure.yaml` file as an example. You must specify the following information:
+To use Azure Blob storage for backups, you need the following:
+
+* An Azure Storage account and a Blob container within it
+* Your storage account name and access key, to authenticate to the container
+
+Create a Secret object with your access credentials. Use the `deploy/backup-azure.yaml` file as an example. You must specify the following information:
 
 * `metadata.name` is the name of the Kubernetes secret which you will reference in the Custom Resource
 * `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` are base64-encoded keys to access Azure Blob storage

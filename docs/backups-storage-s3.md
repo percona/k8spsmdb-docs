@@ -16,6 +16,8 @@ Also, note that S3 has an upload limit of 10,000 parts per file. If your backup 
 2. Be aware of the 10,000 part limit for S3 uploads.
 3. Adjust your backup chunk size and memory settings in the Custom Resource if necessary for large backups.
 
+To encrypt backups at rest on S3, see [Enable server-side encryption for backups](backups-encryption.md).
+
 ## Choose the authentication method
 
 You can use one of the following options to authenticate to S3:
@@ -121,22 +123,6 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
     ```bash
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
-
-7. Verify that the cluster can write to the bucket. Take an on-demand backup:
-
-    ```bash
-    kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
-    ```
-
-    Then watch it finish:
-
-    ```bash
-    kubectl get psmdb-backup -n $NAMESPACE
-    ```
-
-    The backup must reach the `ready` state. `error` means the credentials, bucket, or
-    region are wrong - check the backup object's status message and the `pbm-agent` logs.
-    See [Troubleshoot backups and restores](debug-backup-restore.md).
 
 <a name="automate-access-to-amazon-s3-using-irsa"></a>
 
@@ -371,7 +357,7 @@ export namespace=<my-namespace>
 
         ```bash
         kubectl -n $NAMESPACE annotate serviceaccount default eks.amazonaws.com/role-arn=$role_arn --overwrite
-        kubectl -n $NAMESPACE annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role-arn --overwrite
+        kubectl -n $NAMESPACE annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role_arn --overwrite
         ```
 
 4. Annotating a Service Account does not restart existing Pods automatically. Restart the Operator and database Pods so they pick up the new `AWS_ROLE_ARN` environment variable:
@@ -570,6 +556,12 @@ By following these steps, you should be able to resolve the "Request ARN is inva
 
 ## Authenticate with an IAM instance profile
 
+<!-- TODO(docs): This section is a stub next to IRSA's full tutorial above. Needs SME
+     input to expand into a complete walkthrough: creating and attaching the instance
+     profile, a worked configuration example, a verification step, and troubleshooting.
+     Flagged during the 2026-09 storage-pages restructure - do not fill in with guessed
+     AWS steps. -->
+
 Follow these steps:
 
 1. Create the [IAM instance profile :octicons-link-external-16:](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and the permission policy within. In this policy you specify the access level that grants the access to S3 buckets.
@@ -577,4 +569,7 @@ Follow these steps:
 3. Configure an S3 storage bucket in the Custom Resource and verify the connection from the EC2 instance to it.
 4. Create or update the Percona Server for MongoDB cluster. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"
 

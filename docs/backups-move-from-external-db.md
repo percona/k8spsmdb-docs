@@ -105,6 +105,12 @@ source, so the destination reads from the same bucket.
 
 ## Verify the migration
 
+Export the *destination* cluster's namespace, replacing `<namespace>` with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 --8<-- "verify-backup-storage.md"
 
 Then confirm the data itself arrived: connect to the destination cluster and compare
