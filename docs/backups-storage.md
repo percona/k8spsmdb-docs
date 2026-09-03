@@ -82,7 +82,7 @@ Identity-based guides:
 
 * [Amazon S3 with IRSA or an IAM instance profile](backups-storage-s3.md#choose-the-authentication-method)
 * [Google Cloud Storage with Workload Identity](backups-storage-gcp.md#automate-access-to-google-cloud-storage-using-workload-identity)
-* [Oracle Cloud Infrastructure Object Storage](backups-storage-oci.md)
+* [Oracle Cloud Infrastructure Object Storage](backups-storage-oci.md#choose-the-authentication-method)
 
 !!! warning
 

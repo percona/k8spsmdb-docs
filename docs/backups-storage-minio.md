@@ -2,7 +2,13 @@
 
 Use the `minio` storage type for MinIO and other S3-compatible storages. It helps with connectivity and compatibility issues when your S3 implementation doesn't support SigV4 or requires endpoint configuration that works better with the `minio` storage type.
 
-To use the `minio` storage type, create a Secret object with your access credentials. You can use the [`deploy/backup-s3.yaml`](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as the example.
+To use the `minio` storage type, you need the following:
+
+* An S3-compatible bucket and the region it's in
+* Access key and secret key to authenticate to the bucket
+* The storage's endpoint URL, if it's not AWS S3 itself (for example, your MinIO service address)
+
+Create a Secret object with your access credentials. You can use the [`deploy/backup-s3.yaml`](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as the example.
 
 You must specify the following information:
 
@@ -121,6 +127,8 @@ To configure TLS verification with custom certificates, do the following:
     After you apply the configuration, the Operator passes your custom certificate configuration to `pbm-agents`. `pbm-agents` then use it to securely verify TLS communication with S3 storage during backups and restores.
 
 You may use [several S3 storages](multi-storage.md) for backups and may have TLS / SSL certificates for secure communication with each storage. In this case, the Operator merges the certificates into a single `ca-bundle.crt` file and passes it to PBM. When connecting to a specific S3 storage, PBM finds the corresponding certificate and uses it to securely verify TLS communication with this storage.
+
+To encrypt backups at rest, see [Enable server-side encryption for backups](backups-encryption.md).
 
 ## Verify the storage works
 

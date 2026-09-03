@@ -240,3 +240,7 @@ Follow these steps to authenticate using a service account JSON key. This method
     ```bash
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"
