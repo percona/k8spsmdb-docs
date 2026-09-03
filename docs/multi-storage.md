@@ -1,8 +1,20 @@
 # Multiple storages for backups
 
-You can define several storage locations for backups in the Operator. However, previously you were limited to only a single storage for point-in-time recovery, because Percona Backup for MongoDB (PBM) couldn't maintain oplog consistency across multiple storages. Also, you had to wait for the Operator to reconfigure the cluster and sync metadata after you make the next backup or a restore to a different storage. 
+You can define several storage locations for backups. The Operator treats one of them as the
+**main storage** and the rest as **profiles**:
 
-This behavior is improved. The Operator differentiates the storages as the main storage and profiles. The difference between them is that the Operator uses the main storage to save both backups and oplog chunks for point-in-time recovery. Profiles are used only for backups. This is done for data consistency and to enable point-in-time recovery from a backup on any storage. 
+* The **main storage** holds backups *and* the oplog chunks used for point-in-time recovery.
+  There is exactly one.
+* **Profiles** hold backups only.
+
+Keeping oplog on a single storage is what makes the data consistent, and it is why you can
+recover to a point in time from a backup held on any storage.
+
+!!! note
+
+    This applies to Operator version 1.20.0 and later. Earlier versions allowed only one
+    storage when point-in-time recovery was enabled, and switching storage meant waiting for
+    the Operator to reconfigure the cluster and resync metadata.
 
 ## Define the main storage
 
@@ -27,7 +39,7 @@ You can run other [profile management commands :octicons-link-external-16:](http
 
 ## Change the main storage
 
-You can change the main storage by reassigning the `main:true` flag for another one. The Operator then:
+You can change the main storage by reassigning the `main: true` flag for another one. The Operator then:
 
 * Resyncs the metadata for the new main storage 
 * Deletes the profile for it

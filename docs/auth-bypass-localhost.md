@@ -1,4 +1,4 @@
-# Disabling the Percona Server for MongoDB localhost exception
+# Disable the localhost authentication bypass
 
 By default, you can connect to Percona Server for MongoDB from `localhost` without authentication to perform administrative actions such as creating the first user. This is called the **localhost exception**. The Operator relies on this exception to bootstrap the cluster.
 

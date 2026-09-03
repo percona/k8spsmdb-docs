@@ -1,36 +1,41 @@
-# Get started
+# Deploy and operate
 
-**Start here.** Choose your path based on what you want to do:
+This section takes a cluster from nothing to running, monitored, and backed up. Follow it in
+order the first time; each step assumes the one before it.
 
-* **Building an application?** Follow the [**developer path**](#developer-path) to get a cluster, connect from your code, and run locally.
-* **Deploying or operating the cluster?** Follow the [**deployment and operations path**](#deployment-and-operations-path) to install the Operator, connect with the shell, and run backups and monitoring.
+!!! tip "Building an application instead?"
 
----
+    If someone else runs the cluster and you only need to connect your code to it, start
+    with [Development](get-a-cluster.md) instead. It covers connection strings, application
+    users, and driver examples, and does not assume you administer the cluster.
 
-## Developer path
+## The path
 
-Use this path when you want to connect your application to Percona Server for MongoDB on Kubernetes.
+1. **[Quick install](kubectl.md)** — deploy the Operator and a database cluster with
+   `kubectl`. To use Helm instead, see [Install from Helm charts](helm.md).
+2. **[Connect to Percona Server for MongoDB](connect.md)** — connect with `mongosh` from
+   inside the cluster and confirm the database answers.
+3. **[Insert data](data-insert.md)** — add sample data so later steps have something to work
+   with.
+4. **[Make a backup](backup-tutorial.md)** — configure storage and run your first backup.
+5. **[Monitor the database with PMM](monitoring-tutorial.md)** — set up Percona Monitoring
+   and Management.
 
-1. **[Get a cluster](get-a-cluster.md)** — Install a cluster quickly or use one your team already provides.
-2. **[Connect your application](connect-from-app.md)** — Build the connection URI and use it in your app with any MongoDB driver.
-3. **[Get credentials for your app](app-credentials.md)** — Create a dedicated application user and use it in your connection string.
-4. **[Connection examples](connection-examples.md)** — Copy minimal examples in Node.js, Python, or Go.
-5. **[Connect from your laptop or CI](connect-from-outside.md)** — Use port-forward for local development or expose the cluster for shared access.
-6. **[What's next](what-next.md#if-youre-building-an-application)** — Deepen your knowledge and get ready for production use.
+[Start with the quick install :material-arrow-right:](kubectl.md){.md-button}
 
-[Start the developer path :material-arrow-right:](get-a-cluster.md){.md-button}
+## Day-to-day operations
 
----
+* [Pause or restart the cluster](pause.md)
+* [Delete the Operator and database](delete.md)
 
-## Deployment and operations path
+## Beyond the basics
 
-Use this path when you deploy and operate the database cluster (install, backup, monitor, upgrade).
+The quick install is deliberately minimal - it is not a production configuration. When you
+are ready to run this for real:
 
-1. **[Quick install](kubectl.md)** — Deploy the Operator and database with kubectl or [Helm](helm.md).
-2. **[Connect to the database](connect.md)** — Connect with `mongosh` from inside the cluster.
-3. **[Insert data](data-insert.md)** — Add sample data to verify the cluster.
-4. **[Make a backup](backup-tutorial.md)** — Configure and run a backup.
-5. **[Monitor with PMM](monitoring-tutorial.md)** — Set up Percona Monitoring and Management.
-6. **[What's next](what-next.md)** — Day two operations, user guides, and more.
-
-[Start the cluster deployment and operations path :material-arrow-right:](kubectl.md){.md-button}
+* [Install](System-Requirements.md) covers system requirements, platform-specific setup, and
+  multi-namespace deployments.
+* [Features](features.md) covers what the Operator can do - backups, high availability,
+  security, scaling, upgrades - and the decisions each one involves.
+* [What's next for operators](what-next-operations.md) lists the hardening tasks worth doing
+  before production.

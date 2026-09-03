@@ -6,6 +6,13 @@
 
 You can generate TLS certificates manually instead of using the Operator's automatic certificate generation. This approach gives you full control over certificate properties and is useful for production environments with specific security requirements.
 
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 ## What you'll create
 
 When you follow the steps from this guide, you'll generate these certificate files:
@@ -323,3 +330,23 @@ spec:
 
 * Check the sample certificates in `deploy/ssl-secrets.yaml` for reference
 * Review MongoDB certificate requirements in the [upstream documentation :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/configure-ssl/#member-certificate-requirements)
+
+## Verify the certificates
+
+Confirm both Secrets exist and carry the three expected keys:
+
+```bash
+kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data}' | tr ',' '\n'
+```
+
+You should see `ca.crt`, `tls.crt`, and `tls.key`. Check the certificate is valid for the
+names the cluster uses:
+
+```bash
+kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data.tls\.crt}' \
+  | base64 -d | openssl x509 -noout -text | grep -A1 'Subject Alternative Name'
+```
+
+The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is
+otherwise valid but missing those names produces connection failures that look like TLS
+misconfiguration rather than a naming problem.

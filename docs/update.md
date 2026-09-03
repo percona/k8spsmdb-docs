@@ -31,6 +31,12 @@ When choosing this scenario, consider the following:
 * Check that the current Operator version supports the new database version.
 * Some features may require an Operator upgrade later for full functionality.
 
+## Choose a minor upgrade path
+
+* [Upgrade to a specific version](update-minor-set-version.md) - pin the database to a
+  version you choose.
+* [Upgrade manually](update_manually.md) - drive the upgrade yourself.
+
 ## Update strategies
 
 You can chose how you want to update your database cluster when you run an upgrade:
@@ -66,3 +72,19 @@ When you omit this option, Kubernetes keeps the default of 10 revisions.
 ## Update on OpenShift
 
 If you run the Operator on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift), you need to do additional steps during the upgrade. See [Upgrade Percona Server for MongoDB on OpenShift](update_openshift.md) for details.
+
+
+## Limitations
+
+* Major database upgrades move one version at a time. To cross two major versions, upgrade
+  through the intermediate one.
+* `updateStrategy: SmartUpdate` is what lets the Operator order the restart of replica set
+  members; with the plain Kubernetes strategies the Operator does not control that ordering.
+* `upgradeOptions.setFCV` changes the feature compatibility version, which is not reversible
+  by simply downgrading the image. Decide it deliberately.
+
+## Next steps
+
+* [Upgrade the Operator and CRD](update-operator.md)
+* [Upgrade Percona Server for MongoDB](update-db.md)
+* [Known limitations](limitations.md)

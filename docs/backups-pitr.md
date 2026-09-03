@@ -7,6 +7,12 @@ Point-in-time recovery rolls the cluster back to a specific date and time. The O
 * [Configure backup storage](backups-storage.md). PBM saves oplog to that storage.
 * You must have a successful backup (full logical, physical or incremental base) to serve as the base for oplog collection. Without one, Percona Backup for MongoDB does not upload oplog. Take a backup for a new cluster and after you restore from a backup. See [Make a backup](backups-ondemand.md).
 
+* Export your namespace so the commands on this page can use it:
+
+    ```bash
+    export NAMESPACE=<namespace>
+    ```
+
 ## Enable oplog collection
 
 Set [backup.pitr.enabled](operator.md#backuppitrenabled) in `deploy/cr.yaml`:
@@ -18,7 +24,9 @@ backup:
     enabled: true
 ```
 
-After you enable point-in-time recovery, it takes 10 minutes for the first oplog chunk to be uploaded. The default interval is 10 minutes. Change it with `backup.pitr.oplogSpanMin`.
+After you enable point-in-time recovery, the first oplog chunk is uploaded once the first
+interval elapses. The interval is set by `backup.pitr.oplogSpanMin` and defaults to 10
+minutes, so expect roughly a 10 minute wait before any point in time is recoverable.
 
 ## Multiple storages
 
@@ -30,12 +38,25 @@ After you enable point-in-time recovery, it takes 10 minutes for the first oplog
 
     You must have a single storage in [spec.backup.storages](operator.md#backupstoragesstorage-nametype). PBM writes oplog to the same bucket as the backup snapshot. If you define several storages and enable PITR, PBM cannot guarantee consistency, so the Operator does not allow it. You will see an error in the Operator logs.
 
+## Verify that oplog is being collected
+
+Enabling the option is not proof that oplog is reaching the storage. After the first
+interval has passed, check that a backup reports a restorable time:
+
+```bash
+kubectl get psmdb-backup <backup_name> -n $NAMESPACE -o jsonpath='{.status.latestRestorableTime}'
+```
+
+An empty result means no oplog has been uploaded yet. Give it another interval, then check
+that a successful base backup exists and that the Operator logs show no storage errors.
+A value that advances between checks confirms oplog collection is working.
+
 ## Restore options
 
 You can restore your database on the same cluster or on a new cluster. Choose your restore path.
 
-* **This cluster** — undo a bad write, or other change on this cluster. 
-* **New cluster** — restore that same point in time into another Kubernetes environment. Use this for disaster recovery or when you want to leave the source cluster running.
+* [**This cluster**](backups-pitr-restore.md#restore-on-the-same-cluster) — undo a bad write, or other change on this cluster.
+* [**New cluster**](backups-pitr-restore.md#restore-on-a-new-cluster) — restore that same point in time into another Kubernetes environment. Use this for disaster recovery or when you want to leave the source cluster running.
 
 PVC snapshot (`external`) backups do not support this restore.
 

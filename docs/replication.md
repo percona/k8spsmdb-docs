@@ -46,6 +46,34 @@ Choosing the right topology depends on your goals. Here are common use cases tha
 *  Geo-distributed applications - Serve users from the nearest region to reduce latency and improve experience.
 *  Compliance isolation - Keep data within specific jurisdictions to meet regulatory requirements.
 
+
+## Choose a path
+
+| Your goal | Go to |
+|---|---|
+| Decide between multi-cluster and multi-region before deploying | [Plan your deployment](replication-plan-deployment.md) |
+| Let sites discover each other through Multi-cluster Services | [Multi-cluster Services](replication-mcs.md) |
+| Enable Multi-cluster Services on GKE | [Enable multi-cluster Services on GKE](replication-mcs-gke.md) |
+| Enable Multi-cluster Services on EKS | [Enable multi-cluster Services on EKS](replication-mcs-eks.md) |
+| Add Multi-cluster Services to a running deployment | [Apply MCS to an existing cluster](replication-apply-mcs-existing.md) |
+| Set up the site that accepts writes | [Configure the Main site](replication-main.md) |
+| Set up a site that follows the Main one | [Configure the Replica site](replication-replica.md) |
+| Connect the sites together | [Interconnect sites](replication-interconnect.md) |
+| Promote a Replica site when the Main one is lost | [Fail over services to the Replica site](replication-failover.md) |
+| Back up a cross-site deployment | [Backups with cross-site replication](replication-backups.md) |
+| Spread one replica set across data centers | [Splitting replica set across multiple data centers](replication-multi-dc.md) |
+
+## Limitations
+
+* Setting `clusterServiceDNSMode` to `ServiceMesh` cannot be combined with multi-cluster
+  Services - the two are mutually exclusive.
+* Point-in-time recovery requires oplog on a single main storage. See
+  [Multiple storages for backups](multi-storage.md).
+* Cross-site deployments depend on every site resolving the others' hostnames. Review
+  [Networking and external access](expose.md) before you interconnect sites.
+
+For the full list, see [Known limitations](limitations.md).
+
 ## Next steps
 
 [Plan your deployment](replication-plan-deployment.md){.md-button}

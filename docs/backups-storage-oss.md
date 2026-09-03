@@ -10,6 +10,13 @@ To use [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](
 * An OSS bucket. Refer to the [bucket naming conventions :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/bucket-naming-conventions) for requirements
 * Access to the Resource Access Management (RAM) console and sufficient permissions to create and manage access policies and users. Read more about using RAM with Alibaba Cloud OSS in the [official documentation :octicons-link-external-16:](https://www.alibabacloud.com/help/en/oss/user-guide/how-oss-works-with-ram).
 
+Export your namespace so the commands below can use it. Replace `<namespace>` with
+your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 **Configuration steps**
 {.power-number}
 
@@ -40,14 +47,14 @@ To use [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](
       name: my-cluster-name-backup-oss
     type: Opaque
     data:
-      ALIBABA_ACCESS_KEY_ID: <base64-encoded-access-key-id>
-      ALIBABA_ACCESS_KEY_SECRET: <base64-encoded-access-key-secret>
+      ALIBABA_ACCESS_KEY_ID: UkVQTEFDRS1XSVRILUFMSUJBQkEtQUNDRVNTLUtFWS1JRA==
+      ALIBABA_ACCESS_KEY_SECRET: UkVQTEFDRS1XSVRILUFMSUJBQkEtQUNDRVNTLUtFWS1TRUNSRVQ=
     ```
 
-5. Create the Secret in your cluster. Replace the `<namespace>` placeholder with your value:
+5. Create the Secret in your cluster:
 
     ```bash
-    kubectl apply -f backup-oss-secret.yaml -n <namespace>
+    kubectl apply -f backup-oss-secret.yaml -n $NAMESPACE
     ```
 
 6. Configure the OSS storage in the `deploy/cr.yaml` Custom Resource. Specify the following information:
@@ -77,7 +84,7 @@ To use [Alibaba Cloud Object Storage Service (OSS) :octicons-link-external-16:](
 7. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 ## Optional settings
@@ -135,7 +142,7 @@ contain the `SSE_CUSTOMER_KEY` key.
     2. Create the Secret object:
 
         ```bash
-        kubectl apply -f oss-sse-key.yaml -n <namespace>
+        kubectl apply -f oss-sse-key.yaml -n $NAMESPACE
         ```
 
     3. Reference this Secret in your storage configuration:
@@ -177,3 +184,7 @@ contain the `SSE_CUSTOMER_KEY` key.
     ```
 
 For encryption types, RAM permissions, and PBM-side details, see [Server-side encryption in PBM :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/oss.html#server-side-encryption).
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

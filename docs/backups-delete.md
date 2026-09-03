@@ -5,13 +5,32 @@ You can delete backups in the following way:
 * Configure the retention policy and have the Operator delete them according to this policy rules
 * Manually
 
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 ## Configure backup retention
 
 Use the `backup.tasks.retention` subsection to configure the retention policy for backups. Specify the following parameters:
 
 * `backup.tasks.retention.type` - the retention strategy. The default (and currently only supported strategy) is `count`, which keeps the most recent `backup.tasks.retention.count` backups and removes older ones.
-* `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Considerations](backups-scheduled.md#considerations) for details on how this applies to incremental backups.
+* `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Retention and incremental backups](#retention-and-incremental-backups) below.
 * `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well.
+
+### Retention and incremental backups
+
+Two things behave differently for incremental backups:
+
+* The `percona.com/delete-backup` finalizer applies to an incremental **base** backup and
+  is ignored for increments. Deleting a base backup makes PBM delete every increment
+  derived from it from the storage. The Backup resource for the base is removed, but the
+  Backup resources for the increments remain in the Operator, because the Operator hands
+  their deletion to PBM. This is expected to change in a future release.
+* Retention counts base backups. It is ignored for increments.
+
 
 ## Delete manually
 
@@ -19,7 +38,7 @@ To delete a backup manually, you need to specify the backup name. Get the name f
 by the following command:
 
 ```bash
-kubectl get psmdb-backup -n <namespace>
+kubectl get psmdb-backup -n $NAMESPACE
 ```
 
 ??? example "Sample output"
@@ -33,7 +52,7 @@ kubectl get psmdb-backup -n <namespace>
 Now, you can delete the desired backup as follows:
 
 ```bash
-kubectl delete psmdb-backup/<backup-name> -n <namespace>
+kubectl delete psmdb-backup/<backup-name> -n $NAMESPACE
 ```
 
 !!! note "Delete base backups for point-in-time recovery"
@@ -42,6 +61,12 @@ kubectl delete psmdb-backup/<backup-name> -n <namespace>
 
 ### Delete backups with the legacy `ancestor` label
 
+Starting with Operator version 1.17.0, the backup label changed from `ancestor` to
+`percona.com/backup-ancestor`. The Operator deletes backups carrying the new label, but it
+does not remove older backups that use `ancestor`. Backups created with Operator versions
+before 1.17.0 must be removed manually to free storage.
+
+
 Backups created before version 1.17.0 have the `ancestor` label. The Operator doesn't automatically delete such backups according to the retention policy. You should manually delete them to free up storage.
 
 To find and remove these legacy backups:
@@ -49,11 +74,11 @@ To find and remove these legacy backups:
 1. List all backups with the `ancestor` label:
 
     ```bash
-    kubectl get psmdb-backup -l ancestor -n <namespace>
+    kubectl get psmdb-backup -l ancestor -n $NAMESPACE
     ```
 
 2. Delete them:
 
     ```bash
-    kubectl delete psmdb-backup -l ancestor -n <namespace>
+    kubectl delete psmdb-backup -l ancestor -n $NAMESPACE
     ```

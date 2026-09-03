@@ -46,6 +46,27 @@ For Secret names, key layout, and exposed endpoints, see [Connection secrets](co
 
 For testing you can use `databaseAdmin`. For production, create a dedicated [application user](app-credentials.md) and use its connection string Secret.
 
+## Verify the connection string
+
+Test the URI before you put it in your application, so a failure later is your code and not
+the connection. Run a ping from a throwaway Pod in the cluster:
+
+```bash
+kubectl run mongosh-test --rm -it --restart=Never -n <namespace> \
+  --image=percona/percona-server-mongodb:{{ mongodb80recommended }} -- \
+  mongosh "$MONGODB_URI" --quiet --eval 'db.runCommand({ping:1})'
+```
+
+`{ ok: 1 }` means the URI, the credentials, and the network path all work.
+
+* An authentication error means the user or password is wrong, or the URI points at the
+  wrong `authSource`.
+* A timeout means the host is not reachable from where you ran it - see
+  [Connect from your laptop or CI](connect-from-outside.md) if your app runs outside the
+  cluster.
+* A TLS error means the URI and the cluster disagree about TLS. See
+  [Troubleshoot connection issues](troubleshoot-connection.md).
+
 ## Use the URI in your application
 
 Pass the decoded URI to your MongoDB driver as the connection string. Example shape (values come from the Secret; do not hardcode passwords):

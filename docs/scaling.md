@@ -346,7 +346,7 @@ You can change the size for different components of your MongoDB sharded cluster
 
 #### Changing the number of shards
 
-You can change the number of shards of an existing cluster by adding or removing members in the [spec.replsets](https://docs.percona.com/percona-operator-for-mongodb/operator.html#replsets-section) subsection.
+You can change the number of shards of an existing cluster by adding or removing members in the [spec.replsets](operator.md#operator-replsets-section) subsection.
 
 For example, given the following cluster that has 2 shards:
 

@@ -36,10 +36,17 @@ data:
   AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
 ```
 
+Export your namespace so the commands below can use it. Replace `<namespace>` with
+your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 1. Create the Secret object with this file:
 
     ```bash
-    kubectl apply -f deploy/backup-s3.yaml -n <namespace>
+    kubectl apply -f deploy/backup-s3.yaml -n $NAMESPACE
     ```
 
 2. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
@@ -76,7 +83,7 @@ data:
 3. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 ## Configure TLS verification with custom certificates for S3 storage
@@ -114,3 +121,7 @@ To configure TLS verification with custom certificates, do the following:
     After you apply the configuration, the Operator passes your custom certificate configuration to `pbm-agents`. `pbm-agents` then use it to securely verify TLS communication with S3 storage during backups and restores.
 
 You may use [several S3 storages](multi-storage.md) for backups and may have TLS / SSL certificates for secure communication with each storage. In this case, the Operator merges the certificates into a single `ca-bundle.crt` file and passes it to PBM. When connecting to a specific S3 storage, PBM finds the corresponding certificate and uses it to securely verify TLS communication with this storage.
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

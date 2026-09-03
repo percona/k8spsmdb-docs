@@ -2,13 +2,17 @@
 
 Use this guide when you want to recover the cluster to a specific date and time, or to the latest restorable transaction. The Operator restores a backup, then replays oplog up to that moment.
 
+Turn oplog collection on first. See [Enable point-in-time recovery](backups-pitr.md). PVC snapshot (`external`) backups do not support this restore.
+
 To restore a backup without replaying oplog, use [Restore on the same cluster](backups-restore.md) or [Restore on a new cluster](backups-restore-to-new-cluster.md).
+
+Restore options for the `pitr` stanza are listed in the [Restore resource reference](restore-options.md#the-pitr-subsection).
 
 ## Before you begin
 
-* [Enable oplog collection](backups-pitr.md#enable-oplog-collection) and wait until oplog starts uploading.
+* [Enable oplog collection](backups-pitr.md#enable-oplog-collection) and wait until oplog is uploading (about 10 minutes by default).
 * You need a successful backup (full logical, physical, or incremental base) to use as the restore base. After a restore, take a new backup before you rely on PITR again.
-* Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) so clients do not write during the restore. The Operator may delete and recreate Pods; see [restore considerations](backups-restore.md#considerations).
+* Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) so clients do not write during the restore. The Operator may delete and recreate Pods; see [restore considerations](backups-restore.md#downtime-to-expect).
 
 --8<-- "backups-restore.md:backup-prepare"
 
@@ -26,11 +30,11 @@ In the Restore object, set `spec.pitr.type` to one of:
 
 * `latest` — recover to the latest possible transaction.
 
-## Restore on the same cluster 
+## Restore on the same cluster
 
-Use this path when the Backup object still exists in the cluster. Set `spec.backupName`. 
+Use this path when the Backup object still exists in the cluster. Set `spec.backupName`. Do not set `spec.backupSource` in the same Restore object.
 
-1. Edit the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{release}}/deploy/backup/restore.yaml) manifest:
+1. Edit the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup/restore.yaml) manifest:
 
     * `spec.clusterName` — the cluster to restore. On the same cluster this matches the name in the Backup object.
     * `spec.backupName` — the backup to use as the base.
@@ -83,7 +87,7 @@ If a physical restore fails, see [If a physical restore fails](backups-restore.m
 
 ## Restore on a new cluster
 
-Use this path when you restore into a different Kubernetes environment and there is no Backup object on the target. 
+Use this path when you restore into a different Kubernetes environment and there is no Backup object on the target. Set `spec.backupSource` (and storage) instead of `spec.backupName`.
 
 --8<-- "backups-restore-to-new-cluster.md:backup-new-env-preconditions"
 
@@ -176,6 +180,24 @@ If `backup.storages` on the target `deploy/cr.yaml` already points at the source
     ```bash
     kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
     ```
+
+
+## Verify the restore
+
+Watch the Restore object until it finishes:
+
+```bash
+kubectl get psmdb-restore -n $NAMESPACE
+```
+
+The restore must reach the `ready` state. `rejected` means the Operator refused the request
+before starting - check `status.error` on the object. `error` means the restore began and
+failed; for physical restores read
+[If a physical restore fails](backups-restore.md#if-a-physical-restore-fails) before
+retrying, because a failed physical restore is not rolled back.
+
+Then connect to the cluster and confirm the data is there: compare database and collection
+names, and document counts for your largest collections, against what you expect.
 
 ## Related
 

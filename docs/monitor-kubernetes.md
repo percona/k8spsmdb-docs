@@ -143,7 +143,7 @@ To set up monitoring of Kubernetes, you need the following:
         ```yaml title="pmm-api-vmoperator.yaml"
         apiVersion: v1
         data:
-          api_key: <base-64-encoded-pmm-server-token>
+          api_key: UkVQTEFDRS1XSVRILVBNTS1TRVJWRVItVE9LRU4=
         kind: Secret
         metadata:
           name: pmm-token-vmoperator

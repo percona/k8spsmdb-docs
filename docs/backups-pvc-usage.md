@@ -25,7 +25,7 @@ spec:
 1. Configure the `PerconaServerMongoDBBackup` object. Edit the `deploy/backup/backup.yaml` manifest and specify the following keys: 
 
     * `metadata.name` - the name of the backup
-    * `spec.clusterName` - the name of your cluster. Run `kubectl get psmdb -n <namespace>` to find out the cluster name.
+    * `spec.clusterName` - the name of your cluster. Run `kubectl get psmdb -n $NAMESPACE` to find out the cluster name.
     * `spec.type` - is the type. Set it to `external`
     * `spec.volumeSnapshotClass` - Specify the name of the `VolumeSnapshotClass` resource that your cluster has or [you have configured](backups-pvc-setup.md)
     
@@ -45,14 +45,14 @@ spec:
 2. Start the backup:
 
     ```bash
-    kubectl apply -f deploy/backup/backup.yaml -n <namespace>
+    kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
     ```
 
 3. Monitor the backup progress:
 
     ```bash
-    kubectl get psmdb-backup -n <namespace>
-    kubectl describe psmdb-backup my-snapshot-backup -n <namespace>
+    kubectl get psmdb-backup -n $NAMESPACE
+    kubectl describe psmdb-backup my-snapshot-backup -n $NAMESPACE
     ```
 
     ??? example "Sample output"
@@ -81,7 +81,7 @@ spec:
 4. List created snapshots:
 
     ```bash
-    kubectl get volumesnapshot -n <namespace>
+    kubectl get volumesnapshot -n $NAMESPACE
     ```
 
     ??? example "Sample output"
@@ -96,7 +96,7 @@ spec:
     * Set the schedule, 
     * Specify the `type` as `external`
     * Reference the VolumeSnapshot Class for the `volumeSnapshotClass`
-    * Configure the [retention policy](backups-scheduled.md#configure-retention)
+    * Configure the [retention policy](backups-delete.md#configure-backup-retention)
 
     ```yaml
     backup:
@@ -123,7 +123,7 @@ spec:
 2. Start the backup:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 The Operator creates a `PerconaServerMongoDBBackup` resource for each scheduled run. Retention with `deleteFromStorage: true` removes old `VolumeSnapshot` objects and PBM metadata when backups age out.
