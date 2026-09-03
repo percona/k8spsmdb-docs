@@ -10,7 +10,7 @@ The Operator does not copy data itself. It writes a document into the Percona Ba
 
 ??? info "Show the backup and restore flows"
 
-    The Operator configures PBM when it creates a cluster that already has [backup storage](backups-storage.md), when you add storage later, or when you [restore on a new cluster](backups-restore-to-new-cluster.md) and pass storage in `backupSource`.
+    The Operator configures PBM when it creates a cluster that already has [backup storage](backups-storage.md), when you add storage later, or when you [restore on a new cluster](backups-restore.md#restore-on-a-new-cluster) and pass storage in `backupSource`.
 
     `pbm-agent` processes in every database Pod watch PBM [control collections :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/control-collections.html). When a new document appears, one agent is elected among secondaries and starts the backup or restore. See the [PBM agent documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/pbm-agent.html) for the election process.
 
@@ -76,7 +76,7 @@ The Operator does not copy data itself. It writes a document into the Percona Ba
 | A one-off copy before a change | On-demand backup | [Configure storage](backups-storage.md), then make an [on-demand backup](backups-ondemand.md) |
 | Large dataset, fast backup and restore | PVC snapshot (`external`) | [Configure PVC snapshots](backups-pvc-setup.md) |
 | Undo a bad write to a specific time | Point-in-time recovery (PITR) (logical or physical only) | [Enable PITR](backups-pitr.md), then [restore to a point in time](backups-pitr-restore.md) |
-| Clone data to another environment | Restore to a new cluster | [Restore on a new cluster](backups-restore-to-new-cluster.md) |
+| Clone data to another environment | Restore to a new cluster | [Restore on a new cluster](backups-restore.md#restore-on-a-new-cluster) |
 | Restore one database or collection | Selective restore from a logical backup | [Restore on the same cluster](backups-restore.md#selective-restore) |
 
 ## Backup types
@@ -116,9 +116,9 @@ Starting with version 1.20.0, you can define [multiple backup storages](multi-st
 
 You can restore:
 
-* On the [same cluster](backups-restore.md)
-* On a [new cluster](backups-restore-to-new-cluster.md)
-* On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
+* On the [same cluster](backups-restore.md#restore-on-the-same-cluster)
+* On a [new cluster](backups-restore.md#restore-on-a-new-cluster)
+* On a [new cluster with different replica set names](backups-restore.md#with-different-replica-set-names)
 * A [collection under a different name](backups-restore-new-name.md) (logical backups, replica set only)
 * Selected namespaces from a full logical backup ([selective restore](backups-restore.md#selective-restore))
 

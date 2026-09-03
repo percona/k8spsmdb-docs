@@ -30,7 +30,7 @@ disk on the source cluster is not reachable from the destination.
 * The Operator and the *destination* cluster are [installed](quickstart.md) in your
   Kubernetes environment.
 * Ideally the *source* and *destination* have the same topology. If they do not, PBM
-  supports [replica set remapping](backups-restore-replset-remapping.md).
+  supports [replica set remapping](backups-restore.md#with-different-replica-set-names).
 
 ## 1. Configure backup storage on the source cluster
 
@@ -99,7 +99,7 @@ not take effect - check the `storage:` key in the config file.
 ## 4. Restore into the Kubernetes cluster
 
 The remaining work happens on the *destination* cluster and is described in
-[Restore from a backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md).
+[Restore from a backup to a new Kubernetes-based environment](backups-restore.md#restore-on-a-new-cluster).
 Use the backup name from the previous step and the storage parameters you configured on the
 source, so the destination reads from the same bucket.
 
@@ -115,4 +115,4 @@ partially configured source can restore cleanly and be incomplete.
 ## Next steps
 
 * [Percona ClusterSync for MongoDB](clustersync.md) - migrate with near-zero downtime instead
-* [Restore to a new cluster with different replica set names](backups-restore-replset-remapping.md)
+* [Restore to a new cluster with different replica set names](backups-restore.md#with-different-replica-set-names)
