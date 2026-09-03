@@ -33,7 +33,7 @@ Specifies the name of the MongoDB cluster to restore.
 
 ### `storageName`
 
-Specifies the name of the storage where a backup is located. The storage name must match the name in the `backup.storages` subsection of the `deploy/cr.yaml` file. Use this option together with the `backupSource` option. For more information on the flow and restore steps, see [Restore from a backup on a new cluster](backups-restore-to-new-cluster.md#approach-2-the-storage-is-defined-on-target)
+Specifies the name of the storage where a backup is located. The storage name must match the name in the `backup.storages` subsection of the `deploy/cr.yaml` file. Use this option together with the `backupSource` option. For more information on the flow and restore steps, see [Restore from a backup on a new cluster](backups-restore.md#approach-2-the-storage-is-defined-on-target)
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -85,7 +85,7 @@ Specifies the target namespace to restore to when remapping a namespace during a
 
 ## `replsetRemapping` 
 
-Defines mapping between source and target replica set names during a restore. This should be a dictionary where each key is the replica set name from the source cluster, and the corresponding value is the desired replica set name in the target cluster. Read more about [restores to the cluster with different replica set names](backups-restore-replset-remapping.md).
+Defines mapping between source and target replica set names during a restore. This should be a dictionary where each key is the replica set name from the source cluster, and the corresponding value is the desired replica set name in the target cluster. Read more about [restores to the cluster with different replica set names](backups-restore.md#with-different-replica-set-names).
 
 | Value type  | Example    |
 | ----------- | ---------- |

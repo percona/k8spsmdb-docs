@@ -1,6 +1,6 @@
 ## Restore to a new Kubernetes environment
 
-To [restore from a backup to a new Kubernetes-based environment](backups-restore-to-new-cluster.md), you must create a Secrets object there with the same user passwords as in the original cluster. 
+To [restore from a backup to a new Kubernetes-based environment](backups-restore.md#restore-on-a-new-cluster), you must create a Secrets object there with the same user passwords as in the original cluster. 
 
 Find the Secrets name object on the source cluster in the `spec.secrets` key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.
 

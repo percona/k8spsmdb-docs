@@ -4,7 +4,7 @@ Use this guide when you want to recover the cluster to a specific date and time,
 
 Turn oplog collection on first. See [Enable point-in-time recovery](backups-pitr.md). PVC snapshot (`external`) backups do not support this restore.
 
-To restore a backup without replaying oplog, use [Restore on the same cluster](backups-restore.md) or [Restore on a new cluster](backups-restore-to-new-cluster.md).
+To restore a backup without replaying oplog, use [Restore on the same cluster](backups-restore.md#restore-on-the-same-cluster) or [Restore on a new cluster](backups-restore.md#restore-on-a-new-cluster).
 
 Restore options for the `pitr` stanza are listed in the [Restore resource reference](restore-options.md#the-pitr-subsection).
 
@@ -89,11 +89,11 @@ If a physical restore fails, see [If a physical restore fails](backups-restore.m
 
 Use this path when you restore into a different Kubernetes environment and there is no Backup object on the target. Set `spec.backupSource` (and storage) instead of `spec.backupName`.
 
---8<-- "backups-restore-to-new-cluster.md:backup-new-env-preconditions"
+--8<-- "backups-restore.md:backup-new-env-preconditions"
 
 PBM must know where the backup and oplog live. Define storage in the Restore object, or pre-configure it on the target cluster and reference it by name.
 
-If the target replica set names differ from the source, add `replsetRemapping`. See [Restore to a new cluster with different replica set names](backups-restore-replset-remapping.md).
+If the target replica set names differ from the source, add `replsetRemapping`. See [Restore to a new cluster with different replica set names](backups-restore.md#with-different-replica-set-names).
 
 ### Storage defined in the Restore object
 
@@ -202,6 +202,6 @@ names, and document counts for your largest collections, against what you expect
 ## Related
 
 * [Restore a collection under a different name](backups-restore-new-name.md#point-in-time-recovery-with-namespace-remapping) — combine remapping with PITR
-* [Restore to a new cluster with different replica set names](backups-restore-replset-remapping.md)
+* [Restore to a new cluster with different replica set names](backups-restore.md#with-different-replica-set-names)
 * [Restore resource options](restore-options.md#the-pitr-subsection)
 * [Troubleshoot backups and restores](debug-backup-restore.md)

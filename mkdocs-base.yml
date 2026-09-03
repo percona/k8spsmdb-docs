@@ -181,6 +181,7 @@ nav:
        - "Connect to Percona Server for MongoDB": connect.md
        - "Insert data": data-insert.md
        - "Make a backup": backup-tutorial.md
+       - "Make a restore": restore-tutorial.md
        - "Monitor the database with PMM": monitoring-tutorial.md
        - "Pause or restart the cluster": pause.md
        - "Delete the Operator and database": delete.md
@@ -204,6 +205,20 @@ nav:
        - "Install in multi-namespace (cluster-wide) mode": cluster-wide.md
        - Install with OpenEverest: everest.md
        - Verify the cluster operation: verify-cluster.md
+    
+    - Upgrade and version management:
+        - update.md
+        - Upgrade CRD and the Operator:
+            - update-operator.md
+            - update-crd-manual.md
+            - update-crd-helm.md
+            - update-crd-olm.md
+        - "Upgrade Percona Server for MongoDB": update-db.md
+        - "Upgrade to a specific version": update-minor-set-version.md
+        - "Automatic minor upgrades": update-minor-automatic.md
+        - "Major upgrades": update-major.md
+        - "Upgrade manually": update_manually.md
+        - "Upgrade on OpenShift": update_openshift.md
 
     - Features:
        - features.md
@@ -215,7 +230,6 @@ nav:
        - "Monitoring and observability": monitoring-observability.md
        - "Search and vector search": search-overview.md
        - "Data migration": clustersync.md
-       - "Upgrades and version management": update.md
        - "Networking and external access": expose.md
        - "Customization and extensibility": customization.md
 
@@ -228,6 +242,107 @@ nav:
        - "Troubleshoot connection issues": troubleshoot-connection.md
        - what-next.md
 
+    - User guides:
+        - High availability and topology:
+            - "Sharding": sharding.md
+            - "Arbiter, non-voting and hidden nodes": arbiter.md
+            - "Control Pod scheduling": constraints.md
+        - Backup and restore:
+            - backups-configure.md
+            - "Configure storage for backups":
+                - backups-storage.md
+                - "Amazon S3 storage": backups-storage-s3.md
+                - "MinIO and S3-compatible storages": backups-storage-minio.md
+                - "Google Cloud storage": backups-storage-gcp.md
+                - "Microsoft Azure Blob storage": backups-storage-azure.md
+                - "Alibaba Cloud OSS storage": backups-storage-oss.md
+                - "Oracle Cloud Infrastructure Object Storage": backups-storage-oci.md
+                - "Remote file server": backups-storage-filesystem.md
+            - "Enable point-in-time recovery (PITR)":
+                - backups-pitr.md
+                - "Restore to a point in time": backups-pitr-restore.md
+            - Make a backup:
+                - "Scheduled backup": backups-scheduled.md
+                - "On-demand backup": backups-ondemand.md
+            - "Use PVC snapshots":
+                - backups-pvc-snapshots.md
+                - "Configure PVC snapshots": backups-pvc-setup.md
+                - "Restore from a PVC snapshot": backups-pvc-usage.md
+            - "Enable server-side encryption": backups-encryption.md
+            - Restore from a backup:
+                - backups-restore.md
+                - "Restore a collection under a different name": backups-restore-new-name.md
+            - multi-storage.md
+            - "Delete the unneeded backup": backups-delete.md
+        - Disaster recovery and multi-site:
+            - "Plan your deployment": replication-plan-deployment.md
+            - Multi-cluster Services:
+                - replication-mcs.md
+                - "Enable Multi-cluster Services on GKE": replication-mcs-gke.md
+                - "Enable Multi-cluster Services on EKS": replication-mcs-eks.md
+                - "Apply MCS to an existing cluster": replication-apply-mcs-existing.md
+            - Deployment:
+                - "Configure Main site for replication": replication-main.md
+                - "Configure Replica site for replication": replication-replica.md
+                - "Interconnect sites": replication-interconnect.md
+                - "Fail over workload to the Replica site": replication-failover.md
+                - "Backups with cross-site replication": replication-backups.md
+                - "Splitting replica set across multiple data centers": replication-multi-dc.md
+        - Scaling and storage:
+            - scaling.md
+            - "Manage local storage": storage.md
+            - "Configure VolumeAttributesClass": volume-attributes-class.md
+        - Security:
+            - Manage users:
+                - users.md
+                - "Application-level (unprivileged) users": app-users.md
+                - "System users": system-users.md
+                - "Connection secrets": connection-secrets.md
+                - Manage system users with Vault:
+                    - system-users-vault.md
+                    - "Configuration": system-users-vault-setup.md
+            - Transport encryption (TLS/SSL):
+                - TLS.md
+                - "Configure TLS using cert-manager": tls-cert-manager.md
+                - "Generate certificates manually": tls-manual.md
+                - "Update certificates": tls-update.md
+                - "Configure the TLS certificate management policy": tls-cert-management-policy.md
+                - "Disable TLS": tls-disable.md
+            - Data-at-rest encryption:
+                - encryption.md
+                - "Configure encryption using an encryption key Secret": encryption-keyfile.md
+                - "Configure encryption with HashiCorp Vault":
+                    - "without TLS": encryption-vault.md
+                    - "with TLS": encryption-vault-tls.md
+            - Enable authentication:
+                - "OpenLDAP integration": ldap.md
+                - "OIDC authentication": oidc.md
+                - "Disable authentication": auth-disable.md
+                - "Disable localhost authentication bypass": auth-bypass-localhost.md
+        - Monitoring and observability:
+            - "Monitor the database with PMM": monitoring.md
+            - "Monitor Kubernetes": monitor-kubernetes.md
+            - Logging:
+                - "Persistent logging": persistent-logging.md
+                - "Log rotation": logrotate.md
+        - Search and vector search:
+            - "Configure search and vector search": search-setup.md
+        - Data migration:
+            - "Set up and use PCSM": clustersync-setup.md
+            - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
+        - Customization and extensibility:
+            - "Change MongoDB options": options.md
+            - "Percona Backup for MongoDB options": options-pbm.md
+            - "Add sidecar containers": sidecar.md
+            - "Extend startup logic (hook script)": hookscript.md
+            - Environment variables:
+                - "Operator environment variables": env-vars-operator.md
+                - "Cluster component environment variables": env-vars-cluster.md
+                - "Define custom environment variables": env-vars-custom.md
+            - "Labels and annotations": annotations.md
+            - "Configure concurrent reconciliation": reconciliation-concurrency.md
+            - "Use a private registry": custom-registry.md
+            - "Create a private S3-compatible cloud for backups": private.md
     - Troubleshooting:
         - debug.md
         - Troubleshoot the Operator installation issues: troubleshoot-operator.md
@@ -258,5 +373,36 @@ nav:
     - Release notes:
           - RN/index.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.md
+          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.md
+        
 
     - "Documentation archive": https://docs.percona.com/legacy-documentation/

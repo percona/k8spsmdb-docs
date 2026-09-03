@@ -506,8 +506,8 @@ Useful status fields: `status.state` (`waiting`, `running`, `ready`, `error`, â€
 
 Restores are `PerconaServerMongoDBRestore` objects. You can restore onto the same cluster, onto a new cluster, run point-in-time recovery, or restore selected namespaces (databases/collections). Details and limitations:
 
-* [Restore on the same cluster](backups-restore.md)
-* [Restore to a new cluster](backups-restore-to-new-cluster.md)
+* [Restore on the same cluster](backups-restore.md#restore-on-the-same-cluster)
+* [Restore to a new cluster](backups-restore.md#restore-on-a-new-cluster)
 * [Selective restore](backups-restore.md#selective-restore)
 
 ### Restore to the same cluster
@@ -562,7 +562,7 @@ Restores are `PerconaServerMongoDBRestore` objects. You can restore onto the sam
 1. Create the target `PerconaServerMongoDB` cluster (create flow above).
 2. Create a `PerconaServerMongoDBRestore` that points at that cluster and at the backup source (often via `spec.backupSource` when the backup object does not exist in the new environment).
 
-See [Restore to a new cluster](backups-restore-to-new-cluster.md) for storage, Secrets, and `backupSource` examples.
+See [Restore to a new cluster](backups-restore.md#restore-on-a-new-cluster) for storage, Secrets, and `backupSource` examples.
 
 ### Selective (partial) restore
 
