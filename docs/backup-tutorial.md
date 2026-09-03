@@ -56,8 +56,8 @@ cd percona-server-mongodb-operator
       name: my-cluster-name-backup-s3
     type: Opaque
     data:
-      AWS_ACCESS_KEY_ID: <YOUR_AWS_ACCESS_KEY_ID>
-      AWS_SECRET_ACCESS_KEY: <YOUR_AWS_SECRET_ACCESS_KEY>
+      AWS_ACCESS_KEY_ID: UkVQTEFDRS1XSVRILUFXUy1BQ0NFU1MtS0VZ
+      AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
     ```
 
 3. Create the Secrets object from this yaml file. Specify your namespace instead of the `<namespace>` placeholder:

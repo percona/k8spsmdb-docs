@@ -1,4 +1,4 @@
-# Percona Server for MongoDB Sharding
+# Sharding
 
 ## About sharding
 

@@ -1,40 +1,47 @@
-# Restore the cluster from a previously saved backup
+# Restore on the same cluster
 
-You can restore from a backup as follows:
+This page covers restoring a backup onto the cluster that produced it. Restoring somewhere
+else is covered in [Other restore scenarios](#other-restore-scenarios), and the options are
+compared in [Backup and restore](backups.md#restore-options).
 
-* On the same cluster where you made a backup
-* On [a new cluster deployed in a different Kubernetes-based environment](backups-restore-to-new-cluster.md).
-* On a [new cluster with different replica set names](backups-restore-replset-remapping.md)
+Every restore is a Restore object, created from the
+[`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.
 
-This document focuses on the restore to the same cluster. For a comparison of restore options, see [Backup and restore](backups.md#restore-options).
+## Downtime to expect
 
-## Restore scenarios
+Every restore causes downtime. How much, and whether Pods are replaced, depends on the
+restore type and on whether the cluster is sharded:
 
-You can make the following restores:
+| Restore | Downtime | Pods deleted and recreated |
+|---|---|---|
+| Logical, unsharded cluster | For the duration of the data restore | None |
+| Logical, sharded cluster | Data restore, plus refreshing sharding metadata on `mongos` | `mongos` Pods only |
+| Physical or incremental | Data restore, plus refreshing sharding metadata on `mongos` | All Pods - replica set, config server replica set if present, and `mongos` |
 
-* [Restore to a point in time](backups-pitr-restore.md#on-the-same-cluster). A precondition is to [enable oplog collection](backups-pitr.md).
-* [Restore from a full backup](#restore-from-a-backup)
-* [Selective restore from a full logical backup](#selective-restore)
-* [Restore a collection from a logical backup under a different name](backups-restore-new-name.md)
+Also check PBM's [restore considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations)
+for keeping MongoDB clients away from the database while the restore runs.
 
-For either type of a restore you need to create a Restore object using the [`deploy/backup/restore.yaml`  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml) manifest.
+## Choose backupName or backupSource
 
-You can specify the backup to restore from in two ways: using the `backupName` or the `backupSource` keys. You must use only one of these options in your restore configuration. Specifying them both together is not allowed.
+Every restore names its source in one of two ways. Use exactly one - setting both is not allowed.
 
-* Use the **`backupName`** option when backup objects exist in the cluster, such as for restoring to the same cluster where the backup was created. When you specify the `backupName`, PBM automatically determines the backup type and performs the corresponding restore procedure.
+| | `backupName` | `backupSource` |
+|---|---|---|
+| Use it when | Backup objects exist in this cluster | No backup objects exist, for example [when restoring to a new cluster](backups-restore-to-new-cluster.md) |
+| Backup type | PBM determines it automatically | You must state it yourself: `logical`, `physical`, `incremental`, or `external` |
+| Typical case | Restoring onto the cluster that made the backup | Restoring into a fresh environment |
 
-* Use the **`backupSource`** option when there are no backup objects in the cluster, such as [when restoring to a new cluster](backups-restore-to-new-cluster.md). You can also use the `backupSource` for restores to the same cluster, instead of the `backupName`.  If you specify the `backupSource`, you must manually specify the backup type (`logical`, `physical`, `incremental`, or `external`) in the configuration. 
-
-## Considerations
-
-1. Check PBM's [considerations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) to prevent MongoDB clients from accessing the database when the restore is in progress.
-2. During the restore, the Operator may delete and recreate Pods. This may cause downtime. The downtime duration depends on the restore type and the database deployment:
-
-    * *Logical restore in an unsharded cluster* results causes downtime for the duration of the data restore. No Pods are deleted or recreated
-    * *Logical restore in a sharded cluster* causes downtime for the duration of the data restore and the time needed to refresh sharding metadata on `mongos`. This results in deleting and recreating only `mongos` Pods.
-    * *Physical and incremental restore* causes downtime for the entire period required to restore the data and refresh the sharding metadata on `mongos`. The Operator deletes and recreates all Pods - replica set, config server replica set (if present) and mongos Pods. 
+`backupSource` also works for restores onto the same cluster, if you prefer it.
 
 ## Before you begin
+
+Two preconditions are easy to miss:
+
+* The backup you restore from must be in the `ready` state. A backup still in `running`,
+  `waiting`, or `error` cannot be restored.
+* Restoring to a point in time additionally requires that
+  [oplog collection](backups-pitr.md) was enabled **before** that backup was taken.
+  Enabling it afterwards does not make earlier moments recoverable.
 
 --8<-- [start:backup-prepare]
 
@@ -43,7 +50,7 @@ You can specify the backup to restore from in two ways: using the `backupName` o
 2. Export your namespace as an environment variable. Replace the `<namespace>` placeholder with your value:
 
     ```bash
-    export NAMESPACE = <namespace>
+    export NAMESPACE=<namespace>
     ```
 
 3. Get the backup information. List the backups using this command: 
@@ -73,7 +80,7 @@ Pass this configuration to the Operator:
 
 === "via the YAML manifest"
 
-    1. Edit the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/v{{ release }}/deploy/backup/restore.yaml) file and specify the following keys:
+    1. Edit the [deploy/backup/restore.yaml :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/v{{ release }}/deploy/backup/restore.yaml) file and specify the following keys:
 
         ```yaml
         apiVersion: psmdb.percona.com/v1
@@ -104,10 +111,16 @@ Pass this configuration to the Operator:
     spec:
       clusterName: my-cluster-name
       backupName: backup1
-    EOF -n $NAMESPACE
+    EOF
     ```
 
-### If a physical restore fails
+## If a physical restore fails
+
+!!! warning
+
+    A failed physical restore is not rolled back, and the Operator cannot guarantee data
+    consistency afterwards. Data can be lost, corrupted, incomplete, or only partially
+    restored. Read this section before you start a physical restore, not after.
 
 If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.
 
@@ -117,13 +130,10 @@ You can inspect restore logs by executing into the `mongod` container and checki
 
 For step-by-step diagnostics, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
-## Make a point-in-time recovery
-
-To restore to a specific date and time on this cluster, see [Restore to a point in time](backups-pitr-restore.md#on-the-same-cluster).
 
 ## Selective restore
 
-Starting with the version 1.18.0, you can restore a desired subset of data from a **full** logical backup. Selective logical backups are not yet supported.
+Starting with version 1.18.0, you can restore a desired subset of data from a **full** logical backup. Selective logical backups are not yet supported.
 
 Selective restores have a number of limitations. Learn more about the [current selective restore limitations :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores) in Percona Backup for MongoDB documentation.
 
@@ -146,3 +156,28 @@ You can specify several "namespaces" (subsets of data) as a list for the `select
 
 Also, you can use `selective.withUsersAndRoles` set to `true` to restore a custom database with users and roles from a full backup. Read more about this functionality in [PBM documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-selective.html#restore-with-users-and-roles).
 
+
+## Verify the restore
+
+Watch the Restore object until it finishes:
+
+```bash
+kubectl get psmdb-restore -n $NAMESPACE
+```
+
+The restore must reach the `ready` state. `rejected` means the Operator refused the request
+before starting - check `status.error` on the object. `error` means the restore began and
+failed; for physical restores read
+[If a physical restore fails](#if-a-physical-restore-fails) before
+retrying, because a failed physical restore is not rolled back.
+
+Then connect to the cluster and confirm the data is there: compare database and collection
+names, and document counts for your largest collections, against what you expect.
+
+## Other restore scenarios
+
+* [Restore to a point in time](backups-pitr-restore.md#restore-on-the-same-cluster) - recover to a
+  specific date and time on this cluster.
+* [Restore a collection under a different name](backups-restore-new-name.md)
+* [Restore to a new Kubernetes-based environment](backups-restore-to-new-cluster.md)
+* [Restore to a new cluster with different replica set names](backups-restore-replset-remapping.md)

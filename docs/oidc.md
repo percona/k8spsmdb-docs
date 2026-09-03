@@ -1,4 +1,4 @@
-# OIDC authentication in Percona Operator for MongoDB 
+# OIDC authentication
 
 OpenID Connect (OIDC) is an identity authentication protocol built on top of the OAuth 2.0 framework. OIDC is designed to verify user identities and provide authentication, ensuring that users are who they claim to be. OAuth 2.0 is used for user authorization to access resources.
 
@@ -10,6 +10,13 @@ identity provider with Percona Server for MongoDB managed by the Operator.
 The flow has been tested with Okta, Microsoft Entra ID, Ping Identity, and Keycloak. The IdP configuration is out of scope of this document. Please refer to [Percona Server for MongoDB documentation :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/oidc.html) and upstream documentation of your IdP for the configuration guidelines.
 
 Use OIDC authentication only for application level users. The Operator's system users (`clusterAdmin`, `clusterMonitor`, the backup user, and others) authenticate with SCRAM. Therefore, keep `SCRAM-SHA-256` together with `MONGODB-OIDC` authentication mechanisms in Percona Server for MongoDB configuration. Removing the SCRAM authentication mechanism locks the Operator out of the cluster.
+
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
 
 ## Version availability
 
@@ -309,3 +316,24 @@ Failed to load JWKs from issuer ... SSL peer certificate or SSH remote key was n
 ```
 
 As a workaround, front the identity provider with a publicly trusted certificate.
+
+## Verify OIDC authentication
+
+Confirm that the cluster accepts the OIDC mechanism and that your identity provider's claims
+map to MongoDB roles:
+
+```bash
+kubectl exec -it my-cluster-name-rs0-0 -n $NAMESPACE -- mongosh \
+  --authenticationMechanism=MONGODB-OIDC --authenticationDatabase='$external'
+```
+
+Then check what roles the token produced:
+
+```javascript
+db.runCommand({connectionStatus: 1})
+```
+
+An empty `authInfo.authenticatedUserRoles` means the token was accepted but no role matched -
+check the claim your roles are read from and the role names in MongoDB. A failure before
+that points at the issuer URL, the audience, or `authenticationMechanisms` not including
+`MONGODB-OIDC`.

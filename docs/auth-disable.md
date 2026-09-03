@@ -1,4 +1,4 @@
-# Disable authentication in Percona Server for MongoDB
+# Disable authentication
 
 You can disable authentication in Percona Server for MongoDB clusters. This is useful for development, testing, or migration scenarios where you need access to the database without authentication.
 
@@ -14,6 +14,15 @@ You might want to disable authentication in the following scenarios:
 * **Migration and data import**: When migrating data from external MongoDB instances that don't use authentication
 * **Troubleshooting**: When debugging authentication-related issues
 * **Legacy application compatibility**: When working with applications that don't support MongoDB authentication
+
+## Before you begin
+
+Export your namespace so the commands below can use it. Replace `<namespace>` with your
+value:
+
+```bash
+export NAMESPACE=<namespace>
+```
 
 ## Considerations
 

@@ -1,4 +1,4 @@
-# Binding Percona Server for MongoDB components to Specific Kubernetes/OpenShift Nodes
+# Control Pod scheduling with anti-affinity and tolerations
 
 The operator does a good job of automatically assigning new pods to nodes to
 achieve balanced distribution across the cluster. There are situations when you

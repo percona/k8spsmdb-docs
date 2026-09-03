@@ -58,10 +58,10 @@ When you use the user principal authentication method, you need an API signing k
       OCI_PRIVATE_KEY: base64_encoded_private_key
     ```
 
-4. Create the Kubernetes Secrets object. Replace the `<namespace>` placeholder with your value:
+4. Create the Kubernetes Secrets object:
 
     ```bash
-    kubectl apply -f oci-secret.yaml -n <namespace>
+    kubectl apply -f oci-secret.yaml -n $NAMESPACE
     ```
 
 !!! note
@@ -169,7 +169,7 @@ Configure the OCI storage in the `backup.storages` subsection of the `deploy/cr.
 4. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 ## Enable server-side encryption
@@ -195,3 +195,7 @@ backup:
           kmsKeyID: OCI-KMS-KEY-OCID-HERE
           secretName: my-cluster-name-backup-oci-sse
 ```
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

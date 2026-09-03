@@ -1,4 +1,4 @@
-# Configure vector search with Percona Search for MongoDB
+# Configure search and vector search
 
 !!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
@@ -23,7 +23,7 @@ This setup uses the following software versions:
 * Percona Search for MongoDB {{mongot}}.
 
 
-## Before you start
+## Before you begin
 
 1. Make sure you understand [requirements](search-overview.md#availability-and-requirements) and [limitations](search-overview.md#limitations) of using Percona Search for MongoDB.
 2. Clone the repository with all manifests and source code:

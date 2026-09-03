@@ -1,8 +1,15 @@
-# Run Percona Server for MongoDB without TLS
+# Disable TLS
 
 You can run Percona Server for MongoDB without TLS. For example, for testing or demonstration purposes. However, we recommend that you have the TLS protocol enabled.
 
 You can start a new cluster without TLS or disable the TLS protocol for a running cluster. See the corresponding sections for steps.
+
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
 
 ## Disable TLS for a new cluster
 
@@ -141,3 +148,16 @@ To re-enable TLS protocol for a running cluster, follow these steps:
 !!! note
 
     If you also need to disable authentication in addition to TLS, see [Disable authentication](auth-disable.md). Note that TLS must be disabled before you can disable authentication.
+
+## Verify TLS is disabled
+
+Confirm the mode took effect and the cluster came back:
+
+```bash
+kubectl get psmdb -n $NAMESPACE -o jsonpath='{.items[*].spec.tls.mode}'
+kubectl get psmdb -n $NAMESPACE
+```
+
+The mode must read `disabled` and the cluster must reach `ready`. Disabling TLS restarts the
+database Pods, so a cluster that stays in `initializing` means the rollout has not finished
+yet - check Pod status before changing anything else.

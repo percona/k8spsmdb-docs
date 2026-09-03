@@ -4,6 +4,70 @@ The Operator uses [Percona Backup for MongoDB (PBM) :octicons-link-external-16:]
 
 Use this page to choose a backup type, storage, restore method, and whether you need point-in-time recovery. When you know what you need, go to [Configure backups](backups-configure.md).
 
+## How backup and restore work
+
+The Operator does not copy data itself. It writes a document into the Percona Backup for MongoDB control collections, and a `pbm-agent` beside one of the secondary nodes does the work. You do not need this to configure backups, but it explains what you see in the logs and why a restore behaves the way it does.
+
+??? info "Show the backup and restore flows"
+
+    The Operator configures PBM when it creates a cluster that already has [backup storage](backups-storage.md), when you add storage later, or when you [restore on a new cluster](backups-restore-to-new-cluster.md) and pass storage in `backupSource`.
+
+    `pbm-agent` processes in every database Pod watch PBM [control collections :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/control-collections.html). When a new document appears, one agent is elected among secondaries and starts the backup or restore. See the [PBM agent documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/pbm-agent.html) for the election process.
+
+    **Backup flow**
+
+    When you create a Backup object, the Operator adds a document to the control collections. An agent on a secondary reads the backup type and copies data:
+
+    * **Logical** — reads database data and uploads it to storage.
+    * **Physical** — copies files from `dbPath` and uploads them.
+    * **Physical incremental** — the first backup of a chain has the `incremental-base` type and copies all data files; each later `incremental` backup copies only the blocks changed since the previous one. PBM tracks the chain only on the node that took the base backup, so every increment must run on that same node. If that node goes away, the chain cannot continue and a new base is required.
+    * **External (PVC snapshot)** — prepares the database for a consistent copy; the Operator creates CSI `VolumeSnapshot` objects for each data PVC.
+
+    For PVC snapshots, PBM opens a [`$backupCursor` :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/backup-external.html#procedure), stores metadata on remote storage, and waits until nodes are `copyReady`. The Operator then snapshots each `mongod-data` PVC. After snapshots are `readyToUse`, PBM closes the cursor and marks the backup complete. The Backup resource `status.snapshots` field lists each replica set and snapshot name.
+
+    **Restore flow**
+
+    **From logical backup**
+
+    1. The Operator writes a restore document to the control collections.
+    2. It shuts down `mongos` Pods (sharded clusters) so clients cannot use the database during the restore.
+    3. A `pbm-agent` restores data into the corresponding collections.
+    4. For a selective restore, PBM restores only the specified namespaces.
+    5. For point-in-time recovery, PBM replays oplog up to `restore_to_time`.
+
+    **From physical backup**
+
+    A `pbm-agent` needs access to `mongod` binaries, so the Operator prepares the cluster first:
+
+    1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.
+    2. The agent inside the `mongod` container wipes `dbPath`, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.
+    3. PBM restarts `mongod` as it moves through restore phases.
+    4. After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and `mongos` Pods.
+
+    <a name="from-pvc-snapshot-external-backup"></a>
+
+    **From PVC snapshot (`external`) backup**
+
+    Snapshot restores use PBM’s [external restore :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-external-agent-restart.html) workflow. At **`copyReady`**, `mongod` is stopped and data directories are empty, so the Operator recreates PVCs from volume snapshots and runs `pbm-agent restore-finish` before PBM can complete the restore.
+
+    1. The Operator terminates `mongos` and arbiter nodes, prepares StatefulSets as for a physical restore, and starts `pbm restore --external`.
+    2. PBM shuts down `mongod`, wipes `dbPath`, and leaves nodes in **`copyReady`**.
+    3. The Operator scales StatefulSets to zero and runs `pbm-agent restore-finish` on every node with PBM config, replica set name, node name, and (when needed) MongoDB `db` config for encryption at rest.
+    4. It recreates each data PVC from the `VolumeSnapshot` in the backup or in `backupSource.snapshots`, one PVC at a time.
+    5. It scales StatefulSets back up and runs `pbm restore-finish` so PBM applies metadata and brings the cluster to a consistent state.
+    6. After success, it cleans up temporary restore configuration and returns the cluster to normal operation.
+
+    For steps, see [Restore from a PVC snapshot](backups-pvc-usage.md#make-an-in-place-restore-from-a-pvc-snapshot-backup).
+
+    **Point-in-time recovery from a physical backup**
+
+    1. The Operator follows the same preparation as for a physical restore.
+    2. It makes sure Pod 0 is primary.
+    3. PBM restores the backup, then applies oplog to the target time.
+    4. After success, the Operator recreates the StatefulSet with its regular configuration.
+
+    For steps, see [Restore to a point in time](backups-pitr-restore.md).
+
 ## Choose a path
 
 | Goal | Use | Next step |
@@ -83,69 +147,12 @@ See [Known limitations](limitations.md#backups-and-restores) for the full list. 
 
 * No PITR and no selective restore for PVC snapshots.
 * Deleting an incremental **base** backup also deletes its increments from storage.
-* Restore a collection under a dfferent name works only on replica sets for unsharded collections, and requires a full logical backup.
+* Restore a collection under a different name works only on replica sets for unsharded collections, and requires a full logical backup.
 * After a failed restore, the Operator cannot guarantee data consistency.
 
-## Backup retention
+## Backup lifecycle
 
 Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with [backup.tasks.retention](operator.md#backuptasksretentioncount). See [Configure retention policy](backups-delete.md#configure-backup-retention).
-
-## How backup and restore work
-
-The Operator configures PBM when it creates a cluster that already has [backup storage](backups-storage.md), when you add storage later, or when you [restore on a new cluster](backups-restore-to-new-cluster.md) and pass storage in `backupSource`.
-
-`pbm-agent` processes in every database Pod watch PBM [control collections :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/control-collections.html). When a new document appears, one agent is elected among secondaries and starts the backup or restore. See the [PBM agent documentation :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/details/pbm-agent.html) for the election process.
-
-### Backup flow
-
-When you create a Backup object, the Operator adds a document to the control collections. An agent on a secondary reads the backup type and copies data:
-
-* **Logical** — reads database data and uploads it to storage.
-* **Physical** — copies files from `dbPath` and uploads them.
-* **External (PVC snapshot)** — prepares the database for a consistent copy; the Operator creates CSI `VolumeSnapshot` objects for each data PVC.
-
-For PVC snapshots, PBM opens a [`$backupCursor` :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/backup-external.html#procedure), stores metadata on remote storage, and waits until nodes are `copyReady`. The Operator then snapshots each `mongod-data` PVC. After snapshots are `readyToUse`, PBM closes the cursor and marks the backup complete. The Backup resource `status.snapshots` field lists each replica set and snapshot name.
-
-### Restore flow
-
-**From logical backup**
-
-1. The Operator writes a restore document to the control collections.
-2. It shuts down `mongos` Pods (sharded clusters) so clients cannot use the database during the restore.
-3. A `pbm-agent` restores data into the corresponding collections.
-4. For a selective restore, PBM restores only the specified namespaces.
-5. For point-in-time recovery, PBM replays oplog up to `restore_to_time`.
-
-**From physical backup**
-
-A `pbm-agent` needs access to `mongod` binaries, so the Operator prepares the cluster first:
-
-1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.
-2. The agent inside the `mongod` container wipes `dbPath`, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.
-3. PBM restarts `mongod` as it moves through restore phases.
-4. After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and `mongos` Pods.
-
-### From PVC snapshot (`external`) backup { #from-pvc-snapshot-external-backup }
-
-Snapshot restores use PBM’s [external restore :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/restore-external-agent-restart.html) workflow. At **`copyReady`**, `mongod` is stopped and data directories are empty, so the Operator recreates PVCs from volume snapshots and runs `pbm-agent restore-finish` before PBM can complete the restore.
-
-1. The Operator terminates `mongos` and arbiter nodes, prepares StatefulSets as for a physical restore, and starts `pbm restore --external`.
-2. PBM shuts down `mongod`, wipes `dbPath`, and leaves nodes in **`copyReady`**.
-3. The Operator scales StatefulSets to zero and runs `pbm-agent restore-finish` on every node with PBM config, replica set name, node name, and (when needed) MongoDB `db` config for encryption at rest.
-4. It recreates each data PVC from the `VolumeSnapshot` in the backup or in `backupSource.snapshots`, one PVC at a time.
-5. It scales StatefulSets back up and runs `pbm restore-finish` so PBM applies metadata and brings the cluster to a consistent state.
-6. After success, it cleans up temporary restore configuration and returns the cluster to normal operation.
-
-For steps, see [Restore from a PVC snapshot](backups-pvc-usage.md#make-an-in-place-restore-from-a-pvc-snapshot-backup).
-
-**Point-in-time recovery from a physical backup**
-
-1. The Operator follows the same preparation as for a physical restore.
-2. It makes sure Pod 0 is primary.
-3. PBM restores the backup, then applies oplog to the target time.
-4. After success, the Operator recreates the StatefulSet with its regular configuration.
-
-For steps, see [Restore to a point in time](backups-pitr-restore.md).
 
 ## Next steps
 

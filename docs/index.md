@@ -14,10 +14,10 @@ The Percona Operator for MongoDB runs and manages Percona Server for MongoDB ins
 Choose how you want to use the Operator:
 
 * **I'm building an application** — I need to connect my app to Percona Server for MongoDB on Kubernetes.  
-  [Get started (developer path) :material-arrow-right:](quickstart.md#developer-path)
+  [Start with Development :material-arrow-right:](get-a-cluster.md)
 
 * **I'm deploying or operating the cluster** — I install, back up, and maintain the database.  
-  [Get started (deployment and operations path) :material-arrow-right:](quickstart.md#deployment-and-operations-path)
+  [Start with Deploy and operate :material-arrow-right:](quickstart.md)
 
 ---
 

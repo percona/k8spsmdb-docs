@@ -1,4 +1,4 @@
-# Users
+# About application and system users
 
 MongoDB user accounts within the cluster can be divided into two different groups:
 
@@ -39,5 +39,5 @@ metadata:
   name: my-cluster-name-mongodb-keyfile
 type: Opaque
 data:
-  mongodb-key: <replace-this-value-with-base-64-encoded-text>
+  mongodb-key: UkVQTEFDRS1XSVRILU1PTkdPREItS0VZRklMRQ==
 ```

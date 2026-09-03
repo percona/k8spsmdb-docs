@@ -1,4 +1,4 @@
-# Replica set members and their usage 
+# Arbiter, non-voting and hidden nodes
 
 Percona Server for MongoDB replica set is a number of `mongod` instances working together to ensure data durability and system resilience. Such configuration enhances fault tolerance and keeps your database accessible even during failures. 
 

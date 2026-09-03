@@ -1,6 +1,20 @@
 # Connection examples
 
-Use the same connection URI from [Connect your application](connect-from-app.md) in your code. The examples below show how to connect and run a simple operation with the official MongoDB drivers for Node.js, Python, and Go. Replace the URI with your own (host, username, password, and options such as `ssl=false` or `replicaSet=rs0` as needed).
+The examples below connect and run a simple operation with the official MongoDB drivers for
+Node.js, Python, and Go.
+
+None of them hardcodes a URI. Each one reads `MONGODB_URI` from the environment, so the same
+code works with the connection string the Operator generated for you - whatever the cluster
+name, namespace, replica set name, or TLS setting happens to be. Take the URI from
+[Connect your application](connect-from-app.md) and put it in the environment first:
+
+```bash
+export MONGODB_URI=$(kubectl get secret <connection-secret-name> -n <namespace> \
+  -o jsonpath='{.data.<username>_mongos_connectionString}' | base64 --decode)
+```
+
+On a replica set cluster the key is `<username>_rs0_connectionString` instead. See
+[Connection secrets](connection-secrets.md#secret-names) for the full key layout.
 
 ## Node.js
 
@@ -15,7 +29,7 @@ Example: connect and insert one document.
 ```javascript
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb://myuser:mypassword@my-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false";
+const uri = process.env.MONGODB_URI;
 
 async function run() {
   const client = new MongoClient(uri);
@@ -32,7 +46,7 @@ async function run() {
 run().catch(console.error);
 ```
 
-For replica set URI use the same pattern with a URI like `mongodb://...@my-cluster-name-rs0.<namespace>.svc.cluster.local/admin?replicaSet=rs0&ssl=false`. The driver handles failover and reconnection when you use a replica set URI.
+The Operator's replica set connection string already carries `replicaSet=rs0`, so the driver handles failover and reconnection without any extra code.
 
 ## Python
 
@@ -45,9 +59,10 @@ pip install pymongo
 Example: connect and insert one document.
 
 ```python
+import os
 from pymongo import MongoClient
 
-uri = "mongodb://myuser:mypassword@my-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false"
+uri = os.environ["MONGODB_URI"]
 
 client = MongoClient(uri)
 try:
@@ -77,6 +92,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -84,7 +100,7 @@ import (
 )
 
 func main() {
-	uri := "mongodb://myuser:mypassword@my-cluster-name-mongos.default.svc.cluster.local/admin?ssl=false"
+	uri := os.Getenv("MONGODB_URI")
 
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(uri))
 	if err != nil {
@@ -103,6 +119,25 @@ func main() {
 
 Use the same URI for replica set (with `replicaSet=rs0`); the driver handles replica set discovery and reconnection.
 
+## Keep the URI in an environment variable for the connection string
+
+Do not hardcode the MongoDB URI or credentials in your code. Use environment variables (for example `MONGODB_URI` or `MONGODB_USER` and `MONGODB_PASSWORD`) so you can change them per environment (local, staging, production) without changing code.
+
+Example:
+
+```bash
+export MONGODB_URI=$(kubectl get secret <connection-secret-name> -n <namespace> \
+  -o jsonpath='{.data.<username>_mongos_connectionString}' | base64 --decode)
+```
+
+Taking the value from the Secret rather than typing a URI keeps the host, the replica set name, and the TLS settings correct without you tracking them. Your app reads the variable at startup. In Kubernetes, you can inject it from a [Secret](app-credentials.md#use-the-connection-string-in-your-app) or ConfigMap.
+
+Use a [dedicated application user](app-credentials.md) rather than the database admin account, with only the roles it needs. That limits the damage if the credentials leak.
+
+## Retries and connection pooling
+
+MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example [Node.js](https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/), [Python](https://pymongo.readthedocs.io/en/stable/faq.html#connection-pooling), [Go](https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/)) for options like connection timeouts and retry logic.
+
 ## Next steps
 
-[App configuration best practices](app-configuration.md){.md-button}
+[Troubleshoot connection issues :material-arrow-right:](troubleshoot-connection.md){.md-button}

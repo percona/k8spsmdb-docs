@@ -26,7 +26,7 @@ To install and deploy the Operator, you need the following:
         * [Set up Minikube](minikube.md)
         * [Create and configure the GKE cluster](gke.md#create-a-google-kubernetes-engine-gke-cluster)
         * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
-        * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
+        * [Create and configure the AKS cluster](aks.md#create-the-aks-cluster)
 
 ## Installation 
 

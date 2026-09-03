@@ -8,7 +8,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 
 **Common causes:**
 
-* **Your app runs outside the cluster** and you are using the internal hostname (for example `my-cluster-mongos.default.svc.cluster.local`). That hostname works only inside Kubernetes. Use [port-forward](connect-from-outside.md#option-1-port-forward-local-development) for local dev or [expose the cluster](connect-from-outside.md#option-2-expose-the-cluster-nodeport-or-loadbalancer) (NodePort or LoadBalancer) and use the external host and port in your URI.
+* **Your app runs outside the cluster** and you are using the internal hostname (for example `my-cluster-name-mongos.default.svc.cluster.local`). That hostname works only inside Kubernetes. Use [port-forward](connect-from-outside.md#option-1-port-forward-local-development) for local dev or [expose the cluster](connect-from-outside.md#option-2-expose-the-cluster-nodeport-or-loadbalancer) (NodePort or LoadBalancer) and use the external host and port in your URI.
 * **Port-forward is not running.** If you use port-forward, keep the `kubectl port-forward` command running while you connect.
 * **Wrong port.** Default MongoDB port is 27017. If you use NodePort, use the NodePort number in your URI.
 
@@ -19,7 +19,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 **Common causes:**
 
 * **Wrong username or password.** Get the credentials from the correct Secret. For the admin user, see [Connect to Percona Server for MongoDB](connect.md). For an application user, see [Get credentials for your app](app-credentials.md). Ensure there are no extra spaces when reading from the Secret (for example when using `base64 --decode`).
-* **Wrong database in the URI.** The user may be defined on the `admin` database; use `/admin` in the URI path (for example `mongodb://user:pass@host/admin?ssl=false`).
+* **Wrong database in the URI.** The user may be defined on the `admin` database; use `/admin` in the URI path (for example `mongodb://user:pass@host/admin`).
 * **User does not exist yet.** If you added a user in the Custom Resource, apply the change and wait for the Operator to create the user and Secret.
 
 ## Wrong replica set name or hostname
@@ -28,7 +28,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 
 **Common causes:**
 
-* **Replica set name missing or wrong.** For a non-sharded cluster, the URI must include `replicaSet=rs0` (for example `.../admin?replicaSet=rs0&ssl=false`). See [Connect your application](connect-from-app.md#connection-string-format).
+* **Replica set name missing or wrong.** For a non-sharded cluster, the URI must include `replicaSet=rs0` (for example `.../admin?replicaSet=rs0`). See [Connect your application](connect-from-app.md#get-a-connection-string).
 * **Sharded vs replica set.** If the cluster is sharded (default), connect to the **mongos** host (`<cluster-name>-mongos.<namespace>.svc.cluster.local`), not the replica set host. If sharding is off, use the **rs0** host and `replicaSet=rs0`.
 
 ## Cannot resolve hostname
@@ -46,7 +46,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 
 **Common causes:**
 
-* **TLS is enabled** on the cluster but your URI has `ssl=false`, or the reverse. Match the URI to the cluster: if the cluster uses TLS, use `ssl=true` and ensure the client trusts the CA. See [Transport encryption (TLS/SSL)](TLS.md).
+* **The URI disagrees with the cluster about TLS.** TLS is on by default (`tls.mode: preferTLS`), which accepts both TLS and plain connections - but a cluster set to `requireTLS` rejects a URI carrying `ssl=false`. Prefer the connection string from the Secret, which already matches the cluster; if you build the URI yourself, use `ssl=true` and make sure the client trusts the CA. See [Transport encryption (TLS/SSL)](TLS.md).
 * **Wrong CA or certificate.** For production, use the correct CA certificate or system trust store.
 
 ---
