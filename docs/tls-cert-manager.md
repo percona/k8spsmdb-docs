@@ -12,7 +12,7 @@ You can use cert-manager in two ways:
 
 * **Operator-managed issuers (default)** — By default, the Operator creates a Kubernetes `Issuer` resource, which is namespace-scoped, along with a local self-signed Certificate Authority (CA) in the same database namespace. The `Issuer` is used for clusters that are deployed within a single namespace and handles certificate generation for that specific namespace.
 
-   For deployments spanning multiple namespaces, the Operator can instead use a `ClusterIssuer` resource, which is cluster-scoped and can issue certificates across any namespace. Use a `ClusterIssuer` for [multi-namespace](cluster-wide.md) setups. Both approaches are automated by the Operator and require no additional PKI configuration from you.
+   For deployments spanning multiple namespaces, the Operator can instead use a `ClusterIssuer` resource, which is cluster-scoped and can issue certificates across any namespace. Use a `ClusterIssuer` for [multi-namespace](cluster-wide.md) setups. Managing `ClusterIssuer` resources requires extra RBAC permissions that are not in the default Operator roles. See [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope).
 
 * **Your existing issuer** — you point the Operator at a cert-manager `Issuer` or
   `ClusterIssuer` that your platform team already manages (for example, Smallstep,
@@ -122,23 +122,42 @@ to `true` (the default) for this self-signed setup.
 !!! note "Version availability: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 If you want the Operator to manage the CA chain and issue certificates across all namespaces, use the
-`ClusterIssuer` resource rather than namespace-scoped `Issuer` resources. 
+`ClusterIssuer` resource rather than namespace-scoped `Issuer` resources.
 
-Configure the Custom Resource as follows:
+The Operator requires additional permissions to create and manage the `ClusterIssuer` resource. Default Operator RBAC covers only namespace-scoped objects. Therefore, you must grant cluster-scoped access to let the Operator create and update the shared CA `ClusterIssuer` resources across the Kubernetes cluster.
 
-```yaml
-spec:
-  tls:
-    allowInvalidCertificates: false
-    issuerConf:
-      kind: ClusterIssuer
-      group: cert-manager.io
-```
+1. Create a ClusterRole and ClusterRoleBinding. Replace the `<operator-namespace>` placeholder with the namespace where the Operator is deployed:
 
-Set the `tls.issuerConf.kind` option to `ClusterIssuer` without pre-creating issuers yourself.
-The Operator creates the CA `Certificate` and the `ClusterIssuer` resource in the cert-manager namespace (`cert-manager` by default). The cert-manager generates signed certificates using the ClusterIssuer.
+    ```bash
+    kubectl create clusterrole psmdb-clusterissuer-manager \
+      --verb=get,list,watch,create,update,patch \
+      --resource=clusterissuers.cert-manager.io
 
-If you installed cert-manager in a custom namespace, you must explicitly define it in the `CERTMANAGER_NAMESPACE` environment variable for the Operator deployment.
+    kubectl create clusterrolebinding psmdb-clusterissuer-manager \
+      --clusterrole=psmdb-clusterissuer-manager \
+      --serviceaccount=<operator-namespace>:percona-server-mongodb-operator
+    ```
+
+2. Configure the Custom Resource. Set the `tls.issuerConf.kind` option to `ClusterIssuer` without pre-creating issuers yourself:
+
+    ```yaml
+    spec:
+      tls:
+        allowInvalidCertificates: false
+        issuerConf:
+          kind: ClusterIssuer
+          group: cert-manager.io
+    ```
+
+3. Apply the configuration. Replace the `<namespace>` placeholder with the namespace where your cluster is deployed:
+
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
+
+    The Operator creates the CA `Certificate` and the `ClusterIssuer` resource in the cert-manager namespace (`cert-manager` by default). The cert-manager generates signed certificates using the `ClusterIssuer`.
+
+If you installed cert-manager in a custom namespace, set the [`CERTMANAGER_NAMESPACE`](env-vars-operator.md#certmanager_namespace) environment variable on the Operator Deployment.
 
 ## Use an existing ClusterIssuer
 
