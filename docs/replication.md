@@ -15,7 +15,7 @@ While the underlying mechanics such as replica sets, TLS, and service exposure a
 
 ### Cross-site replication
 
-To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the cross-site replication. This means that one cluster is the Main site and another one(s) - the Replica site(s).
+To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the **cross-site replication**. This means that one cluster is the Main site and another one(s) - the Replica site(s).
 
 The following diagram shows how the data is replicated between the sites.
 
