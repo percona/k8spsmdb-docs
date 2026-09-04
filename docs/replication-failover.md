@@ -2,6 +2,11 @@
 
 Failing over services to the Replica site ensures your applications remain available if the Main site needs maintenance or becomes unavailable. You might need to do this during planned maintenance windows or in response to unexpected outages. The following sections explain how to handle both planned and unplanned failover scenarios.
 
+## Before you begin
+
+* Your sites must already be interconnected before you can fail over between them. See [Interconnect sites](replication-interconnect.md) (Multi-cluster Services) or [Splitting a replica set across multiple data centers](replication-multi-dc.md) (manual/multi-region) if you haven't set that up yet.
+* The example hostnames below (`main-cluster-rs0-0.psmdb.svc.clusterset.local`) use the Multi-cluster Services DNS suffix from [Interconnect sites](replication-interconnect.md). If you interconnected sites manually instead, substitute your own hostnames (for example, `svc.cluster.local` or an externally reachable name) — the `rs.status()`/`rs.conf()`/`rs.reconfig()` commands themselves are the same either way.
+
 ## Planned services switchover
 
 You can switch over services to the Replica site while doing some planned maintenance on the Main site. 
@@ -72,25 +77,33 @@ Here's how to do it:
           },
         ```
 
-3. Retrieve and store the current configuration in the variable:
+3. If you can still reach any surviving member you're about to remove from the configuration, back it up first - this procedure is not reversible once applied.
+
+4. Retrieve and store the current configuration in the variable:
 
     ```
-    cfg = rs.config()
+    cfg = rs.conf()
     ```
 
-4. Override the member array to include the surviving members - the ones from the Replica site. For the following command replace the member indexes with the ones you got from the `rs.config()` output:
+5. Override the member array to include the surviving members - the ones from the Replica site. For the following command replace the member indexes with the ones you got from the `rs.conf()` output:
 
     ```
     cfg.members = [cfg.members[3], cfg.members[4], cfg.members[5]]
     ```
 
-5. Reconfigure the replica set passing the updated member list:
+6. Reconfigure the replica set passing the updated member list:
 
     ```
     rs.reconfig(cfg, {force: true})
     ```
 
-6. Check the updated configuration:
+    !!! warning
+
+        `force: true` is a last resort for when the Main site is genuinely unreachable and no primary exists anywhere in the set - never run it while a primary is still reachable, and never call it from an automated script. After a forced reconfiguration, the replica set's configuration version jumps by a large, arbitrary amount (tens or hundreds of thousands) - this is expected behavior that prevents version collisions if both sides of a network partition were force-reconfigured independently, not a sign something went wrong.
+
+        If the Main site's Pods come back online later, do not let them rejoin this replica set on their own - they still hold the old configuration and can conflict with the one you just forced. Decommission them or bring them back as a fresh Replica site instead.
+
+7. Check the updated configuration:
 
     ```
     rs.status().members
@@ -122,7 +135,11 @@ Here's how to do it:
           }
         ```
 
-7. Repeat steps 1-6 for every shard's replica set in your sharded cluster. 
-8. Connect to the config server replica set Pod and repeat steps 1-6.
-9. Connect to the Replica site and check the replica set configuration
-10. Reconfigure your MongoDB clients to connect to the Replica site.
+8. Repeat steps 1-7 for every shard's replica set in your sharded cluster. 
+9. Connect to the config server replica set Pod and repeat steps 1-7.
+10. Connect to the Replica site and check the replica set configuration.
+11. Reconfigure your MongoDB clients to connect to the Replica site.
+
+## Next steps
+
+[About multi-cluster and multi-region deployments](replication.md){.md-button}

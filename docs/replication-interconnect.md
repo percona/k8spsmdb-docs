@@ -2,7 +2,7 @@
 
 At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site's nodes as external nodes for the Main site. In the same way, you add the Main's site nodes as external ones for the Replica site.
 
-Every site has three replica set members and three config server replica set members. But you add only two of them as voting members, while the third member is added as a non-voting one. In doing so, you avoid split-brain situations and prevent the primary elections if the Replica site is down or there is a network disruption between the sites.
+Configure two of each site's three replica set members (and two of the three config server members) as voting external nodes, and the third as non-voting (`votes: 0`, `priority: 0`). This is a deliberate choice, not automatic Operator behavior - it avoids split-brain and unwanted primary elections if the other site goes down or the network between sites is disrupted.
 
 In this way, the `main` cluster managed by the Operator is able to reach the `replica` nodes.
 

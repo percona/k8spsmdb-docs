@@ -432,3 +432,7 @@ The output differs per deployed topology:
 
 You can scale the same idea beyond single-member sites. For example, deploy two data-bearing members on the Main site and two on the Replica site (`size: 2` on each), then add a single external arbiter so the total number of voters stays odd (2 + 2 + 1). Use `unsafeFlags.replsetSize: true` when a site has an even number of local members without a local arbiter. The interconnect pattern is the same: list remote data members and the shared arbiter under `externalNodes`, with `arbiterOnly: true` on the arbiter entry.
 
+## Next steps
+
+[About multi-cluster and multi-region deployments](replication.md){.md-button}
+
