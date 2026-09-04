@@ -2,8 +2,8 @@
 
 The Operator does a good job of automatically assigning new Pods to nodes to
 achieve balanced distribution across the cluster. There are situations when you
-must ensure that Pods land on specific nodes: for example, for the advantage of
-speed on an SSD-equipped machine, or reduce costs by choosing nodes in the same
+must ensure that Pods land on specific nodes: for example, for the speed of an
+SSD-equipped machine, or to reduce costs by choosing nodes in the same
 availability zone. There are also situations where the concern isn't placement at
 all, but survival - making sure routine Kubernetes maintenance doesn't take down
 more of the database than it has to.

@@ -32,13 +32,19 @@ replsets:
 
 Find the description of other available options in the [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the [Custom Resource options reference](operator.md).
 
-**Verify the Arbiter joined the replica set.** [Connect to the cluster](connect.md), then run:
+**Verify the Arbiter joined the replica set.** [Connect to the cluster](connect.md), then check its state:
 
 ```javascript
 rs.status().members
 ```
 
-The Arbiter's entry shows `stateStr: 'ARBITER'`.
+The Arbiter's entry shows `stateStr: 'ARBITER'`. To confirm it's configured as an arbiter (not just currently acting as one), check the replica set configuration instead:
+
+```javascript
+rs.conf().members
+```
+
+The same entry shows `arbiterOnly: true`.
 
 ### Default read and write concern for replica sets with an Arbiter
 
