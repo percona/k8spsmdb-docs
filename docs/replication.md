@@ -51,17 +51,12 @@ Choosing the right topology depends on your goals. Here are common use cases tha
 
 | Your goal | Go to |
 |---|---|
-| Decide between multi-cluster and multi-region before deploying | [Plan your deployment](replication-plan-deployment.md) |
-| Let sites discover each other through Multi-cluster Services | [Multi-cluster Services](replication-mcs.md) |
-| Enable Multi-cluster Services on GKE | [Enable multi-cluster Services on GKE](replication-mcs-gke.md) |
-| Enable Multi-cluster Services on EKS | [Enable multi-cluster Services on EKS](replication-mcs-eks.md) |
-| Add Multi-cluster Services to a running deployment | [Apply MCS to an existing cluster](replication-apply-mcs-existing.md) |
-| Set up the site that accepts writes | [Configure the Main site](replication-main.md) |
-| Set up a site that follows the Main one | [Configure the Replica site](replication-replica.md) |
-| Connect the sites together | [Interconnect sites](replication-interconnect.md) |
-| Promote a Replica site when the Main one is lost | [Fail over services to the Replica site](replication-failover.md) |
-| Back up a cross-site deployment | [Backups with cross-site replication](replication-backups.md) |
-| Spread one replica set across data centers | [Splitting replica set across multiple data centers](replication-multi-dc.md) |
+| Haven't decided your topology yet | [Plan your deployment](replication-plan-deployment.md) |
+| Both sites are on Kubernetes, on a cloud that supports Multi-cluster Services (GKE/EKS) | [Multi-cluster Services](replication-mcs.md) |
+| Already running a cluster and want to turn on Multi-cluster Services for it | [Apply MCS to an existing cluster](replication-apply-mcs-existing.md) |
+| A site lives outside Kubernetes, or you want manual, vendor-neutral control over cross-site membership instead of relying on a cloud's MCS support | [Splitting a replica set across multiple data centers](replication-multi-dc.md) |
+| Need to switch over or fail over to the Replica site | [Fail over services to the Replica site](replication-failover.md) |
+| Backing up a cross-site deployment | [Backups with cross-site replication](replication-backups.md) |
 
 ## Limitations
 
