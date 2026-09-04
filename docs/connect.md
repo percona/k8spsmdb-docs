@@ -2,7 +2,7 @@
 
 In this tutorial, you will connect to the Percona Server for MongoDB cluster you deployed previously.
 
-Starting with Operator version 1.23.0, the Operator creates a Secret with a ready-to-use connection string for the `databaseAdmin` user. Use it to connect to the database.
+The Operator creates a Secret with a ready-to-use connection string for the `databaseAdmin` user. Use it to connect to the database.
 
 Here's how to do it:
 {.power-number}
@@ -13,7 +13,7 @@ Here's how to do it:
     kubectl get secrets -n <namespace>
     ```
 
-    The connection string Secret is named `<cluster_name>-databaseadmin-conn-str`. The `<cluster_name>` value is the [name of your Percona Distribution for MongoDB](operator.md#metadata). The default variant is:
+    The connection string Secret is named `<cluster_name>-databaseadmin-conn-str`. The `<cluster_name>` value is the [name of your Percona Server for MongoDB](operator.md#metadata). The default variant is:
 
     === "via kubectl" 
 
@@ -74,8 +74,9 @@ Here's how to do it:
 
         The exact URI depends on your cluster configuration. Use the value retrieved from the connection string Secret.
 
+Congratulations! You have connected to Percona Server for MongoDB.
 
-Congratulations! You have connected to Percona Server for MongoDB. 
+To connect from your own application (connection string, credentials, code examples), see [Get started](get-a-cluster.md) (developer path) or [Connect your application](connect-from-app.md).
 
 ## Next steps
 
