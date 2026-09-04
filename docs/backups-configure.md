@@ -52,11 +52,11 @@ A backup in `error` never completed. `running` or `waiting` means it is not fini
 
 ## 5. Restore
 
-* [On the same cluster](backups-restore.md), or on a [new cluster](backups-restore-to-new-cluster.md).
+* [On the same cluster](backups-restore.md#restore-on-the-same-cluster), or on a [new cluster](backups-restore.md#restore-on-a-new-cluster).
 * [Restore to a point in time](backups-pitr-restore.md) — roll the database back to a specific moment.
 * [Restore from a PVC snapshot](backups-pvc-usage.md).
 * [Restore a collection under a different name](backups-restore-new-name.md).
-* [Restore to a new cluster with different replica set names](backups-restore-replset-remapping.md).
+* [Restore to a new cluster with different replica set names](backups-restore.md#with-different-replica-set-names).
 
 Practise a restore before you need one. Restores are the only proof that backups work.
 

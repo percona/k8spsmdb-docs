@@ -56,6 +56,13 @@ them. The Operator applies anti-affinity by default, and you can shape placement
 with node selectors, topology spread constraints, tolerations, and priority classes. See
 [Pod placement and scheduling](constraints.md).
 
+Anti-affinity only protects against *involuntary* disruption - a node dying takes down at
+most one replica set member, because the others are elsewhere. It does nothing against
+*voluntary* disruption, such as a node drain during a cluster upgrade, which can evict
+several anti-affinitized Pods back to back and break quorum anyway. A
+[Pod Disruption Budget](constraints.md#pod-disruption-budgets) is what limits how many Pods
+a voluntary disruption can take down at once, and is what actually closes that gap.
+
 Arbiters need particular attention here, because an arbiter sharing a host with a
 data-bearing member removes the redundancy it was added to provide. See
 [Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members](arbiter.md#prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members).
