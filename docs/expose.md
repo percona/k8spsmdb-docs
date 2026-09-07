@@ -80,8 +80,7 @@ Make sure every part of the connection string reflects your environment:
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
 - **`<namespace>`**: the Kubernetes namespace where your cluster is deployed
 
-If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically.
-
+If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically. Note that a generated connection string has `tls=true` and this also requires a client certificate - see [Connect with a client certificate](TLS.md#connect-with-a-client-certificate) for how to extract and use one.
 
 !!! warning
 

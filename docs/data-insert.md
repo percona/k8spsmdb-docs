@@ -63,6 +63,13 @@ Now your cluster has some data in it.
 
 To connect from your application, see [Connect your application](connect-from-app.md).
 
+You're done with the `percona-client` Pod from the previous step. Exit `mongosh` and the
+shell (`exit` or Ctrl+D, twice), then delete the Pod:
+
+```bash
+kubectl delete pod percona-client -n <namespace>
+```
+
 ## Next steps
 
 [Make a backup :material-arrow-right:](backup-tutorial.md){.md-button}   

@@ -529,7 +529,7 @@ Specifies a secret object for [LDAP over TLS](ldap.md#using-ldap-over-tls-connec
 
 The Vault section defines how the Operator connects to HashiCorp Vault to sync system user credentials. Read more about this feature in [Manage system users with Vault](system-users-vault.md)
 
-### `vault.endpointUrl`
+### `vault.endpointURL`
 
 The Vault server address.
 

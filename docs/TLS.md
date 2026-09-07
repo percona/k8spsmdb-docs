@@ -24,6 +24,14 @@ spec:
     mode: preferTLS
 ```
 
+Internal communication also uses a fixed `clusterAuthMode: x509`. The Operator does not
+expose this as a Custom Resource option. Because MongoDB shares one TLS listener for both
+internal and external traffic, this has a side effect on external clients too: any client
+that connects using TLS must present a valid client
+certificate, even under the default `preferTLS` mode. A client that connects without TLS
+is unaffected. See [Connect with a client certificate](#connect-with-a-client-certificate)
+below.
+
 ## TLS Certificates
 
 You can configure TLS security in several ways:
@@ -79,6 +87,30 @@ spec:
 ```
 
 See [Configure the TLS certificate management policy](tls-cert-management-policy.md) for setup steps, monitoring, recovery, and policy switching.
+
+### Connect with a client certificate
+
+Any client that connects over TLS needs the same certificate the Operator generated for
+the cluster (see `clusterAuthMode` above). Extract it from the `<cluster-name>-ssl` Secret
+and pass it to your client:
+
+```bash
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.crt}' | base64 -d > tls.crt
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.key}' | base64 -d > tls.key
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+cat tls.crt tls.key > client.pem
+```
+
+Then pass `client.pem` and `ca.crt` to your client. For `mongosh`:
+
+```bash
+mongosh "<connection-string>" --tlsCertificateKeyFile client.pem --tlsCAFile ca.crt
+```
+
+Run this wherever your client actually runs - on your own machine if you
+[exposed the cluster](expose.md), or inside a Pod if you're connecting from within
+Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
+[Connect to Percona Server for MongoDB](connect.md).
 
 ## TLS configuration
 
