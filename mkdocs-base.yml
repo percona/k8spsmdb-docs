@@ -342,7 +342,6 @@ nav:
             - "Labels and annotations": annotations.md
             - "Configure concurrent reconciliation": reconciliation-concurrency.md
             - "Use a private registry": custom-registry.md
-            - "Create a private S3-compatible cloud for backups": private.md
     - Troubleshooting:
         - debug.md
         - Troubleshoot the Operator installation issues: troubleshoot-operator.md

@@ -2,11 +2,25 @@
 
 Use the `minio` storage type for MinIO and other S3-compatible storages. It helps with connectivity and compatibility issues when your S3 implementation doesn't support SigV4 or requires endpoint configuration that works better with the `minio` storage type.
 
+## Assumptions
+
+This page assumes you already have a MinIO (or other S3-compatible) service reachable from your cluster. To install MinIO itself on Kubernetes, see MinIO's own
+[Kubernetes deployment documentation :octicons-link-external-16:](https://docs.min.io/aistor/installation/kubernetes/).
+
+Note that MinIO's standalone open-source server is no longer actively maintained, so
+MinIO's current Kubernetes install path is through their AIStor product, which requires
+a license key (a free tier is available). Any other S3-compatible service (including one
+you already run) works with the `minio` storage type too.
+
+## Preconditions
+
 To use the `minio` storage type, you need the following:
 
 * An S3-compatible bucket and the region it's in
 * Access key and secret key to authenticate to the bucket
 * The storage's endpoint URL, if it's not AWS S3 itself (for example, your MinIO service address)
+
+## Create a Secret
 
 Create a Secret object with your access credentials. You can use the [`deploy/backup-s3.yaml`](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as the example.
 
@@ -49,13 +63,15 @@ your value:
 export NAMESPACE=<namespace>
 ```
 
-1. Create the Secret object with this file:
+Create the Secret object with this file:
 
-    ```bash
-    kubectl apply -f deploy/backup-s3.yaml -n $NAMESPACE
-    ```
+```bash
+kubectl apply -f deploy/backup-s3.yaml -n $NAMESPACE
+```
 
-2. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
+## Configure the storage
+
+1. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
 
     Specify the following configuration:
 
@@ -86,7 +102,7 @@ export NAMESPACE=<namespace>
             secure: true
     ```
 
-3. Apply the configuration:
+2. Apply the configuration:
 
     ```bash
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE
