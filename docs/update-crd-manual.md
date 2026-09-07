@@ -1,5 +1,9 @@
 # Upgrade the Operator and CRD manually
 
+--8<-- "update-critical-notice.md"
+
+## Procedure
+
 The upgrade includes the following steps.
 
 1. **For Operators older than v1.12.0**: Update the API version in the [Custom Resource Definition :octicons-link-external-16:](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/):

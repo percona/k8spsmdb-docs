@@ -2,7 +2,9 @@
 
 {%set commandName = 'oc' %}
 
---8<-- "update-assumptions.md" 
+--8<-- "update-critical-notice.md"
+
+--8<-- "update-assumptions.md"
 
 ## Upgrading Percona Server for MongoDB
 

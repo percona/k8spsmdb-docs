@@ -206,20 +206,6 @@ nav:
        - Install with OpenEverest: everest.md
        - Verify the cluster operation: verify-cluster.md
     
-    - Upgrade and version management:
-        - update.md
-        - Upgrade CRD and the Operator:
-            - update-operator.md
-            - update-crd-manual.md
-            - update-crd-helm.md
-            - update-crd-olm.md
-        - "Upgrade Percona Server for MongoDB": update-db.md
-        - "Upgrade to a specific version": update-minor-set-version.md
-        - "Automatic minor upgrades": update-minor-automatic.md
-        - "Major upgrades": update-major.md
-        - "Upgrade manually": update_manually.md
-        - "Upgrade on OpenShift": update_openshift.md
-
     - Features:
        - features.md
        - "High availability and topology": ha-topology.md
@@ -232,6 +218,21 @@ nav:
        - "Data migration": clustersync.md
        - "Networking and external access": expose.md
        - "Customization and extensibility": customization.md
+    
+    - Upgrade and version management:
+        - update.md
+        - Upgrade CRD and the Operator:
+            - update-operator.md
+            - update-crd-manual.md
+            - update-crd-helm.md
+            - update-crd-olm.md
+        - Upgrade Percona Server for MongoDB: 
+          - update-db.md
+          - update-minor-set-version.md
+          - update-minor-automatic.md
+          - update-major.md
+          - update-manually.md
+          - update-openshift.md
 
     - Development:
        - "Get a cluster": get-a-cluster.md
