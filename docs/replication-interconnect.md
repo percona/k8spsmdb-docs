@@ -6,7 +6,7 @@ Configure two of each site's three replica set members (and two of the three con
 
 In this way, the `main` cluster managed by the Operator is able to reach the `replica` nodes.
 
-!!! admonition "Using the arbiter node"
+!!! tip "Using the arbiter node"
 
     You can also add an **external arbiter** as a voting member when you interconnect sites. For example, if you run the arbiter node in the third location. This ability requires the Operator version 1.23.0 and above.
     

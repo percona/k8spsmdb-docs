@@ -328,7 +328,7 @@ nav:
                 - "Log rotation": logrotate.md
         - Configure search and vector search: search-setup.md
         - Data migration:
-            - "Set up and use PCSM": clustersync-setup.md
+            - "Set up and use PCSM for data migration": clustersync-setup.md
             - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
         - Customization and extensibility:
             - "Change MongoDB options": options.md

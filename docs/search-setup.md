@@ -1,6 +1,6 @@
 # Configure search and vector search
 
-!!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
@@ -45,7 +45,7 @@ This setup uses the following software versions:
 Install the Operator by applying the `deploy/bundle.yaml` manifest. This also installs CRDs, Role-based access control (RBAC) and the Operator deployment:
     
 ```bash
-kubectl apply --server-side -f deploy/bundle.yaml
+kubectl apply --server-side -f deploy/bundle.yaml -n $NAMESPACE
 ```
 
 As the result you will have the Operator Pod up and running.

@@ -1,6 +1,6 @@
 # Restore a collection under a different name
 
-!!! admonition "Version added: 1.23.0"
+!!! note "Version added: 1.23.0"
 
 You can restore a single collection from a full logical backup under a different database and/or collection name. The Operator remaps the namespace during the restore: the source collection stays in place, and PBM creates a new collection with the data and indexes from the backup.
 
