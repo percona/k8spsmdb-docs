@@ -36,16 +36,6 @@ Pod, and rotation keeps them from filling the volume.
 * [Persistent logging](persistent-logging.md)
 * [Log rotation](logrotate.md)
 
-
-## Limitations
-
-* PMM reports on the database. It does not tell you that a PVC is nearly full, that a Pod is
-  stuck `Pending`, or that a node is gone - those need
-  [Kubernetes-layer monitoring](monitor-kubernetes.md).
-* The log collector keeps logs beyond the life of a Pod, but it is not a substitute for a
-  retention policy: without rotation, logs grow until the volume fills. See
-  [Log rotation](logrotate.md).
-
 ## Next steps
 
 * [Monitor with Percona Monitoring and Management (PMM)](monitoring.md)
