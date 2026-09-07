@@ -89,7 +89,7 @@ cd percona-server-mongodb-operator
 
     !!! note ""
 
-        If you use a different S3-compatible storage instead of AWS S3, add the `endpointURL` key in the `s3` subsection, which should point to the actual cloud used for backups. This value is specific to the cloud provider. For example, using Google Cloud involves the following `endpointUrl`:
+        If you use a different S3-compatible storage instead of AWS S3, add the `endpointUrl` key in the `s3` subsection, which should point to the actual cloud used for backups. This value is specific to the cloud provider. For example, using Google Cloud involves the following `endpointUrl`:
 
         ```
         endpointUrl: https://storage.googleapis.com

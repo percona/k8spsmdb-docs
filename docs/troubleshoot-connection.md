@@ -48,6 +48,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 
 * **The URI disagrees with the cluster about TLS.** TLS is on by default (`tls.mode: preferTLS`), which accepts both TLS and plain connections - but a cluster set to `requireTLS` rejects a URI carrying `ssl=false`. Prefer the connection string from the Secret, which already matches the cluster; if you build the URI yourself, use `ssl=true` and make sure the client trusts the CA. See [Transport encryption (TLS/SSL)](TLS.md).
 * **Wrong CA or certificate.** For production, use the correct CA certificate or system trust store.
+* **"No certificate provided by peer" even though the URI and cluster agree on TLS.** The Operator's default `clusterAuthMode: x509` requires a client certificate for any TLS connection, not just internal replica-set traffic. This applies even under the default `preferTLS` mode, and isn't configurable through the Custom Resource. See [Connect with a client certificate](TLS.md#connect-with-a-client-certificate), or connect without `tls=true` in the URI if a plain connection is acceptable.
 
 ---
 

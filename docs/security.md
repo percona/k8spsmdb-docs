@@ -6,22 +6,21 @@ what you already get without configuring anything, and what each decision change
 
 ## What a new cluster already gives you
 
-A cluster deployed from the default `deploy/cr.yaml` is not unprotected. Before you change
-anything:
+A cluster deployed from the default `deploy/cr.yaml` is  protected. This is what is available out of the box:
 
 | | Default | Change it in |
 |---|---|---|
 | Authentication | Enabled | [Disable authentication](auth-disable.md) |
 | Transport encryption | On, `tls.mode: preferTLS` - TLS for internal traffic, TLS or plain accepted from clients | [About TLS security](TLS.md) |
-| Certificates | Issued and renewed for you, `tls.certManagementPolicy: auto` | [Certificate management policy](tls-cert-management-policy.md) |
+| Certificates | Self-signed by the Operator; renew manually unless you add cert-manager | [About TLS security](TLS.md#tls-certificates) |
 | Data-at-rest encryption | On, key in the Secret named by `secrets.encryptionKey` | [About data-at-rest encryption](encryption.md) |
 | Internal cluster authentication | A random 1024-byte keyfile, generated if absent | [Users](users.md#mongodb-internal-authentication-key-optional) |
 
-Most work in this section is therefore *changing* a default - to meet a policy, to use your
-own certificate authority, or to move key material into an external store - not switching
-protection on.
+You don't need to turn on security here - it's already on. This section is about changing *how*
+it works: for example, switching to your own certificate authority, meeting a compliance
+policy, or moving key material into an external store.
 
-## Who may connect
+## Manage users: who can connect
 
 The Operator distinguishes **system users**, which it creates and uses to run the cluster,
 from **application users**, which your workloads use. System users are generated into
@@ -32,8 +31,9 @@ the Custom Resource so they are created and reconciled like any other resource.
 * [Application-level (unprivileged) users](app-users.md)
 * [System users](system-users.md)
 * [Connection secrets](connection-secrets.md)
+* [Manage system users with Vault](system-users-vault.md)
 
-## How they prove it
+## Enable authentication: how users prove who they are
 
 Beyond the built-in credentials, authentication can be delegated to an external directory or
 identity provider:
@@ -44,9 +44,9 @@ identity provider:
 | [OpenLDAP integration](ldap.md) | Your organization already authenticates against LDAP and you want MongoDB roles mapped to LDAP groups. |
 | [OIDC authentication](oidc.md) | You use an identity provider and want short-lived tokens instead of stored passwords. |
 
-Two settings deliberately weaken authentication and exist for narrow, temporary situations:
-[Disable authentication](auth-disable.md) and
-[Disable localhost authentication bypass](auth-bypass-localhost.md).
+[Disable authentication](auth-disable.md) deliberately weakens authentication and exists
+for narrow, temporary situations only, such as development, testing, or migration. Never use it
+on a cluster holding real data.
 
 !!! warning
 
@@ -54,14 +54,19 @@ Two settings deliberately weaken authentication and exist for narrow, temporary 
     network endpoint. Use it only in an isolated environment, and never for a cluster
     holding real data.
 
-## How traffic is protected
+[Disable localhost authentication bypass](auth-bypass-localhost.md) does the opposite: it
+permanently closes MongoDB's bootstrap-only "localhost exception" on a running cluster,
+tightening security rather than loosening it.
+
+## Transport encryption: protecting data in transit (TLS)
 
 TLS is on by default; what you choose is who issues the certificates and how strictly TLS is
 enforced.
 
 | Option | Choose it when |
 |---|---|
-| [cert-manager](tls-cert-manager.md) | You want issuance and renewal handled automatically. Recommended. |
+| Operator-generated certificates (default) | You want TLS working with no extra setup. Renewal is manual. |
+| [cert-manager](tls-cert-manager.md) | You want issuance and renewal handled automatically. Recommended for production. |
 | [Manual certificates](tls-manual.md) | Your organization issues certificates from its own CA. |
 
 `tls.mode` decides enforcement: `preferTLS` (default) accepts both TLS and plain client
@@ -73,7 +78,7 @@ Operator owns is set by the
 [TLS certificate management policy](tls-cert-management-policy.md), and TLS can be turned
 off entirely with [Disable TLS](tls-disable.md).
 
-## How data on disk is protected
+## Data-at-rest encryption: protecting data on disk
 
 Encryption at rest is on by default; what you choose is where the key lives.
 
