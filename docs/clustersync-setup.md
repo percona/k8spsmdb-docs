@@ -31,7 +31,7 @@ Replace them with your values, if needed.
 Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:
 
 ```
-percona/percona-clustersync-for-mongodb:0.9.0
+percona/percona-clustersync-mongodb:0.9.0
 ```
 
 ## Configuration
@@ -395,7 +395,7 @@ kubectl delete psmdb-clustersync my-cluster-sync -n $NAMESPACE
 
 This removes the PCSM Deployment and Operator-owned Secrets. The source credentials Secret and the MongoDB sync user on the target are not deleted automatically.
 
-## 5. Troubleshooting
+## Troubleshooting
 
 ### PCSM Pod is not ready
 
