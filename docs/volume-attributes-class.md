@@ -130,3 +130,8 @@ To configure a VolumeAttributesClass, you need to create a `VolumeAttributesClas
          volumeAttributesClassName: silver
          volumeMode: Filesystem    
         ```
+
+## Next steps
+
+[Scaling and storage](scaling-about.md){.md-button}
+[Resize storage](scaling-storage-resize.md){.md-button}

@@ -2,7 +2,7 @@
 
 ## Storage resizing
 
-Use this guidance if [storage resizing](scaling.md#scale-storage) does not behave as expected.
+Use this guidance if [storage resizing](scaling-storage-resize.md) does not behave as expected.
 
 ## Storage does not scale when you expect it
 

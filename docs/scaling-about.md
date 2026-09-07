@@ -18,10 +18,12 @@ Horizontal and vertical scaling are covered in
 ## Storage
 
 Each data-bearing member gets its own persistent volume, defined in
-`replsets.volumeSpec`. The storage class you pick decides whether the volume can be
-resized later and whether it can be snapshotted, so it is worth choosing deliberately
-rather than falling back to the cluster default. See
-[Local storage support](storage.md).
+`replsets.volumeSpec`. The storage class you pick decides what you can do with that
+volume later, so it is worth choosing deliberately rather than falling back to the
+cluster default: whether it can be [resized](scaling-storage-resize.md) as data grows, and
+whether it supports [PVC snapshots](backups-pvc-snapshots.md) for backups. For
+node-local volumes instead of a cluster-provisioned PVC - `emptyDir` and `hostPath` -
+see [Manage local storage](storage.md).
 
 ### Growing volumes
 
@@ -34,8 +36,12 @@ Volume expansion is controlled by the `storageScaling` section of the Custom Res
   system such as the Kubernetes Vertical Pod Autoscaler. When enabled, the Operator skips
   its own autoscaling and resize operations.
 
+For the full step-by-step procedures - automatic resizing, Volume Expansion, manual
+resizing without Volume Expansion, and external autoscalers - see
+[Resize storage](scaling-storage-resize.md).
+
 Not every storage class supports expansion. If a resize does not take effect, start with
-[Storage resizing](debug-storage.md).
+[Troubleshoot storage resizing](debug-storage.md).
 
 ### Volume attributes
 

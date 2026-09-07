@@ -66,7 +66,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `enableVolumeExpansion`
 
-Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -96,7 +96,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `storageScaling.enableVolumeScaling`
 
-Enables or disables [storage scaling / volume expansion](scaling.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -104,7 +104,7 @@ Enables or disables [storage scaling / volume expansion](scaling.md#storage-resi
 
 ### `storageScaling.enableExternalAutoscaling`
 
-Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling.md#storage-resizing-with-volume-expansion-capability)
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability)
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -112,7 +112,7 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 ### `storageScaling.autoscaling.enabled`
 
-Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling.md#automatic-storage-resizing).
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing).
 
 | Value type  | Example    |
 | ----------- | ---------- |
