@@ -2142,7 +2142,7 @@ PMM Client Docker image to use.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `percona/pmm-client:{{ pmm2recommended }}` |
+| :material-code-string: string     | `percona/pmm-client:{{ pmm3recommended }}` |
 
 ### `pmm.serverHost`
 

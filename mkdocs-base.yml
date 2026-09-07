@@ -326,8 +326,7 @@ nav:
             - Logging:
                 - "Persistent logging": persistent-logging.md
                 - "Log rotation": logrotate.md
-        - Search and vector search:
-            - "Configure search and vector search": search-setup.md
+        - Configure search and vector search: search-setup.md
         - Data migration:
             - "Set up and use PCSM": clustersync-setup.md
             - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
