@@ -9,16 +9,16 @@ something the defaults do not cover.
 | You want to | Use |
 |---|---|
 | Change MongoDB server settings | [Changing MongoDB options](options.md) |
-| Change Percona Backup for MongoDB settings | [options-pbm.md](options-pbm.md) |
-| Run a script at a point in the Pod lifecycle | [hookscript.md](hookscript.md) |
+| Change Percona Backup for MongoDB settings | [Change Percona Backup for MongoDB configuration](options-pbm.md) |
+| Run a script at a point in the Pod lifecycle | [Extend Pod startup logic](hookscript.md) |
 
 MongoDB settings live in the `configuration` field of each replica set, and are passed
 through to the server as its configuration file.
 
 ## Change what runs beside the database
 
-Sidecar containers let you run your own process in the database Pod, with `sidecars`,
-`sidecarVolumes`, and `sidecarPVCs` in the Custom Resource. See
+Sidecar containers let you run your own process in the database Pod. Use `sidecars`,
+`sidecarVolumes`, and `sidecarPVCs` in the Custom Resource for that. See
 [Add sidecar containers](sidecar.md).
 
 Environment variables are set at three different levels, depending on what you need to
@@ -31,8 +31,8 @@ influence:
 
 ## Change how objects are labelled and scoped
 
-* [Labels and annotations](annotations.md) - the Operator can be told to leave certain
-  labels and annotations alone with `ignoreLabels` and `ignoreAnnotations`, which matters
+* [Labels and annotations](annotations.md) - Tell the Operator  to leave certain
+  labels and annotations alone with `ignoreLabels` and `ignoreAnnotations`. This matters
   when another controller in the cluster also manages them.
 * [Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode](cluster-wide.md) -
   one Operator managing clusters across namespaces.
@@ -43,9 +43,9 @@ influence:
 
 * [How to use private registry](custom-registry.md) - pull images from your own registry
   with `imagePullSecrets`.
-* [Creating a private S3-compatible cloud for backups](private.md) - keep backups inside
+* [Use MinIO or another S3-compatible storage](backups-storage-minio.md) - keep backups inside
   your own network.
-* [Install the database with customized parameters](custom-install.md)
+* [Install the database with customized parameters](custom-install.md) - tune the Operator and database at startup if you already know what extra configuration you need.
 
 ## Unsafe configurations
 
@@ -54,8 +54,8 @@ such as a replica set below the member count needed for high availability.
 
 !!! warning
 
-    Unsafe flags exist for development and testing. A cluster running with them can lose
-    data on node failure and is not supported for production use.
+    Each `unsafeFlags` setting removes a specific safety guardrail the Operator otherwise
+    enforces - check what a flag does before enabling it in a production cluster. 
 
 ## Limitations
 
@@ -65,8 +65,6 @@ such as a replica set below the member count needed for high availability.
 * Options set through `configuration` are passed to the database as-is. The Operator does
   not validate them, so a typo surfaces as a database that will not start rather than as a
   rejected Custom Resource.
-* `unsafeFlags` disables the guardrails that keep a cluster highly available. Clusters
-  running with them are not supported for production use.
 
 ## Next steps
 
