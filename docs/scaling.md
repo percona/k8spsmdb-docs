@@ -38,6 +38,8 @@ spec:
 Use our reference documentation for the [Custom Resource options](operator.md) 
 for more details about other components.
 
+<a name="scale-storage"></a>
+
 Storage capacity is scaled separately - see [Resize storage](scaling-storage-resize.md).
 
 ## Horizontal scaling
@@ -106,10 +108,7 @@ set the same way, by its component label:
 kubectl get pods -n $NAMESPACE -l app.kubernetes.io/component=mongod,app.kubernetes.io/replset=cfg
 ```
 
-The number of Pods must match `sharding.configsvrReplSet.size` or your custom config server replica set name if you changed it. For more details, see the section on [Configuring
-instances of a sharded
-cluster](sharding.
-md#configuring-instances-of-a-sharded-cluster).
+The number of Pods must match `sharding.configsvrReplSet.size` or your custom config server replica set name if you changed it. For more details, see the section on [Configuring instances of a sharded cluster](sharding.md#configuring-instances-of-a-sharded-cluster).
 
 #### Changing the number of shards
 
