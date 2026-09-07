@@ -205,7 +205,7 @@ Use this approach if you already [defined](backups-storage.md) the storage in th
 
 ### With different replica set names
 
-!!! admonition "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
+!!! note "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
 
 You can restore from a backup to a cluster that has different replica set names. The number of shards you need on the target cluster depends on the restore type:
 

@@ -1,6 +1,6 @@
 # Define custom environment variables
 
-!!! admonition "Version added: 1.22.0"
+!!! note "Version added: 1.22.0"
 
 Custom environment variables let you inject configuration without rebuilding container images. This is useful when you need to:
 
