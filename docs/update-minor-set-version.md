@@ -1,5 +1,7 @@
 # Upgrade to a specific version
 
+--8<-- "update-critical-notice.md"
+
 --8<-- "update-assumptions.md"
 
 ## Procedure

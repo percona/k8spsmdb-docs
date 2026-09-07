@@ -5,6 +5,8 @@ Operator with the `helm upgrade` command.
 
 The `helm upgrade` command updates only the Operator deployment. The [update flow for the database management system](update-db.md) is the same for all installation methods, whether it was installed via Helm or `kubectl`.
 
+--8<-- "update-critical-notice.md"
+
 ## CRD management by Helm
 
 If you installed the Operator deployment from the main `psmdb-operator` chart, Helm installs the CRDs from the `crds/` directory.

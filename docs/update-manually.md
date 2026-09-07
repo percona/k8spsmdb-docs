@@ -13,6 +13,8 @@ Running a manual database upgrade allows you to do just that. You can use one of
 
 * *On Delete*, [done by Kubernetes on per-Pod basis  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) when Pods are manually deleted.
 
+--8<-- "update-critical-notice.md"
+
 ## Rolling Update strategy and semi-automatic updates
 
 To run a semi-automatic update of Percona Server for MongoDB, do the following:
@@ -39,7 +41,7 @@ To run a semi-automatic update of Percona Server for MongoDB, do the following:
 To upgrade Percona Server for MongoDB manually, do following:
 {.power-number}
 
-1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update-db.md).
+1. Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the [Operator upgrade guide](update-operator.md).
 
 2. Edit the `deploy/cr.yaml` file and set the `updateStrategy` key to `OnDelete`.
 
