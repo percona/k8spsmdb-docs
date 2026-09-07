@@ -225,7 +225,7 @@ nav:
        - "High availability and topology": ha-topology.md
        - "Backup and restore": backups.md
        - "Disaster recovery and multi-site": replication.md
-       - "Scaling and storage": scaling-storage.md
+       - "Scaling and storage": scaling-about.md
        - "Security": security.md
        - "Monitoring and observability": monitoring-observability.md
        - "Search and vector search": search-overview.md
@@ -290,6 +290,7 @@ nav:
                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
         - Scaling and storage:
             - scaling.md
+            - "Resize storage": scaling-storage-resize.md
             - "Manage local storage": storage.md
             - "Configure VolumeAttributesClass": volume-attributes-class.md
         - Security:

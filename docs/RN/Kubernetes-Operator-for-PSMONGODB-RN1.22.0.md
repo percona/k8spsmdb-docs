@@ -218,7 +218,7 @@ spec:
       maxSize: "10Gi"
 ```
 
-Learn more about the workflow and troubleshooting tips in our [documentation](../scaling.md#automatic-storage-resizing).
+Learn more about the workflow and troubleshooting tips in our [documentation](../scaling-storage-resize.md#automatic-storage-resizing).
 
 ### Cluster readiness now reflects PBM state
 
