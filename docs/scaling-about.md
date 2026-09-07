@@ -74,6 +74,7 @@ expansion - check the PVC events.
 
 ## Next steps
 
-* [Horizontal and vertical scaling](scaling.md)
-* [Local storage support](storage.md)
-* [Known limitations](limitations.md)
+[Horizontal and vertical scaling](scaling.md){.md-button}
+[Resize storage](scaling-storage-resize.md){.md-button}
+[Local storage support](storage.md){.md-button}
+[Known limitations](limitations.md){.md-button}

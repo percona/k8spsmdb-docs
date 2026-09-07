@@ -37,7 +37,7 @@ documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/
 
 ## Automatic storage resizing
 
-!!! admonition: "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
+!!! note "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
 
 The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. 
 
@@ -116,6 +116,8 @@ The `storageAutoscaling` section appears under `.status` in the Custom Resource.
 When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization's policies and requirements. For help with common issues, see [Troubleshooting storage ](debug-storage.md).
 
 ## Storage resizing with Volume Expansion capability
+
+!!! note "Version added: [1.16.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.md)"
 
 To enable storage resizing via volume expansion, do the following:
 {.power-number}
