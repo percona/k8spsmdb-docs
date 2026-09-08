@@ -28,6 +28,7 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Create a GKE cluster](gke.md#create-the-gke-cluster)
         * [Create an EKS cluster](eks.md#create-the-eks-cluster)
         * [Create an AKS cluster](aks.md#create-the-aks-cluster)
+        * [Create an RKE cluster](rke2.md)
 
 
 ## Procedure 
