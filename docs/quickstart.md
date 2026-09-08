@@ -18,7 +18,9 @@ order the first time; each step assumes the one before it.
 3. **[Insert data](data-insert.md)** — add sample data so later steps have something to work
    with.
 4. **[Make a backup](backup-tutorial.md)** — configure storage and run your first backup.
-5. **[Monitor the database with PMM](monitoring-tutorial.md)** — set up Percona Monitoring
+5. **[Make a restore](restore-tutorial.md)** — delete the sample data and restore it from
+   your backup.
+6. **[Monitor the database with PMM](monitoring-tutorial.md)** — set up Percona Monitoring
    and Management.
 
 [Start with the quick install :material-arrow-right:](kubectl.md){.md-button}

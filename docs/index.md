@@ -9,6 +9,17 @@ The Percona Operator for MongoDB runs and manages Percona Server for MongoDB ins
 
 ---
 
+## Understand the Operator
+
+Just evaluating? See how the Operator works, how it's designed and how it stands out among other ways to run MongoDB on Kubernetes:
+
+* [How the Operator works](how-it-works.md)
+* [Architecture](architecture.md)
+* [Compare with other solutions](compare.md)
+* [Features](features.md)
+
+---
+
 ## Get started
 
 Choose how you want to use the Operator:
@@ -21,58 +32,38 @@ Choose how you want to use the Operator:
 
 ---
 
-## Stay updated
-
-Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
-
----
-
 <div data-grid markdown>
 <div data-banner markdown>
 
-## :fontawesome-solid-magnifying-glass: Understand the Operator { .title }
+## :material-progress-download: Install and upgrade { .title }
 
-Understand how the Operator works, how it’s designed, and how it compares to other ways to run MongoDB on Kubernetes.
+Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes, or keep an existing deployment current?
 
-* [How the Operator works](how-it-works.md)
-* [Architecture](architecture.md)
-* [Compare with other solutions](compare.md)
-* [Features](features.md)
+* [Full installation options](namespace-mode.md)
+* [Upgrade the Operator and database](update.md)
 
 </div><div data-banner markdown>
 
-## :material-progress-download: Set up the Operator and the database { .title }
+## :material-file-document-multiple: Day-to-day operations { .title }
 
-Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes? Install the Operator and learn how to easily manage daily operations.
+Configure, scale, and secure your cluster for ongoing use.
 
-* [Installation](namespace-mode.md)
-* [Manage users](users.md)
 * [Configure backups](backups-configure.md)
-* [Scale your cluster](scaling.md)
-* [Monitor database health](monitoring.md)
-* [Upgrade](update.md)
-
-</div><div data-banner markdown>
-
-## :material-file-document-multiple: User guides {.title}
-
-Optimize your Kubernetes and database workflows with the Operator.
-
-* [Configure external access to the cluster](expose.md)
 * [Configure TLS](TLS.md)
 * [Encrypt data at rest](encryption.md)
+* [Scale the cluster](scaling.md)
+* [Monitor the database](monitoring.md)
 * [Set up disaster recovery with multi-cluster deployment](replication.md)
-
 
 </div><div data-banner markdown>
 
-## :fontawesome-solid-user-tie: Manage cluster lifecycle {.title}
+## :material-wrench: Troubleshooting { .title }
 
-Take control of your cluster's lifecycle. Follow these guides to keep your environment running smoothly with minimal downtime.
+Diagnose and resolve issues with your Operator installation and database.
 
-* [Upgrade](update.md)
-* [Pause and resume](pause.md)
-* [Migrate data using backups](backups-move-from-external-db.md)
+* [Troubleshoot the Operator installation](troubleshoot-operator.md)
+* [Check the logs](debug-logs.md)
+* [Troubleshoot backups and restores](debug-backup-restore.md)
 
 </div><div data-banner markdown>
 

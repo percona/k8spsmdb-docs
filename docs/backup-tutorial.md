@@ -156,4 +156,4 @@ Congratulations! You have made the first backup manually. Continue with [Configu
 
 ## Next steps
 
-[Monitor the database :material-arrow-right:](monitoring-tutorial.md){.md-button}
+[Make a restore :material-arrow-right:](restore-tutorial.md){.md-button}

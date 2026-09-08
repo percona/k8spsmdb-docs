@@ -175,6 +175,28 @@ nav:
        - "Comparison with other solutions": compare.md
        - "Known limitations": limitations.md
 
+    - Features:
+       - features.md
+       - "High availability and topology": ha-topology.md
+       - "Backup and restore": backups.md
+       - "Disaster recovery and multi-site": replication.md
+       - "Scaling and storage": scaling-about.md
+       - "Security": security.md
+       - "Monitoring and observability": monitoring-observability.md
+       - "Search and vector search": search-overview.md
+       - "Data migration": clustersync.md
+       - "Networking and external access": expose.md
+       - "Customization and extensibility": customization.md
+    
+    - Development:
+       - "Get a cluster": get-a-cluster.md
+       - "Connect your application": connect-from-app.md
+       - "Get credentials for your app": app-credentials.md
+       - "Connect from your laptop or CI": connect-from-outside.md
+       - "Connection examples (Node, Python, Go)": connection-examples.md
+       - "Troubleshoot connection issues": troubleshoot-connection.md
+       - what-next.md
+
     - Deploy and operate:
        - quickstart.md
        - "Quick install": kubectl.md
@@ -206,19 +228,6 @@ nav:
        - Install with OpenEverest: everest.md
        - Verify the cluster operation: verify-cluster.md
     
-    - Features:
-       - features.md
-       - "High availability and topology": ha-topology.md
-       - "Backup and restore": backups.md
-       - "Disaster recovery and multi-site": replication.md
-       - "Scaling and storage": scaling-about.md
-       - "Security": security.md
-       - "Monitoring and observability": monitoring-observability.md
-       - "Search and vector search": search-overview.md
-       - "Data migration": clustersync.md
-       - "Networking and external access": expose.md
-       - "Customization and extensibility": customization.md
-    
     - Upgrade and version management:
         - update.md
         - Upgrade CRD and the Operator:
@@ -233,15 +242,6 @@ nav:
           - update-major.md
           - update-manually.md
           - update-openshift.md
-
-    - Development:
-       - "Get a cluster": get-a-cluster.md
-       - "Connect your application": connect-from-app.md
-       - "Get credentials for your app": app-credentials.md
-       - "Connect from your laptop or CI": connect-from-outside.md
-       - "Connection examples (Node, Python, Go)": connection-examples.md
-       - "Troubleshoot connection issues": troubleshoot-connection.md
-       - what-next.md
 
     - User guides:
         - High availability and topology:
