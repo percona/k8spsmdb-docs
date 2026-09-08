@@ -1,6 +1,9 @@
-# 3. Insert sample data 
+# 3. Insert sample data
 
 In this tutorial you will learn to insert sample data to Percona Server for MongoDB.
+
+These commands run in `mongosh`. If you are not connected yet, start with
+[Connect to Percona Server for MongoDB](connect.md).
 
 MongoDB provides [multiple methods for data insert  :octicons-link-external-16:](https://www.mongodb.com/docs/v7.0/reference/insert-methods/). We will use a `For` loop to insert some sample documents.
 {.power-number}
