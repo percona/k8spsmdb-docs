@@ -78,3 +78,7 @@ The steps are the following:
     ```bash
     kubectl apply -f deploy/cr.yaml
     ```
+
+## See also
+
+* [Choose your upgrade path](update.md)

@@ -57,3 +57,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 * [Connect your application](connect-from-app.md) — URI format and where to get each part.
 * [Connect from your laptop or CI](connect-from-outside.md) — Port-forward and external access.
 * [Troubleshooting](debug.md) — Operator and cluster-level debugging.
+
+## Next steps
+
+[What's next for developers?](what-next.md){.md-button}

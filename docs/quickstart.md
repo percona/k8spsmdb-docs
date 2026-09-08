@@ -25,11 +25,6 @@ order the first time; each step assumes the one before it.
 
 [Start with the quick install :material-arrow-right:](kubectl.md){.md-button}
 
-## Day-to-day operations
-
-* [Pause or restart the cluster](pause.md)
-* [Delete the Operator and database](delete.md)
-
 ## Beyond the basics
 
 The quick install is deliberately minimal - it is not a production configuration. When you

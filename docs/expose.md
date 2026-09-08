@@ -410,7 +410,7 @@ Split horizon has following limitations:
 * `clusterServiceDNSMode: ServiceMesh` cannot be combined with multi-cluster Services. See
   [Known limitations](limitations.md).
 
-## Next steps
+## See also
 
 * [Disaster recovery and multi-site](replication.md)
 * [Transport encryption (TLS/SSL)](TLS.md) - external endpoints should require TLS

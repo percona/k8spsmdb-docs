@@ -160,9 +160,9 @@ spec:
 
     The Operator will not allow you to remove existing shards unless they don't have any user-created collections. It is your responsibility to ensure the shard's data is [migrated to the remaining shards](https://www.mongodb.com/docs/manual/tutorial/remove-shards-from-cluster) in the cluster before trying to applying this change.
 
-## Next steps
+## See also
 
-[Scaling and storage](scaling-about.md){.md-button}
-[Resize storage](scaling-storage-resize.md){.md-button}
-[Manage local storage](storage.md){.md-button}
-[Configure VolumeAttributesClass](volume-attributes-class.md){.md-button}
+* [Scaling and storage](scaling-about.md)
+* [Resize storage](scaling-storage-resize.md)
+* [Manage local storage](storage.md)
+* [Configure VolumeAttributesClass](volume-attributes-class.md)

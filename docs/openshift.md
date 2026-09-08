@@ -280,3 +280,7 @@ See [TLS instructions](TLS.md) for detailed guidance.
 When `oc get psmdb` shows the cluster status as `ready`, you can try to connect to the cluster.
 
 {% include 'assets/fragments/connectivity.txt' %}
+
+## Next steps
+
+[Verify the cluster operation](verify-cluster.md){.md-button}

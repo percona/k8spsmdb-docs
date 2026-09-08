@@ -230,3 +230,8 @@ replsets:
 
 The [Kubernetes Taints and Toleratins  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
 contains more examples on this topic.
+
+## See also
+
+* [Scaling and storage](scaling-about.md)
+* [Disaster recovery and multi-site](replication.md)

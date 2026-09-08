@@ -130,6 +130,6 @@ Also, you can check the rest of the Operator's parameters in the [Custom Resourc
 
 [Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
 
-## Useful links
+## See also
 
 [Install Percona Server for MongoDB with customized parameters](custom-install.md)

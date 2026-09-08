@@ -121,5 +121,5 @@ Use the page for your storage type:
 
 ## Next steps
 
-* [Making scheduled backups](backups-scheduled.md)
-* [Making on-demand backups](backups-ondemand.md)
+[Scheduled backup](backups-scheduled.md){.md-button}
+[On-demand backup](backups-ondemand.md){.md-button}

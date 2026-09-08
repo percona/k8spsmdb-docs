@@ -3,3 +3,7 @@
 Give the cluster a few minutes to initialize. Once `kubectl get psmdb -n <namespace>` shows the status as `ready`, you can connect to the database.
 
 {% include 'assets/fragments/connectivity.txt' %}
+
+## Next steps
+
+[What's next for operators](what-next-operations.md){.md-button}

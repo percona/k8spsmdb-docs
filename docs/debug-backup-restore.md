@@ -228,3 +228,7 @@ To recover the affected Pod, delete its PVC and the Pod so the Operator can recr
     ```
 
 The Operator automatically recreates the Pod and PVC after deletion.
+
+## See also
+
+* [Backup and restore](backups.md)

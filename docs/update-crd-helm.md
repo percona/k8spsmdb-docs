@@ -131,3 +131,7 @@ To update the CRDs you have the following options:
 **Error: "invalid ownership metadata" or "CRD already exists"**
 
 This happens when existing CRDs were installed from `crds/` and Helm does not own them. Pass the `--take-ownership` flag when you install the `psmdb-operator-crds` chart (Helm 3.17+). For Helm < 3.17+, add Helm ownership metadata before installing or upgrading `psmdb-operator-crds`.
+
+## Next steps
+
+[Upgrade the database](update-db.md){.md-button}

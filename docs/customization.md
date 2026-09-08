@@ -66,7 +66,7 @@ such as a replica set below the member count needed for high availability.
   not validate them, so a typo surfaces as a database that will not start rather than as a
   rejected Custom Resource.
 
-## Next steps
+## See also
 
 * [Changing MongoDB options](options.md)
 * [Add sidecar containers](sidecar.md)

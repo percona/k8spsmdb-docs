@@ -75,3 +75,7 @@ Perform the following steps on your **running** cluster. Review the [Considerati
     ```
 
 For more information about Percona Server for MongoDB configuration options, see [Changing MongoDB options](options.md).
+
+## See also
+
+* [Monitoring and observability](monitoring-observability.md)

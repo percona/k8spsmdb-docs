@@ -154,3 +154,8 @@ Apply the configuration:
 ```bash
 kubectl apply -f deploy/cr.yaml -n <namespace>
 ```
+
+## See also
+
+* [Scaling and storage](scaling-about.md)
+* [Security](security.md)

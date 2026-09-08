@@ -82,3 +82,8 @@ To find and remove these legacy backups:
     ```bash
     kubectl delete psmdb-backup -l ancestor -n $NAMESPACE
     ```
+
+## See also
+
+* [Disaster recovery and multi-site](replication.md)
+* [Data migration](clustersync.md)
