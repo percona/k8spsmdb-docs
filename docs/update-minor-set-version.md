@@ -37,3 +37,7 @@ To upgrade Percona Server for MongoDB to a specific version, do the following:
 
 
 The update process is successfully finished when all Pods have been restarted. If you turned on [Percona Server for MongoDB Sharding](sharding.md), the mongos and Config Server nodes must be restarted too to complete the upgrade.
+
+## See also
+
+* [Choose your upgrade path](update.md)

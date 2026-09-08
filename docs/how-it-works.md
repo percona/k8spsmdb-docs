@@ -37,7 +37,7 @@ Ready to get started? Continue to the [quickstart guide](quickstart.md) to deplo
 
 [Quickstart guide](quickstart.md){.md-button}
 
-## Useful links
+## See also
 
 - [Design and architecture](architecture.md)
 - [Features and capabilities](features.md) 

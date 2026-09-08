@@ -27,7 +27,7 @@ The way to instruct the Operator how it should run the database upgrades is to s
 * `Latest` - the Operator automatically updates the database and components to the most recent available version.
 * `version` - specify the exact database version you want to update to. The Operator updates the database to it automatically.
 
-## Next steps
+## See also
 
 * [Upgrade the Operator](update-operator.md), if it also needs updating
 * [Compatibility and known issues before you upgrade](update.md#before-you-upgrade-compatibility-and-known-issues)

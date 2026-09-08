@@ -73,7 +73,7 @@ Topology choices interact with other features - selective restores, cross-site r
 and search each place their own constraints on sharding and member types. See
 [Known limitations](limitations.md).
 
-## Next steps
+## See also
 
 * [MongoDB sharding](sharding.md)
 * [Replica set members](arbiter.md)

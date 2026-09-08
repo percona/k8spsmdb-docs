@@ -275,9 +275,9 @@ You can configure the Operator to use an external storage autoscaler instead of 
 
 To use an external autoscaler, set the `spec.storageScaling.enableExternalAutoscaling` option to `true` in the Custom Resource manifest.
 
-## Next steps
+## See also
 
-[Scaling and storage](scaling-about.md){.md-button}
-[Manage local storage](storage.md){.md-button}
-[Configure VolumeAttributesClass](volume-attributes-class.md){.md-button}
-[Troubleshoot storage resizing](debug-storage.md){.md-button}
+* [Scaling and storage](scaling-about.md)
+* [Manage local storage](storage.md)
+* [Configure VolumeAttributesClass](volume-attributes-class.md)
+* [Troubleshoot storage resizing](debug-storage.md)

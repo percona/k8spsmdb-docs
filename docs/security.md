@@ -103,7 +103,7 @@ Security settings interact with other features - `requireTLS` affects how client
 sites connect, and disabling TLS or authentication constrains cross-site replication. See
 [Known limitations](limitations.md).
 
-## Next steps
+## See also
 
 * [About application and system users](users.md)
 * [About TLS security](TLS.md)

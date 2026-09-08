@@ -190,3 +190,7 @@ Once the backup is `ready`, check the object in the bucket itself - in the AWS c
 with `aws s3api head-object` - and confirm it reports the server-side encryption algorithm
 you configured. If the backup succeeds but the object shows no encryption, the storage
 accepted the upload and ignored the setting.
+
+## See also
+
+* [Data-at-rest encryption](encryption.md) - encrypt what you back up the same way you encrypt data at rest

@@ -81,4 +81,4 @@ Below is a streamlined example for cluster-wide setup on Kubernetes:
 
 ## Next steps
 
-[Verify the cluster operation](verify-cluster.md)
+[Verify the cluster operation](verify-cluster.md){.md-button}

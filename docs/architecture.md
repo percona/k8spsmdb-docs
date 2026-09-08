@@ -65,7 +65,7 @@ Applications should use a **mongodb+srv** connection URI. MongoDB drivers (4.2 a
 
     The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the [installation instructions](System-Requirements.md#installation-guidelines).
 
-## Next step
+## Next steps
 
 [Get started with the Operator](quickstart.md){.md-button}
 [Compare with other solutions](compare.md){.md-button}

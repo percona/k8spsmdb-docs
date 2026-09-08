@@ -104,3 +104,7 @@ The upgrade includes the following steps.
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
         ```
+
+## Next steps
+
+[Upgrade the database](update-db.md){.md-button}

@@ -75,6 +75,9 @@ Use the URI in your app or in [Connection examples](connection-examples.md).
 
 ## Next steps
 
-* [Connection examples (Node, Python, Go)](connection-examples.md)
+[Connection examples (Node, Python, Go)](connection-examples.md){.md-button}
+
+## See also
+
 * [Troubleshoot connection issues](troubleshoot-connection.md)
 * [Networking and external access](expose.md) - for a permanent external endpoint rather than port-forward

@@ -60,4 +60,8 @@ incompatible configuration settings. Compatibility issues between major
 MongoDB versions can be found in
 [upstream documentation  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/release-notes/7.0/#std-label-7.0-downgrade-considerations).
 
+## See also
+
+* [Choose your upgrade path](update.md)
+
  

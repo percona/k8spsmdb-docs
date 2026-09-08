@@ -131,7 +131,9 @@ To configure a VolumeAttributesClass, you need to create a `VolumeAttributesClas
          volumeMode: Filesystem    
         ```
 
-## Next steps
+## See also
 
-[Scaling and storage](scaling-about.md){.md-button}
-[Resize storage](scaling-storage-resize.md){.md-button}
+* [Scaling and storage](scaling-about.md)
+* [Resize storage](scaling-storage-resize.md)
+* [Monitoring and observability](monitoring-observability.md)
+* [High availability and topology](ha-topology.md)

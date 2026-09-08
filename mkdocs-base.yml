@@ -294,6 +294,12 @@ nav:
             - "Resize storage": scaling-storage-resize.md
             - "Manage local storage": storage.md
             - "Configure VolumeAttributesClass": volume-attributes-class.md
+        - Monitoring and observability:
+            - "Monitor the database with PMM": monitoring.md
+            - "Monitor Kubernetes": monitor-kubernetes.md
+            - Logging:
+                - "Persistent logging": persistent-logging.md
+                - "Log rotation": logrotate.md
         - Security:
             - Manage users:
                 - users.md
@@ -321,12 +327,6 @@ nav:
                 - "OIDC authentication": oidc.md
                 - "Disable authentication": auth-disable.md
                 - "Disable localhost authentication bypass": auth-bypass-localhost.md
-        - Monitoring and observability:
-            - "Monitor the database with PMM": monitoring.md
-            - "Monitor Kubernetes": monitor-kubernetes.md
-            - Logging:
-                - "Persistent logging": persistent-logging.md
-                - "Log rotation": logrotate.md
         - Configure search and vector search: search-setup.md
         - Data migration:
             - "Set up and use PCSM for data migration": clustersync-setup.md

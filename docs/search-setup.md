@@ -286,3 +286,7 @@ You can add further aggregation stages after `$vectorSearch` (for example
 For more index and query options, see the
 [MongoDB Vector Search documentation :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/).
 
+## See also
+
+* [Security](security.md) - `mongot` authenticates like any other client
+

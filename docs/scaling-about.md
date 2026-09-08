@@ -72,9 +72,9 @@ The cluster must return to `ready`, and PVC capacity must show the new size. A P
 the old size with the cluster otherwise healthy means the storage class did not accept the
 expansion - check the PVC events.
 
-## Next steps
+## See also
 
-[Horizontal and vertical scaling](scaling.md){.md-button}
-[Resize storage](scaling-storage-resize.md){.md-button}
-[Local storage support](storage.md){.md-button}
-[Known limitations](limitations.md){.md-button}
+* [Horizontal and vertical scaling](scaling.md)
+* [Resize storage](scaling-storage-resize.md)
+* [Local storage support](storage.md)
+* [Known limitations](limitations.md)

@@ -79,3 +79,8 @@ Finally, let’s compare various features that are not a good fit for other cate
 | Helm              | Yes                          | Yes                | Yes, for operator only | Yes, for operator only        |
 | SSL/TLS           | Yes                          | Yes                | Enterprise         | Yes                               |
 | Create users/roles| Yes                          | Yes                | No                 | Yes                               |
+
+## Next steps
+
+[Get started](quickstart.md){.md-button}
+[Known limitations](limitations.md){.md-button}

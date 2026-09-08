@@ -140,6 +140,8 @@ Here's how to do it:
 10. Connect to the Replica site and check the replica set configuration.
 11. Reconfigure your MongoDB clients to connect to the Replica site.
 
-## Next steps
+## See also
 
-[About multi-cluster and multi-region deployments](replication.md){.md-button}
+* [About multi-cluster and multi-region deployments](replication.md)
+* [Backup and restore](backups.md)
+* [High availability and topology](ha-topology.md)

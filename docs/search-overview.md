@@ -226,7 +226,7 @@ requirements:
 * **Search index data are not included in backups.** Plan for reindex time after
   restore when you estimate recovery objectives for the search surface.
 
-## Next steps
+## See also
 
 * [Configure search and vector search](search-setup.md)
 * [About security](security.md) - `mongot` authenticates to the database like any other client

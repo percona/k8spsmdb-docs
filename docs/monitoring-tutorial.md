@@ -102,4 +102,4 @@ Monitoring and Management (PMM)](monitoring.md).
 
 ## Next steps
 
-[What's next :material-arrow-right:](what-next-operations.md){.md-button}
+[What's next for operators :material-arrow-right:](what-next-operations.md){.md-button}

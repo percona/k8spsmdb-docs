@@ -36,7 +36,7 @@ Pod, and rotation keeps them from filling the volume.
 * [Persistent logging](persistent-logging.md)
 * [Log rotation](logrotate.md)
 
-## Next steps
+## See also
 
 * [Monitor with Percona Monitoring and Management (PMM)](monitoring.md)
 * [Persistent logging](persistent-logging.md)

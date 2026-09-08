@@ -66,4 +66,8 @@ Practise a restore before you need one. Restores are the only proof that backups
 
 ## Next steps
 
+[Configure storage for backups](backups-storage.md){.md-button}
+
+## See also
+
 Bringing data in from outside Kubernetes? See [Move an external database to Kubernetes](backups-move-from-external-db.md).

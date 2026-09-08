@@ -118,7 +118,8 @@ database and collection names, and document counts for your largest collections,
 source. A restore that reports success still needs this check, because a backup taken from a
 partially configured source can restore cleanly and be incomplete.
 
-## Next steps
+## See also
 
 * [Percona ClusterSync for MongoDB](clustersync.md) - migrate with near-zero downtime instead
 * [Restore to a new cluster with different replica set names](backups-restore.md#with-different-replica-set-names)
+* [Disaster recovery and multi-site](replication.md)

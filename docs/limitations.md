@@ -49,3 +49,7 @@ See [Limitations](search-overview.md#limitations) in the search overview.
 ## Real-time replication with Percona ClusterSync for MongoDB
 
 --8<-- "clustersync.md:pcsmlimitations"
+
+## Next steps
+
+[Get started](quickstart.md){.md-button}

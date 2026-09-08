@@ -59,8 +59,8 @@ different hardware in case of a reboot or a hardware failure.
 
 More details can be found in the [official hostPath Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
 
-## Next steps
+## See also
 
-[Resize storage](scaling-storage-resize.md){.md-button}
-[Configure VolumeAttributesClass](volume-attributes-class.md){.md-button}
-[PVC snapshots](backups-pvc-snapshots.md){.md-button}
+* [Resize storage](scaling-storage-resize.md)
+* [Configure VolumeAttributesClass](volume-attributes-class.md)
+* [PVC snapshots](backups-pvc-snapshots.md)

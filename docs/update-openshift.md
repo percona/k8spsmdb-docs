@@ -77,3 +77,7 @@
 
 6. The deployment rollout will be automatically triggered by the applied patch.
 
+## See also
+
+* [Choose your upgrade path](update.md)
+
