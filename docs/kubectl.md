@@ -18,7 +18,7 @@ For how to install Percona Operator for MongoDB in a multi-namespace mode, see [
 
 To install Percona Distribution for MongoDB, you need the following:
 
-1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. If you don’t have it installed, you can install it by following the [official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+1. The **kubectl** tool to manage and deploy applications on Kubernetes. Install it by following the [official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/), if you haven't done it before.
 
 2. A Kubernetes environment. You can deploy it on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
@@ -29,6 +29,8 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Create an EKS cluster](eks.md#create-the-eks-cluster)
         * [Create an AKS cluster](aks.md#create-the-aks-cluster)
         * [Create an RKE cluster](rke2.md)
+    
+    For installing on OpenShift, see [Install Percona Operator for MongoDB on OpenShift](openshift.md)
 
 
 ## Procedure 
