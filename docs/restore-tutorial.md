@@ -8,10 +8,12 @@ the same thing you'd do to recover from real data loss.
 ## Considerations and prerequisites
 
 * The backup you restore from (`backup1`) must be in the `ready` state.
-* Restoring causes downtime. For a logical restore on an unsharded cluster like this one, that
-  means the database is unavailable for the duration of the restore, but no Pods are deleted
-  or recreated. See [Downtime to expect](backups-restore.md#downtime-to-expect) for other
-  restore types.
+* Restoring causes downtime. This tutorial uses a logical restore on the default
+  sharded cluster. The database stays unavailable while data is restored and while
+  sharding metadata is refreshed on `mongos`. For that refresh, the Operator deletes
+  and recreates the `mongos` Pods. The `rs0` and config server Pods stay running.
+  See [Downtime to expect](backups-restore.md#downtime-to-expect) for other restore
+  types, including an unsharded cluster.
 * This tutorial restores onto the same cluster that made the backup. For restoring into a
   different cluster, restoring to a point in time, or other scenarios, see
   [Restore from a backup](backups-restore.md) and the [Restore Resource
@@ -86,8 +88,8 @@ admin> db.test.countDocuments()
     ??? example "Sample output"
 
         ``` {.text .no-copy}
-        NAME       CLUSTER           BACKUP    STATUS   COMPLETED   AGE
-        restore1   my-cluster-name   backup1   ready    38s         38s
+        NAME       CLUSTER           STATUS   AGE
+        restore1   my-cluster-name   ready    47s
         ```
 
     When the status changes to `ready`, the restore is complete.

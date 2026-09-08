@@ -13,7 +13,7 @@ The cluster is running. These are the tasks that keep it running.
 * **[Plan multi-region or disaster recovery](replication-plan-deployment.md)** — Replicate across sites and [fail over](replication-failover.md) when needed.
 * **[Remove a deployment](delete.md)** — Delete a test cluster or decommission an environment.
 
-You can also operate the Operator and database via the [Open Everest](https://openeverest.io/docs/) web interface. See [Get started with Percona Everest](https://docs.percona.com/everest/quickstart-guide/quick-install.html) to try it.
+You can also operate the Operator and database via the [Open Everest](https://openeverest.io/docs/) web interface. Navigate to the **Get started with Open Everest** guide in the Open Everest documentation to try it.
 
 Building an application against the cluster rather than operating it? See
-[What's next](what-next.md).
+[What's next for developers](what-next.md).
