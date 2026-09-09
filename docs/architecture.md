@@ -4,15 +4,19 @@ The Percona Operator for MongoDB automates deploying and operating Percona Serve
 
 ## Components
 
-The StatefulSet, deployed with the Operator includes the following components:
+The Operator deploys and manages the following components:
 
 * **Percona Server for MongoDB** - a drop-in replacement for MongoDB Community Server with enterprise-grade features. Each replica set member runs as a `mongod` process in its own Pod. The Operator deploys these Pods via a StatefulSet so that each member has a stable network identity and a PersistentVolume for data. You can run one or more replica sets; in a sharded cluster, each shard is a replica set.
 
-* **Percona Backup for MongoDB (PBM)** - an open-source backup and restore solution for Percona Server for MongoDB, MongoDB Community and Advanced Edition with guaranteed data consistency. When you [configure backup storage](backups-storage.md), the Operator runs PBM as a [sidecar container](sidecar.md) in each database Pod. PBM performs logical or physical backups and uploads them to the configured storage. Read more about types, storages, restores, and point-in-time recovery in [Backup and restore](backups.md).
+* **Percona Backup for MongoDB (PBM)** - an open-source backup and restore solution for Percona Server for MongoDB, MongoDB Community Edition, and MongoDB Enterprise Advanced with guaranteed data consistency. When you [configure backup storage](backups-storage.md), the Operator runs PBM as a [sidecar container](sidecar.md) in each database Pod. PBM performs logical or physical backups and uploads them to the configured storage. Read more about types, storages, restores, and point-in-time recovery in [Backup and restore](backups.md).
 
+* **Percona ClusterSync for MongoDB (PCSM)** — enables real-time data migration and replication from an external MongoDB deployment (on-premises, Atlas, or another Kubernetes cluster) into the Operator-managed cluster. Deployed and managed by the Operator through the `PerconaServerMongoDBClusterSync` Custom Resource, PCSM runs as a separate Deployment and performs an initial sync followed by continuous change-stream replication. To learn more, see [Data migration](clustersync.md).
+
+* **Percona Search for MongoDB** (tech preview) - a search engine that adds full-text and vector search over your MongoDB data. When you enable search, the Operator deploys it as a dedicated `mongot` StatefulSet — one per data-bearing replica set or shard, each with its own PVC. Applications never connect to it directly: `mongod` (or `mongos` in a sharded cluster) forwards search queries to it over gRPC. Read more in [About full-text and vector search](search-overview.md).
+  
 * **mongos** (sharded clusters only) - is the query router that acts as the entry point to the sharded cluster for client applications. Clients connect to mongos, which routes queries to the appropriate shard(s). The Operator deploys mongos via a StatefulSet; you control the number of mongos replicas in the custom resource.
 
-* **Config server replica set** (sharded clusters only) - a special replica set that stores cluster metadata and configuration.  Config servers run `mongod` process with a dedicated role; see [Sharding](sharding.md) for configuration options.
+* **Config server replica set** (sharded clusters only) - a special replica set that stores cluster metadata and configuration. Config servers run a `mongod` process with a dedicated role; see [Sharding](sharding.md) for configuration options.
 
 It can also include [sidecar containers](sidecar.md) that you can add to replica set, config server, or mongos Pods. Examples of sidecar containers are Percona Monitoring and Management (PMM) client for [monitoring](monitoring.md), or custom exporters and tools. The Operator supports multiple sidecars per Pod with configurable images, commands, and volume mounts.
 
@@ -36,7 +40,7 @@ When you need horizontal scaling, you enable sharding. Each shard is a replica s
 
 For details, see [Percona Server for MongoDB Sharding](sharding.md).
 
-By default, the Operator creates Percona Server for MongoDB replica set with three members, one primary and the remaining secondaries. This is the minimal recommended configuration. A replica set can have up to 50 members with the maximum of 7 voting members.
+By default, the Operator creates a three-member replica set - the minimal recommended configuration, providing high availability out of the box. See [Default database deployment](how-it-works.md#default-database-deployment) for supported replica set sizes.
 
 ## High availability
 
