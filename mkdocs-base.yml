@@ -365,14 +365,15 @@ nav:
                   - "Retrieve certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Frequently asked questions": faq.md
+          - telemetry.md
           - Legal:
               - "Copyright and licensing information": copyright.md
               - "Trademark policy": trademark-policy.md
               - legal-notice.md
 
     - Release notes:
+          # Note: 1.23.0 used to be listed twice here - removed the duplicate.
           - RN/index.md
-          - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md
           - RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.md

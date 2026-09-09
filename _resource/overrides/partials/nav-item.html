@@ -63,13 +63,17 @@
     {% endif %}
     <li class="{{ class }} md-nav__item--nested">
       {% if not prune %}
-        {% set expanded = "navigation.expand" in features %}
-        {% set active = nav_item.active or expanded %}
-        {% set checked = "checked" if nav_item.active %}
-        {% if expanded and not checked %}
-          {% set indeterminate = "md-toggle--indeterminate" %}
-        {% endif %}
-        <input class="md-nav__toggle md-toggle {{ indeterminate }}" type="checkbox" id="{{ path }}" {{ checked }}>
+        {#-
+          Docs-nav override: per feedback, every section should start
+          collapsed except Features, which should start open (users can
+          still collapse it - this only affects the checkbox's initial
+          state, not whether it stays togglable). Everything else keeps
+          Material's stock behaviour: closed unless the active page is
+          inside it.
+        -#}
+        {% set is_force_expanded = nav_item.title in ["Features"] %}
+        {% set checked = "checked" if (nav_item.active or is_force_expanded) %}
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="{{ path }}" {{ checked }}>
         {% if not indexes %}
           <label class="md-nav__link" for="{{ path }}" id="{{ path }}_label" tabindex="0">
             {{ render_content(nav_item) }}
