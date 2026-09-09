@@ -8,7 +8,8 @@ The Operator extends the Kubernetes API with a set of Custom Resources:
 
 * **PerconaServerMongoDB** for the database cluster
 * **PerconaServerMongoDBBackup** for backups
-* **PerconaServerMongoDBRestore** for restores. 
+* **PerconaServerMongoDBRestore** for restores
+* **PerconaServerMongoDBClusterSync** for data migration and real-time replication
 
 These Custom Resources are defined by the Custom Resource Definitions (CRD), which you install when you install the Operator. 
 

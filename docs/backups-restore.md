@@ -237,11 +237,11 @@ kubectl apply -f deploy/backup/restore.yaml -n $NAMESPACE
 A restore that violates the shard-count rule above, or maps to a replica set name that
 doesn't exist on the target, is rejected - see [Verify the restore](#verify-the-restore).
 
-### Point-in-time recovery
+## Point-in-time recovery
 
 For point-in-time recovery on a new cluster, see [Restore to a point in time](backups-pitr-restore.md#restore-on-a-new-cluster).
 
-### Restore from a backup with a prefix in a bucket path
+## Restore from a backup with a prefix in a bucket path
 
 If you defined a prefix (a folder) in your backup bucket, specify it in the `spec.backupSource` subsection of the restore configuration.
 

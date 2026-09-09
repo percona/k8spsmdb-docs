@@ -1,6 +1,6 @@
-# Restore to a point in time
+# Make a point in time restore 
 
-Use this guide when you want to recover the cluster to a specific date and time, or to the latest restorable transaction. The Operator restores a backup, then replays oplog up to that moment.
+Use this guide to run a point-in-time recovery (PITR): recover the cluster to a specific date and time, or to the latest restorable transaction. The Operator restores a backup, then replays oplog up to that moment.
 
 Turn oplog collection on first. See [Enable point-in-time recovery](backups-pitr.md). PVC snapshot (`external`) backups do not support this restore.
 
