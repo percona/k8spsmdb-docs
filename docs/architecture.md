@@ -26,7 +26,7 @@ A replica set consists of one primary and one or more secondary nodes. The prima
 
 ![image](assets/images/replication.svg)
 
-Client applications connect to the replica set using a MongoDB driver and a `mongodb+srv` connection string.
+Client applications connect to the replica set using a MongoDB driver and a connection string from the Operator’s [connection Secrets](connection-secrets.md). Prefer the `mongodb+srv` URI.
 
 ### Sharded cluster
 
@@ -57,7 +57,11 @@ The database cluster is deployed as a replica set with at least three nodes (or 
 
 ### Client connectivity
 
-Applications should use a **mongodb+srv** connection URI. MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the necessary Services and DNS entries for the replica set.
+The Operator creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the `databaseAdmin` user and for application users you declare in the Custom Resource. Use those URIs in your app instead of assembling hostnames and credentials yourself. The Operator refreshes the Secrets when topology, exposure, or passwords change.
+
+Prefer a **mongodb+srv** URI (the `_connectionStringSrv` key). MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the Services and DNS entries those URIs rely on. For connections from outside the cluster, use the `_connectionStringExposed` key after you [expose the Service](expose.md).
+
+See [Connection secrets](connection-secrets.md) for Secret names and keys.
 
 ![image](assets/images/operator.svg)
 
