@@ -130,3 +130,10 @@ To configure a VolumeAttributesClass, you need to create a `VolumeAttributesClas
          volumeAttributesClassName: silver
          volumeMode: Filesystem    
         ```
+
+## See also
+
+* [Scaling and storage](scaling-about.md)
+* [Resize storage](scaling-storage-resize.md)
+* [Monitoring and observability](monitoring-observability.md)
+* [High availability and topology](ha-topology.md)

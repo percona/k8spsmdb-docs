@@ -381,7 +381,7 @@ For a non-sharded replica set, use the `databaseAdmin_rs0_connectionStringSrv` k
 
 ## Backup lifecycle
 
-Backup storage, schedules, and retention live on the cluster Custom Resource under `spec.backup`. On-demand backups are separate `PerconaServerMongoDBBackup` objects. See [Backup and restore](backups.md).
+Backup storage, schedules, and retention live on the cluster Custom Resource under `spec.backup`. On-demand backups are separate `PerconaServerMongoDBBackup` objects. See [Backup and restore](backups.md) and [Configure backups](backups-configure.md).
 
 To manage backups, you must configure the backup storage. See [Configure storage for backups](backups-storage.md) for details.
 
@@ -506,8 +506,8 @@ Useful status fields: `status.state` (`waiting`, `running`, `ready`, `error`, â€
 
 Restores are `PerconaServerMongoDBRestore` objects. You can restore onto the same cluster, onto a new cluster, run point-in-time recovery, or restore selected namespaces (databases/collections). Details and limitations:
 
-* [Restore on the same cluster](backups-restore.md)
-* [Restore to a new cluster](backups-restore-to-new-cluster.md)
+* [Restore on the same cluster](backups-restore.md#restore-on-the-same-cluster)
+* [Restore to a new cluster](backups-restore.md#restore-on-a-new-cluster)
 * [Selective restore](backups-restore.md#selective-restore)
 
 ### Restore to the same cluster
@@ -562,7 +562,7 @@ Restores are `PerconaServerMongoDBRestore` objects. You can restore onto the sam
 1. Create the target `PerconaServerMongoDB` cluster (create flow above).
 2. Create a `PerconaServerMongoDBRestore` that points at that cluster and at the backup source (often via `spec.backupSource` when the backup object does not exist in the new environment).
 
-See [Restore to a new cluster](backups-restore-to-new-cluster.md) for storage, Secrets, and `backupSource` examples.
+See [Restore to a new cluster](backups-restore.md#restore-on-a-new-cluster) for storage, Secrets, and `backupSource` examples.
 
 ### Selective (partial) restore
 

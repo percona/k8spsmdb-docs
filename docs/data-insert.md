@@ -1,6 +1,9 @@
-# 3. Insert sample data 
+# 3. Insert sample data
 
 In this tutorial you will learn to insert sample data to Percona Server for MongoDB.
+
+These commands run in `mongosh`. If you are not connected yet, start with
+[Connect to Percona Server for MongoDB](connect.md).
 
 MongoDB provides [multiple methods for data insert  :octicons-link-external-16:](https://www.mongodb.com/docs/v7.0/reference/insert-methods/). We will use a `For` loop to insert some sample documents.
 {.power-number}
@@ -61,6 +64,15 @@ MongoDB provides [multiple methods for data insert  :octicons-link-external-16:]
 
 Now your cluster has some data in it.
 
+To connect from your application, see [Connect your application](connect-from-app.md).
+
+You're done with the `percona-client` Pod from the previous step. Exit `mongosh` and the
+shell (`exit` or Ctrl+D, twice), then delete the Pod:
+
+```bash
+kubectl delete pod percona-client -n <namespace>
+```
+
 ## Next steps
 
-[Make a backup :material-arrow-right:](backup-tutorial.md){.md-button}   
+[Take your first backup :material-arrow-right:](backup-tutorial.md){.md-button}   

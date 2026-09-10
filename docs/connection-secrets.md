@@ -1,4 +1,4 @@
-# Connection Secrets
+# Connection secrets
 
 !!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 

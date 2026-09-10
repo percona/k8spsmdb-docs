@@ -1,8 +1,33 @@
-# Exposing the cluster
+# Networking and external access
 
 The Operator provides entry points for accessing the database by client applications in several scenarios. In all cases, the cluster is exposed using regular Kubernetes [Service objects  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/), which the Operator configures.
 
 This document describes how to use [Custom Resource manifest options](operator.md) to expose clusters deployed with the Operator. 
+
+## Choose how to expose your cluster
+
+Exposure is two separate questions: **who needs to reach the database**, and **how they
+resolve its addresses**. Start here rather than reading the whole page.
+
+| What you need | Go to |
+|---|---|
+| Clients inside the same Kubernetes cluster, sharded deployment | [Using a single entry point in a sharded cluster](#using-a-single-entry-point-in-a-sharded-cluster) |
+| Clients inside the cluster, replica set deployment | [Accessing replica set Pods](#accessing-replica-set-pods) |
+| Clients outside Kubernetes | [Connecting from outside Kubernetes](#connecting-from-outside-kubernetes) |
+| A separate address for every Pod, so drivers can reach members directly | [Service per Pod](#service-per-pod) |
+| Stable DNS names managed for you | [Automatic DNS records with External DNS](#automatic-dns-records-with-external-dns) |
+| Members advertised under names clients can actually resolve | [Controlling hostnames in replset configuration](#controlling-hostnames-in-replset-configuration) |
+| One replica set reachable under different names from inside and outside | [Exposing replica set with split-horizon DNS](#exposing-replica-set-with-split-horizon-dns) |
+| A service mesh in front of the database | [Application protocol support for service mesh integrations](#application-protocol-support-for-service-mesh-integrations) |
+
+!!! important
+
+    A replica set advertises the hostnames its members were configured with. If clients
+    outside Kubernetes cannot resolve those names, exposing the Service is not enough - the
+    connection still fails. That is what
+    [Controlling hostnames in replset configuration](#controlling-hostnames-in-replset-configuration)
+    and split-horizon DNS exist to solve, and it is the most common reason an external
+    connection fails after the Service is created.
 
 ## Using a single entry point in a sharded cluster
 
@@ -53,10 +78,9 @@ Make sure every part of the connection string reflects your environment:
 
 - **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
-- **<namespace>**: the Kubernetes namespace where your cluster is deployed
+- **`<namespace>`**: the Kubernetes namespace where your cluster is deployed
 
-If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically.
-
+If [TLS is enabled](TLS.md), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically. Note that a generated connection string has `tls=true` and this also requires a client certificate - see [Connect with a client certificate](TLS.md#connect-with-a-client-certificate) for how to extract and use one.
 
 !!! warning
 
@@ -98,7 +122,7 @@ Make sure every part of the connection string reflects your environment:
 
 - **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command  
-- **<namespace name>**: the Kubernetes namespace where your cluster is deployed
+- **`<namespace>*`*: the Kubernetes namespace where your cluster is deployed
 
 !!! warning
 
@@ -377,3 +401,17 @@ Split horizon has following limitations:
 * using IP addresses in horizons is not allowed by MongoDB
 * horizons should be set for *all Pods of a replica set* or not set at all
 
+## Limitations
+
+* Exposing a cluster with `LoadBalancer` Services creates one cloud load balancer per
+  exposed Pod, which has a direct cost and may hit provider quotas.
+* Multi-cluster and multi-region deployments have their own connectivity rules on top of
+  these - see [Disaster recovery and multi-site](replication.md).
+* `clusterServiceDNSMode: ServiceMesh` cannot be combined with multi-cluster Services. See
+  [Known limitations](limitations.md).
+
+## See also
+
+* [Disaster recovery and multi-site](replication.md)
+* [Transport encryption (TLS/SSL)](TLS.md) - external endpoints should require TLS
+* [About security](security.md)

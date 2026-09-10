@@ -1,6 +1,6 @@
-# 4. Make a backup
+# 4. Take your first backup
 
-In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backups, see the [Backup and restore](backups.md) section.
+In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backup types and storages, see [Backup and restore](backups.md).
 
 ## Considerations and prerequisites
 
@@ -56,8 +56,8 @@ cd percona-server-mongodb-operator
       name: my-cluster-name-backup-s3
     type: Opaque
     data:
-      AWS_ACCESS_KEY_ID: <YOUR_AWS_ACCESS_KEY_ID>
-      AWS_SECRET_ACCESS_KEY: <YOUR_AWS_SECRET_ACCESS_KEY>
+      AWS_ACCESS_KEY_ID: UkVQTEFDRS1XSVRILUFXUy1BQ0NFU1MtS0VZ
+      AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
     ```
 
 3. Create the Secrets object from this yaml file. Specify your namespace instead of the `<namespace>` placeholder:
@@ -89,7 +89,7 @@ cd percona-server-mongodb-operator
 
     !!! note ""
 
-        If you use a different S3-compatible storage instead of AWS S3, add the `endpointURL` key in the `s3` subsection, which should point to the actual cloud used for backups. This value is specific to the cloud provider. For example, using Google Cloud involves the following `endpointUrl`:
+        If you use a different S3-compatible storage instead of AWS S3, add the `endpointUrl` key in the `s3` subsection, which should point to the actual cloud used for backups. This value is specific to the cloud provider. For example, using Google Cloud involves the following `endpointUrl`:
 
         ```
         endpointUrl: https://storage.googleapis.com
@@ -152,8 +152,8 @@ cd percona-server-mongodb-operator
 
 If you face issues with the backup, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
-Congratulations! You have made the first backup manually. Want to learn more about backups? See the [Backup and restore](backups.md) section for how to [configure point-in-time recovery](backups-pitr.md), [enable server-side encryption](backups-encryption.md) and how to [automatically make backups according to the schedule](backups-scheduled.md).
+Congratulations! You have made the first backup manually. Continue with [Configure backups](backups-configure.md) to [enable point-in-time recovery](backups-pitr.md), [encrypt backups](backups-encryption.md), and [run backups on a schedule](backups-scheduled.md).
 
 ## Next steps
 
-[Monitor the database :material-arrow-right:](monitoring-tutorial.md){.md-button}
+[Restore sample data :material-arrow-right:](restore-tutorial.md){.md-button}

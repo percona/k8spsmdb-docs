@@ -16,6 +16,8 @@ Also, note that S3 has an upload limit of 10,000 parts per file. If your backup 
 2. Be aware of the 10,000 part limit for S3 uploads.
 3. Adjust your backup chunk size and memory settings in the Custom Resource if necessary for large backups.
 
+To encrypt backups at rest on S3, see [Enable server-side encryption for backups](backups-encryption.md).
+
 ## Choose the authentication method
 
 You can use one of the following options to authenticate to S3:
@@ -29,7 +31,9 @@ You can use one of the following options to authenticate to S3:
 * If a Secret with s3 credentials exists and is defined in the Custom Resource, it has the highest precedence. The Operator always uses S3 credentials in a Kubernetes Secret if they are present. 
 * If a Secret with S3 credentials is not defined, but IRSA-related credentials are configured, then the Operator will use IRSA. In this case, IRSA credentials take precedence over any IAM instance profile on the worker nodes.
 
-## Set up AWS S3 access with S3 credentials
+<a name="set-up-aws-s3-access-with-s3-credentials"></a>
+
+## Authenticate with S3 access keys
 
 Follow these steps to authenticate using an AWS S3 access key and secret key. This method works on any Kubernetes environment.
 
@@ -58,23 +62,32 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
     * `metadata.name` is the name of the Kubernetes secret which you will reference in the Custom Resource
     * Base64-encoded credentials to access S3 storage.
 
-    Here's the example configuration of the Secret file:
+    Put the following into `deploy/backup-s3.yaml`, replacing the values with the
+    base64 strings you produced in the previous step:
 
-    ```yaml
+    ```yaml title="deploy/backup-s3.yaml"
     apiVersion: v1
     kind: Secret
     metadata:
       name: my-cluster-name-backup-s3
     type: Opaque
     data:
-      AWS_ACCESS_KEY_ID: <base64-encoded-access-key>
-      AWS_SECRET_ACCESS_KEY: <base64-encoded-secret>
+      AWS_ACCESS_KEY_ID: UkVQTEFDRS1XSVRILUFXUy1BQ0NFU1MtS0VZ
+      AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
     ```
+
+    !!! note
+
+        Values under `data` must be valid base64. The placeholders above are real base64
+        strings (they decode to `REPLACE-WITH-AWS-ACCESS-KEY` and
+        `REPLACE-WITH-AWS-SECRET-KEY`), so the manifest applies as written and fails later
+        with an authentication error rather than a parsing one. If you would rather paste
+        plain text, use `stringData` instead of `data` and skip the base64 step.
 
 4. Create the Kubernetes Secret object with this file:
 
     ```bash
-    kubectl apply -f deploy/backup-s3.yaml -n <namespace>
+    kubectl apply -f deploy/backup-s3.yaml -n $NAMESPACE
     ```
 
 5. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give your storage a name (the default name is `s3-us-west`) and define the following information:
@@ -97,6 +110,7 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
           s3:
             bucket: S3-BACKUP-BUCKET-NAME-HERE
             region: us-west-2
+            prefix: ""
             credentialsSecret: my-cluster-name-backup-s3
       ...
     ```
@@ -104,13 +118,15 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
     For more configuration options, see the [Operator Custom Resource options](operator.md#operator-backup-section).
 
 
-5. Apply the configuration:
+6. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
-## Automate access to Amazon S3 using IRSA
+<a name="automate-access-to-amazon-s3-using-irsa"></a>
+
+## Authenticate with IRSA
 
 [IAM Roles for Service Accounts (IRSA) :octicons-link-external-16:](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) lets Pods on Amazon EKS assume an IAM role through the cluster's OpenID Connect (OIDC) provider. You do not store AWS access keys in a Kubernetes Secret. Instead, Percona Backup for MongoDB uses the AWS default credential provider chain and receives temporary credentials automatically.
 
@@ -224,7 +240,7 @@ export namespace=<my-namespace>
 
     Note the `PolicyArn` value from the command output. You will need it later in this setup.
 
-4. Create a trust policy that allows your EKS OIDC provider to assume the role. Replace `<account-id>`, `<region>`, and `<oidc-id>` in the file with your `$account_id`, `$aws_region`, and `$oidc_id` values:
+4. Create a trust policy that allows your EKS OIDC provider to assume the role. Replace `<account-id>`, `<aws-region>`, and `<oidc-id>` with your `$account_id`, `$aws_region`, and `$oidc_id` values. Each placeholder appears more than once in the file - replace every occurrence:
 
     ```json title="role-trust-policy.json"
     {
@@ -238,7 +254,7 @@ export namespace=<my-namespace>
           "Action": "sts:AssumeRoleWithWebIdentity",
           "Condition": {
             "StringEquals": {
-              "oidc.eks.<region>.amazonaws.com/id/<oidc-id>:aud": "sts.amazonaws.com"
+              "oidc.eks.<aws-region>.amazonaws.com/id/<oidc-id>:aud": "sts.amazonaws.com"
             }
           }
         }
@@ -341,7 +357,7 @@ export namespace=<my-namespace>
 
         ```bash
         kubectl -n $NAMESPACE annotate serviceaccount default eks.amazonaws.com/role-arn=$role_arn --overwrite
-        kubectl -n $NAMESPACE annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role-arn --overwrite
+        kubectl -n $NAMESPACE annotate serviceaccount percona-server-mongodb-operator eks.amazonaws.com/role-arn=$role_arn --overwrite
         ```
 
 4. Annotating a Service Account does not restart existing Pods automatically. Restart the Operator and database Pods so they pick up the new `AWS_ROLE_ARN` environment variable:
@@ -519,7 +535,7 @@ This error usually indicates a problem with your IRSA (IAM Roles for Service Acc
     Confirm that your EKS cluster has the correct OIDC provider set up. In your trust policy, the URL must exactly match your cluster's OIDC provider URL and should follow the format:  
 
     ```
-    https://oidc.eks.<region>.amazonaws.com/id/<OIDC_ID>
+    https://oidc.eks.<aws-region>.amazonaws.com/id/<oidc-id>
     ```
     
     Even minor mismatches (such as missing trailing slashes or extra characters) can cause this error.
@@ -536,7 +552,15 @@ This error usually indicates a problem with your IRSA (IAM Roles for Service Acc
 By following these steps, you should be able to resolve the "Request ARN is invalid" error when using IRSA.
 
 
-## Automate access to Amazon S3 using IAM instance profile
+<a name="automate-access-to-amazon-s3-using-iam-instance-profile"></a>
+
+## Authenticate with an IAM instance profile
+
+<!-- TODO(docs): This section is a stub next to IRSA's full tutorial above. Needs SME
+     input to expand into a complete walkthrough: creating and attaching the instance
+     profile, a worked configuration example, a verification step, and troubleshooting.
+     Flagged during the 2026-09 storage-pages restructure - do not fill in with guessed
+     AWS steps. -->
 
 Follow these steps:
 
@@ -545,4 +569,7 @@ Follow these steps:
 3. Configure an S3 storage bucket in the Custom Resource and verify the connection from the EC2 instance to it.
 4. Create or update the Percona Server for MongoDB cluster. *Do not provide* `s3.credentialsSecret` for the storage in `deploy/cr.yaml`.
 
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"
 

@@ -1,30 +1,37 @@
 # Install Percona Server for MongoDB using kubectl
 
-A Kubernetes Operator is a special type of controller introduced to simplify complex deployments. The Operator extends the Kubernetes API with custom resources.
-
-The [Percona Operator for MongoDB](compare.md) is based on best practices for configuration and setup of a [Percona Server for MongoDB  :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-server-for-mongodb) and [Percona Backup for MongoDB :octicons-link-external-16:](https://www.percona.com/mongodb/software/percona-backup-for-mongodb) in a Kubernetes-based environment on-premises or in the cloud.
+Percona Operator for MongoDB is a special type of controller introduced to automate deployment and management of Percona Server for MongoDB in Kubernetes. The Operator extends the Kubernetes API with custom resources. Learn more about [how the Operator works](how-it-works.md) and its [architecture](architecture.md).
 
 We recommend installing the Operator with the [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm  :octicons-link-external-16:](https://github.com/helm/helm) package manager.
 
 [Install with kubectl :material-arrow-down:](#prerequisites){.md-button} [Install with Helm :material-arrow-right:](helm.md){.md-button}
 
+## Assumptions
+
+This guide walks you through installing Percona Operator for MongoDB in a [single-namespace mode](namespace-mode.md#single-namespace-deployment) with default parameters.
+
+For how to install Percona Operator for MongoDB in a multi-namespace mode, see [Install in a multi-namespace mode](cluster-wide.md). For how ton install Percona Operator for MongoDB with customized parameters, see [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
+
+--8<-- "what-you-install.md"
+
 ## Prerequisites
 
 To install Percona Distribution for MongoDB, you need the following:
 
-1. The **kubectl** tool to manage and deploy applications on Kubernetes, included in most Kubernetes distributions. If you don’t have it installed, you can install it by following the [official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+1. The **kubectl** tool to manage and deploy applications on Kubernetes. Install it by following the [official installation instructions  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/install-kubectl/), if you haven't done it before.
 
 2. A Kubernetes environment. You can deploy it on [Minikube  :octicons-link-external-16:](https://github.com/kubernetes/minikube) for testing purposes or using any cloud provider of your choice. Check the list of our [officially supported platforms](System-Requirements.md#officially-supported-platforms).
 
     !!! note "See also"
 
         * [Set up Minikube](minikube.md)
-        * [Create and configure the GKE cluster](gke.md#create-and-configure-the-gke-cluster)
-        * [Set up Amazon Elastic Kubernetes Service](eks.md#prerequisites)
-        * [Create and configure the AKS cluster](aks.md#create-and-configure-the-aks-cluster)
-        * [Create the RKE2 cluster](rke2.md#create-the-rke2-cluster)
+        * [Create a GKE cluster](gke.md#create-the-gke-cluster)
+        * [Create an EKS cluster](eks.md#create-the-eks-cluster)
+        * [Create an AKS cluster](aks.md#create-the-aks-cluster)
+        * [Create an RKE cluster](rke2.md)
+    
+    For installing on OpenShift, see [Install Percona Operator for MongoDB on OpenShift](openshift.md)
 
---8<-- "what-you-install.md"
 
 ## Procedure 
 
@@ -101,7 +108,7 @@ You can check the rest of the Operator's parameters in the [Custom Resource opti
 
 [Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
 
-## Useful links
+## See also
 
 [Install Percona Server for MongoDB with customized parameters](custom-install.md)
 

@@ -2,15 +2,15 @@
 
 This guide provides step-by-step instructions for configuring and using Persistent Volume Claim (PVC) Snapshots with Percona Operator for MongoDB.
 
-For a high-level explanation of PVC snapshots, see [PVC snapshot support](backups-pvc-snapshots.md).
+For when to use snapshots compared with other backup types, see [Backup types](backups.md#backup-types). For requirements, see [PVC snapshots](backups-pvc-snapshots.md).
 
 !!! note "Amazon EKS users"
 
     If you run your cluster on Amazon EKS, refer to the [Add a VolumeSnapshotClass on EKS](#add-a-volumesnapshotclass-on-eks) section. EKS requires specific addons, a `gp3` storage class, and a matching `VolumeSnapshotClass` before you can use PVC snapshots.
 
-## Prerequisites
+## Requirements
 
-Before you use PVC snapshots, verify the following:
+Your environment must satisfy the following before PVC snapshots work at all:
 
 1. Your Kubernetes cluster must run a CSI driver that supports Volume Snapshots. Examples:
 
@@ -46,7 +46,7 @@ Before you use PVC snapshots, verify the following:
 
 4. To use PVC snapshots, you must run the Operator version 1.23.0 or later.
 
-## Before you start
+## Prepare your environment
 
 1. Clone the Operator repository to be able to edit manifests:
 
@@ -207,6 +207,24 @@ If your cluster has no suitable `VolumeSnapshotClass`, create one for your platf
         ```{.text .no-copy}
         volumesnapshotclass.snapshot.storage.k8s.io/ebs-csi-gp3 created
         ```
+
+## Verify the setup
+
+Confirm the `VolumeSnapshotClass` exists and names the CSI driver your storage class uses:
+
+```bash
+kubectl get volumesnapshotclass
+```
+
+Then take a PVC snapshot backup and confirm it completes:
+
+```bash
+kubectl get psmdb-backup -n $NAMESPACE
+```
+
+The backup must reach the `ready` state. A backup that fails here usually means the
+`VolumeSnapshotClass` name in the task does not match one returned above, or the driver does
+not match the one behind the volumes.
 
 ## Next steps
 

@@ -15,7 +15,7 @@ While the underlying mechanics such as replica sets, TLS, and service exposure a
 
 ### Cross-site replication
 
-To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the cross-site replication. This means that one cluster is the Main site and another one(s) - the Replica site(s).
+To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the **cross-site replication**. This means that one cluster is the Main site and another one(s) - the Replica site(s).
 
 The following diagram shows how the data is replicated between the sites.
 
@@ -45,6 +45,29 @@ Choosing the right topology depends on your goals. Here are common use cases tha
 *  Disaster recovery - Replicate data across regions to survive outages. Even if an entire data center fails, your application stays online.
 *  Geo-distributed applications - Serve users from the nearest region to reduce latency and improve experience.
 *  Compliance isolation - Keep data within specific jurisdictions to meet regulatory requirements.
+
+
+## Choose a path
+
+| Your goal | Go to |
+|---|---|
+| Haven't decided your topology yet | [Plan your deployment](replication-plan-deployment.md) |
+| Both sites are on Kubernetes, on a cloud that supports Multi-cluster Services (GKE/EKS) | [Multi-cluster Services](replication-mcs.md) |
+| Already running a cluster and want to turn on Multi-cluster Services for it | [Apply MCS to an existing cluster](replication-apply-mcs-existing.md) |
+| A site lives outside Kubernetes, or you want manual, vendor-neutral control over cross-site membership instead of relying on a cloud's MCS support | [Splitting a replica set across multiple data centers](replication-multi-dc.md) |
+| Need to switch over or fail over to the Replica site | [Fail over services to the Replica site](replication-failover.md) |
+| Backing up a cross-site deployment | [Backups with cross-site replication](replication-backups.md) |
+
+## Limitations
+
+* Setting `clusterServiceDNSMode` to `ServiceMesh` cannot be combined with multi-cluster
+  Services - the two are mutually exclusive.
+* Point-in-time recovery requires oplog on a single main storage. See
+  [Multiple storages for backups](multi-storage.md).
+* Cross-site deployments depend on every site resolving the others' hostnames. Review
+  [Networking and external access](expose.md) before you interconnect sites.
+
+For the full list, see [Known limitations](limitations.md).
 
 ## Next steps
 

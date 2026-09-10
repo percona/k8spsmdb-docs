@@ -1,6 +1,11 @@
 # Microsoft Azure Blob storage
 
-To use Azure Blob storage, create a Secret object with your access credentials. Use the `deploy/backup-azure.yaml` file as an example. You must specify the following information:
+To use Azure Blob storage for backups, you need the following:
+
+* An Azure Storage account and a Blob container within it
+* Your storage account name and access key, to authenticate to the container
+
+Create a Secret object with your access credentials. Use the `deploy/backup-azure.yaml` file as an example. You must specify the following information:
 
 * `metadata.name` is the name of the Kubernetes secret which you will reference in the Custom Resource
 * `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` are base64-encoded keys to access Azure Blob storage
@@ -28,14 +33,21 @@ metadata:
   name: my-cluster-azure-secret
 type: Opaque
 data:
-  AZURE_STORAGE_ACCOUNT_NAME: UkVQTEFDRS1XSVRILUFXUy1BQ0NFU1MtS0VZ
-  AZURE_STORAGE_ACCOUNT_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
+  AZURE_STORAGE_ACCOUNT_NAME: UkVQTEFDRS1XSVRILUFaVVJFLVNUT1JBR0UtQUNDT1VOVC1OQU1F
+  AZURE_STORAGE_ACCOUNT_KEY: UkVQTEFDRS1XSVRILUFaVVJFLVNUT1JBR0UtQUNDT1VOVC1LRVk=
+```
+
+Export your namespace so the commands below can use it. Replace `<namespace>` with
+your value:
+
+```bash
+export NAMESPACE=<namespace>
 ```
 
 1. Create the Kubernetes Secret object with this file:
 
     ```bash
-    kubectl apply -f deploy/backup-azure.yaml
+    kubectl apply -f deploy/backup-azure.yaml -n $NAMESPACE
     ```
 
 2. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the Custom Resource.
@@ -69,5 +81,9 @@ data:
 3. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

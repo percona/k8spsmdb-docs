@@ -176,6 +176,10 @@ Here's how to do it.
         helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
         ```
 
+## Next steps
+
+[Verify the cluster operation](verify-cluster.md){.md-button}
+
 
 
 

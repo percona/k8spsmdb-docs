@@ -6,6 +6,8 @@ The upgrade process is similar for all installation methods, including Helm and 
 
 ## Considerations 
 
+**Read all of these before you upgrade.** 
+
 ### For Kubernetes Cluster versions and upgrades
 
 1. Before upgrading the Kubernetes cluster, have a disaster recovery plan in place. Ensure that a backup is taken prior to the upgrade, and that point-in-time recovery is enabled to meet your Recovery Point Objective (RPO).
@@ -86,5 +88,5 @@ The upgrade process is similar for all installation methods, including Helm and 
 
 [Update manually](update-crd-manual.md){.md-button}
 [Update via Helm](update-crd-helm.md){.md-button}
-[Update via OLM](update-crd-olm.md){.md-button}
+[Update via OLM (OpenShift)](update-crd-olm.md){.md-button}
 

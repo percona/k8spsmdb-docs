@@ -1,6 +1,6 @@
 # About full-text and vector search
 
-!!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
@@ -48,7 +48,7 @@ Existing deployments continue to work as before after you upgrade the
 Operator: if you haven't enabled search for the cluster, the Operator does not deploy
 search components.
 
-## How the Percona Server for MongoDB (`mongod`) and Percona Search for MongoDB (`mongot`) communicate
+## How `mongod` and `mongot` communicate
 
 Percona Search for MongoDB runs as a separate `mongot` process. Your applications and users never connect to it
 directly. They still connect to Percona Server for MongoDB (to  `mongod` or to `mongos` in a sharded
@@ -226,3 +226,10 @@ requirements:
 * **Search index data are not included in backups.** Plan for reindex time after
   restore when you estimate recovery objectives for the search surface.
 
+## Next step
+
+[Configure search and vector search](search-setup.md){.md-button}
+
+## See also
+
+* [About security](security.md) - `mongot` authenticates to the database like any other client

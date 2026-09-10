@@ -57,7 +57,7 @@ For example, you want to capture the startup time of the container to observe wh
 
         ```yaml
         spec:
-          replicaSets:
+          replsets:
             - name: rs0
               hookScript: 
                 script: |
@@ -102,7 +102,7 @@ For example, you want to capture the startup time of the container to observe wh
 
         ```yaml
         spec:
-          replicaSets:
+          replsets:
             - name: rs0
               hookScript:
                 configMapRef:
@@ -120,6 +120,39 @@ For example, you want to capture the startup time of the container to observe wh
         ```bash
         kubectl exec -it <container-name> -n <namespace> -- cat /tmp/date
         ```
+
+## Run a hook script before the PBM agent starts
+
+You can also run a hook script before the `pbm-agent` container starts, using
+`spec.backup.hookScript`. For example, to register the start of the backup agent in an
+external audit system:
+
+```yaml
+spec:
+  backup:
+    enabled: true
+    hookScript:
+      script: |
+        #!/usr/bin/env bash
+        echo "PBM agent starting: $(date)" > /tmp/pbm-start
+```
+
+Apply the configuration changes the same way as for a replica set hook script:
+
+```bash
+kubectl apply -f deploy/cr.yaml -n <namespace>
+```
+
+A `configMapRef` also works here, the same way it does for `replsets.hookScript`:
+
+```yaml
+spec:
+  backup:
+    enabled: true
+    hookScript:
+      configMapRef:
+        name: hookscript-configmap
+```
 
 ## Best practices
 

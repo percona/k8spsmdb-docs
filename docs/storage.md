@@ -4,6 +4,16 @@ Among the wide rage of volume types, supported by Kubernetes, there are two
 volume types which allow Pod containers to access part of the local filesystem
 on the node the *emptyDir* and *hostPath*.
 
+## Choose the right storage option
+
+This page covers node-local volume types - `emptyDir` and `hostPath` - for the
+special cases described below. For most data-bearing members, you instead want a
+cluster-provisioned `PersistentVolumeClaim`, configured through
+`replsets.volumeSpec.persistentVolumeClaim`. If that's what you're after:
+
+* To grow an existing volume's size, see [Resize storage](scaling-storage-resize.md).
+* For snapshot-based backup support, see [PVC snapshots](backups-pvc-snapshots.md).
+
 ## emptyDir
 
 A Pod [emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)
@@ -48,3 +58,9 @@ Consider using the tolerations settings to avoid a cluster migration to
 different hardware in case of a reboot or a hardware failure.
 
 More details can be found in the [official hostPath Kubernetes documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
+
+## See also
+
+* [Resize storage](scaling-storage-resize.md)
+* [Configure VolumeAttributesClass](volume-attributes-class.md)
+* [PVC snapshots](backups-pvc-snapshots.md)

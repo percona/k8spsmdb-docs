@@ -2,34 +2,72 @@
 
 You can upgrade Percona Operator for MongoDB to newer versions. The upgrade process consists of these steps:
 
-* Upgrade the Operator  
+* Upgrade the Operator
 * Upgrade the database (Percona Server for MongoDB).
 
-## Update scenarios
+You can either upgrade both the Operator and the database, or upgrade only the database. Use this page to find the right procedure and to check what to watch out for before you start.
 
-You can either upgrade both the Operator and the database, or you can upgrade only the database. To decide which scenario to choose, read on.
+## Choose your upgrade path
 
-### Full upgrade (CRD, Operator, and the database). 
+### Upgrade the Operator and CRD
 
-When to use this scenario:
+Upgrade the Operator and CRD when:
 
-* The new Operator version has changes that are required for new features of the database to work
-* The Operator has new features or fixes that enhance automation and management.
-* Compatibility improvements between the Operator and the database require synchronized updates.
+* New database features need changes in this Operator version
+* You want automation or fixes from the new Operator
+* Compatibility between the Operator and the database requires a synchronized update
 
-When going on with this scenario, make sure to test it in a staging or testing environment first. Upgrading the Operator may cause performance degradation. 
+Test in a staging environment first. Upgrading the Operator may cause performance
+degradation.
 
-### Upgrade only the database
+| You installed the Operator via | Use |
+| --- | --- |
+| `kubectl` | [Upgrade manually](update-crd-manual.md) |
+| Helm | [Upgrade via Helm](update-crd-helm.md) |
+| OLM on OpenShift | [Upgrade via OLM](update-crd-olm.md) |
 
-When to use this scenario:
+### Upgrade the database
 
-* The new version of the database has new features or fixes that are not related to the Operator or other components of your infrastructure
-* You have updated the Operator earlier and now want to proceed with the database update.
+Upgrade the database after you've already upgraded the Operator and now want to move the
+database forward. Or, when the new database version has features or fixes unrelated
+to the Operator.
 
-When choosing this scenario, consider the following:
+Check the [version compatibility matrix](versions.md) to confirm that your
+current Operator version supports the new database version first.
 
-* Check that the current Operator version supports the new database version.
-* Some features may require an Operator upgrade later for full functionality.
+| You want to | Use |
+| --- | --- |
+| Let the Operator upgrade the database automatically | [Automatic minor upgrades](update-minor-automatic.md) |
+| Pin the database to a specific version | [Upgrade to a specific version](update-minor-set-version.md) |
+| Control each Pod restart yourself (Rolling Update or On Delete) | [Upgrade manually](update-manually.md) |
+| Move to the next major MongoDB version | [Major upgrades](update-major.md) |
+
+Running on OpenShift? Database upgrades there follow a different procedure - see
+[Upgrade Percona Server for MongoDB on OpenShift](update-openshift.md).
+
+## Before you upgrade: compatibility and known issues
+
+- **Take a backup first.** Do this before any upgrade. See
+  [Backup and restore](backups.md) or jump straight to an
+  [on-demand backup](backup-tutorial.md).
+- **Version jumps happen one step at a time.** You can upgrade the Operator only to the
+  nearest `major.minor` version - bigger gaps need several sequential upgrades. Database
+  major versions move one version at a time too. See
+  [Considerations](update-operator.md#for-the-operator-upgrades) and [Major version upgrades](update-major.md).
+- **CRD/Operator compatibility window.** The CRD supports the last 3 minor Operator
+  versions. See [Considerations](update-operator.md#considerations).
+- **FCV changes are not easily reversible.** Setting
+  [`upgradeOptions.setFCV`](operator.md#upgradeoptionssetfcv) is not undone by simply
+  downgrading the image afterward. See [Feature Compatibility
+  Version](update-major.md#feature-compatibility-version).
+- **MongoDB end-of-life notices.** MongoDB 4.4 reached end-of-life in Operator 1.16.0, and
+  MongoDB 5.0 in Operator 1.19.0 - upgrade the database to a supported major version
+  before upgrading the Operator past those releases. See [End of Life versions of MongoDB](update-minor-automatic.md#end-of-life-versions-of-mongodb).
+- **Known problematic version combination.** Operator 1.19.0/1.19.1 with a sharded cluster
+  and MongoDB 8.0 can fail point-in-time recovery. See
+  [Considerations](update-operator.md#considerations).
+- **Test in staging first.** Do this for any upgrade, especially Operator upgrades and
+  major database version upgrades, before you run it against production.
 
 ## Update strategies
 
@@ -49,7 +87,7 @@ To select an update strategy, set the `updateStrategy` key in the [Custom Resour
 * `RollingUpdate`
 * `OnDelete`
 
-For a manual update of your database cluster using the `RollingUpdate` or `OnDelete` strategies, refer to [the low-level Kubernetes way of database upgrades](update_manually.md) guide.
+For a manual update of your database cluster using the `RollingUpdate` or `OnDelete` strategies, refer to [the low-level Kubernetes way of database upgrades](update-manually.md) guide.
 
 ## Revision history limit
 
@@ -63,6 +101,8 @@ spec:
 
 When you omit this option, Kubernetes keeps the default of 10 revisions.
 
-## Update on OpenShift
+## See also
 
-If you run the Operator on [OpenShift :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift), you need to do additional steps during the upgrade. See [Upgrade Percona Server for MongoDB on OpenShift](update_openshift.md) for details.
+* [Upgrade the Operator and CRD](update-operator.md)
+* [Upgrade Percona Server for MongoDB](update-db.md)
+* [Known limitations](limitations.md)

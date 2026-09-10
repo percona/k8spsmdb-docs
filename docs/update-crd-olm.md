@@ -1,10 +1,12 @@
 # Upgrade the Operator and CRD on OpenShift via Operator Lifecycle Manager (OLM)
 
+--8<-- "update-critical-notice.md"
+
 If you have [installed the Operator on the OpenShift platform using OLM](openshift.md#install-the-operator-via-the-operator-lifecycle-manager-olm), you can upgrade the Operator within it.
 
 If you know the OLM upgrade workflow, jump to the [update Deployment steps](#upgrade-the-operator-via-olm).
 
-### Understand how OLM applies Operator upgrades
+## Understand how OLM applies Operator upgrades
 
 OLM manages the Operator using a resource called a `ClusterServiceVersion` (CSV).
 Each CSV represents a specific version of the Operator and contains:
@@ -26,9 +28,9 @@ The following items are replaced with the values defined in the new CSV:
 If you previously customized the Operator Deployment manually, these changes are overwritten during the upgrade.
 
 The CRD may be updated too, if the new Operator version introduces schema changes.
-However, OLM doesn't modify the `PerconaServerMongoDB` Custom Resource. It remains unchanged and continues running with its current configuration. For how to update it, refer to [Update Percona Server for MongoDB](update_openshift.md).
+However, OLM doesn't modify the `PerconaServerMongoDB` Custom Resource. It remains unchanged and continues running with its current configuration. For how to update it, refer to [Update Percona Server for MongoDB](update-openshift.md).
 
-#### Persisting custom Operator configuration
+### Persisting custom Operator configuration
 
 If you need to customize the Operator Deployment (for example, to adjust resource limits or set environment variables), you can do it through the Subscription.
 
@@ -89,4 +91,4 @@ These overrides are applied on top of the CSV and persist across upgrades. All o
 
 ## Next steps
 
-[Upgrade the database](update_openshift.md){.md-button}
+[Upgrade the database](update-openshift.md){.md-button}

@@ -1,8 +1,8 @@
-# Install Percona Server for MongoDB on OpenShift
+# Install Percona Operator for MongoDB on OpenShift
 
 {%set commandName = 'oc' %}
 
-Percona Operator for Percona Server for MongoDB is a [Red Hat Certified Operator  :octicons-link-external-16:](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification). This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.
+Percona Operator for MongoDB is a [Red Hat Certified Operator  :octicons-link-external-16:](https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification). This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.
 
 To install Percona Server for MongoDB on OpenShift means:
 
@@ -280,3 +280,7 @@ See [TLS instructions](TLS.md) for detailed guidance.
 When `oc get psmdb` shows the cluster status as `ready`, you can try to connect to the cluster.
 
 {% include 'assets/fragments/connectivity.txt' %}
+
+## Next steps
+
+[Verify the cluster operation](verify-cluster.md){.md-button}
