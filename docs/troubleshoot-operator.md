@@ -186,4 +186,4 @@ For backup and restore failures, see [Troubleshoot backups and restores](debug-b
 
 ## See also
 
-* [Install](System-Requirements.md)
+* [Installation](System-Requirements.md)

@@ -1,4 +1,4 @@
-# 6. Monitor database with Percona Monitoring and Management (PMM)
+# 6. Check cluster health
 
 Monitoring database health and performance helps you catch problems early — before they turn into
 outages. You also see how the cluster is performing. This tutorials guides you through the setup of monitoring with  [Percona Monitoring and Management (PMM) :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/index.html) so you can view metrics

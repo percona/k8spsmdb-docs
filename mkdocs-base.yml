@@ -187,8 +187,20 @@ nav:
        - "Data migration": clustersync.md
        - "Networking and external access": expose.md
        - "Customization and extensibility": customization.md
+
+    - Try the Operator:
+       - quickstart.md
+       - "Quick install": kubectl.md
+       - "Connect to Percona Server for MongoDB": connect.md
+       - "Insert data": data-insert.md
+       - "Take your first backup": backup-tutorial.md
+       - "Restore sample data": restore-tutorial.md
+       - "Check cluster health": monitoring-tutorial.md
+       - "Pause or restart the cluster": pause.md
+       - "Delete the Operator and database": delete.md
+       - what-next-operations.md
     
-    - Development:
+    - Integrate your application:
        - "Get a cluster": get-a-cluster.md
        - "Connect your application": connect-from-app.md
        - "Get credentials for your app": app-credentials.md
@@ -197,19 +209,7 @@ nav:
        - "Troubleshoot connection issues": troubleshoot-connection.md
        - what-next.md
 
-    - Deploy and operate:
-       - quickstart.md
-       - "Quick install": kubectl.md
-       - "Connect to Percona Server for MongoDB": connect.md
-       - "Insert data": data-insert.md
-       - "Make a backup": backup-tutorial.md
-       - "Make a restore": restore-tutorial.md
-       - "Monitor the database with PMM": monitoring-tutorial.md
-       - "Pause or restart the cluster": pause.md
-       - "Delete the Operator and database": delete.md
-       - what-next-operations.md
-
-    - Install:
+    - Installation:
        - Plan your installation:
          - Single-namespace and multi-namespace deployment modes: namespace-mode.md
          - "System requirements": System-Requirements.md
