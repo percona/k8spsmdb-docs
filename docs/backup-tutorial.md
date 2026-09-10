@@ -1,4 +1,4 @@
-# 4. Make a backup
+# 4. Take your first backup
 
 In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backup types and storages, see [Backup and restore](backups.md).
 
@@ -156,4 +156,4 @@ Congratulations! You have made the first backup manually. Continue with [Configu
 
 ## Next steps
 
-[Make a restore :material-arrow-right:](restore-tutorial.md){.md-button}
+[Restore sample data :material-arrow-right:](restore-tutorial.md){.md-button}

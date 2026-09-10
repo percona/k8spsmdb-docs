@@ -25,17 +25,17 @@ Just evaluating? See how the Operator works, how it's designed and how it stands
 Choose how you want to use the Operator:
 
 * **I'm building an application** — I need to connect my app to Percona Server for MongoDB on Kubernetes.  
-  [Start with Development :material-arrow-right:](get-a-cluster.md)
+  [Start integrating your application :material-arrow-right:](get-a-cluster.md)
 
 * **I'm deploying or operating the cluster** — I install, back up, and maintain the database.  
-  [Start with Deploy and operate :material-arrow-right:](quickstart.md)
+  [Try the Operator :material-arrow-right:](quickstart.md)
 
 ---
 
 <div data-grid markdown>
 <div data-banner markdown>
 
-## :material-progress-download: Install and upgrade { .title }
+## :material-progress-download: Installation and upgrade { .title }
 
 Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes, or keep an existing deployment current?
 

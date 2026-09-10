@@ -75,4 +75,4 @@ kubectl delete pod percona-client -n <namespace>
 
 ## Next steps
 
-[Make a backup :material-arrow-right:](backup-tutorial.md){.md-button}   
+[Take your first backup :material-arrow-right:](backup-tutorial.md){.md-button}   

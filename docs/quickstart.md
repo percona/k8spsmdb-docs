@@ -1,4 +1,4 @@
-# Deploy and operate
+# Try the Operator
 
 This section takes a cluster from nothing to running, monitored, and backed up. Follow it in
 order the first time; each step assumes the one before it.
@@ -6,7 +6,7 @@ order the first time; each step assumes the one before it.
 !!! tip "Building an application instead?"
 
     If someone else runs the cluster and you only need to connect your code to it, start
-    with [Development](get-a-cluster.md) instead. It covers connection strings, application
+    with [Integrate your application](get-a-cluster.md) instead. It covers connection strings, application
     users, and driver examples, and does not assume you administer the cluster.
 
 ## The path
@@ -17,10 +17,10 @@ order the first time; each step assumes the one before it.
    inside the cluster and confirm the database answers.
 3. **[Insert data](data-insert.md)** — add sample data so later steps have something to work
    with.
-4. **[Make a backup](backup-tutorial.md)** — configure storage and run your first backup.
-5. **[Make a restore](restore-tutorial.md)** — delete the sample data and restore it from
+4. **[Take your first backup](backup-tutorial.md)** — configure storage and run your first backup.
+5. **[Restore sample data](restore-tutorial.md)** — delete the sample data and restore it from
    your backup.
-6. **[Monitor the database with PMM](monitoring-tutorial.md)** — set up Percona Monitoring
+6. **[Check cluster health](monitoring-tutorial.md)** — set up Percona Monitoring
    and Management.
 
 [Start with the quick install :material-arrow-right:](kubectl.md){.md-button}
@@ -30,7 +30,7 @@ order the first time; each step assumes the one before it.
 The quick install is deliberately minimal - it is not a production configuration. When you
 are ready to run this for real:
 
-* [Install](System-Requirements.md) covers system requirements, platform-specific setup, and
+* [Installation](System-Requirements.md) covers system requirements, platform-specific setup, and
   multi-namespace deployments.
 * [Features](features.md) covers what the Operator can do - backups, high availability,
   security, scaling, upgrades - and the decisions each one involves.

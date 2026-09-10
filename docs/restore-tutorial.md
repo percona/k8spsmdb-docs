@@ -1,4 +1,4 @@
-# 5. Make a restore
+# 5. Restore sample data
 
 Now that you have a backup, verify you can actually restore from it — this is worth
 confirming before you need it for real. In this tutorial you deliberately remove the sample
