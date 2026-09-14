@@ -191,12 +191,9 @@ nav:
     - Try the Operator:
        - quickstart.md
        - "Quick install": kubectl.md
-       - "Connect to Percona Server for MongoDB": connect.md
-       - "Insert data": data-insert.md
+       - "Connect and insert sample data": connect.md
        - "Take your first backup": backup-tutorial.md
        - "Restore sample data": restore-tutorial.md
-       - "Check cluster health": monitoring-tutorial.md
-       - "Pause or restart the cluster": pause.md
        - "Delete the Operator and database": delete.md
        - what-next-operations.md
     
@@ -343,6 +340,7 @@ nav:
             - "Labels and annotations": annotations.md
             - "Configure concurrent reconciliation": reconciliation-concurrency.md
             - "Use a private registry": custom-registry.md
+        - "Pause or resume the cluster": pause.md
     - Troubleshooting:
         - debug.md
         - Troubleshoot the Operator installation issues: troubleshoot-operator.md

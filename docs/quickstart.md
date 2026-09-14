@@ -13,15 +13,11 @@ order the first time; each step assumes the one before it.
 
 1. **[Quick install](kubectl.md)** — deploy the Operator and a database cluster with
    `kubectl`. To use Helm instead, see [Install from Helm charts](helm.md).
-2. **[Connect to Percona Server for MongoDB](connect.md)** — connect with `mongosh` from
-   inside the cluster and confirm the database answers.
-3. **[Insert data](data-insert.md)** — add sample data so later steps have something to work
-   with.
-4. **[Take your first backup](backup-tutorial.md)** — configure storage and run your first backup.
-5. **[Restore sample data](restore-tutorial.md)** — delete the sample data and restore it from
+2. **[Connect and insert sample data](connect.md)** — connect with mongosh from inside the
+   cluster and add sample data so later steps have something to work with.
+3. **[Take your first backup](backup-tutorial.md)** — configure storage and run your first backup.
+4. **[Restore sample data](restore-tutorial.md)** — delete the sample data and restore it from
    your backup.
-6. **[Check cluster health](monitoring-tutorial.md)** — set up Percona Monitoring
-   and Management.
 
 [Start with the quick install :material-arrow-right:](kubectl.md){.md-button}
 
