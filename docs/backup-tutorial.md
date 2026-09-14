@@ -1,4 +1,4 @@
-# 4. Take your first backup
+# 3. Take your first backup
 
 In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backup types and storages, see [Backup and restore](backups.md).
 

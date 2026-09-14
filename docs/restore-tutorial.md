@@ -1,4 +1,4 @@
-# 5. Restore sample data
+# 4. Restore sample data
 
 Now that you have a backup, verify you can actually restore from it — this is worth
 confirming before you need it for real. In this tutorial you deliberately remove the sample
@@ -22,7 +22,7 @@ the same thing you'd do to recover from real data loss.
 ## Delete the test data
 
 To confirm the restore actually recovers your data rather than just running the mechanics,
-remove the `test` collection you created in [Insert data](data-insert.md):
+remove the `test` collection you created in [Insert sample data](connect.md#insert-sample-data):
 
 ``` {.javascript data-prompt="admin>"}
 admin> db.test.drop()
@@ -96,8 +96,9 @@ admin> db.test.countDocuments()
 
 ## Verify the data
 
-Connect to the database the same way you did in [Connect to Percona Server for
-MongoDB](connect.md), and confirm the sample data from [Insert data](data-insert.md) is back:
+Connect to the database the same way you did in [Connect and insert sample
+data](connect.md), and confirm the sample data from [Insert sample
+data](connect.md#insert-sample-data) is back:
 
 ``` {.javascript data-prompt="admin>"}
 admin> db.test.countDocuments()

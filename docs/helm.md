@@ -128,7 +128,7 @@ Also, you can check the rest of the Operator's parameters in the [Custom Resourc
 
 ## Next steps
 
-[Connect to Percona Server for MongoDB :material-arrow-right:](connect.md){.md-button}
+[Connect and insert sample data :material-arrow-right:](connect.md){.md-button}
 
 ## See also
 
