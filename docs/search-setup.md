@@ -141,8 +141,8 @@ When search is ready, `status.search` shows the replica set or shard entry with
 
 ## Connect to the cluster
 
-Open a MongoDB client session the same way as in
-[Connect to Percona Server for MongoDB](connect.md). Use an application user
+Open a MongoDB client session using the steps in [Connection
+secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh). Use an application user
 with `readWrite` and `dbAdmin` (or equivalent) on the database where you will
 store vectors — not the Operator's `searchCoordinator` system user.
 

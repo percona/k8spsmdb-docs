@@ -183,7 +183,7 @@ subsections.
 
 Verify that the clusters are interconnected by connecting to one of them. 
 
-1. Connect to one of the Pods directly using the credentials of the database admin user. Refer to the [Connect to Percona Server for MongoDB](connect.md) tutorial how to retrieve user credentials:
+1. Connect to one of the Pods directly using the credentials of the database admin user. Refer to [Connection secrets](connection-secrets.md#retrieve-a-connection-string) for how to retrieve user credentials:
 
     ```bash
     kubectl exec -it main-cluster-rs0-0 -- mongosh -u databaseAdmin -p <dbAdminPassword>

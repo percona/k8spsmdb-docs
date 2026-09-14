@@ -110,7 +110,7 @@ mongosh "<connection-string>" --tlsCertificateKeyFile client.pem --tlsCAFile ca.
 Run this wherever your client actually runs - on your own machine if you
 [exposed the cluster](expose.md), or inside a Pod if you're connecting from within
 Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
-[Connect to Percona Server for MongoDB](connect.md).
+[Connection secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh).
 
 ## TLS configuration
 

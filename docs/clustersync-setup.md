@@ -383,7 +383,7 @@ To finalize replication, change the replication mode to `finalized`.
         To start over, you need to delete the `PerconaServerMongoDBClusterSync` object and recreate it. PCSM starts from the initial data sync.
  
 
-4. Point your applications to the target cluster. See [Connect to Percona Server for MongoDB](connect.md).
+4. Point your applications to the target cluster using its connection Secret - see [Connection secrets](connection-secrets.md#use-in-an-application-deployment).
 
 ### Clean up
 

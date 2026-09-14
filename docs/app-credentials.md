@@ -4,7 +4,7 @@ When the Operator creates a database cluster, it creates the Secret with the adm
 
 The Operator also creates the [connection Secret](connection-secrets.md) for the `databaseAdmin` user that contains auto-generated connection string URIs. You can use them directly in your app. 
 
-For testing, you can reuse the `databaseAdmin` connection string Secret. See [Connect to Percona Server for MongoDB](connect.md) for the steps.
+For testing, you can reuse the `databaseAdmin` connection string Secret. See [Connection secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh) for the steps.
 
 For production and for most applications, create a dedicated **application-level (unprivileged) user** instead of using `databaseAdmin`. The Operator creates the user, a password Secret, and a connection string Secret that your app can read.
 
