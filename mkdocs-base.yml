@@ -71,6 +71,7 @@ extra_javascript:
   - js/rating.js
   - js/kapa.js
   - js/posthog-search.js
+  - js/posthog-version.js
 
 markdown_extensions:
   attr_list: {}
