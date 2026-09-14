@@ -18,7 +18,7 @@ Use this page when your application cannot connect to Percona Server for MongoDB
 
 **Common causes:**
 
-* **Wrong username or password.** Get the credentials from the correct Secret. For the admin user, see [Connect to Percona Server for MongoDB](connect.md). For an application user, see [Get credentials for your app](app-credentials.md). Ensure there are no extra spaces when reading from the Secret (for example when using `base64 --decode`).
+* **Wrong username or password.** Get the credentials from the correct Secret. For the admin user, see [Connection secrets](connection-secrets.md#retrieve-a-connection-string). For an application user, see [Get credentials for your app](app-credentials.md). Ensure there are no extra spaces when reading from the Secret (for example when using `base64 --decode`).
 * **Wrong database in the URI.** The user may be defined on the `admin` database; use `/admin` in the URI path (for example `mongodb://user:pass@host/admin`).
 * **User does not exist yet.** If you added a user in the Custom Resource, apply the change and wait for the Operator to create the user and Secret.
 

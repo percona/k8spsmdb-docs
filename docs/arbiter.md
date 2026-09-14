@@ -32,7 +32,7 @@ replsets:
 
 Find the description of other available options in the [replsets.arbiter section](operator.md#replsetsarbiterenabled) of the [Custom Resource options reference](operator.md).
 
-**Verify the Arbiter joined the replica set.** [Connect to the cluster](connect.md), then check its state:
+**Verify the Arbiter joined the replica set.** [Connect to the cluster](connection-secrets.md#open-an-interactive-shell-with-mongosh), then check its state:
 
 ```javascript
 rs.status().members
@@ -107,7 +107,7 @@ Find the description of other available options in the [replsets.nonvoting secti
 
 You can also add a non-voting node or an external arbiter in another location through the `externalNodes` option. See [Voting members across sites](replication.md#voting-members-across-sites) and [Deploy Primary-Secondary-Arbiter across sites](replication-multi-dc.md#deploy-primary-secondary-arbiter-across-sites) for details.
 
-**Verify the node is non-voting.** [Connect to the cluster](connect.md), then run:
+**Verify the node is non-voting.** [Connect to the cluster](connection-secrets.md#open-an-interactive-shell-with-mongosh), then run:
 
 ```javascript
 rs.config().members
@@ -135,7 +135,7 @@ replsets:
 
 Find the description of other available options in the [replsets.hidden section](operator.md#replsetshiddenenabled) of the [Custom Resource options reference](operator.md).
 
-**Verify the node is hidden.** [Connect to the cluster](connect.md), then run:
+**Verify the node is hidden.** [Connect to the cluster](connection-secrets.md#open-an-interactive-shell-with-mongosh), then run:
 
 ```javascript
 rs.config().members
