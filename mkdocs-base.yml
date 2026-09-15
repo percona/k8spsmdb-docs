@@ -70,6 +70,8 @@ extra_javascript:
   - js/consent.js
   - js/rating.js
   - js/kapa.js
+  - js/posthog-search.js
+  - js/posthog-version.js
 
 markdown_extensions:
   attr_list: {}
