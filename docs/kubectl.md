@@ -30,7 +30,7 @@ To install Percona Distribution for MongoDB, you need the following:
         * [Create an AKS cluster](aks.md#create-the-aks-cluster)
         * [Create an RKE cluster](rke2.md)
     
-    For installing on OpenShift, see [Install Percona Operator for MongoDB on OpenShift](openshift.md)
+    For installing on OpenShift, see [Install Percona Operator for MongoDB on OpenShift via OLM](openshift.md#install-the-operator-via-the-operator-lifecycle-manager-olm)
 
 
 ## Procedure 

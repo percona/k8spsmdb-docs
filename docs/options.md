@@ -4,13 +4,19 @@ When you deploy a new Percona Server for MongoDB cluster, the Operator spins it 
 You can configure mongod Pods, mongos Pods and config server replica set Pods separately, based on your requirements.  
 Then you pass these options to MongoDB instances in the cluster in one of the following ways:
 
-- [Edit the `deploy/cr.yaml` file](#edit-the-deploycryaml-file)
-- [Use a ConfigMap](#use-a-configmap)
-- [Use a Secret object](#use-a-secret-object)
+- [Changing MongoDB options](#changing-mongodb-options)
+  - [Edit the `deploy/cr.yaml` file](#edit-the-deploycryaml-file)
+    - [Example](#example)
+  - [Use a ConfigMap](#use-a-configmap)
+  - [Use a Secret Object](#use-a-secret-object)
 
 Note that you can't change options that may break the behavior of the Operator. For example, TLS/SSL options. If you try changing such options, your changes will be ignored.
 
 Some options, such as `enableLocalhostAuthBypass`, can be set via `replsets.configuration` and, for sharded clusters, `sharding.configsvrReplSet.configuration`, but only on running clusters. Setting them before the cluster has bootstrapped prevents initialization. See [Disable localhost authentication bypass](auth-bypass-localhost.md) for details.
+
+!!! important
+
+    When you set options through `configuration`, the Operator passes them to the database as-is and does not validate them. If you make a typo, the database will not start. The Operator will not reject the Custom Resource.
 
 ## Edit the `deploy/cr.yaml` file
 
