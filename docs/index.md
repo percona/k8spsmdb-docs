@@ -7,6 +7,13 @@ The Percona Operator for MongoDB runs and manages Percona Server for MongoDB ins
 [Get started :material-arrow-down:](#get-started){.md-button}
 [What's new in version {{release}}](RN/Kubernetes-Operator-for-PSMONGODB-RN{{release}}.md){.md-button}
 
+!!! info ":material-map-marker-path: What's coming next"
+
+    See what the team is working on in the
+    [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1),
+    and when to expect it in the
+    [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
+
 ---
 
 ## Understand the Operator
@@ -79,7 +86,3 @@ Explore Custom Resource, backup and restore options, certified images and versio
 
 </div>
 </div>
-
-## Stay updated
-
-Use the [public roadmap :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline :octicons-link-external-16:](https://github.com/orgs/percona/projects/10/views/10).
