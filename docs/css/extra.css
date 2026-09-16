@@ -60,17 +60,6 @@
   color: var(--md-typeset-a-color);
 }
 
-/* Percona live announcement banner */
-
-.md-banner {
-  text-align: center;
-}
-
-.md-banner,
-.md-banner * {
-  font-family: "Poppins", sans-serif !important;
-}
-
 /* Version switcher: keep dropdown surface solid in light/dark.
    Material already sets background-color; reinforce it here so
    custom header styles cannot wash it out. Parent .md-header__topic
