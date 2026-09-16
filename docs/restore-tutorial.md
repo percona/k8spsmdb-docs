@@ -121,4 +121,4 @@ options](restore-options.md).
 
 ## Next steps
 
-[Monitor the database :material-arrow-right:](monitoring-tutorial.md){.md-button}
+[What's next for the operator :material-arrow-right:](what-next-operations.md){.md-button}
