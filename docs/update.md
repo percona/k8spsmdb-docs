@@ -7,6 +7,59 @@ You can upgrade Percona Operator for MongoDB to newer versions. The upgrade proc
 
 You can either upgrade both the Operator and the database, or upgrade only the database. Use this page to find the right procedure and to check what to watch out for before you start.
 
+## How an upgrade works
+
+An upgrade has **two independent stages**, and you decide when to run each one.
+
+```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 14, "rankSpacing": 22, "useMaxWidth": false}, "themeVariables": {"fontSize": "12px"}} }%%
+flowchart TD
+  A["Operator 1.22.0"]
+  B["<b>Stage 1</b> · upgrade Operator"]
+  C["crVersion still 1.22.0 · no restart"]
+  D["<b>Stage 2</b> · raise crVersion"]
+  E["crVersion 1.23.0 · Pods roll"]
+  A --> B --> C --> D --> E
+```
+
+### Stage 1: upgrade the Operator
+
+You replace the CRD and the Operator Deployment. The Operator is a controller running in its
+own Pod - it is not in the data path, so replacing it does not interrupt client connections.
+
+Your database Pods are not restarted at this stage, because the cluster Custom Resource still
+declares the old `crVersion` and the old images. The new Operator recognises that version and
+keeps managing the cluster with the behaviour it already had.
+
+### Stage 2: upgrade the database
+
+When you are ready - a maintenance window, a quieter period, one cluster at a time - you
+raise `crVersion` and the image versions in the Custom Resource. That is the change that
+rolls the database: with the default
+[Smart Update](#update-strategies) strategy the Operator restarts Pods one at a time and
+updates the primary last, so the cluster stays available throughout.
+
+Nothing forces the two stages to happen together. You can upgrade the Operator across a fleet
+first, then work through the database clusters on your own schedule.
+
+### Why the stages can be separated
+
+The CRD supports **the last three minor Operator versions**: the current one and the two
+before it. With Operator {{ release }} installed, clusters still declaring
+`crVersion: 1.22.0` or `crVersion: 1.21.0` keep running normally - so a cluster does not have
+to move the moment you upgrade the Operator.
+
+That window is also the limit. Once your Operator is more than two minor versions ahead of a
+cluster's `crVersion`, that cluster has to catch up. Plan stage 2 before the gap gets that
+wide. See [Considerations](update-operator.md#considerations).
+
+!!! note
+
+    The procedures on the individual upgrade pages patch `crVersion` and the images in one
+    command, which performs both stages back to back. That is the convenient path when you
+    intend to do both. To keep the stages apart, upgrade the CRD and Operator first, and
+    patch `crVersion` and the images later.
+
 ## Choose your upgrade path
 
 ### Upgrade the Operator and CRD
