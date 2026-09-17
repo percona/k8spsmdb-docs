@@ -24,14 +24,6 @@ spec:
     mode: preferTLS
 ```
 
-Internal communication also uses a fixed `clusterAuthMode: x509`. The Operator does not
-expose this as a Custom Resource option. Because MongoDB shares one TLS listener for both
-internal and external traffic, this has a side effect on external clients too: any client
-that connects using TLS must present a valid client
-certificate, even under the default `preferTLS` mode. A client that connects without TLS
-is unaffected. See [Connect with a client certificate](#connect-with-a-client-certificate)
-below.
-
 ## TLS Certificates
 
 You can configure TLS security in several ways:

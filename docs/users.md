@@ -39,5 +39,5 @@ metadata:
   name: my-cluster-name-mongodb-keyfile
 type: Opaque
 data:
-  mongodb-key: UkVQTEFDRS1XSVRILU1PTkdPREItS0VZRklMRQ==
+  mongodb-key: <your-base-64-encoded-key-here>
 ```

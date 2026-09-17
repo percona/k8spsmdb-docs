@@ -1,6 +1,6 @@
 # Install Percona Operator for MongoDB in multi-namespace (cluster-wide) mode
 
-This document walks you through installing the Operator and Percona Server for MongoDB in multi-namespace (luster-wide) mode with default parameters. 
+This document walks you through installing the Operator and Percona Server for MongoDB in multi-namespace (cluster-wide) mode with default parameters. 
 
 To learn more about available deployment modes, see [Single-namespace and multi-namespace deployment modes](namespace-mode.md).
 

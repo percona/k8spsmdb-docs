@@ -122,7 +122,7 @@ Make sure every part of the connection string reflects your environment:
 
 - **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
 - **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command  
-- **`<namespace>*`*: the Kubernetes namespace where your cluster is deployed
+- **`<namespace>`**: the Kubernetes namespace where your cluster is deployed
 
 !!! warning
 

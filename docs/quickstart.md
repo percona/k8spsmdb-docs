@@ -18,6 +18,8 @@ order the first time; each step assumes the one before it.
 3. **[Take your first backup](backup-tutorial.md)** — configure storage and run your first backup.
 4. **[Restore sample data](restore-tutorial.md)** — delete the sample data and restore it from
    your backup.
+5. **[Delete the cluster](delete.md)** — remove the evaluation deployment when testing is
+   done and you are ready to deploy for production.
 
 [Start with the quick install :material-arrow-right:](kubectl.md){.md-button}
 

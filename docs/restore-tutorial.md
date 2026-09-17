@@ -121,4 +121,8 @@ options](restore-options.md).
 
 ## Next steps
 
-[What's next for the operator :material-arrow-right:](what-next-operations.md){.md-button}
+[Delete the Operator and database :material-arrow-right:](delete.md){.md-button}
+
+## See also
+
+[What's next for the operator](what-next-operations.md)

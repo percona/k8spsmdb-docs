@@ -52,7 +52,7 @@ That window is also the limit. Once your Operator is more than two minor version
 
     The procedures on the individual upgrade pages patch `crVersion` and the images in one command, which runs both stages back to back. Use that path when you intend to do both at once. To keep the stages apart, upgrade the CRD and Operator first, then patch `crVersion` and the images later.
 
-## Before you upgrade: compatibility and known issues
+## Before you upgrade: limits you should know
 
 * **Take a backup first.** Do this before any upgrade. See [Backup and restore](backups.md) or [On-demand backup](backup-tutorial.md).
 * **Test in staging first.** Do this for any upgrade, especially Operator upgrades and major database version upgrades, before you run it against production. Operator upgrades can cause performance degradation.
