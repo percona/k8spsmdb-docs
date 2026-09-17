@@ -321,7 +321,7 @@ nav:
                 - "Configure encryption with HashiCorp Vault":
                     - "without TLS": encryption-vault.md
                     - "with TLS": encryption-vault-tls.md
-            - Enable authentication:
+            - Authentication:
                 - "OpenLDAP integration": ldap.md
                 - "OIDC authentication": oidc.md
                 - "Disable authentication": auth-disable.md

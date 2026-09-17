@@ -144,15 +144,15 @@ To delete the Operator, do the following:
 
 4. Delete Custom Resource Definitions:
 
-     !!! warning
-    
-         Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them. 
+    !!! warning
 
-         If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+        Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them.
 
-     ```bash
-     helm uninstall psmdb-operator-crds --namespace <namespace>
-     ```
+        If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+
+    ```bash
+    helm uninstall psmdb-operator-crds --namespace <namespace>
+    ```
 
 ## Clean up resources
  

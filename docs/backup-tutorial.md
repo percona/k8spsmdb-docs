@@ -136,8 +136,8 @@ cd percona-server-mongodb-operator
 4. Track the backup progress. 
 
     ```bash
-	kubectl get psmdb-backup -n <namespace>
-	```
+	  kubectl get psmdb-backup -n <namespace>
+	  ```
 
 	??? example "Sample output"
 
