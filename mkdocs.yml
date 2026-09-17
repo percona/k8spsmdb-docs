@@ -11,6 +11,8 @@ theme:
     - search.highlight
     - navigation.top
     - navigation.tracking
+    - navigation.indexes
+    - navigation.path
     - content.tabs.link
 #    - content.action.edit
     - content.action.view

@@ -1,5 +1,15 @@
 # Install Percona server for MongoDB on Kubernetes
 
+## Assumptions
+
+This guide walks you through installing Percona Operator for MongoDB in a [single-namespace mode](namespace-mode.md#single-namespace-deployment) with default parameters.
+
+For how to install Percona Operator for MongoDB in a multi-namespace mode, see [Install in a multi-namespace mode](cluster-wide.md). For how ton install Percona Operator for MongoDB with customized parameters, see [Install Percona Operator for MongoDB with customized parameters](custom-install.md).
+
+--8<-- "what-you-install.md"
+
+## Installation
+
 1. Clone the percona-server-mongodb-operator repository:
 
     ```bash

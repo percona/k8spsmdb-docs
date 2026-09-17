@@ -381,7 +381,7 @@ For a non-sharded replica set, use the `databaseAdmin_rs0_connectionStringSrv` k
 
 ## Backup lifecycle
 
-Backup storage, schedules, and retention live on the cluster Custom Resource under `spec.backup`. On-demand backups are separate `PerconaServerMongoDBBackup` objects. See [Backup and restore](backups.md).
+Backup storage, schedules, and retention live on the cluster Custom Resource under `spec.backup`. On-demand backups are separate `PerconaServerMongoDBBackup` objects. See [Backup and restore](backups.md) and [Configure backups](backups-configure.md).
 
 To manage backups, you must configure the backup storage. See [Configure storage for backups](backups-storage.md) for details.
 
