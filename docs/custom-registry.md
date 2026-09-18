@@ -133,3 +133,7 @@ OpenShift environment demonstrates the process:
         custom one.
 
 9. Now follow the standard Percona Operator for MongoDB [installation instruction](System-Requirements.md#installation-guidelines).
+
+## See also
+
+* [Troubleshooting](debug.md) - environment variables, reconciliation concurrency, and hook scripts are exactly what gets tuned in response to an observed problem

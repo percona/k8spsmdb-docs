@@ -15,3 +15,7 @@ You can turn on MCS for the **already-existing non-MCS cluster**. To do this:
     Operator version `1.11.0` or below, you need rotating multi-domain (SAN)
     certificates. Do this by [pausing the cluster](pause.md) and
     deleting [TLS Secrets](TLS.md).
+
+## Next steps
+
+[Deploy the Main site](replication-main.md){.md-button}

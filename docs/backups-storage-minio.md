@@ -2,7 +2,27 @@
 
 Use the `minio` storage type for MinIO and other S3-compatible storages. It helps with connectivity and compatibility issues when your S3 implementation doesn't support SigV4 or requires endpoint configuration that works better with the `minio` storage type.
 
-To use the `minio` storage type, create a Secret object with your access credentials. You can use the [`deploy/backup-s3.yaml`](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as the example.
+## Assumptions
+
+This page assumes you already have a MinIO (or other S3-compatible) service reachable from your cluster. To install MinIO itself on Kubernetes, see MinIO's own
+[Kubernetes deployment documentation :octicons-link-external-16:](https://docs.min.io/aistor/installation/kubernetes/).
+
+Note that MinIO's standalone open-source server is no longer actively maintained, so
+MinIO's current Kubernetes install path is through their AIStor product, which requires
+a license key (a free tier is available). Any other S3-compatible service (including one
+you already run) works with the `minio` storage type too.
+
+## Preconditions
+
+To use the `minio` storage type, you need the following:
+
+* An S3-compatible bucket and the region it's in
+* Access key and secret key to authenticate to the bucket
+* The storage's endpoint URL, if it's not AWS S3 itself (for example, your MinIO service address)
+
+## Create a Secret
+
+Create a Secret object with your access credentials. You can use the [`deploy/backup-s3.yaml`](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/deploy/backup-s3.yaml) file as the example.
 
 You must specify the following information:
 
@@ -36,13 +56,22 @@ data:
   AWS_SECRET_ACCESS_KEY: UkVQTEFDRS1XSVRILUFXUy1TRUNSRVQtS0VZ
 ```
 
-1. Create the Secret object with this file:
+Export your namespace so the commands below can use it. Replace `<namespace>` with
+your value:
 
-    ```bash
-    kubectl apply -f deploy/backup-s3.yaml -n <namespace>
-    ```
+```bash
+export NAMESPACE=<namespace>
+```
 
-2. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
+Create the Secret object with this file:
+
+```bash
+kubectl apply -f deploy/backup-s3.yaml -n $NAMESPACE
+```
+
+## Configure the storage
+
+1. Configure the storage in the Custom Resource. Modify the `backup.storages` subsection of the `deploy/cr.yaml` file. Give the name to the storage (by default, `minio`). You will later use it to refer this storage when making backups and restores.
 
     Specify the following configuration:
 
@@ -73,10 +102,10 @@ data:
             secure: true
     ```
 
-3. Apply the configuration:
+2. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 ## Configure TLS verification with custom certificates for S3 storage
@@ -114,3 +143,9 @@ To configure TLS verification with custom certificates, do the following:
     After you apply the configuration, the Operator passes your custom certificate configuration to `pbm-agents`. `pbm-agents` then use it to securely verify TLS communication with S3 storage during backups and restores.
 
 You may use [several S3 storages](multi-storage.md) for backups and may have TLS / SSL certificates for secure communication with each storage. In this case, the Operator merges the certificates into a single `ca-bundle.crt` file and passes it to PBM. When connecting to a specific S3 storage, PBM finds the corresponding certificate and uses it to securely verify TLS communication with this storage.
+
+To encrypt backups at rest, see [Enable server-side encryption for backups](backups-encryption.md).
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

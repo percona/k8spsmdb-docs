@@ -174,3 +174,23 @@ encryption key and other needed options:
        ```bash
        echo -n 'plain-text-string' | base64
        ```
+
+## Verify that encryption is applied
+
+Encryption failures are silent from the cluster's side: an unencrypted backup completes
+exactly like an encrypted one. Take a backup and confirm it succeeds:
+
+```bash
+export NAMESPACE=<namespace>
+kubectl apply -f deploy/backup/backup.yaml -n $NAMESPACE
+kubectl get psmdb-backup -n $NAMESPACE
+```
+
+Once the backup is `ready`, check the object in the bucket itself - in the AWS console, or
+with `aws s3api head-object` - and confirm it reports the server-side encryption algorithm
+you configured. If the backup succeeds but the object shows no encryption, the storage
+accepted the upload and ignored the setting.
+
+## See also
+
+* [Data-at-rest encryption](encryption.md) - encrypt what you back up the same way you encrypt data at rest

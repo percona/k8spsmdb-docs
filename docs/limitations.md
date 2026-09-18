@@ -23,7 +23,7 @@ This requirement is stricter than the [AVX requirement for MongoDB 5.0 and later
 * The Operator cannot place MongoDB Pods in other data centers by itself. Cross-site topologies need an Operator deployment on each site, with unmanaged clusters registered as `externalNodes` on the Main site. Setup and scaling require manual operations. See [Splitting a replica set across multiple data centers](replication-multi-dc.md).
 * Backups are supported on the Main site only, not on Replica sites in a multi-datacenter replica set split.
 * Multi-cluster Services (MCS) can add cloud-provider limits. For example, on GKE all participating Pods must be in the same project. Avoid exporting Services from the `default` and `kube-system` namespaces. See [Multi-cluster Services](replication-mcs.md).
-* Setting `replsets.clusterServiceDNSMode` to `ServiceMesh` supersedes multi-cluster settings. You cannot combine `ServiceMesh` DNS mode with multi-cluster Services. See the [Custom Resource options](operator.md#replsetsclusterservicednsmode).
+* Setting `clusterServiceDNSMode` to `ServiceMesh` supersedes multi-cluster settings. You cannot combine `ServiceMesh` DNS mode with multi-cluster Services. See the [Custom Resource options](operator.md#clusterservicednsmode).
 
 ## Networking and exposure
 
@@ -49,3 +49,7 @@ See [Limitations](search-overview.md#limitations) in the search overview.
 ## Real-time replication with Percona ClusterSync for MongoDB
 
 --8<-- "clustersync.md:pcsmlimitations"
+
+## Next steps
+
+[Get started](quickstart.md){.md-button}

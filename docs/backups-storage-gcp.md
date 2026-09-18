@@ -209,10 +209,10 @@ Follow these steps to authenticate using a service account JSON key. This method
       GCS_PRIVATE_KEY: base_64_encoded_key
     ```
 
-5. Create the Kubernetes Secrets object. Replace the `<namespace>` placeholder with your value:
+5. Create the Kubernetes Secrets object:
 
     ```bash
-    kubectl apply -f gcp-cs-secret.yaml -n <namespace>
+    kubectl apply -f gcp-cs-secret.yaml -n $NAMESPACE
     ```
 
 6. Configure the GCS storage in the `deploy/cr.yaml` Custom Resource. Specify the following information:
@@ -238,5 +238,9 @@ Follow these steps to authenticate using a service account JSON key. This method
 7. Apply the configuration:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
+
+## Verify the storage works
+
+--8<-- "verify-backup-storage.md"

@@ -55,7 +55,7 @@ To set up monitoring of Kubernetes, you need the following:
 
 ## Install the Victoria Metrics Kubernetes monitoring stack
 
-??? admonition "Install on OpenShift"
+??? note "Install on OpenShift"
 
     When installing the chart on OpenShift, some components might require additional Security Context Constraints (SCCs), depending on the permissions they need at runtime.
 
@@ -143,7 +143,7 @@ To set up monitoring of Kubernetes, you need the following:
         ```yaml title="pmm-api-vmoperator.yaml"
         apiVersion: v1
         data:
-          api_key: <base-64-encoded-pmm-server-token>
+          api_key: UkVQTEFDRS1XSVRILVBNTS1TRVJWRVItVE9LRU4=
         kind: Secret
         metadata:
           name: pmm-token-vmoperator
@@ -221,22 +221,6 @@ To set up monitoring of Kubernetes, you need the following:
         --set vmagent.spec.externalLabels.k8s_cluster_id=test-cluster \
         -n monitoring-system
         ```
-
-## Validate the successful installation
-
-```bash
-kubectl get pods -n <namespace>
-```
-
-??? example "Sample output"
-
-    ```{.text .no-copy}
-    vm-k8s-stack-kube-state-metrics-d9d85978d-9pzbs                   1/1     Running   0          28m
-    vm-k8s-stack-victoria-metrics-operator-844d558455-gvg4n           1/1     Running   0          28m
-    vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Running   0          28m
-    ```
-
-What Pods are running depends on the configuration chosen in values used while installing `victoria-metrics-k8s-stack` chart.
 
 ## Validate the successful installation
 

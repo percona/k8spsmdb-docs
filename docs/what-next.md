@@ -1,10 +1,13 @@
-# What's next?
+# What's next for developers
 
-Congratulations! You have completed all the steps in the Get started guide. 
+You have an application talking to the database. These are the things worth doing before you call it production-ready.
 
-You have the following options to move forward with the Operator:
+* **[Enable TLS for application connections](TLS.md)** — Encrypt traffic between your app and the database.
+* **[Create and manage application users](app-users.md)** — Use dedicated, least-privilege users instead of the default admin.
+* **[Expose the cluster for production access](expose.md)** — Connect from outside the cluster (load balancer or ingress) instead of port-forward.
+* **[Scale the replica set](scaling.md)** — Add nodes for read capacity and high availability; understand how your driver uses secondaries.
+* **[Understand backups and restore](backups.md)** — See backup types, point-in-time recovery, and what they mean for your app.
+* **[Test your disaster recovery and failover strategies](replication-failover.md)** — Practice a failover before you need one.
 
-* Deepen your monitoring insights by setting up [Kubernetes monitoring with PMM](monitor-kubernetes.md)
-* Control Pods assignment on specific Kubernetes Nodes by setting up [affinity / anti-affinity](constraints.md)
-* Ready to adopt the Operator for production use and need to delete the testing deployment? Use [this guide](delete.md) to do it
-* You can also try operating the Operator and database clusters via the web interface with [Percona Everest  :octicons-link-external-16:](https://docs.percona.com/everest/index.html) - an open-source web-based database provisioning tool based on Percona Operators. See [Get started with Percona Everest  :octicons-link-external-16:](https://docs.percona.com/everest/quickstart-guide/quick-install.html) on how to start using it
+Operating the cluster rather than building against it? See
+[What's next for operators](what-next-operations.md).

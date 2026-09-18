@@ -1,6 +1,6 @@
 # Define custom environment variables
 
-!!! admonition "Version added: 1.22.0"
+!!! note "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
 
 Custom environment variables let you inject configuration without rebuilding container images. This is useful when you need to:
 
@@ -8,11 +8,7 @@ Custom environment variables let you inject configuration without rebuilding con
 - Pass non-sensitive runtime flags to custom entrypoints.
 - Provide credentials or third-party API tokens from a Secret without baking them into images.
 
-You can configure custom environment variables in these ways:
-
-* [Set them in the Custom Resource directly](#set-variables-directly-in-the-custom-resource)
-* [Load variables from a ConfigMap](#load-variables-from-a-configmap)
-* [Load variables from a Secret](#load-variables-from-a-secret)
+The following sections in this document show how you can define custom environment variables.
 
 ## Supported components
 
@@ -103,23 +99,15 @@ Use this when you need to supply sensitive values (tokens, passwords, keys).
 
 For example, you need to provide a token used by a custom sidecar container.
 
-1. Encode your sensitive values before adding them to a Secret, as Kubernetes stores Secret data in base64-encoded form. This helps prevent accidental exposure of sensitive information in plaintext, even though it is not a secure encryption method.
-
-    To encode an API token, run:
-
-    ```bash
-    echo -n "your-token" | base64
-    ```
-
-    Copy the encoded string for use in your Secret manifest.
-
-2. Export the namespace where your cluster is running as an environment variable. Replace `my-namespace` with your value:
+1. Export the namespace where your cluster is running as an environment variable. Replace `my-namespace` with your value:
 
     ```bash
     export NAMESPACE=my-namespace
     ```
 
-3. Create a Secret configuration file. For example, `custom-sidecar.yaml`:
+2. Create a Secret configuration file. For example, `custom-sidecar.yaml`. Put your value in
+    plain text under `stringData` - Kubernetes base64-encodes it for you when the Secret is
+    created:
 
     ```yaml
     apiVersion: v1
@@ -128,16 +116,16 @@ For example, you need to provide a token used by a custom sidecar container.
       name: psmdb-env-secrets
     type: Opaque
     stringData:
-      LOG_EXPORT_TOKEN: "your-base64-encoded-token"
+      LOG_EXPORT_TOKEN: "your-token"
     ```
 
-4. Create the Secret object:
+3. Create the Secret object:
 
     ```bash
     kubectl apply -f custom-sidecar.yaml -n $NAMESPACE
     ```
 
-5. Reference the Secret in the Custom Resource:
+4. Reference the Secret in the Custom Resource:
 
     ```yaml
     spec:
@@ -148,7 +136,7 @@ For example, you need to provide a token used by a custom sidecar container.
               name: psmdb-env-secrets
     ```
 
-6. Apply the changes:
+5. Apply the changes:
   
     ```bash
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE

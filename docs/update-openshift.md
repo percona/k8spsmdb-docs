@@ -2,7 +2,9 @@
 
 {%set commandName = 'oc' %}
 
---8<-- "update-assumptions.md" 
+--8<-- "update-critical-notice.md"
+
+--8<-- "update-assumptions.md"
 
 ## Upgrading Percona Server for MongoDB
 
@@ -74,4 +76,8 @@
         ```
 
 6. The deployment rollout will be automatically triggered by the applied patch.
+
+## See also
+
+* [Choose your upgrade path](update.md)
 

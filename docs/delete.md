@@ -144,15 +144,15 @@ To delete the Operator, do the following:
 
 4. Delete Custom Resource Definitions:
 
-     !!! warning
-    
-         Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them. 
+    !!! warning
 
-         If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+        Although you install the CRD Helm chart (`psmdb-operator-crds`) in a specific namespace, the CRDs themselves are cluster-scoped resources and apply to *all* namespaces in your Kubernetes environment. If you uninstall or delete this CRD chart, it will remove the CRDs from the Kubernetes environment. This will irreversibly delete *all* Percona Server for MongoDB clusters managed by these CRDs across *all* namespaces where you deployed them.
 
-     ```bash
-     helm uninstall psmdb-operator-crds --namespace <namespace>
-     ```
+        If you run other Percona Server for MongoDB clusters in other namespaces, skip this step.
+
+    ```bash
+    helm uninstall psmdb-operator-crds --namespace <namespace>
+    ```
 
 ## Clean up resources
  
@@ -217,3 +217,56 @@ To manually clean up resources, do the following:
         kubectl delete secret <secret_name> -n <namespace>
         ```
 
+## Delete the Kubernetes cluster (platform-specific)
+
+To remove the Kubernetes cluster itself (and all workloads in it), use the platform’s tools. This step is optional and typically done after you have deleted the Operator and database as described above.
+
+!!! warning
+
+    Deleting the cluster removes all data and resources in it. This cannot be undone.
+
+### Amazon EKS
+
+You need the cluster name and AWS region. With `eksctl`:
+
+```bash
+eksctl delete cluster --region=<region> --name="<cluster name>"
+```
+
+Deletion can take several minutes.
+
+### Google Kubernetes Engine (GKE)
+
+Using `gcloud` (replace placeholders with your cluster name, zone, and project ID):
+
+```bash
+gcloud container clusters delete <cluster name> \
+  --zone <zone> \
+  --project <project ID>
+```
+
+Type `y` when prompted to confirm. Deletion can take several minutes.
+
+### Microsoft Azure Kubernetes Service (AKS)
+
+Using Azure CLI (replace placeholders with your resource group and cluster name):
+
+```bash
+az aks delete --name <cluster name> --resource-group <resource group> --yes --no-wait
+```
+
+The cluster is removed asynchronously; it may take several minutes.
+
+### Minikube
+
+To stop the local cluster:
+
+```bash
+minikube stop
+```
+
+To delete the cluster and its data:
+
+```bash
+minikube delete
+```

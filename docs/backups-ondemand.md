@@ -4,6 +4,13 @@ An on-demand backup is a backup that you start manually at any time. You create 
 
 If you want to run backups automatically, according to the schedule, see [Make scheduled backups](backups-scheduled.md) tutorial.
 
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 Here's what you need to do to run on-demand backups:
 
 ## Modify the Custom Resource manifest {.power-number}
@@ -14,10 +21,10 @@ Here's what you need to do to run on-demand backups:
 
     * Check that you have defined at least one [configured storage](backups-storage.md) in the `backup.storages` subsection.
 
-2. Apply the changes. Don't forget to replace the `<namespace>` placeholder with your namespace:
+2. Apply the changes:
 
     ```bash
-    kubectl apply -f deploy/cr.yaml -n <namespace>
+    kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
 
 ## Create a Backup resource 
@@ -30,7 +37,7 @@ To create a Backup resource, you need a special custom resource manifest. The [d
     * `metadata.name` is the name of the backup. You will need this name when you [restore from this backup](backups-restore.md). The default name is `backup1`.
 
     * `spec.clusterName` is the name of your cluster (prior to
-        the Operator version 1.12.0 this key was named `spec.psmdbCluster`). Run `kubectl get psmdb -n <namespace>` to find out the cluster name.
+        the Operator version 1.12.0 this key was named `spec.psmdbCluster`). Run `kubectl get psmdb -n $NAMESPACE` to find out the cluster name.
 
     * `spec.storageName` is the name of your [already configured storage](backups-storage.md).
 

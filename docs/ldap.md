@@ -1,4 +1,4 @@
-# How to integrate Percona Operator for MongoDB with OpenLDAP
+# OpenLDAP integration
 
 Enterprises use LDAP services provided by software like OpenLDAP, Microsoft Active Directory, etc. to control information about users, systems, networks, services and applications and manage corresponding access rights for the authentication/authorization process in a centralized way.
 
@@ -9,6 +9,25 @@ To help you understand and perform the integration of OpenLDAP with Percona Serv
 - Learn about LDAP concepts and [LDIF  :octicons-link-external-16:](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) files, which are used for configuration.
 - Follow the official [OpenLDAP documentation  :octicons-link-external-16:](https://www.openldap.org/doc/admin26/) for detailed instructions on how to install and configure OpenLDAP.
 - Review the [Percona Server for MongoDB documentation  :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html) for guidance on configuring MongoDB to work with LDAP.
+
+## Before you begin
+
+* An OpenLDAP server is installed, running, and reachable from the Kubernetes cluster.
+  This guide does not cover installing OpenLDAP.
+* The Operator and a Percona Server for MongoDB cluster are running.
+* Export your namespace so the commands below can use it. Replace `<namespace>` with your
+  value:
+
+    ```bash
+    export NAMESPACE=<namespace>
+    ```
+
+!!! note
+
+    Whether you configure a replica set or a sharded cluster changes what you configure and
+    where. A replica set needs `mongod` configuration only; a sharded cluster needs both
+    `mongos` (authentication) and the config server replica set (authorization). Pick the
+    matching section below.
 
 ## Configure the OpenLDAP server
 
@@ -420,7 +439,7 @@ If you use [OIDC authentication](oidc.md) with LDAP authorization, merge both se
 
 [LDAP over TLS  :octicons-link-external-16:](https://www.openldap.org/faq/data/cache/185.html) allows you to use Transport Layer Security, encrypting your communication between MongoDB and OpenLDAP server.
 
-Here are the needed modifications to [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection which will enable it:
+Here are the needed modifications to [Configure the Operator and Percona Server for MongoDB](#configure-the-operator-and-percona-server-for-mongodb) subsection which will enable it:
 
 1. First, create a secret that contains the SSL certificate to connect to LDAP. The following example creates it from the file with CA certificate (the one you use in `/etc/openldap/ldap.conf`), naming the new secret `my-ldap-secret`:
 
@@ -437,7 +456,7 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
         ldapSecret: my-ldap-secret
     ```
 
-3. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [The MongoDB and Operator side](https://docs.percona.com/percona-operator-for-mongodb/ldap.html#the-mongodb-and-operator-side) subsection:
+3. It is also necessary to change the value of transportSecurity to `tls` in mongod and mongos configurations. The configuration is similar to one described at the [Configure the Operator and Percona Server for MongoDB](#configure-the-operator-and-percona-server-for-mongodb) subsection:
 
     Changed mongod configuration should look as follows:
 
@@ -484,3 +503,25 @@ Here are the needed modifications to [The MongoDB and Operator side](https://doc
       authenticationMechanisms: 'PLAIN,SCRAM-SHA-256'
     ```
 
+## Verify LDAP authentication
+
+Connect to the cluster as one of your LDAP users, authenticating against the `$external`
+database with the `PLAIN` mechanism:
+
+```bash
+kubectl exec -it my-cluster-name-rs0-0 -n $NAMESPACE -- mongosh \
+  --authenticationMechanism=PLAIN --authenticationDatabase='$external' \
+  -u <ldap-user> -p
+```
+
+Then confirm the roles the LDAP group mapping produced:
+
+```javascript
+db.runCommand({connectionStatus: 1})
+```
+
+The `authInfo.authenticatedUserRoles` array in the output shows the MongoDB roles the user
+received. An empty array means authentication succeeded but the group-to-role mapping did
+not match - re-check `userToDNMapping` and the LDAP query in your configuration. An
+authentication failure instead points at the LDAP server address, the lookup user, or
+`authenticationMechanisms` not including `PLAIN`.

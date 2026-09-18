@@ -2,11 +2,11 @@
 
 At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site's nodes as external nodes for the Main site. In the same way, you add the Main's site nodes as external ones for the Replica site.
 
-Every site has three replica set members and three config server replica set members. But you add only two of them as voting members, while the third member is added as a non-voting one. In doing so, you avoid split-brain situations and prevent the primary elections if the Replica site is down or there is a network disruption between the sites.
+Configure two of each site's three replica set members (and two of the three config server members) as voting external nodes, and the third as non-voting (`votes: 0`, `priority: 0`). This is a deliberate choice, not automatic Operator behavior - it avoids split-brain and unwanted primary elections if the other site goes down or the network between sites is disrupted.
 
 In this way, the `main` cluster managed by the Operator is able to reach the `replica` nodes.
 
-!!! admonition "Using the arbiter node"
+!!! tip "Using the arbiter node"
 
     You can also add an **external arbiter** as a voting member when you interconnect sites. For example, if you run the arbiter node in the third location. This ability requires the Operator version 1.23.0 and above.
     
@@ -183,7 +183,7 @@ subsections.
 
 Verify that the clusters are interconnected by connecting to one of them. 
 
-1. Connect to one of the Pods directly using the credentials of the database admin user. Refer to the [Connect to Percona Server for MongoDB](connect.md) tutorial how to retrieve user credentials:
+1. Connect to one of the Pods directly using the credentials of the database admin user. Refer to [Connection secrets](connection-secrets.md#retrieve-a-connection-string) for how to retrieve user credentials:
 
     ```bash
     kubectl exec -it main-cluster-rs0-0 -- mongosh -u databaseAdmin -p <dbAdminPassword>

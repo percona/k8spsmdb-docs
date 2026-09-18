@@ -1,6 +1,6 @@
 # Telemetry
 
-The Telemetry function enables the Operator gathering and sending basic anonymous data to Percona, which helps us to determine where to focus the development and what is the uptake for each release of Operator.
+The Telemetry function enables the Operator to gather and send basic anonymous data to Percona, which helps us to determine where to focus the development and what is the uptake for each release of Operator.
 
 The following information is gathered:
 
@@ -14,7 +14,7 @@ The following information is gathered:
 * Is [sharding](sharding.md) enabled (starting from the Operator version 1.13)
 * Is [Hashicorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys) enabled (starting from the Operator version 1.13)
 * Is the Operator deployed in a [cluster-wide mode](cluster-wide.md) (starting from the Operator version 1.13)
-* Is [Volume Expansion](scaling.md#storage-resizing-with-volume-expansion-capability) enabled (starting from the Operator version 1.19)
+* Is [Volume Expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) enabled (starting from the Operator version 1.19)
 * Are [multi-cluster Services](replication-mcs.md) enabled (starting from the Operator version 1.19)
 * Does the Operator manage [custom MongoDB users](app-users.md#create-users-via-custom-resource) and/or [custom MongoDB roles](app-users.md#custom-mongodb-roles) (starting from the Operator version 1.19)
 * Is the Operator [deployed with Helm](helm.md)
