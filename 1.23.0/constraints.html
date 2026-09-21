@@ -10,11 +10,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The operator does a good job of automatically assigning new pods to nodes to
+        <meta name="description" content="The Operator does a good job of automatically assigning new Pods to nodes to
 achieve balanced distribution across the cluster. There are situations when you
-must ensure that pods land on specific nodes: for example, for the advantage of
-speed on an SSD-equipped machine, or reduce costs by choosing nodes in the same
-availability zone.">
+must ensure that Pods land on specific nodes: for example, for the speed of an
+SSD-equipped machine, or to reduce costs by choosing nodes in the same
+availability zone. There are also situations where the concern isn’t placement at
+all, but survival - making sure routine Kubernetes maintenance doesn’t take down
+more of the database than it has to.">
       
       
         <meta name="author" content="Percona LLC">
@@ -23,10 +25,10 @@ availability zone.">
         <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.0/constraints.html">
       
       
-        <link rel="prev" href="hookscript.html">
+        <link rel="prev" href="arbiter.html">
       
       
-        <link rel="next" href="annotations.html">
+        <link rel="next" href="backups-configure.html">
       
       
         
@@ -37,7 +39,7 @@ availability zone.">
     
     
       
-        <title>Anti-affinity and tolerations - Percona Operator for MongoDB</title>
+        <title>Control Pod scheduling - Percona Operator for MongoDB</title>
       
     
     
@@ -109,7 +111,7 @@ availability zone.">
                  
                  
                  <meta property="og:type" content="website" />
-                 <meta property="og:title" content="Percona Operator for MongoDB - Anti-affinity and tolerations" />
+                 <meta property="og:title" content="Percona Operator for MongoDB - Control Pod scheduling" />
                  <meta property="og:image" content="https://docs.percona.com/percona-operator-for-mongodb/latest/assets/images/kubernetes-operators.png">
                  <meta property="og:url" content="https://docs.percona.com/percona-operator-for-mongodb/latest/index.html">
                 </head>
@@ -136,7 +138,7 @@ availability zone.">
     <div data-md-component="skip">
       
         
-        <a href="#binding-percona-server-for-mongodb-components-to-specific-kubernetesopenshift-nodes" class="md-skip">
+        <a href="#control-pod-scheduling" class="md-skip">
           Skip to content
         </a>
       
@@ -211,7 +213,7 @@ availability zone.">
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Anti-affinity and tolerations
+              Control Pod scheduling
             
           </span>
         </div>
@@ -375,21 +377,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
       <a href="index.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Welcome
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -399,7 +393,6 @@ availability zone.">
     
       
       
-  
   
   
   
@@ -407,16 +400,9 @@ availability zone.">
       <a href="get-help.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Get help from Percona
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -429,51 +415,50 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="how-it-works.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    Features
-  
-
-    
+    About
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              <label class="md-nav__link " for="__nav_3">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Features
-  
-
+            About
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
   
   
   
@@ -481,16 +466,9 @@ availability zone.">
       <a href="architecture.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Design and architecture
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -501,7 +479,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -509,16 +486,9 @@ availability zone.">
       <a href="compare.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Comparison with other solutions
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -529,7 +499,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -537,16 +506,9 @@ availability zone.">
       <a href="limitations.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Known limitations
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -567,45 +529,59 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="features.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    Quickstart guides
-  
-
-    
+    Features
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              <label class="md-nav__link " for="__nav_4">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Quickstart guides
-  
-
+            Features
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -614,21 +590,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="quickstart.html" class="md-nav__link">
+      <a href="ha-topology.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
+    High availability and topology
   </span>
-  
   
 
       </a>
@@ -642,51 +610,243 @@ availability zone.">
   
   
   
+    <li class="md-nav__item">
+      <a href="backups.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backup and restore
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="replication.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disaster recovery and multi-site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="scaling-about.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling and storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="monitoring-observability.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring and observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="search-overview.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search and vector search
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="clustersync.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="expose.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking and external access
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="customization.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Customization and extensibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="quickstart.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    1. Quick install
-  
-
-    
+    Try the Operator
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    1. Quick install
-  
-
+              <label class="md-nav__link " for="__nav_5">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Try the Operator
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
   
   
   
@@ -694,16 +854,9 @@ availability zone.">
       <a href="kubectl.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    With kubectl
-  
-
-    
+    Quick install
   </span>
-  
   
 
       </a>
@@ -714,43 +867,6 @@ availability zone.">
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="helm.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    With Helm
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -758,16 +874,9 @@ availability zone.">
       <a href="connect.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    2. Connect to Percona Server for MongoDB
-  
-
-    
+    Connect and insert sample data
   </span>
-  
   
 
       </a>
@@ -778,35 +887,6 @@ availability zone.">
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="data-insert.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    3. Insert data
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -814,16 +894,9 @@ availability zone.">
       <a href="backup-tutorial.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    4. Make a backup
-  
-
-    
+    Take your first backup
   </span>
-  
   
 
       </a>
@@ -837,21 +910,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="monitoring-tutorial.html" class="md-nav__link">
+      <a href="restore-tutorial.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    5. Monitor the database with PMM
-  
-
-    
+    Restore sample data
   </span>
-  
   
 
       </a>
@@ -865,21 +930,33 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="what-next.html" class="md-nav__link">
+      <a href="delete.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    What&rsquo;s next?
-  
-
-    
+    Delete the Operator and database
   </span>
   
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="what-next-operations.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What&rsquo;s next for operators
+  </span>
   
 
       </a>
@@ -900,338 +977,36 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_6" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installation
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Installation
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="System-Requirements.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System requirements
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="minikube.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on Minikube
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="everest.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install with OpenEverest
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="gke.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on Google Kubernetes Engine (GKE)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="eks.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on Amazon Elastic Kubernetes Service (AWS EKS)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="aks.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on Microsoft Azure Kubernetes Service (AKS)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="rke2.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on Rancher Kubernetes Engine (RKE2)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="kubernetes.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Generic Kubernetes installation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="openshift.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install on OpenShift
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Upgrade
-  
-
-    
+    Integrate your application
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1240,11 +1015,7 @@ availability zone.">
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Upgrade
-  
-
+            Integrate your application
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1253,21 +1024,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="update.html" class="md-nav__link">
+      <a href="get-a-cluster.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    About upgrades
-  
-
-    
+    Get a cluster
   </span>
-  
   
 
       </a>
@@ -1281,444 +1044,170 @@ availability zone.">
   
   
   
+    <li class="md-nav__item">
+      <a href="connect-from-app.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Connect your application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app-credentials.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Get credentials for your app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="connect-from-outside.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Connect from your laptop or CI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="connection-examples.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Connection examples (Node, Python, Go)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="troubleshoot-connection.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot connection issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="what-next.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What&rsquo;s next for developers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Upgrade CRD and the Operator
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Upgrade CRD and the Operator
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-operator.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Considerations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-crd-manual.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manually
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-crd-helm.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    With Helm
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-crd-olm.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Via OLM
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-db.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Database upgrade overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Minor upgrade
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Minor upgrade
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-minor-set-version.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    To a specific version
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-minor-automatic.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Automatic minor upgrades
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update_manually.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manual upgrade
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update-major.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Major upgrade
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="update_openshift.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Upgrade Percona Server for MongoDB on OpenShift
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
-        
-          
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Configuration
-  
-
-    
+    Installation
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Configuration
-  
-
+            Installation
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1727,32 +1216,26 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7_1" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
-        
-          
           <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Manage users
-  
-
-    
+    Plan your installation
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1761,11 +1244,7 @@ availability zone.">
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Manage users
-  
-
+            Plan your installation
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1774,21 +1253,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="users.html" class="md-nav__link">
+      <a href="namespace-mode.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    About application and system users
-  
-
-    
+    Single-namespace and multi-namespace deployment modes
   </span>
-  
   
 
       </a>
@@ -1802,191 +1273,16 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="app-users.html" class="md-nav__link">
+      <a href="System-Requirements.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Application-level (unprivileged) users
-  
-
-    
+    System requirements
   </span>
-  
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="system-users.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System users
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="connection-secrets.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Connection secrets
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_1_5" id="__nav_7_1_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manage system users with Vault
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Manage system users with Vault
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="system-users-vault.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="system-users-vault-setup.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configuration
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -2005,32 +1301,32 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7_2" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
-        
-          
           <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Authentication
-  
-
-    
+    Create a Kubernetes cluster
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2039,11 +1335,7 @@ availability zone.">
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_2">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Authentication
-  
-
+            Create a Kubernetes cluster
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2052,21 +1344,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="ldap.html" class="md-nav__link">
+      <a href="minikube.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    OpenLDAP integration
-  
-
-    
+    Minikube
   </span>
-  
   
 
       </a>
@@ -2080,21 +1364,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="oidc.html" class="md-nav__link">
+      <a href="gke.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    OIDC authentication
-  
-
-    
+    Google Kubernetes Engine (GKE)
   </span>
-  
   
 
       </a>
@@ -2108,21 +1384,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="auth-disable.html" class="md-nav__link">
+      <a href="eks.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Disable authentication
-  
-
-    
+    Amazon Elastic Kubernetes Service (AWS EKS)
   </span>
-  
   
 
       </a>
@@ -2136,21 +1404,33 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="auth-bypass-localhost.html" class="md-nav__link">
+      <a href="aks.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Disable localhost authentication bypass
-  
-
-    
+    Microsoft Azure Kubernetes Service (AKS)
   </span>
   
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rke2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rancher Kubernetes Engine (RKE2)
+  </span>
   
 
       </a>
@@ -2172,21 +1452,54 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="options.html" class="md-nav__link">
+    
+    
+      
         
-  
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7_3" >
+        
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
-    
-  
-    Changing MongoDB options
-  
-
-    
+    Install in a single namespace
   </span>
   
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Install in a single namespace
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="helm.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    From Helm charts
+  </span>
   
 
       </a>
@@ -2200,21 +1513,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="options-pbm.html" class="md-nav__link">
+      <a href="kubernetes.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Change Percona Backup for MongoDB configuration
-  
-
-    
+    Using manifests
   </span>
-  
   
 
       </a>
@@ -2228,21 +1533,570 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="hookscript.html" class="md-nav__link">
+      <a href="custom-install.html" class="md-nav__link">
         
   
+  <span class="md-ellipsis">
+    Install the database with customized parameters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="openshift.html" class="md-nav__link">
+        
   
   <span class="md-ellipsis">
-    
+    Install on OpenShift
+  </span>
   
-    Extend startup logic for Percona Server for MongoDB components
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cluster-wide.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install in multi-namespace (cluster-wide) mode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="everest.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Install with OpenEverest
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="verify-cluster.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Verify the cluster operation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
   
 
     
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="update.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Upgrade and version management
   </span>
   
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_8">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Upgrade and version management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="update-operator.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Upgrade CRD and the Operator
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_8_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Upgrade CRD and the Operator
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-crd-manual.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade the Operator and CRD manually
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-crd-helm.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade the Operator and CRD with Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-crd-olm.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade the Operator and CRD on OpenShift via Operator Lifecycle Manager (OLM)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="update-db.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Upgrade Percona Server for MongoDB
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_8_2">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            Upgrade Percona Server for MongoDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-minor-set-version.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade to a specific version
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-minor-automatic.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automatic minor upgrade to the latest / recommended version
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-major.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Major version automated upgrades
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-manually.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manual upgrades of Percona Server for MongoDB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="update-openshift.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade Percona Server for MongoDB on OpenShift
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9" checked>
+        
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            User guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_1" checked>
+        
+          <label class="md-nav__link" for="__nav_9_1" id="__nav_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    High availability and topology
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            High availability and topology
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sharding.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sharding
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="arbiter.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arbiter, non-voting and hidden nodes
+  </span>
   
 
       </a>
@@ -2256,7 +2110,6 @@ availability zone.">
   
   
     
-  
   
   
     <li class="md-nav__item md-nav__item--active">
@@ -2270,16 +2123,9 @@ availability zone.">
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
-  
   <span class="md-ellipsis">
-    
-  
-    Anti-affinity and tolerations
-  
-
-    
+    Control Pod scheduling
   </span>
-  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -2288,16 +2134,9 @@ availability zone.">
       <a href="constraints.html" class="md-nav__link md-nav__link--active">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Anti-affinity and tolerations
-  
-
-    
+    Control Pod scheduling
   </span>
-  
   
 
       </a>
@@ -2316,6 +2155,17 @@ availability zone.">
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choose your approach
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#node-selector" class="md-nav__link">
@@ -2368,6 +2218,45 @@ availability zone.">
 </li>
       
         <li class="md-nav__item">
+  <a href="#priority-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pod-disruption-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pod Disruption Budgets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pod Disruption Budgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-you-can-set-priorityclassname-and-poddisruptionbudget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where you can set priorityClassName and podDisruptionBudget
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#topology-spread-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2390,21 +2279,10 @@ availability zone.">
 </li>
       
         <li class="md-nav__item">
-  <a href="#priority-classes" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Priority Classes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pod-disruption-budgets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pod Disruption Budgets
+        See also
       
     </span>
   </a>
@@ -2420,361 +2298,6 @@ availability zone.">
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="annotations.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Labels and annotations
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="expose.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Exposing the cluster
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="storage.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Local storage support
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="arbiter.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Arbiter and non-voting nodes
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sharding.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    MongoDB sharding
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_12" id="__nav_7_12_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Transport encryption (TLS/SSL)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_12">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Transport encryption (TLS/SSL)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="TLS.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    About TLS security
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tls-cert-manager.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure TLS using cert-manager
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tls-manual.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Generate certificates manually
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tls-update.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Update certificates
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tls-cert-management-policy.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure the TLS certificate management policy
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tls-disable.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Disable TLS
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2788,572 +2311,55 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_13" id="__nav_7_13_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Data at rest encryption
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_13">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Data at rest encryption
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="encryption.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    About data-at-rest encryption
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="encryption-keyfile.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure encryption using an encryption key Secret
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_3" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_13_3" id="__nav_7_13_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure encryption with HashiCorp Vault
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_13_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Configure encryption with HashiCorp Vault
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="encryption-vault.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    without TLS
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="encryption-vault-tls.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    with TLS
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="telemetry.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Telemetry
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="env-vars-operator.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Operator environment variables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="env-vars-cluster.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Cluster component environment variables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="env-vars-custom.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Define custom environment variables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reconciliation-concurrency.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure concurrency for a cluster reconciliation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_19" >
-        
           
-          <label class="md-nav__link" for="__nav_7_19" id="__nav_7_19_label" tabindex="0">
-            
-  
+          <div class="md-nav__link md-nav__container">
+            <a href="backups-configure.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    Logging
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_19">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Logging
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="persistent-logging.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Persistent logging
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="logrotate.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Log rotation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Management
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Management
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
     Backup and restore
-  
-
-    
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Backup and restore
-  
-
+              <label class="md-nav__link " for="__nav_9_2">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            Backup and restore
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3362,107 +2368,58 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="backups.html" class="md-nav__link">
+    
+    
+      
         
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    About backups
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_2" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2_1" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_2" id="__nav_8_1_2_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="backups-storage.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
     Configure storage for backups
-  
-
-    
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_2">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Configure storage for backups
-  
-
+              <label class="md-nav__link " for="__nav_9_2_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Configure storage for backups
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-storage.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -3470,16 +2427,9 @@ availability zone.">
       <a href="backups-storage-s3.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Amazon S3 storage
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3490,7 +2440,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3498,16 +2447,9 @@ availability zone.">
       <a href="backups-storage-minio.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     MinIO and S3-compatible storages
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3518,7 +2460,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3526,16 +2467,9 @@ availability zone.">
       <a href="backups-storage-gcp.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Google Cloud storage
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3546,7 +2480,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3554,16 +2487,9 @@ availability zone.">
       <a href="backups-storage-azure.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Microsoft Azure Blob storage
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3574,7 +2500,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3582,16 +2507,9 @@ availability zone.">
       <a href="backups-storage-oss.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Alibaba Cloud OSS storage
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3602,7 +2520,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3610,16 +2527,9 @@ availability zone.">
       <a href="backups-storage-oci.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Oracle Cloud Infrastructure Object Storage
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3630,7 +2540,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3638,16 +2547,9 @@ availability zone.">
       <a href="backups-storage-filesystem.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Remote file server
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3669,101 +2571,41 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="multi-storage.html" class="md-nav__link">
+    
+    
+      
         
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Multiple storages for backups
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-pitr.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Store operations logs for point-in-time recovery
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_5" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2_2" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_5" id="__nav_8_1_5_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="backups-pitr.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    PVC snapshot backups
-  
-
-    
+    Enable point-in-time recovery (PITR)
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_5">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    PVC snapshot backups
-  
-
+              <label class="md-nav__link " for="__nav_9_2_2">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Enable point-in-time recovery (PITR)
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3772,77 +2614,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="backups-pvc-snapshots.html" class="md-nav__link">
+      <a href="backups-pitr-restore.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
+    Restore to a point in time
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-pvc-setup.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure PVC snapshots
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-pvc-usage.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Use PVC snapshots
-  
-
-    
-  </span>
-  
   
 
       </a>
@@ -3864,51 +2642,40 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2_3" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_1_6" id="__nav_8_1_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_2_3" id="__nav_9_2_3_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
     Make a backup
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Make a backup
-  
-
+            Make a backup
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
   
   
   
@@ -3916,16 +2683,9 @@ availability zone.">
       <a href="backups-scheduled.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Scheduled backup
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3936,7 +2696,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -3944,16 +2703,9 @@ availability zone.">
       <a href="backups-ondemand.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     On-demand backup
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3973,6 +2725,98 @@ availability zone.">
               
                 
   
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="backups-pvc-snapshots.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Use PVC snapshots
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_9_2_4">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Use PVC snapshots
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-pvc-setup.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure PVC snapshots
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-pvc-usage.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Restore from a PVC snapshot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -3980,16 +2824,9 @@ availability zone.">
       <a href="backups-encryption.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Enable server-side encryption
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4003,135 +2840,46 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_8" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_2_6" >
         
           
-          <label class="md-nav__link" for="__nav_8_1_8" id="__nav_8_1_8_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="backups-restore.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
     Restore from a backup
-  
-
-    
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1_8">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Restore from a backup
-  
-
+              <label class="md-nav__link " for="__nav_9_2_6">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Restore from a backup
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-restore.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    On the same cluster
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-restore-to-new-cluster.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    On a new cluster
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-restore-replset-remapping.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    On a new cluster with different replica set names
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -4139,16 +2887,9 @@ availability zone.">
       <a href="backups-restore-new-name.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Restore a collection under a different name
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4168,6 +2909,25 @@ availability zone.">
               
                 
   
+  
+  
+    <li class="md-nav__item">
+      <a href="multi-storage.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multiple storages for backups
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -4175,16 +2935,9 @@ availability zone.">
       <a href="backups-delete.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Delete the unneeded backup
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4206,107 +2959,42 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="scaling.html" class="md-nav__link">
+    
+    
+      
         
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Horizontal and vertical scaling
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_3" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Multi-cluster and multi-region deployment
-  
-
-    
+    Disaster recovery and multi-site
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Multi-cluster and multi-region deployment
-  
-
+            Disaster recovery and multi-site
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="replication.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    About Multi-cluster and multi-region deployments
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -4314,16 +3002,9 @@ availability zone.">
       <a href="replication-plan-deployment.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Plan your deployment
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4337,79 +3018,50 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3_3" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_3_2" >
         
           
-          <label class="md-nav__link" for="__nav_8_3_3" id="__nav_8_3_3_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="replication-mcs.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
     Multi-cluster Services
-  
-
-    
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_3_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3_3">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Multi-cluster Services
-  
-
+              <label class="md-nav__link " for="__nav_9_3_2">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Multi-cluster Services
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="replication-mcs.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    About Multi-cluster Services
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -4417,16 +3069,9 @@ availability zone.">
       <a href="replication-mcs-gke.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Enable Multi-cluster Services on GKE
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4437,7 +3082,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4445,16 +3089,9 @@ availability zone.">
       <a href="replication-mcs-eks.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Enable Multi-cluster Services on EKS
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4465,7 +3102,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4473,16 +3109,9 @@ availability zone.">
       <a href="replication-apply-mcs-existing.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Apply MCS to an existing cluster
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4504,51 +3133,48 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_3_3" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_3_4" id="__nav_8_3_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_3_3" id="__nav_9_3_3_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
     Deployment
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
+            Deployment
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
   
   
   
@@ -4556,16 +3182,9 @@ availability zone.">
       <a href="replication-main.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Configure Main site for replication
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4576,7 +3195,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4584,16 +3202,9 @@ availability zone.">
       <a href="replication-replica.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Configure Replica site for replication
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4604,7 +3215,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4612,16 +3222,9 @@ availability zone.">
       <a href="replication-interconnect.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Interconnect sites
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4632,7 +3235,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4640,16 +3242,9 @@ availability zone.">
       <a href="replication-failover.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Fail over workload to the Replica site
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4660,7 +3255,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4668,16 +3262,9 @@ availability zone.">
       <a href="replication-backups.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Backups with cross-site replication
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4688,7 +3275,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -4696,16 +3282,9 @@ availability zone.">
       <a href="replication-multi-dc.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Splitting replica set across multiple data centers
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -4735,45 +3314,45 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_4" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_4" >
         
           
-          <label class="md-nav__link" for="__nav_8_4" id="__nav_8_4_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="scaling.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
-    Real-time replication with Percona ClusterSync for MongoDB
-  
-
-    
+    Scaling and storage
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_4">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Real-time replication with Percona ClusterSync for MongoDB
-  
-
+              <label class="md-nav__link " for="__nav_9_4">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
+            <span class="md-nav__icon md-icon"></span>
+            Scaling and storage
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -4782,21 +3361,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="clustersync.html" class="md-nav__link">
+      <a href="scaling-storage-resize.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    About PCSM integration
-  
-
-    
+    Resize storage
   </span>
-  
   
 
       </a>
@@ -4810,57 +3381,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="clustersync-setup.html" class="md-nav__link">
+      <a href="storage.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Set up and use PCSM
-  
-
-    
+    Manage local storage
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="monitoring.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Monitor with Percona Monitoring and Management (PMM)
-  
-
-    
-  </span>
-  
   
 
       </a>
@@ -4871,63 +3398,6 @@ availability zone.">
             
               
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sidecar.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Add sidecar containers
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="pause.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Restart or pause the cluster
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -4935,16 +3405,9 @@ availability zone.">
       <a href="volume-attributes-class.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Configure VolumeAttributesClass for Persistent Volumes
-  
-
-    
+    Configure VolumeAttributesClass
   </span>
-  
   
 
       </a>
@@ -4959,51 +3422,44 @@ availability zone.">
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+    
     
       
+        
       
-  
-  
-  
-  
-    
-    
-    
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_5" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Search and Vector search
-  
-
-    
+    Monitoring and observability
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Search and Vector search
-  
-
+            Monitoring and observability
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -5012,21 +3468,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="search-overview.html" class="md-nav__link">
+      <a href="monitoring.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    About full-text and vector search
-  
-
-    
+    Monitor the database with PMM
   </span>
-  
   
 
       </a>
@@ -5038,6 +3486,801 @@ availability zone.">
               
                 
   
+  
+  
+    <li class="md-nav__item">
+      <a href="monitor-kubernetes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitor Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_5_3" >
+        
+          <label class="md-nav__link" for="__nav_9_5_3" id="__nav_9_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Logging
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Logging
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="persistent-logging.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Persistent logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="logrotate.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Log rotation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6" >
+        
+          <label class="md-nav__link" for="__nav_9_6" id="__nav_9_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="users.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Manage users
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_9_6_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Manage users
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app-users.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Application-level (unprivileged) users
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="system-users.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System users
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="connection-secrets.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Connection secrets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_1_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="system-users-vault.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Manage system users with Vault
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_9_6_1_4">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_6_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            Manage system users with Vault
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="system-users-vault-setup.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="TLS.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Transport encryption (TLS/SSL)
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_9_6_2">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Transport encryption (TLS/SSL)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tls-cert-manager.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure TLS using cert-manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tls-manual.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generate certificates manually
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tls-update.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Update certificates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tls-cert-management-policy.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure the TLS certificate management policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tls-disable.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disable TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="encryption.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Data-at-rest encryption
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_9_6_3">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Data-at-rest encryption
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="encryption-keyfile.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure encryption using an encryption key Secret
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_3_2" >
+        
+          <label class="md-nav__link" for="__nav_9_6_3_2" id="__nav_9_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configure encryption with HashiCorp Vault
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Configure encryption with HashiCorp Vault
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="encryption-vault.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    without TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="encryption-vault-tls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    with TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_6_4" >
+        
+          <label class="md-nav__link" for="__nav_9_6_4" id="__nav_9_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ldap.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenLDAP integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="oidc.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OIDC authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth-disable.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disable authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth-bypass-localhost.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disable localhost authentication bypass
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -5045,16 +4288,9 @@ availability zone.">
       <a href="search-setup.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Configure search and vector search
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -5063,57 +4299,40 @@ availability zone.">
 
               
             
-          </ul>
-        </nav>
+              
+                
+  
+  
+  
+    
+    
       
-    </li>
-  
-
-    
+        
       
+        
       
-  
-  
-  
-  
-    
-    
-    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_8" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
-        
-          
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_8" id="__nav_9_8_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Troubleshooting
-  
-
-    
+    Data migration
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_8">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Troubleshooting
-  
-
+            Data migration
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -5122,21 +4341,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="troubleshoot-operator.html" class="md-nav__link">
+      <a href="clustersync-setup.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Troubleshoot the Operator installation issues
-  
-
-    
+    Set up and use PCSM for data migration
   </span>
-  
   
 
       </a>
@@ -5150,21 +4361,90 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="debug.html" class="md-nav__link">
+      <a href="backups-move-from-external-db.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Initial troubleshooting
-  
-
-    
+    Use backups to move an external database to Kubernetes
   </span>
   
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_9" >
+        
+          <label class="md-nav__link" for="__nav_9_9" id="__nav_9_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Customization and extensibility
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_9">
+            <span class="md-nav__icon md-icon"></span>
+            Customization and extensibility
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="options.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Change MongoDB options
+  </span>
   
 
       </a>
@@ -5178,21 +4458,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="debug-shell.html" class="md-nav__link">
+      <a href="options-pbm.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Exec into the container
-  
-
-    
+    Percona Backup for MongoDB options
   </span>
-  
   
 
       </a>
@@ -5206,21 +4478,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="debug-logs.html" class="md-nav__link">
+      <a href="sidecar.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Check the logs
-  
-
-    
+    Add sidecar containers
   </span>
-  
   
 
       </a>
@@ -5234,21 +4498,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="debug-backup-restore.html" class="md-nav__link">
+      <a href="hookscript.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Troubleshoot backups and restores
-  
-
-    
+    Extend startup logic (hook script)
   </span>
-  
   
 
       </a>
@@ -5262,21 +4518,52 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="debug-images.html" class="md-nav__link">
+    
+    
+      
         
-  
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_9_9_5" >
+        
+          <label class="md-nav__link" for="__nav_9_9_5" id="__nav_9_9_5_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
-    
-  
-    Special debug images
-  
-
-    
+    Environment variables
   </span>
   
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_9_5">
+            <span class="md-nav__icon md-icon"></span>
+            Environment variables
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="env-vars-operator.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operator environment variables
+  </span>
   
 
       </a>
@@ -5290,21 +4577,129 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
-      <a href="debug-storage.html" class="md-nav__link">
+      <a href="env-vars-cluster.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Storage resizing
-  
-
-    
+    Cluster component environment variables
   </span>
   
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="env-vars-custom.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Define custom environment variables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="annotations.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Labels and annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reconciliation-concurrency.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configure concurrent reconciliation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="custom-registry.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Use a private registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pause.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pause or resume the cluster
+  </span>
   
 
       </a>
@@ -5325,32 +4720,218 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="debug.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
+    Troubleshooting
+  </span>
   
-    HOWTOs
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_10">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Troubleshooting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="troubleshoot-operator.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot the Operator installation issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-shell.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exec into the container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-logs.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Check the logs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-backup-restore.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot backups and restores
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-images.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Special debug images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-storage.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage resizing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
   
 
     
-  </span>
+      
+      
   
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11" >
+        
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -5359,11 +4940,7 @@ availability zone.">
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    HOWTOs
-  
-
+            Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -5372,329 +4949,44 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="custom-install.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
     
-  
-    Install the database with customized parameters
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="custom-registry.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    How to use private registry
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="private.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Creating a private S3-compatible cloud for backups
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="backups-move-from-external-db.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    How to use backups to move the external database to Kubernetes
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="cluster-wide.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Install Percona Server for MongoDB in multi-namespace (cluster-wide) mode
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reconciliation-concurrency.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configure concurrency for a cluster reconciliation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="monitor-kubernetes.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Monitor Kubernetes
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="delete.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delete the Operator
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
     
       
+        
       
-  
-  
-  
-  
-    
-    
-    
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_1" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
-        
-          
-          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
+    Custom Resource reference
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
+            Custom Resource reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_12_1" id="__nav_12_1_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom Resource reference
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_1">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Custom Resource reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
   
   
   
@@ -5702,16 +4994,9 @@ availability zone.">
       <a href="operator.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    PerconaServerMongoDB options
-  
-
-    
+    Custom Resource options
   </span>
-  
   
 
       </a>
@@ -5722,7 +5007,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -5730,16 +5014,9 @@ availability zone.">
       <a href="backup-resource-options.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Backup options
-  
-
-    
+    Backup resource options
   </span>
-  
   
 
       </a>
@@ -5750,7 +5027,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -5758,16 +5034,9 @@ availability zone.">
       <a href="restore-options.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Restore options
-  
-
-    
+    Restore resource options
   </span>
-  
   
 
       </a>
@@ -5778,7 +5047,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -5786,16 +5054,9 @@ availability zone.">
       <a href="clustersync-options.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     ClusterSync options
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -5814,7 +5075,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -5822,16 +5082,9 @@ availability zone.">
       <a href="cr-statuses.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Custom resource statuses
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -5842,146 +5095,6 @@ availability zone.">
             
               
                 
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_12_3" id="__nav_12_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Certified images
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Certified images
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="images.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Percona certified images
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="image-query.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Retrieve Percona certified images
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="versions.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Versions compatibility
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
   
   
   
@@ -5989,16 +5102,9 @@ availability zone.">
       <a href="api.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Operator API
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6010,6 +5116,96 @@ availability zone.">
               
                 
   
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="images.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Certified images
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_11_4">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_4">
+            <span class="md-nav__icon md-icon"></span>
+            Certified images
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="image-query.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retrieve certified images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="versions.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Versions compatibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -6017,16 +5213,9 @@ availability zone.">
       <a href="faq.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Frequently asked questions
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6040,51 +5229,62 @@ availability zone.">
   
   
   
+    <li class="md-nav__item">
+      <a href="telemetry.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Telemetry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
     
     
-    
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8" >
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_12_7" id="__nav_12_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
             
   
-  
   <span class="md-ellipsis">
-    
-  
     Legal
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Legal
-  
-
+            Legal
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
-  
   
   
   
@@ -6092,16 +5292,9 @@ availability zone.">
       <a href="copyright.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Copyright and licensing information
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6112,7 +5305,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6120,16 +5312,9 @@ availability zone.">
       <a href="trademark-policy.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Trademark policy
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6143,21 +5328,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
       <a href="legal-notice.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Legal Notice
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6186,45 +5363,99 @@ availability zone.">
   
   
   
-  
     
     
-    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_12" >
         
           
-          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
-            
-  
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="RN/index.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    
-  
     Release notes
-  
-
-    
   </span>
   
-  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_13">
-            <span class="md-nav__icon md-icon"></span>
+            </a>
             
-  
-    Release notes
-  
-
+              <label class="md-nav__link " for="__nav_12">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Release notes
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -6233,49 +5464,13 @@ availability zone.">
   
   
   
-  
-    <li class="md-nav__item">
-      <a href="RN/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Release notes index
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.23.0 (2026-07-23)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6286,7 +5481,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6294,16 +5488,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.22.0 (2026-02-25)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6314,7 +5501,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6322,16 +5508,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.21.2 (2026-01-12)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6342,7 +5521,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6350,16 +5528,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.21.1 (2025-10-30)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6370,7 +5541,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6378,16 +5548,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.21.0 (2025-10-20)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6398,7 +5561,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6406,16 +5568,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.20.1 (2025-06-04)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6426,7 +5581,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6434,16 +5588,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
     Percona Operator for MongoDB 1.20.0 (2025-05-19)
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -6454,7 +5601,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6462,16 +5608,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.19.1 (2025-02-20)
-  
-
-    
+    Percona Operator for MongoDB 1.19.1
   </span>
-  
   
 
       </a>
@@ -6482,7 +5621,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6490,16 +5628,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.19.0 (2025-01-21)
-  
-
-    
+    Percona Operator for MongoDB 1.19.0
   </span>
-  
   
 
       </a>
@@ -6510,7 +5641,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6518,16 +5648,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.18.0 (2024-11-14)
-  
-
-    
+    Percona Operator for MongoDB 1.18.0
   </span>
-  
   
 
       </a>
@@ -6538,7 +5661,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6546,16 +5668,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.17.0 (2024-09-09)
-  
-
-    
+    Percona Operator for MongoDB 1.17.0
   </span>
-  
   
 
       </a>
@@ -6566,7 +5681,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6574,16 +5688,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.16.2 (2024-07-23)
-  
-
-    
+    Percona Operator for MongoDB 1.16.2
   </span>
-  
   
 
       </a>
@@ -6594,7 +5701,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6602,16 +5708,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.16.1 (2024-06-24)
-  
-
-    
+    Percona Operator for MongoDB 1.16.1
   </span>
-  
   
 
       </a>
@@ -6622,7 +5721,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6630,16 +5728,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.16.0 (2024-05-24)
-  
-
-    
+    Percona Operator for MongoDB 1.16.0
   </span>
-  
   
 
       </a>
@@ -6650,7 +5741,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6658,16 +5748,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.15.0 (2023-10-09)
-  
-
-    
+    Percona Operator for MongoDB 1.15.0
   </span>
-  
   
 
       </a>
@@ -6678,7 +5761,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6686,16 +5768,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.14.0 (2023-03-13)
-  
-
-    
+    Percona Operator for MongoDB 1.14.0
   </span>
-  
   
 
       </a>
@@ -6706,7 +5781,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6714,16 +5788,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.13.0 (2022-09-15)
-  
-
-    
+    Percona Operator for MongoDB 1.13.0
   </span>
-  
   
 
       </a>
@@ -6734,7 +5801,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6742,16 +5808,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Operator for MongoDB 1.12.0 (2022-05-05)
-  
-
-    
+    Percona Operator for MongoDB 1.12.0
   </span>
-  
   
 
       </a>
@@ -6762,7 +5821,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6770,16 +5828,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Distribution for MongoDB Operator 1.11.0 (2021-12-21)
-  
-
-    
+    Percona Distribution for MongoDB Operator 1.11.0
   </span>
-  
   
 
       </a>
@@ -6790,7 +5841,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6798,16 +5848,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Distribution for MongoDB Operator 1.10.0 (2021-09-30)
-  
-
-    
+    Percona Distribution for MongoDB Operator 1.10.0
   </span>
-  
   
 
       </a>
@@ -6818,7 +5861,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6826,16 +5868,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Distribution for MongoDB Operator 1.9.0 (2021-07-29)
-  
-
-    
+    Percona Distribution for MongoDB Operator 1.9.0
   </span>
-  
   
 
       </a>
@@ -6846,7 +5881,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6854,16 +5888,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.8.0 (2021-05-06)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.8.0
   </span>
-  
   
 
       </a>
@@ -6874,7 +5901,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6882,16 +5908,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.7.0 (2021-03-08)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.7.0
   </span>
-  
   
 
       </a>
@@ -6902,7 +5921,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6910,16 +5928,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.6.0 (2020-12-22)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.6.0
   </span>
-  
   
 
       </a>
@@ -6930,7 +5941,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6938,16 +5948,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.5.0 (2020-09-07)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.5.0
   </span>
-  
   
 
       </a>
@@ -6958,7 +5961,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6966,16 +5968,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.4.0 (2020-03-31)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.4.0
   </span>
-  
   
 
       </a>
@@ -6986,7 +5981,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -6994,16 +5988,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.3.0 (2019-12-11)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.3.0
   </span>
-  
   
 
       </a>
@@ -7014,7 +6001,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -7022,16 +6008,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0 (2019-09-20)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.2.0
   </span>
-  
   
 
       </a>
@@ -7042,7 +6021,6 @@ availability zone.">
             
               
                 
-  
   
   
   
@@ -7050,16 +6028,9 @@ availability zone.">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0 (2019-07-15)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.1.0
   </span>
-  
   
 
       </a>
@@ -7073,21 +6044,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
       <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.html" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0 (2019-05-29)
-  
-
-    
+    Percona Kubernetes Operator for Percona Server for MongoDB 1.0.0
   </span>
-  
   
 
       </a>
@@ -7108,21 +6071,13 @@ availability zone.">
   
   
   
-  
     <li class="md-nav__item">
       <a href="https://docs.percona.com/legacy-documentation/" class="md-nav__link">
         
   
-  
   <span class="md-ellipsis">
-    
-  
-    Old releases (documentation archive)
-  
-
-    
+    Documentation archive
   </span>
-  
   
 
       </a>
@@ -7134,7 +6089,7 @@ availability zone.">
 </nav>
                     <br>
                     <label class="md-nav__title" for="__drawer">
-    <a href=https://learn.percona.com/download-percona-operator-for-mongodb-1 onclick="_gaq.push(['b._trackEvent', 'Percona Operator for MongoDB', 'Download', 'Download Manual Percona Operator for MongoDB']);" class="md-nav__link md-nav__link--active" style="font-size: .7rem;">
+    <a href=https://learn.percona.com/download-percona-operator-for-mongodb-1 onclick="_gaq.push(['b._trackEvent', 'Percona Operator for MongoDB', 'Download', 'Download Manual Percona Operator for MongoDB']);" class="md-nav__link" style="font-size: .7rem;">
       Download PDF
     </a>
   </label> 
@@ -7430,6 +6385,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#choose-your-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choose your approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#node-selector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7480,6 +6446,45 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
+  <a href="#priority-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pod-disruption-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pod Disruption Budgets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pod Disruption Budgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-you-can-set-priorityclassname-and-poddisruptionbudget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where you can set priorityClassName and podDisruptionBudget
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#topology-spread-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7502,21 +6507,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#priority-classes" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Priority Classes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pod-disruption-budgets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pod Disruption Budgets
+        See also
       
     </span>
   </a>
@@ -7559,6 +6553,80 @@ window.addEventListener('afterprint', (event) => {
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="index.html" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="sharding.html" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    User guides
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="sharding.html" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    High availability and topology
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -7576,31 +6644,71 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="binding-percona-server-for-mongodb-components-to-specific-kubernetesopenshift-nodes">Binding Percona Server for MongoDB components to Specific Kubernetes/OpenShift Nodes<a class="headerlink" href="#binding-percona-server-for-mongodb-components-to-specific-kubernetesopenshift-nodes" title="Permanent link">&para;</a></h1>
-<p>The operator does a good job of automatically assigning new pods to nodes to
+<h1 id="control-pod-scheduling">Control Pod scheduling<a class="headerlink" href="#control-pod-scheduling" title="Permanent link">&para;</a></h1>
+<p>The Operator does a good job of automatically assigning new Pods to nodes to
 achieve balanced distribution across the cluster. There are situations when you
-must ensure that pods land on specific nodes: for example, for the advantage of
-speed on an SSD-equipped machine, or reduce costs by choosing nodes in the same
-availability zone.</p>
+must ensure that Pods land on specific nodes: for example, for the speed of an
+SSD-equipped machine, or to reduce costs by choosing nodes in the same
+availability zone. There are also situations where the concern isn&rsquo;t placement at
+all, but survival - making sure routine Kubernetes maintenance doesn&rsquo;t take down
+more of the database than it has to.</p>
 <p>The appropriate (sub)sections (<code>replsets</code>, <code>replsets.arbiter</code>, <code>backup</code>, etc.)
 of the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
 file contain the keys which can be used to do assign pods to nodes.</p>
+<h2 id="choose-your-approach">Choose your approach<a class="headerlink" href="#choose-your-approach" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Use</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bind Pods to specific hardware (SSD nodes, a GPU node pool)</td>
+<td>Node selector</td>
+<td><a href="#node-selector">Node selector</a></td>
+</tr>
+<tr>
+<td>Spread replica set members across nodes, zones, or regions so infrastructure loss doesn&rsquo;t take down a majority</td>
+<td>Affinity and anti-affinity</td>
+<td><a href="#affinity-and-anti-affinity">Affinity and anti-affinity</a></td>
+</tr>
+<tr>
+<td>Protect the database from being evicted for a less important workload</td>
+<td>Priority Classes</td>
+<td><a href="#priority-classes">Priority Classes</a></td>
+</tr>
+<tr>
+<td>Limit how many Pods a voluntary disruption (node drain, cluster upgrade) can take down at once</td>
+<td>Pod Disruption Budget</td>
+<td><a href="#pod-disruption-budgets">Pod Disruption Budgets</a></td>
+</tr>
+<tr>
+<td>Balance Pods across zones or nodes with finer control than simple anti-affinity</td>
+<td>Topology Spread Constraints</td>
+<td><a href="#topology-spread-constraints">Topology Spread Constraints</a></td>
+</tr>
+<tr>
+<td>Allow Pods onto nodes that are otherwise off-limits (tainted, dedicated)</td>
+<td>Tolerations</td>
+<td><a href="#tolerations">Tolerations</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="node-selector">Node selector<a class="headerlink" href="#node-selector" title="Permanent link">&para;</a></h2>
 <p>The <code>nodeSelector</code> contains one or more key-value pairs. If the node is not
 labeled with each key-value pair from the Pod’s <code>nodeSelector</code>, the Pod will not
 be able to land on it.</p>
 <p>The following example binds the Pod to any node having a self-explanatory
 <code>disktype: ssd</code> label:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">nodeSelector</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span>
 </code></pre></div>
 <h2 id="affinity-and-anti-affinity">Affinity and anti-affinity<a class="headerlink" href="#affinity-and-anti-affinity" title="Permanent link">&para;</a></h2>
-<p>Affinity defines eligible pods that can be scheduled on the node which already
-has pods with specific labels. Anti-affinity defines pods that are not eligible.
-This approach is reduces costs by ensuring several pods with intensive data
-exchange  occupy the same availability zone or even the same node or, on the
-contrary, to spread the pods on different nodes or even different availability
-zones for high availability and balancing purposes.</p>
+<p>Affinity attracts Pods to nodes that already run Pods with specific labels; anti-affinity repels them. Use affinity to keep Pods with heavy data exchange on the same node or availability zone and cut cross-node traffic. Use anti-affinity to spread Pods across different nodes or zones, so the loss of one doesn&rsquo;t take several replica set members down together.</p>
 <p>Percona Operator for MongoDB provides two approaches for doing this:</p>
 <ul>
 <li>simple way to set anti-affinity for Pods, built-in into the Operator,</li>
@@ -7620,8 +6728,9 @@ may have one of the following values:</p>
 </ul>
 <p>The following example forces Percona Server for MongoDB Pods to avoid occupying
 the same node:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">affinity</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 </code></pre></div>
 <h3 id="advanced-approach-use-standard-kubernetes-constraints">Advanced approach - use standard Kubernetes constraints<a class="headerlink" href="#advanced-approach-use-standard-kubernetes-constraints" title="Permanent link">&para;</a></h3>
 <p>The previous method can be used without special knowledge of the Kubernetes way
@@ -7630,48 +6739,118 @@ tuning may be needed. In this case, the <code>advanced</code> option placed in t
 <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
 file turns off the effect of the <code>antiAffinityTopologyKey</code> and allows
 the use of the standard Kubernetes affinity constraints of any complexity:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">affinity</span><span class="p">:</span>
-<span class="w">   </span><span class="nt">advanced</span><span class="p">:</span>
-<span class="w">     </span><span class="nt">podAffinity</span><span class="p">:</span>
-<span class="w">       </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
-<span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
-<span class="w">           </span><span class="nt">matchExpressions</span><span class="p">:</span>
-<span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
-<span class="w">             </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
-<span class="w">             </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">S1</span>
-<span class="w">         </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">failure-domain.beta.kubernetes.io/zone</span>
-<span class="w">     </span><span class="nt">podAntiAffinity</span><span class="p">:</span>
-<span class="w">       </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
-<span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-<span class="w">         </span><span class="nt">podAffinityTerm</span><span class="p">:</span>
-<span class="w">           </span><span class="nt">labelSelector</span><span class="p">:</span>
-<span class="w">             </span><span class="nt">matchExpressions</span><span class="p">:</span>
-<span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
-<span class="w">               </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
-<span class="w">               </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">S2</span>
-<span class="w">           </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
-<span class="w">     </span><span class="nt">nodeAffinity</span><span class="p">:</span>
-<span class="w">       </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
-<span class="w">         </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span>
-<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span>
-<span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/e2e-az-name</span>
-<span class="w">             </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
-<span class="w">             </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e2e-az1</span>
-<span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e2e-az2</span>
-<span class="w">       </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
-<span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">         </span><span class="nt">preference</span><span class="p">:</span>
-<span class="w">           </span><span class="nt">matchExpressions</span><span class="p">:</span>
-<span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">another-node-label-key</span>
-<span class="w">             </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
-<span class="w">             </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">another-node-label-value</span>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">advanced</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">podAffinity</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
+<span class="w">              </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<span class="w">              </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">S1</span>
+<span class="w">          </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">failure-domain.beta.kubernetes.io/zone</span>
+<span class="w">      </span><span class="nt">podAntiAffinity</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">          </span><span class="nt">podAffinityTerm</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">labelSelector</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
+<span class="w">                </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<span class="w">                </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">S2</span>
+<span class="w">            </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
+<span class="w">      </span><span class="nt">nodeAffinity</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/e2e-az-name</span>
+<span class="w">              </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<span class="w">              </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e2e-az1</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e2e-az2</span>
+<span class="w">        </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">preference</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">another-node-label-key</span>
+<span class="w">              </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<span class="w">              </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">another-node-label-value</span>
 </code></pre></div>
 <p>See explanation of the advanced affinity options <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature">in Kubernetes
 documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</p>
+<h2 id="priority-classes">Priority Classes<a class="headerlink" href="#priority-classes" title="Permanent link">&para;</a></h2>
+<p>Pods may belong to a <em>priority class</em>. This lets the scheduler distinguish more and less important Pods when needed - for example, when a higher-priority Pod cannot be scheduled without evicting a lower-priority one first.</p>
+<p>Without a <code>priorityClassName</code> set, MongoDB Pods carry Kubernetes&rsquo; default priority and are exactly as evictable as anything else in the cluster. In a resource-constrained cluster, nothing protects the database from being bumped for a less critical workload unless you set this explicitly.</p>
+<p>To use it, add one or more PriorityClasses to your Kubernetes cluster, then set <code>priorityClassName</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-priority</span>
+</code></pre></div>
+<p>See the <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption">Kubernetes Pods Priority and Preemption documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
+to find out how to define and use priority classes in your cluster.</p>
+<h2 id="pod-disruption-budgets">Pod Disruption Budgets<a class="headerlink" href="#pod-disruption-budgets" title="Permanent link">&para;</a></h2>
+<p>Affinity and anti-affinity covered above only control <em>where</em> Pods land - they do nothing to stop a <em>voluntary</em> disruption. A <code>kubectl drain</code> during a node upgrade, or a cluster autoscaler action, can evict two anti-affinitized replica set members back to back, breaking quorum through routine maintenance instead of hardware failure. A <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> is what limits how many Pods can go down at once during such <em>voluntary disruptions</em> - the specific gap anti-affinity leaves open. The <code>maxUnavailable</code> and <code>minAvailable</code> options in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> file set these limits.</p>
+<p>For the standard 3-member data-bearing replica set, losing 2 members at once breaks quorum - you need a majority of the 3 to elect a primary - so <code>maxUnavailable: 1</code> is the most you can afford to lose there:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">podDisruptionBudget</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p>Don&rsquo;t copy <code>1</code> onto a different member count. The right number scales with how many voting members you actually have - see <a href="arbiter.html#manage-voting-members-in-replica-set">Manage voting members in replica set</a> to work out your own voting member count for arbiter, hidden, and non-voting members before you set this on a 5- or 7-member set.</p>
+<p><strong>Verify the current budget.</strong> Check how many disruptions the cluster currently allows:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
+kubectl<span class="w"> </span>get<span class="w"> </span>pdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<h3 id="where-you-can-set-priorityclassname-and-poddisruptionbudget">Where you can set priorityClassName and podDisruptionBudget<a class="headerlink" href="#where-you-can-set-priorityclassname-and-poddisruptionbudget" title="Permanent link">&para;</a></h3>
+<p>Both options are configurable per component, but not uniformly. The following table reflects what&rsquo;s configurable.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th><code>priorityClassName</code></th>
+<th><code>podDisruptionBudget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>replsets</code> (data-bearing)</td>
+<td><a href="operator.html#replsetspriorityclassname">Yes</a></td>
+<td><a href="operator.html#replsetspoddisruptionbudgetmaxunavailable">Yes</a></td>
+</tr>
+<tr>
+<td><code>replsets.nonvoting</code></td>
+<td><a href="operator.html#replsetsnonvotingpriorityclassname">Yes</a></td>
+<td><a href="operator.html#replsetsnonvotingpoddisruptionbudgetmaxunavailable">Yes</a></td>
+</tr>
+<tr>
+<td><code>replsets.hidden</code></td>
+<td><a href="operator.html#replsetshiddenpriorityclassname">Yes</a></td>
+<td><a href="operator.html#replsetshiddenpoddisruptionbudgetmaxunavailable">Yes</a></td>
+</tr>
+<tr>
+<td><code>replsets.arbiter</code></td>
+<td><a href="operator.html#replsetsarbiterpriorityclassname">Yes</a></td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sharding.configsvrReplSet</code></td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sharding.mongos</code></td>
+<td><a href="operator.html#shardingmongospriorityclassname">Yes</a></td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>backup</code></td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 <h2 id="topology-spread-constraints">Topology Spread Constraints<a class="headerlink" href="#topology-spread-constraints" title="Permanent link">&para;</a></h2>
 <p><em>Topology Spread Constraints</em>  allow you to control how Pods are distributed
 across the cluster based on regions, zones, nodes, and other topology specifics.
@@ -7680,13 +6859,14 @@ This can be useful for both high availability and resource efficiency.</p>
 <code>topologySpreadConstraints</code> subsection, which can be put into <code>replsets</code>,
 <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> sections of the
 <code>deploy/cr.yaml</code> configuration file as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">topologySpreadConstraints</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona-server-mongodb</span>
-<span class="w">    </span><span class="nt">maxSkew</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
-<span class="w">    </span><span class="nt">whenUnsatisfiable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DoNotSchedule</span>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">topologySpreadConstraints</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona-server-mongodb</span>
+<span class="w">      </span><span class="nt">maxSkew</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
+<span class="w">      </span><span class="nt">whenUnsatisfiable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DoNotSchedule</span>
 </code></pre></div>
 <p>You can see the explanation of these affinity options <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/">in Kubernetes documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>.</p>
 <h2 id="tolerations">Tolerations<a class="headerlink" href="#tolerations" title="Permanent link">&para;</a></h2>
@@ -7704,44 +6884,26 @@ for comparison).</p>
 configured to not tolerating this <em>taint</em> is removed from the node. This removal
 can be immediate or after the <code>tolerationSeconds</code> interval. The following
 example defines this effect and the removal interval:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">tolerations</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"node.alpha.kubernetes.io/unreachable"</span>
-<span class="w">  </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">"Exists"</span>
-<span class="w">  </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s">"NoExecute"</span>
-<span class="w">  </span><span class="nt">tolerationSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6000</span>
+<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"node.alpha.kubernetes.io/unreachable"</span>
+<span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">"Exists"</span>
+<span class="w">    </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s">"NoExecute"</span>
+<span class="w">    </span><span class="nt">tolerationSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6000</span>
 </code></pre></div>
 <p>The <a href="https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/">Kubernetes Taints and Toleratins  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
 contains more examples on this topic.</p>
-<h2 id="priority-classes">Priority Classes<a class="headerlink" href="#priority-classes" title="Permanent link">&para;</a></h2>
-<p>Pods may belong to some <em>priority classes</em>. This flexibility allows the
-scheduler to distinguish more and less important Pods when needed, such as the
-situation when a higher priority Pod cannot be scheduled without evicting a
-lower priority one. This ability can be accomplished by adding one or more
-PriorityClasses in your Kubernetes cluster, and specifying the
-<code>PriorityClassName</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
-file:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-priority</span>
-</code></pre></div>
-<p>See the <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption">Kubernetes Pods Priority and Preemption documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
-to find out how to define and use priority classes in your cluster.</p>
-<h2 id="pod-disruption-budgets">Pod Disruption Budgets<a class="headerlink" href="#pod-disruption-budgets" title="Permanent link">&para;</a></h2>
-<p>Creating the <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
-is the Kubernetes method to limit the number of Pods of an application that can
-go down simultaneously due to  <em>voluntary disruptions</em> such as the cluster
-administrator’s actions during a deployment update. Distribution Budgets allow
-large applications to retain their high availability during maintenance and
-other administrative activities. The <code>maxUnavailable</code> and <code>minAvailable</code> options
-in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>
-file can be used to set these limits. The recommended variant is the following:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">podDisruptionBudget</span><span class="p">:</span>
-<span class="w">   </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</code></pre></div>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="scaling-about.html">Scaling and storage</a></li>
+<li><a href="replication.html">Disaster recovery and multi-site</a></li>
+</ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 26, 2024 10:04:27 UTC">July 26, 2024</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
       
         <br>
         Created:
@@ -7804,7 +6966,7 @@ file can be used to set these limits. The recommended variant is the following:<
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.highlight", "navigation.top", "navigation.tracking", "content.tabs.link", "content.action.view", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.highlight", "navigation.top", "navigation.tracking", "navigation.indexes", "navigation.path", "content.tabs.link", "content.action.view", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
 
