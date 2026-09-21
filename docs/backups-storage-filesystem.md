@@ -56,3 +56,13 @@ that still supports NFS access.
           filesystem:
             path: /mnt/nfs/
     ```
+
+## Verify the storage works
+
+Export your namespace first, replacing `<namespace>` with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
+--8<-- "verify-backup-storage.md"

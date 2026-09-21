@@ -10,9 +10,7 @@ for example, from 7.0 to 8.0. To upgrade Percona Server for MongoDB from 6.0 to 
 you should first upgrade it to 7.0, and then make a separate upgrade from 7.0
 to 8.0. The same is true for major version downgrades.
 
-!!! important
-
-    Before the upgrade, [make a backup](backup-tutorial.md) of your data.
+--8<-- "update-critical-notice.md"
 
 --8<-- "update-assumptions.md"
 
@@ -23,13 +21,17 @@ to 8.0. The same is true for major version downgrades.
 key in the `deploy/cr.yaml` Custom Resource manifest to `<version>-recommended`:
 
 
-```yaml
-spec:
-  upgradeOptions:
-    apply: 8.0-recommended
-```
+    ```yaml
+    spec:
+      upgradeOptions:
+        apply: 8.0-recommended
+    ```
 
-3. Apply the `deploy/cr.yaml` Custom Resource manifest to start the major version upgrade.
+3. Apply the `deploy/cr.yaml` Custom Resource manifest to start the major version upgrade:
+    
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
 
 ### Feature Compatibility Version
 
@@ -57,5 +59,9 @@ sure to remove incompatible features that are persisted and/or update
 incompatible configuration settings. Compatibility issues between major
 MongoDB versions can be found in
 [upstream documentation  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/release-notes/7.0/#std-label-7.0-downgrade-considerations).
+
+## See also
+
+* [Choose your upgrade path](update.md)
 
  

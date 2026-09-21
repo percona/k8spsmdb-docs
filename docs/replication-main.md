@@ -143,8 +143,8 @@ When you manage multiple clusters, creating a separate kubeconfig file for each 
 
 ## Export the cluster secrets and certificates to be copied from Main to Replica
 
-The _Main_ and _Replica_ sites must have the same same users
-credentials and TLS certificates to be able to communicate with each other. To do this, export the Secrets from the `main` cluster and recreate them on the `replica` cluster. 
+The _Main_ and _Replica_ sites must have the same user credentials and TLS
+certificates to be able to communicate with each other. To do this, export the Secrets from the `main` cluster and recreate them on the `replica` cluster. 
 
 1. List the Secrets objects:
 
@@ -177,20 +177,37 @@ ready for the `replica` site.
 
     Use the following scripts:
 
-    ```bash
-    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-secrets.yml > my-cluster-secrets-replica.yaml
-    sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-secrets-replica.yaml
+    === ":simple-linux: in Linux"
 
-    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl.yml > replica-cluster-ssl.yml
-    sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl.yml
+        ```bash
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-secrets.yml > my-cluster-secrets-replica.yaml
+        sed -i 's/main-cluster/replica-cluster/g' my-cluster-secrets-replica.yaml
 
-    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl-internal.yml > replica-cluster-ssl-internal.yml
-    sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl-internal.yml
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl.yml > replica-cluster-ssl.yml
+        sed -i 's/main-cluster/replica-cluster/g' replica-cluster-ssl.yml
 
-    
-    yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-name-mongodb-encryption-key.yml > my-cluster-name-mongodb-encryption-key2.yml
-    sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-name-mongodb-encryption-key2.yml
-    ```
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl-internal.yml > replica-cluster-ssl-internal.yml
+        sed -i 's/main-cluster/replica-cluster/g' replica-cluster-ssl-internal.yml
+
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-name-mongodb-encryption-key.yml > my-cluster-name-mongodb-encryption-key2.yml
+        sed -i 's/main-cluster/replica-cluster/g' my-cluster-name-mongodb-encryption-key2.yml
+        ```
+
+    === ":simple-apple: in macOS"
+
+        ```bash
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-secrets.yml > my-cluster-secrets-replica.yaml
+        sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-secrets-replica.yaml
+
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl.yml > replica-cluster-ssl.yml
+        sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl.yml
+
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' main-cluster-ssl-internal.yml > replica-cluster-ssl-internal.yml
+        sed -i '' 's/main-cluster/replica-cluster/g' replica-cluster-ssl-internal.yml
+
+        yq eval 'del(.metadata.ownerReferences, .metadata.annotations, .metadata.creationTimestamp, .metadata.resourceVersion, .metadata.selfLink, .metadata.uid)' my-cluster-name-mongodb-encryption-key.yml > my-cluster-name-mongodb-encryption-key2.yml
+        sed -i '' 's/main-cluster/replica-cluster/g' my-cluster-name-mongodb-encryption-key2.yml
+        ```
 
     The commands do the following for each file:
 

@@ -5,4 +5,9 @@
 It automates day-one and day-two database operations for open source databases on Kubernetes clusters.
 OpenEverest provides API and Web GUI to launch databases with just a few clicks and scale them, do routine maintenance tasks, such as software updates, patch management, backups, and monitoring.
 
-You can try it in action by [Installing OpenEverest :octicons-link-external-16:](https://openeverest.io/documentation/current/quick-install.html) and [managing your first cluster :octicons-link-external-16:](https://openeverest.io/documentation/current/use/cluster-management.html).
+You can try it in action by installing OpenEverest and managing your first cluster.
+
+## Next steps
+
+[Install OpenEverest :octicons-link-external-16:](https://openeverest.io/documentation/current/quick-install.html){.md-button}
+[Manage your first cluster :octicons-link-external-16:](https://openeverest.io/documentation/current/use/cluster-management.html){.md-button}

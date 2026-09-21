@@ -31,7 +31,7 @@ Replace them with your values, if needed.
 Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:
 
 ```
-percona/percona-clustersync-for-mongodb:0.9.0
+percona/percona-clustersync-mongodb:0.9.0
 ```
 
 ## Configuration
@@ -383,7 +383,7 @@ To finalize replication, change the replication mode to `finalized`.
         To start over, you need to delete the `PerconaServerMongoDBClusterSync` object and recreate it. PCSM starts from the initial data sync.
  
 
-4. Point your applications to the target cluster. See [Connect to Percona Server for MongoDB](connect.md).
+4. Point your applications to the target cluster using its connection Secret - see [Connection secrets](connection-secrets.md#use-in-an-application-deployment).
 
 ### Clean up
 
@@ -395,7 +395,7 @@ kubectl delete psmdb-clustersync my-cluster-sync -n $NAMESPACE
 
 This removes the PCSM Deployment and Operator-owned Secrets. The source credentials Secret and the MongoDB sync user on the target are not deleted automatically.
 
-## 5. Troubleshooting
+## Troubleshooting
 
 ### PCSM Pod is not ready
 

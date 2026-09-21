@@ -177,7 +177,7 @@ To use an external autoscaler, set the `spec.enableExternalVolumeAutoscaling` op
 
 * The [multi-cluster and multi-region deployment](../replication.md) section has been improved and expanded with the information about multi-cluster deployment and its value as well as how it works. It provides improved guidance on multi-cluster services, a step-by-step tutorial for enabling multi-cluster deployments on GKE, and revised instructions for deploying and interconnecting sites for replication. The docs also walk you through planned switchover and controlled failover procedures in disaster scenarios.
 
-* Updated the [Scale Percona Server for MongoDB on Kubernetes](../scaling.md) topic with the information about the `pvc-resize-in-progress` annotation and how it works.
+* Updated the [Resize storage](../scaling-storage-resize.md) topic with the information about the `pvc-resize-in-progress` annotation and how it works.
 
 * Updated the [Configure backup storage](../backups-storage.md) with the Google Cloud Storage configuration.
 

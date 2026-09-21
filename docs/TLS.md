@@ -80,6 +80,30 @@ spec:
 
 See [Configure the TLS certificate management policy](tls-cert-management-policy.md) for setup steps, monitoring, recovery, and policy switching.
 
+### Connect with a client certificate
+
+Any client that connects over TLS needs the same certificate the Operator generated for
+the cluster (see `clusterAuthMode` above). Extract it from the `<cluster-name>-ssl` Secret
+and pass it to your client:
+
+```bash
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.crt}' | base64 -d > tls.crt
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.key}' | base64 -d > tls.key
+kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+cat tls.crt tls.key > client.pem
+```
+
+Then pass `client.pem` and `ca.crt` to your client. For `mongosh`:
+
+```bash
+mongosh "<connection-string>" --tlsCertificateKeyFile client.pem --tlsCAFile ca.crt
+```
+
+Run this wherever your client actually runs - on your own machine if you
+[exposed the cluster](expose.md), or inside a Pod if you're connecting from within
+Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
+[Connection secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh).
+
 ## TLS configuration
 
 The following sections provide guidelines how to:

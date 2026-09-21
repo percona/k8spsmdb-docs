@@ -2,15 +2,15 @@
 
 This document guides you through the configuration of the Operator and Vault for system user management. By default, the Operator and Vault communicate over an unencrypted HTTP protocol. You can enable encrypted HTTPS protocol with TLS as an additional security layer to protect the data transmitted between Vault and your Percona Server for MongoDB nodes. HTTPS ensures that sensitive information, such as encryption keys and secrets, cannot be intercepted or tampered with on the network.
 
-## Assumptions
+## About this guide
 
 1. This guide is provided as a best effort and builds upon procedures described in the official Vault documentation. Since Vault's setup steps may change in future releases, this document may become outdated; we cannot guarantee ongoing accuracy or responsibility for such changes. For the most up-to-date and reliable information, please always refer to [the official Vault documentation](https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls#kubernetes-minikube-tls).
 2. In the following sections we deploy the Vault server in High Availability (HA) mode on Kubernetes via Helm with TLS enabled. The HA setup uses Raft storage backend and consists of 3 replicas for redundancy. Using Helm is not mandatory. Any supported Vault deployment (on-premises, in the cloud, or a managed Vault service) works as long as the Operator can reach it.
 3. This guide uses Vault Helm chart version 0.30.0. You may want to change it to the required version by setting the `VAULT_HELM_VERSION` variable.
 
-## Prerequisites
+## Before you begin
 
-Before you begin, ensure you have the following tools installed:
+Ensure you have the following tools installed:
 
 * `kubectl`- Kubernetes command-line interface
 * `helm` - Helm package manager
@@ -277,7 +277,7 @@ For testing purposes, let's insert the credentials from the sample `deploy/secre
 3. Verify the insertion:
 
     ```bash
-    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv get -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users/databaseAdmin"
+    kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv get -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users"
     ```
 
     ??? example "Sample output"
@@ -349,12 +349,12 @@ Specify the following information:
         ```yaml
         spec:
           vault:
-            endpointUrl: https://vault.vault.svc.cluster.local:8200
+            endpointURL: https://vault.vault.svc.cluster.local:8200
             tlsSecret: my-tls-vault-secret
             syncUsers:
               role: operator
-              mountPath: /secret/operator/psmdb/system
-              keyPath: psmdb/operator/namespace/my-cluster-name/users
+              mountPath: secret
+              keyPath: psmdb/operator/psmdb/my-cluster-name/users
         ```
 
     === "Authentication with Vault token"
@@ -362,13 +362,13 @@ Specify the following information:
         ```yaml
         spec:
           vault:
-            endpointUrl: https://vault.vault.svc.cluster.local:8200
+            endpointURL: https://vault.vault.svc.cluster.local:8200
             tlsSecret: my-tls-vault-secret
             syncUsers:
               role: operator
-              mountPath: /secret/operator/psmdb/system
-              keyPath: psmdb/operator/namespace/my-cluster-name/users
-              tokenSecret: vault-token-operator
+              mountPath: secret
+              keyPath: psmdb/operator/psmdb/my-cluster-name/users
+              tokenSecret: vault-sync-secret
         ```
 
 ## Authenticate in Percona Server for MongoDB to verify password management
@@ -400,16 +400,36 @@ Here's how to do it:
 
     See [Connection secrets](connection-secrets.md) for other key names.
 
-2. Spin up a `mongo` client Pod:
+2. Your cluster uses TLS by default, and MongoDB requires a client certificate for any TLS
+    connection. Retrieve the certificate, key, and CA certificate from the
+    `<cluster-name>-ssl` Secret:
 
     ```bash
-    kubectl -n $CLUSTER_NAMESPACE run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    kubectl get secret my-cluster-name-ssl -n $CLUSTER_NAMESPACE -o jsonpath='{.data.tls\.crt}' | base64 -d > tls.crt
+    kubectl get secret my-cluster-name-ssl -n $CLUSTER_NAMESPACE -o jsonpath='{.data.tls\.key}' | base64 -d > tls.key
+    kubectl get secret my-cluster-name-ssl -n $CLUSTER_NAMESPACE -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+    cat tls.crt tls.key > client.pem
     ```
 
-3. Inside the Pod, connect using the connection string from step 1:
+3. Spin up a `mongo` client Pod and copy the certificate files into it:
 
     ```bash
-    mongosh "<connection-string>"
+    kubectl -n $CLUSTER_NAMESPACE run percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- sleep 3600
+    kubectl -n $CLUSTER_NAMESPACE cp client.pem percona-client:/tmp/client.pem
+    kubectl -n $CLUSTER_NAMESPACE cp ca.crt percona-client:/tmp/ca.crt
+    ```
+
+4. Open a shell inside the Pod:
+
+    ```bash
+    kubectl -n $CLUSTER_NAMESPACE exec -it percona-client -- bash -il
+    ```
+
+5. Inside the Pod, connect using the connection string from step 1 and the certificate
+    files you copied in:
+
+    ```bash
+    mongosh "<connection-string>" --tlsCertificateKeyFile /tmp/client.pem --tlsCAFile /tmp/ca.crt
     ```
 
     ??? example "Expected output"
@@ -419,10 +439,19 @@ Here's how to do it:
         [direct: mongos] admin>
         ```
 
-4. Update the password for the `MONGODB_DATABASE_ADMIN_PASSWORD` user:
+    If your cluster has TLS disabled, drop the `--tlsCertificateKeyFile`/`--tlsCAFile`
+    flags and connect with just `mongosh "<connection-string>"`.
+
+6. Update the password for the `MONGODB_DATABASE_ADMIN_PASSWORD` user:
 
     ```bash
     kubectl exec -it vault-0 -n $NAMESPACE -- /bin/sh -c "vault kv patch -mount=secret psmdb/operator/$CLUSTER_NAMESPACE/my-cluster-name/users MONGODB_DATABASE_ADMIN_PASSWORD="newStrongPass""
     ```
 
-5. Repeat steps 2-3 and connect to Percona Server for MongoDB with this new password. As a result you should be successfully authenticated.
+7. Repeat steps 4-5 and connect to Percona Server for MongoDB with this new password. As a result you should be successfully authenticated.
+
+8. When you're done, delete the client Pod:
+
+    ```bash
+    kubectl delete pod percona-client -n $CLUSTER_NAMESPACE
+    ```

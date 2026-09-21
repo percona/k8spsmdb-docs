@@ -1,6 +1,6 @@
 # Restore a collection under a different name
 
-!!! admonition "Version added: 1.23.0"
+!!! note "Version added: 1.23.0"
 
 You can restore a single collection from a full logical backup under a different database and/or collection name. The Operator remaps the namespace during the restore: the source collection stays in place, and PBM creates a new collection with the data and indexes from the backup.
 
@@ -94,7 +94,7 @@ You can remap a collection onto another Percona Server for MongoDB cluster manag
 * The **target** cluster must be a **replica set** (not sharded).
 * The backup must be a **logical** backup available to the target cluster.
 * The target namespace (`nsTo`) must not already exist on the target cluster.
-* When restoring to a new Kubernetes environment, follow the [preconditions for restore to a new cluster](backups-restore-to-new-cluster.md#preconditions).
+* When restoring to a new Kubernetes environment, follow the [preconditions for restore to a new cluster](backups-restore.md#preconditions-for-a-new-environment).
 
 On the target cluster, point `spec.clusterName` at that cluster and use `backupSource` when Backup objects from the source cluster are not present:
 
@@ -117,6 +117,18 @@ spec:
     nsTo: "myApp.test_remapped"
 ```
 
-You can also define storage on the target cluster’s `cr.yaml` and reference it with `storageName` instead of embedding credentials in `backupSource`. See [Restore to a new Kubernetes-based environment](backups-restore-to-new-cluster.md) for storage configuration details.
+You can also define storage on the target cluster’s `cr.yaml` and reference it with `storageName` instead of embedding credentials in `backupSource`. See [Restore to a new Kubernetes-based environment](backups-restore.md#restore-on-a-new-cluster) for storage configuration details.
 
 This restore adds one collection to the target cluster. It does not replace the whole cluster data.
+
+## Verify the restore
+
+Watch the Restore object until it finishes:
+
+```bash
+kubectl get psmdb-restore -n $NAMESPACE
+```
+
+The restore must reach the `ready` state. Then connect to the cluster and confirm the
+collection exists under its new name with the document count you expect - a namespace
+remapping that matched nothing still completes successfully.

@@ -57,7 +57,7 @@ spec:
     csReplSet: cfg
 ```
 
-Define mappings as key-value pairs where the key is the source replica set name and the value is the target replica set name. Read more about how to set it up in the [documentation](../backups-restore-replset-remapping.md).
+Define mappings as key-value pairs where the key is the source replica set name and the value is the target replica set name. Read more about how to set it up in the [documentation](../backups-restore.md#with-different-replica-set-names).
 
 This enhancement expands the number of environments where restores are possible, making recovery more flexible and reliable.
 
@@ -218,7 +218,7 @@ spec:
       maxSize: "10Gi"
 ```
 
-Learn more about the workflow and troubleshooting tips in our [documentation](../scaling.md#automatic-storage-resizing).
+Learn more about the workflow and troubleshooting tips in our [documentation](../scaling-storage-resize.md#automatic-storage-resizing).
 
 ### Cluster readiness now reflects PBM state
 

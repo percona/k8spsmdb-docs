@@ -1,4 +1,11 @@
-# Install and use the *cert-manager*
+# Configure TLS using cert-manager
+
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
 
 ## About the *cert-manager*
 
@@ -226,3 +233,18 @@ environment variable on the Operator Deployment.
 For more details on all cert-manager-related Custom Resource options, see the
 [`tls.issuerConf` section](operator.md#operator-issuerconf-section) in the
 Operator spec reference.
+
+## Verify the certificates
+
+Confirm cert-manager issued both Secrets and that they are populated:
+
+```bash
+kubectl get secret my-cluster-name-ssl my-cluster-name-ssl-internal -n $NAMESPACE
+kubectl get certificate -n $NAMESPACE
+```
+
+Each `Certificate` must report `READY=True`. A certificate stuck in `False` usually means the
+issuer does not exist or is not ready - check `kubectl describe certificate` for the reason.
+The cluster itself stays in `initializing` until both Secrets exist, so a cluster that never
+reaches `ready` after enabling cert-manager is nearly always an issuance problem, not a
+database problem.

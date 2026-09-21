@@ -1,6 +1,6 @@
-# Configure vector search with Percona Search for MongoDB
+# Configure search and vector search
 
-!!! admonition "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
+!!! note "Version added: [1.23.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.md)"
 
 !!! warning "Tech preview"
 
@@ -23,7 +23,7 @@ This setup uses the following software versions:
 * Percona Search for MongoDB {{mongot}}.
 
 
-## Before you start
+## Before you begin
 
 1. Make sure you understand [requirements](search-overview.md#availability-and-requirements) and [limitations](search-overview.md#limitations) of using Percona Search for MongoDB.
 2. Clone the repository with all manifests and source code:
@@ -45,7 +45,7 @@ This setup uses the following software versions:
 Install the Operator by applying the `deploy/bundle.yaml` manifest. This also installs CRDs, Role-based access control (RBAC) and the Operator deployment:
     
 ```bash
-kubectl apply --server-side -f deploy/bundle.yaml
+kubectl apply --server-side -f deploy/bundle.yaml -n $NAMESPACE
 ```
 
 As the result you will have the Operator Pod up and running.
@@ -141,8 +141,8 @@ When search is ready, `status.search` shows the replica set or shard entry with
 
 ## Connect to the cluster
 
-Open a MongoDB client session the same way as in
-[Connect to Percona Server for MongoDB](connect.md). Use an application user
+Open a MongoDB client session using the steps in [Connection
+secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh). Use an application user
 with `readWrite` and `dbAdmin` (or equivalent) on the database where you will
 store vectors — not the Operator's `searchCoordinator` system user.
 
@@ -285,4 +285,8 @@ You can add further aggregation stages after `$vectorSearch` (for example
 
 For more index and query options, see the
 [MongoDB Vector Search documentation :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/).
+
+## See also
+
+* [Security](security.md) - `mongot` authenticates like any other client
 

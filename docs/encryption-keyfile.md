@@ -1,6 +1,13 @@
-# Configure data-at-rest encryption using an encryption key Secret
+# Configure encryption using an encryption key Secret
 
 Data-at-rest encryption using a Kubernetes Secret allows you to securely store the encryption key used by Percona Server for MongoDB directly in your cluster, without relying on an external key management service. This guide explains how to configure the Operator to use a Secret for managing your MongoDB encryption key.
+
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
 
 ## Configuration steps
 
@@ -61,3 +68,17 @@ Data-at-rest encryption using a Kubernetes Secret allows you to securely store t
           "encryptionKeyId": "local"
         }
         ```
+
+## Verify encryption is active
+
+The encryption key Secret must exist before the cluster starts, and its name must match
+`secrets.encryptionKey`:
+
+```bash
+kubectl get secret -n $NAMESPACE | grep encryption-key
+kubectl get psmdb -n $NAMESPACE
+```
+
+The cluster must reach the `ready` state. If `mongod` cannot read the key, Pods fail to start
+and the cluster never leaves `initializing` - check the database Pod logs for a keyfile error.
+Note that changing this Secret on a running cluster does not re-encrypt existing data.

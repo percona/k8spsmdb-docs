@@ -14,6 +14,13 @@ The overall troubleshooting workflow looks like this:
 
 Refer to the following sections for details. For status field reference, see [Custom resource statuses](cr-statuses.md).
 
+Export your namespace so the commands below can use it. Replace `<namespace>`
+with your value:
+
+```bash
+export NAMESPACE=<namespace>
+```
+
 ## Backups
 
 ### Check backup status
@@ -21,7 +28,7 @@ Refer to the following sections for details. For status field reference, see [Cu
 Start by checking the status of your backup objects:
 
 ```bash
-kubectl get psmdb-backup -n <namespace>
+kubectl get psmdb-backup -n $NAMESPACE
 ```
 
 This shows you all backup objects with their current state. The `STATUS` column indicates whether a backup succeeded, failed, or is in progress. A successful backup has the `ready` status.
@@ -39,11 +46,11 @@ This shows you all backup objects with their current state. The `STATUS` column 
 When a backup fails, use `kubectl describe` or inspect the full object to get detailed error information:
 
 ```bash
-kubectl describe psmdb-backup <backup-name> -n <namespace>
+kubectl describe psmdb-backup <backup-name> -n $NAMESPACE
 ```
 
 ```bash
-kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml
+kubectl get psmdb-backup <backup-name> -n $NAMESPACE -o yaml
 ```
 
 The `Status` section contains the `State` and `Error` fields that explain why the backup failed.
@@ -73,7 +80,7 @@ Common error scenarios include:
 Before you start a backup, confirm that PBM is ready on the cluster:
 
 ```bash
-kubectl get psmdb <cluster-name> -n <namespace> \
+kubectl get psmdb <cluster-name> -n $NAMESPACE \
   -o jsonpath='{range .status.conditions[?(@.type=="PBMReady")]}{.type}{"\n"}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'
 ```
 
@@ -84,13 +91,13 @@ If `PBMReady` is `False`, resolve the reported reason before retrying the backup
 Each backup object records which Pod ran PBM for the operation. Retrieve the Pod map as follows:
 
 ```bash
-kubectl get psmdb-backup <backup-name> -n <namespace> -o jsonpath='{.status.pbmPods}'
+kubectl get psmdb-backup <backup-name> -n $NAMESPACE -o jsonpath='{.status.pbmPods}'
 ```
 
 You can also inspect the full status:
 
 ```bash
-kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml
+kubectl get psmdb-backup <backup-name> -n $NAMESPACE -o yaml
 ```
 
 Look for the `pbmPods` field.
@@ -100,13 +107,13 @@ Look for the `pbmPods` field.
 To see detailed logs from the Pod that ran the backup, check the `backup-agent` container:
 
 ```bash
-kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
+kubectl logs pod/<pod-name> -c backup-agent -n $NAMESPACE
 ```
 
 For example:
 
 ```bash
-kubectl logs pod/my-cluster-name-rs0-2 -c backup-agent -n <namespace>
+kubectl logs pod/my-cluster-name-rs0-2 -c backup-agent -n $NAMESPACE
 ```
 
 These logs show PBM backup execution, including storage uploads and any errors that occurred.
@@ -120,7 +127,7 @@ You can also run PBM diagnostics inside the container. See [Exec into the contai
 To check the status of restore operations, run:
 
 ```bash
-kubectl get psmdb-restore -n <namespace>
+kubectl get psmdb-restore -n $NAMESPACE
 ```
 
 This shows all restore objects with their current state. A successful restore has the `ready` status.
@@ -138,11 +145,11 @@ This shows all restore objects with their current state. A successful restore ha
 When a restore fails, use the `kubectl describe` command or inspect the full object:
 
 ```bash
-kubectl describe psmdb-restore <restore-name> -n <namespace>
+kubectl describe psmdb-restore <restore-name> -n $NAMESPACE
 ```
 
 ```bash
-kubectl get psmdb-restore <restore-name> -n <namespace> -o yaml
+kubectl get psmdb-restore <restore-name> -n $NAMESPACE -o yaml
 ```
 
 The `Status` section contains the `State` and `Error` fields that explain why the restore failed.
@@ -174,7 +181,7 @@ How you view restore logs depends on the restore type.
 For a logical restore, PBM runs in the `backup-agent` sidecar. Check logs from a replica set Pod:
 
 ```bash
-kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
+kubectl logs pod/<pod-name> -c backup-agent -n $NAMESPACE
 ```
 
 #### Physical restore
@@ -182,13 +189,13 @@ kubectl logs pod/<pod-name> -c backup-agent -n <namespace>
 For a physical restore, the Operator moves PBM into the `mongod` container and removes the `backup-agent` sidecar for the duration of the restore. Check `mongod` logs:
 
 ```bash
-kubectl logs pod/<pod-name> -c mongod -n <namespace>
+kubectl logs pod/<pod-name> -c mongod -n $NAMESPACE
 ```
 
 PBM also stores logs for the latest restore under `/data/db/pbm-restore-logs` inside the data directory. You can inspect them by executing into the `mongod` container:
 
 ```bash
-kubectl exec -it <pod-name> -c mongod -n <namespace> -- ls -la /data/db/pbm-restore-logs
+kubectl exec -it <pod-name> -c mongod -n $NAMESPACE -- ls -la /data/db/pbm-restore-logs
 ```
 
 PBM keeps only the latest restore logs because it cleans up the data directory during the process.
@@ -210,14 +217,18 @@ To recover the affected Pod, delete its PVC and the Pod so the Operator can recr
 1. Identify the affected Pod and its PVC:
 
     ```bash
-    kubectl get pods -n <namespace>
-    kubectl get pvc -n <namespace>
+    kubectl get pods -n $NAMESPACE
+    kubectl get pvc -n $NAMESPACE
     ```
 
 2. Delete the PVC and the Pod. For example, for the `my-cluster-name-rs0-2` Pod:
 
     ```bash
-    kubectl delete pod/my-cluster-name-rs0-2 pvc/mongod-data-my-cluster-name-rs0-2 -n <namespace>
+    kubectl delete pod/my-cluster-name-rs0-2 pvc/mongod-data-my-cluster-name-rs0-2 -n $NAMESPACE
     ```
 
 The Operator automatically recreates the Pod and PVC after deletion.
+
+## See also
+
+* [Backup and restore](backups.md)
