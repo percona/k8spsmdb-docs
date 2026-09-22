@@ -17,7 +17,7 @@ PMM Server and PMM Client are installed separately.
 ## Considerations
 
 1. If you are using PMM server version 2, use a PMM client image compatible with PMM 2. If you are using PMM server version 3, use a PMM client image compatible with PMM 3. Check [Percona certified images](images.md) for the right one.
-2. If you specified both authentication methods for PMM server configuration and they have non-empty values, priority goes to PMM 3. 
+2. If `PMM_SERVER_TOKEN` is present and non-empty, the Operator configures the PMM Client for PMM 3. Otherwise, it configures the client for PMM 2 when a PMM 2 credential is present. If both methods have non-empty values, priority goes to PMM 3.
 3. For migration from PMM2 to PMM3, see [PMM upgrade documentation :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html). Also check the [Automatic migration of API keys :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html#automatic-migration-of-api-keys) page.
 
 ## Install PMM Server
@@ -42,7 +42,7 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
 === "PMM2"
 
-    [Get the PMM API key from PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication). The API key must have the role "Admin". You need this key to authorize PMM Client within PMM Server. 
+    [Get the PMM API key from PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication). The API key must have the role "Admin". You need this key to authorize PMM Client within PMM Server. PMM 2 also supports username/password authentication; configure either `PMM_SERVER_API_KEY` or both `PMM_SERVER_USER` and `PMM_SERVER_PASSWORD`.
 
     === ":material-view-dashboard-variant: From PMM UI" 
 
@@ -59,7 +59,24 @@ PMM Client is installed as a side-car container in the database Pods in your Kub
 
     !!! warning
 
-        The API key is not rotated automatically when it expires. You must manually recreate it and reconfigure the PMM Client. 
+        The API key is not rotated automatically when it expires. You must manually recreate it and reconfigure the PMM Client.
+
+### Understand the credentials
+
+The Secret referenced by `spec.secrets.users` contains two independent sets of credentials:
+
+* `MONGODB_CLUSTER_MONITOR_USER` and `MONGODB_CLUSTER_MONITOR_PASSWORD` authenticate the PMM Client to MongoDB. The Operator passes them to the PMM Client as `DB_USER` and `DB_PASSWORD`.
+* PMM Server credentials authenticate the PMM Client to PMM Server. These credentials do not need to match the MongoDB monitoring user.
+
+The PMM Server credentials depend on the PMM version:
+
+| PMM version | Secret keys | PMM Server username used by the Operator |
+|:------------|:------------|:-----------------------------------------|
+| PMM 2 API key | `PMM_SERVER_API_KEY` | `api_key` |
+| PMM 2 username/password | `PMM_SERVER_USER`, `PMM_SERVER_PASSWORD` | Value of `PMM_SERVER_USER` |
+| PMM 3 service token | `PMM_SERVER_TOKEN` | `service_token` |
+
+For PMM 2 API-key authentication, the Operator uses the literal username `api_key`; do not set `PMM_SERVER_USER` to `api_key` manually. If both an API key and username/password are present, the API key is used. For PMM 3, the Operator uses the literal username `service_token`; you do not specify a separate PMM Server username.
 
 ### Create a secret
 
@@ -78,7 +95,8 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
           name: my-cluster-name-secrets
         type: Opaque
         stringData:
-          ....
+          MONGODB_CLUSTER_MONITOR_USER: clusterMonitor
+          MONGODB_CLUSTER_MONITOR_PASSWORD: clusterMonitor123456
           PMM_SERVER_TOKEN: ""
         ``` 
 
@@ -93,9 +111,15 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
           name: my-cluster-name-secrets
         type: Opaque
         stringData:
-          ....
+          MONGODB_CLUSTER_MONITOR_USER: clusterMonitor
+          MONGODB_CLUSTER_MONITOR_PASSWORD: clusterMonitor123456
           PMM_SERVER_API_KEY: ""
+          # Alternatively, use both of the following instead of PMM_SERVER_API_KEY:
+          # PMM_SERVER_USER: ""
+          # PMM_SERVER_PASSWORD: ""
         ``` 
+
+    The examples above show only the credentials relevant to monitoring. Include the other required MongoDB system-user credentials in the same Secret. Use only one PMM authentication method unless you intentionally want PMM 3 to take precedence. A non-empty `PMM_SERVER_TOKEN` always selects PMM 3, even when PMM 2 credentials are also present.
 
 2. Create the Secrets object using the `deploy/secrets.yaml` file.
 
@@ -139,6 +163,15 @@ Now you must pass the credentials to the Operator. To do so, create a Secret obj
     kubectl get pods -n <namespace>
     kubectl logs <cluster-name>-rs0-0 -c pmm-client -n <namespace>
     ```
+
+If the PMM Client cannot connect, verify the following:
+
+* `pmm.serverHost` resolves and is reachable from the database Pods.
+* `MONGODB_CLUSTER_MONITOR_USER` and `MONGODB_CLUSTER_MONITOR_PASSWORD` are present and valid.
+* The PMM Server credential matches the selected PMM version: a non-empty `PMM_SERVER_TOKEN` for PMM 3, or `PMM_SERVER_API_KEY` / both `PMM_SERVER_USER` and `PMM_SERVER_PASSWORD` for PMM 2.
+* The PMM Client image is compatible with the PMM Server major version.
+
+Do not print the complete Secret or container environment while troubleshooting because these values contain credentials.
 
 ## Check the metrics
 
