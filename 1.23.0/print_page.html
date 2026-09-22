@@ -20956,7 +20956,7 @@ to the PMM Server. As a user, you connect to the PMM Server to see database metr
 <h2 id="monitoring-considerations">Considerations<a class="headerlink" href="#monitoring-considerations" title="Permanent link">&para;</a></h2>
 <ol>
 <li>If you are using PMM server version 2, use a PMM client image compatible with PMM 2. If you are using PMM server version 3, use a PMM client image compatible with PMM 3. Check <a href="#images">Percona certified images</a> for the right one.</li>
-<li>If you specified both authentication methods for PMM server configuration and they have non-empty values, priority goes to PMM 3. </li>
+<li>If <code>PMM_SERVER_TOKEN</code> is present and non-empty, the Operator configures the PMM Client for PMM 3. Otherwise, it configures the client for PMM 2 when a PMM 2 credential is present. If both methods have non-empty values, priority goes to PMM 3.</li>
 <li>For migration from PMM2 to PMM3, see <a href="https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html">PMM upgrade documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. Also check the <a href="https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html#automatic-migration-of-api-keys">Automatic migration of API keys <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> page.</li>
 </ol>
 <h2 id="monitoring-install-pmm-server">Install PMM Server<a class="headerlink" href="#monitoring-install-pmm-server" title="Permanent link">&para;</a></h2>
@@ -20975,7 +20975,7 @@ Please refer to the <a href="https://docs.percona.com/percona-monitoring-and-man
 </div>
 </div>
 <div class="tabbed-block">
-<p><a href="https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication">Get the PMM API key from PMM Server <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. The API key must have the role &ldquo;Admin&rdquo;. You need this key to authorize PMM Client within PMM Server. </p>
+<p><a href="https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication">Get the PMM API key from PMM Server <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. The API key must have the role &ldquo;Admin&rdquo;. You need this key to authorize PMM Client within PMM Server. PMM 2 also supports username/password authentication; configure either <code>PMM_SERVER_API_KEY</code> or both <code>PMM_SERVER_USER</code> and <code>PMM_SERVER_PASSWORD</code>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="monitoring-__tabbed_2_1" name="monitoring-__tabbed_2" type="radio" /><input id="monitoring-__tabbed_2_2" name="monitoring-__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="monitoring-__tabbed_2_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 5v14h6V5zm7 0v5h6V5zm7 0v9h6V5zm-7 6v8h6v-8zm7 4v4h6v-4z"/></svg></span> From PMM UI</label><label for="monitoring-__tabbed_2_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg></span> From command line</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -20991,11 +20991,45 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The API key is not rotated automatically when it expires. You must manually recreate it and reconfigure the PMM Client. </p>
+<p>The API key is not rotated automatically when it expires. You must manually recreate it and reconfigure the PMM Client.</p>
 </div>
 </div>
 </div>
 </div>
+<h3 id="monitoring-understand-the-credentials">Understand the credentials<a class="headerlink" href="#monitoring-understand-the-credentials" title="Permanent link">&para;</a></h3>
+<p>The Secret referenced by <code>spec.secrets.users</code> contains two independent sets of credentials:</p>
+<ul>
+<li><code>MONGODB_CLUSTER_MONITOR_USER</code> and <code>MONGODB_CLUSTER_MONITOR_PASSWORD</code> authenticate the PMM Client to MongoDB. The Operator passes them to the PMM Client as <code>DB_USER</code> and <code>DB_PASSWORD</code>.</li>
+<li>PMM Server credentials authenticate the PMM Client to PMM Server. These credentials do not need to match the MongoDB monitoring user.</li>
+</ul>
+<p>The PMM Server credentials depend on the PMM version:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">PMM version</th>
+<th style="text-align: left;">Secret keys</th>
+<th style="text-align: left;">PMM Server username used by the Operator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PMM 2 API key</td>
+<td style="text-align: left;"><code>PMM_SERVER_API_KEY</code></td>
+<td style="text-align: left;"><code>api_key</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">PMM 2 username/password</td>
+<td style="text-align: left;"><code>PMM_SERVER_USER</code>, <code>PMM_SERVER_PASSWORD</code></td>
+<td style="text-align: left;">Value of <code>PMM_SERVER_USER</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">PMM 3 service token</td>
+<td style="text-align: left;"><code>PMM_SERVER_TOKEN</code></td>
+<td style="text-align: left;"><code>service_token</code></td>
+</tr>
+</tbody>
+</table>
+<p>For PMM 2 API-key authentication, the Operator uses the literal username <code>api_key</code>; do not set <code>PMM_SERVER_USER</code> to <code>api_key</code> manually. If both an API key and username/password are present, the API key is used. For PMM 3, the Operator uses the literal username <code>service_token</code>; you do not specify a separate PMM Server username.</p>
 <h3 id="monitoring-create-a-secret">Create a secret<a class="headerlink" href="#monitoring-create-a-secret" title="Permanent link">&para;</a></h3>
 <p>Now you must pass the credentials to the Operator. To do so, create a Secret object.</p>
 <ol>
@@ -21011,8 +21045,9 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-secrets</span>
 <span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
 <span class="nt">stringData</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">....</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">PMM_SERVER_TOKEN</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="nt">MONGODB_CLUSTER_MONITOR_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clusterMonitor</span>
+<span class="w">  </span><span class="nt">MONGODB_CLUSTER_MONITOR_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clusterMonitor123456</span>
+<span class="w">  </span><span class="nt">PMM_SERVER_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="s">""</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -21023,12 +21058,17 @@ Key using <code>curl</code> and <code>jq</code> utilities. Replace <code>&lt;log
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-secrets</span>
 <span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
 <span class="nt">stringData</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">....</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">PMM_SERVER_API_KEY</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="nt">MONGODB_CLUSTER_MONITOR_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clusterMonitor</span>
+<span class="w">  </span><span class="nt">MONGODB_CLUSTER_MONITOR_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clusterMonitor123456</span>
+<span class="w">  </span><span class="nt">PMM_SERVER_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="c1"># Alternatively, use both of the following instead of PMM_SERVER_API_KEY:</span>
+<span class="w">  </span><span class="c1"># PMM_SERVER_USER: ""</span>
+<span class="w">  </span><span class="c1"># PMM_SERVER_PASSWORD: ""</span>
 </code></pre></div>
 </div>
 </div>
 </div>
+<p>The examples above show only the credentials relevant to monitoring. Include the other required MongoDB system-user credentials in the same Secret. Use only one PMM authentication method unless you intentionally want PMM 3 to take precedence. A non-empty <code>PMM_SERVER_TOKEN</code> always selects PMM 3, even when PMM 2 credentials are also present.</p>
 </li>
 <li>
 <p>Create the Secrets object using the <code>deploy/secrets.yaml</code> file.</p>
@@ -21071,6 +21111,14 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;cluster-name&gt;-
 </code></pre></div>
 </li>
 </ol>
+<p>If the PMM Client cannot connect, verify the following:</p>
+<ul>
+<li><code>pmm.serverHost</code> resolves and is reachable from the database Pods.</li>
+<li><code>MONGODB_CLUSTER_MONITOR_USER</code> and <code>MONGODB_CLUSTER_MONITOR_PASSWORD</code> are present and valid.</li>
+<li>The PMM Server credential matches the selected PMM version: a non-empty <code>PMM_SERVER_TOKEN</code> for PMM 3, or <code>PMM_SERVER_API_KEY</code> / both <code>PMM_SERVER_USER</code> and <code>PMM_SERVER_PASSWORD</code> for PMM 2.</li>
+<li>The PMM Client image is compatible with the PMM Server major version.</li>
+</ul>
+<p>Do not print the complete Secret or container environment while troubleshooting because these values contain credentials.</p>
 <h2 id="monitoring-check-the-metrics">Check the metrics<a class="headerlink" href="#monitoring-check-the-metrics" title="Permanent link">&para;</a></h2>
 <p class="power-number">Let&rsquo;s see how the collected data is visualized in PMM.</p>
 <ol>
