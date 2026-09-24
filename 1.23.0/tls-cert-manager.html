@@ -6691,7 +6691,7 @@ of TLS certificates. It is community-driven and open source.</p>
 <ul>
 <li><strong>Operator-managed issuers (default)</strong> — By default, the Operator creates a Kubernetes <code>Issuer</code> resource, which is namespace-scoped, along with a local self-signed Certificate Authority (CA) in the same database namespace. The <code>Issuer</code> is used for clusters that are deployed within a single namespace and handles certificate generation for that specific namespace.</li>
 </ul>
-<p>For deployments spanning multiple namespaces, the Operator can instead use a <code>ClusterIssuer</code> resource, which is cluster-scoped and can issue certificates across any namespace. Use a <code>ClusterIssuer</code> for <a href="cluster-wide.html">multi-namespace</a> setups. Both approaches are automated by the Operator and require no additional PKI configuration from you.</p>
+<p>For deployments spanning multiple namespaces, the Operator can instead use a <code>ClusterIssuer</code> resource, which is cluster-scoped and can issue certificates across any namespace. Use a <code>ClusterIssuer</code> for <a href="cluster-wide.html">multi-namespace</a> setups. Managing <code>ClusterIssuer</code> resources requires extra RBAC permissions that are not in the default Operator roles. See <a href="#operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope</a>.</p>
 <ul>
 <li><strong>Your existing issuer</strong> — you point the Operator at a cert-manager <code>Issuer</code> or
   <code>ClusterIssuer</code> that your platform team already manages (for example, Smallstep,
@@ -6781,8 +6781,22 @@ to <code>true</code> (the default) for this self-signed setup. </p>
 <p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
 <p>If you want the Operator to manage the CA chain and issue certificates across all namespaces, use the
-<code>ClusterIssuer</code> resource rather than namespace-scoped <code>Issuer</code> resources. </p>
-<p>Configure the Custom Resource as follows:</p>
+<code>ClusterIssuer</code> resource rather than namespace-scoped <code>Issuer</code> resources.</p>
+<p>The Operator requires additional permissions to create and manage the <code>ClusterIssuer</code> resource. Default Operator RBAC covers only namespace-scoped objects. Therefore, you must grant cluster-scoped access to let the Operator create and update the shared CA <code>ClusterIssuer</code> resources across the Kubernetes cluster.</p>
+<ol>
+<li>
+<p>Create a ClusterRole and ClusterRoleBinding. Replace the <code>&lt;operator-namespace&gt;</code> placeholder with the namespace where the Operator is deployed:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>clusterrole<span class="w"> </span>psmdb-clusterissuer-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--verb<span class="o">=</span>get,list,watch,create,update,patch<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--resource<span class="o">=</span>clusterissuers.cert-manager.io
+
+kubectl<span class="w"> </span>create<span class="w"> </span>clusterrolebinding<span class="w"> </span>psmdb-clusterissuer-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--clusterrole<span class="o">=</span>psmdb-clusterissuer-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--serviceaccount<span class="o">=</span>&lt;operator-namespace&gt;:percona-server-mongodb-operator
+</code></pre></div>
+</li>
+<li>
+<p>Configure the Custom Resource. Set the <code>tls.issuerConf.kind</code> option to <code>ClusterIssuer</code> without pre-creating issuers yourself:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">allowInvalidCertificates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -6790,9 +6804,15 @@ to <code>true</code> (the default) for this self-signed setup. </p>
 <span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterIssuer</span>
 <span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io</span>
 </code></pre></div>
-<p>Set the <code>tls.issuerConf.kind</code> option to <code>ClusterIssuer</code> without pre-creating issuers yourself.
-The Operator creates the CA <code>Certificate</code> and the <code>ClusterIssuer</code> resource in the cert-manager namespace (<code>cert-manager</code> by default). The cert-manager generates signed certificates using the ClusterIssuer.</p>
-<p>If you installed cert-manager in a custom namespace, you must explicitly define it in the <code>CERTMANAGER_NAMESPACE</code> environment variable for the Operator deployment.</p>
+</li>
+<li>
+<p>Apply the configuration. Replace the <code>&lt;namespace&gt;</code> placeholder with the namespace where your cluster is deployed:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The Operator creates the CA <code>Certificate</code> and the <code>ClusterIssuer</code> resource in the cert-manager namespace (<code>cert-manager</code> by default). The cert-manager generates signed certificates using the <code>ClusterIssuer</code>.</p>
+</li>
+</ol>
+<p>If you installed cert-manager in a custom namespace, set the <a href="env-vars-operator.html#certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code></a> environment variable on the Operator Deployment.</p>
 <h2 id="use-an-existing-clusterissuer">Use an existing ClusterIssuer<a class="headerlink" href="#use-an-existing-clusterissuer" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
@@ -6878,7 +6898,7 @@ database problem.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 3, 2026 08:29:17 UTC">September 3, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 24, 2026 14:33:20 UTC">September 24, 2026</span>
       
         <br>
         Created:
