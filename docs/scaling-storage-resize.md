@@ -12,7 +12,7 @@ Note that you **cannot** shrink the size of an existing PVC object.
 
 Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:
 
-* automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage and scales the storage automatically
+* automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see [Resize mongos log storage](#resize-mongos-log-storage).
 * storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest
 * manual scaling - scale the storage manually.
 
@@ -39,7 +39,7 @@ documentation  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/
 
 !!! note "Version added: [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md)"
 
-The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. 
+The Operator can automatically resize Persistent Volume Claims (PVCs) for **replica sets and config server Pods** based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. 
 
 This feature gives you:
 
@@ -48,6 +48,8 @@ This feature gives you:
 * lower operational effort for developers and platform engineers
 * cost control by expanding only when needed
 * a more predictable environment so teams can focus on delivery
+
+**mongos log PVCs are not supported by automatic storage resizing.** You can [resize them manually](#resize-mongos-log-storage).
 
 To enable automatic storage resizing, edit the `deploy/cr.yaml` Custom Resource manifest as follows:
 {.power-number}
@@ -129,10 +131,11 @@ options in the Custom Resource.
 
     This is the example configuration of defining a new storage size in the `deploy/cr.yaml` file:
 
-    ``` {.text .no-copy}
+    ```yaml
     spec:
       ...
-      enableVolumeExpansion: true
+      storageScaling:
+        enableVolumeScaling: true
       ...
       replsets:
         ...
@@ -163,6 +166,45 @@ The storage size change takes some time. When it starts, the Operator does the f
 * updates the `.status.storageAutoscaling.<PVC_NAME>.resizeCount` field.
 
 After the resize finishes, the Operator deletes this annotation.
+
+### Resize mongos log storage
+
+!!! note "Version added: [1.23.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.md)"
+
+In a sharded cluster, you can also resize the PVCs that store `mongos` logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the `sharding.mongos.logs.persistentVolumeClaim` subsection. See [Persistent logging](persistent-logging.md#for-mongos-pods) to learn how to configure them.
+
+To resize the `mongos` log PVCs, do the following:
+{.power-number}
+
+1. Make sure the [storageScaling.enableVolumeScaling](operator.md#storagescalingenablevolumescaling) Custom Resource option is set to `true`.
+2. Specify the new storage size for the `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage` option in the Custom Resource:
+
+    ```yaml
+    spec:
+      ...
+      storageScaling:
+        enableVolumeScaling: true
+      ...
+      sharding:
+        mongos:
+          logs:
+            persistentVolumeClaim:
+              resources:
+                requests:
+                  storage: <NEW STORAGE SIZE>
+    ```
+
+3. Apply the changes:
+
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
+
+The Operator resizes the existing `mongos` log PVCs in place. The logs stored on them are preserved. To check the new size, run:
+
+```bash
+kubectl get pvc -l app.kubernetes.io/component=mongos -n <namespace>
+```
 
 ## Manual scaling without Volume Expansion capability
 

@@ -3,11 +3,14 @@
 
 `logrotate` is a tool to manage the log file growth. MongoDB logs can grow quickly. Without rotation, logs may fill the filesystem and disrupt the database. `logrotate` ensures predictable log retention and disk usage.
 
-`logrotate` runs in a `logcollector` sidecar container within each database Pod. It reads the log files at the specified path and rotates them according to the set of rules.
+When [log collection](persistent-logging.md) is enabled, `logrotate` runs in a `logrotate` sidecar container next to the MongoDB container. Each Pod gets its own `logrotate` sidecar, which rotates the log file of that Pod:
 
-By default, `logrotate` in Percona Operator for MongoDB works as follows:
+* replica set and config server Pods: `/data/db/logs/mongod.full.log`
+* `mongos` Pods: `/data/db/logs/mongos.full.log` (starting with Operator version 1.23.1)
 
-* Rotates the `/data/db/logs/mongod.full.log` daily.
+Both log files are rotated under the same default policy. By default, `logrotate` in Percona Operator for MongoDB works as follows:
+
+* Rotates the log file daily.
 * If the log file exceeds 100 MB, it will be rotated on the next run, regardless of the schedule.
 * Keeps up to 7 rotated log files.
 * Skips missing or empty log files.
@@ -16,9 +19,8 @@ By default, `logrotate` in Percona Operator for MongoDB works as follows:
 * Ensures pre-rotation scripts run only once per rotation with `sharedscripts`.
 * Before rotating, performs the following in the `prerotate` script:
 
-  * Runs the `db.adminCommand({ logRotate: 1 })` command so that MongoDB
-  closes its current log and starts a new one.
-  * Deletes any `mongod.log.*` files in `/data/db/logs/` that are older than 7 days.
+  * Runs the `db.adminCommand({ logRotate: 1 })` command against the local `mongod` or `mongos` instance so that it closes its current log and starts a new one.
+  * Deletes any `mongod.log.*` files (for `mongod`) or `mongos.log.*` files (for `mongos`) in `/data/db/logs/` that are older than 7 days.
 
 
 ## Configure log rotation
@@ -39,8 +41,12 @@ Use the `logcollector.logrotate.configuration` section in the Custom Resource to
 
 !!! important
 
-    You must provide the full `logrotate` configuration because the Operator replaces the default configuration with the one you provide.
+    1. You must provide the full `logrotate` configuration because the Operator replaces the default configuration with the one you provide.
     Refer to the [default configuration](https://github.com/percona/percona-server-mongodb-operator/blob/v{{release}}/build/logcollector/logrotate/logrotate.conf) to see the built-in logrotate rules and use it as a guide for your custom settings.
+
+    2. The `logcollector.logrotate.configuration` option is a single cluster-wide setting: the same configuration is used by the `logrotate` sidecars in replica set, config server, and `mongos` Pods. It fully replaces the built-in configuration, including the `mongos.full.log` rules.
+
+        In a sharded cluster, if your custom configuration includes only the `/data/db/logs/mongod.full.log` rules, the Operator silently stops rotating `mongos.full.log`. To rotate logs on all Pods, include rules for both files, as shown in the example below.
 
 Here's an example configuration:
 
@@ -66,7 +72,27 @@ spec:
                find /data/db/logs/ -type f -name 'mongod.log.*' -mtime +7 -delete
            endscript
         }
+
+        /data/db/logs/mongos.full.log {
+           daily
+           minsize 100K
+           maxsize 200M
+           rotate 7
+           missingok
+           nocompress
+           notifempty
+           copytruncate
+           sharedscripts
+           prerotate
+               # rotate mongos.log using 'db.adminCommand({ logRotate: 1 })'
+               mongosh "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin" \
+                       --eval 'db.adminCommand({ logRotate: 1 })'
+               find /data/db/logs/ -type f -name 'mongos.log.*' -mtime +7 -delete
+           endscript
+        }
 ```
+
+The `mongos.full.log` rules are required only for sharded clusters. Because of the `missingok` option, `logrotate` skips a file that doesn't exist in a Pod, so you can use the same configuration for both replica set and sharded clusters.
 
 Apply the configuration:
 
