@@ -547,7 +547,7 @@ The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses the
 
 ### `vault.reinitInterval`
 
-How often the Operator creates a new Vault client and authenticates again. The default is 30 minutes. If you change Vault comnfiguration in `spec.vault` or update the Secret named by `vault.syncUsers.tokenSecret`, the Operator creates a new client on the next reconciliation. See [Control how often the Operator contacts Vault](system-users-vault.md#control-how-often-the-operator-contacts-vault).
+How often the Operator creates a new Vault client and authenticates again. The default is 30 minutes. If you change Vault configuration in `spec.vault` or update the Secret named by `vault.syncUsers.tokenSecret`, the Operator creates a new client on the next reconciliation. See [Control how often the Operator contacts Vault](system-users-vault.md#control-how-often-the-operator-contacts-vault).
 
 | Value type  | Example    |
 | ----------- | ---------- |
