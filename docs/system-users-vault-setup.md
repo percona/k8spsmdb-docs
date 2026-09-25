@@ -335,6 +335,8 @@ Specify the following information:
 
 * `endpointURL`: Where your Vault server is running.
 * `tlsSecret` (optional): The Secret name that contains TLS certificates for accessing Vault via TLS. This is the Secret object that you created at the previous step
+* `reinitInterval` (optional): How often the Operator creates a new Vault client. The default is 30 minutes. See [Control how often the Operator contacts Vault](system-users-vault.md#control-how-often-the-operator-contacts-vault).
+* `requestInterval` (optional): How often the Operator reads user passwords from Vault. Leave it unset to read Vault on every reconciliation. See [Control how often the Operator contacts Vault](system-users-vault.md#control-how-often-the-operator-contacts-vault).
 * Specify the Vault-related information for the `syncUsers` subsection:
 
    * `role`: The role you have created for the Operator in Vault
