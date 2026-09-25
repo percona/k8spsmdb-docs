@@ -555,7 +555,7 @@ How often the Operator creates a new Vault client and authenticates again. The d
 
 ### `vault.requestInterval`
 
-How often the Operator reads system user credentials from Vault. If this value is unset, the Operator reads Vault on every reconciliation. The time of the last read is stored in [`status.vaultLastRequestedAt`](cr-statuses.md#perconaservermongodb-status).
+How often the Operator reads system user credentials from Vault. If this value is unset, the Operator reads Vault on every reconciliation. When this value is set, the time of the last read is stored in [`status.vaultLastRequestedAt`](cr-statuses.md#perconaservermongodb-status).
 
 | Value type  | Example    |
 | ----------- | ---------- |
