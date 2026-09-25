@@ -10,8 +10,8 @@ When [Vault is enabled](system-users-vault-setup.md#configure-vault), the Operat
 
 * Retrieves system user passwords from Vault during cluster creation
 * Creates Kubernetes Secrets using those passwords
-* Sends periodic requests to Vault for updates
-* Compares Vault credentials with the Secret during each reconciliation loop and patches the Secret when values differ.
+* Reads system user passwords from Vault on every reconciliation, unless you set [`requestInterval`](#limit-reads-of-user-passwords)
+* Compares Vault credentials with the Kubernetes Secret and patches the Secret when the values differ
 * Applies its standard password rotation routine to update credentials inside the cluster
 * Ensures Vault remains the authoritative source
 * Continues reconciling even if Vault is temporarily unavailable
@@ -49,6 +49,35 @@ The Operator can authenticate in Vault in two ways:
 
 * **Using Kubernetes service accounts** - The Operator authenticates to Vault using its Service Account JWT. This method is recommended when Vault runs in the same Kubernetes cluster
 * **Using Vault tokens** - The Operator authenticates to Vault using a pre-created Vault token. This method is used when Vault is deployed outside Kubernetes or in another cluster.
+
+## Control how often the Operator contacts Vault
+
+Two options control Vault traffic. Both settings accept a time duration value, such as `30m` or `1m`.
+
+### Reinitialize the Vault client
+
+[`vault.reinitInterval`](operator.md#vaultreinitinterval) sets how often the Operator creates a new Vault client and authenticates again. The default is 30 minutes (`30m`).
+
+The Operator also creates a new client on the next reconciliation in these cases:
+
+* You change `spec.vault`
+* You change the data in the Secret referenced in `vault.syncUsers.tokenSecret`
+
+The Operator does not wait for `reinitInterval` in either case. With Kubernetes authentication, each new client logs in to Vault and receives a new token.
+
+### Limit reads of user passwords
+
+The [`vault.requestInterval`](operator.md#vaultrequestinterval) option sets how often the Operator reads the system user secret from Vault.
+
+Leave it unset to read Vault on every reconciliation. Set it when password changes do not need to reach the cluster on the next reconciliation. The Operator then waits until the interval has elapsed since the last read and records that time in the [`status.vaultLastRequestedAt`](cr-statuses.md#perconaservermongodb-status) field.
+
+```yaml
+spec:
+  vault:
+    endpointURL: https://vault-service:8200
+    reinitInterval: 30m
+    requestInterval: 1m
+```
 
 ## Configuration
 
