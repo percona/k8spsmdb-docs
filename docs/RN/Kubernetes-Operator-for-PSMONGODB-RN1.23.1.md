@@ -14,7 +14,7 @@ This release focuses on day-to-day operations. It adds persistent logging for mo
 `mongos` is the query router in a sharded cluster. Its logs record connection failures, slow queries, authentication errors, and which shard received a query.
 
 Starting with this release, persistent logging also covers `mongos` Pods. This enables you to see what the
-router did after a rollout, an out-of-memory restart a node
+router did after a rollout, an out-of-memory restart, a node
 drain or another incident.
 
 The Operator adds the `logs` (Fluent Bit) and `logrotate` sidecars to each `mongos` Pod. Those logs survive a Pod restart only when you configure the storage for them via the `sharding.mongos.logs.persistentVolumeClaim` section in the Custom Resource. The Operator then creates one Persistent Volume Claim (PVC) per `mongos` Pod and stores the log file on that volume.
@@ -23,7 +23,7 @@ Resize that PVC the same way you resize storage for replica set and config serve
 
 If you turn persistent logging off, the Operator removes the sidecars but keeps existing `mongos` log PVCs. Files already on the volume stay readable.
 
-`logrotate` uses one cluster-wide policy for `mongod` and `mongos`: rotates logs daily, when they exceed 100 MB and keeps up to 7 rotated files. When you change that policy, include the configuration for both `mongod` and `mongos`.
+`logrotate` uses one cluster-wide policy for `mongod` and `mongos`. It rotates logs daily, when they exceed 100 MB and keeps up to 7 rotated files. When you change that policy, include the configuration for both `mongod` and `mongos`.
 
 Read more in the [persistent logging](../persistent-logging.md#collect-logs-from-mongos) and [log rotation](../logrotate.md) documentation.
 
@@ -50,6 +50,12 @@ Learn more in [Manage system users with Vault](../system-users-vault.md).
 
 ## CRD Changes
 
+* The `.status.oci.credentials.secretName` field has now the minimum length of `1` and maximum length of `253`. An empty name is rejected, and a name longer than 253 characters is rejected.
+* The `status.oci.credentials` field requires the `secretName` to be present when `credentials.type` is `userPrincipal`.
+* New fields added:
+  
+  * `sharding.mongos.logs.persistentVolumeClaim` to configure persistent log storage for `mongos` Pods.
+  * `vault.requestInterval` and `vault.reinitInterval` to control Vault password-read and client reinitialization intervals.
 
 ## Changelog
 
@@ -72,12 +78,11 @@ Learn more in [Manage system users with Vault](../system-users-vault.md).
 
 The Operator was developed and tested with the following software:
 
-* Percona Server for MongoDB 6.0.29-23, 7.0.37-20, and 8.0.26-11
+* Percona Server for MongoDB 6.0.29-23, 7.0.43-23, and 8.0.32-14
 * Percona Backup for MongoDB 2.15.0
-* PMM Client: 2.44.1-1
-* PMM3 Client: 3.8.1
+* PMM3 Client: 3.9.1
 * cert-manager: 1.21.0
-* LogCollector based on fluent-bit: 5.0.9-1
+* LogCollector based on fluent-bit: 5.1.1-1
 
 Other options may also work but have not been tested.
 
@@ -87,12 +92,12 @@ Percona Operators are designed for compatibility with all [CNCF-certified :octic
 
 --8<-- [start:platforms]
 
-* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.33 - 1.35
-* [Amazon Elastic Kubernetes Service (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.33 - 1.36
+* [Google Kubernetes Engine (GKE) :octicons-link-external-16:](https://cloud.google.com/kubernetes-engine) 1.34 - 1.35
+* [Amazon Elastic Kubernetes Service (EKS) :octicons-link-external-16:](https://aws.amazon.com) 1.34 - 1.36
 * [Azure Kubernetes Service (AKS) :octicons-link-external-16:](https://azure.microsoft.com/en-us/services/kubernetes-service/) 1.34 - 1.36
-* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.18 - 4.22 
-* [Rancher :octicons-link-external-16:](https://www.rancher.com/) with Rancher Kubernetes Engine (RKE2) 1.33 - 1.35  
-* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.38.1 with Kubernetes v1.35.1
+* [OpenShift Container Platform :octicons-link-external-16:](https://www.redhat.com/en/technologies/cloud-computing/openshift) 4.19 - 4.22
+* [Rancher :octicons-link-external-16:](https://www.rancher.com/) with Rancher Kubernetes Engine (RKE2) 1.34 - 1.36
+* [Minikube :octicons-link-external-16:](https://github.com/kubernetes/minikube) 1.39.0 with Kubernetes v1.37.0
 --8<-- [end:platforms]
 
 This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.
@@ -105,22 +110,22 @@ Find Percona's certified Docker images that you can use with the Percona Operato
 
 | Image                                                  | Digest                                                           |
 |:-------------------------------------------------------|:-----------------------------------------------------------------|
-| percona/percona-server-mongodb:8.0.26-11               | e258e1faf74fb3d521bb2732d2a05fe3b7318335974ef3ddf33783746f6c084f |
-| percona/percona-server-mongodb:8.0.26-11 (ARM64)       | 2515c4680c8945febea98de5333a9a9895e39e2bf7f9ec0f240f04b1fe1dc645 |
-| percona/percona-server-mongodb:7.0.37-20               | 2762037db63934fa15e20a1fa03258ccfb457633bac7a02cdfbff594d1639c4b |
-| percona/percona-server-mongodb:7.0.37-20 (ARM64)       | 392b90cc2e8e67c16bff3885c38819439d7db58ad4a7e734ae8a7cfe24a19a14 |
+| percona/percona-server-mongodb:8.0.32-14               | 47b05b6624421b7b417d2324da59db7e5fc74d544c15ede4fe8877b6d4e79ff8 |
+| percona/percona-server-mongodb:8.0.32-14 (ARM64)       | 2cef2f3fa8a26fe1aa5ce1eb51381f92d1caedc3781b5d474b320d52d4096114 |
+| percona/percona-server-mongodb:7.0.43-23               | dc817d4892f0045136745d0988601b6ff0a7bbe50c76110c353920819c720c71 |
+| percona/percona-server-mongodb:7.0.43-23 (ARM64)       | 316a9311998523cf0ace036d4a455188535c00629987843fc93c3e244af40a98 |
 | percona/percona-server-mongodb:6.0.29-23               | cf9254f6d05f7f64b6295a7d96c6b4591d02e521a68488cb99eb54f9720714c1 |
 | percona/percona-server-mongodb:6.0.29-23 (ARM64)       | 62fbdebb132307ced293ad30eeb597e7f4f7f9bf05ccc222a436c7f2b71d5cbc |
-| percona/fluentbit:5.0.9-1                              | 1ca02c2c820697ea943b39ab3e033446eca383343bb61acc71981548d31f4c7f |
-| percona/fluentbit:5.0.9-1 (ARM64)                      | 1814577514a49b851c59d1bf6ad5ec360ebd04d53ce9f5ece5209498b5c6a64b |
-| percona/pmm-client:3.8.1                               | a92cfb7f912bd85d8245575c3ee5c423664ad2baedb674d159a87b113dbd4de2 |
-| percona/pmm-client:3.8.1 (ARM64)                       | 3fe427c0666337df7613824da5f3b5fb7397e849f70402ac557c1324c5d996e6 |
+| percona/fluentbit:5.1.1-1                              | 332ac2386031925cef314367366abea5cb6ec1ac0bc601b824422753346bc5df |
+| percona/fluentbit:5.1.1-1 (ARM64)                      | 1d528ec4a8c9bab32762c83eb4e33458f2e48d9af94f0aa59bba0ce4e89904dd |
+| percona/pmm-client:3.9.1                               | 6b4309035f1fc4c0dcb6b7374ac7a01526319374a071759282a21eb016f754bf |
+| percona/pmm-client:3.9.1 (ARM64)                       | ab419b7e10cd81fa44dd198e4a10c44dc056e87ea73fd836a66b6a2356bc4efc |
 | percona/pmm-client:2.44.1-1                            | 52a8fb5e8f912eef1ff8a117ea323c401e278908ce29928dafc23fac1db4f1e3 |
 | percona/pmm-client:2.44.1-1 (ARM64)                    | 390bfd12f981e8b3890550c4927a3ece071377065e001894458047602c744e3b |
 | percona/percona-backup-mongodb:2.15.0                  | 2c69ec2dbd5be02df31577869df97c72781bf6fe6456471e8087b0e03136f672 |
 | percona/percona-backup-mongodb:2.15.0 (ARM64)          | 188c38f60e54b9864e74e346209c0a924b6c8b0829062a31d44a5abb42626703 |
-| percona/percona-server-mongodb-operator:1.23.0         | 21e9fed2c4309d3e88c6ec64ddf5dce6c0e86ce4be20531ab83c0b838739f89b |
-| percona/percona-server-mongodb-operator:1.23.0 (ARM64) | 9747f69b64119ce343cb01ac47fa4b7af8050266852f4faef612908b02d554a2 |
+| percona/percona-server-mongodb-operator:1.23.1         |       |
+| percona/percona-server-mongodb-operator:1.23.1 (ARM64) |   |
 
 --8<-- [end:images]
 
