@@ -73,6 +73,7 @@ Learn more in [Manage system users with Vault](../system-users-vault.md).
 
 * [K8SPSMDB-1817](https://perconadev.atlassian.net/browse/K8SPSMDB-1817) - Fixed a deadlock where Smart Update stayed blocked while Percona ClusterSync for MongoDB (PCSM) held the cluster lease and scheduled backups sat in Waiting. Smart Update no longer waits forever on backups that are parked because PCSM is replicating.
 
+* [K8SPSMDB-1834](https://perconadev.atlassian.net/browse/K8SPSMDB-1834) - Fixed endless Smart Update Pod restarts after you upgrade from Operator 1.22 to 1.23 when `spec.tls.issuerConf.kind` is `ClusterIssuer`. The Operator now keeps leaf certificate `issuerRef.kind` set to `ClusterIssuer`, so cert-manager no longer reissues those certificates in a loop.
 
 ## Supported software
 
