@@ -51,7 +51,7 @@ You can now use full-text and vector search with Percona Operator for MongoDB. F
 
 Full-text and vector search are provided by a separate tool called Percona Search for MongoDB that runs the `mongot` search process. You manage it declaratively in the Custom Resource. The Operator deploys and manages the `mongot` alongside your cluster, wires authentication and TLS, and keeps search in sync with your data for both replica set and sharded deployments. Existing clusters that don’t enable search continue to run unchanged after you upgrade.
 
-Full-text and vector search require Percona Server for MongoDB 8.3 or later. The Operator uses experimental 8.3 images that you must explicitly specify in the Custom Resource.
+Full-text and vector search require Percona Server for MongoDB 8.3 or later. You must explicitly specify Percona Server for MongoDB 8.3 images in the Custom Resource.
 
 This feature is available as a tech preview and is not recommended for production use yet. Try it in staging or testing environments and share your feedback to help us shape its future.
 
