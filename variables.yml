@@ -18,7 +18,7 @@ pbmrecommended: '2.15.0'
 
 pmm2recommended: '2.44.1-1'
 pmm3recommended: '3.9.1'
-fluentbitrecommended: '5.1.1-1'
+fluentbitrecommended: '5.1.2-1'
 certmanagerrecommended: '1.21.0'
 
 # Platforms
