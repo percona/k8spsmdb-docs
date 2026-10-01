@@ -97,6 +97,7 @@ Common fields:
 - `status.host` – connection endpoint
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
+- `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values
 

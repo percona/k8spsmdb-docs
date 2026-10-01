@@ -545,6 +545,22 @@ The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses the
 | ----------- | ---------- |
 | :material-code-string: string     | `my-tls-vault-secret` |
 
+### `vault.reinitInterval`
+
+How often the Operator creates a new Vault client and authenticates again. The default is 30 minutes. If you change Vault configuration in `spec.vault` or update the Secret named by `vault.syncUsers.tokenSecret`, the Operator creates a new client on the next reconciliation. See [Control how often the Operator contacts Vault](system-users-vault.md#control-how-often-the-operator-contacts-vault).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `30m` |
+
+### `vault.requestInterval`
+
+How often the Operator reads system user credentials from Vault. If this value is unset, the Operator reads Vault on every reconciliation. When this value is set, the time of the last read is stored in [`status.vaultLastRequestedAt`](cr-statuses.md#perconaservermongodb-status).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `1m` |
+
 ### `vault.syncUsers.role`
 
 The Vault Kubernetes auth role name. 
@@ -572,7 +588,7 @@ The Vault path where system user credentials are stored.
 ### `vault.syncUsers.tokenSecret`
 
 The Kubernetes Secret that contains a Vault token for token-based
-authentication. If this value is set, the Operator uses the provided token to authenticate with Vault. If this value is not set and authentication with Kubernetes service account is also enabled, the Operator will use its service account with Vault Kubernetes authentication.
+authentication. If this value is set, the Operator uses the provided token to authenticate with Vault. If this value is not set and authentication with Kubernetes service account is also enabled, the Operator will use its service account with Vault Kubernetes authentication. If you change the data in this Secret, the Operator creates a new Vault client on the next reconciliation. It does not wait for `vault.reinitInterval`.
 
 | Value type  | Example    |
 | ----------- | ---------- |
