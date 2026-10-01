@@ -177,9 +177,8 @@ To use full-text and vector search with the Operator, you must meet the followin
 requirements:
 
 1. **Percona Server for MongoDB 8.3 or later.** Percona Search for MongoDB is available only
-   starting with MongoDB 8.3. The Operator uses [experimental
-   images of Percona Server for MongoDB 8.3](https://hub.docker.com/r/perconalab/percona-server-mongodb/tags?name=8.3). You must explicitly specify them in
-   the Custom Resource to use vector search. 
+   starting with MongoDB 8.3. You must explicitly specify [Percona Server for MongoDB 8.3 images](https://hub.docker.com/r/percona/percona-server-mongodb/tags?name=8.3) in
+   the Custom Resource to use search capabilities. 
 2. **Dedicated persistent storage for each Percona Search for MongoDB pod.** Each Percona Search for MongoDB needs
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
    the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
