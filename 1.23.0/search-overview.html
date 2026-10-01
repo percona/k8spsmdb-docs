@@ -6785,9 +6785,8 @@ Custom Resource for readiness.</p>
 requirements:</p>
 <ol>
 <li><strong>Percona Server for MongoDB 8.3 or later.</strong> Percona Search for MongoDB is available only
-   starting with MongoDB 8.3. The Operator uses <a href="https://hub.docker.com/r/perconalab/percona-server-mongodb/tags?name=8.3">experimental
-   images of Percona Server for MongoDB 8.3</a>. You must explicitly specify them in
-   the Custom Resource to use vector search. </li>
+   starting with MongoDB 8.3. You must explicitly specify <a href="https://hub.docker.com/r/percona/percona-server-mongodb/tags?name=8.3">Percona Server for MongoDB 8.3 images</a> in
+   the Custom Resource to use search capabilities. </li>
 <li><strong>Dedicated persistent storage for each Percona Search for MongoDB pod.</strong> Each Percona Search for MongoDB needs
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
    the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
@@ -6844,7 +6843,7 @@ requirements:</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 09:27:14 UTC">September 9, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 1, 2026 07:40:08 UTC">October 1, 2026</span>
       
         <br>
         Created:

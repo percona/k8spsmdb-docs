@@ -10449,9 +10449,8 @@ Custom Resource for readiness.</p>
 requirements:</p>
 <ol>
 <li><strong>Percona Server for MongoDB 8.3 or later.</strong> Percona Search for MongoDB is available only
-   starting with MongoDB 8.3. The Operator uses <a href="https://hub.docker.com/r/perconalab/percona-server-mongodb/tags?name=8.3">experimental
-   images of Percona Server for MongoDB 8.3</a>. You must explicitly specify them in
-   the Custom Resource to use vector search. </li>
+   starting with MongoDB 8.3. You must explicitly specify <a href="https://hub.docker.com/r/percona/percona-server-mongodb/tags?name=8.3">Percona Server for MongoDB 8.3 images</a> in
+   the Custom Resource to use search capabilities. </li>
 <li><strong>Dedicated persistent storage for each Percona Search for MongoDB pod.</strong> Each Percona Search for MongoDB needs
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
    the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
@@ -26647,7 +26646,7 @@ index, and run a <code>$vectorSearch</code> query.</p>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perconalab/percona-server-mongodb:8.3</span>
 <span class="w">  </span><span class="nt">search</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perconalab/percona-search-mongodb:{{ mongot }}</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:{{ mongot }}</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
@@ -41773,7 +41772,7 @@ we will do our very best to be helpful.</p></section><section class="print-page"
 <h3 id="rn-kubernetes-operator-for-psmongodb-rn1.23.0-run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview">Run AI and semantic search workloads with vector search available in Percona Operator for MongoDB (tech preview)<a class="headerlink" href="#rn-kubernetes-operator-for-psmongodb-rn1.23.0-run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview" title="Permanent link">&para;</a></h3>
 <p>You can now use full-text and vector search with Percona Operator for MongoDB. Full-text search finds documents by matching keywords and phrases in the text. Vector search retrieves results based on meaning rather than exact word matches, so you can store and query vector data alongside traditional data in Percona Server for MongoDB. Use it for AI and retrieval-augmented generation (RAG) workloads, semantic search and similarity queries. As a result, you have the same capability that MongoDB Atlas customers and self-managed upstream users already have.</p>
 <p>Full-text and vector search are provided by a separate tool called Percona Search for MongoDB that runs the <code>mongot</code> search process. You manage it declaratively in the Custom Resource. The Operator deploys and manages the <code>mongot</code> alongside your cluster, wires authentication and TLS, and keeps search in sync with your data for both replica set and sharded deployments. Existing clusters that don’t enable search continue to run unchanged after you upgrade.</p>
-<p>Full-text and vector search require Percona Server for MongoDB 8.3 or later. The Operator uses experimental 8.3 images that you must explicitly specify in the Custom Resource.</p>
+<p>Full-text and vector search require Percona Server for MongoDB 8.3 or later. You must explicitly specify Percona Server for MongoDB 8.3 images in the Custom Resource.</p>
 <p>This feature is available as a tech preview and is not recommended for production use yet. Try it in staging or testing environments and share your feedback to help us shape its future.</p>
 <p>Learn more in the <a href="#search-overview">documentation</a> and <a href="#search-setup">setup tutorial</a>.</p>
 <h3 id="rn-kubernetes-operator-for-psmongodb-rn1.23.0-boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview">Boost backup and restore performance with PVC snapshot support (tech preview)<a class="headerlink" href="#rn-kubernetes-operator-for-psmongodb-rn1.23.0-boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview" title="Permanent link">&para;</a></h3>
