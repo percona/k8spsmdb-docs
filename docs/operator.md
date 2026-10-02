@@ -114,6 +114,8 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing).
 
+Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. Resize those manually, see [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage).
+
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
@@ -3582,6 +3584,54 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-text-long: subdoc      |            |
+
+### `sharding.mongos.logs.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs when [persistent logging](persistent-logging.md#for-mongos-pods) is enabled.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.labels`
+
+The [Kubernetes labels  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for the [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `rack: rack-22` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use for the [Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `standard` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs that store mongos logs. See [How to configure VolumeAttributesClass for Persistent Volumes](volume-attributes-class.md) to learn more.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `silver` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the PVC that stores mongos logs. Defaults to `ReadWriteOnce` if not set.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-application-array-outline: array       | `[ "ReadWriteOnce" ]` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage) to change it.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `1Gi`      |
 
 ## Roles section
 
