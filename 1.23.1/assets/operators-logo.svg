@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_12" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1123.5 1123.5">
+  <!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Background">
+    <g>
+      <path class="st0" d="M212.1,740.9l39.3,104.6h573.1l86.8-104.6H212.1Z"/>
+      <polyline class="st0" points="279.4 704.1 465.1 377.7 489.9 420.5 328 704.1"/>
+      <polygon class="st0" points="619.5 603 677.8 704.1 865.5 704.1 619.5 278 373.4 704.1 561.1 704.1 619.5 603"/>
+      <polygon class="st0" points="447.9 278 510.5 386.4 573.1 278 447.9 278"/>
+    </g>
+  </g>
+</svg>
