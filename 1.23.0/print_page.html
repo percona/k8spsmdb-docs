@@ -11627,7 +11627,7 @@ options</a>.</p>
 <ul>
 <li><code>percona.com/delete-psmdb-pods-in-order</code>: it is enabled by default and it ensures the Pods are deleted in order on cluster deletion. PVCs are not deleted.</li>
 <li>
-<p><code>percona.com/delete-psmdb-pvc</code>: if present, <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volume Claims  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> for the database cluster Pods are deleted along with the cluster deletion.</p>
+<p><code>percona.com/delete-psmdb-pvc</code>: if present, <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volume Claims  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> for the database cluster Pods are deleted along with the cluster deletion. This includes the PVCs that store <code>mongos</code> logs, if you configured them for <a href="#persistent-logging-for-mongos-pods">persistent logging</a> in a sharded cluster.</p>
 <p>This finalizer is off by default in the <code>deploy/cr.yaml</code> configuration file, allowing you to recreate the cluster without losing data. If you need, you can <a href="#delete-clean-up-resources">delete TLS-related objects and PVCs manually</a>. </p>
 </li>
 </ul>
@@ -11781,6 +11781,7 @@ persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
 </details>
 </li>
 </ol>
+<p>If you configured <a href="#persistent-logging-for-mongos-pods">persistent logging for <code>mongos</code> Pods</a> in a sharded cluster, the list also includes PVCs for each <code>mongos</code> Pod  named <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;ordinal&gt;</code>. They store <code>mongos</code> logs and remain after you delete the cluster or disable log collection. Delete them the same way.</p>
 <p>Note that if your Custom Resource manifest includes the <code>percona.com/delete-psmdb-pvc</code> finalizer, all Secrets will be automatically deleted when you delete the PVCs. To prevent this from happening, disable the finalizer.</p>
 </li>
 <li>
@@ -20557,7 +20558,7 @@ storage supplied by the Kubernetes administrator,</li>
 Note that you <strong>cannot</strong> shrink the size of an existing PVC object.</p>
 <p>Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:</p>
 <ul>
-<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage and scales the storage automatically</li>
+<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage</a>.</li>
 <li>storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest</li>
 <li>manual scaling - scale the storage manually.</li>
 </ul>
@@ -20578,7 +20579,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.22.0">1.22.0</a></p>
 </div>
-<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. </p>
+<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for <strong>replica sets and config server Pods</strong> based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. </p>
 <p>This feature gives you:</p>
 <ul>
 <li>fewer outages from full disks because storage grows with demand</li>
@@ -20587,6 +20588,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <li>cost control by expanding only when needed</li>
 <li>a more predictable environment so teams can focus on delivery</li>
 </ul>
+<p><strong>mongos log PVCs are not supported by automatic storage resizing.</strong> You can <a href="#scaling-storage-resize-resize-mongos-log-storage">resize them manually</a>.</p>
 <p class="power-number">To enable automatic storage resizing, edit the <code>deploy/cr.yaml</code> Custom Resource manifest as follows:</p>
 <ol>
 <li>
@@ -20657,24 +20659,25 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 and/or <code>configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage</code>
 options in the Custom Resource. </p>
 <p>This is the example configuration of defining a new storage size in the <code>deploy/cr.yaml</code> file:</p>
-<div class="no-copy highlight"><pre><span></span><code>spec:
-  ...
-  enableVolumeExpansion: true
-  ...
-  replsets:
-    ...
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: &lt;NEW STORAGE SIZE&gt;
-  ...
-  configsvrReplSets:
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: &lt;NEW STORAGE SIZE&gt;
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumeSpec</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">configsvrReplSets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">volumeSpec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
 </code></pre></div>
 </li>
 <li>
@@ -20690,6 +20693,39 @@ options in the Custom Resource. </p>
 <li>updates the <code>.status.storageAutoscaling.&lt;PVC_NAME&gt;.resizeCount</code> field.</li>
 </ul>
 <p>After the resize finishes, the Operator deletes this annotation.</p>
+<h3 id="scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage<a class="headerlink" href="#scaling-storage-resize-resize-mongos-log-storage" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.23.1.md">1.23.1</a></p>
+</div>
+<p>In a sharded cluster, you can also resize the PVCs that store <code>mongos</code> logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="#persistent-logging-for-mongos-pods">Persistent logging</a> to learn how to configure them.</p>
+<p class="power-number">To resize the <code>mongos</code> log PVCs, do the following:</p>
+<ol>
+<li>Make sure the <a href="#operator-storagescalingenablevolumescaling">storageScaling.enableVolumeScaling</a> Custom Resource option is set to <code>true</code>.</li>
+<li>
+<p>Specify the new storage size for the <code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code> option in the Custom Resource:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Apply the changes:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+</ol>
+<p>The Operator resizes the existing <code>mongos</code> log PVCs in place. The logs stored on them are preserved. To check the new size, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
 <h2 id="scaling-storage-resize-manual-scaling-without-volume-expansion-capability">Manual scaling without Volume Expansion capability<a class="headerlink" href="#scaling-storage-resize-manual-scaling-without-volume-expansion-capability" title="Permanent link">&para;</a></h2>
 <p>Manual scaling is the way to go if:</p>
 <ul>
@@ -21506,20 +21542,69 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
                     <section class="print-page" id="persistent-logging" heading-number="9.5.3.1"><h1 id="persistent-logging-persistent-logging">Persistent logging<a class="headerlink" href="#persistent-logging-persistent-logging" title="Permanent link">&para;</a></h1>
 <p>In a distributed Kubernetes environment, it&rsquo;s often difficult to debug issues because logs are tied to the lifecycle of individual Pods and containers. If a Pod fails and restarts, its logs are lost, making it hard to identify the root cause of an issue.</p>
 <p>Percona Operator for MongoDB addresses this challenge with <strong>persistent logging</strong>, ensuring logs are stored persistently, independent of the Pods. This approach helps ensure that logs are available for review even after a Pod restarts.</p>
-<p>The Operator uses <a href="https://fluentbit.io/">Fluent Bit <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, a lightweight log processor with versatile output plugins and forwarding features, to collect logs. Fluent Bit runs as a <code>logs</code> sidecar container alongside each database Pod. It gathers logs from the <code>mongod</code> container, adds metadata, and saves them in a single file called <code>mongod.full.log</code> in the <code>/data/db/</code> directory within the Pod’s Persistent Volume Claim (PVC). As a result, logs persist across Pod restarts and remain available for later debugging.</p>
-<p>Logs are also streamed to standard output, making them accessible via the <code>kubectl logs</code> command for quick troubleshooting:</p>
+<p>The Operator uses <a href="https://fluentbit.io/">Fluent Bit <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, a lightweight log processor with versatile output plugins and forwarding features, to collect logs. Fluent Bit runs as a <code>logs</code> sidecar container alongside the database container in a Pod, adds metadata to the collected logs, and saves them in a single log file in the <code>/data/db/logs/</code> directory. When this directory is backed by a Persistent Volume Claim (PVC), logs persist across Pod restarts and remain available for later debugging.</p>
+<p>See <a href="#persistent-logging-what-gets-collected">What gets collected</a> below — this works differently depending on the Pod type.</p>
+<p>Logs are also streamed to standard output, making them accessible via the <code>kubectl logs</code> command for quick troubleshooting. For example, to view MongoDB logs, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-c<span class="w"> </span>logs
 </code></pre></div>
-<p>Currently, logs are collected only for the <code>mongod</code> instances running in the config server and replica set Pods. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are rotated daily, stored for 7 days and are deleted afterwards.</p>
+<p>A <code>logrotate</code> sidecar container runs next to the <code>logs</code> container and rotates the collected log file. By default, logs are rotated daily, stored for 7 days and are deleted afterwards. See <a href="#logrotate">Log rotation</a> for details.</p>
+<p>Logs of all other containers in the Pods are ephemeral, meaning they will not persist after a Pod restart.</p>
+<h2 id="persistent-logging-what-gets-collected">What gets collected<a class="headerlink" href="#persistent-logging-what-gets-collected" title="Permanent link">&para;</a></h2>
+<h3 id="persistent-logging-for-replica-set-and-config-server-pods">For replica set and config server Pods<a class="headerlink" href="#persistent-logging-for-replica-set-and-config-server-pods" title="Permanent link">&para;</a></h3>
+<p>Fluent Bit gathers logs from the <code>mongod</code> container and saves them to the <code>/data/db/logs/mongod.full.log</code> file. The file is stored on the same PVC as the MongoDB data, so logs persist across Pod restarts without any additional configuration.</p>
+<h3 id="persistent-logging-for-mongos-pods">For mongos Pods<a class="headerlink" href="#persistent-logging-for-mongos-pods" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Version added: 1.23.1</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Enabling log collection alone does not persist <code>mongos</code> logs. You must configure the storage for the <code>mongos</code> Pod in the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection of the Custom Resource. Otherwise, the Operator stores <code>mongos</code> logs on an <code>emptyDir</code> volume and they are lost when the Pod restarts.</p>
+</div>
+<p>In a sharded cluster, the Operator also adds the <code>logs</code> and <code>logrotate</code> sidecar containers to <code>mongos</code> Pods when log collection is enabled. Fluent Bit gathers logs from the <code>mongos</code> container and saves them to the <code>/data/db/logs/mongos.full.log</code> file.</p>
+<p><code>mongos</code> Pods don&rsquo;t store data, so they have no PVC by default. To keep <code>mongos</code> logs across Pod restarts, configure a dedicated PVC for them in the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection of the Custom Resource. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">logcollector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"ReadWriteOnce"</span><span class="p p-Indicator">]</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+</code></pre></div>
+<p>The <code>resources.requests.storage</code> option is required. See the <a href="#operator-shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage">Custom Resource reference</a> for all available options.</p>
+<p>The Operator creates one PVC per <code>mongos</code> Pod. PVCs are named <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;ordinal&gt;</code>, for example, <code>mongos-logs-my-cluster-name-mongos-0</code>. Check them with this command:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>Adding or removing the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection makes the Operator re-create the <code>mongos</code> StatefulSet and restart <code>mongos</code> Pods one by one.</p>
+<p>To view the collected <code>mongos</code> logs, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-mongos-0<span class="w"> </span>-c<span class="w"> </span>logs
+</code></pre></div>
+<p>To increase the size of the <code>mongos</code> log PVCs, see <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize storage</a>.</p>
 <h2 id="persistent-logging-configure-log-collector">Configure log collector<a class="headerlink" href="#persistent-logging-configure-log-collector" title="Permanent link">&para;</a></h2>
 <p>Cluster-level logging is enabled by default and is controlled with the <code>logcollector.enabled</code> key in the <code>deploy/cr.yaml</code> Custom Resource manifest.</p>
 <p>You can additionally configure Fluent Bit using the <code>logcollector.configuration</code> subsection in the <code>deploy/cr.yaml</code> Custom Resource manifest. This allows you to define custom filters or output plugins to suit your specific logging and monitoring needs.</p>
-<p>Note that when you add a new configuration to the <code>logcollector.configuration</code>, this triggers a Smart Update.</p></section><section class="print-page" id="logrotate" heading-number="9.5.3.2"><h1 id="logrotate-log-rotation">Log rotation<a class="headerlink" href="#logrotate-log-rotation" title="Permanent link">&para;</a></h1>
-<p><code>logrotate</code> is a tool to manage the log file growth. MongoDB logs can grow quickly. Without rotation, logs may fill the filesystem and disrupt the database. <code>logrotate</code> ensures predictable log retention and disk usage.</p>
-<p><code>logrotate</code> runs in a <code>logcollector</code> sidecar container within each database Pod. It reads the log files at the specified path and rotates them according to the set of rules.</p>
-<p>By default, <code>logrotate</code> in Percona Operator for MongoDB works as follows:</p>
+<p>Note that when you add a new configuration to the <code>logcollector.configuration</code>, this triggers a Smart Update.</p>
+<h2 id="persistent-logging-disable-log-collection">Disable log collection<a class="headerlink" href="#persistent-logging-disable-log-collection" title="Permanent link">&para;</a></h2>
+<p>To disable log collection, set <code>logcollector.enabled</code> to <code>false</code> in the Custom Resource and apply it. The Operator removes the <code>logs</code> and <code>logrotate</code> sidecar containers from the Pods.</p>
+<p>Disabling log collection doesn&rsquo;t delete the <code>mongos</code> log PVCs or the logs stored on them. The PVCs and their data remain in the namespace until you delete them. While the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set, the PVCs stay attached to <code>mongos</code> Pods, but <code>mongos</code> logs are no longer written to them.</p>
+<h2 id="persistent-logging-see-also">See also<a class="headerlink" href="#persistent-logging-see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Rotates the <code>/data/db/logs/mongod.full.log</code> daily.</li>
+<li><a href="#logrotate">Log rotation</a></li>
+<li><a href="#scaling-storage-resize">Resize storage</a></li>
+<li><a href="#delete-delete-the-database-cluster">Delete the database cluster</a></li>
+</ul></section><section class="print-page" id="logrotate" heading-number="9.5.3.2"><h1 id="logrotate-log-rotation">Log rotation<a class="headerlink" href="#logrotate-log-rotation" title="Permanent link">&para;</a></h1>
+<p><code>logrotate</code> is a tool to manage the log file growth. MongoDB logs can grow quickly. Without rotation, logs may fill the filesystem and disrupt the database. <code>logrotate</code> ensures predictable log retention and disk usage.</p>
+<p>When <a href="#persistent-logging">log collection</a> is enabled, <code>logrotate</code> runs in a <code>logrotate</code> sidecar container next to the MongoDB container. Each Pod gets its own <code>logrotate</code> sidecar, which rotates the log file of that Pod:</p>
+<ul>
+<li>replica set and config server Pods: <code>/data/db/logs/mongod.full.log</code></li>
+<li><code>mongos</code> Pods: <code>/data/db/logs/mongos.full.log</code> (starting with Operator version 1.23.1)</li>
+</ul>
+<p>Both log files are rotated under the same default policy. By default, <code>logrotate</code> in Percona Operator for MongoDB works as follows:</p>
+<ul>
+<li>Rotates the log file daily.</li>
 <li>If the log file exceeds 100 MB, it will be rotated on the next run, regardless of the schedule.</li>
 <li>Keeps up to 7 rotated log files.</li>
 <li>Skips missing or empty log files.</li>
@@ -21530,10 +21615,9 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
 <p>Before rotating, performs the following in the <code>prerotate</code> script:</p>
 </li>
 <li>
-<p>Runs the <code>db.adminCommand({ logRotate: 1 })</code> command so that MongoDB
-  closes its current log and starts a new one.</p>
+<p>Runs the <code>db.adminCommand({ logRotate: 1 })</code> command against the local <code>mongod</code> or <code>mongos</code> instance so that it closes its current log and starts a new one.</p>
 </li>
-<li>Deletes any <code>mongod.log.*</code> files in <code>/data/db/logs/</code> that are older than 7 days.</li>
+<li>Deletes any <code>mongod.log.*</code> files (for <code>mongod</code>) or <code>mongos.log.*</code> files (for <code>mongos</code>) in <code>/data/db/logs/</code> that are older than 7 days.</li>
 </ul>
 <h2 id="logrotate-configure-log-rotation">Configure log rotation<a class="headerlink" href="#logrotate-configure-log-rotation" title="Permanent link">&para;</a></h2>
 <p>You can customize log rotation if you need different retention, size limits, or want to rotate additional files (for example, audit logs). This gives you predictable disk usage and keeps compliance or troubleshooting logs available for as long as you need.</p>
@@ -21548,8 +21632,16 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
 <p>Use the <code>logcollector.logrotate.configuration</code> section in the Custom Resource to completely override the default <code>logrotate</code> settings. For example, you can configure it to rotate logs when their size is between 100 KB (minimum) and 200 MB (maximum).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
+<ol>
+<li>
 <p>You must provide the full <code>logrotate</code> configuration because the Operator replaces the default configuration with the one you provide.
 Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/v1.23.0/build/logcollector/logrotate/logrotate.conf">default configuration</a> to see the built-in logrotate rules and use it as a guide for your custom settings.</p>
+</li>
+<li>
+<p>The <code>logcollector.logrotate.configuration</code> option is a single cluster-wide setting: the same configuration is used by the <code>logrotate</code> sidecars in replica set, config server, and <code>mongos</code> Pods. It fully replaces the built-in configuration, including the <code>mongos.full.log</code> rules.</p>
+<p>In a sharded cluster, if your custom configuration includes only the <code>/data/db/logs/mongod.full.log</code> rules, the Operator silently stops rotating <code>mongos.full.log</code>. To rotate logs on all Pods, include rules for both files, as shown in the example below.</p>
+</li>
+</ol>
 </div>
 <p>Here&rsquo;s an example configuration:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -21573,7 +21665,26 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <span class="w">               </span><span class="no">find /data/db/logs/ -type f -name 'mongod.log.*' -mtime +7 -delete</span>
 <span class="w">           </span><span class="no">endscript</span>
 <span class="w">        </span><span class="no">}</span>
+
+<span class="w">        </span><span class="no">/data/db/logs/mongos.full.log {</span>
+<span class="w">           </span><span class="no">daily</span>
+<span class="w">           </span><span class="no">minsize 100K</span>
+<span class="w">           </span><span class="no">maxsize 200M</span>
+<span class="w">           </span><span class="no">rotate 7</span>
+<span class="w">           </span><span class="no">missingok</span>
+<span class="w">           </span><span class="no">nocompress</span>
+<span class="w">           </span><span class="no">notifempty</span>
+<span class="w">           </span><span class="no">copytruncate</span>
+<span class="w">           </span><span class="no">sharedscripts</span>
+<span class="w">           </span><span class="no">prerotate</span>
+<span class="w">               </span><span class="no"># rotate mongos.log using 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">mongosh "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin" \</span>
+<span class="w">                       </span><span class="no">--eval 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">find /data/db/logs/ -type f -name 'mongos.log.*' -mtime +7 -delete</span>
+<span class="w">           </span><span class="no">endscript</span>
+<span class="w">        </span><span class="no">}</span>
 </code></pre></div>
+<p>The <code>mongos.full.log</code> rules are required only for sharded clusters. Because of the <code>missingok</code> option, <code>logrotate</code> skips a file that doesn&rsquo;t exist in a Pod, so you can use the same configuration for both replica set and sharded clusters.</p>
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
@@ -29918,6 +30029,7 @@ to apply image changes.</p>
 </table>
 <h3 id="operator-storagescalingautoscalingenabled"><code>storageScaling.autoscaling.enabled</code><a class="headerlink" href="#operator-storagescalingautoscalingenabled" title="Permanent link">&para;</a></h3>
 <p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="#scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing</a>.</p>
+<p>Does not apply to mongos log PVCs defined via <code>sharding.mongos.logs.persistentVolumeClaim</code>. Resize those manually, see <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage</a>.</p>
 <table>
 <thead>
 <tr>
@@ -36666,6 +36778,102 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"/></svg></span> subdoc</td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimannotations"><code>sharding.mongos.logs.persistentVolumeClaim.annotations</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimannotations" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">Kubernetes annotations  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> metadata for the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claim  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> that stores mongos logs when <a href="#persistent-logging-for-mongos-pods">persistent logging</a> is enabled.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"/></svg></span> string</td>
+<td><code>service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimlabels"><code>sharding.mongos.logs.persistentVolumeClaim.labels</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimlabels" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Kubernetes labels  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> metadata for the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claim  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> that stores mongos logs.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"/></svg></span> string</td>
+<td><code>rack: rack-22</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimstorageclassname"><code>sharding.mongos.logs.persistentVolumeClaim.storageClassName</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimstorageclassname" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/storage/storage-classes/">Kubernetes Storage Class  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> to use for the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claim  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> that stores mongos logs.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"/></svg></span> string</td>
+<td><code>standard</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimvolumeattributesclassname"><code>sharding.mongos.logs.persistentVolumeClaim.volumeAttributesClassName</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimvolumeattributesclassname" title="Permanent link">&para;</a></h3>
+<p>The name of the <a href="https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/">volumeAttributesClassName <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> used to modify the provisioned PVCs that store mongos logs. See <a href="#volume-attributes-class">How to configure VolumeAttributesClass for Persistent Volumes</a> to learn more.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"/></svg></span> string</td>
+<td><code>silver</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimaccessmodes"><code>sharding.mongos.logs.persistentVolumeClaim.accessModes</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimaccessmodes" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> access modes for the PVC that stores mongos logs. Defaults to <code>ReadWriteOnce</code> if not set.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m0 18H3V6h18zM6 8v10h4v-2H8v-6h2V8zm10 8h-2v2h4V8h-4v2h2z"/></svg></span> array</td>
+<td><code>[ "ReadWriteOnce" ]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage"><code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> size for the PVC that stores mongos logs. Required when the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. The Operator creates one PVC of this size per mongos Pod. See <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage</a> to change it.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"/></svg></span> string</td>
+<td><code>1Gi</code></td>
 </tr>
 </tbody>
 </table>

@@ -6534,10 +6534,14 @@ window.addEventListener('afterprint', (event) => {
 
 <h1 id="log-rotation">Log rotation<a class="headerlink" href="#log-rotation" title="Permanent link">&para;</a></h1>
 <p><code>logrotate</code> is a tool to manage the log file growth. MongoDB logs can grow quickly. Without rotation, logs may fill the filesystem and disrupt the database. <code>logrotate</code> ensures predictable log retention and disk usage.</p>
-<p><code>logrotate</code> runs in a <code>logcollector</code> sidecar container within each database Pod. It reads the log files at the specified path and rotates them according to the set of rules.</p>
-<p>By default, <code>logrotate</code> in Percona Operator for MongoDB works as follows:</p>
+<p>When <a href="persistent-logging.html">log collection</a> is enabled, <code>logrotate</code> runs in a <code>logrotate</code> sidecar container next to the MongoDB container. Each Pod gets its own <code>logrotate</code> sidecar, which rotates the log file of that Pod:</p>
 <ul>
-<li>Rotates the <code>/data/db/logs/mongod.full.log</code> daily.</li>
+<li>replica set and config server Pods: <code>/data/db/logs/mongod.full.log</code></li>
+<li><code>mongos</code> Pods: <code>/data/db/logs/mongos.full.log</code> (starting with Operator version 1.23.1)</li>
+</ul>
+<p>Both log files are rotated under the same default policy. By default, <code>logrotate</code> in Percona Operator for MongoDB works as follows:</p>
+<ul>
+<li>Rotates the log file daily.</li>
 <li>If the log file exceeds 100 MB, it will be rotated on the next run, regardless of the schedule.</li>
 <li>Keeps up to 7 rotated log files.</li>
 <li>Skips missing or empty log files.</li>
@@ -6548,10 +6552,9 @@ window.addEventListener('afterprint', (event) => {
 <p>Before rotating, performs the following in the <code>prerotate</code> script:</p>
 </li>
 <li>
-<p>Runs the <code>db.adminCommand({ logRotate: 1 })</code> command so that MongoDB
-  closes its current log and starts a new one.</p>
+<p>Runs the <code>db.adminCommand({ logRotate: 1 })</code> command against the local <code>mongod</code> or <code>mongos</code> instance so that it closes its current log and starts a new one.</p>
 </li>
-<li>Deletes any <code>mongod.log.*</code> files in <code>/data/db/logs/</code> that are older than 7 days.</li>
+<li>Deletes any <code>mongod.log.*</code> files (for <code>mongod</code>) or <code>mongos.log.*</code> files (for <code>mongos</code>) in <code>/data/db/logs/</code> that are older than 7 days.</li>
 </ul>
 <h2 id="configure-log-rotation">Configure log rotation<a class="headerlink" href="#configure-log-rotation" title="Permanent link">&para;</a></h2>
 <p>You can customize log rotation if you need different retention, size limits, or want to rotate additional files (for example, audit logs). This gives you predictable disk usage and keeps compliance or troubleshooting logs available for as long as you need.</p>
@@ -6566,8 +6569,16 @@ window.addEventListener('afterprint', (event) => {
 <p>Use the <code>logcollector.logrotate.configuration</code> section in the Custom Resource to completely override the default <code>logrotate</code> settings. For example, you can configure it to rotate logs when their size is between 100 KB (minimum) and 200 MB (maximum).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
+<ol>
+<li>
 <p>You must provide the full <code>logrotate</code> configuration because the Operator replaces the default configuration with the one you provide.
 Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/v1.23.0/build/logcollector/logrotate/logrotate.conf">default configuration</a> to see the built-in logrotate rules and use it as a guide for your custom settings.</p>
+</li>
+<li>
+<p>The <code>logcollector.logrotate.configuration</code> option is a single cluster-wide setting: the same configuration is used by the <code>logrotate</code> sidecars in replica set, config server, and <code>mongos</code> Pods. It fully replaces the built-in configuration, including the <code>mongos.full.log</code> rules.</p>
+<p>In a sharded cluster, if your custom configuration includes only the <code>/data/db/logs/mongod.full.log</code> rules, the Operator silently stops rotating <code>mongos.full.log</code>. To rotate logs on all Pods, include rules for both files, as shown in the example below.</p>
+</li>
+</ol>
 </div>
 <p>Here&rsquo;s an example configuration:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6591,7 +6602,26 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <span class="w">               </span><span class="no">find /data/db/logs/ -type f -name 'mongod.log.*' -mtime +7 -delete</span>
 <span class="w">           </span><span class="no">endscript</span>
 <span class="w">        </span><span class="no">}</span>
+
+<span class="w">        </span><span class="no">/data/db/logs/mongos.full.log {</span>
+<span class="w">           </span><span class="no">daily</span>
+<span class="w">           </span><span class="no">minsize 100K</span>
+<span class="w">           </span><span class="no">maxsize 200M</span>
+<span class="w">           </span><span class="no">rotate 7</span>
+<span class="w">           </span><span class="no">missingok</span>
+<span class="w">           </span><span class="no">nocompress</span>
+<span class="w">           </span><span class="no">notifempty</span>
+<span class="w">           </span><span class="no">copytruncate</span>
+<span class="w">           </span><span class="no">sharedscripts</span>
+<span class="w">           </span><span class="no">prerotate</span>
+<span class="w">               </span><span class="no"># rotate mongos.log using 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">mongosh "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/admin" \</span>
+<span class="w">                       </span><span class="no">--eval 'db.adminCommand({ logRotate: 1 })'</span>
+<span class="w">               </span><span class="no">find /data/db/logs/ -type f -name 'mongos.log.*' -mtime +7 -delete</span>
+<span class="w">           </span><span class="no">endscript</span>
+<span class="w">        </span><span class="no">}</span>
 </code></pre></div>
+<p>The <code>mongos.full.log</code> rules are required only for sharded clusters. Because of the <code>missingok</code> option, <code>logrotate</code> skips a file that doesn&rsquo;t exist in a Pod, so you can use the same configuration for both replica set and sharded clusters.</p>
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
@@ -6673,7 +6703,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
       
         <br>
         Created:

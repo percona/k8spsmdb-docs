@@ -3433,10 +3433,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#what-gets-collected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What gets collected
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What gets collected">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-replica-set-and-config-server-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For replica set and config server Pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-mongos-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For mongos Pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configure-log-collector" class="md-nav__link">
     <span class="md-ellipsis">
       
         Configure log collector
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-log-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disable log collection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -6277,10 +6338,71 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#what-gets-collected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What gets collected
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What gets collected">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-replica-set-and-config-server-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For replica set and config server Pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-mongos-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For mongos Pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configure-log-collector" class="md-nav__link">
     <span class="md-ellipsis">
       
         Configure log collector
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-log-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disable log collection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -6435,21 +6557,66 @@ window.addEventListener('afterprint', (event) => {
 <h1 id="persistent-logging">Persistent logging<a class="headerlink" href="#persistent-logging" title="Permanent link">&para;</a></h1>
 <p>In a distributed Kubernetes environment, it&rsquo;s often difficult to debug issues because logs are tied to the lifecycle of individual Pods and containers. If a Pod fails and restarts, its logs are lost, making it hard to identify the root cause of an issue.</p>
 <p>Percona Operator for MongoDB addresses this challenge with <strong>persistent logging</strong>, ensuring logs are stored persistently, independent of the Pods. This approach helps ensure that logs are available for review even after a Pod restarts.</p>
-<p>The Operator uses <a href="https://fluentbit.io/">Fluent Bit <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, a lightweight log processor with versatile output plugins and forwarding features, to collect logs. Fluent Bit runs as a <code>logs</code> sidecar container alongside each database Pod. It gathers logs from the <code>mongod</code> container, adds metadata, and saves them in a single file called <code>mongod.full.log</code> in the <code>/data/db/</code> directory within the Pod’s Persistent Volume Claim (PVC). As a result, logs persist across Pod restarts and remain available for later debugging.</p>
-<p>Logs are also streamed to standard output, making them accessible via the <code>kubectl logs</code> command for quick troubleshooting:</p>
+<p>The Operator uses <a href="https://fluentbit.io/">Fluent Bit <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, a lightweight log processor with versatile output plugins and forwarding features, to collect logs. Fluent Bit runs as a <code>logs</code> sidecar container alongside the database container in a Pod, adds metadata to the collected logs, and saves them in a single log file in the <code>/data/db/logs/</code> directory. When this directory is backed by a Persistent Volume Claim (PVC), logs persist across Pod restarts and remain available for later debugging.</p>
+<p>See <a href="#what-gets-collected">What gets collected</a> below — this works differently depending on the Pod type.</p>
+<p>Logs are also streamed to standard output, making them accessible via the <code>kubectl logs</code> command for quick troubleshooting. For example, to view MongoDB logs, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-c<span class="w"> </span>logs
 </code></pre></div>
-<p>Currently, logs are collected only for the <code>mongod</code> instances running in the config server and replica set Pods. All other logs are ephemeral, meaning they will not persist after a Pod restart. Logs are rotated daily, stored for 7 days and are deleted afterwards.</p>
+<p>A <code>logrotate</code> sidecar container runs next to the <code>logs</code> container and rotates the collected log file. By default, logs are rotated daily, stored for 7 days and are deleted afterwards. See <a href="logrotate.html">Log rotation</a> for details.</p>
+<p>Logs of all other containers in the Pods are ephemeral, meaning they will not persist after a Pod restart.</p>
+<h2 id="what-gets-collected">What gets collected<a class="headerlink" href="#what-gets-collected" title="Permanent link">&para;</a></h2>
+<h3 id="for-replica-set-and-config-server-pods">For replica set and config server Pods<a class="headerlink" href="#for-replica-set-and-config-server-pods" title="Permanent link">&para;</a></h3>
+<p>Fluent Bit gathers logs from the <code>mongod</code> container and saves them to the <code>/data/db/logs/mongod.full.log</code> file. The file is stored on the same PVC as the MongoDB data, so logs persist across Pod restarts without any additional configuration.</p>
+<h3 id="for-mongos-pods">For mongos Pods<a class="headerlink" href="#for-mongos-pods" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Version added: 1.23.1</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Enabling log collection alone does not persist <code>mongos</code> logs. You must configure the storage for the <code>mongos</code> Pod in the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection of the Custom Resource. Otherwise, the Operator stores <code>mongos</code> logs on an <code>emptyDir</code> volume and they are lost when the Pod restarts.</p>
+</div>
+<p>In a sharded cluster, the Operator also adds the <code>logs</code> and <code>logrotate</code> sidecar containers to <code>mongos</code> Pods when log collection is enabled. Fluent Bit gathers logs from the <code>mongos</code> container and saves them to the <code>/data/db/logs/mongos.full.log</code> file.</p>
+<p><code>mongos</code> Pods don&rsquo;t store data, so they have no PVC by default. To keep <code>mongos</code> logs across Pod restarts, configure a dedicated PVC for them in the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection of the Custom Resource. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">logcollector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"ReadWriteOnce"</span><span class="p p-Indicator">]</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+</code></pre></div>
+<p>The <code>resources.requests.storage</code> option is required. See the <a href="operator.html#shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage">Custom Resource reference</a> for all available options.</p>
+<p>The Operator creates one PVC per <code>mongos</code> Pod. PVCs are named <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;ordinal&gt;</code>, for example, <code>mongos-logs-my-cluster-name-mongos-0</code>. Check them with this command:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>Adding or removing the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection makes the Operator re-create the <code>mongos</code> StatefulSet and restart <code>mongos</code> Pods one by one.</p>
+<p>To view the collected <code>mongos</code> logs, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-mongos-0<span class="w"> </span>-c<span class="w"> </span>logs
+</code></pre></div>
+<p>To increase the size of the <code>mongos</code> log PVCs, see <a href="scaling-storage-resize.html#resize-mongos-log-storage">Resize storage</a>.</p>
 <h2 id="configure-log-collector">Configure log collector<a class="headerlink" href="#configure-log-collector" title="Permanent link">&para;</a></h2>
 <p>Cluster-level logging is enabled by default and is controlled with the <code>logcollector.enabled</code> key in the <code>deploy/cr.yaml</code> Custom Resource manifest.</p>
 <p>You can additionally configure Fluent Bit using the <code>logcollector.configuration</code> subsection in the <code>deploy/cr.yaml</code> Custom Resource manifest. This allows you to define custom filters or output plugins to suit your specific logging and monitoring needs.</p>
 <p>Note that when you add a new configuration to the <code>logcollector.configuration</code>, this triggers a Smart Update.</p>
+<h2 id="disable-log-collection">Disable log collection<a class="headerlink" href="#disable-log-collection" title="Permanent link">&para;</a></h2>
+<p>To disable log collection, set <code>logcollector.enabled</code> to <code>false</code> in the Custom Resource and apply it. The Operator removes the <code>logs</code> and <code>logrotate</code> sidecar containers from the Pods.</p>
+<p>Disabling log collection doesn&rsquo;t delete the <code>mongos</code> log PVCs or the logs stored on them. The PVCs and their data remain in the namespace until you delete them. While the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set, the PVCs stay attached to <code>mongos</code> Pods, but <code>mongos</code> logs are no longer written to them.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="logrotate.html">Log rotation</a></li>
+<li><a href="scaling-storage-resize.html">Resize storage</a></li>
+<li><a href="delete.html#delete-the-database-cluster">Delete the database cluster</a></li>
+</ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="January 26, 2026 10:31:25 UTC">January 26, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
       
         <br>
         Created:

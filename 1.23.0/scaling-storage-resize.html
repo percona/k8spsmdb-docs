@@ -3266,6 +3266,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Storage resizing with Volume Expansion capability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resize-mongos-log-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resize mongos log storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6338,6 +6355,23 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Storage resizing with Volume Expansion capability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resize-mongos-log-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resize mongos log storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6512,7 +6546,7 @@ storage supplied by the Kubernetes administrator,</li>
 Note that you <strong>cannot</strong> shrink the size of an existing PVC object.</p>
 <p>Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:</p>
 <ul>
-<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage and scales the storage automatically</li>
+<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see <a href="#resize-mongos-log-storage">Resize mongos log storage</a>.</li>
 <li>storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest</li>
 <li>manual scaling - scale the storage manually.</li>
 </ul>
@@ -6533,7 +6567,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a></p>
 </div>
-<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. </p>
+<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for <strong>replica sets and config server Pods</strong> based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. </p>
 <p>This feature gives you:</p>
 <ul>
 <li>fewer outages from full disks because storage grows with demand</li>
@@ -6542,6 +6576,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <li>cost control by expanding only when needed</li>
 <li>a more predictable environment so teams can focus on delivery</li>
 </ul>
+<p><strong>mongos log PVCs are not supported by automatic storage resizing.</strong> You can <a href="#resize-mongos-log-storage">resize them manually</a>.</p>
 <p class="power-number">To enable automatic storage resizing, edit the <code>deploy/cr.yaml</code> Custom Resource manifest as follows:</p>
 <ol>
 <li>
@@ -6612,24 +6647,25 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 and/or <code>configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage</code>
 options in the Custom Resource. </p>
 <p>This is the example configuration of defining a new storage size in the <code>deploy/cr.yaml</code> file:</p>
-<div class="no-copy highlight"><pre><span></span><code>spec:
-  ...
-  enableVolumeExpansion: true
-  ...
-  replsets:
-    ...
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: &lt;NEW STORAGE SIZE&gt;
-  ...
-  configsvrReplSets:
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: &lt;NEW STORAGE SIZE&gt;
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumeSpec</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">configsvrReplSets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">volumeSpec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
 </code></pre></div>
 </li>
 <li>
@@ -6645,6 +6681,39 @@ options in the Custom Resource. </p>
 <li>updates the <code>.status.storageAutoscaling.&lt;PVC_NAME&gt;.resizeCount</code> field.</li>
 </ul>
 <p>After the resize finishes, the Operator deletes this annotation.</p>
+<h3 id="resize-mongos-log-storage">Resize mongos log storage<a class="headerlink" href="#resize-mongos-log-storage" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.md">1.23.1</a></p>
+</div>
+<p>In a sharded cluster, you can also resize the PVCs that store <code>mongos</code> logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="persistent-logging.html#for-mongos-pods">Persistent logging</a> to learn how to configure them.</p>
+<p class="power-number">To resize the <code>mongos</code> log PVCs, do the following:</p>
+<ol>
+<li>Make sure the <a href="operator.html#storagescalingenablevolumescaling">storageScaling.enableVolumeScaling</a> Custom Resource option is set to <code>true</code>.</li>
+<li>
+<p>Specify the new storage size for the <code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code> option in the Custom Resource:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Apply the changes:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+</ol>
+<p>The Operator resizes the existing <code>mongos</code> log PVCs in place. The logs stored on them are preserved. To check the new size, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
 <h2 id="manual-scaling-without-volume-expansion-capability">Manual scaling without Volume Expansion capability<a class="headerlink" href="#manual-scaling-without-volume-expansion-capability" title="Permanent link">&para;</a></h2>
 <p>Manual scaling is the way to go if:</p>
 <ul>
@@ -6744,7 +6813,7 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
       
         <br>
         Created:

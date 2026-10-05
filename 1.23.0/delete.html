@@ -6620,7 +6620,7 @@ window.addEventListener('afterprint', (event) => {
 <ul>
 <li><code>percona.com/delete-psmdb-pods-in-order</code>: it is enabled by default and it ensures the Pods are deleted in order on cluster deletion. PVCs are not deleted.</li>
 <li>
-<p><code>percona.com/delete-psmdb-pvc</code>: if present, <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volume Claims  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> for the database cluster Pods are deleted along with the cluster deletion.</p>
+<p><code>percona.com/delete-psmdb-pvc</code>: if present, <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volume Claims  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> for the database cluster Pods are deleted along with the cluster deletion. This includes the PVCs that store <code>mongos</code> logs, if you configured them for <a href="persistent-logging.html#for-mongos-pods">persistent logging</a> in a sharded cluster.</p>
 <p>This finalizer is off by default in the <code>deploy/cr.yaml</code> configuration file, allowing you to recreate the cluster without losing data. If you need, you can <a href="#clean-up-resources">delete TLS-related objects and PVCs manually</a>. </p>
 </li>
 </ul>
@@ -6774,6 +6774,7 @@ persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
 </details>
 </li>
 </ol>
+<p>If you configured <a href="persistent-logging.html#for-mongos-pods">persistent logging for <code>mongos</code> Pods</a> in a sharded cluster, the list also includes PVCs for each <code>mongos</code> Pod  named <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;ordinal&gt;</code>. They store <code>mongos</code> logs and remain after you delete the cluster or disable log collection. Delete them the same way.</p>
 <p>Note that if your Custom Resource manifest includes the <code>percona.com/delete-psmdb-pvc</code> finalizer, all Secrets will be automatically deleted when you delete the PVCs. To prevent this from happening, disable the finalizer.</p>
 </li>
 <li>
@@ -6827,7 +6828,7 @@ persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 17, 2026 10:12:41 UTC">September 17, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
       
         <br>
         Created:
