@@ -14,7 +14,7 @@ To delete the database cluster means to delete the Custom Resource associated wi
 There are two [finalizers  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) defined in the Custom Resource, which are related to cluster deletion:
 
 * `percona.com/delete-psmdb-pods-in-order`: it is enabled by default and it ensures the Pods are deleted in order on cluster deletion. PVCs are not deleted.
-* `percona.com/delete-psmdb-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion.
+* `percona.com/delete-psmdb-pvc`: if present, [Persistent Volume Claims  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the database cluster Pods are deleted along with the cluster deletion. This includes the PVCs that store `mongos` logs, if you configured them for [persistent logging](persistent-logging.md#for-mongos-pods) in a sharded cluster.
 
     This finalizer is off by default in the `deploy/cr.yaml` configuration file, allowing you to recreate the cluster without losing data. If you need, you can [delete TLS-related objects and PVCs manually](#clean-up-resources). 
 
@@ -200,6 +200,8 @@ To manually clean up resources, do the following:
             persistentvolumeclaim "mongod-data-my-cluster-name-rs0-1" deleted
             persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
             ```    
+
+    If you configured [persistent logging for `mongos` Pods](persistent-logging.md#for-mongos-pods) in a sharded cluster, the list also includes PVCs for each `mongos` Pod  named `mongos-logs-<cluster-name>-mongos-<ordinal>`. They store `mongos` logs and remain after you delete the cluster or disable log collection. Delete them the same way.
 
     Note that if your Custom Resource manifest includes the `percona.com/delete-psmdb-pvc` finalizer, all Secrets will be automatically deleted when you delete the PVCs. To prevent this from happening, disable the finalizer.
 
