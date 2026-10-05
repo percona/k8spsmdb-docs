@@ -25,7 +25,7 @@ If you turn persistent logging off, the Operator removes the sidecars but keeps 
 
 `logrotate` uses one cluster-wide policy for `mongod` and `mongos`. It rotates logs daily, when they exceed 100 MB and keeps up to 7 rotated files. When you change that policy, include the configuration for both `mongod` and `mongos`.
 
-Read more in the [persistent logging](../persistent-logging.md#collect-logs-from-mongos) and [log rotation](../logrotate.md) documentation.
+Read more in the [persistent logging](../persistent-logging.md#for-mongos-pods) and [log rotation](../logrotate.md) documentation.
 
 ### Control how often the Operator contacts HashiCorp Vault
 

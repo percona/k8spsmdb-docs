@@ -26,7 +26,7 @@ Fluent Bit gathers logs from the `mongod` container and saves them to the `/data
 
 ### For mongos Pods
 
-!!! note "Version added: 1.23.1"
+!!! note "Version added: [1.23.1](RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.md)"
 
 !!! important
 
