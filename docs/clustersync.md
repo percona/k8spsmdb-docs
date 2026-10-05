@@ -52,7 +52,7 @@ Components of this architecture are:
 
 * **Target cluster** – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.
 
-* **PCSM Deployment** — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see [Troubleshooting](clustersync-setup.md#5-troubleshooting).
+* **PCSM Deployment** — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see [Troubleshooting](clustersync-setup.md#troubleshooting).
 
 ## Supported MongoDB deployments
 
