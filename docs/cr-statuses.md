@@ -88,15 +88,17 @@ kubectl get psmdb <cluster-name> -n <namespace> \
 
 ## PerconaServerMongoDB status
 
-The main cluster state is recorded in the `status.state` section. For component-level states, see the `status.replsets`, `status.mongos`, and `status.search` sections.
+The main cluster state is recorded in the `status.state` section. For component-level states, see the [`status.replsets` and `status.mongos`](#replica-set-and-mongos-status) and [`status.search`](#vector-search-status) sections.
 
 Common fields:
 
 - `status.state` – overall cluster state
 - `status.ready` / `status.size` – number of ready pods and the size of the database cluster
 - `status.host` – connection endpoint
+- `status.mongoVersion` / `status.mongoImage` – Percona Server for MongoDB version and image of the cluster. When you change the image in the Custom Resource, the Operator updates these fields after all Pods run the new image and the cluster is `ready`. With [automatic upgrades](update-minor-automatic.md), the Operator sets them to the target version as soon as it starts the upgrade, so check `status.state` and the Pod images instead to confirm the upgrade finished
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
+- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values
@@ -113,6 +115,100 @@ Common fields:
 | `error` | The Operator detected an error; check conditions and events. |
 
 When [vector search is enabled](operator.md#searchenabled), the cluster is not marked `ready` until every entry in `status.search` is also `ready`.
+
+### Replica set and mongos status
+
+The Operator reports the state of each replica set in `status.replsets.<rs-name>`. In a sharded cluster, this includes the config server replica set (`cfg`). The Operator reports the state of `mongos` Pods in `status.mongos`.
+
+Common fields under `status.replsets.<rs-name>` and `status.mongos`:
+
+- `size` – desired number of Pods
+- `ready` – number of Pods with all containers ready
+- `status` – component state. The states are: `initializing`, `ready`, `paused`, `stopping`, `error`
+- `message` – optional human-readable details. For example, the reason a container is waiting to start, or why a Pod can't be scheduled
+
+Fields available only under `status.replsets.<rs-name>`:
+
+- `initialized` – `true` after the Operator initiates the replica set
+- `added_as_shard` – `true` after the Operator adds the replica set to the sharded cluster as a shard. Available only for shard replica sets in a sharded cluster. The config server replica set doesn't have this field
+- `members` – replica set members, keyed by Pod name. Each member has the following fields:
+
+    - `name` – member host and port
+    - `state` – member state as a number
+    - `stateStr` – member state as a string, for example `PRIMARY` or `SECONDARY`
+
+The `state` and `stateStr` values come from the [`rs.status()` :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/command/replSetGetStatus/) output of MongoDB. See [Replica set member states :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/replica-states/) in MongoDB documentation for the full list. The Operator refreshes `members` during reconciliation, so after a failover the new primary appears in the status within a few seconds.
+
+**Example. View replica set and mongos status:**
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> -o yaml
+```
+
+??? example "Sample output for a sharded cluster"
+
+    ```{.yaml .no-copy}
+    status:
+      ...
+      mongos:
+        ready: 3
+        size: 3
+        status: ready
+      ...
+      replsets:
+        cfg:
+          initialized: true
+          members:
+            my-cluster-name-cfg-0:
+              name: my-cluster-name-cfg-0.my-cluster-name-cfg.psmdb.svc.cluster.local:27017
+              state: 1
+              stateStr: PRIMARY
+            my-cluster-name-cfg-1:
+              name: my-cluster-name-cfg-1.my-cluster-name-cfg.psmdb.svc.cluster.local:27017
+              state: 2
+              stateStr: SECONDARY
+            my-cluster-name-cfg-2:
+              name: my-cluster-name-cfg-2.my-cluster-name-cfg.psmdb.svc.cluster.local:27017
+              state: 2
+              stateStr: SECONDARY
+          ready: 3
+          size: 3
+          status: ready
+        rs0:
+          added_as_shard: true
+          initialized: true
+          members:
+            my-cluster-name-rs0-0:
+              name: my-cluster-name-rs0-0.my-cluster-name-rs0.psmdb.svc.cluster.local:27017
+              state: 1
+              stateStr: PRIMARY
+            my-cluster-name-rs0-1:
+              name: my-cluster-name-rs0-1.my-cluster-name-rs0.psmdb.svc.cluster.local:27017
+              state: 2
+              stateStr: SECONDARY
+            my-cluster-name-rs0-2:
+              name: my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017
+              state: 2
+              stateStr: SECONDARY
+          ready: 3
+          size: 3
+          status: ready
+    ```
+
+To find the current primary of a replica set, query the `members` field:
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> \
+  -o jsonpath='{range .status.replsets.rs0.members.*}{.name}{"\t"}{.stateStr}{"\n"}{end}'
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    my-cluster-name-rs0-0.my-cluster-name-rs0.psmdb.svc.cluster.local:27017	SECONDARY
+    my-cluster-name-rs0-1.my-cluster-name-rs0.psmdb.svc.cluster.local:27017	PRIMARY
+    my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017	SECONDARY
+    ```
 
 ### Vector search status
 
@@ -188,6 +284,8 @@ Common fields:
 - `status.start` / `status.completed` – start and completion timestamps
 - `status.latestRestorableTime` – latest point for point-in-time recovery from this backup
 - `status.error` – error details when the backup fails
+- `status.pbmPods` – nodes that PBM used for the backup, keyed by replica set name. Each value is the host and port of a `mongod` node. The first part of the hostname is the Pod name, for example `my-cluster-name-rs0-2` in `my-cluster-name-rs0-2.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017`. Use it to find the Pod whose `backup-agent` logs to check.
+- `status.pbmPod` – deprecated. Records a single node. Use `status.pbmPods` instead
 
 ### Backup state values
 
