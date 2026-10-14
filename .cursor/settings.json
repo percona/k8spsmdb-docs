@@ -1,7 +1,0 @@
-{
-  "plugins": {
-    "kapa": {
-      "enabled": true
-    }
-  }
-}

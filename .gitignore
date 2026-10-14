@@ -4,3 +4,5 @@ ps/
 Pipfile
 Pipfile.lock
 *~
+
+.cursor/
