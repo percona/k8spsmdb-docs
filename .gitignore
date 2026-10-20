@@ -4,3 +4,4 @@ ps/
 Pipfile
 Pipfile.lock
 *~
+Claude outputs/
