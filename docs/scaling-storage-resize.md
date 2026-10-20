@@ -113,9 +113,32 @@ Run the `kubectl get psmdb -o yaml -n <namespace>` to check the current cluster 
         resizeCount: 2
     ```
 
-The `storageAutoscaling` section appears under `.status` in the Custom Resource.
+The `storageAutoscaling` section appears under `.status` in the Custom Resource. It has an entry for each PVC, with the following fields:
 
-When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization's policies and requirements. For help with common issues, see [Troubleshooting storage ](debug-storage.md).
+* `currentSize` - the filesystem size of the volume, as reported by the `df` command in the database container
+* `lastResizeTime` - the time when the Operator last detected that the volume grew
+* `resizeCount` - how many times the volume grew
+* `lastError` - the error from the latest failed attempt to check or resize the volume. The Operator clears this field on the next successful usage check, so while the problem persists, the field can appear and disappear between reconciliation loops.
+
+The Operator resizes storage for the whole replica set, so `lastResizeTime` and `resizeCount` change for every PVC in that replica set, not only for the PVC that exceeded the threshold.
+
+??? example "Sample output with an error"
+
+    In this example, an admission policy in the Kubernetes cluster rejected the Operator's request to increase the storage size:
+
+    ```{.text .no-copy}
+    storageAutoscaling:
+      mongod-data-my-cluster-name-rs0-0:
+        currentSize: 3021608Ki
+        lastError: 'patch CR with new storage size: perconaservermongodbs.psmdb.percona.com
+          "my-cluster-name" is forbidden: ValidatingAdmissionPolicy ''block-storage-resize''
+          with binding ''block-storage-resize'' denied request: storage resize
+          blocked by policy'
+    ```
+
+    The Operator also logs the same error with the `failed to check/resize PVC` message.
+
+When the storage size reaches the limit, no further resizing is done and the Operator logs the `PVC already at maxSize` message. Reaching the limit is not an error, so the Operator doesn't set the `lastError` field. You can either clean up the data or set a new limit based on your organization's policies and requirements. For help with common issues, see [Troubleshooting storage ](debug-storage.md).
 
 ## Storage resizing with Volume Expansion capability
 

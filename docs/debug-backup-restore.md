@@ -102,6 +102,14 @@ kubectl get psmdb-backup <backup-name> -n $NAMESPACE -o yaml
 
 Look for the `pbmPods` field.
 
+The keys of `pbmPods` are replica set names, and the values are the host and port of the `mongod` node that PBM used. The first part of the hostname is the Pod name:
+
+```{.text .no-copy}
+{"cfg":"my-cluster-name-cfg-1.my-cluster-name-cfg.<namespace>.svc.cluster.local:27017","rs0":"my-cluster-name-rs0-2.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017"}
+```
+
+In this example, check the `my-cluster-name-cfg-1` and `my-cluster-name-rs0-2` Pods.
+
 ### View backup-agent logs
 
 To see detailed logs from the Pod that ran the backup, check the `backup-agent` container:
