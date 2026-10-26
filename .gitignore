@@ -4,7 +4,5 @@ ps/
 Pipfile
 Pipfile.lock
 *~
-
 .cursor/
-
-.cursor/
+Claude outputs/
