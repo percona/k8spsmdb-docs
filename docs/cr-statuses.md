@@ -96,6 +96,7 @@ Common fields:
 - `status.ready` / `status.size` – number of ready pods and the size of the database cluster
 - `status.host` – connection endpoint
 - `status.mongoVersion` / `status.mongoImage` – Percona Server for MongoDB version and image of the cluster. When you change the image in the Custom Resource, the Operator updates these fields after all Pods run the new image and the cluster is `ready`. With [automatic upgrades](update-minor-automatic.md), the Operator sets them to the target version as soon as it starts the upgrade, so check `status.state` and the Pod images instead to confirm the upgrade finished
+- `status.backupVersion` / `status.backupImage` – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs `spec.backup.image`. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With [automatic upgrades](update-minor-automatic.md), the Operator sets `status.backupVersion` to the target version as soon as it starts the upgrade. `status.backupImage` updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
 - `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
@@ -285,7 +286,6 @@ Common fields:
 - `status.latestRestorableTime` – latest point for point-in-time recovery from this backup
 - `status.error` – error details when the backup fails
 - `status.pbmPods` – nodes that PBM used for the backup, keyed by replica set name. Each value is the host and port of a `mongod` node. The first part of the hostname is the Pod name, for example `my-cluster-name-rs0-2` in `my-cluster-name-rs0-2.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017`. Use it to find the Pod whose `backup-agent` logs to check.
-- `status.pbmPod` – deprecated. Records a single node. Use `status.pbmPods` instead
 
 ### Backup state values
 
