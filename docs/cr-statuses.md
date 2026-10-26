@@ -261,6 +261,7 @@ Common condition fields:
 | `PBMReady` | PBM agents and storage are ready. |
 | `pendingSmartUpdate` | A smart update is pending but has not started. |
 | `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. |
+| `ImageUpgradeInProgress` | An image change is still in progress, or it has finished and the cluster is not `ready` yet. |
 
 `status.conditions[].status` values:
 
@@ -269,7 +270,9 @@ Common condition fields:
 | `True` | The condition is currently true. |
 | `False` | The condition is currently false. |
 
-The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`.
+The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`, `ImageUpgrade`.
+
+When `ImageUpgradeInProgress` is `True`, `reason` is `ImageUpgrade`. While a container still differs from the StatefulSet template, `message` names the containers that are changing, including init containers and containers the template adds that are not on the Pod yet. For example: `Image upgrade is in progress for container(s) mongod, backup-agent`. After every container matches, the message changes to `Image upgrade is waiting for the cluster to be ready`. The Operator removes the condition when `status.state` is `ready`.
 
 ## PerconaServerMongoDBBackup status
 
