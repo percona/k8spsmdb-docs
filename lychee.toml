@@ -1,0 +1,27 @@
+# Lychee reads this file automatically from the repository root.
+# https://github.com/lycheeverse/lychee-action
+
+# Substitute {{ release }} and the other top-level variables.yml values
+# before checking links. Nested values and macros such as {{ k8spsmdbjira(894) }}
+# are left unchanged.
+preprocess = { command = ".github/scripts/expand-mkdocs-vars.sh" }
+
+verbose = "info"
+no_progress = true
+
+timeout = 20
+max_retries = 2
+retry_wait_time = 2
+max_concurrency = 8
+
+# 403: some public docs (MySQL, Red Hat) block automated clients.
+# 429: the host rate-limited the checker. Neither status means the URL is broken.
+accept = ["200..=299", "403", "429"]
+
+# Sample addresses in the docs are not endpoints to call.
+exclude_all_private = true
+exclude_loopback = true
+
+exclude = [
+  '^https?://(www\.)?example\.(com|org|net)(/|$)',
+]
