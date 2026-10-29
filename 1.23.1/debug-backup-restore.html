@@ -6819,6 +6819,10 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
 <p>Look for the <code>pbmPods</code> field.</p>
+<p>The keys of <code>pbmPods</code> are replica set names, and the values are the host and port of the <code>mongod</code> node that PBM used. The first part of the hostname is the Pod name:</p>
+<div class="no-copy highlight"><pre><span></span><code>{"cfg":"my-cluster-name-cfg-1.my-cluster-name-cfg.&lt;namespace&gt;.svc.cluster.local:27017","rs0":"my-cluster-name-rs0-2.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017"}
+</code></pre></div>
+<p>In this example, check the <code>my-cluster-name-cfg-1</code> and <code>my-cluster-name-rs0-2</code> Pods.</p>
 <h3 id="view-backup-agent-logs">View backup-agent logs<a class="headerlink" href="#view-backup-agent-logs" title="Permanent link">&para;</a></h3>
 <p>To see detailed logs from the Pod that ran the backup, check the <code>backup-agent</code> container:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -6909,7 +6913,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
       
         <br>
         Created:

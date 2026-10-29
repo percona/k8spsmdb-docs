@@ -6655,8 +6655,28 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
     resizeCount: 2
 </code></pre></div>
 </details>
-<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource.</p>
-<p>When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization&rsquo;s policies and requirements. For help with common issues, see <a href="debug-storage.html">Troubleshooting storage </a>.</p>
+<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource. It has an entry for each PVC, with the following fields:</p>
+<ul>
+<li><code>currentSize</code> - the filesystem size of the volume, as reported by the <code>df</code> command in the database container</li>
+<li><code>lastResizeTime</code> - the time when the Operator last detected that the volume grew</li>
+<li><code>resizeCount</code> - how many times the volume grew</li>
+<li><code>lastError</code> - the error from the latest failed attempt to check or resize the volume. The Operator clears this field on the next successful usage check, so while the problem persists, the field can appear and disappear between reconciliation loops.</li>
+</ul>
+<p>The Operator resizes storage for the whole replica set, so <code>lastResizeTime</code> and <code>resizeCount</code> change for every PVC in that replica set, not only for the PVC that exceeded the threshold.</p>
+<details class="example">
+<summary>Sample output with an error</summary>
+<p>In this example, an admission policy in the Kubernetes cluster rejected the Operator&rsquo;s request to increase the storage size:</p>
+<div class="no-copy highlight"><pre><span></span><code>storageAutoscaling:
+  mongod-data-my-cluster-name-rs0-0:
+    currentSize: 3021608Ki
+    lastError: 'patch CR with new storage size: perconaservermongodbs.psmdb.percona.com
+      "my-cluster-name" is forbidden: ValidatingAdmissionPolicy ''block-storage-resize''
+      with binding ''block-storage-resize'' denied request: storage resize
+      blocked by policy'
+</code></pre></div>
+<p>The Operator also logs the same error with the <code>failed to check/resize PVC</code> message.</p>
+</details>
+<p>When the storage size reaches the limit, no further resizing is done and the Operator logs the <code>PVC already at maxSize</code> message. Reaching the limit is not an error, so the Operator doesn&rsquo;t set the <code>lastError</code> field. You can either clean up the data or set a new limit based on your organization&rsquo;s policies and requirements. For help with common issues, see <a href="debug-storage.html">Troubleshooting storage </a>.</p>
 <h2 id="storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a class="headerlink" href="#storage-resizing-with-volume-expansion-capability" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html">1.16.0</a></p>
@@ -6835,7 +6855,7 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
       
         <br>
         Created:

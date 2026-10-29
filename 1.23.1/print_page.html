@@ -13778,6 +13778,7 @@ flowchart TB
 <li><a href="#update-operator">Upgrade the Operator and CRD</a></li>
 <li><a href="#update-db">Upgrade Percona Server for MongoDB</a></li>
 <li><a href="#limitations">Known limitations</a></li>
+<li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a></li>
 </ul></section>
                     <section class='print-page md-section' id='section-8' heading-number='8'>
                         <h1>Upgrade and version management<a class='headerlink' href='#section-8' title='Permanent link'></a>
@@ -14331,6 +14332,7 @@ problematic version combinations.</li>
 <h2 id="update-minor-set-version-see-also">See also<a class="headerlink" href="#update-minor-set-version-see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
+<li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a></li>
 </ul></section><section class="print-page" id="update-minor-automatic" heading-number="8.2.2"><h1 id="update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version">Automatic minor upgrade to the latest / recommended version<a class="headerlink" href="#update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version" title="Permanent link">&para;</a></h1>
 <h2 id="update-minor-automatic-before-you-begin">Before you begin<a class="headerlink" href="#update-minor-automatic-before-you-begin" title="Permanent link">&para;</a></h2>
 <ul>
@@ -14442,6 +14444,7 @@ another more conservative schedule when the upgrade is complete.</p>
 <h2 id="update-minor-automatic-see-also">See also<a class="headerlink" href="#update-minor-automatic-see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
+<li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a> - with automatic upgrades, <code>status.mongoVersion</code> and <code>status.mongoImage</code> show the target version as soon as the upgrade starts. To confirm the upgrade finished, check that <code>status.state</code> is <code>ready</code> and all Pods run the new image</li>
 </ul></section><section class="print-page" id="update-major" heading-number="8.2.3"><h1 id="update-major-major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#update-major-major-version-automated-upgrades" title="Permanent link">&para;</a></h1>
 <p>Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.</p>
 <p>It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
@@ -20678,8 +20681,28 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
     resizeCount: 2
 </code></pre></div>
 </details>
-<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource.</p>
-<p>When the storage size reaches the limit, no further resizing is done and this event is recorded in the logs. You can either clean up the data or set a new limit based on your organization&rsquo;s policies and requirements. For help with common issues, see <a href="#debug-storage">Troubleshooting storage </a>.</p>
+<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource. It has an entry for each PVC, with the following fields:</p>
+<ul>
+<li><code>currentSize</code> - the filesystem size of the volume, as reported by the <code>df</code> command in the database container</li>
+<li><code>lastResizeTime</code> - the time when the Operator last detected that the volume grew</li>
+<li><code>resizeCount</code> - how many times the volume grew</li>
+<li><code>lastError</code> - the error from the latest failed attempt to check or resize the volume. The Operator clears this field on the next successful usage check, so while the problem persists, the field can appear and disappear between reconciliation loops.</li>
+</ul>
+<p>The Operator resizes storage for the whole replica set, so <code>lastResizeTime</code> and <code>resizeCount</code> change for every PVC in that replica set, not only for the PVC that exceeded the threshold.</p>
+<details class="example">
+<summary>Sample output with an error</summary>
+<p>In this example, an admission policy in the Kubernetes cluster rejected the Operator&rsquo;s request to increase the storage size:</p>
+<div class="no-copy highlight"><pre><span></span><code>storageAutoscaling:
+  mongod-data-my-cluster-name-rs0-0:
+    currentSize: 3021608Ki
+    lastError: 'patch CR with new storage size: perconaservermongodbs.psmdb.percona.com
+      "my-cluster-name" is forbidden: ValidatingAdmissionPolicy ''block-storage-resize''
+      with binding ''block-storage-resize'' denied request: storage resize
+      blocked by policy'
+</code></pre></div>
+<p>The Operator also logs the same error with the <code>failed to check/resize PVC</code> message.</p>
+</details>
+<p>When the storage size reaches the limit, no further resizing is done and the Operator logs the <code>PVC already at maxSize</code> message. Reaching the limit is not an error, so the Operator doesn&rsquo;t set the <code>lastError</code> field. You can either clean up the data or set a new limit based on your organization&rsquo;s policies and requirements. For help with common issues, see <a href="#debug-storage">Troubleshooting storage </a>.</p>
 <h2 id="scaling-storage-resize-storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a class="headerlink" href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.16.0">1.16.0</a></p>
@@ -29432,7 +29455,11 @@ Events:                      &lt;none&gt;
 <p>This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.</p>
 <h2 id="debug-check-logs">Check logs<a class="headerlink" href="#debug-check-logs" title="Permanent link">&para;</a></h2>
-<p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won&rsquo;t see in Pod status alone. See the <a href="#debug-logs">Check logs</a> section for more information about logs and how to check them.</p></section>
+<p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won&rsquo;t see in Pod status alone. See the <a href="#debug-logs">Check logs</a> section for more information about logs and how to check them.</p>
+<h2 id="debug-see-also">See also<a class="headerlink" href="#debug-see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#cr-statuses">Custom resource statuses</a></li>
+</ul></section>
                     <section class='print-page md-section' id='section-10' heading-number='10'>
                         <h1>Troubleshooting<a class='headerlink' href='#section-10' title='Permanent link'></a>
                         </h1>
@@ -29790,6 +29817,10 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
 <p>Look for the <code>pbmPods</code> field.</p>
+<p>The keys of <code>pbmPods</code> are replica set names, and the values are the host and port of the <code>mongod</code> node that PBM used. The first part of the hostname is the Pod name:</p>
+<div class="no-copy highlight"><pre><span></span><code>{"cfg":"my-cluster-name-cfg-1.my-cluster-name-cfg.&lt;namespace&gt;.svc.cluster.local:27017","rs0":"my-cluster-name-rs0-2.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017"}
+</code></pre></div>
+<p>In this example, check the <code>my-cluster-name-cfg-1</code> and <code>my-cluster-name-rs0-2</code> Pods.</p>
 <h3 id="debug-backup-restore-view-backup-agent-logs">View backup-agent logs<a class="headerlink" href="#debug-backup-restore-view-backup-agent-logs" title="Permanent link">&para;</a></h3>
 <p>To see detailed logs from the Pod that ran the backup, check the <code>backup-agent</code> container:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -40263,14 +40294,17 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </code></pre></div>
 </details>
 <h2 id="cr-statuses-perconaservermongodb-status">PerconaServerMongoDB status<a class="headerlink" href="#cr-statuses-perconaservermongodb-status" title="Permanent link">&para;</a></h2>
-<p>The main cluster state is recorded in the <code>status.state</code> section. For component-level states, see the <code>status.replsets</code>, <code>status.mongos</code>, and <code>status.search</code> sections.</p>
+<p>The main cluster state is recorded in the <code>status.state</code> section. For component-level states, see the <a href="#cr-statuses-replica-set-and-mongos-status"><code>status.replsets</code> and <code>status.mongos</code></a> and <a href="#cr-statuses-vector-search-status"><code>status.search</code></a> sections.</p>
 <p>Common fields:</p>
 <ul>
 <li><code>status.state</code> – overall cluster state</li>
 <li><code>status.ready</code> / <code>status.size</code> – number of ready pods and the size of the database cluster</li>
 <li><code>status.host</code> – connection endpoint</li>
+<li><code>status.mongoVersion</code> / <code>status.mongoImage</code> – Percona Server for MongoDB version and image of the cluster. When you change the image in the Custom Resource, the Operator updates these fields after all Pods run the new image and the cluster is <code>ready</code>. With <a href="#update-minor-automatic">automatic upgrades</a>, the Operator sets them to the target version as soon as it starts the upgrade, so check <code>status.state</code> and the Pod images instead to confirm the upgrade finished</li>
+<li><code>status.backupVersion</code> / <code>status.backupImage</code> – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs <code>spec.backup.image</code>. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With <a href="#update-minor-automatic">automatic upgrades</a>, the Operator sets <code>status.backupVersion</code> to the target version as soon as it starts the upgrade. <code>status.backupImage</code> updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished</li>
 <li><code>status.conditions</code> – detailed condition list with reason and message</li>
 <li><code>status.search</code> – vector search (<code>mongot</code>) readiness per replica set or shard. Available when search is enabled.</li>
+<li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See <a href="#scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing</a> for more information about this feature.</li>
 <li><code>status.vaultLastRequestedAt</code> – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when <a href="#operator-vaultrequestinterval"><code>spec.vault.requestInterval</code></a> is set.</li>
 </ul>
 <h3 id="cr-statuses-cluster-state-values">Cluster state values<a class="headerlink" href="#cr-statuses-cluster-state-values" title="Permanent link">&para;</a></h3>
@@ -40310,6 +40344,92 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </tbody>
 </table>
 <p>When <a href="#operator-searchenabled">vector search is enabled</a>, the cluster is not marked <code>ready</code> until every entry in <code>status.search</code> is also <code>ready</code>.</p>
+<h3 id="cr-statuses-replica-set-and-mongos-status">Replica set and mongos status<a class="headerlink" href="#cr-statuses-replica-set-and-mongos-status" title="Permanent link">&para;</a></h3>
+<p>The Operator reports the state of each replica set in <code>status.replsets.&lt;rs-name&gt;</code>. In a sharded cluster, this includes the config server replica set (<code>cfg</code>). The Operator reports the state of <code>mongos</code> Pods in <code>status.mongos</code>.</p>
+<p>Common fields under <code>status.replsets.&lt;rs-name&gt;</code> and <code>status.mongos</code>:</p>
+<ul>
+<li><code>size</code> – desired number of Pods</li>
+<li><code>ready</code> – number of Pods with all containers ready</li>
+<li><code>status</code> – component state. The states are: <code>initializing</code>, <code>ready</code>, <code>paused</code>, <code>stopping</code>, <code>error</code></li>
+<li><code>message</code> – optional human-readable details. For example, the reason a container is waiting to start, or why a Pod can&rsquo;t be scheduled</li>
+</ul>
+<p>Fields available only under <code>status.replsets.&lt;rs-name&gt;</code>:</p>
+<ul>
+<li><code>initialized</code> – <code>true</code> after the Operator initiates the replica set</li>
+<li><code>added_as_shard</code> – <code>true</code> after the Operator adds the replica set to the sharded cluster as a shard. Available only for shard replica sets in a sharded cluster. The config server replica set doesn&rsquo;t have this field</li>
+<li>
+<p><code>members</code> – replica set members, keyed by Pod name. Each member has the following fields:</p>
+<ul>
+<li><code>name</code> – member host and port</li>
+<li><code>state</code> – member state as a number</li>
+<li><code>stateStr</code> – member state as a string, for example <code>PRIMARY</code> or <code>SECONDARY</code></li>
+</ul>
+</li>
+</ul>
+<p>The <code>state</code> and <code>stateStr</code> values come from the <a href="https://www.mongodb.com/docs/manual/reference/command/replSetGetStatus/"><code>rs.status()</code> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> output of MongoDB. See <a href="https://www.mongodb.com/docs/manual/reference/replica-states/">Replica set member states <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a> in MongoDB documentation for the full list. The Operator refreshes <code>members</code> during reconciliation, so after a failover the new primary appears in the status within a few seconds.</p>
+<p><strong>Example. View replica set and mongos status:</strong></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
+</code></pre></div>
+<details class="example">
+<summary>Sample output for a sharded cluster</summary>
+<div class="no-copy highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">mongos</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">ready</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ready</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cfg</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">initialized</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">members</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">my-cluster-name-cfg-0</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-cfg-0.my-cluster-name-cfg.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span>
+<span class="w">        </span><span class="nt">my-cluster-name-cfg-1</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-cfg-1.my-cluster-name-cfg.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECONDARY</span>
+<span class="w">        </span><span class="nt">my-cluster-name-cfg-2</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-cfg-2.my-cluster-name-cfg.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECONDARY</span>
+<span class="w">      </span><span class="nt">ready</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ready</span>
+<span class="w">    </span><span class="nt">rs0</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">added_as_shard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">initialized</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">members</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">my-cluster-name-rs0-0</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-rs0-0.my-cluster-name-rs0.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span>
+<span class="w">        </span><span class="nt">my-cluster-name-rs0-1</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-rs0-1.my-cluster-name-rs0.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECONDARY</span>
+<span class="w">        </span><span class="nt">my-cluster-name-rs0-2</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">stateStr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECONDARY</span>
+<span class="w">      </span><span class="nt">ready</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ready</span>
+</code></pre></div>
+</details>
+<p>To find the current primary of a replica set, query the <code>members</code> field:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.replsets.rs0.members.*}{.name}{"\t"}{.stateStr}{"\n"}{end}'</span>
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>my-cluster-name-rs0-0.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDARY
+my-cluster-name-rs0-1.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 PRIMARY
+my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDARY
+</code></pre></div>
+</details>
 <h3 id="cr-statuses-vector-search-status">Vector search status<a class="headerlink" href="#cr-statuses-vector-search-status" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.23.0">1.23.0</a></p>
@@ -40419,6 +40539,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <li><code>status.start</code> / <code>status.completed</code> – start and completion timestamps</li>
 <li><code>status.latestRestorableTime</code> – latest point for point-in-time recovery from this backup</li>
 <li><code>status.error</code> – error details when the backup fails</li>
+<li><code>status.pbmPods</code> – nodes that PBM used for the backup, keyed by replica set name. Each value is the host and port of a <code>mongod</code> node. The first part of the hostname is the Pod name, for example <code>my-cluster-name-rs0-2</code> in <code>my-cluster-name-rs0-2.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017</code>. Use it to find the Pod whose <code>backup-agent</code> logs to check.</li>
 </ul>
 <h3 id="cr-statuses-backup-state-values">Backup state values<a class="headerlink" href="#cr-statuses-backup-state-values" title="Permanent link">&para;</a></h3>
 <p><code>status.state</code> values are:</p>
