@@ -34,7 +34,7 @@ These variables are injected into the PBM backup agent sidecar:
 | `PBM_AGENT_SIDECAR_SLEEP` | Sidecar retry delay (seconds). |
 | `SHARDED` | Set to `"TRUE"` when sharding is enabled. |
 | `POD_NAME` | Pod name (from `metadata.name`). |
-| `PBM_MONGODB_URI` | MongoDB connection string URI constructed by the Operator. |
+| `PBM_MONGODB_URI` | MongoDB connection string the Operator builds. When TLS is on, the string includes `tlsInsecure=true` only when [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) is `true`. |
 | `PBM_AGENT_TLS_ENABLED` | `"true"` when TLS is enabled. |
 
 ## Scheduled backup job
