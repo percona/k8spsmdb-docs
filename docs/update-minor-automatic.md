@@ -82,3 +82,4 @@ The steps are the following:
 ## See also
 
 * [Choose your upgrade path](update.md)
+* [Custom resource statuses](cr-statuses.md#perconaservermongodb-status) - with automatic upgrades, `status.mongoVersion` and `status.mongoImage` show the target version as soon as the upgrade starts. To confirm the upgrade finished, check that `status.state` is `ready` and all Pods run the new image

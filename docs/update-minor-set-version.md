@@ -41,3 +41,4 @@ The update process is successfully finished when all Pods have been restarted. I
 ## See also
 
 * [Choose your upgrade path](update.md)
+* [Custom resource statuses](cr-statuses.md#perconaservermongodb-status)

@@ -134,3 +134,4 @@ When you omit this option, Kubernetes keeps the default of 10 revisions.
 * [Upgrade the Operator and CRD](update-operator.md)
 * [Upgrade Percona Server for MongoDB](update-db.md)
 * [Known limitations](limitations.md)
+* [Custom resource statuses](cr-statuses.md#perconaservermongodb-status)
