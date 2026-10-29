@@ -260,7 +260,9 @@ Each condition uses the standard Kubernetes fields (`type`, `status`, `reason`, 
 | `PBMRestoreFinishing` | The Operator started `pbm restore-finish` to apply backup metadata. |
 | `PBMRestoreFinished` | PBM completed the external restore. The Operator can clean up temporary restore configuration. |
 
-While `ReplsetPVCsRestoredFromSnapshot` is unset, the restore is still recreating PVCs. On a sharded cluster, one PVC per shard and one PVC on the config server replica set can be changing together. The next member of the same replica set starts after the Operator has created the previous member's PVC. The volume can still be provisioning. On a single replica set, one PVC changes at a time.
+While `PBMAgentConfiguredForSnapshot` is `True` and `ReplsetPVCsRestoredFromSnapshot` is unset, the restore is recreating PVCs. On a sharded cluster, one PVC per shard and one PVC on the config server replica set can be changing together. The next member of the same replica set starts after the Operator has created the previous member's PVC. The volume can still be provisioning. On a single replica set, one PVC changes at a time.
+
+If `PBMAgentConfiguredForSnapshot` is also unset, PVC recreation has not started. The restore is still preparing the cluster or waiting for PBM to reach `copyReady`.
 
 Example: list restore conditions:
 
