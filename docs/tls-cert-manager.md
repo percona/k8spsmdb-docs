@@ -188,7 +188,10 @@ spec:
 
 Replace `my-org-issuer` with the name of your existing `ClusterIssuer`. Set
 [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) to
-`false` so MongoDB validates certificates against your trusted CA.
+`false` so clients validate certificates against your trusted CA. Starting with
+version 1.24.0, this includes the Operator and the backup agent as well as
+MongoDB. Include every hostname those clients use in the certificate. See
+[Turn on server certificate checks](TLS.md#turn-on-server-certificate-checks).
 
 When you deploy the cluster, the Operator creates `Certificate` resources that
 reference your `ClusterIssuer`. cert-manager signs the resulting Secrets; the
