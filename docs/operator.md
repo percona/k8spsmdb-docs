@@ -2211,7 +2211,7 @@ If omitted, the Operator does not pass the `--query-source` flag and PMM uses th
 
 ### `pmm.mongodParams`
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb) command for `mongod` Pods.
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html) command for `mongod` Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2219,7 +2219,7 @@ Additional parameters which will be passed to the [pmm-admin add mongodb  :octic
 
 ### `pmm.mongosParams`
 
-Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/commands/pmm-admin.html#mongodb) command for `mongos` Pods.
+Additional parameters which will be passed to the [pmm-admin add mongodb  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html) command for `mongos` Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
