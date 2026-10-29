@@ -4517,34 +4517,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="PMM sidecar">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pmm2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PMM2
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pmm3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PMM3
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -6462,34 +6434,6 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="PMM sidecar">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pmm2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PMM2
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pmm3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PMM3
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -6794,151 +6738,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h2 id="pmm-sidecar">PMM sidecar<a class="headerlink" href="#pmm-sidecar" title="Permanent link">&para;</a></h2>
-<p>The PMM sidecar supports two modes (PMM2 and PMM3). The Operator injects the following variables.</p>
-<h3 id="pmm2">PMM2<a class="headerlink" href="#pmm2" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>PMM_SERVER</code></td>
-<td>PMM server address.</td>
-</tr>
-<tr>
-<td><code>DB_TYPE</code></td>
-<td>Database type (<code>mongodb</code>).</td>
-</tr>
-<tr>
-<td><code>DB_USER</code></td>
-<td>Monitoring user (from Secret).</td>
-</tr>
-<tr>
-<td><code>DB_PASSWORD</code></td>
-<td>Monitoring password (from Secret).</td>
-</tr>
-<tr>
-<td><code>DB_HOST</code></td>
-<td>MongoDB host (defaults to <code>localhost</code>).</td>
-</tr>
-<tr>
-<td><code>DB_CLUSTER</code></td>
-<td>Cluster name.</td>
-</tr>
-<tr>
-<td><code>DB_PORT</code></td>
-<td>MongoDB port.</td>
-</tr>
-<tr>
-<td><code>DB_PORT_MIN</code></td>
-<td>Minimum PMM agent port.</td>
-</tr>
-<tr>
-<td><code>DB_PORT_MAX</code></td>
-<td>Maximum PMM agent port.</td>
-</tr>
-<tr>
-<td><code>PMM_USER</code></td>
-<td>PMM user for custom login (optional).</td>
-</tr>
-<tr>
-<td><code>PMM_PASSWORD</code></td>
-<td>PMM password or API key (optional).</td>
-</tr>
-<tr>
-<td><code>CLUSTER_NAME</code></td>
-<td>Cluster name (or custom PMM cluster name).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_PRERUN_SCRIPT</code></td>
-<td>PMM pre-run script.</td>
-</tr>
-<tr>
-<td><code>POD_NAME</code></td>
-<td>Pod name.</td>
-</tr>
-<tr>
-<td><code>POD_NAMESPASE</code></td>
-<td>Pod namespace (note the spelling).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SERVER_ADDRESS</code></td>
-<td>PMM server address.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_LISTEN_PORT</code></td>
-<td>PMM agent listen port.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_PORTS_MIN</code></td>
-<td>Min PMM agent port.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_PORTS_MAX</code></td>
-<td>Max PMM agent port.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_CONFIG_FILE</code></td>
-<td>PMM agent config path.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SERVER_INSECURE_TLS</code></td>
-<td>Allows insecure TLS.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_LISTEN_ADDRESS</code></td>
-<td>PMM agent listen address.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SETUP_NODE_NAME</code></td>
-<td>Node name used by PMM.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SETUP</code></td>
-<td>Enables auto-setup.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SETUP_FORCE</code></td>
-<td>Forces auto-setup.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SETUP_NODE_TYPE</code></td>
-<td>Node type (<code>container</code>).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SETUP_METRICS_MODE</code></td>
-<td>Metrics mode (<code>push</code>).</td>
-</tr>
-<tr>
-<td><code>PMM_ADMIN_CUSTOM_PARAMS</code></td>
-<td>Extra <code>pmm-admin</code> parameters.</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SERVER_USERNAME</code></td>
-<td>PMM server user (optional).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SERVER_PASSWORD</code></td>
-<td>PMM server password (optional).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SIDECAR</code></td>
-<td>Sidecar flag (v1.10+).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_SIDECAR_SLEEP</code></td>
-<td>Sidecar delay (v1.10+).</td>
-</tr>
-<tr>
-<td><code>PMM_AGENT_PATHS_TEMPDIR</code></td>
-<td>Temporary dir override (v1.15+).</td>
-</tr>
-</tbody>
-</table>
-<h3 id="pmm3">PMM3<a class="headerlink" href="#pmm3" title="Permanent link">&para;</a></h3>
+<p>The Operator injects the following variables into the PMM3 sidecar:</p>
 <table>
 <thead>
 <tr>
@@ -7121,7 +6921,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="February 25, 2026 16:29:14 UTC">February 25, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:13:07 UTC">October 29, 2026</span>
       
         <br>
         Created:

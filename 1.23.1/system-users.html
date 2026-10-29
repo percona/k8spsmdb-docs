@@ -6696,11 +6696,12 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 <tr>
 <td style="text-align: left;">PMM Server</td>
-<td style="text-align: left;">PMM_SERVER_USER</td>
+<td style="text-align: left;">—</td>
 <td style="text-align: left;">PMM_SERVER_TOKEN</td>
 </tr>
 </tbody>
 </table>
+<p>For PMM Server, store the service account token in <code>PMM_SERVER_TOKEN</code>. The Operator signs in to PMM Server with the username <code>service_token</code>.</p>
 <h3 id="system-users-and-mongodb-roles">System users and MongoDB roles<a class="headerlink" href="#system-users-and-mongodb-roles" title="Permanent link">&para;</a></h3>
 <p>The following table maps MongoDB roles to system users:</p>
 <table>
@@ -6721,7 +6722,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 <tr>
 <td><strong>Cluster Monitor</strong></td>
-<td><a href="https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor">clusterMonitor <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, <a href="https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read">read (on the <code>local</code> database) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, <a href="https://docs.percona.com/percona-monitoring-and-management/2/setting-up/client/mongodb.html#create-pmm-account-and-set-permissions">explainRole <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a></td>
+<td><a href="https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor">clusterMonitor <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, <a href="https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read">read (on the <code>local</code> database) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>, <a href="https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#create-monitoring-role">explainRole <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a></td>
 </tr>
 <tr>
 <td><strong>Database Admin</strong></td>
@@ -6757,9 +6758,6 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">MONGODB_CLUSTER_MONITOR_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clusterMonitor123456</span>
 <span class="w">  </span><span class="nt">MONGODB_USER_ADMIN_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">userAdmin</span>
 <span class="w">  </span><span class="nt">MONGODB_USER_ADMIN_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">userAdmin123456</span>
-<span class="w">  </span><span class="nt">PMM_SERVER_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
-<span class="w">  </span><span class="c1">#PMM_SERVER_PASSWORD: admin</span>
-<span class="w">  </span><span class="c1">#PMM_SERVER_API_KEY: apikey</span>
 <span class="w">  </span><span class="nt">PMM_SERVER_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">token</span>
 </code></pre></div>
 <p>The example above matches the default <code>deploy/secrets.yaml</code> file, which includes sample passwords and PMM Server credentials. These are intended only for development or automated testing. <strong>Don&rsquo;t use them in production</strong>.</p>
@@ -6886,23 +6884,11 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
 <td style="text-align: left;">MONGODB_USER_ADMIN_PASSWORD</td>
 <td style="text-align: left;">userAdmin123456</td>
 </tr>
-<tr>
-<td style="text-align: left;">PMM_SERVER_USER</td>
-<td style="text-align: left;">admin</td>
-</tr>
-<tr>
-<td style="text-align: left;">PMM_SERVER_PASSWORD</td>
-<td style="text-align: left;">admin</td>
-</tr>
-<tr>
-<td style="text-align: left;">PMM_SERVER_API_KEY</td>
-<td style="text-align: left;">apikey</td>
-</tr>
 </tbody>
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Do not use the default MongoDB users and/or default PMM API key in production!</p>
+<p>Do not use the default MongoDB users in production!</p>
 </div>
 <h2 id="internal-secret-and-its-usage">Internal Secret and its usage<a class="headerlink" href="#internal-secret-and-its-usage" title="Permanent link">&para;</a></h2>
 <p>The Operator creates and updates an additional Secrets object which is named based on the cluster name, like <code>internal-my-cluster-name-users</code>. This Secrets object is used only by the Operator. Users must not change it.</p>
@@ -6917,7 +6903,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 13, 2026 17:01:16 UTC">August 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:13:07 UTC">October 29, 2026</span>
       
         <br>
         Created:

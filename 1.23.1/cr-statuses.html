@@ -7163,6 +7163,10 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <td><code>TLSSecretsReady</code></td>
 <td>TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0.</td>
 </tr>
+<tr>
+<td><code>ImageUpgradeInProgress</code></td>
+<td>An image change is still in progress, or it has finished and the cluster is not <code>ready</code> yet.</td>
+</tr>
 </tbody>
 </table>
 <p><code>status.conditions[].status</code> values:</p>
@@ -7184,7 +7188,8 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<p>The Operator sets <code>reason</code> and <code>message</code> values as free-form strings. Common reasons include <code>ErrorReconcile</code>, <code>RSReady</code>, <code>RSStopping</code>, <code>RSPaused</code>, <code>MongosReady</code>, <code>MongosStopping</code>, <code>MongosPaused</code>, <code>PBMConfigurationIsUpToDate</code>, <code>PBMConfigurationIsChanged</code>, <code>TLSSecretNotFound</code>.</p>
+<p>The Operator sets <code>reason</code> and <code>message</code> values as free-form strings. Common reasons include <code>ErrorReconcile</code>, <code>RSReady</code>, <code>RSStopping</code>, <code>RSPaused</code>, <code>MongosReady</code>, <code>MongosStopping</code>, <code>MongosPaused</code>, <code>PBMConfigurationIsUpToDate</code>, <code>PBMConfigurationIsChanged</code>, <code>TLSSecretNotFound</code>, <code>ImageUpgrade</code>.</p>
+<p>When <code>ImageUpgradeInProgress</code> is <code>True</code>, <code>reason</code> is <code>ImageUpgrade</code>. While a container still differs from the StatefulSet template, <code>message</code> names the containers that are changing, including init containers and containers the template adds that are not on the Pod yet. For example: <code>Image upgrade is in progress for container(s) mongod, backup-agent</code>. After every container matches, the message changes to <code>Image upgrade is waiting for the cluster to be ready</code>. The Operator removes the condition when <code>status.state</code> is <code>ready</code>.</p>
 <h2 id="perconaservermongodbbackup-status">PerconaServerMongoDBBackup status<a class="headerlink" href="#perconaservermongodbbackup-status" title="Permanent link">&para;</a></h2>
 <p>Backup progress and results are in <code>status.state</code>. You also get destination and timing details that help you validate backups and Point-in-time recovery time ranges.</p>
 <p>Common fields:</p>
@@ -7455,7 +7460,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:14:11 UTC">October 29, 2026</span>
       
         <br>
         Created:
