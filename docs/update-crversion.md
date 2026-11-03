@@ -78,7 +78,7 @@ To avoid this, use one of these options:
 
     By default, `ignoreDifferences` only affects the out-of-sync check. The `RespectIgnoreDifferences=true` option makes sync skip the ignored field as well. See [Diff customization :octicons-link-external-16:](https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/) and [Sync options :octicons-link-external-16:](https://argo-cd.readthedocs.io/en/latest/user-guide/sync-options/) in the Argo CD documentation.
 
-    With this option, Argo CD removes `crVersion` from the manifest before it applies it, so changing `crVersion` in Git doesn't change the cluster. To upgrade the cluster, change `crVersion` directly in the cluster, for example with `kubectl patch`.
+With this option, Argo CD preserves the live `crVersion` when it pre-patches the desired manifest for an existing Custom Resource, so changing `crVersion` in Git doesn't change that cluster. The option does not apply when the resource is first created: Argo CD applies the Git manifest as-is. To upgrade an existing cluster while the field is ignored, change `crVersion` directly in the cluster, for example with `kubectl patch`.
 
 ### Init image
 
