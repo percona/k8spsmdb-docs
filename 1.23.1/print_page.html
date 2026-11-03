@@ -9821,8 +9821,13 @@ and search each place their own constraints on sharding and member types. See
 <li>The Operator terminates <code>mongos</code> and arbiter nodes, prepares StatefulSets as for a physical restore, and starts <code>pbm restore --external</code>.</li>
 <li>PBM shuts down <code>mongod</code>, wipes <code>dbPath</code>, and leaves nodes in <strong><code>copyReady</code></strong>.</li>
 <li>The Operator scales StatefulSets to zero and runs <code>pbm-agent restore-finish</code> on every node with PBM config, replica set name, node name, and (when needed) MongoDB <code>db</code> config for encryption at rest.</li>
-<li>It recreates each data PVC from the <code>VolumeSnapshot</code> in the backup or in <code>backupSource.snapshots</code>, one PVC at a time.</li>
-<li>It scales StatefulSets back up and runs <code>pbm restore-finish</code> so PBM applies metadata and brings the cluster to a consistent state.</li>
+<li>
+<p>It recreates each data PVC from the <code>VolumeSnapshot</code> for that replica set. Snapshot names come from the backup, or from <code>backupSource.snapshots</code>.</p>
+<p>Starting with version 1.24.0, the Operator restores replica sets in parallel. On a sharded cluster, every shard and the config server replica set move forward together. Inside one replica set, PVCs are recreated one at a time, because those members share one snapshot. Data-bearing members are recreated first, then non-voting and hidden members if you use them. A single replica set recreates one PVC at a time.</p>
+</li>
+<li>
+<p>It scales StatefulSets back up and runs <code>pbm restore-finish</code> so PBM applies metadata and brings the cluster to a consistent state.</p>
+</li>
 <li>After success, it cleans up temporary restore configuration and returns the cluster to normal operation.</li>
 </ol>
 <p>For steps, see <a href="#backups-pvc-usage-make-an-in-place-restore-from-a-pvc-snapshot-backup">Restore from a PVC snapshot</a>.</p>
@@ -40391,7 +40396,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 <tr>
 <td><code>ReplsetPVCsRestoredFromSnapshot</code></td>
-<td>All data PVCs are recreated from the <code>VolumeSnapshot</code> objects in the backup or in <code>backupSource.snapshots</code>. PVCs are rolled out one at a time.</td>
+<td>All data PVCs are recreated from the <code>VolumeSnapshot</code> objects in the backup or in <code>backupSource.snapshots</code>. Starting with version 1.24.0, the Operator advances every replica set together. On a sharded cluster, that is one PVC on each shard and on the config server replica set. Inside a replica set, the next PVC starts after the previous PVC object is created. The condition becomes <code>True</code> when every replica set is finished.</td>
 </tr>
 <tr>
 <td><code>PBMAgentAwaitingRestoreFinish</code></td>
@@ -40407,11 +40412,13 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
+<p>While <code>PBMAgentConfiguredForSnapshot</code> is <code>True</code> and <code>ReplsetPVCsRestoredFromSnapshot</code> is unset, the restore is recreating PVCs. On a sharded cluster, one PVC per shard and one PVC on the config server replica set can be changing together. The next member of the same replica set starts after the Operator has created the previous member&rsquo;s PVC. The volume can still be provisioning. On a single replica set, one PVC changes at a time.</p>
+<p>If <code>PBMAgentConfiguredForSnapshot</code> is also unset, PVC recreation has not started. The restore is still preparing the cluster or waiting for PBM to reach <code>copyReady</code>.</p>
 <p>Example: list restore conditions:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>&lt;restore-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'</span>
 </code></pre></div>
-<p>For the full restore workflow, see <a href="#backups-pvc-snapshots-restore-flow">PVC snapshot backups — Restore flow</a>.</p>
+<p>For the restore sequence, see <a href="#backups-from-pvc-snapshot-external-backup">How backup and restore work</a>.</p>
 <h2 id="cr-statuses-perconaservermongodbclustersync-status">PerconaServerMongoDBClusterSync status<a class="headerlink" href="#cr-statuses-perconaservermongodbclustersync-status" title="Permanent link">&para;</a></h2>
 <p>Percona ClusterSync for MongoDB (PCSM) progress and results are on the <code>PerconaServerMongoDBClusterSync</code> Custom Resource. Use these fields to track replication intent, runtime state, lag, and failures.</p>
 <p><code>spec.mode</code> is your lifecycle intent. <code>status.state</code> is what PCSM is doing. For configuration options, see <a href="#clustersync-options">ClusterSync Resource options</a>. For concepts, see <a href="#clustersync">Real-time replication with PCSM</a>.</p>

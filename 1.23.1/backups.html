@@ -6624,8 +6624,13 @@ window.addEventListener('afterprint', (event) => {
 <li>The Operator terminates <code>mongos</code> and arbiter nodes, prepares StatefulSets as for a physical restore, and starts <code>pbm restore --external</code>.</li>
 <li>PBM shuts down <code>mongod</code>, wipes <code>dbPath</code>, and leaves nodes in <strong><code>copyReady</code></strong>.</li>
 <li>The Operator scales StatefulSets to zero and runs <code>pbm-agent restore-finish</code> on every node with PBM config, replica set name, node name, and (when needed) MongoDB <code>db</code> config for encryption at rest.</li>
-<li>It recreates each data PVC from the <code>VolumeSnapshot</code> in the backup or in <code>backupSource.snapshots</code>, one PVC at a time.</li>
-<li>It scales StatefulSets back up and runs <code>pbm restore-finish</code> so PBM applies metadata and brings the cluster to a consistent state.</li>
+<li>
+<p>It recreates each data PVC from the <code>VolumeSnapshot</code> for that replica set. Snapshot names come from the backup, or from <code>backupSource.snapshots</code>.</p>
+<p>Starting with version 1.24.0, the Operator restores replica sets in parallel. On a sharded cluster, every shard and the config server replica set move forward together. Inside one replica set, PVCs are recreated one at a time, because those members share one snapshot. Data-bearing members are recreated first, then non-voting and hidden members if you use them. A single replica set recreates one PVC at a time.</p>
+</li>
+<li>
+<p>It scales StatefulSets back up and runs <code>pbm restore-finish</code> so PBM applies metadata and brings the cluster to a consistent state.</p>
+</li>
 <li>After success, it cleans up temporary restore configuration and returns the cluster to normal operation.</li>
 </ol>
 <p>For steps, see <a href="backups-pvc-usage.html#make-an-in-place-restore-from-a-pvc-snapshot-backup">Restore from a PVC snapshot</a>.</p>
@@ -6782,7 +6787,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 24, 2026 14:32:19 UTC">September 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 08:24:32 UTC">November 3, 2026</span>
       
         <br>
         Created:
