@@ -134,6 +134,18 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
         EOF
         ```
     
+        !!! tip "Service per Pod for `mongos`"
+
+            If you set `sharding.mongos.expose.servicePerPod` to `true`, also add the hostnames of the per-Pod `mongos` Services to the `hosts` lists in this step and in step 7. For example, for 3 `mongos` Pods, generate the names and paste the output into the lists, for example after the `"${CLUSTER_NAME}-mongos.${NAMESPACE}.svc.cluster.local",` line. Each line of the output ends with a comma, so don't paste it at the end of a list:
+
+            ```bash
+            for i in 0 1 2; do
+              printf '"%s",\n' "${CLUSTER_NAME}-mongos-$i" "${CLUSTER_NAME}-mongos-$i.${NAMESPACE}" "${CLUSTER_NAME}-mongos-$i.${NAMESPACE}.svc.cluster.local"
+            done
+            ```
+
+            See [Hostnames in the certificates](TLS.md#hostnames-in-the-certificates).
+
     5. Bundle the server certificate with the CA certificate:
     
         ```bash

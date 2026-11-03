@@ -263,9 +263,9 @@ The Operator owns the External DNS annotations it generates. The rules are:
 
 ## Service per Pod
 
-To make all database Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod. This Service per Pod option allows your application to handle Cursor tracking instead of relying on a single Service. This solves the problem of `CursorNotFound` errors that occur when a Service transparently cycles between mongos instances while your client is still iterating a cursor on a large collection.
+In a sharded cluster, the Operator can create a [Kubernetes Service  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/services-networking/service/) for each `mongos` Pod instead of one shared `mongos` Service. Your application can then connect to a specific `mongos` instance and handle cursor tracking itself. This solves the problem of `CursorNotFound` errors that occur when a shared Service transparently cycles between `mongos` instances while your client is still iterating a cursor on a large collection.
 
-This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](operator.md#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+To enable it, set the [sharding.mongos.expose.servicePerPod](operator.md#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
 
 If this feature is enabled with the `expose.type: NodePort`, the created Services look like this:
 
@@ -276,6 +276,12 @@ my-cluster-name-mongos-0   NodePort       10.38.158.103   <none>         27017:3
 my-cluster-name-mongos-1   NodePort       10.38.155.250   <none>         27017:31389/TCP              12s
 ...
 ```
+
+Starting with version 1.24.0, the certificates that the Operator issues include the per-Pod `mongos` Service hostnames, such as `my-cluster-name-mongos-0.<namespace>.svc.cluster.local`. Clients that verify hostnames can connect to these Services over TLS. This requires `crVersion` 1.24.0 or later. When you enable `servicePerPod`, or scale `mongos` to more Pods than the certificate covers, the Operator re-issues the certificates and all Pods, including `mongos`, restart once. While you enable `servicePerPod`, the cluster status can briefly show `error` until the `mongos` Pods restart with the new certificates. If you provide your own certificates, add these hostnames yourself. See [Hostnames in the certificates](TLS.md#hostnames-in-the-certificates).
+
+!!! note
+
+    Replica sets don't have this option. When you set [`replsets.expose.enabled`](operator.md#replsetsexposeenabled) to `true`, the Operator always creates a Service for each replica set Pod. See [Connecting from outside Kubernetes](#connecting-from-outside-kubernetes).
 
 ## Controlling hostnames in replset configuration
 
