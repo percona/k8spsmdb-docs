@@ -49,8 +49,8 @@ with all active major versions of Percona Server for MongoDB. The exact version 
 determined by the Docker image in use.
 
 The Operator uses Percona-certified Docker images, which you can find [here](images.md).
-For example, Percona Server for MongoDB 8.0 is supported with the following
-recommended version: {{ mongodb80recommended }}. 
+For example, Percona Server for MongoDB 8.3 is supported with the following
+recommended version: {{ mongodb83recommended }}. 
 
 Check the [Percona Server for MongoDB release notes :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html) for more details on the exact version of the latest major version. Use the version switcher to check other major versions.
 
