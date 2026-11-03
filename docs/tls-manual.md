@@ -347,6 +347,8 @@ kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data.tls\.cr
   | base64 -d | openssl x509 -noout -text | grep -A1 'Subject Alternative Name'
 ```
 
-The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is
+The Subject Alternative Name (SAN) list must cover the Pod and Service DNS names of your cluster. A certificate that is
 otherwise valid but missing those names produces connection failures that look like TLS
 misconfiguration rather than a naming problem.
+
+If the cluster uses [split-horizon DNS](expose.md#exposing-replica-set-with-split-horizon-dns), include each horizon hostname in that list. Do not include the port. The Operator does not add these names to a certificate you created.
