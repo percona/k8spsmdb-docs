@@ -17,3 +17,4 @@ mkdocs-placeholder-plugin
 mkdocs-open-in-new-tab
 mike
 mkdocs-git-committers-plugin-2
+mkdocs-glightbox
