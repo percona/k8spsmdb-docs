@@ -208,6 +208,41 @@ kubectl exec -it <pod-name> -c mongod -n $NAMESPACE -- ls -la /data/db/pbm-resto
 
 PBM keeps only the latest restore logs because it cleans up the data directory during the process.
 
+### All Pods terminate when a physical or snapshot restore starts
+
+Starting with Operator 1.24.0, a physical or PVC snapshot restore deletes the replica set and config server replica set Pods together, after it stops the `mongos` and arbiter Pods. This is expected, and you don't need to take any action. See [Downtime to expect](backups-restore.md#downtime-to-expect).
+
+To watch the restore, run:
+
+```bash
+kubectl get psmdb-restore -n $NAMESPACE
+```
+
+### Restore stays in the `waiting` state
+
+A physical or PVC snapshot restore can stay in the `waiting` state while `status.error` remains empty. This happens when at least one replica set member is not ready, for example because its Pod can't be scheduled. The Operator has no timeout for this wait. If only one member is down, the Operator has already stopped the healthy members.
+
+The Operator log repeats `Waiting for statefulsets to be ready before restore` or `Waiting for pbm-agent.` while it waits.
+
+To recover, bring the missing member back:
+
+1. Check the Operator log for the waiting message:
+
+    ```bash
+    kubectl logs deploy/<operator-deployment-name> -n $NAMESPACE
+    ```
+
+2. Find the Pods that are not ready and check why:
+
+    ```bash
+    kubectl get pods -n $NAMESPACE
+    kubectl describe pod <pod-name> -n $NAMESPACE
+    ```
+
+3. Fix the cause, for example free up resources or restore the node the Pod needs.
+
+The restore continues without further action once all members are ready.
+
 ### If a physical restore fails
 
 If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.
