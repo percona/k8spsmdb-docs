@@ -356,10 +356,14 @@ Each condition uses the standard Kubernetes fields (`type`, `status`, `reason`, 
 | Condition | Meaning |
 | --- | --- |
 | `PBMAgentConfiguredForSnapshot` | Database StatefulSets are scaled to zero. Pods are configured to run `pbm-agent restore-finish` with the PBM config, replica set name, node name, and (if needed) encryption-related MongoDB config. |
-| `ReplsetPVCsRestoredFromSnapshot` | All data PVCs are recreated from the `VolumeSnapshot` objects in the backup or in `backupSource.snapshots`. PVCs are rolled out one at a time. |
+| `ReplsetPVCsRestoredFromSnapshot` | All data PVCs are recreated from the `VolumeSnapshot` objects in the backup or in `backupSource.snapshots`. Starting with version 1.24.0, the Operator advances every replica set together. On a sharded cluster, that is one PVC on each shard and on the config server replica set. Inside a replica set, the next PVC starts after the previous PVC object is created. The condition becomes `True` when every replica set is finished. |
 | `PBMAgentAwaitingRestoreFinish` | StatefulSets are scaled back up. `pbm-agent` processes on every node are running and waiting at PBM **`copyReady`** for the restore to finish. |
 | `PBMRestoreFinishing` | The Operator started `pbm restore-finish` to apply backup metadata. |
 | `PBMRestoreFinished` | PBM completed the external restore. The Operator can clean up temporary restore configuration. |
+
+While `PBMAgentConfiguredForSnapshot` is `True` and `ReplsetPVCsRestoredFromSnapshot` is unset, the restore is recreating PVCs. On a sharded cluster, one PVC per shard and one PVC on the config server replica set can be changing together. The next member of the same replica set starts after the Operator has created the previous member's PVC. The volume can still be provisioning. On a single replica set, one PVC changes at a time.
+
+If `PBMAgentConfiguredForSnapshot` is also unset, PVC recreation has not started. The restore is still preparing the cluster or waiting for PBM to reach `copyReady`.
 
 Example: list restore conditions:
 
@@ -368,7 +372,7 @@ kubectl get psmdb-restore <restore-name> -n <namespace> \
   -o jsonpath='{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'
 ```
 
-For the full restore workflow, see [PVC snapshot backups — Restore flow](backups-pvc-snapshots.md#restore-flow).
+For the restore sequence, see [How backup and restore work](backups.md#from-pvc-snapshot-external-backup).
 
 ## PerconaServerMongoDBClusterSync status
 
