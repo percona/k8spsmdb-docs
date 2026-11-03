@@ -416,7 +416,7 @@ Here's how to do it:
 3. Spin up a `mongo` client Pod and copy the certificate files into it:
 
     ```bash
-    kubectl -n $CLUSTER_NAMESPACE run percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- sleep 3600
+    kubectl -n $CLUSTER_NAMESPACE run percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- sleep 3600
     kubectl -n $CLUSTER_NAMESPACE cp client.pem percona-client:/tmp/client.pem
     kubectl -n $CLUSTER_NAMESPACE cp ca.crt percona-client:/tmp/ca.crt
     ```

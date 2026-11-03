@@ -86,7 +86,7 @@ The upgrade includes the following steps.
         kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb83recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "pmm": { "image": "percona/pmm-client:{{ pmm3recommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
@@ -99,7 +99,7 @@ The upgrade includes the following steps.
         kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb83recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'
