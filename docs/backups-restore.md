@@ -28,7 +28,7 @@ for keeping MongoDB clients away from the database while the restore runs.
 
 !!! note "How Pods are shut down in physical and PVC snapshot restores"
 
-    Physical and PVC snapshot restores replaces the data on the existing volumes. To speed up restore performance, the Operator version 1.24.0 and newer no longer shuts down the replica set Pods in order, with secondaries first and the primary last. It stops `mongos` and arbiter Pods first, then deletes the replica set and config server replica set Pods together. Each `mongod` still has the Pod's termination grace period to shut down. 
+    Physical restores replace data on existing volumes, while PVC snapshot restores recreate data PVCs from snapshots. To speed up restore performance, the Operator version 1.24.0 and newer no longer shuts down the replica set Pods in order, with secondaries first and the primary last. It stops `mongos` and arbiter Pods first, then deletes the replica set and config server replica set Pods together. Each `mongod` still has the Pod's termination grace period to shut down.
 
 ## Choose `backupName` or `backupSource`
 
