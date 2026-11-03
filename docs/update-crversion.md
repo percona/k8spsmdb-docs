@@ -4,7 +4,7 @@ Use this page to understand what the Operator does with each `crVersion` value b
 
 ## What `crVersion` does
 
-The `spec.crVersion` option in the Custom Resource sets the behavior level of a cluster. The Operator compares it against its own feature thresholds to decide which features, defaults, and StatefulSet settings to apply. That is why `crVersion` is more than a label: when you change it in either direction, the Operator updates the StatefulSets and the database Pods roll.
+The `spec.crVersion` option in the Custom Resource sets the behavior level of a cluster. The Operator compares it against its own feature thresholds to decide which features, defaults, and StatefulSet settings to apply. That is why `crVersion` is more than a label: changing it in either direction can update the StatefulSet Pod templates. Pod restarts follow the configured [update strategy](update.md#update-strategies): `SmartUpdate` and `RollingUpdate` roll Pods when their templates change, while `OnDelete` requires you to delete the Pods manually.
 
 Check the value of a running cluster:
 
