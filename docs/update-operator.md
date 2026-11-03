@@ -38,7 +38,9 @@ The upgrade process is similar for all installation methods, including Helm and 
 
     Check the [Release notes index](RN/index.md) for the list of the Operator versions.
 
-2. CRD supports **the last 3 minor versions of the Operator**. This means it is compatible with the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+2. Percona supports the CRD with **the last 3 minor versions of the Operator**: the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+
+    The same support window applies to the `crVersion` of your database clusters. The Operator doesn't reject an older `crVersion`, so keeping your clusters inside the window is up to you. See [What `crVersion` does](update-crversion.md#what-crversion-does).
 
 3. Starting from version 1.14.0, the Operator configures replica set members
     using local fully-qualified domain names (FQDN). Before this version, if you [exposed a replica set](expose.md), it
