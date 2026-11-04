@@ -301,7 +301,7 @@ kubectl describe pv <pv-name>
 
     The `--wait=false` option keeps the first command from blocking while a running Pod still uses the claim. If the Pod is already `Pending`, deleting the claim can be enough: the StatefulSet recreates it, and the Pod schedules on its own.
 
-3. Wait until the new member is `SECONDARY` before you touch another one. Run `rs.status()` in [mongosh](connection-secrets.md#open-an-interactive-shell-with-mongosh) to check. `kubectl get psmdb` can show `ready` before the initial sync finishes. If you recreate two members of a three-member replica set at once, there is no majority: the primary steps down, and writes fail until one of the members finishes the sync.
+3. Wait until the new member is `SECONDARY` before you touch another one. Open [mongosh](connection-secrets.md#open-an-interactive-shell-with-mongosh), connecting to the affected shard or config server replica set (`cfg`), not through `mongos`. Authenticate as a user authorized to run `replSetGetStatus`, then run `rs.status()` to check the recreated member. `kubectl get psmdb` can show `ready` before the initial sync finishes. If you recreate two members of a three-member replica set at once, there is no majority: the primary steps down, and writes fail until one of the members finishes the sync.
 
 ## The autoscaler does not add a node
 
