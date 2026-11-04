@@ -63,10 +63,20 @@ See the sections below for how you can fine-tune the Operator and cert-manager t
 
 - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
 * [Configure TLS certificate management policy](tls-cert-management-policy.md)
-- [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
-- [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
-- [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
-- [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
+- [Configure TLS using cert-manager](#configure-tls-using-cert-manager)
+  - [About the *cert-manager*](#about-the-cert-manager)
+  - [Install the *cert-manager*](#install-the-cert-manager)
+  - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
+    - [Rules and limitations](#rules-and-limitations)
+    - [Configuration](#configuration)
+  - [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
+  - [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names)
+  - [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
+  - [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
+  - [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
+  - [Pre-create certificates before deployment](#pre-create-certificates-before-deployment)
+  - [Operator environment variable](#operator-environment-variable)
+  - [Verify the certificates](#verify-the-certificates)
 
 ## Customize certificate duration for cert-manager
 
@@ -121,8 +131,19 @@ Operator automatically creates:
 
 cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates)
-to `true` (the default) for this self-signed setup. 
+to `true` (the default) for this self-signed setup.
 
+## Update certificates for split-horizon names
+
+!!! note "Version availability: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+With `tls.certManagementPolicy: auto`, the Operator updates `dnsNames` on the
+`<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources
+when you add or change [split-horizon DNS](expose.md#exposing-replica-set-with-split-horizon-dns)
+names. cert-manager reissues the certificates. You do not edit `dnsNames` yourself. However, for user-managed Certificate resources or `tls.certManagementPolicy: userProvidedOnly`,
+ update `dnsNames` yourself.
+
+This applies to every issuer on this page: Operator-managed issuers, and an existing `Issuer` or `ClusterIssuer`.
 
 ## Operator-managed issuers with ClusterIssuer scope
 
@@ -194,6 +215,8 @@ When you deploy the cluster, the Operator creates `Certificate` resources that
 reference your `ClusterIssuer`. cert-manager signs the resulting Secrets; the
 Operator does not create a parallel CA or overwrite your issuer.
 
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
+
 !!! note
 
     The Operator's default RBAC does not grant access to cluster-scoped
@@ -220,6 +243,8 @@ spec:
 When the issuer name refers to an existing resource, the Operator creates TLS
 `Certificate` resources that cert-manager signs through your issuer. It does not
 recreate the issuer or its CA chain.
+
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
 
 ## Pre-create certificates before deployment
 
