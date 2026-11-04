@@ -93,6 +93,11 @@ How the Pod picks up a fix depends on where you make it.
 
     ```bash
     kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
+
+    Before deleting the Pod, inspect its StatefulSet with `kubectl get statefulset <statefulset-name> -n <namespace> -o yaml`. Wait until `spec.template` contains the corrected requests or scheduling constraints. Then delete the Pod:
+
+    ```bash
     kubectl delete pod <pending-pod> -n <namespace>
     ```
 
