@@ -137,11 +137,11 @@ to `true` (the default) for this self-signed setup.
 
 !!! note "Version availability: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
 
-The Operator updates `dnsNames` on the
+With `tls.certManagementPolicy: auto`, the Operator updates `dnsNames` on the
 `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources
 when you add or change [split-horizon DNS](expose.md#exposing-replica-set-with-split-horizon-dns)
-names. cert-manager reissues the certificates. You do not edit `dnsNames` for
-horizon hostnames.
+names. cert-manager reissues the certificates. You do not edit `dnsNames` yourself. However, for user-managed Certificate resources or `tls.certManagementPolicy: userProvidedOnly`,
+ update `dnsNames` yourself.
 
 This applies to every issuer on this page: Operator-managed issuers, and an existing `Issuer` or `ClusterIssuer`.
 
