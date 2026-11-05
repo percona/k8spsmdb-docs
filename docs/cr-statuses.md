@@ -100,6 +100,7 @@ Common fields:
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
 - `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
+- `status.vpaStatus` – the VPA recommendation and the resources the Operator applied for each component. Available when `spec.vpa.enabled` is `true`. See [VPA status](#vpa-status).
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values
@@ -237,6 +238,37 @@ kubectl get psmdb <cluster-name> -n <namespace> \
     {"rs0":{"size":1,"ready":1,"status":"ready"}}
     ```
 
+### VPA status
+
+!!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+If [`spec.vpa.enabled`](operator.md#vpaenabled) is set to `true`, the Operator records what it reads from each component's VerticalPodAutoscaler object in `status.vpaStatus`. When VPA is turned off, the Operator clears this field.
+
+Each entry is keyed by component: the replica set name for replica set members and the config server replica set, `<replset-name>-nv` for non-voting members, `<replset-name>-hidden` for hidden members, and `mongos`.
+
+Fields under `status.vpaStatus.<component>`:
+
+- `recommended` – the latest CPU and memory recommendation the Operator accepted from the VPA object, before it's limited to `minAllowed` and `maxAllowed`. In `Auto` mode, a newer recommendation replaces it only after the stabilization window passes
+- `applied` – the requests and limits the Operator applied to the StatefulSet in `Auto` mode. After you switch to `Off`, the last value stays in the status but isn't used.
+- `lastObservedAt` – when the Operator read the recommendation in `recommended`. The stabilization window is measured from this time
+- `lastAppliedAt` – when `applied` last changed
+- `message` – why the component isn't following the latest recommendation. For example, because of a missing VPA object or a recommendation waiting for the stabilization window. Absent when the component follows the latest recommendation
+
+**Example. View VPA status:**
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> \
+  -o jsonpath='{.status.vpaStatus}' && echo
+```
+
+??? example "Sample output"
+
+    ```{.json .no-copy}
+    {"rs0":{"applied":{"limits":{"cpu":"4","memory":"4Gi"},"requests":{"cpu":"250m","memory":"1Gi"}},"lastAppliedAt":"2026-11-05T10:20:02Z","lastObservedAt":"2026-11-05T10:20:02Z","recommended":{"cpu":"250m","memory":"1Gi"}}}
+    ```
+
+To learn how the Operator uses these values, see [Scale automatically with VPA](scaling-vertical.md#scale-automatically-with-vpa).
+
 ### Conditions 
 
 Conditions show more detail about cluster state changes. You can see them in `status.conditions[]`.
@@ -262,6 +294,7 @@ Common condition fields:
 | `pendingSmartUpdate` | A smart update is pending but has not started. |
 | `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. |
 | `ImageUpgradeInProgress` | An image change is still in progress, or it has finished and the cluster is not `ready` yet. |
+| `VPAReady` | The Operator can read VerticalPodAutoscaler objects. `False` with reason `APINotInstalled` when `spec.vpa.enabled` is `true` but the VPA Custom Resource Definition isn't installed. Not set when VPA is turned off. Available since Operator 1.24.0. |
 
 `status.conditions[].status` values:
 
@@ -270,7 +303,7 @@ Common condition fields:
 | `True` | The condition is currently true. |
 | `False` | The condition is currently false. |
 
-The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`, `ImageUpgrade`.
+The Operator sets `reason` and `message` values as free-form strings. Common reasons include `ErrorReconcile`, `RSReady`, `RSStopping`, `RSPaused`, `MongosReady`, `MongosStopping`, `MongosPaused`, `PBMConfigurationIsUpToDate`, `PBMConfigurationIsChanged`, `TLSSecretNotFound`, `ImageUpgrade`, `CRDInstalled`, `APINotInstalled`.
 
 When `ImageUpgradeInProgress` is `True`, `reason` is `ImageUpgrade`. While a container still differs from the StatefulSet template, `message` names the containers that are changing, including init containers and containers the template adds that are not on the Pod yet. For example: `Image upgrade is in progress for container(s) mongod, backup-agent`. After every container matches, the message changes to `Image upgrade is waiting for the cluster to be ready`. The Operator removes the condition when `status.state` is `ready`.
 

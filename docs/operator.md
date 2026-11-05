@@ -292,6 +292,82 @@ The `wtimeout` field (in milliseconds) of the default write concern: how long to
 | ----------- | ---------- |
 | :material-numeric-1-box: int         | `5000`      |
 
+## <a name="operator-vpa-section"></a>VPA section
+
+The `vpa` section controls how the Operator reads and applies [Vertical Pod Autoscaler :octicons-link-external-16:](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) recommendations for CPU and memory. The Operator only reads VerticalPodAutoscaler objects. It doesn't install VPA or create the objects. Each replica set, non-voting and hidden member group, config server replica set and `mongos` can override some options in its own `vpa` subsection. Learn more in [Vertical scaling](scaling-vertical.md#scale-automatically-with-vpa) and [Configure vertical autoscaling](scaling-vpa.md).
+
+### `vpa.enabled`
+
+Enables reading VPA recommendations. Defaults to `false`. Required when the `vpa` section is present.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `vpa.updateMode`
+
+Controls what the Operator does with recommendations. `Off` records them in `status.vpaStatus` without changing Pods. `Auto` applies them within the bounds and the stabilization window. Defaults to `Off`. Quote the value, because YAML reads an unquoted `Off` as a boolean.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"Off"`    |
+
+### `vpa.controlledValues`
+
+Controls which resource values the Operator changes. `RequestsOnly` changes requests and caps them at the declared limits. `RequestsAndLimits` changes requests and scales limits to keep the declared ratio between limit and request. Defaults to `RequestsOnly`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `RequestsOnly` |
+
+### `vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to any component. Must not exceed [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu). The Custom Resource is rejected otherwise.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `100m`     |
+
+### `vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to any component. Must not exceed [`vpa.maxAllowed.memory`](#vpamaxallowedmemory). The Custom Resource is rejected otherwise.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `256Mi`    |
+
+### `vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to any component.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"8"`      |
+
+### `vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to any component.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts. Edits to `resources` in the spec aren't delayed by it. Defaults to `5m`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `2h`       |
+
+### `vpa.inPlaceResize`
+
+Resizes running Pods in place instead of recreating them, and adjusts the WiredTiger cache size at runtime. Requires `updateStrategy: SmartUpdate`, `crVersion` 1.24.0 or later and `vpa.updateMode: Auto`. Turning it on or off causes one rolling restart. Defaults to `false`.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `true`   |
+
 ## <a name="operator-unsafeflags-section"></a>Unsafe flags section
 
 The `unsafeFlags` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters. 
@@ -1441,6 +1517,54 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
 
+### `replsets.nonvoting.vpa.objectName`
+
+The name of the VerticalPodAutoscaler object the Operator reads recommendations from for this component. When not set, the Operator uses `<cluster-name>-<replset-name>-nv-vpa`. Requires [`vpa.enabled`](#vpaenabled). See [Configure vertical autoscaling](scaling-vpa.md#use-your-own-vpa-object-names).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-custom-vpa` |
+
+### `replsets.nonvoting.vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to this component. Overrides [`vpa.minAllowed.cpu`](#vpaminallowedcpu). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `500m`     |
+
+### `replsets.nonvoting.vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to this component. Overrides [`vpa.minAllowed.memory`](#vpaminallowedmemory). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `512Mi`    |
+
+### `replsets.nonvoting.vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to this component. Overrides [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"4"`      |
+
+### `replsets.nonvoting.vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to this component. Overrides [`vpa.maxAllowed.memory`](#vpamaxallowedmemory).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `replsets.nonvoting.vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts for this component. Overrides [`vpa.stabilizationWindow`](#vpastabilizationwindow).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `4h`       |
+
 ### `replsets.nonvoting.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
@@ -1673,6 +1797,54 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
 
+### `replsets.hidden.vpa.objectName`
+
+The name of the VerticalPodAutoscaler object the Operator reads recommendations from for this component. When not set, the Operator uses `<cluster-name>-<replset-name>-hidden-vpa`. Requires [`vpa.enabled`](#vpaenabled). See [Configure vertical autoscaling](scaling-vpa.md#use-your-own-vpa-object-names).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-custom-vpa` |
+
+### `replsets.hidden.vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to this component. Overrides [`vpa.minAllowed.cpu`](#vpaminallowedcpu). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `500m`     |
+
+### `replsets.hidden.vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to this component. Overrides [`vpa.minAllowed.memory`](#vpaminallowedmemory). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `512Mi`    |
+
+### `replsets.hidden.vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to this component. Overrides [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"4"`      |
+
+### `replsets.hidden.vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to this component. Overrides [`vpa.maxAllowed.memory`](#vpamaxallowedmemory).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `replsets.hidden.vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts for this component. Overrides [`vpa.stabilizationWindow`](#vpastabilizationwindow).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `4h`       |
+
 ### `replsets.hidden.volumeSpec.emptyDir`
 
 The [Kubernetes emptyDir volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
@@ -1888,6 +2060,54 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
+
+### `replsets.vpa.objectName`
+
+The name of the VerticalPodAutoscaler object the Operator reads recommendations from for this component. When not set, the Operator uses `<cluster-name>-<replset-name>-vpa`. Requires [`vpa.enabled`](#vpaenabled). See [Configure vertical autoscaling](scaling-vpa.md#use-your-own-vpa-object-names).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-custom-vpa` |
+
+### `replsets.vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to this component. Overrides [`vpa.minAllowed.cpu`](#vpaminallowedcpu). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `500m`     |
+
+### `replsets.vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to this component. Overrides [`vpa.minAllowed.memory`](#vpaminallowedmemory). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `512Mi`    |
+
+### `replsets.vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to this component. Overrides [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"4"`      |
+
+### `replsets.vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to this component. Overrides [`vpa.maxAllowed.memory`](#vpamaxallowedmemory).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `replsets.vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts for this component. Overrides [`vpa.stabilizationWindow`](#vpastabilizationwindow).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `4h`       |
 
 ### `replsets.volumeSpec.emptyDir`
 
@@ -2921,6 +3141,54 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
 
+### `sharding.configsvrReplSet.vpa.objectName`
+
+The name of the VerticalPodAutoscaler object the Operator reads recommendations from for this component. When not set, the Operator uses `<cluster-name>-<configsvrReplSet.name>-vpa`, which is `<cluster-name>-cfg-vpa` by default. Requires [`vpa.enabled`](#vpaenabled). See [Configure vertical autoscaling](scaling-vpa.md#use-your-own-vpa-object-names).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-custom-vpa` |
+
+### `sharding.configsvrReplSet.vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to this component. Overrides [`vpa.minAllowed.cpu`](#vpaminallowedcpu). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `500m`     |
+
+### `sharding.configsvrReplSet.vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to this component. Overrides [`vpa.minAllowed.memory`](#vpaminallowedmemory). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `512Mi`    |
+
+### `sharding.configsvrReplSet.vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to this component. Overrides [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"4"`      |
+
+### `sharding.configsvrReplSet.vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to this component. Overrides [`vpa.maxAllowed.memory`](#vpamaxallowedmemory).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `sharding.configsvrReplSet.vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts for this component. Overrides [`vpa.stabilizationWindow`](#vpastabilizationwindow).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `4h`       |
+
 ### `sharding.configsvrReplSet.expose.enabled`
 
 Enable or disable exposing [Config Server  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/) nodes with dedicated IP addresses.
@@ -3480,6 +3748,54 @@ The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `0.5G`     |
+
+### `sharding.mongos.vpa.objectName`
+
+The name of the VerticalPodAutoscaler object the Operator reads recommendations from for this component. When not set, the Operator uses `<cluster-name>-mongos-vpa`. Requires [`vpa.enabled`](#vpaenabled). See [Configure vertical autoscaling](scaling-vpa.md#use-your-own-vpa-object-names).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-custom-vpa` |
+
+### `sharding.mongos.vpa.minAllowed.cpu`
+
+The minimum CPU request the Operator applies to this component. Overrides [`vpa.minAllowed.cpu`](#vpaminallowedcpu). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `500m`     |
+
+### `sharding.mongos.vpa.minAllowed.memory`
+
+The minimum memory request the Operator applies to this component. Overrides [`vpa.minAllowed.memory`](#vpaminallowedmemory). Isn't validated against `maxAllowed`. If it's larger, `maxAllowed` wins.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `512Mi`    |
+
+### `sharding.mongos.vpa.maxAllowed.cpu`
+
+The maximum CPU request the Operator applies to this component. Overrides [`vpa.maxAllowed.cpu`](#vpamaxallowedcpu).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `"4"`      |
+
+### `sharding.mongos.vpa.maxAllowed.memory`
+
+The maximum memory request the Operator applies to this component. Overrides [`vpa.maxAllowed.memory`](#vpamaxallowedmemory).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `16Gi`     |
+
+### `sharding.mongos.vpa.stabilizationWindow`
+
+The minimum time between two recommendations the Operator accepts for this component. Overrides [`vpa.stabilizationWindow`](#vpastabilizationwindow).
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `4h`       |
 
 ### `sharding.mongos.expose.type`
 
