@@ -55,14 +55,16 @@ The fix depends on which container was killed, so find that out first.
 
 Kubernetes doesn't post an `OOMKilled` event, so `kubectl get events` doesn't show the kill. The Operator doesn't flag it either: `kubectl get psmdb` reports `initializing`. After a long crash loop, the status becomes `error` with a message such as `Error: pod my-cluster-name-cfg-0 is in CrashLoopBackOff state`.
 
+An `OOMKilled` reason can also result from node-wide memory exhaustion. Check node/kernel diagnostics and the affected container's cgroup memory counters to distinguish node pressure from a container-limit OOM before increasing limits.
+
 Use the container name to choose the next step:
 
 | What you see | What it means | Go to |
 | --- | --- | --- |
-| `mongod` in a replica set Pod | The database used more memory than its limit | [mongod is killed](#mongod-is-killed) |
-| `mongos`, or `mongod` in a config server Pod | A router or a config server has too small a limit | [mongos and config server Pods](#mongos-and-config-server-pods) |
-| `backup-agent`, `pmm-client`, `logs`, or `logrotate` | A sidecar reached its own limit. `mongod` isn't affected | [Sidecar containers](#sidecar-containers) |
-| The Operator Pod | The Operator reached its limit | [The Operator is killed](#the-operator-is-killed) |
+| `mongod` in a replica set Pod | The database container was OOM-killed; check its memory limit and node memory pressure | [mongod is killed](#mongod-is-killed) |
+| `mongos`, or `mongod` in a config server Pod | A router or config server was OOM-killed; check its memory limit and node memory pressure | [mongos and config server Pods](#mongos-and-config-server-pods) |
+| `backup-agent`, `pmm-client`, `logs`, or `logrotate` | A sidecar was OOM-killed; check its memory limit and node memory pressure | [Sidecar containers](#sidecar-containers) |
+| The Operator Pod | The Operator was OOM-killed; check its memory limit and node memory pressure | [The Operator is killed](#the-operator-is-killed) |
 | Exit code `137` without `OOMKilled` | The process got `SIGKILL` for another reason, such as a failed liveness probe or a node shutdown | Check the Pod events and the node, not the memory limit |
 | The Pod is `Evicted` | The node ran short of memory and the kubelet evicted the Pod. This is node pressure, not the container limit | Check `kubectl describe node <node-name>` and the requests of the other Pods on the node |
 
@@ -84,7 +86,7 @@ kubectl logs <pod-name> -n <namespace> -c logs | grep "Detected unclean shutdown
 
 ### Check the memory settings
 
-Connect to the member with [mongosh](connection-secrets.md#open-an-interactive-shell-with-mongosh) and check how much memory `mongod` sees and how large its cache is:
+Connect directly to the affected `mongod` member with [mongosh](connection-secrets.md#open-an-interactive-shell-with-mongosh). Use a `mongodb://` URI with that Pod's hostname and port as the only host, and add `directConnection=true`, retaining the authentication and TLS settings from the connection guide. Check how much memory `mongod` sees and how large its cache is:
 
 ```javascript
 db.hostInfo().system.memLimitMB
@@ -111,7 +113,7 @@ The in-memory engine is different. Its size is `memory limit × `[`inMemorySizeR
 
 ### Find what uses the memory
 
-The cache can't grow past its configured size. If `mongod` is killed, the memory outside the cache is what grew. Compare the two in `mongosh`, ideally several times while the memory rises:
+The configured cache size does not cap the total memory used by `mongod`. An OOM kill alone does not tell you whether cache or non-cache memory grew. Compare the two in `mongosh`, ideally several times while the memory rises:
 
 ```javascript
 const s = db.serverStatus();
@@ -122,7 +124,7 @@ print("connections   " + s.connections.current);
 print("open cursors  " + s.metrics.cursor.open.total);
 ```
 
-The `allocated` value minus the `wt cache` value is the memory that `mongod` holds outside the cache. If it grows over time while the cache stays flat, look at what the workload is doing. These are the patterns that occur most often:
+The `allocated` value minus the `wt cache` value is a rough estimate of live heap allocations outside the cache. It excludes free memory retained by the allocator and other memory charged to the container. Also compare `db.serverStatus().mem.resident` (in MiB) with the container's cgroup memory usage. If live allocations grow while the cache stays flat, look at what the workload is doing. These are the patterns that occur most often:
 
 * **Abandoned cursors.** A client reads one batch and never iterates or closes the cursor. If the query needed an in-memory sort, the cursor holds the sorted result outside the cache. List the idle cursors with:
 
@@ -173,11 +175,11 @@ If the container keeps being killed after you raise the limit, the cause is almo
     kubectl apply -f deploy/cr.yaml -n <namespace>
     ```
 
-    The Operator restarts the members one at a time: the secondaries first and the primary last, after a step-down. The cache size follows the new limit. Check the new values with the `mongosh` commands from [Check the memory settings](#check-the-memory-settings).
+    With the default `SmartUpdate` strategy, the Operator restarts the members one at a time: the secondaries first and the primary last, after a step-down. `RollingUpdate` uses the StatefulSet controller's update order; `OnDelete` requires you to delete and recreate each Pod manually. See [Update strategies](update.md#update-strategies) and [Upgrade manually](update-manually.md). Once a member has restarted with the new settings, its cache size follows the new limit. Check the new values with the `mongosh` commands from [Check the memory settings](#check-the-memory-settings).
 
 !!! note
 
-    A Pod that is already crash-looping, or `Pending` because the nodes can't hold the new request, keeps its old settings after you change the Custom Resource. Delete such a Pod so that the StatefulSet recreates it with the new settings. Delete one Pod at a time.
+    If a Pod that is crash-looping or `Pending` still has the old resource settings, confirm that the StatefulSet's Pod template has the new settings before deleting that Pod. Delete one Pod at a time and wait for it to become ready before proceeding. If a `Pending` Pod already has the new request and its scheduling events report insufficient memory, add node capacity or revise the requested resources; deleting it won't resolve that capacity shortage.
 
 For the settings of the limits, see [`replsets.resources.limits.memory`](operator.md#replsetsresourceslimitsmemory). For sizing, see [Scaling](scaling.md).
 
@@ -220,7 +222,7 @@ For the settings of the limits, see [`replsets.resources.limits.memory`](operato
 | `backup-agent` | [`backup.resources`](operator.md#backupresourceslimitsmemory) |
 | `pmm-client` | [`pmm.resources`](operator.md#pmmresourceslimitsmemory) |
 | `logs` (the log collector) | `logcollector.resources` |
-| `logrotate` | No key of its own |
+| `logrotate` | `logcollector.resources` (shared with `logs`) |
 
 A restore needs much more memory in `backup-agent` than a backup does. To find the peak that a sidecar reaches, read the memory counters of its cgroup while a backup or a restore runs. This example is for nodes that use cgroup v2:
 
