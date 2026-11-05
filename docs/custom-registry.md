@@ -132,8 +132,13 @@ OpenShift environment demonstrates the process:
         will try using the image recommended by the Version Service instead of the
         custom one.
 
+    !!! note
+
+        If a cluster's `crVersion` is older than the Operator and you don't set `initImage`, the Operator pulls the Operator image tag that matches `crVersion` for the init container. For example, Operator {{ release }} running a cluster with `crVersion: 1.22.0` uses the `1.22.0` tag. Push that tag to your registry too, or set `initImage` explicitly. See [Init image](update-crversion.md#init-image).
+
 9. Now follow the standard Percona Operator for MongoDB [installation instruction](System-Requirements.md#installation-guidelines).
 
 ## See also
 
+* [What `crVersion` does](update-crversion.md#what-crversion-does)
 * [Troubleshooting](debug.md) - environment variables, reconciliation concurrency, and hook scripts are exactly what gets tuned in response to an observed problem
