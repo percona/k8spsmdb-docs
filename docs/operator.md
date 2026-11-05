@@ -600,6 +600,8 @@ authentication. If this value is set, the Operator uses the provided token to au
 
 The replsets section controls the MongoDB Replica Set.
 
+NOTE: Replsets create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the Replset configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.
+
 ### `replsets.name`
 
 The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/).
@@ -2574,6 +2576,9 @@ Number of seconds after which the readiness probe times out.
 
 The `sharding` section in the deploy/cr.yaml file contains configuration
 options for Percona Server for MondoDB [sharding](sharding.md).
+
+NOTE: sharding.configsvrReplSet create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the sharding.configsvrReplSet configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.
+
 
 ### `sharding.enabled`
 
