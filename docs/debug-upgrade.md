@@ -2,12 +2,14 @@
 
 Use this page when a cluster misbehaves after an upgrade, after you changed `crVersion`, or after you re-applied a manifest. Find your symptom:
 
-* [Pods stuck in `Init:ErrImagePull`](#pods-stuck-in-initerrimagepull)
-* [Cluster stuck in `initializing` with `malformed version` in the log](#cluster-stuck-in-initializing-with-malformed-version-in-the-log)
-* [API server rejects `crVersion`](#api-server-rejects-crversion)
-* [Pods restarted after you re-applied a manifest](#pods-restarted-after-you-re-applied-a-manifest)
-* [Argo CD shows the application as out of sync](#argo-cd-shows-the-application-as-out-of-sync)
-* [None of these match](#none-of-these-match)
+- [Troubleshoot upgrades and `crVersion` problems](#troubleshoot-upgrades-and-crversion-problems)
+    - [Pods stuck in `Init:ErrImagePull`](#pods-stuck-in-initerrimagepull)
+    - [Cluster stuck in `initializing` with `malformed version` in the log](#cluster-stuck-in-initializing-with-malformed-version-in-the-log)
+    - [API server rejects `crVersion`](#api-server-rejects-crversion)
+    - [Pods restarted after you re-applied a manifest](#pods-restarted-after-you-re-applied-a-manifest)
+    - [Argo CD shows the application as out of sync](#argo-cd-shows-the-application-as-out-of-sync)
+    - [None of these match](#none-of-these-match)
+    - [See also](#see-also)
 
 For what the Operator does with each `crVersion` value, see [`crVersion` behavior](update-crversion.md).
 
@@ -27,9 +29,9 @@ kubectl describe pod <pod-name> -n <namespace>
 
 ## Cluster stuck in `initializing` with `malformed version` in the log
 
-**Impact:** Every reconcile of this cluster fails until you fix the value. Other clusters managed by the same Operator are not affected.
+**Impact:** Every reconcile of this cluster fails until you fix the value. The Operator stops managing this cluster until you fix the value. On a running cluster, the Operator Pod can also restart once, which briefly affects all clusters it manages. The `kubectl get psmdb <cluster-name> -n <namespace>` shows the last state (for example, `ready`).
 
-**Cause:** `crVersion` is not a version string, for example `abc`. The Kubernetes API server accepts it, but the Operator can't parse it. The cluster has no `status.message`.
+**Cause:** `crVersion` is not a version string, for example `abc`. The Kubernetes API server accepts it, but the Operator can't parse it. The cluster status keeps its last value: empty for a new cluster, `ready` for a running one.
 
 **Check:** Look for `malformed version` in the Operator log:
 

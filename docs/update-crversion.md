@@ -28,7 +28,7 @@ kubectl get psmdb <cluster-name> -n <namespace> -o jsonpath='{.spec.crVersion}'
 | Newer than the Operator or a pre-release, for example `9.9.9` or `1.24.0-beta` | The Operator accepts the value without a warning. Unless you set `initImage`, it derives the [init image](#init-image) using that value as the tag. If the tag is unavailable in your registry, the Pods cannot start and report `Init:ErrImagePull` or `Init:ImagePullBackOff`. |
 | A two-part string, for example `"1.2"` | The Operator accepts it and treats it as `1.2.0`, a very old behavior level. Always use the full `major.minor.patch` version. |
 | An unquoted two-part number, for example `1.24` | YAML reads it as a number, and the Kubernetes API server rejects the Custom Resource with `spec.crVersion in body must be of type string`. |
-| A string that is not a version, for example `abc` | The Kubernetes API server accepts it, but the Operator cannot parse it. Every reconcile fails, the Operator log shows `malformed version: abc`, and the cluster stays in the `initializing` state with no `status.message`. Other clusters managed by the same Operator are not affected. The cluster recovers once you set a valid version. |
+| A string that is not a version, for example `abc` | The Kubernetes API server accepts it, but the Operator can't parse it. The Operator stops reconciling the cluster and logs malformed version: abc. The cluster status keeps its last value: empty for a new cluster, ready for a running one. On a running cluster, the Operator Pod can also crash once, which briefly interrupts management of all clusters it watches. The cluster recovers once you set a valid version. |
 
 ### Why to set `crVersion` explicitly
 
