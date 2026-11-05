@@ -38,6 +38,8 @@ spec:
 Use our reference documentation for the [Custom Resource options](operator.md) 
 for more details about other components.
 
+If a container is restarted with `OOMKilled` after you lower a memory limit, or because the workload grew, see [Troubleshoot out-of-memory errors](debug-oom.md).
+
 <a name="scale-storage"></a>
 
 Storage capacity is scaled separately - see [Resize storage](scaling-storage-resize.md).
