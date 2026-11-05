@@ -166,6 +166,8 @@ If you are still running into issues, check with your Kubernetes cluster adminis
     
     Check the information in the `Status` section. The `State` and `State Description` fields explain why the Pod reports errors.
 
+    If a container restarts, check its `Last State`. The reason `OOMKilled` means that the container ran out of memory. See [Troubleshoot out-of-memory errors](debug-oom.md).
+
 8. To run commands inside a container, use the `kubectl exec` command:
 
     ```bash

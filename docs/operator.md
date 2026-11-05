@@ -880,6 +880,8 @@ The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB optio
 | ----------- | ---------- |
 | :material-decimal: float       | `0.5`      |
 
+The Operator sets the cache size to `(memory limit − 1 GiB) × ratio`, with a minimum of 0.25 GB. Without a memory limit, the Operator doesn't set the cache size, and `mongod` sizes it from the memory of the node. See [How the Operator sizes the cache](debug-oom.md#how-the-operator-sizes-the-cache).
+
 ### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
 
 Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes.
@@ -919,6 +921,8 @@ The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :o
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-decimal: float       |  `0.9`     |
+
+The in-memory size is `memory limit × ratio`. Unlike the WiredTiger cache, it has no 1 GiB subtracted.
 
 ### `replsets.livenessProbe.failureThreshold`
 
@@ -2889,7 +2893,9 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 | :material-code-string: string     | `/psmdb-some-name-rs0` |
 
 
-### `sharding.configsvrReplSet.limits.cpu`
+<a name="shardingconfigsvrreplsetlimitscpu"></a>
+
+### `sharding.configsvrReplSet.resources.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -2897,7 +2903,9 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.configsvrReplSet.limits.memory`
+<a name="shardingconfigsvrreplsetlimitsmemory"></a>
+
+### `sharding.configsvrReplSet.resources.limits.memory`
 
 [Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -2913,7 +2921,9 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.configsvrReplSet.requests.memory`
+<a name="shardingconfigsvrreplsetrequestsmemory"></a>
+
+### `sharding.configsvrReplSet.resources.requests.memory`
 
 The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -3449,7 +3459,9 @@ Name of the [custom sidecar container](sidecar.md) for mongos Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `rs-sidecar-1` |
 
-### `sharding.mongos.limits.cpu`
+<a name="shardingmongoslimitscpu"></a>
+
+### `sharding.mongos.resources.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
@@ -3457,7 +3469,9 @@ Name of the [custom sidecar container](sidecar.md) for mongos Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.mongos.limits.memory`
+<a name="shardingmongoslimitsmemory"></a>
+
+### `sharding.mongos.resources.limits.memory`
 
 [Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
@@ -3473,7 +3487,9 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.mongos.requests.memory`
+<a name="shardingmongosrequestsmemory"></a>
+
+### `sharding.mongos.resources.requests.memory`
 
 The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
