@@ -155,7 +155,11 @@ See [Known limitations](limitations.md#backups-and-restores) for the full list. 
 
 ## Backup lifecycle
 
-Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with [backup.tasks.retention](operator.md#backuptasksretentioncount). See [Configure retention policy](backups-delete.md#configure-backup-retention).
+Starting with version 1.24.0, you can [cancel a backup](backups-cancel.md) while it's still running. Deleting a running Backup object cancels the backup first.
+
+To remove a finished backup, delete its Backup object. For a `ready` backup, the `delete-backup` finalizer also removes the backup files from storage. For a canceled or failed backup, the Operator deletes only the Backup object. See [Clean up a canceled backup](backups-cancel.md#clean-up-a-canceled-backup). 
+
+To have the Operator delete old backups for you, set how many to keep with [backup.tasks.retention](operator.md#backuptasksretentioncount). See [Configure retention policy](backups-delete.md#configure-backup-retention).
 
 ## Next steps
 
