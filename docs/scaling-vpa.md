@@ -194,7 +194,7 @@ Turning `inPlaceResize` on or off causes one rolling restart of the `mongod` Pod
 
 ## Override settings per component
 
-Each component can override the bounds and the stabilization window. Component values take precedence over `spec.vpa`. Supported sections are `replsets[]`, `replsets[].nonvoting`, `replsets[].hidden`, `sharding.configsvrReplSet` and `sharding.mongos`:
+Each component can override the bounds and the stabilization window. A non-empty component `minAllowed` or `maxAllowed` map replaces the corresponding map in `spec.vpa` entirely; omitted resources don't inherit their global bounds. Repeat every resource bound you want to retain, as shown below. Supported sections are `replsets[]`, `replsets[].nonvoting`, `replsets[].hidden`, `sharding.configsvrReplSet` and `sharding.mongos`:
 
 ```yaml
 spec:
@@ -202,6 +202,7 @@ spec:
   - name: rs0
     vpa:
       minAllowed:
+        cpu: 500m
         memory: 4Gi
       stabilizationWindow: 4h
   sharding:
@@ -209,6 +210,7 @@ spec:
       vpa:
         maxAllowed:
           cpu: "2"
+          memory: 16Gi
 ```
 
 ### Use your own VPA object names
