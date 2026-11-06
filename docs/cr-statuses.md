@@ -298,8 +298,10 @@ Common fields:
 | --- | --- |
 | `""` | Backup is created but not processed yet. |
 | `waiting` | Backup is queued or waiting for resources. |
-| `requested` | The Operator accepted the backup request. |
+| `requested` | The Operator sent the backup command to PBM, and PBM is preparing to start the backup. |
 | `running` | Backup is in progress. |
+| `canceling` | You [canceled the backup](backups-cancel.md), and the Operator is stopping it. |
+| `canceled` | The backup was canceled. You can't restore from it. |
 | `ready` | Backup completed successfully. |
 | `error` | Backup failed. |
 

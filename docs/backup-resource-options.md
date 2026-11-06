@@ -23,6 +23,10 @@ The metadata part of the `deploy/backup/backup.yaml` contains metadata about the
 
 * `name` - The name of the backup resource used to identify it in your deployment. You also use the backup name for the restore operation.
 
+* `annotations` - The Operator reads the following annotations:
+
+    * `percona.com/cancel-backup: "true"` - cancels the backup if it is still running. Available starting with version 1.24.0. See [Cancel a running backup](backups-cancel.md).
+
 ## `spec`
 
 This subsection includes the configuration of a backup resource.

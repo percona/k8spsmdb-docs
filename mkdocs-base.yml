@@ -264,6 +264,7 @@ nav:
             - Make a backup:
                 - "Scheduled backup": backups-scheduled.md
                 - "On-demand backup": backups-ondemand.md
+                - "Cancel a running backup": backups-cancel.md
             - "Use PVC snapshots":
                 - backups-pvc-snapshots.md
                 - "Configure PVC snapshots": backups-pvc-setup.md
