@@ -78,6 +78,7 @@ Use **Annotations** when:
 | `percona.com/ssl-hash` | Pods | Stores the hash of the most recent TLS configuration | 
 | `percona.com/ssl-internal-hash` | Pods | Stores the hash of the most recent TLS configuration for internal communication |
 | `percona.com/passwords-updated`| Secrets | Indicates when passwords were last updated in the Secret |
+| `percona.com/cancel-backup` | Backup (`PerconaServerMongoDBBackup`) | You set it to cancel a backup that is still running. The Operator reads only the value `"true"`, which is case-sensitive. It doesn't remove the annotation after the cancellation. Available starting with version 1.24.0. See [Cancel a running backup](backups-cancel.md). | `"true"` |
 | `percona.com/external-dns-managed` | Services | Set by the Operator when External DNS `/hostname` and `/ttl` annotations are generated from values defined in `expose.externalDNS`. Marks ownership of those annotations.  Do not set or remove it manually. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations). | `"true"` |
 | `kubectl.kubernetes.io/restartedAt` | PVC | Records the most recent timestamp when the associated resource was intentionally restarted. This annotation is typically used to trigger rolling restarts of StatefulSets, ensuring Pods or PVCs are refreshed according to Kubernetes best practices. | `2026-02-01T12:34:56Z` |
 

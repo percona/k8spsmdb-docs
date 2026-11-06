@@ -158,6 +158,8 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
     It should show the status as `READY` when the backup process is over.
 
+To stop a backup that is still running, see [Cancel a running backup](backups-cancel.md).
+
 ## Troubleshooting
 
 If you have any issues with a backup, see [Troubleshoot backups and restores](debug-backup-restore.md).

@@ -17,7 +17,7 @@ export NAMESPACE=<namespace>
 Use the `backup.tasks.retention` subsection to configure the retention policy for backups. Specify the following parameters:
 
 * `backup.tasks.retention.type` - the retention strategy. The default (and currently only supported strategy) is `count`, which keeps the most recent `backup.tasks.retention.count` backups and removes older ones.
-* `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Retention and incremental backups](#retention-and-incremental-backups) below.
+* `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. Only backups in the `ready` state count. Failed and canceled backups stay until you delete them manually. See [Retention and incremental backups](#retention-and-incremental-backups) below.
 * `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well.
 
 ### Retention and incremental backups
@@ -54,6 +54,8 @@ Now, you can delete the desired backup as follows:
 ```bash
 kubectl delete psmdb-backup/<backup-name> -n $NAMESPACE
 ```
+
+If the backup is still running, the Operator [cancels it](backups-cancel.md) first and then deletes the object. The Operator removes backup files from storage only for `ready` backups. To remove the files of a canceled or failed backup, see [Clean up a canceled backup](backups-cancel.md#clean-up-a-canceled-backup).
 
 !!! note "Delete base backups for point-in-time recovery"
 
