@@ -29,7 +29,7 @@ For every status field, see [Custom Resource statuses](cr-statuses.md#vpa-status
 
 ## VPAReady is False with reason APINotInstalled
 
-**Symptom:** The `VPAReady` condition is `False` with the message "spec.vpa.enabled is set but the autoscaling.k8s.io/v1.VerticalPodAutoscaler is not installed in the cluster". While the condition is `False`, each component's `message` reports that its VPA object is not found.
+**Symptom:** The `VPAReady` condition is `False` with the message "spec.vpa.enabled is set but the autoscaling.k8s.io/v1.VerticalPodAutoscaler is not installed in the cluster".
 
 **Cause:** The VPA Custom Resource Definition isn't installed.
 
