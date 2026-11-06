@@ -184,6 +184,8 @@ If you are still running into issues, check with your Kubernetes cluster adminis
 
 For backup and restore failures, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
+For vertical autoscaling failures, such as a cluster in the `error` state after a VerticalPodAutoscaler object was deleted, see [Troubleshoot vertical autoscaling](debug-vpa.md).
+
 ## See also
 
 * [Installation](System-Requirements.md)

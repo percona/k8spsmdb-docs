@@ -1,50 +1,14 @@
-# Scale Percona Server for MongoDB on Kubernetes
+# Scale replica sets and shards
 
-One of the great advantages brought by Kubernetes is
-the ease of an application scaling. Scaling a Deployment up or down ensures new
-Pods are created and set to available Kubernetes nodes.
+Horizontal scaling changes the number of members in the cluster. Add replica set members for redundancy and read capacity, or add shards when one replica set can no longer hold the data or the write load. To give existing members more CPU and memory instead, see [Vertical scaling](scaling-vertical.md). To grow volumes, see [Resize storage](scaling-storage-resize.md).
 
-This page covers [vertical](#vertical-scaling) and [horizontal](#horizontal-scaling)
-scaling. Vertical scaling adds more compute (CPU and memory) to MongoDB nodes;
-horizontal scaling is about adding more nodes to the cluster. Storage capacity is
-scaled separately - see [Resize storage](scaling-storage-resize.md). [High availability](architecture.md#high-availability)
-looks technically similar to horizontal scaling, because it also involves additional
-nodes, but the reason is maintaining liveness of the system in case of server or
-network failures.
+Changing the member count changes the replica set's voting membership. Review [High availability and topology](ha-topology.md) before you scale.
 
-## Vertical scaling
-
-### Scale compute resources
-
-The Operator deploys and manages multiple components, such as MongoDB replica
-set instances, `mongos` and config server replica set instances, and others. You can manage CPU or memory for every component separately by editing corresponding sections in the Custom Resource. We follow
-the structure for requests and limits that [Kubernetes provides  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
-
-To add more resources to your MongoDB replica set instances, edit the following
-section in the Custom Resource:
-
-```yaml
-spec:
-  replsets:
-    resources:
-      requests: 
-        memory: 4G
-        cpu: 2
-      limits:
-        memory: 4G
-        cpu: 2
-```
-
-Use our reference documentation for the [Custom Resource options](operator.md) 
-for more details about other components.
-
+<a name="vertical-scaling"></a>
 <a name="scale-storage"></a>
+<a name="horizontal-scaling"></a>
 
-Storage capacity is scaled separately - see [Resize storage](scaling-storage-resize.md).
-
-## Horizontal scaling
-
-### Replica Sets
+## Replica sets
 
 You can change the size separately for different components of your MongoDB replica set by setting these options in the appropriate subsections:
 
@@ -88,7 +52,7 @@ The cluster must show the `ready` state, and `status.ready`/`status.size` in
 member count. See [Custom resource statuses](cr-statuses.md) for the full status field
 reference.
 
-### Sharding
+## Sharding
 
 You can change the size for different components of your MongoDB sharded cluster by setting these options in the appropriate subsections:
 
@@ -110,7 +74,7 @@ kubectl get pods -n $NAMESPACE -l app.kubernetes.io/component=mongod,app.kuberne
 
 The number of Pods must match `sharding.configsvrReplSet.size` or your custom config server replica set name if you changed it. For more details, see the section on [Configuring instances of a sharded cluster](sharding.md#configuring-instances-of-a-sharded-cluster).
 
-#### Changing the number of shards
+### Changing the number of shards
 
 You can change the number of shards of an existing cluster by adding or removing members in the [spec.replsets](operator.md#operator-replsets-section) subsection.
 
@@ -163,6 +127,7 @@ spec:
 ## See also
 
 * [Scaling and storage](scaling-about.md)
+* [Vertical scaling](scaling-vertical.md)
 * [Resize storage](scaling-storage-resize.md)
 * [Manage local storage](storage.md)
 * [Configure VolumeAttributesClass](volume-attributes-class.md)

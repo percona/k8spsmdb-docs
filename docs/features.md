@@ -31,7 +31,7 @@ Protect your data with Percona Backup for MongoDB, which runs as a sidecar in yo
 Scale your database infrastructure as demand grows:
 
 * **Horizontal scaling** — [Add replica set members](scaling.md) or scale [shards and mongos](sharding.md) when sharding is enabled.
-* **Vertical scaling** — Adjust CPU and memory limits in the PerconaServerMongoDB custom resource.
+* **Vertical scaling** — [Adjust CPU and memory](scaling-vertical.md) manually, or let the Operator size them from [Vertical Pod Autoscaler recommendations](scaling-vertical.md#scale-automatically-with-vpa).
 * **Storage expansion** — Expand PersistentVolumeClaims for database volumes when your storage class supports it.
 * **Pod placement** — Use [affinity and anti-affinity](constraints.md) to control which nodes run MongoDB Pods, arbiters, or mongos.
 
