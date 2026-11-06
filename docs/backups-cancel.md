@@ -107,7 +107,7 @@ kubectl delete psmdb-backup backup1 -n $NAMESPACE
 
 **Fix:**
 
-1. Check the `backup-agent` logs of the Pod that runs the backup. The `status.pbmPod` field of the Backup object names that Pod. See [Troubleshoot backups and restores](debug-backup-restore.md#find-the-pod-that-ran-the-backup).
+1. Check the `backup-agent` logs of the Pods that ran the backup. The `status.pbmPods` field maps replica set names to the host and port of the `mongod` nodes that PBM used; the first part of each hostname is the Pod name. See [Troubleshoot backups and restores](debug-backup-restore.md#find-the-pod-that-ran-the-backup).
 2. For a PVC snapshot backup, check which snapshots remain and why they aren't deleted:
 
     ```bash
