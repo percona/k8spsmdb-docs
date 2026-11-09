@@ -4,10 +4,11 @@
 
 You can control how the Operator behaves when it cannot find TLS Secrets.
 
-The Operator expects and uses two Secrets for TLS communication. They are referenced in the following Custom Resource options:
+The Operator expects and uses the following Secrets for TLS communication. They are referenced in the following Custom Resource options:
 
 * `spec.secrets.ssl` - the Secret with the certificates for communication between client applications and the cluster.
 * `spec.secrets.sslInternal` - the Secret with the certificates for communication between Percona Server for MongoDB instances in the cluster and for internal authorization.
+* `spec.secrets.sslPBM` - the Secret with the client certificate that the Operator and the backup agents present to the cluster. Starting with version 1.24.0, the Operator needs it when backups are enabled.
 
 To learn more, see [TLS Certificates](TLS.md#tls-certificates)
 
@@ -28,7 +29,7 @@ The Operator has two policies to manage TLS certificates. You define a policy vi
 |------------|-------------------|
 | Operator self-signed certificates or Operator-driven cert-manager | `auto` (default) |
 | [Manually generated certificates](tls-manual.md) in production | `userProvidedOnly` |
-| External Secrets or GitOps-managed `<cluster>-ssl` / `<cluster>-ssl-internal` Secrets | `userProvidedOnly` |
+| External Secrets or GitOps-managed `<cluster>-ssl`, `<cluster>-ssl-internal` and `<cluster>-pbm` Secrets | `userProvidedOnly` |
 | You own rotation and must avoid surprise CA changes on Secret loss | `userProvidedOnly` |
 
 The following table explains how the Operator responds under each policy when it cannot access TLS Secrets.
@@ -39,13 +40,15 @@ The following table explains how the Operator responds under each policy when it
 | TLS Secret deleted while cluster is running | Operator may create new Secrets and roll Pods | Pods keep running; Operator logs an error; `TLSSecretsReady=False` |
 | TLS Secrets restored | Normal operation | `TLSSecretsReady=True`; no forced restart from this policy alone |
 
+If you provide your own external Secret in the `secrets.ssl` option and the PBM client Secret is missing, the Operator doesn't set `TLSSecretsReady=False` under either policy. The cluster goes to the `error` state with the message `PBM client TLS secret <name> is required when custom SSL secret <name> is provided and backups are enabled`. Pods keep running.
+
 ## Configuration
 
 ### Prerequisites
 
 Ensure you have:
 
-1. Created both TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. See [Generate TLS certificates manually](tls-manual.md).
+1. Created the TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. When backups are enabled, this includes the PBM client Secret. See [Generate TLS certificates manually](tls-manual.md).
 2. Referenced the Secret names in the Custom Resource:
 
     ```yaml
@@ -53,6 +56,7 @@ Ensure you have:
       secrets:
         ssl: my-cluster-name-ssl
         sslInternal: my-cluster-name-ssl-internal
+        sslPBM: my-cluster-name-pbm
     ```
 
 3. Run Percona Operator for MongoDB version 1.23.0 or later.
@@ -73,6 +77,7 @@ Ensure you have:
       secrets:
         ssl: my-cluster-name-ssl
         sslInternal: my-cluster-name-ssl-internal
+        sslPBM: my-cluster-name-pbm
       replsets:
       - name: rs0
         size: 3
@@ -109,7 +114,7 @@ kubectl -n <namespace> get psmdb my-cluster-name -o jsonpath='{range .status.con
     TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
     ```
 
-The cluster may still show Pods as running while `TLSSecretsReady` is `False`. Treat this as a **degraded** state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.
+The cluster may still show Pods as running while `TLSSecretsReady` is `False`. If the missing Secret is the PBM client Secret, the cluster state is also `error`. Treat this as a **degraded** state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.
 
 Check Operator logs for errors mentioning `certManagementPolicy is userProvidedOnly`.
 
@@ -120,7 +125,7 @@ See [Custom resource statuses](cr-statuses.md#conditions) for more on cluster co
 1. Confirm which Secret is missing:
 
     ```bash
-    kubectl -n <namespace> get secret my-cluster-name-ssl my-cluster-name-ssl-internal
+    kubectl -n <namespace> get secret my-cluster-name-ssl my-cluster-name-ssl-internal my-cluster-name-pbm
     ```
 
 2. Recreate or re-sync the Secret (from backup, External Secrets, or your certificate pipeline).
@@ -153,6 +158,6 @@ Certificate rotation remains your responsibility:
 
 1. Update the TLS Secrets with new certificate material (same Secret names).
 2. Follow the steps in [Update certificates](tls-update.md) for your certificate source.
-3. Confirm `TLSSecretsReady=True` after both Secrets are valid.
+3. Confirm `TLSSecretsReady=True` after all Secrets are valid.
 
 The Operator picks up new Secret content and reconciles Pods according to its normal TLS update flow.

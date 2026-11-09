@@ -12,8 +12,8 @@ How your TLS certificates are updated depends on how they were created:
 
 ## Check your certificates for expiration
 
-1. First, check the necessary secrets names (`my-cluster-name-ssl` and
-    `my-cluster-name-ssl-internal` by default):
+1. First, check the necessary secrets names (`my-cluster-name-ssl`,
+    `my-cluster-name-ssl-internal` and, when backups are enabled, `my-cluster-name-pbm` by default):
 
     ```bash
     kubectl get certificate
@@ -23,6 +23,7 @@ How your TLS certificates are updated depends on how they were created:
 
     ``` {.text .no-copy}
     NAME                           READY   SECRET                         AGE
+    my-cluster-name-pbm            True    my-cluster-name-pbm            49m
     my-cluster-name-ssl            True    my-cluster-name-ssl            49m
     my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
     ```
@@ -51,7 +52,7 @@ How your TLS certificates are updated depends on how they were created:
             `my-cluster-name-psmdb-ca-issuer` issuer is used to create a self signed
             CA certificate (`my-cluster-name-ca-cert`), and then the
             `my-cluster-name-psmdb-issuer` issuer is used to create SSL certificates
-            (`my-cluster-name-ssl` and `my-cluster-name-ssl-internal`) signed by
+            (`my-cluster-name-ssl`, `my-cluster-name-ssl-internal` and `my-cluster-name-pbm`) signed by
             the `my-cluster-name-ca-cert` CA certificate.
 
     === "ClusterIssuer"
@@ -83,14 +84,19 @@ How your TLS certificates are updated depends on how they were created:
     {
       kubectl get secret/my-cluster-name-ssl-internal -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
       kubectl get secret/my-cluster-name-ssl -o jsonpath='{.data.ca\.crt}' | base64 --decode | openssl x509 -noout -dates
+      kubectl get secret/my-cluster-name-pbm -o jsonpath='{.data.tls\.crt}' | base64 --decode | openssl x509 -noout -dates
       }
     ```
 
     The resulting output will be self-explanatory:
 
     ``` {.text .no-copy}
-    notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
-    notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
+    notBefore=Apr 25 12:09:38 {{year}} GMT
+    notAfter=Jul 24 12:09:38 {{year}} GMT
+    notBefore=Apr 25 12:09:38 {{year}} GMT
+    notAfter=Jul 24 12:09:38 {{year}} GMT
+    notBefore=Apr 25 12:09:38 {{year}} GMT
+    notAfter=Jul 24 12:09:38 {{year}} GMT
     ```
 
 ## Update certificates without downtime
@@ -186,7 +192,7 @@ Operator version prior to 1.9.0), you should move through the
         ```bash
         {
           kubectl delete issuer/my-cluster-name-psmdb-ca-issuer issuer/my-cluster-name-psmdb-issuer 
-          kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal
+          kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal certificate/my-cluster-name-pbm --ignore-not-found
           }
         ```
 
@@ -197,7 +203,7 @@ Operator version prior to 1.9.0), you should move through the
         ```bash
         {
           kubectl delete clusterissuer/my-cluster-name-psmdb-ca-issuer clusterissuer/my-cluster-name-psmdb-issuer
-          kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal
+          kubectl delete certificate/my-cluster-name-ssl certificate/my-cluster-name-ssl-internal certificate/my-cluster-name-pbm --ignore-not-found
           kubectl delete -n cert-manager certificate/my-cluster-name-ca-cert
           kubectl delete -n cert-manager secret/my-cluster-name-ca-cert
           }
@@ -214,8 +220,10 @@ Operator version prior to 1.9.0), you should move through the
 3. Delete Secrets to force the SSL reconciliation:
 
     ```bash
-    kubectl delete secret/my-cluster-name-ssl secret/my-cluster-name-ssl-internal
+    kubectl delete secret/my-cluster-name-ssl secret/my-cluster-name-ssl-internal secret/my-cluster-name-pbm --ignore-not-found
     ```
+
+    The `my-cluster-name-pbm` Secret and `Certificate` exist only when backups are enabled, so the commands use `--ignore-not-found`. If you set `secrets.sslPBM`, use that Secret name. The `Certificate` name stays `my-cluster-name-pbm`. If you created the PBM Secret yourself, recreate it with a certificate signed by the new CA.
 
 4. Check certificates to make sure reconciliation have succeeded.
 
@@ -252,13 +260,13 @@ a cluster named `cluster1`:
     === "Namespace-scoped Issuer (default)"
 
         ```bash
-        kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal
+        kubectl -n <namespace_name> delete issuer.cert-manager.io/cluster1-psmdb-ca-issuer issuer.cert-manager.io/cluster1-psmdb-issuer certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-pbm certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert secret/cluster1-ssl secret/cluster1-ssl-internal secret/cluster1-pbm --ignore-not-found
         ```
 
     === "ClusterIssuer"
 
         ```bash
-        kubectl -n <namespace_name> delete certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl secret/cluster1-ssl secret/cluster1-ssl-internal
+        kubectl -n <namespace_name> delete certificate.cert-manager.io/cluster1-ssl-internal certificate.cert-manager.io/cluster1-ssl certificate.cert-manager.io/cluster1-pbm secret/cluster1-ssl secret/cluster1-ssl-internal secret/cluster1-pbm --ignore-not-found
         kubectl delete clusterissuer.cert-manager.io/cluster1-psmdb-ca-issuer clusterissuer.cert-manager.io/cluster1-psmdb-issuer
         kubectl -n cert-manager delete certificate.cert-manager.io/cluster1-ca-cert secret/cluster1-ca-cert
         ```
