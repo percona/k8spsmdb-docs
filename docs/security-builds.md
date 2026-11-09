@@ -43,7 +43,7 @@ You stay on Operator 1.24.0. Leave the Custom Resource Definitions and the datab
 
 This procedure is the same on all [supported platforms](System-Requirements.md#officially-supported-platforms) except OpenShift.
 
-On OpenShift, it works when you installed the Operator with a community bundle or with Helm.
+On OpenShift, it works when you installed the Operator with a community bundle, with Helm or by applying the manifests manually.
 
 The OpenShift Certified Operator and Operator Lifecycle Manager (OLM) bundles do not include security builds yet. If you installed through one of those bundles, keep the image the bundle provides.
 
