@@ -21,8 +21,9 @@ Aside from this Secret, the Operator creates an internal secret for its own inte
 | Cluster Monitor | MONGODB_CLUSTER_MONITOR_USER | MONGODB_CLUSTER_MONITOR_PASSWORD |
 | Database Admin  | MONGODB_DATABASE_ADMIN_USER  | MONGODB_DATABASE_ADMIN_PASSWORD  |
 | User Admin      | MONGODB_USER_ADMIN_USER      | MONGODB_USER_ADMIN_PASSWORD      |
-| PMM Server      | PMM_SERVER_USER              | PMM_SERVER_TOKEN                 |
+| PMM Server      | —                            | PMM_SERVER_TOKEN                 |
 
+For PMM Server, store the service account token in `PMM_SERVER_TOKEN`. The Operator signs in to PMM Server with the username `service_token`.
 
 ### System users and MongoDB roles
 
@@ -32,7 +33,7 @@ The following table maps MongoDB roles to system users:
 |--------------|---------------|
 | **Backup/Restore** | [backup :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup), [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [readWrite :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWrite), [pbmAnyAction :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/install/configure-authentication.html) |
 | **Cluster Admin** | [clusterAdmin :octicons-link-external-16:](https://docs.mongodb.com/manual/reference/built-in-roles/#clusterAdmin) |
-| **Cluster Monitor** | [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [read (on the `local` database) :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read), [explainRole :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/setting-up/client/mongodb.html#create-pmm-account-and-set-permissions) |
+| **Cluster Monitor** | [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor), [read (on the `local` database) :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-read), [explainRole :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html#create-monitoring-role) |
 | **Database Admin** | [readWriteAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readWriteAnyDatabase), [readAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-readAnyDatabase), [dbAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-dbAdminAnyDatabase), [backup :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-backup), [restore :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-restore), [clusterMonitor :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-clusterMonitor) |
 | **User Admin** | [userAdminAnyDatabase :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/built-in-roles/#mongodb-authrole-userAdminAnyDatabase) |
 | **PMM Server** | See [PMM documentation](https://docs.percona.com/percona-monitoring-and-management/3/install-pmm/install-pmm-client/connect-database/mongodb.html) |
@@ -62,9 +63,6 @@ stringData:
   MONGODB_CLUSTER_MONITOR_PASSWORD: clusterMonitor123456
   MONGODB_USER_ADMIN_USER: userAdmin
   MONGODB_USER_ADMIN_PASSWORD: userAdmin123456
-  PMM_SERVER_USER: admin
-  #PMM_SERVER_PASSWORD: admin
-  #PMM_SERVER_API_KEY: apikey
   PMM_SERVER_TOKEN: token
 ```
 
@@ -167,13 +165,10 @@ These development-mode credentials from `deploy/secrets.yaml` are:
 | MONGODB_CLUSTER_MONITOR_PASSWORD | clusterMonitor123456 |
 | MONGODB_USER_ADMIN_USER          | userAdmin            |
 | MONGODB_USER_ADMIN_PASSWORD      | userAdmin123456      |
-| PMM_SERVER_USER                  | admin                |
-| PMM_SERVER_PASSWORD              | admin                |
-| PMM_SERVER_API_KEY               | apikey               |
 
 !!! warning
 
-    Do not use the default MongoDB users and/or default PMM API key in production!
+    Do not use the default MongoDB users in production!
 
 ## Internal Secret and its usage
 

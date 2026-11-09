@@ -47,47 +47,7 @@ The scheduled backup job container gets the namespace so it can create backup ob
 
 ## PMM sidecar
 
-The PMM sidecar supports two modes (PMM2 and PMM3). The Operator injects the following variables.
-
-### PMM2
-
-| Variable | Purpose |
-| --- | --- |
-| `PMM_SERVER` | PMM server address. |
-| `DB_TYPE` | Database type (`mongodb`). |
-| `DB_USER` | Monitoring user (from Secret). |
-| `DB_PASSWORD` | Monitoring password (from Secret). |
-| `DB_HOST` | MongoDB host (defaults to `localhost`). |
-| `DB_CLUSTER` | Cluster name. |
-| `DB_PORT` | MongoDB port. |
-| `DB_PORT_MIN` | Minimum PMM agent port. |
-| `DB_PORT_MAX` | Maximum PMM agent port. |
-| `PMM_USER` | PMM user for custom login (optional). |
-| `PMM_PASSWORD` | PMM password or API key (optional). |
-| `CLUSTER_NAME` | Cluster name (or custom PMM cluster name). |
-| `PMM_AGENT_PRERUN_SCRIPT` | PMM pre-run script. |
-| `POD_NAME` | Pod name. |
-| `POD_NAMESPASE` | Pod namespace (note the spelling). |
-| `PMM_AGENT_SERVER_ADDRESS` | PMM server address. |
-| `PMM_AGENT_LISTEN_PORT` | PMM agent listen port. |
-| `PMM_AGENT_PORTS_MIN` | Min PMM agent port. |
-| `PMM_AGENT_PORTS_MAX` | Max PMM agent port. |
-| `PMM_AGENT_CONFIG_FILE` | PMM agent config path. |
-| `PMM_AGENT_SERVER_INSECURE_TLS` | Allows insecure TLS. |
-| `PMM_AGENT_LISTEN_ADDRESS` | PMM agent listen address. |
-| `PMM_AGENT_SETUP_NODE_NAME` | Node name used by PMM. |
-| `PMM_AGENT_SETUP` | Enables auto-setup. |
-| `PMM_AGENT_SETUP_FORCE` | Forces auto-setup. |
-| `PMM_AGENT_SETUP_NODE_TYPE` | Node type (`container`). |
-| `PMM_AGENT_SETUP_METRICS_MODE` | Metrics mode (`push`). |
-| `PMM_ADMIN_CUSTOM_PARAMS` | Extra `pmm-admin` parameters. |
-| `PMM_AGENT_SERVER_USERNAME` | PMM server user (optional). |
-| `PMM_AGENT_SERVER_PASSWORD` | PMM server password (optional). |
-| `PMM_AGENT_SIDECAR` | Sidecar flag (v1.10+). |
-| `PMM_AGENT_SIDECAR_SLEEP` | Sidecar delay (v1.10+). |
-| `PMM_AGENT_PATHS_TEMPDIR` | Temporary dir override (v1.15+). |
-
-### PMM3
+The Operator injects the following variables into the PMM3 sidecar:
 
 | Variable | Purpose |
 | --- | --- |

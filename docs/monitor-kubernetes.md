@@ -6,9 +6,7 @@ However, the database state also depends on the state of the Kubernetes cluster 
 
 This document describes how to set up monitoring of the Kubernetes cluster health. This setup has been tested with the [PMM server  :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/reference/index.html) as the centralized data storage and the Victoria Metrics Kubernetes monitoring stack as the metrics collector. These steps may also apply if you use another Prometheus-compatible storage.
 
-The Operator is compatible with both PMM versions 2 and 3. PMM2 has reached end-of-life. Therefore, we recommend using the latest PMM version 3 for optimal monitoring capabilities.
-
-The steps in this tutorial are for PMM 3.
+The steps in this tutorial use PMM3.
 
 ## Pre-requisites
 
@@ -18,40 +16,17 @@ To set up monitoring of Kubernetes, you need the following:
 
 2. [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm).
 3. [kubectl  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/tools/).
-4. PMM 3 Service account token (or PMM2 API key).
+4. PMM3 service account token.
 
 ## Configure authentication
 
-=== "PMM3 (recommended)"
+PMM3 uses Grafana service accounts to control access to PMM server components and resources. To authenticate in PMM server, generate a service account token. [Generate a service account and token :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html#generate-a-service-account-and-token). Specify the Admin role for the service account.
 
-    PMM3 uses Grafana service accounts to control access to PMM server components and resources. To authenticate in PMM server, you need a service account token. [Generate a service account and token :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/api/authentication.html?h=authe#generate-a-service-account-and-token). Specify the Admin role for the service account.
+The token must have the format `glsa_*************************_9e35351b`.
 
-    The token must have the format `glsa_*************************_9e35351b`.
+!!! warning
 
-    !!! warning
-
-        When you create a service account token, you can select its lifetime: it can be either a permanent token that never expires or the one with the expiration date. PMM server cannot rotate service account tokens after they expire. So you must take care of reconfiguring PMM Client in this case.
-
-=== "PMM2"
-
-    [Get the PMM API key from PMM Server :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.    html#api-keys-and-authentication). The API key must have the role "Admin". You need this key to authorize PMM Client within PMM Server. 
-
-    === ":material-view-dashboard-variant: From PMM UI" 
-
-        [Generate the PMM API key :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/2/details/api.html#api-keys-and-authentication){.md-button} 
-
-    === ":material-console: From command line"
-
-        You can query your PMM Server installation for the API
-        Key using `curl` and `jq` utilities. Replace `<login>:<password>@<server_host>` placeholders with your real PMM Server login, password, and hostname in the following command:
-        
-        ```bash
-        API_KEY=$(curl --insecure -X POST -H "Content-Type: application/json" -d '{"name":"operator", "role": "Admin"}' "https://<login>:<password>@<server_host>/graph/api/auth/keys" | jq .key)
-        ```
-
-    !!! warning
-
-        The API key is not rotated. 
+    When you create a service account token, you can select its lifetime: it can be either a permanent token that never expires or the one with the expiration date. PMM server cannot rotate service account tokens after they expire. So you must take care of reconfiguring PMM Client in this case. 
 
 ## Install the Victoria Metrics Kubernetes monitoring stack
 
@@ -123,13 +98,13 @@ To set up monitoring of Kubernetes, you need the following:
         === ":simple-linux: Linux"     
 
             ````bash
-            $ echo -n <API-key> | base64 --wrap=0
+            $ echo -n <PMM-SERVER-TOKEN> | base64 --wrap=0
             ````    
 
         === ":simple-apple: macOS" 
 
             ```bash
-            echo -n <API-key> | base64 
+            echo -n <PMM-SERVER-TOKEN> | base64 
             ```    
 
     2. Create the Namespace where you want to set up monitoring. The following command creates the Namespace `monitoring-system`. You can specify a different name. In the latter steps, specify your namespace instead of the `<namespace>` placeholder.
@@ -138,7 +113,7 @@ To set up monitoring of Kubernetes, you need the following:
         kubectl create namespace monitoring-system
         ```    
 
-    3. Create the YAML file for the [Kubernetes Secrets :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded API key value within. Let's name this file `pmm-api-vmoperator.yaml`.
+    3. Create the YAML file for the [Kubernetes Secrets :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) and specify the base64-encoded service account token within. The Victoria Metrics chart reads this value from the `api_key` field. Name this file `pmm-api-vmoperator.yaml`.
 
         ```yaml title="pmm-api-vmoperator.yaml"
         apiVersion: v1
