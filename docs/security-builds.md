@@ -41,7 +41,7 @@ Set the Operator image to the security tag you chose. The examples use `1.24.0-2
 
 You stay on Operator 1.24.0. Leave the Custom Resource Definitions and the database Custom Resource unchanged. The image change does not restart your database Pods.
 
-This procedure is the same on Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS).
+This procedure is the same on all [supported platforms](System-Requirements.md#officially-supported-platforms) except OpenShift.
 
 On OpenShift, it works when you installed the Operator with a community bundle or with Helm.
 
