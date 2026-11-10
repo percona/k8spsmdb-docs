@@ -250,7 +250,7 @@ The Operator shrinks each StatefulSet whose size you lowered. For example, for t
 
 Non-voting and hidden members and `mongos` log volumes skip the step-down, because they never become primary. For a shard or the config server replica set of a sharded cluster, the Operator stops the balancer for the time of the shrink.
 
-The step-down triggers a primary election. Applications lose their connection to the primary for a few seconds, and drivers with retryable writes reconnect on their own.
+The step-down triggers a primary election and briefly interrupts connections to the primary. Write availability during the rest of the shrink depends on the replica set topology: a two-voter replica set loses its voting majority while either member is unavailable, and a primary-secondary-arbiter replica set cannot acknowledge majority writes while a data-bearing member resyncs. For an online shrink, use at least three healthy data-bearing voting members and ensure the remaining members can satisfy your configured write concern.
 
 While the shrink runs, the cluster status is `initializing`. The Operator doesn't run [Smart Update](update.md#update-strategies) and doesn't resize volumes automatically until the shrink finishes.
 
