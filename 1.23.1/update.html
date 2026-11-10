@@ -30,7 +30,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -1669,6 +1669,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -1822,6 +1824,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="security-builds.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apply security builds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
     
     
       
@@ -1840,7 +1862,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_3" >
         
           
           
@@ -1855,14 +1877,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_2">
+              <label class="md-nav__link " for="__nav_8_3">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
             <span class="md-nav__icon md-icon"></span>
             Upgrade Percona Server for MongoDB
           </label>
@@ -6338,6 +6360,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#apply-a-security-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply a security build
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6484,6 +6517,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Upgrade the database (Percona Server for MongoDB)</li>
 </ul>
 <p>You can run both stages, or only the database stage, depending on what you need to change. See <a href="#choose-your-upgrade-path">Choose your upgrade path</a> for use cases.</p>
+<p>To apply a security build for the Operator version you already run, see <a href="security-builds.html">Operator security builds</a>.</p>
 <h2 id="how-an-upgrade-works">How an upgrade works<a class="headerlink" href="#how-an-upgrade-works" title="Permanent link">&para;</a></h2>
 <p>An upgrade has <strong>two independent stages</strong>, and you decide when to run each one. Stage 2 does not have to follow stage 1 immediately.</p>
 <div style="text-align: center">
@@ -6580,6 +6614,8 @@ flowchart TB
 </tbody>
 </table>
 <p>On OpenShift, database upgrades follow a different procedure. See <a href="update-openshift.html">Upgrade Percona Server for MongoDB on OpenShift</a>.</p>
+<h3 id="apply-a-security-build">Apply a security build<a class="headerlink" href="#apply-a-security-build" title="Permanent link">&para;</a></h3>
+<p>Apply a security build to patch the Operator version you already run with the fixes for High and Critical Common Vulnerabilities and Exposures (CVE). See <a href="security-builds.html">Apply security builds</a>.</p>
 <h2 id="update-strategies">Update strategies<a class="headerlink" href="#update-strategies" title="Permanent link">&para;</a></h2>
 <p>Choose how the Operator or Kubernetes updates your database cluster during an upgrade by setting <code>updateStrategy</code> in the <a href="operator.html">Custom Resource</a>:</p>
 <ul>
@@ -6605,6 +6641,7 @@ flowchart TB
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="update-operator.html">Upgrade the Operator and CRD</a></li>
+<li><a href="security-builds.html">Apply security builds</a></li>
 <li><a href="update-db.html">Upgrade Percona Server for MongoDB</a></li>
 <li><a href="limitations.html">Known limitations</a></li>
 <li><a href="cr-statuses.html#perconaservermongodb-status">Custom resource statuses</a></li>
@@ -6614,7 +6651,7 @@ flowchart TB
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:43:46 UTC">November 10, 2026</span>
       
         <br>
         Created:
@@ -6681,7 +6718,7 @@ flowchart TB
     
     
 
-      <script src="assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="js/print-site.js"></script>
       

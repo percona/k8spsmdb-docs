@@ -26,7 +26,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -1675,6 +1675,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1828,6 +1830,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="security-builds.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apply security builds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
     
     
       
@@ -1846,7 +1868,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2" >
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_3" >
         
           
           
@@ -1861,14 +1883,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_2">
+              <label class="md-nav__link " for="__nav_8_3">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
             <span class="md-nav__icon md-icon"></span>
             Upgrade Percona Server for MongoDB
           </label>
@@ -6963,10 +6985,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
-  <a href="#update-db" class="md-nav__link">
+  <a href="#security-builds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2 Upgrade Percona Server for MongoDB
+        8.2 Apply security builds
       
     </span>
   </a>
@@ -6974,22 +6996,33 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
-  <a href="#section-8-2" class="md-nav__link">
+  <a href="#update-db" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2 Upgrade Percona Server for MongoDB
+        8.3 Upgrade Percona Server for MongoDB
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="8.2 Upgrade Percona Server for MongoDB">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-8-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Upgrade Percona Server for MongoDB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3 Upgrade Percona Server for MongoDB">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#update-minor-set-version" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2.1 Upgrade to a specific version
+        8.3.1 Upgrade to a specific version
       
     </span>
   </a>
@@ -7000,7 +7033,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#update-minor-automatic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2.2 Automatic minor upgrade to the latest / recommended version
+        8.3.2 Automatic minor upgrade to the latest / recommended version
       
     </span>
   </a>
@@ -7011,7 +7044,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#update-major" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2.3 Major version automated upgrades
+        8.3.3 Major version automated upgrades
       
     </span>
   </a>
@@ -7022,7 +7055,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#update-manually" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2.4 Manual upgrades of Percona Server for MongoDB
+        8.3.4 Manual upgrades of Percona Server for MongoDB
       
     </span>
   </a>
@@ -7033,7 +7066,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#update-openshift" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2.5 Upgrade Percona Server for MongoDB on OpenShift
+        8.3.5 Upgrade Percona Server for MongoDB on OpenShift
       
     </span>
   </a>
@@ -13660,6 +13693,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 <li>Upgrade the database (Percona Server for MongoDB)</li>
 </ul>
 <p>You can run both stages, or only the database stage, depending on what you need to change. See <a href="#update-choose-your-upgrade-path">Choose your upgrade path</a> for use cases.</p>
+<p>To apply a security build for the Operator version you already run, see <a href="#security-builds">Operator security builds</a>.</p>
 <h2 id="update-how-an-upgrade-works">How an upgrade works<a class="headerlink" href="#update-how-an-upgrade-works" title="Permanent link">&para;</a></h2>
 <p>An upgrade has <strong>two independent stages</strong>, and you decide when to run each one. Stage 2 does not have to follow stage 1 immediately.</p>
 <div style="text-align: center">
@@ -13756,6 +13790,8 @@ flowchart TB
 </tbody>
 </table>
 <p>On OpenShift, database upgrades follow a different procedure. See <a href="#update-openshift">Upgrade Percona Server for MongoDB on OpenShift</a>.</p>
+<h3 id="update-apply-a-security-build">Apply a security build<a class="headerlink" href="#update-apply-a-security-build" title="Permanent link">&para;</a></h3>
+<p>Apply a security build to patch the Operator version you already run with the fixes for High and Critical Common Vulnerabilities and Exposures (CVE). See <a href="#security-builds">Apply security builds</a>.</p>
 <h2 id="update-update-strategies">Update strategies<a class="headerlink" href="#update-update-strategies" title="Permanent link">&para;</a></h2>
 <p>Choose how the Operator or Kubernetes updates your database cluster during an upgrade by setting <code>updateStrategy</code> in the <a href="#operator">Custom Resource</a>:</p>
 <ul>
@@ -13781,6 +13817,7 @@ flowchart TB
 <h2 id="update-see-also">See also<a class="headerlink" href="#update-see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#update-operator">Upgrade the Operator and CRD</a></li>
+<li><a href="#security-builds">Apply security builds</a></li>
 <li><a href="#update-db">Upgrade Percona Server for MongoDB</a></li>
 <li><a href="#limitations">Known limitations</a></li>
 <li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a></li>
@@ -13791,6 +13828,7 @@ flowchart TB
                     <section class="print-page" id="update-operator" heading-number="8.1"><h1 id="update-operator-upgrade-the-operator-and-crd">Upgrade the Operator and CRD<a class="headerlink" href="#update-operator-upgrade-the-operator-and-crd" title="Permanent link">&para;</a></h1>
 <p>To update the Operator, you need to update the Custom Resource Definition (CRD) and the Operator deployment. Also we recommend to update the Kubernetes database cluster configuration by updating the Custom Resource and the database components to the latest version. This step ensures that all new features that come with the Operator release work in your environment.</p>
 <p>The upgrade process is similar for all installation methods, including Helm and OLM.</p>
+<p>This page covers an upgrade to a new Operator version. To stay on your current version and apply only security fixes, see <a href="#security-builds">Apply security builds</a>.</p>
 <h2 id="update-operator-considerations">Considerations<a class="headerlink" href="#update-operator-considerations" title="Permanent link">&para;</a></h2>
 <p><strong>Read all of these before you upgrade.</strong> </p>
 <h3 id="update-operator-for-kubernetes-cluster-versions-and-upgrades">For Kubernetes Cluster versions and upgrades<a class="headerlink" href="#update-operator-for-kubernetes-cluster-versions-and-upgrades" title="Permanent link">&para;</a></h3>
@@ -14192,7 +14230,70 @@ However, OLM doesn&rsquo;t modify the <code>PerconaServerMongoDB</code> Custom R
 </li>
 </ol>
 <h2 id="update-crd-olm-next-steps">Next steps<a class="headerlink" href="#update-crd-olm-next-steps" title="Permanent link">&para;</a></h2>
-<p><a class="md-button" href="#update-openshift">Upgrade the database</a></p></section></section><section class="print-page" id="update-db" heading-number="8.2"><h1 id="update-db-upgrade-percona-server-for-mongodb">Upgrade Percona Server for MongoDB<a class="headerlink" href="#update-db-upgrade-percona-server-for-mongodb" title="Permanent link">&para;</a></h1>
+<p><a class="md-button" href="#update-openshift">Upgrade the database</a></p></section></section><section class="print-page" id="security-builds" heading-number="8.2"><h1 id="security-builds-operator-security-builds">Operator security builds<a class="headerlink" href="#security-builds-operator-security-builds" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
+</div>
+<p>The Operator has access to your cluster&rsquo;s credentials and other sensitive configuration. A vulnerability in the Operator image is a path to that data, even when your MongoDB cluster itself is fully patched. Security builds close that gap on a release you already run, without waiting for the next Operator version.</p>
+<p>This page covers patching your current Operator version. To move to a newer Operator version, see <a href="#update-operator">Upgrade the Operator and CRD</a>.</p>
+<h2 id="security-builds-understand-a-security-build">Understand a security build<a class="headerlink" href="#security-builds-understand-a-security-build" title="Permanent link">&para;</a></h2>
+<p>A security build is a new Operator image that fixes a High or Critical vulnerability in a release you already run.</p>
+<p>Each Operator release gets a dedicated security branch (for example, <code>security/1.24.0</code>), created from that release the first time a security build runs. Every later build starts from this same branch, so earlier fixes carry forward.</p>
+<p>A scan of the Operator image runs every week. When it finds a High or Critical Common Vulnerabilities and Exposures (CVE) in a Go dependency, the Go version or a library that ships with Go, the build moves the affected dependency or toolchain to a version that includes the fix.</p>
+<p>Before a fix reaches you:</p>
+<ul>
+<li>The candidate image is scanned again, and the fix is submitted as a pull request for review.</li>
+<li>Once the pull request is merged, the final image is rebuilt from the merged commit, so the published image matches the reviewed source.</li>
+<li>The rebuilt image goes through a final Trivy scan and the Operator end-to-end (E2E) test suite before publication.</li>
+</ul>
+<p>A security build rebuilds <strong>only the Operator image</strong>. Percona Server for MongoDB, Percona Backup for MongoDB, and the other component images stay on the versions from the original release. Vulnerabilities in those images are outside a security build.</p>
+<h2 id="security-builds-read-the-image-tags">Read the image tags<a class="headerlink" href="#security-builds-read-the-image-tags" title="Permanent link">&para;</a></h2>
+<p>Each release is published with these tags. The following table uses version <code>1.24.0</code>. Later releases follow the same pattern:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>What it points to</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1.24.0</code></td>
+<td>The original release image. This is the default tag, and the only one listed in the <a href="#image-query">Version Service</a>.</td>
+<td>Use this tag for a standard deployment or upgrade.</td>
+</tr>
+<tr>
+<td><code>1.24.0-1</code></td>
+<td>The same release image, published with a numbered tag.</td>
+<td>Use this tag when you want the release image and a fixed digest.</td>
+</tr>
+<tr>
+<td><code>1.24.0-2</code>, <code>1.24.0-3</code>, and later numbers</td>
+<td>Security builds for the original release. They stay on Operator 1.24.0. Each numbered tag is a separate, immutable image. The first security build is <code>1.24.0-2</code>.</td>
+<td>Use a numbered tag when you want a specific security build and you need that choice to stay fixed.</td>
+</tr>
+<tr>
+<td><code>1.24.0-latest</code></td>
+<td>The newest image for this release. This tag is mutable. It moves from <code>1.24.0-2</code> to <code>1.24.0-3</code> and so on.</td>
+<td>Use this tag when you want the newest image for this release and you are ready for the tag to move. A digest names one image. A digest you copy from this tag today still names that image after the tag moves.</td>
+</tr>
+</tbody>
+</table>
+<p>Look up digests for numbered security-build tags (<code>1.24.0-2</code>, <code>1.24.0-3</code>, &hellip;) on <a href="https://hub.docker.com/r/percona/percona-server-mongodb-operator/tags">Docker Hub <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"/></svg></span></a>. The Version Service lists the original release tag only.</p>
+<h2 id="security-builds-switch-to-a-security-build">Switch to a security build<a class="headerlink" href="#security-builds-switch-to-a-security-build" title="Permanent link">&para;</a></h2>
+<p>Set the Operator image to the security tag you chose. The examples use <code>1.24.0-2</code>. Replace that tag with the one you picked.</p>
+<p>You stay on Operator 1.24.0. Leave the Custom Resource Definitions and the database Custom Resource unchanged. The image change does not restart your database Pods.</p>
+<p>This procedure is the same on all <a href="#system-requirements-officially-supported-platforms">supported platforms</a> except OpenShift.</p>
+<p>On OpenShift, it works when you installed the Operator with a community bundle, with Helm or by applying the manifests manually.</p>
+<p>The OpenShift Certified Operator and Operator Lifecycle Manager (OLM) bundles do not include security builds yet. If you installed through one of those bundles, keep the image the bundle provides.</p>
+<h2 id="security-builds-security-build-lifecycle">Security build lifecycle<a class="headerlink" href="#security-builds-security-build-lifecycle" title="Permanent link">&para;</a></h2>
+<p>Security builds for a release continue until the next Operator release. Security builds for 1.24.0 stop when Operator 1.25.0 is released. Those images stay available and keep the same digest.</p>
+<p>After Operator 1.25.0 is released, new fixes land in security builds for 1.25.0.</p>
+<h2 id="security-builds-see-also">See also<a class="headerlink" href="#security-builds-see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#update-operator">Upgrade the Operator and CRD</a></li>
+</ul></section><section class="print-page" id="update-db" heading-number="8.3"><h1 id="update-db-upgrade-percona-server-for-mongodb">Upgrade Percona Server for MongoDB<a class="headerlink" href="#update-db-upgrade-percona-server-for-mongodb" title="Permanent link">&para;</a></h1>
 <h2 id="update-db-before-you-begin">Before you begin<a class="headerlink" href="#update-db-before-you-begin" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Read <a href="#update-before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
@@ -14253,10 +14354,10 @@ problematic version combinations.</li>
 <li><a href="#update-operator">Upgrade the Operator</a>, if it also needs updating</li>
 <li><a href="#update-before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a></li>
 </ul></section>
-                    <section class='print-page md-section' id='section-8-2' heading-number='8.2'>
-                        <h1>Upgrade Percona Server for MongoDB<a class='headerlink' href='#section-8-2' title='Permanent link'></a>
+                    <section class='print-page md-section' id='section-8-3' heading-number='8.3'>
+                        <h1>Upgrade Percona Server for MongoDB<a class='headerlink' href='#section-8-3' title='Permanent link'></a>
                         </h1>
-                    <section class="print-page" id="update-minor-set-version" heading-number="8.2.1"><h1 id="update-minor-set-version-upgrade-to-a-specific-version">Upgrade to a specific version<a class="headerlink" href="#update-minor-set-version-upgrade-to-a-specific-version" title="Permanent link">&para;</a></h1>
+                    <section class="print-page" id="update-minor-set-version" heading-number="8.3.1"><h1 id="update-minor-set-version-upgrade-to-a-specific-version">Upgrade to a specific version<a class="headerlink" href="#update-minor-set-version-upgrade-to-a-specific-version" title="Permanent link">&para;</a></h1>
 <h2 id="update-minor-set-version-before-you-begin">Before you begin<a class="headerlink" href="#update-minor-set-version-before-you-begin" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Read <a href="#update-before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
@@ -14338,7 +14439,7 @@ problematic version combinations.</li>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
 <li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a></li>
-</ul></section><section class="print-page" id="update-minor-automatic" heading-number="8.2.2"><h1 id="update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version">Automatic minor upgrade to the latest / recommended version<a class="headerlink" href="#update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version" title="Permanent link">&para;</a></h1>
+</ul></section><section class="print-page" id="update-minor-automatic" heading-number="8.3.2"><h1 id="update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version">Automatic minor upgrade to the latest / recommended version<a class="headerlink" href="#update-minor-automatic-automatic-minor-upgrade-to-the-latest-recommended-version" title="Permanent link">&para;</a></h1>
 <h2 id="update-minor-automatic-before-you-begin">Before you begin<a class="headerlink" href="#update-minor-automatic-before-you-begin" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Read <a href="#update-before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
@@ -14450,7 +14551,7 @@ another more conservative schedule when the upgrade is complete.</p>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
 <li><a href="#cr-statuses-perconaservermongodb-status">Custom resource statuses</a> - with automatic upgrades, <code>status.mongoVersion</code> and <code>status.mongoImage</code> show the target version as soon as the upgrade starts. To confirm the upgrade finished, check that <code>status.state</code> is <code>ready</code> and all Pods run the new image</li>
-</ul></section><section class="print-page" id="update-major" heading-number="8.2.3"><h1 id="update-major-major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#update-major-major-version-automated-upgrades" title="Permanent link">&para;</a></h1>
+</ul></section><section class="print-page" id="update-major" heading-number="8.3.3"><h1 id="update-major-major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#update-major-major-version-automated-upgrades" title="Permanent link">&para;</a></h1>
 <p>Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.</p>
 <p>It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.</p>
@@ -14507,7 +14608,7 @@ MongoDB versions can be found in
 <h2 id="update-major-see-also">See also<a class="headerlink" href="#update-major-see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
-</ul></section><section class="print-page" id="update-manually" heading-number="8.2.4"><h1 id="update-manually-manual-upgrades-of-percona-server-for-mongodb">Manual upgrades of Percona Server for MongoDB<a class="headerlink" href="#update-manually-manual-upgrades-of-percona-server-for-mongodb" title="Permanent link">&para;</a></h1>
+</ul></section><section class="print-page" id="update-manually" heading-number="8.3.4"><h1 id="update-manually-manual-upgrades-of-percona-server-for-mongodb">Manual upgrades of Percona Server for MongoDB<a class="headerlink" href="#update-manually-manual-upgrades-of-percona-server-for-mongodb" title="Permanent link">&para;</a></h1>
 <p>The default and recommended way to upgrade the database cluster is using the Smart Update strategy. The Operator controls how objects are updated and restarts the Pods in a proper order during the database upgrade or for other events that require the cluster update. To these events belong ConfigMap updates, password rotation or changing resource values.</p>
 <p>In some cases running an automatic upgrade of Percona Server for MongoDB
 is not an option. For example, if the database upgrade impacts your application, you may want to have a full control over the upgrade process. </p>
@@ -14658,7 +14759,7 @@ my-cluster-name-rs0-2   1/1     Running   0          3m33s
 <h2 id="update-manually-see-also">See also<a class="headerlink" href="#update-manually-see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#update">Choose your upgrade path</a></li>
-</ul></section><section class="print-page" id="update-openshift" heading-number="8.2.5"><h1 id="update-openshift-upgrade-percona-server-for-mongodb-on-openshift">Upgrade Percona Server for MongoDB on OpenShift<a class="headerlink" href="#update-openshift-upgrade-percona-server-for-mongodb-on-openshift" title="Permanent link">&para;</a></h1>
+</ul></section><section class="print-page" id="update-openshift" heading-number="8.3.5"><h1 id="update-openshift-upgrade-percona-server-for-mongodb-on-openshift">Upgrade Percona Server for MongoDB on OpenShift<a class="headerlink" href="#update-openshift-upgrade-percona-server-for-mongodb-on-openshift" title="Permanent link">&para;</a></h1>
 <h2 id="update-openshift-before-you-begin">Before you begin<a class="headerlink" href="#update-openshift-before-you-begin" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Read <a href="#update-before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
@@ -41093,6 +41194,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span cla
 <p>See <a href="#cr-statuses-perconaservermongodbrestore-status">Restore status</a>.</p></section><section class="print-page" id="images" heading-number="11.4"><h1 id="images-percona-certified-images">Percona certified images<a class="headerlink" href="#images-percona-certified-images" title="Permanent link">&para;</a></h1>
 <p>This page lists Percona&rsquo;s certified Docker images that you can use with Percona Operator for MongoDB.</p>
 <p>To find images for a specific Operator version, see <a href="#image-query">Retrieve Percona certified images</a>.</p>
+<p>Starting with version 1.24.0, a release also has security-build tags. See <a href="#security-builds">Operator security builds</a>.</p>
 <p><strong>Images released with the Operator version 1.23.1</strong>:</p>
 <table>
 <thead>
@@ -41183,7 +41285,8 @@ of PMM.</p>
                         <h1>Certified images<a class='headerlink' href='#section-11-4' title='Permanent link'></a>
                         </h1>
                     <section class="print-page" id="image-query" heading-number="11.4.1"><h1 id="image-query-retrieve-percona-certified-images">Retrieve Percona certified images<a class="headerlink" href="#image-query-retrieve-percona-certified-images" title="Permanent link">&para;</a></h1>
-<p>When preparing for the upgrade, you must have the list of compatible images for a specific Operator version and the database version you wish to update to. You can either manually find the images in the <a href="#images">list of certified images</a> or you can get this list by querying the <strong>Version Service</strong> server. </p>
+<p>When preparing for the upgrade, you must have the list of compatible images for a specific Operator version and the database version you wish to update to. You can either manually find the images in the <a href="#images">list of certified images</a> or you can get this list by querying the <strong>Version Service</strong> server.</p>
+<p>Security builds use numbered tags that the Version Service does not list. See <a href="#security-builds">Operator security builds</a> to find and use those tags. </p>
 <h3 id="image-query-what-is-the-version-service">What is the Version Service?<a class="headerlink" href="#image-query-what-is-the-version-service" title="Permanent link">&para;</a></h3>
 <p>The <strong>Version Service</strong> is a centralized repository that the Percona Operator for MySQL connects to at scheduled times to get the latest information on compatible versions and valid image paths. This service is a crucial part of the automatic upgrade process, and it is enabled by default. Its landing page, <code>check.percona.com</code>, provides more details about the service itself.</p>
 <h3 id="image-query-how-to-query-the-version-service">How to query the Version Service<a class="headerlink" href="#image-query-how-to-query-the-version-service" title="Permanent link">&para;</a></h3>
@@ -46005,18 +46108,20 @@ applications or code.</p>
 
 .print-site-enumerate-headings #update-crd-olm > h1:before { content: '8.1.3 ' }
 
-.print-site-enumerate-headings #update-db > h1:before { content: '8.2 ' }
+.print-site-enumerate-headings #security-builds > h1:before { content: '8.2 ' }
 
-.print-site-enumerate-headings #section-8-2 > h1:before { content: '8.2 ' }
-.print-site-enumerate-headings #update-minor-set-version > h1:before { content: '8.2.1 ' }
+.print-site-enumerate-headings #update-db > h1:before { content: '8.3 ' }
 
-.print-site-enumerate-headings #update-minor-automatic > h1:before { content: '8.2.2 ' }
+.print-site-enumerate-headings #section-8-3 > h1:before { content: '8.3 ' }
+.print-site-enumerate-headings #update-minor-set-version > h1:before { content: '8.3.1 ' }
 
-.print-site-enumerate-headings #update-major > h1:before { content: '8.2.3 ' }
+.print-site-enumerate-headings #update-minor-automatic > h1:before { content: '8.3.2 ' }
 
-.print-site-enumerate-headings #update-manually > h1:before { content: '8.2.4 ' }
+.print-site-enumerate-headings #update-major > h1:before { content: '8.3.3 ' }
 
-.print-site-enumerate-headings #update-openshift > h1:before { content: '8.2.5 ' }
+.print-site-enumerate-headings #update-manually > h1:before { content: '8.3.4 ' }
+
+.print-site-enumerate-headings #update-openshift > h1:before { content: '8.3.5 ' }
 
 .print-site-enumerate-headings #section-9 > h1:before { content: '9 ' }
 .print-site-enumerate-headings #section-9-1 > h1:before { content: '9.1 ' }
@@ -46378,7 +46483,7 @@ applications or code.</p>
     
     
 
-      <script src="assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="js/print-site.js"></script>
       
