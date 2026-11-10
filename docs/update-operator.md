@@ -4,6 +4,8 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
 The upgrade process is similar for all installation methods, including Helm and OLM.
 
+This page covers an upgrade to a new Operator version. To stay on your current version and apply only security fixes, see [Apply security builds](security-builds.md).
+
 ## Considerations 
 
 **Read all of these before you upgrade.** 

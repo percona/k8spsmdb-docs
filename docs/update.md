@@ -9,6 +9,8 @@ An upgrade has two independent stages:
 
 You can run both stages, or only the database stage, depending on what you need to change. See [Choose your upgrade path](#choose-your-upgrade-path) for use cases.
 
+To apply a security build for the Operator version you already run, see [Operator security builds](security-builds.md).
+
 ## How an upgrade works
 
 An upgrade has **two independent stages**, and you decide when to run each one. Stage 2 does not have to follow stage 1 immediately.
@@ -93,6 +95,10 @@ Check the [version compatibility matrix](versions.md) first to confirm that your
 
 On OpenShift, database upgrades follow a different procedure. See [Upgrade Percona Server for MongoDB on OpenShift](update-openshift.md).
 
+### Apply a security build
+
+Apply a security build to patch the Operator version you already run with the fixes for High and Critical Common Vulnerabilities and Exposures (CVE). See [Apply security builds](security-builds.md).
+
 ## Update strategies
 
 Choose how the Operator or Kubernetes updates your database cluster during an upgrade by setting `updateStrategy` in the [Custom Resource](operator.md):
@@ -132,6 +138,7 @@ When you omit this option, Kubernetes keeps the default of 10 revisions.
 ## See also
 
 * [Upgrade the Operator and CRD](update-operator.md)
+* [Apply security builds](security-builds.md)
 * [Upgrade Percona Server for MongoDB](update-db.md)
 * [Known limitations](limitations.md)
 * [Custom resource statuses](cr-statuses.md#perconaservermongodb-status)
