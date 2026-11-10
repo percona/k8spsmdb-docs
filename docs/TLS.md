@@ -135,11 +135,13 @@ The certificates don't include the per-Pod Services that the Operator creates wh
 
 !!! warning
 
-    Don't enable `servicePerPod` for `mongos` if `crVersion` is earlier than 1.24.0 and `tls.allowInvalidCertificates` is `false`. The certificates then don't include the per-Pod `mongos` hostnames, the Operator can't connect to `mongos`, and the cluster stays in the `error` state. To fix it, set `crVersion` to 1.24.0. The Operator re-issues the certificates and the Pods restart once.
+    Don't enable `servicePerPod` for `mongos` if `crVersion` is earlier than 1.24.0 and `tls.allowInvalidCertificates` is `false`. The certificates then don't include the per-Pod `mongos` hostnames, the Operator can't connect to `mongos`, and the cluster stays in the `error` state. To fix it, set `crVersion` to 1.24.0. For legacy Operator-generated certificates, this repair requires the `<cluster-name>-ca-cert` Secret. If it is absent, regenerate the certificates; if the new certificates use a different CA, update client trust.
 
 ### When the Operator re-issues certificates
 
 Starting with version 1.24.0, the Operator re-issues a certificate only when a hostname that the cluster needs is missing from it. For example, it re-issues the certificates when you enable `servicePerPod` for `mongos`, or when you scale `mongos` to more Pods than the certificate covers. With `SmartUpdate`, a re-issued certificate triggers one rolling restart of all Pods. The `mongos`-first restart order applies when `tls.allowInvalidCertificates` is `false`; in that case, `mongos` restarts before the config server replica set and the other replica sets. The same rule applies to other hostnames: the Operator re-issues the certificates when you add a replica set, split-horizon hostnames or search, but not when you remove them.
+
+For legacy Operator-generated certificates, automatic re-issuance requires the `<cluster-name>-ca-cert` Secret. If it is absent, regenerate the certificates; if the new certificates use a different CA, update client trust.
 
 The Operator doesn't remove hostnames that are no longer needed. When you scale `mongos` down, the certificates stay the same and no Pods restart. When you scale back up to a size the certificate already covers, no Pods restart either. The next time the Operator re-issues the certificates for another reason, the new certificates contain only the hostnames that the cluster needs at that moment.
 
