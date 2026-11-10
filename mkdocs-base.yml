@@ -234,6 +234,7 @@ nav:
             - update-crd-manual.md
             - update-crd-helm.md
             - update-crd-olm.md
+        - Apply security builds: security-builds.md
         - Upgrade Percona Server for MongoDB: 
           - update-db.md
           - update-minor-set-version.md
