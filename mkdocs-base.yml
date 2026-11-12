@@ -186,7 +186,7 @@ nav:
        - "Security": security.md
        - "Monitoring and observability": monitoring-observability.md
        - "Search and vector search": search-overview.md
-       - "Data migration": clustersync.md
+       - "Data migration": migration.md
        - "Networking and external access": expose.md
        - "Customization and extensibility": customization.md
 
@@ -328,8 +328,11 @@ nav:
                 - "Disable localhost authentication bypass": auth-bypass-localhost.md
         - Configure search and vector search: search-setup.md
         - Data migration:
-            - "Set up and use PCSM for data migration": clustersync-setup.md
-            - "Use backups to move an external database to Kubernetes": backups-move-from-external-db.md
+            - "Migrate with PCSM": migration-pcsm.md
+            - "Migrate with cross-site replication": migration-replication.md
+            - "Migrate with backup and restore": backups-move-from-external-db.md
+            - "About Percona ClusterSync for MongoDB": clustersync.md
+            - "Tutorial: try PCSM within one Kubernetes cluster": clustersync-setup.md
         - Customization and extensibility:
             - "Change MongoDB options": options.md
             - "Percona Backup for MongoDB options": options-pbm.md

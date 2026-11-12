@@ -262,7 +262,7 @@ For example, say you defined the prefix `my-prefix` for your AWS S3 bucket `my-e
         s3:
           credentialsSecret: my-cluster-name-backup-s3
           region: us-east-1
-          bucket: backup-testing
+          bucket: my-example-bucket
           prefix: my-prefix
     ```
 
