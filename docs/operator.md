@@ -2350,7 +2350,7 @@ The same image applies to every `mongot` pod in the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `percona/percona-server-mongodb-mongot:1.70.1-1` |
+| :material-code-string: string     | `percona/percona-search-mongodb:1.70.1-1` |
 
 ### `search.imagePullPolicy`
 
