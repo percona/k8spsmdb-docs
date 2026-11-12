@@ -121,15 +121,16 @@ If the target replica set names differ from the source, add `replsetRemapping`. 
         type: date
         date: YYYY-MM-DD hh:mm:ss
       backupSource:
-        destination: s3://S3-BUCKET-NAME/BACKUP-NAME
+        destination: s3://S3-BUCKET-NAME/my-prefix/BACKUP-NAME
         s3:
           credentialsSecret: my-cluster-name-backup-s3
           region: us-west-2
+          bucket: S3-BUCKET-NAME
           endpointUrl: https://URL-OF-THE-S3-COMPATIBLE-STORAGE
           prefix: my-prefix
     ```
 
-    For S3-compatible storage, `destination` is `s3://`, the bucket name, and the backup name. For Azure Blob storage, omit the prefix and use the container name as the bucket equivalent.
+    For S3-compatible storage, `destination` is `s3://`, the bucket name, the prefix if you use one, and the backup name. For Azure Blob storage, omit the prefix and use the container name as the bucket equivalent.
 
 2. Start the restore:
 
