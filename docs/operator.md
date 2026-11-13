@@ -4646,7 +4646,7 @@ Enables or disables this exact backup.
 
 ### `backup.tasks.schedule`
 
-The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron). The Operator runs the schedule itself. If it misses a scheduled time, it makes one catch-up backup when it starts again. See [If the Operator misses a scheduled backup](backups-scheduled.md#if-the-operator-misses-a-scheduled-backup).
+The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron). The Operator runs the schedule itself. Starting with version 1.24.0, it can create one catch-up backup after a restart if it missed a scheduled time. See [If the Operator misses a scheduled backup](backups-scheduled.md#if-the-operator-misses-a-scheduled-backup) for the conditions and exceptions.
 
 | Value type  | Example    |
 | ----------- | ---------- |
