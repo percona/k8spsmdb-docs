@@ -29,6 +29,8 @@ see [Manage local storage](storage.md).
 
 Volume expansion is controlled by the `storageScaling` section of the Custom Resource:
 
+* `storageScaling.autoscaling` - lets the Operator grow the volumes when their usage
+  crosses a threshold. It covers replica set, config server volumes and the volumes that store `mongos` logs. The Operator uses the same scaling settings for all of them. Automatic resizing of `mongos` logs is available starting with version 1.24.0.
 * `storageScaling.enableVolumeScaling` - lets the Operator resize PVCs when you change
   the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec
   changes.
