@@ -63,10 +63,19 @@ See the sections below for how you can fine-tune the Operator and cert-manager t
 
 - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
 * [Configure TLS certificate management policy](tls-cert-management-policy.md)
-- [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
-- [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
-- [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
-- [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
+- [Configure TLS using cert-manager](#configure-tls-using-cert-manager)
+  - [About the *cert-manager*](#about-the-cert-manager)
+  - [Install the *cert-manager*](#install-the-cert-manager)
+  - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
+    - [Rules and limitations](#rules-and-limitations)
+    - [Configuration](#configuration)
+  - [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
+  - [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
+  - [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
+  - [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
+  - [Pre-create certificates before deployment](#pre-create-certificates-before-deployment)
+  - [Operator environment variable](#operator-environment-variable)
+  - [Verify the certificates](#verify-the-certificates)
 
 ## Customize certificate duration for cert-manager
 
@@ -117,7 +126,13 @@ Operator automatically creates:
 * a self-signed CA `Issuer` and CA `Certificate` in the database namespace,
 * a signing `Issuer` that references the CA,
 * external and internal TLS `Certificate` resources (`<cluster-name>-ssl` and
-  `<cluster-name>-ssl-internal`).
+  `<cluster-name>-ssl-internal`),
+* the PBM client
+  `Certificate` `<cluster-name>-pbm` when backups are enabled and the `crVersion` is 1.24.0 or higher. It's a client-only certificate that the
+  Operator and the backup agents present to MongoDB. See
+  [Transport Layer Security (TLS)](TLS.md) for how the certificates work together.
+  If you set `secrets.sslPBM`, the `Certificate` keeps the name `<cluster-name>-pbm`
+  and writes to the Secret you named.
 
 cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates)
@@ -232,13 +247,17 @@ To use this approach:
 
 1. Create the `Certificate` resources (and issuers, if needed) in the database
    namespace with the names the Operator expects: `<cluster-name>-ssl` and
-   `<cluster-name>-ssl-internal`.
-2. Configure [`tls.issuerConf`](operator.md#operator-issuerconf-section) in the
+   `<cluster-name>-ssl-internal`. If backups are enabled, also create
+   the `<cluster-name>-pbm` `Certificate` as a client certificate: usages
+   `digital signature`, `key encipherment` and `client auth`, no DNS names, and an
+   organization that differs from the member certificates, for example `PBM`. Or
+   let the Operator create it.
+2. Configure [`tls.issuerConf`](operator.md#tlsissuerconfname) in the
    Custom Resource if your certificates are signed by a specific issuer.
 3. Deploy the cluster with the Operator.
 
 Alternatively, you can supply TLS material as Kubernetes Secrets and reference
-them in [`secrets.ssl` and `secrets.sslInternal`](tls-manual.md#configure-your-cluster)
+them in [`secrets.ssl`, `secrets.sslInternal` and `secrets.sslPBM`](tls-manual.md#configure-your-cluster)
 without using cert-manager at all.
 
 ## Operator environment variable
@@ -250,20 +269,21 @@ elsewhere, set the [`CERTMANAGER_NAMESPACE`](env-vars-operator.md#certmanager_na
 environment variable on the Operator Deployment.
 
 For more details on all cert-manager-related Custom Resource options, see the
-[`tls.issuerConf` section](operator.md#operator-issuerconf-section) in the
+[`tls.issuerConf` section](operator.md#tlsissuerconfname) in the
 Operator spec reference.
 
 ## Verify the certificates
 
-Confirm cert-manager issued both Secrets and that they are populated:
+Confirm cert-manager issued the Secrets and that they are populated. The
+`my-cluster-name-pbm` Secret exists only when backups are enabled:
 
 ```bash
-kubectl get secret my-cluster-name-ssl my-cluster-name-ssl-internal -n $NAMESPACE
+kubectl get secret my-cluster-name-ssl my-cluster-name-ssl-internal my-cluster-name-pbm -n $NAMESPACE
 kubectl get certificate -n $NAMESPACE
 ```
 
 Each `Certificate` must report `READY=True`. A certificate stuck in `False` usually means the
 issuer does not exist or is not ready - check `kubectl describe certificate` for the reason.
-The cluster itself stays in `initializing` until both Secrets exist, so a cluster that never
+The cluster itself stays in `initializing` until all of these Secrets exist, so a cluster that never
 reaches `ready` after enabling cert-manager is nearly always an issuance problem, not a
 database problem.
