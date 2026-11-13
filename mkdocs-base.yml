@@ -295,7 +295,10 @@ nav:
                 - "Backups with cross-site replication": replication-backups.md
                 - "Splitting replica set across multiple data centers": replication-multi-dc.md
         - Scaling and storage:
-            - scaling.md
+            - Vertical scaling:
+                - scaling-vertical.md
+                - "Configure vertical autoscaling": scaling-vpa.md
+            - "Scale replica sets and shards": scaling.md
             - "Resize storage": scaling-storage-resize.md
             - "Manage local storage": storage.md
             - "Configure VolumeAttributesClass": volume-attributes-class.md
@@ -357,6 +360,7 @@ nav:
         - "Troubleshoot backups and restores": debug-backup-restore.md
         - "Special debug images": debug-images.md
         - "Storage resizing": debug-storage.md
+        - "Vertical autoscaling": debug-vpa.md
 
     - Reference:
           - Custom Resource reference:
