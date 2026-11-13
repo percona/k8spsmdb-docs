@@ -4880,11 +4880,11 @@ References a ConfigMap or a Secret containing additional logrotate configuration
 
 ### `logcollector.logrotate.schedule`
 
-Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+The scheduled time to rotate logs, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron). The default is `0 0 * * *` (midnight).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `"0 0 0 * * *"` |
+| :material-code-string: string     | `0 0 * * *` |
 
 ### `logcollector.logrotate.livenessProbe`
 
