@@ -6693,10 +6693,11 @@ window.addEventListener('afterprint', (event) => {
 <p class="admonition-title">Version added: 1.23.0</p>
 </div>
 <p>You can control how the Operator behaves when it cannot find TLS Secrets.</p>
-<p>The Operator expects and uses two Secrets for TLS communication. They are referenced in the following Custom Resource options:</p>
+<p>The Operator expects and uses the following Secrets for TLS communication. They are referenced in the following Custom Resource options:</p>
 <ul>
 <li><code>spec.secrets.ssl</code> - the Secret with the certificates for communication between client applications and the cluster.</li>
 <li><code>spec.secrets.sslInternal</code> - the Secret with the certificates for communication between Percona Server for MongoDB instances in the cluster and for internal authorization.</li>
+<li><code>spec.secrets.sslPBM</code> - the Secret with the client certificate that the Operator and the backup agents present to the cluster. Starting with version 1.24.0, the Operator needs it when backups are enabled.</li>
 </ul>
 <p>To learn more, see <a href="TLS.html#tls-certificates">TLS Certificates</a></p>
 <p>The Operator has two policies to manage TLS certificates. You define a policy via the <code>spec.tls.certManagementPolicy</code> option in the Custom Resource:</p>
@@ -6729,7 +6730,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <td><code>userProvidedOnly</code></td>
 </tr>
 <tr>
-<td>External Secrets or GitOps-managed <code>&lt;cluster&gt;-ssl</code> / <code>&lt;cluster&gt;-ssl-internal</code> Secrets</td>
+<td>External Secrets or GitOps-managed <code>&lt;cluster&gt;-ssl</code>, <code>&lt;cluster&gt;-ssl-internal</code> and <code>&lt;cluster&gt;-pbm</code> Secrets</td>
 <td><code>userProvidedOnly</code></td>
 </tr>
 <tr>
@@ -6765,17 +6766,19 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 </tr>
 </tbody>
 </table>
+<p>If you provide your own external Secret in the <code>secrets.ssl</code> option and the PBM client Secret is missing, the Operator doesn’t set <code>TLSSecretsReady=False</code> under either policy. The cluster goes to the <code>error</code> state with the message <code>PBM client TLS secret &lt;name&gt; is required when custom SSL secret &lt;name&gt; is provided and backups are enabled</code>. Pods keep running.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <p>Ensure you have:</p>
 <ol>
-<li>Created both TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. See <a href="tls-manual.html">Generate TLS certificates manually</a>.</li>
+<li>Created the TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. When backups are enabled, this includes the PBM client Secret. See <a href="tls-manual.html">Generate TLS certificates manually</a>.</li>
 <li>
 <p>Referenced the Secret names in the Custom Resource:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
+<span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span>
 </code></pre></div>
 </li>
 <li>
@@ -6797,6 +6800,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
+<span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span>
 <span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
@@ -6825,14 +6829,14 @@ TLSSecretNotFound
 TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
 </code></pre></div>
 </details>
-<p>The cluster may still show Pods as running while <code>TLSSecretsReady</code> is <code>False</code>. Treat this as a <strong>degraded</strong> state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.</p>
+<p>The cluster may still show Pods as running while <code>TLSSecretsReady</code> is <code>False</code>. If the missing Secret is the PBM client Secret, the cluster state is also <code>error</code>. Treat this as a <strong>degraded</strong> state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.</p>
 <p>Check Operator logs for errors mentioning <code>certManagementPolicy is userProvidedOnly</code>.</p>
 <p>See <a href="cr-statuses.html#conditions">Custom resource statuses</a> for more on cluster conditions.</p>
 <h2 id="restore-tls-secrets">Restore TLS Secrets<a class="headerlink" href="#restore-tls-secrets" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Confirm which Secret is missing:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>my-cluster-name-pbm
 </code></pre></div>
 </li>
 <li>
@@ -6857,7 +6861,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <ol>
 <li>Update the TLS Secrets with new certificate material (same Secret names).</li>
 <li>Follow the steps in <a href="tls-update.html">Update certificates</a> for your certificate source.</li>
-<li>Confirm <code>TLSSecretsReady=True</code> after both Secrets are valid.</li>
+<li>Confirm <code>TLSSecretsReady=True</code> after all Secrets are valid.</li>
 </ol>
 <p>The Operator picks up new Secret content and reconciles Pods according to its normal TLS update flow.</p>
 <hr>
@@ -6865,7 +6869,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 10, 2026 10:35:10 UTC">July 10, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

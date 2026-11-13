@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptographic protocol for the following types of communication:">
+        <meta name="description" content="Percona Operator for MongoDB uses the Transport Layer Security (TLS) protocol to encrypt connections to and inside the cluster. Every party in a TLS connection presents its own certificate, so the cluster uses a separate certificate for each role:">
       
       
         <meta name="author" content="Percona LLC">
@@ -6437,12 +6437,50 @@ window.addEventListener('afterprint', (event) => {
 
 
 <h1 id="transport-layer-security-tls">Transport Layer Security (TLS)<a class="headerlink" href="#transport-layer-security-tls" title="Permanent link">¶</a></h1>
-<p>Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptographic protocol for the following types of communication:</p>
-<ul>
-<li>External - to enable client applications communicate with the cluster</li>
-<li>Internal - for communication between Percona Server for MongoDB instances in the cluster. The internal certificate is also used as an authorization method.</li>
-</ul>
-<p>These certificates are stored in Secrets. Default Secret names are <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. These Secrets are referenced in the <code>secrets.ssl</code> and <code>secrets.sslInternal</code> Custom Resource options.</p>
+<p>Percona Operator for MongoDB uses the Transport Layer Security (TLS) protocol to encrypt connections to and inside the cluster. Every party in a TLS connection presents its own certificate, so the cluster uses a separate certificate for each role:</p>
+<table>
+<thead>
+<tr>
+<th>Certificate</th>
+<th>Default Secret name</th>
+<th>Custom Resource option</th>
+<th>Who presents it</th>
+<th>What it’s for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>External</td>
+<td><code>&lt;cluster-name&gt;-ssl</code></td>
+<td><code>secrets.ssl</code></td>
+<td><code>mongod</code> and <code>mongos</code></td>
+<td>Connections from client applications</td>
+</tr>
+<tr>
+<td>Internal</td>
+<td><code>&lt;cluster-name&gt;-ssl-internal</code></td>
+<td><code>secrets.sslInternal</code></td>
+<td>Cluster members</td>
+<td>Connections between Percona Server for MongoDB instances. The internal certificate also authorizes members of the cluster.</td>
+</tr>
+<tr>
+<td>PBM client</td>
+<td><code>&lt;cluster-name&gt;-pbm</code></td>
+<td><code>secrets.sslPBM</code></td>
+<td>The backup agents, and the Operator when it connects for backups and restores</td>
+<td>Connections that Percona Backup for MongoDB (PBM) makes to the database. Available starting with version 1.24.0, when backups are enabled.</td>
+</tr>
+</tbody>
+</table>
+<p>The following diagram shows which certificate each connection uses:</p>
+<pre class="mermaid"><code>flowchart LR
+    App[Client application] -- client certificate --&gt; S[mongod / mongos]
+    S -- External certificate --&gt; App
+    S &lt;-- Internal certificate --&gt; M[Other cluster members]
+    O[The Operator, for backups and restores] -- PBM client certificate --&gt; S
+    B[Backup agent sidecar] -- PBM client certificate --&gt; S</code></pre>
+<p>The same certificate authority (CA) signs all three certificates. <code>mongod</code> and <code>mongos</code> check the certificates that clients present against the CA in the <code>ca.crt</code> key of the internal Secret. If there’s no separate internal Secret, they use the <code>ca.crt</code> key of the external Secret. Clients check the server certificate against the <code>ca.crt</code> key of the external Secret.</p>
+<p>The PBM client certificate is a client-only certificate. It has no hostnames and carries its own subject, with the organization set to <code>PBM</code>.</p>
 <p>You control TLS usage with the <code>tls.mode</code> option in the Custom Resource. This setting defines how Percona Server for MongoDB cluster handles TLS for both internal and external connections. You can choose from the following modes:</p>
 <ul>
 <li><code>allowTLS</code>: The cluster accepts both TLS and non-TLS incoming connections, but does not use TLS for internal communication.</li>
@@ -6493,7 +6531,7 @@ window.addEventListener('afterprint', (event) => {
 <ul>
 <li>
 <p>By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
-certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates two Secrets objects named <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. These Secrets are referenced in the <code>secrets.ssl</code> and <code>secrets.sslInternal</code> options in the Custom Resource.</p>
+certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. When backups are enabled, it also creates <code>&lt;cluster-name&gt;-pbm</code>. These Secrets are referenced in the <code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code> options in the Custom Resource.</p>
 <p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.</p>
 <p>To allow certificates automatically generated by the Operator, the <a href="operator.html#tlsallowinvalidcertificates">tls.allowInvalidCertificates</a>
 Custom Resource option is set to <code>true</code> by default. You can set it to <code>false</code> when using other certificate generation methods, such as cert-manager with a trusted CA.</p>
@@ -6545,21 +6583,58 @@ Custom Resource option is set to <code>true</code> by default. You can set it to
 </code></pre></div>
 <p>See <a href="tls-cert-management-policy.html">Configure the TLS certificate management policy</a> for setup steps, monitoring, recovery, and policy switching.</p>
 <h3 id="connect-with-a-client-certificate">Connect with a client certificate<a class="headerlink" href="#connect-with-a-client-certificate" title="Permanent link">¶</a></h3>
-<p>Any client that connects over TLS needs the same certificate the Operator generated for
-the cluster (see <code>clusterAuthMode</code> above). Extract it from the <code>&lt;cluster-name&gt;-ssl</code> Secret
-and pass it to your client:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.crt
-kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.key
-kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
-cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"> </span>&gt;<span class="w"> </span>client.pem
+<p><code>mongod</code> and <code>mongos</code> require a client certificate on every TLS connection. They check that the cluster CA signed it only when <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> is <code>false</code>. Give each client application its own client certificate. Don’t reuse the external server certificate: MongoDB logs a warning for every connection that presents the server’s own certificate.</p>
+<p>To issue a client certificate with the CA that the Operator created, use one of the following ways:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">cert-manager</label><label for="__tabbed_1_2">Operator-generated certificates</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Create a <code>Certificate</code> that the Operator’s issuer signs. Save the following manifest as <code>my-app-client.yaml</code>. Replace <code>my-cluster-name</code> with your cluster name and <code>my-app</code> with a name for your application:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Certificate</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-client</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-client</span>
+<span class="w">  </span><span class="nt">commonName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">subject</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">usages</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">digital signature</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">key encipherment</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">client auth</span>
+<span class="w">  </span><span class="nt">issuerRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-psmdb-issuer</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Issuer</span>
 </code></pre></div>
-<p>Then pass <code>client.pem</code> and <code>ca.crt</code> to your client. For <code>mongosh</code>:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span><span class="w"> </span>--tlsCertificateKeyFile<span class="w"> </span>client.pem<span class="w"> </span>--tlsCAFile<span class="w"> </span>ca.crt
+<p><code>my-cluster-name-psmdb-issuer</code> of kind <code>Issuer</code> is the default issuer that the Operator creates. If you use <a href="tls-cert-manager.html#use-an-existing-clusterissuer">another issuer</a>, set its name and kind.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app-client.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.crt
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.key
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Sign a client certificate with the CA from the <code>&lt;cluster-name&gt;-ca-cert</code> Secret:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ca-cert<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ca-cert<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.key
+openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-nodes<span class="w"> </span>-keyout<span class="w"> </span>tls.key<span class="w"> </span>-subj<span class="w"> </span><span class="s2">"/O=my-app/CN=my-app"</span><span class="w"> </span>-out<span class="w"> </span>client.csr
+openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>client.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-extfile<span class="w"> </span>&lt;<span class="o">(</span><span class="nb">printf</span><span class="w"> </span><span class="s2">"extendedKeyUsage=clientAuth"</span><span class="o">)</span><span class="w"> </span>-out<span class="w"> </span>tls.crt
+</code></pre></div>
+<p>Keep <code>ca.key</code> safe, and delete it from your workstation when you’re done.</p>
+</div>
+</div>
+</div>
+<p>Combine the certificate and the key into one file, then pass it and <code>ca.crt</code> to your client. For <code>mongosh</code>:</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"> </span>&gt;<span class="w"> </span>client.pem
+mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span><span class="w"> </span>--tls<span class="w"> </span>--tlsCertificateKeyFile<span class="w"> </span>client.pem<span class="w"> </span>--tlsCAFile<span class="w"> </span>ca.crt
 </code></pre></div>
 <p>Run this wherever your client actually runs - on your own machine if you
 <a href="expose.html">exposed the cluster</a>, or inside a Pod if you’re connecting from within
 Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
 <a href="connection-secrets.html#open-an-interactive-shell-with-mongosh">Connection secrets</a>.</p>
+<p>If you use your own CA, sign the client certificate with a CA that the <code>ca.crt</code> key of the <code>&lt;cluster-name&gt;-ssl-internal</code> Secret contains. If you don’t use a separate internal Secret, use the CA from <code>&lt;cluster-name&gt;-ssl</code>.</p>
 <h2 id="tls-configuration">TLS configuration<a class="headerlink" href="#tls-configuration" title="Permanent link">¶</a></h2>
 <p>The following sections provide guidelines how to:</p>
 <ul>
@@ -6576,7 +6651,7 @@ Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 17, 2026 08:52:22 UTC">September 17, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

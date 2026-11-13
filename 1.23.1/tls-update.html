@@ -6549,12 +6549,13 @@ window.addEventListener('afterprint', (event) => {
 <h2 id="check-your-certificates-for-expiration">Check your certificates for expiration<a class="headerlink" href="#check-your-certificates-for-expiration" title="Permanent link">¶</a></h2>
 <ol>
 <li>
-<p>First, check the necessary secrets names (<code>my-cluster-name-ssl</code> and
-    <code>my-cluster-name-ssl-internal</code> by default):</p>
+<p>First, check the necessary secrets names (<code>my-cluster-name-ssl</code>,
+    <code>my-cluster-name-ssl-internal</code> and, when backups are enabled, <code>my-cluster-name-pbm</code> by default):</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>certificate
 </code></pre></div>
 <p>You will have the following response:</p>
 <div class="no-copy highlight"><pre><span></span><code>NAME                           READY   SECRET                         AGE
+my-cluster-name-pbm            True    my-cluster-name-pbm            49m
 my-cluster-name-ssl            True    my-cluster-name-ssl            49m
 my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
 </code></pre></div>
@@ -6580,7 +6581,7 @@ my-cluster-name-psmdb-ca-issuer   True    61m
 <code>my-cluster-name-psmdb-ca-issuer</code> issuer is used to create a self signed
 CA certificate (<code>my-cluster-name-ca-cert</code>), and then the
 <code>my-cluster-name-psmdb-issuer</code> issuer is used to create SSL certificates
-(<code>my-cluster-name-ssl</code> and <code>my-cluster-name-ssl-internal</code>) signed by
+(<code>my-cluster-name-ssl</code>, <code>my-cluster-name-ssl-internal</code> and <code>my-cluster-name-pbm</code>) signed by
 the <code>my-cluster-name-ca-cert</code> CA certificate.</p>
 </div>
 </div>
@@ -6609,11 +6610,16 @@ not in the database namespace.</p>
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-ssl-internal<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
 <span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
+<span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-pbm<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
 <span class="w">  </span><span class="o">}</span>
 </code></pre></div>
 <p>The resulting output will be self-explanatory:</p>
-<div class="no-copy highlight"><pre><span></span><code>notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
-notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
+<div class="no-copy highlight"><pre><span></span><code>notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
+notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
+notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
 </code></pre></div>
 </li>
 </ol>
@@ -6709,7 +6715,7 @@ Operator version prior to 1.9.0), you should move through the
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>issuer/my-cluster-name-psmdb-ca-issuer<span class="w"> </span>issuer/my-cluster-name-psmdb-issuer<span class="w"> </span>
-<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal
+<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal<span class="w"> </span>certificate/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 <span class="w">  </span><span class="o">}</span>
 </code></pre></div>
 </div>
@@ -6717,7 +6723,7 @@ Operator version prior to 1.9.0), you should move through the
 <p>If the Operator manages issuers as <code>ClusterIssuer</code> resources:</p>
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterissuer/my-cluster-name-psmdb-ca-issuer<span class="w"> </span>clusterissuer/my-cluster-name-psmdb-issuer
-<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal
+<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal<span class="w"> </span>certificate/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>certificate/my-cluster-name-ca-cert
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>secret/my-cluster-name-ca-cert
 <span class="w">  </span><span class="o">}</span>
@@ -6734,8 +6740,9 @@ organization’s issuer.</p>
 </li>
 <li>
 <p>Delete Secrets to force the SSL reconciliation:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>secret/my-cluster-name-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>secret/my-cluster-name-ssl-internal<span class="w"> </span>secret/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 </code></pre></div>
+<p>The <code>my-cluster-name-pbm</code> Secret and <code>Certificate</code> exist only when backups are enabled, so the commands use <code>--ignore-not-found</code>. If you set <code>secrets.sslPBM</code>, use that Secret name. The <code>Certificate</code> name stays <code>my-cluster-name-pbm</code>. If you created the PBM Secret yourself, recreate it with a certificate signed by the new CA.</p>
 </li>
 <li>
 <p>Check certificates to make sure reconciliation have succeeded.</p>
@@ -6771,11 +6778,11 @@ if you want to preserver Persistent Volumes with the data.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Namespace-scoped Issuer (default)</label><label for="__tabbed_3_2">ClusterIssuer</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-issuer<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-issuer<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-pbm<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal<span class="w"> </span>secret/cluster1-pbm<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-pbm<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal<span class="w"> </span>secret/cluster1-pbm<span class="w"> </span>--ignore-not-found
 kubectl<span class="w"> </span>delete<span class="w"> </span>clusterissuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>clusterissuer.cert-manager.io/cluster1-psmdb-issuer
 kubectl<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert
 </code></pre></div>
@@ -6863,7 +6870,7 @@ set by <a href="env-vars-operator.html#certmanager_namespace"><code>CERTMANAGER_
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 23, 2026 08:48:42 UTC">July 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

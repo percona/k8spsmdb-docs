@@ -7165,7 +7165,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 <tr>
 <td><code>TLSSecretsReady</code></td>
-<td>TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0.</td>
+<td>TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. Starting with version 1.24.0, when backups are enabled and <code>certManagementPolicy</code> is <code>userProvidedOnly</code>, a missing PBM client Secret also sets this condition to <code>False</code>. If you provide your own external Secret, a missing PBM client Secret puts the cluster in the <code>error</code> state instead.</td>
 </tr>
 <tr>
 <td><code>ImageUpgradeInProgress</code></td>
@@ -7466,7 +7466,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 08:24:32 UTC">November 3, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

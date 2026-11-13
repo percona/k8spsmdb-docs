@@ -6493,6 +6493,10 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p>The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.</p>
 </li>
+<li>
+<p>Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated <a href="TLS.html">PBM client certificate</a> instead of the external server certificate. Upgrading the Operator alone doesn’t change anything. The Operator creates the PBM certificate when you set <code>crVersion</code> to <code>1.24.0</code>, and the database Pods restart to mount it.</p>
+<p>If TLS and backups are enabled and you provide your own external certificate in <code>secrets.ssl</code>, create the PBM client Secret <strong>before</strong> you set <code>crVersion</code> to <code>1.24.0</code>. Otherwise the Operator stops reconciling the cluster. See <a href="tls-manual.html#generate-certificates">Generate TLS certificates manually</a> for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.</p>
+</li>
 </ol>
 <h2 id="update-guides">Update guides<a class="headerlink" href="#update-guides" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="update-crd-manual.html">Update manually</a>
@@ -6503,7 +6507,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:43:46 UTC">November 10, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

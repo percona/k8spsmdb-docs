@@ -6812,6 +6812,12 @@ window.addEventListener('afterprint', (event) => {
 <td></td>
 </tr>
 <tr>
+<td><code>percona.com/pbm-tls-hash</code></td>
+<td>Pods</td>
+<td>Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It’s also set on <code>mongos</code> Pods, so they restart too. Available starting with version 1.24.0.</td>
+<td></td>
+</tr>
+<tr>
 <td><code>percona.com/ssl-internal-hash</code></td>
 <td>Pods</td>
 <td>Stores the hash of the most recent TLS configuration for internal communication</td>
@@ -6914,7 +6920,7 @@ these labels and annotations in the <code>spec.ignoreAnnotations</code> or <code
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 13, 2026 13:16:54 UTC">July 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

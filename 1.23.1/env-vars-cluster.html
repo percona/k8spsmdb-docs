@@ -6723,6 +6723,10 @@ window.addEventListener('afterprint', (event) => {
 <td><code>PBM_AGENT_TLS_ENABLED</code></td>
 <td><code>"true"</code> when TLS is enabled.</td>
 </tr>
+<tr>
+<td><code>PBM_AGENT_TLS_DIR</code></td>
+<td>Directory with the PBM client certificate, <code>/etc/mongodb-pbm</code>. The backup agent reads <code>tls.crt</code> and <code>tls.key</code> from it. Set when TLS and backups are enabled and <code>crVersion</code> is 1.24.0 or later. During a physical restore, the Operator also sets it on the <code>mongod</code> container. See <a href="TLS.html">Transport Layer Security (TLS)</a>.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="scheduled-backup-job">Scheduled backup job<a class="headerlink" href="#scheduled-backup-job" title="Permanent link">¶</a></h2>
@@ -6925,7 +6929,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:13:07 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
       
         <br>
         Created:

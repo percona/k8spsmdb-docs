@@ -14182,6 +14182,10 @@ flowchart TB
 <li>
 <p>The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.</p>
 </li>
+<li>
+<p>Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated <a href="#tls">PBM client certificate</a> instead of the external server certificate. Upgrading the Operator alone doesn’t change anything. The Operator creates the PBM certificate when you set <code>crVersion</code> to <code>1.24.0</code>, and the database Pods restart to mount it.</p>
+<p>If TLS and backups are enabled and you provide your own external certificate in <code>secrets.ssl</code>, create the PBM client Secret <strong>before</strong> you set <code>crVersion</code> to <code>1.24.0</code>. Otherwise the Operator stops reconciling the cluster. See <a href="#tls-manual-generate-certificates">Generate TLS certificates manually</a> for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.</p>
+</li>
 </ol>
 <h2 id="update-operator-update-guides">Update guides<a class="headerlink" href="#update-operator-update-guides" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="#update-crd-manual">Update manually</a>
@@ -23967,12 +23971,50 @@ flags and connect with just <code>mongosh "&lt;connection-string&gt;"</code>.</p
         })
         </script>
         </head><body><h1 id="transport-layer-security-tls">Transport Layer Security (TLS)<a class="headerlink" href="#tls-transport-layer-security-tls" title="Permanent link">¶</a></h1>
-<p>Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptographic protocol for the following types of communication:</p>
-<ul>
-<li>External - to enable client applications communicate with the cluster</li>
-<li>Internal - for communication between Percona Server for MongoDB instances in the cluster. The internal certificate is also used as an authorization method.</li>
-</ul>
-<p>These certificates are stored in Secrets. Default Secret names are <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. These Secrets are referenced in the <code>secrets.ssl</code> and <code>secrets.sslInternal</code> Custom Resource options.</p>
+<p>Percona Operator for MongoDB uses the Transport Layer Security (TLS) protocol to encrypt connections to and inside the cluster. Every party in a TLS connection presents its own certificate, so the cluster uses a separate certificate for each role:</p>
+<table>
+<thead>
+<tr>
+<th>Certificate</th>
+<th>Default Secret name</th>
+<th>Custom Resource option</th>
+<th>Who presents it</th>
+<th>What it’s for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>External</td>
+<td><code>&lt;cluster-name&gt;-ssl</code></td>
+<td><code>secrets.ssl</code></td>
+<td><code>mongod</code> and <code>mongos</code></td>
+<td>Connections from client applications</td>
+</tr>
+<tr>
+<td>Internal</td>
+<td><code>&lt;cluster-name&gt;-ssl-internal</code></td>
+<td><code>secrets.sslInternal</code></td>
+<td>Cluster members</td>
+<td>Connections between Percona Server for MongoDB instances. The internal certificate also authorizes members of the cluster.</td>
+</tr>
+<tr>
+<td>PBM client</td>
+<td><code>&lt;cluster-name&gt;-pbm</code></td>
+<td><code>secrets.sslPBM</code></td>
+<td>The backup agents, and the Operator when it connects for backups and restores</td>
+<td>Connections that Percona Backup for MongoDB (PBM) makes to the database. Available starting with version 1.24.0, when backups are enabled.</td>
+</tr>
+</tbody>
+</table>
+<p>The following diagram shows which certificate each connection uses:</p>
+<pre class="mermaid"><code>flowchart LR
+    App[Client application] -- client certificate --&gt; S[mongod / mongos]
+    S -- External certificate --&gt; App
+    S &lt;-- Internal certificate --&gt; M[Other cluster members]
+    O[The Operator, for backups and restores] -- PBM client certificate --&gt; S
+    B[Backup agent sidecar] -- PBM client certificate --&gt; S</code></pre>
+<p>The same certificate authority (CA) signs all three certificates. <code>mongod</code> and <code>mongos</code> check the certificates that clients present against the CA in the <code>ca.crt</code> key of the internal Secret. If there’s no separate internal Secret, they use the <code>ca.crt</code> key of the external Secret. Clients check the server certificate against the <code>ca.crt</code> key of the external Secret.</p>
+<p>The PBM client certificate is a client-only certificate. It has no hostnames and carries its own subject, with the organization set to <code>PBM</code>.</p>
 <p>You control TLS usage with the <code>tls.mode</code> option in the Custom Resource. This setting defines how Percona Server for MongoDB cluster handles TLS for both internal and external connections. You can choose from the following modes:</p>
 <ul>
 <li><code>allowTLS</code>: The cluster accepts both TLS and non-TLS incoming connections, but does not use TLS for internal communication.</li>
@@ -24023,7 +24065,7 @@ flags and connect with just <code>mongosh "&lt;connection-string&gt;"</code>.</p
 <ul>
 <li>
 <p>By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
-certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates two Secrets objects named <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. These Secrets are referenced in the <code>secrets.ssl</code> and <code>secrets.sslInternal</code> options in the Custom Resource.</p>
+certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. When backups are enabled, it also creates <code>&lt;cluster-name&gt;-pbm</code>. These Secrets are referenced in the <code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code> options in the Custom Resource.</p>
 <p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.</p>
 <p>To allow certificates automatically generated by the Operator, the <a href="#operator-tlsallowinvalidcertificates">tls.allowInvalidCertificates</a>
 Custom Resource option is set to <code>true</code> by default. You can set it to <code>false</code> when using other certificate generation methods, such as cert-manager with a trusted CA.</p>
@@ -24075,21 +24117,58 @@ Custom Resource option is set to <code>true</code> by default. You can set it to
 </code></pre></div>
 <p>See <a href="#tls-cert-management-policy">Configure the TLS certificate management policy</a> for setup steps, monitoring, recovery, and policy switching.</p>
 <h3 id="tls-connect-with-a-client-certificate">Connect with a client certificate<a class="headerlink" href="#tls-connect-with-a-client-certificate" title="Permanent link">¶</a></h3>
-<p>Any client that connects over TLS needs the same certificate the Operator generated for
-the cluster (see <code>clusterAuthMode</code> above). Extract it from the <code>&lt;cluster-name&gt;-ssl</code> Secret
-and pass it to your client:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.crt
-kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.key
-kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-ssl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
-cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"> </span>&gt;<span class="w"> </span>client.pem
+<p><code>mongod</code> and <code>mongos</code> require a client certificate on every TLS connection. They check that the cluster CA signed it only when <a href="#operator-tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> is <code>false</code>. Give each client application its own client certificate. Don’t reuse the external server certificate: MongoDB logs a warning for every connection that presents the server’s own certificate.</p>
+<p>To issue a client certificate with the CA that the Operator created, use one of the following ways:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="tls-__tabbed_1_1" name="tls-__tabbed_1" type="radio"><input id="tls-__tabbed_1_2" name="tls-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="tls-__tabbed_1_1">cert-manager</label><label for="tls-__tabbed_1_2">Operator-generated certificates</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Create a <code>Certificate</code> that the Operator’s issuer signs. Save the following manifest as <code>my-app-client.yaml</code>. Replace <code>my-cluster-name</code> with your cluster name and <code>my-app</code> with a name for your application:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Certificate</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-client</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-client</span>
+<span class="w">  </span><span class="nt">commonName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">subject</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">usages</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">digital signature</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">key encipherment</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">client auth</span>
+<span class="w">  </span><span class="nt">issuerRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-psmdb-issuer</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Issuer</span>
 </code></pre></div>
-<p>Then pass <code>client.pem</code> and <code>ca.crt</code> to your client. For <code>mongosh</code>:</p>
-<div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span><span class="w"> </span>--tlsCertificateKeyFile<span class="w"> </span>client.pem<span class="w"> </span>--tlsCAFile<span class="w"> </span>ca.crt
+<p><code>my-cluster-name-psmdb-issuer</code> of kind <code>Issuer</code> is the default issuer that the Operator creates. If you use <a href="#tls-cert-manager-use-an-existing-clusterissuer">another issuer</a>, set its name and kind.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app-client.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.crt
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>tls.key
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-app-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Sign a client certificate with the CA from the <code>&lt;cluster-name&gt;-ca-cert</code> Secret:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ca-cert<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ca-cert<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.key}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>&gt;<span class="w"> </span>ca.key
+openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-nodes<span class="w"> </span>-keyout<span class="w"> </span>tls.key<span class="w"> </span>-subj<span class="w"> </span><span class="s2">"/O=my-app/CN=my-app"</span><span class="w"> </span>-out<span class="w"> </span>client.csr
+openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>client.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-extfile<span class="w"> </span>&lt;<span class="o">(</span><span class="nb">printf</span><span class="w"> </span><span class="s2">"extendedKeyUsage=clientAuth"</span><span class="o">)</span><span class="w"> </span>-out<span class="w"> </span>tls.crt
+</code></pre></div>
+<p>Keep <code>ca.key</code> safe, and delete it from your workstation when you’re done.</p>
+</div>
+</div>
+</div>
+<p>Combine the certificate and the key into one file, then pass it and <code>ca.crt</code> to your client. For <code>mongosh</code>:</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"> </span>&gt;<span class="w"> </span>client.pem
+mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</span><span class="w"> </span>--tls<span class="w"> </span>--tlsCertificateKeyFile<span class="w"> </span>client.pem<span class="w"> </span>--tlsCAFile<span class="w"> </span>ca.crt
 </code></pre></div>
 <p>Run this wherever your client actually runs - on your own machine if you
 <a href="#expose">exposed the cluster</a>, or inside a Pod if you’re connecting from within
 Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
 <a href="#connection-secrets-open-an-interactive-shell-with-mongosh">Connection secrets</a>.</p>
+<p>If you use your own CA, sign the client certificate with a CA that the <code>ca.crt</code> key of the <code>&lt;cluster-name&gt;-ssl-internal</code> Secret contains. If you don’t use a separate internal Secret, use the CA from <code>&lt;cluster-name&gt;-ssl</code>.</p>
 <h2 id="tls-tls-configuration">TLS configuration<a class="headerlink" href="#tls-tls-configuration" title="Permanent link">¶</a></h2>
 <p>The following sections provide guidelines how to:</p>
 <ul>
@@ -24160,10 +24239,21 @@ cert-manager-webhook-84fcdcd5d-697k4       1/1     Running   0          3m8s
 <ul>
 <li><a href="#tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a></li>
 <li><a href="#tls-cert-management-policy">Configure TLS certificate management policy</a></li>
+<li><a href="#tls-cert-manager-configure-tls-using-cert-manager">Configure TLS using cert-manager</a></li>
+<li><a href="#tls-cert-manager-about-the-cert-manager">About the <em>cert-manager</em></a></li>
+<li><a href="#tls-cert-manager-install-the-cert-manager">Install the <em>cert-manager</em></a></li>
+<li><a href="#tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a><ul>
+<li><a href="#tls-cert-manager-rules-and-limitations">Rules and limitations</a></li>
+<li><a href="#tls-cert-manager-configuration">Configuration</a></li>
+</ul>
+</li>
 <li><a href="#tls-cert-manager-operator-managed-namespace-scoped-issuers-default">Operator-managed namespace-scoped issuers (default)</a></li>
 <li><a href="#tls-cert-manager-operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope</a></li>
 <li><a href="#tls-cert-manager-use-an-existing-clusterissuer">Use an existing ClusterIssuer</a></li>
 <li><a href="#tls-cert-manager-use-an-existing-namespace-scoped-issuer">Use an existing namespace-scoped Issuer</a></li>
+<li><a href="#tls-cert-manager-pre-create-certificates-before-deployment">Pre-create certificates before deployment</a></li>
+<li><a href="#tls-cert-manager-operator-environment-variable">Operator environment variable</a></li>
+<li><a href="#tls-cert-manager-verify-the-certificates">Verify the certificates</a></li>
 </ul>
 <h2 id="tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager<a class="headerlink" href="#tls-cert-manager-customize-certificate-duration-for-cert-manager" title="Permanent link">¶</a></h2>
 <p>When you deploy the cluster using the default configuration, the Operator triggers the cert-manager to create certificates
@@ -24204,7 +24294,13 @@ Operator automatically creates:</p>
 <li>a self-signed CA <code>Issuer</code> and CA <code>Certificate</code> in the database namespace,</li>
 <li>a signing <code>Issuer</code> that references the CA,</li>
 <li>external and internal TLS <code>Certificate</code> resources (<code>&lt;cluster-name&gt;-ssl</code> and
-  <code>&lt;cluster-name&gt;-ssl-internal</code>).</li>
+  <code>&lt;cluster-name&gt;-ssl-internal</code>),</li>
+<li>the PBM client
+  <code>Certificate</code> <code>&lt;cluster-name&gt;-pbm</code> when backups are enabled and the <code>crVersion</code> is 1.24.0 or higher. It’s a client-only certificate that the
+  Operator and the backup agents present to MongoDB. See
+  <a href="#tls">Transport Layer Security (TLS)</a> for how the certificates work together.
+  If you set <code>secrets.sslPBM</code>, the <code>Certificate</code> keeps the name <code>&lt;cluster-name&gt;-pbm</code>
+  and writes to the Secret you named.</li>
 </ul>
 <p>cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set <a href="#operator-tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a>
@@ -24299,13 +24395,17 @@ cert-manager resources that are not owned by the Operator.</p>
 <ol>
 <li>Create the <code>Certificate</code> resources (and issuers, if needed) in the database
    namespace with the names the Operator expects: <code>&lt;cluster-name&gt;-ssl</code> and
-   <code>&lt;cluster-name&gt;-ssl-internal</code>.</li>
-<li>Configure <a href="#operator-operator-issuerconf-section"><code>tls.issuerConf</code></a> in the
+   <code>&lt;cluster-name&gt;-ssl-internal</code>. If backups are enabled, also create
+   the <code>&lt;cluster-name&gt;-pbm</code> <code>Certificate</code> as a client certificate: usages
+   <code>digital signature</code>, <code>key encipherment</code> and <code>client auth</code>, no DNS names, and an
+   organization that differs from the member certificates, for example <code>PBM</code>. Or
+   let the Operator create it.</li>
+<li>Configure <a href="#operator-tlsissuerconfname"><code>tls.issuerConf</code></a> in the
    Custom Resource if your certificates are signed by a specific issuer.</li>
 <li>Deploy the cluster with the Operator.</li>
 </ol>
 <p>Alternatively, you can supply TLS material as Kubernetes Secrets and reference
-them in <a href="#tls-manual-configure-your-cluster"><code>secrets.ssl</code> and <code>secrets.sslInternal</code></a>
+them in <a href="#tls-manual-configure-your-cluster"><code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code></a>
 without using cert-manager at all.</p>
 <h2 id="tls-cert-manager-operator-environment-variable">Operator environment variable<a class="headerlink" href="#tls-cert-manager-operator-environment-variable" title="Permanent link">¶</a></h2>
 <p>When the Operator manages a CA chain with <code>tls.issuerConf.kind: ClusterIssuer</code>,
@@ -24314,16 +24414,17 @@ By default this namespace is <code>cert-manager</code>. If you installed cert-ma
 elsewhere, set the <a href="#env-vars-operator-certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code></a>
 environment variable on the Operator Deployment.</p>
 <p>For more details on all cert-manager-related Custom Resource options, see the
-<a href="#operator-operator-issuerconf-section"><code>tls.issuerConf</code> section</a> in the
+<a href="#operator-tlsissuerconfname"><code>tls.issuerConf</code> section</a> in the
 Operator spec reference.</p>
 <h2 id="tls-cert-manager-verify-the-certificates">Verify the certificates<a class="headerlink" href="#tls-cert-manager-verify-the-certificates" title="Permanent link">¶</a></h2>
-<p>Confirm cert-manager issued both Secrets and that they are populated:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+<p>Confirm cert-manager issued the Secrets and that they are populated. The
+<code>my-cluster-name-pbm</code> Secret exists only when backups are enabled:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>get<span class="w"> </span>certificate<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>Each <code>Certificate</code> must report <code>READY=True</code>. A certificate stuck in <code>False</code> usually means the
 issuer does not exist or is not ready - check <code>kubectl describe certificate</code> for the reason.
-The cluster itself stays in <code>initializing</code> until both Secrets exist, so a cluster that never
+The cluster itself stays in <code>initializing</code> until all of these Secrets exist, so a cluster that never
 reaches <code>ready</code> after enabling cert-manager is nearly always an issuance problem, not a
 database problem.</p></body></html></section><section class="print-page" id="tls-manual" heading-number="9.6.2.2"><html><head>
         <script type="text/javascript">
@@ -24346,19 +24447,29 @@ with your value:</p>
 <ul>
 <li><code>server.pem</code> - Server certificate for MongoDB nodes</li>
 <li><code>server-key.pem</code> - Private key for the server certificate  </li>
-<li><code>client.pem</code> - Client certificate for external connections</li>
-<li><code>client-key.pem</code> - Private key for the client certificate</li>
+<li><code>client.pem</code> - Certificate that <code>mongod</code> and <code>mongos</code> present to client applications. Despite the file name, it’s a server certificate for external connections</li>
+<li><code>client-key.pem</code> - Private key for that certificate</li>
+<li><code>pbm.pem</code> - Client certificate that the Operator and the backup agents present to MongoDB. You need it when backups are enabled</li>
+<li><code>pbm-key.pem</code> - Private key for the PBM client certificate</li>
 <li><code>ca.pem</code> - Certificate Authority certificate</li>
 <li><code>ca-key.pem</code> - Certificate Authority private key</li>
 </ul>
 <h2 id="tls-manual-certificate-requirements">Certificate requirements<a class="headerlink" href="#tls-manual-certificate-requirements" title="Permanent link">¶</a></h2>
-<p>You need to create <strong>two sets</strong> of certificates:</p>
+<p>You need to create the following certificates:</p>
 <ol>
 <li><strong>External certificates</strong> - for client connections from outside the cluster. This set is mandatory</li>
 <li><strong>Internal certificates</strong> - for communication between MongoDB nodes within the cluster. You can omit generating a separate of certificates for internal communication. In this case, the operator reuses the external certificates for both external and internal communication.</li>
+<li>
+<p><strong>PBM client certificate</strong> - for the connections that the Operator and the backup agents make to MongoDB. Starting with version 1.24.0, this certificate is mandatory when backups are enabled and must meet the following requirements:</p>
+<ul>
+<li>It must be a client certificate signed by a CA that the <code>ca.crt</code> key of the internal Secret contains. If you follow this guide, that’s the same CA as for the other certificates.</li>
+<li>Its subject must differ from the member certificates: for example, the Operator’s own PBM certificate uses the organization <code>PBM</code>, while the member certificates use <code>PSMDB</code>. MongoDB treats a client whose subject has the same <code>O</code>, <code>OU</code> and <code>DC</code> values as the member certificates as a cluster member.</li>
+<li>It needs no hostnames.</li>
+</ul>
+</li>
 </ol>
 <p>Generating two separate sets of certificates is not mandatory but highly recommended. Using different certificates for internal and external connections gives you more control and improves security. For example, you can choose to renew or replace external certificates more often than internal ones, or set different expiration dates for each. This makes managing and securing your cluster easier in the long run.</p>
-<p>After creating the certificates, you’ll create two Kubernetes Secrets and reference them in your cluster configuration.</p>
+<p>After creating the certificates, you’ll create a Kubernetes Secret for each set and reference them in your cluster configuration.</p>
 <h2 id="tls-manual-prerequisites">Prerequisites<a class="headerlink" href="#tls-manual-prerequisites" title="Permanent link">¶</a></h2>
 <p>Before you start, make sure you have:</p>
 <ul>
@@ -24458,7 +24569,7 @@ with your value:</p>
 </li>
 <li>
 <p>Create a Kubernetes Secret for internal cluster communication:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>server.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>server-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>server.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>server-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 </li>
 <li>
@@ -24501,8 +24612,43 @@ with your value:</p>
 </li>
 <li>
 <p>Create a Kubernetes Secret for external client connections:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>client.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>client-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>client.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>client-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
+</li>
+<li>
+<p>If backups are enabled, generate the PBM client certificate. It has no hostnames and is valid only for client authentication:</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; pbm-config.json</span>
+<span class="s">  {</span>
+<span class="s">    "signing": {</span>
+<span class="s">      "default": {</span>
+<span class="s">        "expiry": "87600h",</span>
+<span class="s">        "usages": ["signing", "key encipherment", "client auth"]</span>
+<span class="s">      }</span>
+<span class="s">    }</span>
+<span class="s">  }</span>
+<span class="s">EOF</span>
+cat<span class="w"> </span><span class="s">&lt;&lt;EOF | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=./pbm-config.json - | cfssljson -bare pbm</span>
+<span class="s">  {</span>
+<span class="s">    "CN": "${CLUSTER_NAME}-pbm",</span>
+<span class="s">    "names": [</span>
+<span class="s">      {</span>
+<span class="s">        "O": "PBM"</span>
+<span class="s">      }</span>
+<span class="s">    ],</span>
+<span class="s">    "key": {</span>
+<span class="s">      "algo": "rsa",</span>
+<span class="s">      "size": 2048</span>
+<span class="s">    }</span>
+<span class="s">  }</span>
+<span class="s">EOF</span>
+</code></pre></div>
+<p><code>cfssl</code> warns that the certificate lacks a <code>hosts</code> field. That’s expected for a client certificate, so you can ignore the warning.</p>
+</li>
+<li>
+<p>Create a Kubernetes Secret for the PBM client certificate:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>pbm.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>pbm-key.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<p>The Secret needs only <code>tls.crt</code> and <code>tls.key</code>. When <code>tls.allowInvalidCertificates</code> is <code>false</code>, the backup agent verifies the MongoDB server with the CA from the <code>my-cluster-name-ssl</code> Secret.</p>
 </li>
 </ol>
 </div>
@@ -24581,7 +24727,7 @@ with your value:</p>
 </li>
 <li>
 <p>Create a Kubernetes Secret for internal cluster communication:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>server.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>server-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>server.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>server-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 </li>
 <li>
@@ -24612,8 +24758,43 @@ with your value:</p>
 </li>
 <li>
 <p>Create a Kubernetes Secret for external client connections:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>client.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>client-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>client.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>client-key.pem<span class="w"> </span>--from-file<span class="o">=</span>ca.crt<span class="o">=</span>ca.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
+</li>
+<li>
+<p>If backups are enabled, generate the PBM client certificate. It has no hostnames and is valid only for client authentication:</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; pbm-config.json</span>
+<span class="s">  {</span>
+<span class="s">    "signing": {</span>
+<span class="s">      "default": {</span>
+<span class="s">        "expiry": "87600h",</span>
+<span class="s">        "usages": ["signing", "key encipherment", "client auth"]</span>
+<span class="s">      }</span>
+<span class="s">    }</span>
+<span class="s">  }</span>
+<span class="s">EOF</span>
+cat<span class="w"> </span><span class="s">&lt;&lt;EOF | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=./pbm-config.json - | cfssljson -bare pbm</span>
+<span class="s">  {</span>
+<span class="s">    "CN": "${CLUSTER_NAME}-pbm",</span>
+<span class="s">    "names": [</span>
+<span class="s">      {</span>
+<span class="s">        "O": "PBM"</span>
+<span class="s">      }</span>
+<span class="s">    ],</span>
+<span class="s">    "key": {</span>
+<span class="s">      "algo": "rsa",</span>
+<span class="s">      "size": 2048</span>
+<span class="s">    }</span>
+<span class="s">  }</span>
+<span class="s">EOF</span>
+</code></pre></div>
+<p><code>cfssl</code> warns that the certificate lacks a <code>hosts</code> field. That’s expected for a client certificate, so you can ignore the warning.</p>
+</li>
+<li>
+<p>Create a Kubernetes Secret for the PBM client certificate:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>--from-file<span class="o">=</span>tls.crt<span class="o">=</span>pbm.pem<span class="w"> </span>--from-file<span class="o">=</span>tls.key<span class="o">=</span>pbm-key.pem<span class="w"> </span>--type<span class="o">=</span>kubernetes.io/tls<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<p>The Secret needs only <code>tls.crt</code> and <code>tls.key</code>. When <code>tls.allowInvalidCertificates</code> is <code>false</code>, the backup agent verifies the MongoDB server with the CA from the <code>my-cluster-name-ssl</code> Secret.</p>
 </li>
 </ol>
 </div>
@@ -24625,14 +24806,19 @@ with your value:</p>
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span><span class="w">          </span><span class="c1"># External certificate secret</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span><span class="w">  </span><span class="c1"># Internal certificate secret</span>
+<span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span><span class="w">       </span><span class="c1"># PBM client certificate secret</span>
 </code></pre></div>
+<p>If you name the PBM Secret <code>&lt;cluster-name&gt;-pbm</code>, you can omit <code>secrets.sslPBM</code>: that’s the default.</p>
 <h2 id="tls-manual-important-notes">Important notes<a class="headerlink" href="#tls-manual-important-notes" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>If you only create the external certificate, the Operator will use it for both external and internal communications instead of generating a separate internal certificate.</p>
 </li>
 <li>
-<p>The commands above use <code>rs0</code> as the replica set name (the default). If you set a different name in the <code>replsets.name</code> Custom Resource option, update the commands accordingly.</p>
+<p>When you provide your own external certificate and backups are enabled, the Operator doesn’t generate the PBM client certificate. Create the PBM Secret yourself, or the Operator stops reconciling the cluster. See <a href="#tls-manual-troubleshooting">Troubleshooting</a>.</p>
+</li>
+<li>
+<p>The commands use <code>rs0</code> as the replica set name (the default). If you set a different name in the <code>replsets.name</code> Custom Resource option, update the commands accordingly.</p>
 </li>
 </ol>
 <h2 id="tls-manual-additional-resources">Additional resources<a class="headerlink" href="#tls-manual-additional-resources" title="Permanent link">¶</a></h2>
@@ -24641,7 +24827,7 @@ with your value:</p>
 <li>Review MongoDB certificate requirements in the <a href="https://www.mongodb.com/docs/manual/tutorial/configure-ssl/#member-certificate-requirements">upstream documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></li>
 </ul>
 <h2 id="tls-manual-verify-the-certificates">Verify the certificates<a class="headerlink" href="#tls-manual-verify-the-certificates" title="Permanent link">¶</a></h2>
-<p>Confirm both Secrets exist and carry the three expected keys:</p>
+<p>Confirm the Secrets exist and carry the three expected keys:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">','</span><span class="w"> </span><span class="s1">'\n'</span>
 </code></pre></div>
 <p>You should see <code>ca.crt</code>, <code>tls.crt</code>, and <code>tls.key</code>. Check the certificate is valid for the
@@ -24651,7 +24837,32 @@ names the cluster uses:</p>
 </code></pre></div>
 <p>The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is
 otherwise valid but missing those names produces connection failures that look like TLS
-misconfiguration rather than a naming problem.</p></body></html></section><section class="print-page" id="tls-update" heading-number="9.6.2.3"><html><head>
+misconfiguration rather than a naming problem.</p>
+<p>If backups are enabled, check that the PBM certificate is a client certificate with its own subject:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-subject<span class="w"> </span>-ext<span class="w"> </span>extendedKeyUsage
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>subject=O=PBM, CN=my-cluster-name-pbm
+X509v3 Extended Key Usage:
+    TLS Web Client Authentication
+</code></pre></div>
+<p>The subject shows <code>O=PBM</code>, and the extended key usage is <code>TLS Web Client Authentication</code> only.</p>
+</details>
+<h2 id="tls-manual-troubleshooting">Troubleshooting<a class="headerlink" href="#tls-manual-troubleshooting" title="Permanent link">¶</a></h2>
+<h3 id="tls-manual-the-cluster-stops-reconciling-after-you-provide-your-own-certificates">The cluster stops reconciling after you provide your own certificates<a class="headerlink" href="#tls-manual-the-cluster-stops-reconciling-after-you-provide-your-own-certificates" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> the cluster is in the <code>error</code> state. The status message and the Operator log report:</p>
+<div class="no-copy highlight"><pre><span></span><code>TLS secrets handler: "PBM client TLS secret my-cluster-name-pbm is required when custom SSL secret my-cluster-name-ssl is provided and backups are enabled". Please create your TLS secret my-cluster-name-ssl manually or setup cert-manager correctly
+</code></pre></div>
+<p>The database Pods keep running, but the Operator doesn’t apply other changes until you fix this.</p>
+<p><strong>Cause:</strong> you created the external Secret yourself, backups are enabled, <code>crVersion</code> is 1.24.0 or later, and the PBM client Secret doesn’t exist. Starting with version 1.24.0, the Operator doesn’t create the PBM certificate when the external certificate comes from you.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Generate the PBM client certificate with the same CA as your external certificate, as described in <a href="#tls-manual-generate-certificates">Generate certificates</a>.</li>
+<li>Create the Secret with the name from the error message, or set its name in <code>secrets.sslPBM</code>.</li>
+<li>Wait for the next reconciliation. The cluster returns to <code>ready</code>. It can take a minute or two, because the Operator retries with a delay.</li>
+</ol></body></html></section><section class="print-page" id="tls-update" heading-number="9.6.2.3"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -24674,12 +24885,13 @@ misconfiguration rather than a naming problem.</p></body></html></section><secti
 <h2 id="tls-update-check-your-certificates-for-expiration">Check your certificates for expiration<a class="headerlink" href="#tls-update-check-your-certificates-for-expiration" title="Permanent link">¶</a></h2>
 <ol>
 <li>
-<p>First, check the necessary secrets names (<code>my-cluster-name-ssl</code> and
-    <code>my-cluster-name-ssl-internal</code> by default):</p>
+<p>First, check the necessary secrets names (<code>my-cluster-name-ssl</code>,
+    <code>my-cluster-name-ssl-internal</code> and, when backups are enabled, <code>my-cluster-name-pbm</code> by default):</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>certificate
 </code></pre></div>
 <p>You will have the following response:</p>
 <div class="no-copy highlight"><pre><span></span><code>NAME                           READY   SECRET                         AGE
+my-cluster-name-pbm            True    my-cluster-name-pbm            49m
 my-cluster-name-ssl            True    my-cluster-name-ssl            49m
 my-cluster-name-ssl-internal   True    my-cluster-name-ssl-internal   49m
 </code></pre></div>
@@ -24705,7 +24917,7 @@ my-cluster-name-psmdb-ca-issuer   True    61m
 <code>my-cluster-name-psmdb-ca-issuer</code> issuer is used to create a self signed
 CA certificate (<code>my-cluster-name-ca-cert</code>), and then the
 <code>my-cluster-name-psmdb-issuer</code> issuer is used to create SSL certificates
-(<code>my-cluster-name-ssl</code> and <code>my-cluster-name-ssl-internal</code>) signed by
+(<code>my-cluster-name-ssl</code>, <code>my-cluster-name-ssl-internal</code> and <code>my-cluster-name-pbm</code>) signed by
 the <code>my-cluster-name-ca-cert</code> CA certificate.</p>
 </div>
 </div>
@@ -24734,11 +24946,16 @@ not in the database namespace.</p>
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-ssl-internal<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
 <span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.ca\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
+<span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret/my-cluster-name-pbm<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-dates
 <span class="w">  </span><span class="o">}</span>
 </code></pre></div>
 <p>The resulting output will be self-explanatory:</p>
-<div class="no-copy highlight"><pre><span></span><code>notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
-notBefore=Apr 25 12:09:38 2022 GMT notAfter=Jul 24 12:09:38 2022 GMT
+<div class="no-copy highlight"><pre><span></span><code>notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
+notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
+notBefore=Apr 25 12:09:38 2026 GMT
+notAfter=Jul 24 12:09:38 2026 GMT
 </code></pre></div>
 </li>
 </ol>
@@ -24834,7 +25051,7 @@ Operator version prior to 1.9.0), you should move through the
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>issuer/my-cluster-name-psmdb-ca-issuer<span class="w"> </span>issuer/my-cluster-name-psmdb-issuer<span class="w"> </span>
-<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal
+<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal<span class="w"> </span>certificate/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 <span class="w">  </span><span class="o">}</span>
 </code></pre></div>
 </div>
@@ -24842,7 +25059,7 @@ Operator version prior to 1.9.0), you should move through the
 <p>If the Operator manages issuers as <code>ClusterIssuer</code> resources:</p>
 <div class="highlight"><pre><span></span><code><span class="o">{</span>
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterissuer/my-cluster-name-psmdb-ca-issuer<span class="w"> </span>clusterissuer/my-cluster-name-psmdb-issuer
-<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal
+<span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>certificate/my-cluster-name-ssl<span class="w"> </span>certificate/my-cluster-name-ssl-internal<span class="w"> </span>certificate/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>certificate/my-cluster-name-ca-cert
 <span class="w">  </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>secret/my-cluster-name-ca-cert
 <span class="w">  </span><span class="o">}</span>
@@ -24859,8 +25076,9 @@ organization’s issuer.</p>
 </li>
 <li>
 <p>Delete Secrets to force the SSL reconciliation:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>secret/my-cluster-name-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>secret/my-cluster-name-ssl<span class="w"> </span>secret/my-cluster-name-ssl-internal<span class="w"> </span>secret/my-cluster-name-pbm<span class="w"> </span>--ignore-not-found
 </code></pre></div>
+<p>The <code>my-cluster-name-pbm</code> Secret and <code>Certificate</code> exist only when backups are enabled, so the commands use <code>--ignore-not-found</code>. If you set <code>secrets.sslPBM</code>, use that Secret name. The <code>Certificate</code> name stays <code>my-cluster-name-pbm</code>. If you created the PBM Secret yourself, recreate it with a certificate signed by the new CA.</p>
 </li>
 <li>
 <p>Check certificates to make sure reconciliation have succeeded.</p>
@@ -24896,11 +25114,11 @@ if you want to preserver Persistent Volumes with the data.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="tls-update-__tabbed_3_1" name="tls-update-__tabbed_3" type="radio"><input id="tls-update-__tabbed_3_2" name="tls-update-__tabbed_3" type="radio"><div class="tabbed-labels"><label for="tls-update-__tabbed_3_1">Namespace-scoped Issuer (default)</label><label for="tls-update-__tabbed_3_2">ClusterIssuer</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-issuer<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>issuer.cert-manager.io/cluster1-psmdb-issuer<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-pbm<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal<span class="w"> </span>secret/cluster1-pbm<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace_name&gt;<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl-internal<span class="w"> </span>certificate.cert-manager.io/cluster1-ssl<span class="w"> </span>certificate.cert-manager.io/cluster1-pbm<span class="w"> </span>secret/cluster1-ssl<span class="w"> </span>secret/cluster1-ssl-internal<span class="w"> </span>secret/cluster1-pbm<span class="w"> </span>--ignore-not-found
 kubectl<span class="w"> </span>delete<span class="w"> </span>clusterissuer.cert-manager.io/cluster1-psmdb-ca-issuer<span class="w"> </span>clusterissuer.cert-manager.io/cluster1-psmdb-issuer
 kubectl<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>delete<span class="w"> </span>certificate.cert-manager.io/cluster1-ca-cert<span class="w"> </span>secret/cluster1-ca-cert
 </code></pre></div>
@@ -24993,10 +25211,11 @@ set by <a href="#env-vars-operator-certmanager_namespace"><code>CERTMANAGER_NAME
 <p class="admonition-title">Version added: 1.23.0</p>
 </div>
 <p>You can control how the Operator behaves when it cannot find TLS Secrets.</p>
-<p>The Operator expects and uses two Secrets for TLS communication. They are referenced in the following Custom Resource options:</p>
+<p>The Operator expects and uses the following Secrets for TLS communication. They are referenced in the following Custom Resource options:</p>
 <ul>
 <li><code>spec.secrets.ssl</code> - the Secret with the certificates for communication between client applications and the cluster.</li>
 <li><code>spec.secrets.sslInternal</code> - the Secret with the certificates for communication between Percona Server for MongoDB instances in the cluster and for internal authorization.</li>
+<li><code>spec.secrets.sslPBM</code> - the Secret with the client certificate that the Operator and the backup agents present to the cluster. Starting with version 1.24.0, the Operator needs it when backups are enabled.</li>
 </ul>
 <p>To learn more, see <a href="#tls-tls-certificates">TLS Certificates</a></p>
 <p>The Operator has two policies to manage TLS certificates. You define a policy via the <code>spec.tls.certManagementPolicy</code> option in the Custom Resource:</p>
@@ -25029,7 +25248,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <td><code>userProvidedOnly</code></td>
 </tr>
 <tr>
-<td>External Secrets or GitOps-managed <code>&lt;cluster&gt;-ssl</code> / <code>&lt;cluster&gt;-ssl-internal</code> Secrets</td>
+<td>External Secrets or GitOps-managed <code>&lt;cluster&gt;-ssl</code>, <code>&lt;cluster&gt;-ssl-internal</code> and <code>&lt;cluster&gt;-pbm</code> Secrets</td>
 <td><code>userProvidedOnly</code></td>
 </tr>
 <tr>
@@ -25065,17 +25284,19 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 </tr>
 </tbody>
 </table>
+<p>If you provide your own external Secret in the <code>secrets.ssl</code> option and the PBM client Secret is missing, the Operator doesn’t set <code>TLSSecretsReady=False</code> under either policy. The cluster goes to the <code>error</code> state with the message <code>PBM client TLS secret &lt;name&gt; is required when custom SSL secret &lt;name&gt; is provided and backups are enabled</code>. Pods keep running.</p>
 <h2 id="tls-cert-management-policy-configuration">Configuration<a class="headerlink" href="#tls-cert-management-policy-configuration" title="Permanent link">¶</a></h2>
 <h3 id="tls-cert-management-policy-prerequisites">Prerequisites<a class="headerlink" href="#tls-cert-management-policy-prerequisites" title="Permanent link">¶</a></h3>
 <p>Ensure you have:</p>
 <ol>
-<li>Created both TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. See <a href="#tls-manual">Generate TLS certificates manually</a>.</li>
+<li>Created the TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. When backups are enabled, this includes the PBM client Secret. See <a href="#tls-manual">Generate TLS certificates manually</a>.</li>
 <li>
 <p>Referenced the Secret names in the Custom Resource:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
+<span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span>
 </code></pre></div>
 </li>
 <li>
@@ -25097,6 +25318,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
+<span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span>
 <span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
@@ -25125,14 +25347,14 @@ TLSSecretNotFound
 TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
 </code></pre></div>
 </details>
-<p>The cluster may still show Pods as running while <code>TLSSecretsReady</code> is <code>False</code>. Treat this as a <strong>degraded</strong> state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.</p>
+<p>The cluster may still show Pods as running while <code>TLSSecretsReady</code> is <code>False</code>. If the missing Secret is the PBM client Secret, the cluster state is also <code>error</code>. Treat this as a <strong>degraded</strong> state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.</p>
 <p>Check Operator logs for errors mentioning <code>certManagementPolicy is userProvidedOnly</code>.</p>
 <p>See <a href="#cr-statuses-conditions">Custom resource statuses</a> for more on cluster conditions.</p>
 <h2 id="tls-cert-management-policy-restore-tls-secrets">Restore TLS Secrets<a class="headerlink" href="#tls-cert-management-policy-restore-tls-secrets" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Confirm which Secret is missing:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>my-cluster-name-pbm
 </code></pre></div>
 </li>
 <li>
@@ -25157,7 +25379,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <ol>
 <li>Update the TLS Secrets with new certificate material (same Secret names).</li>
 <li>Follow the steps in <a href="#tls-update">Update certificates</a> for your certificate source.</li>
-<li>Confirm <code>TLSSecretsReady=True</code> after both Secrets are valid.</li>
+<li>Confirm <code>TLSSecretsReady=True</code> after all Secrets are valid.</li>
 </ol>
 <p>The Operator picks up new Secret content and reconciles Pods according to its normal TLS update flow.</p></body></html></section><section class="print-page" id="tls-disable" heading-number="9.6.2.5"><html><head>
         <script type="text/javascript">
@@ -29091,6 +29313,10 @@ external audit system:</p>
 <td><code>PBM_AGENT_TLS_ENABLED</code></td>
 <td><code>"true"</code> when TLS is enabled.</td>
 </tr>
+<tr>
+<td><code>PBM_AGENT_TLS_DIR</code></td>
+<td>Directory with the PBM client certificate, <code>/etc/mongodb-pbm</code>. The backup agent reads <code>tls.crt</code> and <code>tls.key</code> from it. Set when TLS and backups are enabled and <code>crVersion</code> is 1.24.0 or later. During a physical restore, the Operator also sets it on the <code>mongod</code> container. See <a href="#tls">Transport Layer Security (TLS)</a>.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="env-vars-cluster-scheduled-backup-job">Scheduled backup job<a class="headerlink" href="#env-vars-cluster-scheduled-backup-job" title="Permanent link">¶</a></h2>
@@ -29595,6 +29821,12 @@ external audit system:</p>
 <td><code>percona.com/ssl-hash</code></td>
 <td>Pods</td>
 <td>Stores the hash of the most recent TLS configuration</td>
+<td></td>
+</tr>
+<tr>
+<td><code>percona.com/pbm-tls-hash</code></td>
+<td>Pods</td>
+<td>Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It’s also set on <code>mongos</code> Pods, so they restart too. Available starting with version 1.24.0.</td>
 <td></td>
 </tr>
 <tr>
@@ -31230,7 +31462,7 @@ to apply image changes.</p>
 </table>
 <h3 id="operator-tls-extended-cert-manager-configuration-section"><a name="operator-issuerconf-section"></a>TLS (extended cert-manager configuration section)<a class="headerlink" href="#operator-tls-extended-cert-manager-configuration-section" title="Permanent link">¶</a></h3>
 <p>The <code>tls</code> section in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file contains various configuration options for additional customization of the <a href="#tls">Transport Layer Security</a>.</p>
-<p>The <a href="#operator-operator-issuerconf-section"><code>tls.issuerConf</code></a> options below control which cert-manager issuer
+<p>The <a href="#operator-tlsissuerconfname"><code>tls.issuerConf</code></a> options below control which cert-manager issuer
 signs MongoDB TLS certificates. See <a href="#tls-cert-manager">Configure TLS using cert-manager</a>
 for setup examples.</p>
 <h3 id="operator-tlsmode"><code>tls.mode</code><a class="headerlink" href="#operator-tlsmode" title="Permanent link">¶</a></h3>
@@ -31496,7 +31728,7 @@ has only two of them:</p>
 </tbody>
 </table>
 <h3 id="operator-secretssslinternal"><code>secrets.sslInternal</code><a class="headerlink" href="#operator-secretssslinternal" title="Permanent link">¶</a></h3>
-<p>A secret with TLS certificate generated for <em>internal</em> communications. When generated by the Operator, the name defaults to <code>&lt;cluster-name&gt;-sslInternal</code>. See <a href="#tls">Transport Layer Security (TLS)</a> for details.</p>
+<p>A secret with TLS certificate generated for <em>internal</em> communications. When generated by the Operator, the name defaults to <code>&lt;cluster-name&gt;-ssl-internal</code>. See <a href="#tls">Transport Layer Security (TLS)</a> for details.</p>
 <table>
 <thead>
 <tr>
@@ -31508,6 +31740,22 @@ has only two of them:</p>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
 <td><code>my-custom-ssl-internal</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-secretssslpbm"><code>secrets.sslPBM</code><a class="headerlink" href="#operator-secretssslpbm" title="Permanent link">¶</a></h3>
+<p>A Secret with the client TLS certificate that the Operator and the backup agents present when they connect to the database. The Secret holds the <code>tls.crt</code> and <code>tls.key</code> keys. The name defaults to <code>&lt;cluster-name&gt;-pbm</code>. The Operator creates this certificate when TLS and backups are enabled and <code>crVersion</code> is 1.24.0 or later, unless you provide your own external certificate in <code>secrets.ssl</code>. With cert-manager, the <code>Certificate</code> is always named <code>&lt;cluster-name&gt;-pbm</code>. This option sets only the Secret name. Available starting with version 1.24.0. See <a href="#tls">Transport Layer Security (TLS)</a> for how the certificates work together.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>my-cluster-name-pbm</code></td>
 </tr>
 </tbody>
 </table>
@@ -41205,7 +41453,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 <tr>
 <td><code>TLSSecretsReady</code></td>
-<td>TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0.</td>
+<td>TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. Starting with version 1.24.0, when backups are enabled and <code>certManagementPolicy</code> is <code>userProvidedOnly</code>, a missing PBM client Secret also sets this condition to <code>False</code>. If you provide your own external Secret, a missing PBM client Secret puts the cluster in the <code>error</code> state instead.</td>
 </tr>
 <tr>
 <td><code>ImageUpgradeInProgress</code></td>
