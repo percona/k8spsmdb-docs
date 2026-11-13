@@ -176,3 +176,32 @@ The following sections provide guidelines how to:
 To use TLS for external traffic, you need to additionally configure your client application. See [this blog post :octicons-link-external-16:](https://www.percona.com/blog/authenticating-your-clients-to-mongodb-on-kubernetes-using-x509-certificates/) for detailed instruction with examples. Also, you can check the [official MongoDB documentation :octicons-link-external-16:](https://www.mongodb.com/docs/manual/tutorial/configure-ssl-clients/). 
 
 For clients outside of your Kubernetes-based environment, you must also [expose your cluster](expose.md).
+
+## Hostnames in the certificates
+
+When the Operator issues certificates either itself or through cert-manager, it lists the hostnames that clients and cluster members use in the certificate's Subject Alternative Names (SANs). A client that verifies hostnames accepts the connection only if the hostname it connects to is in this list. The list includes:
+
+* `localhost`
+* The Services of each replica set, the config server replica set and `mongos`, with and without the namespace and the `svc.cluster.local` suffix, plus wildcards for the Pods behind them. For example `*.my-cluster-name-rs0.<namespace>.svc.cluster.local`
+* The Service names and wildcards with the namespace and the [multi-cluster](replication-mcs.md) DNS suffix, `svc.clusterset.local` by default. For example `my-cluster-name-rs0.<namespace>.svc.clusterset.local`, plus `*.<namespace>.svc.clusterset.local`. The Operator adds these names even if multi-cluster deployment is turned off
+* Hostnames from [split-horizon DNS](expose.md#exposing-replica-set-with-split-horizon-dns), if you configure it
+* The `mongot` Services, if you [enable full-text and vector search](search-overview.md)
+* Starting with `crVersion` 1.24.0, the per-Pod `mongos` Services, when [`sharding.mongos.expose.servicePerPod`](operator.md#shardingmongosexposeserviceperpod) is `true`. The Services are `<cluster-name>-mongos-<N>`, `<cluster-name>-mongos-<N>.<namespace>`, `<cluster-name>-mongos-<N>.<namespace>.svc.cluster.local` and `<cluster-name>-mongos-<N>.<namespace>.svc.clusterset.local` for each `mongos` Pod. The wildcards don't match these names, because the per-Pod Services aren't subdomains of the `mongos` Service.
+
+If you [generate certificates yourself](tls-manual.md), add the same hostnames to your certificates.
+
+The certificates don't include the per-Pod Services that the Operator creates when you [expose replica set Pods](expose.md), such as `<cluster-name>-rs0-<N>.<namespace>.svc.cluster.local`. Clients that verify hostnames can't connect through these Services.
+
+!!! warning
+
+    Don't enable `servicePerPod` for `mongos` if `crVersion` is earlier than 1.24.0 and `tls.allowInvalidCertificates` is `false`. The certificates then don't include the per-Pod `mongos` hostnames, the Operator can't connect to `mongos`, and the cluster stays in the `error` state. To fix it, set `crVersion` to 1.24.0. For legacy Operator-generated certificates, this repair requires the `<cluster-name>-ca-cert` Secret. If it is absent, regenerate the certificates; if the new certificates use a different CA, update client trust.
+
+### When the Operator re-issues certificates
+
+Starting with version 1.24.0, the Operator re-issues a certificate only when a hostname that the cluster needs is missing from it. For example, it re-issues the certificates when you enable `servicePerPod` for `mongos`, or when you scale `mongos` to more Pods than the certificate covers. With `SmartUpdate`, a re-issued certificate triggers one rolling restart of all Pods. The `mongos`-first restart order applies when `tls.allowInvalidCertificates` is `false`; in that case, `mongos` restarts before the config server replica set and the other replica sets. The same rule applies to other hostnames: the Operator re-issues the certificates when you add a replica set, split-horizon hostnames or search, but not when you remove them.
+
+For legacy Operator-generated certificates, automatic re-issuance requires the `<cluster-name>-ca-cert` Secret. If it is absent, regenerate the certificates; if the new certificates use a different CA, update client trust.
+
+The Operator doesn't remove hostnames that are no longer needed. When you scale `mongos` down, the certificates stay the same and no Pods restart. When you scale back up to a size the certificate already covers, no Pods restart either. The next time the Operator re-issues the certificates for another reason, the new certificates contain only the hostnames that the cluster needs at that moment.
+
+This applies only to certificates that the Operator issues, itself or through cert-manager. The Operator doesn't change certificates that you provide.

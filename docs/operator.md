@@ -3499,7 +3499,7 @@ The [IP address type  :octicons-link-external-16:](https://kubernetes.io/docs/co
 
 ### `sharding.mongos.expose.servicePerPod`
 
-If set to `true`, a separate ClusterIP Service is created for each mongos instance.
+If set to `true`, a separate ClusterIP Service is created for each mongos instance. Starting with version 1.24.0, the certificates that the Operator issues include the hostnames of these Services. See [Hostnames in the certificates](TLS.md#hostnames-in-the-certificates).
 
 | Value type  | Example    |
 | ----------- | ---------- |
