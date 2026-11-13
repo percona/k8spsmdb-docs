@@ -30,4 +30,4 @@ The way to instruct the Operator how it should run the database upgrades is to s
 ## See also
 
 * [Upgrade the Operator](update-operator.md), if it also needs updating
-* [Before you upgrade: limits you should know](update.md#before-you-upgrade-limits-you-should-know)
+* [Before you upgrade](update.md#before-you-upgrade)

@@ -146,7 +146,9 @@ The maximum size to which storage can be automatically resized.
 
 ### `crVersion`
 
-Version of the Operator the Custom Resource belongs to.
+The Operator version whose behavior the cluster follows. Changing this value rolls the database Pods.
+
+The option is optional. If you omit it, the Operator writes its own version into the Custom Resource on the first reconcile and keeps that value after later Operator upgrades. We recommend setting it explicitly. See [What `crVersion` does](update-crversion.md#what-crversion-does).
 
 | Value type  | Example    |
 | ----------- | ---------- |
