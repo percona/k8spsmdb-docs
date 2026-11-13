@@ -166,13 +166,13 @@ For example, you want to also rotate audit log files. Here's how to provide this
 
 Starting with version 1.22.0, the default logrotate schedule changed from running once per hour to running once per day.
 
-Use the `logcollector.logrotate.schedule` option in the Custom Resource to set a custom rotation schedule as a cron expression. For example, set the new rotation time to 2:15 a.m every Sunday:
+Use the `logcollector.logrotate.schedule` option in the Custom Resource to set a custom rotation schedule. The value is a five-field [crontab expression  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron): minute, hour, day of month, month, and day of week. For example, set the new rotation time to 2:15 a.m. every Sunday:
 
 ```yaml
 spec:
   logcollector:
     logrotate:
-      schedule: "0 15 2 * * 0"
+      schedule: "15 2 * * 0"   # 2:15 a.m. every Sunday
 ```
 
 Apply the configuration:
