@@ -1,7 +1,7 @@
 # About scaling and storage
 
 A cluster rarely stays the size you first deployed it at. This page covers the three ways
-the Operator lets a cluster grow - more members, bigger members, and bigger disks - and
+the Operator lets you change the size of a cluster - members, resources and disks - and
 which of them need planning before you deploy.
 
 ## Ways to scale
@@ -10,7 +10,7 @@ which of them need planning before you deploy.
 |---|---|---|
 | *Horizontal scaling* | The number of replica set members (`replsets.size`). | You need more redundancy or more read capacity. |
 | *Vertical scaling* | CPU and memory requests and limits (`resources`). | Members are resource-bound rather than too few. |
-| *Storage scaling* | The size of the persistent volumes behind the members (`replsets.volumeSpec`). | The dataset outgrows the disks. |
+| *Storage scaling* | The size of the persistent volumes behind the members (`replsets.volumeSpec`). | The dataset outgrows the disks. Alternatively, it shrinks and you want to cut storage costs. |
 
 Horizontal and vertical scaling are covered in
 [Horizontal and vertical scaling](scaling.md).
@@ -36,12 +36,21 @@ Volume expansion is controlled by the `storageScaling` section of the Custom Res
   system such as the Kubernetes Vertical Pod Autoscaler. When enabled, the Operator skips
   its own autoscaling and resize operations.
 
-For the full step-by-step procedures - automatic resizing, Volume Expansion, manual
-resizing without Volume Expansion, and external autoscalers - see
-[Resize storage](scaling-storage-resize.md).
-
 Not every storage class supports expansion. If a resize does not take effect, start with
 [Troubleshoot storage resizing](debug-storage.md).
+
+### Shrinking volumes
+
+!!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+The Operator can reduce
+the volume size. Kubernetes can't shrink a PVC, so the Operator replaces the volume of one
+member at a time and lets MongoDB copy the data through an initial sync. Shrinking is turned
+off by default.
+
+For the full step-by-step procedures - automatic resizing, Volume Expansion, shrinking,
+manual resizing without Volume Expansion, and external autoscalers - see
+[Resize storage](scaling-storage-resize.md).
 
 ### Volume attributes
 
@@ -51,10 +60,11 @@ Some storage systems expose tunables such as IOPS and throughput through a
 
 ## Limitations
 
-* **Volumes cannot shrink.** Kubernetes supports expanding a PersistentVolumeClaim, not
-  reducing it, and the Operator rejects a spec that asks for less storage than is already
-  provisioned. To move to smaller volumes you have to create a new cluster and restore into
-  it.
+* **Shrinking replaces volumes.** Kubernetes supports expanding a PersistentVolumeClaim, not
+  reducing it. Starting with version 1.24.0, the Operator can [shrink storage](scaling-storage-resize.md#shrink-storage)
+  by replacing the volumes one member at a time, which takes an initial sync per member and
+  needs a replica set of at least two members. Without `enableVolumeShrink`, the Operator
+  keeps the current size when the spec asks for less storage.
 * Expansion depends on the storage class. A `StorageClass` without
   `allowVolumeExpansion: true` cannot grow its volumes at all, so this is worth checking
   before you need it rather than during an incident.

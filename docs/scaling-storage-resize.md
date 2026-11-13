@@ -8,13 +8,14 @@ storage supplied by the Kubernetes administrator,
 (PVC) - a request for storage from a user.
 
 Starting with Kubernetes v1.11, you can increase the size of an existing PVC object (considered stable since Kubernetes v1.24).
-Note that you **cannot** shrink the size of an existing PVC object.
+Note that you **cannot** shrink the size of an **existing** PVC object. However, the Operator can [shrink storage](#shrink-storage) by replacing the volumes one member at a time. This feature is available starting with the Operator version 1.24.0.
 
-Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:
+Use storage scaling to keep up with changing data size while keeping the cluster online. The Operator supports the following scaling options:
 
 * automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see [Resize mongos log storage](#resize-mongos-log-storage).
 * storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest
 * manual scaling - scale the storage manually.
+* storage shrinking - Reduce the storage size by replacing the volumes. See [Shrink storage](#shrink-storage).
 
 You can also use an external autoscaler with the Operator. Enabling an external autoscaler disables the Operator's internal logic for automatic storage resizing. Choose one method based on your environment and requirements; using both simultaneously is not supported.
 
@@ -229,6 +230,115 @@ The Operator resizes the existing `mongos` log PVCs in place. The logs stored on
 kubectl get pvc -l app.kubernetes.io/component=mongos -n <namespace>
 ```
 
+## Shrink storage
+
+!!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+You can shrink storage with the Operator to reduce the storage costs after your data has shrunk. For example, after you archived or dropped large collections.
+
+Since Kubernetes can only increase the storage and cannot reduce the size of an existing PVC, the Operator replaces the volumes instead: it deletes the PVC and the Pod of one member, lets Kubernetes create a smaller PVC for the new Pod, and waits until it receives the data from other members through an initial sync. Then it moves to the next member.
+
+Shrinking is turned off by default. To enable it, set the  `storageScaling.enableVolumeShrink` option to `true`.
+
+### How the Operator shrinks volumes
+
+The Operator shrinks each StatefulSet whose size you lowered. For example, for the `rs0` replica set, the Operator:
+
+1. Runs preflight checks. If a check fails, the Operator either waits or rejects the shrink. See [Before you shrink storage](#before-you-shrink-storage).
+2. Replaces the volumes of the secondary members one by one, starting with the highest Pod index. For each member, it deletes the PVC and the Pod and waits until the new Pod is ready and rejoins the replica set as a secondary.
+3. Steps down the primary and replaces its volume last.
+
+Non-voting and hidden members and `mongos` log volumes skip the step-down, because they never become primary. For a shard or the config server replica set of a sharded cluster, the Operator stops the balancer for the time of the shrink.
+
+The step-down triggers a primary election and briefly interrupts connections to the primary. Write availability during the rest of the shrink depends on the replica set topology: a two-voter replica set loses its voting majority while either member is unavailable, and a primary-secondary-arbiter replica set cannot acknowledge majority writes while a data-bearing member resyncs. For an online shrink, use at least three healthy data-bearing voting members and ensure the remaining members can satisfy your configured write concern.
+
+While the shrink runs, the cluster status is `initializing`. The Operator doesn't run [Smart Update](update.md#update-strategies) and doesn't resize volumes automatically until the shrink finishes.
+
+### Before you shrink storage
+
+* The cluster is `ready`, and every replica set member is `PRIMARY`, `SECONDARY` or `ARBITER`.
+* The replica set has at least two members, three recommended. A single member has no sync source for the initial sync, so the Operator rejects the shrink.
+* You have a recent [backup](backups.md). While a member resyncs, the replica set has one data-bearing member less. In a three-member replica set, losing one more member during that time leaves it without a primary.
+* No backup or restore is running. The Operator waits until they finish.
+* The data on every Pod fits into the new size with headroom. By default, the used space must not exceed 80% of the new size. You can change this threshold with the [`storageScaling.shrinkOpts.maxDiskUsagePercent`](operator.md#storagescalingshrinkoptsmaxdiskusagepercent) option in the Custom Resource.
+* You planned for the time and load. Each member copies all of its data again through an initial sync, so a shrink takes longer and puts more load on the cluster than an expansion. Run it outside peak hours.
+* You checked the `reclaimPolicy` of the storage class. The Operator deletes the old PVCs. With `Delete`, Kubernetes also deletes the old volumes. With `Retain`, the old, larger PersistentVolumes stay until you delete them, and your storage provider keeps charging for them.
+* You set the size you want. You can't stop a shrink once it starts. The Operator keeps the target size from `status.pvcShrink` until all members have the new volume, even if you change the size or turn off `enableVolumeShrink`.
+
+### Shrink the storage {.power-number}
+
+1. Edit the `deploy/cr.yaml` manifest. Configure the `storageScaling` subsection:
+    
+    * Set the `storageScaling.enableVolumeShrink` option to `true`
+    * Optionally, set the disk usage threshold in the `storageScaling.shrinkOpts.maxDiskUsagePercent`:
+    * Set the smaller size for the component you want to shrink, for example a replica set:
+
+    ```yaml
+    spec:
+      storageScaling:
+        enableVolumeShrink: true
+        shrinkOpts:
+          maxDiskUsagePercent: 80
+      replsets:
+      - name: rs0
+        volumeSpec:
+          persistentVolumeClaim:
+            resources:
+              requests:
+                storage: <NEW SMALLER SIZE>
+    ```
+
+    The same works for `sharding.configsvrReplSet.volumeSpec`, `replsets.nonvoting.volumeSpec`, `replsets.hidden.volumeSpec` and `sharding.mongos.logs.persistentVolumeClaim`. For `mongos`, the new log volumes start empty: the logs on the old volumes are lost.
+
+2. Apply the configuration:
+
+    ```bash
+    kubectl apply -f deploy/cr.yaml -n <namespace>
+    ```
+
+### Monitor the shrink
+
+The Operator records the progress in `status.pvcShrink` of the Custom Resource, with an entry for each StatefulSet it shrinks:
+
+```bash
+kubectl get psmdb <cluster-name> -n <namespace> -o jsonpath='{.status.pvcShrink}'
+```
+
+* `targetSize` - the new size
+* `startedAt` - when the shrink started
+* `phase` - the current step: `secondaries`, `stepdown` or `primary`
+* `processedPods` - the Pods that already have the smaller volume
+* `primaryPod` - the member the Operator handles last
+
+The entry disappears when the shrink for that StatefulSet finishes.
+
+### Verify the shrink
+
+```bash
+kubectl get psmdb -n <namespace>
+kubectl get psmdb <cluster-name> -n <namespace> -o jsonpath='{.status.pvcShrink}'
+kubectl get pvc -n <namespace>
+```
+
+The cluster returns to `ready`, `status.pvcShrink` is empty, and the PVCs of the component show the new capacity.
+
+### How shrinking works with volume expansion and automatic resizing
+
+The Operator compares the size in the Custom Resource with the current size of the PVCs:
+
+* A larger size is an expansion. The Operator resizes the PVCs in place if `enableVolumeScaling` is `true`.
+* A smaller size is a shrink. The Operator replaces the volumes if `enableVolumeShrink` is `true`. If shrinking is turned off, the Operator keeps the current size. With `enableVolumeScaling: true`, it also reports the `requested storage (...) is less than actual storage (...)` error.
+* If `enableExternalAutoscaling` is `true`, the Operator neither expands nor shrinks volumes.
+
+[Automatic storage resizing](#automatic-storage-resizing) grows the volumes by writing the new size into the Custom Resource. Keep this in mind when you turn on both automatic resizing and shrinking:
+
+* If a tool such as Argo CD or Flux resets the Custom Resource to the size from your Git repository, the reset size is smaller than the size that automatic resizing set. With shrinking turned on, the Operator then shrinks the volumes back and every member runs an initial sync. Update the size in Git after automatic resizing, or exclude the storage size from synchronization.
+* Automatic resizing is paused while a shrink runs. After the shrink, it grows the volume again as soon as the usage exceeds `autoscaling.triggerThresholdPercent`. Both thresholds default to 80%, so a volume that you shrink close to the limit can grow back shortly after. Shrink to a size that leaves more headroom than the autoscaling threshold.
+
+### Troubleshoot shrinking
+
+If the shrink doesn't start, the Operator rejects it, or the size in the Custom Resource changes back, see [Storage shrinking](debug-storage.md#storage-shrinking) in Troubleshoot storage for the symptom, cause and fix of each case.
+
 ## Manual scaling without Volume Expansion capability
 
 Manual scaling is the way to go if:
@@ -238,7 +348,7 @@ Manual scaling is the way to go if:
 * you do not rely on automated scaling.
 
 You will need to delete Pods and their persistent volumes one by one to resync 
-the data to the new volumes. **This way you can also shrink the storage.**
+the data to the new volumes. This way you can also shrink the storage. Starting with version 1.24.0, the Operator can do it for you: see [Shrink storage](#shrink-storage).
 
 Here's how to resize the storage:
 {.power-number}
