@@ -260,7 +260,7 @@ Common condition fields:
 | `sharding` | Sharding changes are in progress. |
 | `PBMReady` | PBM agents and storage are ready. |
 | `pendingSmartUpdate` | A smart update is pending but has not started. |
-| `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. |
+| `TLSSecretsReady` | TLS Secrets referenced in the Custom Resource exist and are available to the Operator. Available since Operator 1.23.0. Starting with version 1.24.0, when backups are enabled and `certManagementPolicy` is `userProvidedOnly`, a missing PBM client Secret also sets this condition to `False`. If you provide your own external Secret, a missing PBM client Secret puts the cluster in the `error` state instead. |
 | `ImageUpgradeInProgress` | An image change is still in progress, or it has finished and the cluster is not `ready` yet. |
 
 `status.conditions[].status` values:

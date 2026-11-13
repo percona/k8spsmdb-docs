@@ -86,6 +86,10 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 
 7. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 
+8. Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated [PBM client certificate](TLS.md) instead of the external server certificate. Upgrading the Operator alone doesn't change anything. The Operator creates the PBM certificate when you set `crVersion` to `1.24.0`, and the database Pods restart to mount it.
+
+    If TLS and backups are enabled and you provide your own external certificate in `secrets.ssl`, create the PBM client Secret **before** you set `crVersion` to `1.24.0`. Otherwise the Operator stops reconciling the cluster. See [Generate TLS certificates manually](tls-manual.md#generate-certificates) for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.
+
 ## Update guides
 
 [Update manually](update-crd-manual.md){.md-button}
