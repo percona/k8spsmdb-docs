@@ -34,7 +34,7 @@ The steps are the following:
     |-------|---------------|
     | `Recommended` | Automatic upgrade chooses the most recent version flagged as Recommended. For clusters created from scratch, MongoDB 8.0 is selected instead of 7.0 or 6.0, regardless of the image path. For existing clusters, the current major version branch (6.0 / 7.0 / 8.0) is preserved. |
     | `Latest` | Automatic upgrade chooses the most recent version available. Same clusters-created-from-scratch vs. existing-cluster behavior as `Recommended`. |
-    | `{major}-recommended` / `{major}-latest` (e.g. `8.0-recommended`, `7.0-latest`) | Same as `Recommended` / `Latest`, but pins the major MongoDB version so it won't shift for newly provisioned clusters. For example, `7.0-latest` will never move a new cluster to 8.0. |
+    | `{major}-recommended` / `{major}-latest` (e.g. `8.3-recommended`, `8.0-recommended`, `7.0-latest`) | Same as `Recommended` / `Latest`, but pins the major MongoDB version so it won't shift for newly provisioned clusters. For example, `7.0-latest` will never move a new cluster to 8.0. |
     | *version number* | Specify the desired version explicitly (version numbers look like {{ mongodb60recommended }}, {{ mongodb70recommended }}, etc.). Find supported versions  in the [Version compatibility matrix](versions.md). |
 
 4. Make sure to set the valid Version Server

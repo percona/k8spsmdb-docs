@@ -177,7 +177,7 @@ metadata:
   name: my-target-cluster
 spec:
   crVersion: "{{ release }}"
-  image: percona/percona-server-mongodb:{{ mongodb80recommended }}
+  image: percona/percona-server-mongodb:{{ mongodb83recommended }}
   replsets:
     - name: rs0
       size: 3

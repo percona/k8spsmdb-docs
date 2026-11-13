@@ -160,7 +160,7 @@ You can create application-level users manually. Run the commands below, substit
     1. Connect to Percona Server for MongoDB:
     
         ```bash
-        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- bash -il
         ```
 
         ??? example "Sample output"
@@ -198,7 +198,7 @@ You can create application-level users manually. Run the commands below, substit
     1. Connect to Percona Server for MongoDB:
     
         ```bash
-        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+        kubectl run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- bash -il
         ```
 
         ??? example "Sample output"

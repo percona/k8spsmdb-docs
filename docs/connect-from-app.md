@@ -71,7 +71,7 @@ If you already created the `percona-client` Pod from that page, skip to step 2.
       restartPolicy: Never
       containers:
       - name: percona-client
-        image: percona/percona-server-mongodb:{{ mongodb80recommended }}
+        image: percona/percona-server-mongodb:{{ mongodb83recommended }}
         command: ["sleep", "3600"]
         env:
         - name: MONGODB_URI

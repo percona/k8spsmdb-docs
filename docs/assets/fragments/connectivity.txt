@@ -32,7 +32,7 @@ To connect to Percona Server for MongoDB, use the connection string Secret that 
     `percona-client`:
 
     ```bash
-    {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    {{ commandName }} run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- bash -il
     ```
 
     Executing it may require some time to deploy the corresponding Pod.
@@ -65,7 +65,7 @@ If you need to build a connection URI yourself, retrieve credentials from the us
 3. Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod `percona-client`:
 
     ```bash
-    kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+    kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- bash -il
     ```
 
     It may take some time to deploy the corresponding Pod.
