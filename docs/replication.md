@@ -8,7 +8,7 @@ This section introduces two powerful deployment models — **multi-cluster** and
 
 At a glance, both models involve running Percona Server for MongoDB nodes across multiple environments. But their goals, scope, and setup differ.
 
-*  **Multi-cluster** deployments span multiple Kubernetes clusters, typically within the same cloud provider or region. This model is ideal for high availability, staging/production isolation, or cluster migration.
+*  **Multi-cluster** deployments span multiple Kubernetes clusters, typically within the same cloud provider or region. This model is ideal for high availability or staging/production isolation.
 *  **Multi-region** deployments extend MongoDB across geographically distributed data centers or cloud regions. This setup supports disaster recovery, latency optimization, and jurisdictional data control.
 
 While the underlying mechanics such as replica sets, TLS, and service exposure are similar, multi-region deployments introduce additional complexity around DNS, network reachability, and manual configuration.
@@ -26,6 +26,12 @@ The following diagram shows how the data is replicated between the sites.
 
 This separation ensures consistency and avoids conflicts when managing distributed deployments.
 
+#### Unmanaged mode
+
+With `unmanaged: true`, the Operator deploys the `mongod` Pods, their Services and Secrets, but doesn't configure the replica set. The Pods join the replica set of the Main site: through `replsets.externalNodes` when the Operator manages the Main site, or with `rs.add()` on the primary of a replica set outside the Operator. The Pods need the same internal authentication keyfile as that replica set. They copy its `admin` database, so the Operator's system users must exist there with the passwords from the users Secret of the Replica site.
+
+When you set `unmanaged: false`, the Operator takes over the replica set configuration. It keeps the host names you set in `replsetOverrides` and removes every member that isn't one of its Pods or listed in `externalNodes`.
+
 ### Voting members across sites
 
 MongoDB needs an **odd number of voting members** in each replica set for reliable primary elections. When you interconnect Main and Replica sites, you typically add remote members through `replsets.externalNodes` and keep the total voter count odd. Common approaches:
@@ -35,13 +41,26 @@ MongoDB needs an **odd number of voting members** in each replica set for reliab
 
 For a full example that deploys two data-bearing clusters and an arbiter site, then registers the arbiter on the Main site, see [Splitting a replica set across multiple data centers](replication-multi-dc.md).
 
+## Disaster recovery or migration
+
+Cross-site replication serves two goals. The mechanism is the same, but the end state differs:
+
+| | Disaster recovery | Migration |
+|---|---|---|
+| Goal | Keep a standby copy at another site | Move a deployment into the Operator |
+| End state | Both sites stay connected | Only the target stays. The source is decommissioned |
+| Kubernetes members | Stay unmanaged on the Replica site | Unmanaged only until the handover. Then the Operator manages them |
+| Last step | None. The sites keep replicating | Move the primary, remove the source members and hand the replica set to the Operator |
+| Guide | [Plan your deployment](replication-plan-deployment.md) | [Migrate with cross-site replication](migration-replication.md) |
+
+This section covers disaster recovery and other long-lived multi-site setups. To compare all ways to move into the Operator, see [Migrate to the Operator](migration.md).
+
 ## Why to use multi-cluster or multi-region?
 
 Choosing the right topology depends on your goals. Here are common use cases that you can achieve with these models:
 
 * High availability - Spread MongoDB nodes across clusters to avoid single points of failure. If one cluster goes down, others remain operational.
 *  Staging vs Production Isolation - Run isolated environments with shared data topology. Test changes safely without impacting production.
-*  Cluster migration - Move workloads between clusters or cloud providers with minimal downtime.
 *  Disaster recovery - Replicate data across regions to survive outages. Even if an entire data center fails, your application stays online.
 *  Geo-distributed applications - Serve users from the nearest region to reduce latency and improve experience.
 *  Compliance isolation - Keep data within specific jurisdictions to meet regulatory requirements.

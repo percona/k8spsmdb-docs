@@ -124,6 +124,7 @@ You can restore:
 * On a [new cluster with different replica set names](backups-restore.md#with-different-replica-set-names)
 * A [collection under a different name](backups-restore-new-name.md) (logical backups, replica set only)
 * Selected namespaces from a full logical backup ([selective restore](backups-restore.md#selective-restore))
+* A backup that PBM made on a MongoDB deployment outside Kubernetes, to [migrate it to the Operator](backups-move-from-external-db.md)
 
 Use `backupName` when the Backup object still exists in the cluster. Use `backupSource` when it does not — for example, when you restore to a new cluster.
 

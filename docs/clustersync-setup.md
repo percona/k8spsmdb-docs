@@ -2,7 +2,7 @@
 
 This tutorial shows how to configure [Percona ClusterSync for MongoDB (PCSM) :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/) with the Operator, start replication from a source MongoDB deployment to an Operator-managed target cluster, and manage the replication lifecycle.
 
-For concepts, architecture, modes, and limitations, see [Real-time replication and near-zero downtime migration with PCSM](clustersync.md).
+For concepts, architecture, modes, and limitations, see [Real-time replication and near-zero downtime migration with PCSM](clustersync.md). To migrate a production deployment into the Operator, follow [Migrate with PCSM](migration-pcsm.md) after this tutorial.
 
 ## Prerequisites
 
