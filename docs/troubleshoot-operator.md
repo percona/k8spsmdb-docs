@@ -182,6 +182,8 @@ If you are still running into issues, check with your Kubernetes cluster adminis
    
    See the [Avoid the restart-on-fail loop for Percona Server for MongoDB containers](debug-shell.md#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) section for steps.
 
+If a Pod stays in the `Pending` state, see [Troubleshoot Pod scheduling](debug-scheduling.md).
+
 For backup and restore failures, see [Troubleshoot backups and restores](debug-backup-restore.md).
 
 ## See also

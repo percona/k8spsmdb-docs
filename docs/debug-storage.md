@@ -26,3 +26,4 @@ PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to t
 ## See also
 
 * [Scaling and storage](scaling-about.md)
+* [Storage problems that keep Pods in the `Pending` state](debug-scheduling.md#storage-problems)

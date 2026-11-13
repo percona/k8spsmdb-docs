@@ -12,6 +12,10 @@ The appropriate (sub)sections (`replsets`, `replsets.arbiter`, `backup`, etc.)
 of the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml)
 file contain the keys which can be used to do assign pods to nodes.
 
+!!! note
+
+    If Pods are already stuck in the `Pending` state, see [Troubleshoot Pod scheduling](debug-scheduling.md).
+
 ## Choose your approach
 
 | Goal | Use | Where |
@@ -34,6 +38,7 @@ The following example binds the Pod to any node having a self-explanatory
 
 ```yaml
 replsets:
+- name: rs0
   nodeSelector:
     disktype: ssd
 ```
@@ -65,6 +70,7 @@ the same node:
 
 ```yaml
 replsets:
+- name: rs0
   affinity:
     antiAffinityTopologyKey: "kubernetes.io/hostname"
 ```
@@ -80,6 +86,7 @@ the use of the standard Kubernetes affinity constraints of any complexity:
 
 ```yaml
 replsets:
+- name: rs0
   affinity:
     advanced:
       podAffinity:
@@ -134,6 +141,7 @@ To use it, add one or more PriorityClasses to your Kubernetes cluster, then set 
 
 ```yaml
 replsets:
+- name: rs0
   priorityClassName: high-priority
 ```
 
@@ -148,6 +156,7 @@ For the standard 3-member data-bearing replica set, losing 2 members at once bre
 
 ```yaml
 replsets:
+- name: rs0
   podDisruptionBudget:
     maxUnavailable: 1
 ```
@@ -190,6 +199,7 @@ Pod topology spread constraints are controlled by the
 
 ```yaml
 replsets:
+- name: rs0
   topologySpreadConstraints:
     - labelSelector:
         matchLabels:
@@ -221,6 +231,7 @@ example defines this effect and the removal interval:
 
 ```yaml
 replsets:
+- name: rs0
   tolerations:
   - key: "node.alpha.kubernetes.io/unreachable"
     operator: "Exists"

@@ -2688,6 +2688,14 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
 
+### `sharding.configsvrReplSet.priorityClassName`
+
+The [Kubernetes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass) for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `high-priority` |
+
 ### `sharding.configsvrReplSet.env.name`
 
 The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](env-vars-custom.md).
