@@ -2,7 +2,7 @@ mkdocs
 mkdocs-macros-plugin
 mkdocs-exclude
 markdown-include
-mkdocs-material
+mkdocs-material>=9.7.0
 mkdocs-with-pdf
 mkdocs-print-site-plugin
 mkdocs-git-revision-date-plugin
@@ -18,3 +18,4 @@ mkdocs-open-in-new-tab
 mike
 mkdocs-git-committers-plugin-2
 mkdocs-glightbox
+

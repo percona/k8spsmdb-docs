@@ -7,7 +7,7 @@ Pods are created and set to available Kubernetes nodes.
 This page covers [vertical](#vertical-scaling) and [horizontal](#horizontal-scaling)
 scaling. Vertical scaling adds more compute (CPU and memory) to MongoDB nodes;
 horizontal scaling is about adding more nodes to the cluster. Storage capacity is
-scaled separately - see [Resize storage](scaling-storage-resize.md). [High availability](architecture.md#high-availability)
+scaled separately - see [Resize storage](scaling-storage-resize.md). [High availability](ha-topology.md)
 looks technically similar to horizontal scaling, because it also involves additional
 nodes, but the reason is maintaining liveness of the system in case of server or
 network failures.

@@ -65,6 +65,7 @@ extra_css:
   - css/operators.css
   - css/rating.css
   - css/kapa.css
+  - css/glossary.css
 
 extra_javascript:
   - js/promptremover.js
@@ -97,6 +98,11 @@ markdown_extensions:
     alternate_style: true
   pymdownx.tasklist:
     custom_checkbox: true
+  # Show the glossary entry when a reader hovers a link to the glossary
+  material.extensions.preview:
+    targets:
+      include:
+        - glossary.md
   pymdownx.snippets:
       base_path: 
         - snippets
@@ -164,9 +170,6 @@ plugins:
     enabled: true
 
 extra: # Used in main.html template and can't be externalized
-  edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
-  updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  
   version:
     provider: mike
 
@@ -177,8 +180,13 @@ nav:
     - Welcome: index.md
     - Get help from Percona: get-help.md
     - About:
-       - how-it-works.md
-       - "Design and architecture": architecture.md
+       - Design and architecture:
+           - architecture.md
+           - "Who owns what": architecture-responsibilities.md
+           - "Operator responsibilities by area": operator-boundaries.md
+           - "How the Operator reacts to changes": architecture-reconciliation.md
+           - "Key workflows": architecture-workflows.md
+           - "Health checks and probes": architecture-probes.md
        - "Comparison with other solutions": compare.md
        - "Known limitations": limitations.md
 
@@ -351,7 +359,7 @@ nav:
         - "Pause or resume the cluster": pause.md
     - Troubleshooting:
         - debug.md
-        - Troubleshoot the Operator installation issues: troubleshoot-operator.md
+        - "Troubleshoot the Operator": troubleshoot-operator.md
         - "Exec into the container": debug-shell.md
         - "Check the logs": debug-logs.md
         - "Troubleshoot backups and restores": debug-backup-restore.md
@@ -365,12 +373,15 @@ nav:
               - "Restore resource options": restore-options.md
               - "ClusterSync options": clustersync-options.md
           - "Custom resource statuses": cr-statuses.md
+          - "Services and ports": services.md
+          - "Objects the Operator creates": objects-created.md
           - "Operator API": api.md           
           - "Certified images":
                   - images.md
                   - "Retrieve certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Frequently asked questions": faq.md
+          - "Glossary": glossary.md
           - telemetry.md
           - Legal:
               - "Copyright and licensing information": copyright.md

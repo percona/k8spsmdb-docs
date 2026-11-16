@@ -109,13 +109,13 @@ Choose how the Operator or Kubernetes updates your database cluster during an up
 
 ### Smart Update
 
-Smart Update is the default and recommended strategy. The Operator controls the update order and restarts Pods so that the primary is updated last. That reduces connection disruption until the whole cluster is on the new settings.
+Smart Update is the default and recommended strategy. The Operator restarts the Pods itself, one at a time: the secondaries first, then the primary after it steps down, so the replica set holds only one election. In a sharded cluster, it restarts the config server replica set first, then the shards, then `mongos`. It waits for running backups and restores to finish before it starts.
 
-Smart Update also applies when you change a ConfigMap, rotate passwords, or change resource values, not only during database version upgrades.
+Smart Update applies to every change to the Pod template, not only to upgrades: for example, a new image, new resource values or a changed `configuration` section. For what it waits for and its timeouts, see [How Smart Update works](architecture-reconciliation.md#how-smart-update-works).
 
 ### Rolling Update
 
-Rolling Update is [controlled by Kubernetes :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies). The StatefulSet controller deletes a Pod, updates it, waits until it reports Ready, then moves to the next Pod. The update order matches Pod termination order, which may not be optimal for Percona Server for MongoDB.
+Kubernetes restarts the Pods with a [StatefulSet rolling update :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies), from the highest Pod number down. It waits for each Pod to become ready, but it doesn't know which member is the primary, doesn't ask it to step down, and doesn't wait for a running backup.
 
 ### On Delete
 
