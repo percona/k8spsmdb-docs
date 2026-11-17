@@ -10,10 +10,11 @@ Reconciliation is triggered by a variety of events, including:
 - Changes to the cluster state
 - Changes to the cluster resources
 
-You can tune reconciliation behavior with two environment variables in the `percona-server-mongodb-operator` Deployment:
+You can tune reconciliation behavior with these environment variables in the `percona-server-mongodb-operator` Deployment:
 
 - `MAX_CONCURRENT_RECONCILES` — how many clusters the Operator can reconcile in parallel
 - `RECONCILE_INTERVAL` — how long the Operator waits before re-queuing reconciliation for each cluster
+- `BACKUP_RECONCILE_INTERVAL` and `RESTORE_RECONCILE_INTERVAL` — how often the Operator rechecks backups and restores that are in progress. 
   
 See [Configure Operator environment variables](env-vars-operator.md) for the full list of supported values and defaults.
 
@@ -85,9 +86,19 @@ You can set the value to any number greater than 0.
 
 ## Configure the reconciliation interval
 
-After each reconcile loop, the Operator schedules the next one using the `RECONCILE_INTERVAL` environment variable. The default is `5s`.
+After each reconcile loop, the Operator schedules the next one after an interval. Each kind of object has its own interval:
 
-Increasing this value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. Values below `5s`, zero, negative, or invalid duration strings fall back to `5s`.
+| Environment variable | What the Operator rechecks | Default |
+|---|---|---|
+| `RECONCILE_INTERVAL` | Each cluster | `5s` |
+| `BACKUP_RECONCILE_INTERVAL` | Backups that are waiting, running or being canceled. Available starting with version 1.24.0 | `5s` |
+| `RESTORE_RECONCILE_INTERVAL` | Restores that are in progress. Available starting with version 1.24.0 | `5s` |
+
+Increasing a value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. For example, raise `BACKUP_RECONCILE_INTERVAL` if you run many backups and want cluster changes to stay fast.
+
+A longer interval also means that the Operator notices changes later. Backup and restore status updates arrive up to one interval late. A restore goes through several steps, so a long `RESTORE_RECONCILE_INTERVAL` can make restores take noticeably longer.
+
+All three variables accept a Go duration string, such as `30s` or `1m`. Values below `5s`, zero, negative, or invalid duration strings fall back to `5s`.
 
 ### Set the reconciliation interval
 
@@ -136,6 +147,8 @@ The command does the following:
 - Patches the deployment to update the `RECONCILE_INTERVAL` environment variable
 - Sets the value to `30s`
 - Outputs the result
+
+To change `BACKUP_RECONCILE_INTERVAL` or `RESTORE_RECONCILE_INTERVAL`, use the same command with that variable name. Changing the Deployment restarts the Operator Pod, and the new value applies from then on.
 
 ??? example "Sample output"
 
