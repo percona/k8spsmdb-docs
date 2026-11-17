@@ -1,12 +1,12 @@
 # Major version automated upgrades
 
-Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.
+Major version upgrade is moving from the current major version to the next one. For example, from 8.0.x to 8.3.x.
 
 It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.
 
 A major upgrade is supported by the Operator within one major version at a time:
-for example, from 7.0 to 8.0. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
+for example, from 8.0 to 8.3. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
 you should first upgrade it to 7.0, and then make a separate upgrade from 7.0
 to 8.0. The same is true for major version downgrades.
 
@@ -24,7 +24,7 @@ key in the `deploy/cr.yaml` Custom Resource manifest to `<version>-recommended`:
     ```yaml
     spec:
       upgradeOptions:
-        apply: 8.0-recommended
+        apply: 8.3-recommended
     ```
 
 3. Apply the `deploy/cr.yaml` Custom Resource manifest to start the major version upgrade:

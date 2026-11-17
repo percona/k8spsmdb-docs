@@ -9,9 +9,9 @@ apiversion: '1'
 
 # Percona Software for MongoDB images
 
+mongodb83recommended: '8.3.13-4'
 mongodb80recommended: '8.0.32-14'
 mongodb70recommended: '7.0.43-23'
-mongodb60recommended: '6.0.29-23'
 pbmrecommended: '2.15.0'
 
 # Other software
