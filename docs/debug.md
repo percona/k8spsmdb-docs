@@ -67,7 +67,8 @@ The above command provides the following insights:
     impacted by the [Container Restart Policy  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
     In an ideal world, the restart count would be zero, meaning no issues from
     the beginning. If the restart count exceeds zero, it may be reasonable to
-    check why it happens.
+    check why it happens. If a container was killed because it ran out of memory
+    (`OOMKilled`), see [Troubleshoot out-of-memory errors](debug-oom.md).
 * `AGE`: Indicates how long the Pod is running. Any abnormality in this value
     needs to be checked.
 
