@@ -11470,7 +11470,7 @@ user. Use it to connect to the database.</p>
 <ul>
 <li>
 <p>Run the container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 </li>
 <li>
@@ -12143,7 +12143,7 @@ If you already created the <code>percona-client</code> Pod from that page, skip 
 <span class="s">  restartPolicy: Never</span>
 <span class="s">  containers:</span>
 <span class="s">  - name: percona-client</span>
-<span class="s">    image: percona/percona-server-mongodb:8.0.32-14</span>
+<span class="s">    image: percona/percona-server-mongodb:8.3.13-4</span>
 <span class="s">    command: ["sleep", "3600"]</span>
 <span class="s">    env:</span>
 <span class="s">    - name: MONGODB_URI</span>
@@ -12630,8 +12630,8 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
         </script>
         </head><body><h1 id="system-requirements">System Requirements<a class="headerlink" href="#system-requirements-system-requirements" title="Permanent link">¶</a></h1>
 <p>The Operator was developed and tested with Percona Server for MongoDB
-6.0.29-23, 
-7.0.43-23, and 8.0.32-14. Other options may also work but have not been
+7.0.43-23, 
+8.0.32-14, and 8.3.13-4. Other options may also work but have not been
 tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
 2.15.0 and Percona ClusterSync for MongoDB.</p>
 <h2 id="system-requirements-officially-supported-platforms">Officially supported platforms<a class="headerlink" href="#system-requirements-officially-supported-platforms" title="Permanent link">¶</a></h2>
@@ -13222,7 +13222,7 @@ to the cluster.</p>
 <p>Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>Executing it may require some time to deploy the corresponding Pod.</p>
 </li>
@@ -13249,7 +13249,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 </li>
 <li>
 <p>Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>It may take some time to deploy the corresponding Pod.</p>
 </li>
@@ -13724,7 +13724,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m
 <p>Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>Executing it may require some time to deploy the corresponding Pod.</p>
 </li>
@@ -13751,7 +13751,7 @@ oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </sp
 </li>
 <li>
 <p>Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>It may take some time to deploy the corresponding Pod.</p>
 </li>
@@ -13897,7 +13897,7 @@ OpenEverest provides API and Web GUI to launch databases with just a few clicks 
 <p>Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>Executing it may require some time to deploy the corresponding Pod.</p>
 </li>
@@ -13924,7 +13924,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 </li>
 <li>
 <p>Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>It may take some time to deploy the corresponding Pod.</p>
 </li>
@@ -14276,14 +14276,14 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <p>Find the image names <a href="#images">in the list of certified images</a>.</p>
 <p>We recommend to update the PMM Server <strong>before</strong> the upgrade of PMM Client. If you haven’t done it yet, exclude PMM Client from the list of images to update.</p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
-<p>For example, to update the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version, the command is as follows:</p>
+<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="#versions">version compatibility matrix</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="update-crd-manual-__tabbed_2_1" name="update-crd-manual-__tabbed_2" type="radio"><input id="update-crd-manual-__tabbed_2_2" name="update-crd-manual-__tabbed_2" type="radio"><div class="tabbed-labels"><label for="update-crd-manual-__tabbed_2_1">With PMM Client</label><label for="update-crd-manual-__tabbed_2_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "pmm": { "image": "percona/pmm-client:3.9.1" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
@@ -14294,7 +14294,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
 <span class="s1">   }}'</span>
@@ -14711,14 +14711,14 @@ problematic version combinations.</li>
 <p>We recommend to update the PMM Server <strong>before</strong> the upgrade of PMM Client. If you haven’t done it yet, exclude PMM Client from the list of images to update.</p>
 <p>Starting with version 1.21.0, the Operator supports <a href="#persistent-logging">persistent logging</a>. To update to version 1.21.0, exclude the <code>logcollector</code> from the list of images to update. </p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
-<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version:</p>
+<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="#versions">version compatibility matrix</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="update-minor-set-version-__tabbed_1_1" name="update-minor-set-version-__tabbed_1" type="radio"><input id="update-minor-set-version-__tabbed_1_2" name="update-minor-set-version-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="update-minor-set-version-__tabbed_1_1">With PMM Client</label><label for="update-minor-set-version-__tabbed_1_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "pmm": { "image": "percona/pmm-client:3.9.1" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
@@ -14729,7 +14729,7 @@ problematic version combinations.</li>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
 <span class="s1">   }}'</span>
@@ -14812,12 +14812,12 @@ problematic version combinations.</li>
 <td>Automatic upgrade chooses the most recent version available. Same clusters-created-from-scratch vs. existing-cluster behavior as <code>Recommended</code>.</td>
 </tr>
 <tr>
-<td><code>{major}-recommended</code> / <code>{major}-latest</code> (e.g. <code>8.0-recommended</code>, <code>7.0-latest</code>)</td>
+<td><code>{major}-recommended</code> / <code>{major}-latest</code> (e.g. <code>8.3-recommended</code>, <code>8.0-recommended</code>, <code>7.0-latest</code>)</td>
 <td>Same as <code>Recommended</code> / <code>Latest</code>, but pins the major MongoDB version so it won’t shift for newly provisioned clusters. For example, <code>7.0-latest</code> will never move a new cluster to 8.0.</td>
 </tr>
 <tr>
 <td><em>version number</em></td>
-<td>Specify the desired version explicitly (version numbers look like 6.0.29-23, 7.0.43-23, etc.). Find supported versions  in the <a href="#versions">Version compatibility matrix</a>.</td>
+<td>Specify the desired version explicitly (version numbers look like {{ mongodb60recommended }}, 7.0.43-23, etc.). Find supported versions  in the <a href="#versions">Version compatibility matrix</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -14876,11 +14876,11 @@ another more conservative schedule when the upgrade is complete.</p>
         })
         </script>
         </head><body><h1 id="major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#update-major-major-version-automated-upgrades" title="Permanent link">¶</a></h1>
-<p>Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.</p>
+<p>Major version upgrade is moving from the current major version to the next one. For example, from 8.0.x to 8.3.x.</p>
 <p>It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.</p>
 <p>A major upgrade is supported by the Operator within one major version at a time:
-for example, from 7.0 to 8.0. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
+for example, from 8.0 to 8.3. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
 you should first upgrade it to 7.0, and then make a separate upgrade from 7.0
 to 8.0. The same is true for major version downgrades.</p>
 <h2 id="update-major-before-you-begin">Before you begin<a class="headerlink" href="#update-major-before-you-begin" title="Permanent link">¶</a></h2>
@@ -14901,7 +14901,7 @@ problematic version combinations.</li>
 key in the <code>deploy/cr.yaml</code> Custom Resource manifest to <code>&lt;version&gt;-recommended</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">upgradeOptions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0-recommended</span>
+<span class="w">    </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.3-recommended</span>
 </code></pre></div>
 </li>
 <li>
@@ -14981,14 +14981,14 @@ problematic version combinations.</li>
 <p>We recommend to update the PMM Server <strong>before</strong> the upgrade of PMM Client. If you haven’t done it yet, exclude PMM Client from the list of images to update.</p>
 <p>Starting with version 1.21.0, the Operator supports <a href="#persistent-logging">persistent logging</a>. To update to version 1.21.0, exclude the <code>logcollector</code> from the list of images to update. </p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
-<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version:</p>
+<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="#versions">version compatibility matrix</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="update-manually-__tabbed_1_1" name="update-manually-__tabbed_1" type="radio"><input id="update-manually-__tabbed_1_2" name="update-manually-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="update-manually-__tabbed_1_1">With PMM Client</label><label for="update-manually-__tabbed_1_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "pmm": { "image": "percona/pmm-client:3.9.1" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
@@ -14999,7 +14999,7 @@ problematic version combinations.</li>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
 <span class="s1">   }}'</span>
@@ -15036,14 +15036,14 @@ problematic version combinations.</li>
 <p>We recommend to update the PMM Server <strong>before</strong> the upgrade of PMM Client. If you haven’t done it yet, exclude PMM Client from the list of images to update.</p>
 <p>Starting with version 1.21.0, the Operator supports <a href="#persistent-logging">persistent logging</a>. To update to version 1.21.0, exclude the <code>logcollector</code> from the list of images to update. </p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
-<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version:</p>
+<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="#versions">version compatibility matrix</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="update-manually-__tabbed_2_1" name="update-manually-__tabbed_2" type="radio"><input id="update-manually-__tabbed_2_2" name="update-manually-__tabbed_2" type="radio"><div class="tabbed-labels"><label for="update-manually-__tabbed_2_1">With PMM Client</label><label for="update-manually-__tabbed_2_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "pmm": { "image": "percona/pmm-client:3.9.1" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
@@ -15054,7 +15054,7 @@ problematic version combinations.</li>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
 <span class="s1">   }}'</span>
@@ -15291,7 +15291,7 @@ processes of your replica set.</p>
 <p>Run a container with a MongoDB client and connect its console output to your
     terminal. The following command does this, naming the new Pod
     <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>Executing it may require some time to deploy the corresponding Pod.</p>
 </li>
@@ -15318,7 +15318,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 </li>
 <li>
 <p>Run a container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod <code>percona-client</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <p>It may take some time to deploy the corresponding Pod.</p>
 </li>
@@ -22582,7 +22582,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <ol>
 <li>
 <p>Connect to Percona Server for MongoDB:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -22618,7 +22618,7 @@ rs0:PRIMARY&gt; db.test.findOne()
 <ol>
 <li>
 <p>Connect to Percona Server for MongoDB:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>-i<span class="w"> </span>--rm<span class="w"> </span>--tty<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-il
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
@@ -23078,7 +23078,7 @@ client that mounts it:</p>
 <span class="s">  restartPolicy: Never</span>
 <span class="s">  containers:</span>
 <span class="s">  - name: percona-client</span>
-<span class="s">    image: percona/percona-server-mongodb:8.0.32-14</span>
+<span class="s">    image: percona/percona-server-mongodb:8.3.13-4</span>
 <span class="s">    command: ["sleep", "3600"]</span>
 <span class="s">    volumeMounts:</span>
 <span class="s">    - name: ssl</span>
@@ -23927,7 +23927,7 @@ cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"
 </li>
 <li>
 <p>Spin up a <code>mongo</code> client Pod and copy the certificate files into it:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>run<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span><span class="m">3600</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>run<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span><span class="m">3600</span>
 kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>cp<span class="w"> </span>client.pem<span class="w"> </span>percona-client:/tmp/client.pem
 kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>cp<span class="w"> </span>ca.crt<span class="w"> </span>percona-client:/tmp/ca.crt
 </code></pre></div>
@@ -28127,7 +28127,7 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">crVersion</span><span class="p">:</span><span class="w"> </span><span class="s">"1.23.1"</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-server-mongodb:8.0.32-14</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-server-mongodb:8.3.13-4</span>
 <span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">      </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
@@ -30821,7 +30821,7 @@ Continuous restarts prevent to get console access to the container,
 and so a special approach is needed to make fixes.</p>
 <p>To use the debug image instead of the normal one, set the following image name
 for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration file:</p>
-<p><code>percona/percona-server-mongodb:6.0.29-23-debug</code></p>
+<p><code>percona/percona-server-mongodb:{{ mongodb60recommended }}-debug</code></p>
 <p>The Pod should be restarted to get the new image.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -31115,7 +31115,7 @@ to apply image changes.</p>
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>percona/percona</code>-<code>server</code>-<code>mongodb:6.0.29-23</code></td>
+<td><code>percona/percona</code>-<code>server</code>-<code>mongodb:{{ mongodb60recommended }}</code></td>
 </tr>
 </tbody>
 </table>
@@ -31613,7 +31613,7 @@ for setup steps.</p>
 </tbody>
 </table>
 <h3 id="operator-upgradeoptionsapply"><code>upgradeOptions.apply</code><a class="headerlink" href="#operator-upgradeoptionsapply" title="Permanent link">¶</a></h3>
-<p>Specifies how <a href="#update-db">updates are processed</a> by the Operator. <code>Never</code> or <code>Disabled</code> will completely disable automatic upgrades, otherwise it can be set to <code>Latest</code> or <code>Recommended</code> or to a specific version <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> stringof Percona Server for MongoDB (e.g. <code>6.0.29-23</code>) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).</p>
+<p>Specifies how <a href="#update-db">updates are processed</a> by the Operator. <code>Never</code> or <code>Disabled</code> will completely disable automatic upgrades, otherwise it can be set to <code>Latest</code> or <code>Recommended</code> or to a specific version <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> stringof Percona Server for MongoDB (e.g. <code>{{ mongodb60recommended }}</code>) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).</p>
 <table>
 <thead>
 <tr>
@@ -41851,7 +41851,7 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <span class="w">    </span><span class="nt">"namespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-namespace-name"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="nt">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percona/percona-server-mongodb:8.0.32-14"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percona/percona-server-mongodb:8.3.13-4"</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">"replsets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rs0"</span><span class="p">,</span>
@@ -42063,7 +42063,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
-<span class="s1">  {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.0.32-14"}</span>
+<span class="s1">  {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.3.13-4"}</span>
 <span class="s1">]'</span>
 </code></pre></div>
 </div>
@@ -42074,7 +42074,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json-patch+json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">'[</span>
-<span class="s1">    {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.0.32-14"}</span>
+<span class="s1">    {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:8.3.13-4"}</span>
 <span class="s1">  ]'</span>
 </code></pre></div>
 </div>
@@ -42976,8 +42976,8 @@ whole.</p>
 with all active major versions of Percona Server for MongoDB. The exact version is
 determined by the Docker image in use.</p>
 <p>The Operator uses Percona-certified Docker images, which you can find <a href="#images">here</a>.
-For example, Percona Server for MongoDB 8.0 is supported with the following
-recommended version: 8.0.32-14. </p>
+For example, Percona Server for MongoDB 8.3 is supported with the following
+recommended version: 8.3.13-4. </p>
 <p>Check the <a href="https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html">Percona Server for MongoDB release notes <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for more details on the exact version of the latest major version. Use the version switcher to check other major versions.</p>
 <h2 id="faq-how-can-i-add-custom-sidecar-containers-to-my-cluster">How can I add custom sidecar containers to my cluster?<a class="headerlink" href="#faq-how-can-i-add-custom-sidecar-containers-to-my-cluster" title="Permanent link">¶</a></h2>
 <p>The Operator allows you to deploy additional containers to

@@ -7717,7 +7717,7 @@ cat<span class="w"> </span>tls.crt<span class="w"> </span>tls.key<span class="w"
 </li>
 <li>
 <p>Spin up a <code>mongo</code> client Pod and copy the certificate files into it:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>run<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.0.32-14<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span><span class="m">3600</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>run<span class="w"> </span>percona-client<span class="w"> </span>--image<span class="o">=</span>percona/percona-server-mongodb:8.3.13-4<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span><span class="m">3600</span>
 kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>cp<span class="w"> </span>client.pem<span class="w"> </span>percona-client:/tmp/client.pem
 kubectl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$CLUSTER_NAMESPACE</span><span class="w"> </span>cp<span class="w"> </span>ca.crt<span class="w"> </span>percona-client:/tmp/ca.crt
 </code></pre></div>
@@ -7760,7 +7760,7 @@ flags and connect with just <code>mongosh "&lt;connection-string&gt;"</code>.</p
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:51 UTC">October 5, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 14:00:56 UTC">November 17, 2026</span>
       
         <br>
         Created:

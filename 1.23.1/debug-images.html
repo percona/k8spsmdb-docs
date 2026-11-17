@@ -6370,7 +6370,7 @@ Continuous restarts prevent to get console access to the container,
 and so a special approach is needed to make fixes.</p>
 <p>To use the debug image instead of the normal one, set the following image name
 for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration file:</p>
-<p><code>percona/percona-server-mongodb:6.0.29-23-debug</code></p>
+<p><code>percona/percona-server-mongodb:{{ mongodb60recommended }}-debug</code></p>
 <p>The Pod should be restarted to get the new image.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

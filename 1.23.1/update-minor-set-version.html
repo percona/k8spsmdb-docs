@@ -6546,14 +6546,14 @@ problematic version combinations.</li>
 <p>We recommend to update the PMM Server <strong>before</strong> the upgrade of PMM Client. If you haven’t done it yet, exclude PMM Client from the list of images to update.</p>
 <p>Starting with version 1.21.0, the Operator supports <a href="persistent-logging.html">persistent logging</a>. To update to version 1.21.0, exclude the <code>logcollector</code> from the list of images to update. </p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
-<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version:</p>
+<p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="versions.html">version compatibility matrix</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">With PMM Client</label><label for="__tabbed_1_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "pmm": { "image": "percona/pmm-client:3.9.1" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
@@ -6564,7 +6564,7 @@ problematic version combinations.</li>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">   "spec": {</span>
 <span class="s1">      "crVersion":"1.23.1",</span>
-<span class="s1">      "image": "percona/percona-server-mongodb:8.0.32-14",</span>
+<span class="s1">      "image": "percona/percona-server-mongodb:8.3.13-4",</span>
 <span class="s1">      "backup": { "image": "percona/percona-backup-mongodb:2.15.0" },</span>
 <span class="s1">      "logcollector": { "image": "percona/fluentbit:5.1.2-1" }</span>
 <span class="s1">   }}'</span>

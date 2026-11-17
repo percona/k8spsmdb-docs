@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.">
+        <meta name="description" content="Major version upgrade is moving from the current major version to the next one. For example, from 8.0.x to 8.3.x.">
       
       
         <meta name="author" content="Percona LLC">
@@ -6561,11 +6561,11 @@ window.addEventListener('afterprint', (event) => {
 
 
 <h1 id="major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#major-version-automated-upgrades" title="Permanent link">¶</a></h1>
-<p>Major version upgrade is moving from the current major version to the next one. For example, from 6.0.x to 7.0.x.</p>
+<p>Major version upgrade is moving from the current major version to the next one. For example, from 8.0.x to 8.3.x.</p>
 <p>It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.</p>
 <p>A major upgrade is supported by the Operator within one major version at a time:
-for example, from 7.0 to 8.0. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
+for example, from 8.0 to 8.3. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
 you should first upgrade it to 7.0, and then make a separate upgrade from 7.0
 to 8.0. The same is true for major version downgrades.</p>
 <h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
@@ -6586,7 +6586,7 @@ problematic version combinations.</li>
 key in the <code>deploy/cr.yaml</code> Custom Resource manifest to <code>&lt;version&gt;-recommended</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">upgradeOptions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0-recommended</span>
+<span class="w">    </span><span class="nt">apply</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.3-recommended</span>
 </code></pre></div>
 </li>
 <li>
@@ -6623,7 +6623,7 @@ MongoDB versions can be found in
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 14:00:56 UTC">November 17, 2026</span>
       
         <br>
         Created:
