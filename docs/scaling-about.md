@@ -9,11 +9,11 @@ which of them need planning before you deploy.
 | Approach | What changes | Choose it when |
 |---|---|---|
 | *Horizontal scaling* | The number of replica set members (`replsets.size`). | You need more redundancy or more read capacity. |
-| *Vertical scaling* | CPU and memory requests and limits (`resources`). | Members are resource-bound rather than too few. |
+| *Vertical scaling* | CPU and memory requests and limits (`resources`), set by hand or from VPA recommendations. | Members are resource-bound rather than too few. |
 | *Storage scaling* | The size of the persistent volumes behind the members (`replsets.volumeSpec`). | The dataset outgrows the disks. |
 
-Horizontal and vertical scaling are covered in
-[Horizontal and vertical scaling](scaling.md).
+For horizontal scaling, see [Scale replica sets and shards](scaling.md). To change CPU and memory either manually or from VPA recommendations,
+see [Vertical scaling](scaling-vertical.md). 
 
 ## Storage
 
@@ -33,8 +33,9 @@ Volume expansion is controlled by the `storageScaling` section of the Custom Res
   the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec
   changes.
 * `storageScaling.enableExternalAutoscaling` - hands volume autoscaling to an external
-  system such as the Kubernetes Vertical Pod Autoscaler. When enabled, the Operator skips
-  its own autoscaling and resize operations.
+  storage autoscaler. When enabled, the Operator skips its own autoscaling and resize
+  operations. This option is unrelated to the Vertical Pod Autoscaler (VPA), which sizes CPU and
+  memory only.
 
 For the full step-by-step procedures - automatic resizing, Volume Expansion, manual
 resizing without Volume Expansion, and external autoscalers - see
@@ -74,7 +75,9 @@ expansion - check the PVC events.
 
 ## See also
 
-* [Horizontal and vertical scaling](scaling.md)
+* [Scale replica sets and shards](scaling.md)
+* [Vertical scaling](scaling-vertical.md)
+* [Configure vertical autoscaling](scaling-vpa.md)
 * [Resize storage](scaling-storage-resize.md)
 * [Local storage support](storage.md)
 * [Known limitations](limitations.md)
