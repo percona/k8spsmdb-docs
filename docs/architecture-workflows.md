@@ -159,7 +159,7 @@ sequenceDiagram
 
 The backup goes through these states: empty while the Operator hasn't processed it, `waiting`, `requested`, `running`, and `ready` or `error`. See [Backup state values](cr-statuses.md#backup-state-values).
 
-`startingDeadlineSeconds` limits how long a new backup may wait before it starts. It has no default, so without it a backup can wait without a time limit. When the deadline is exceeded, the backup fails.
+`startingDeadlineSeconds` limits how long a new backup may wait before it starts. If it is omitted from the backup resource, the Operator uses `backup.startingDeadlineSeconds` from the cluster Custom Resource, or defaults to 120 seconds. When the deadline is exceeded, the backup fails.
 
 When you delete a backup object, the `percona.com/delete-backup` [finalizer](glossary.md#finalizer) removes the backup files from the storage first.
 

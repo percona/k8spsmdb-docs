@@ -45,7 +45,7 @@ Create backups through a schedule in the cluster CR or through a `PerconaServerM
 
 * Creates scheduled backups from `backup.tasks`, and passes on-demand backups from `PerconaServerMongoDBBackup` resources to PBM.
 * Starting with version 1.24.0, creates one catch-up backup when it starts and finds that a scheduled run was missed while it was stopped. See [Scheduled backups](architecture-workflows.md#scheduled-backups).
-* Applies retention policy to scheduled backups. With `retention` set, it deletes the oldest backups of the task beyond the configured count. Retention doesn't apply to incremental backups.
+* Applies retention policy to scheduled backups. With `retention` set, it deletes the oldest backups of the task beyond the configured count. Retention counts incremental base backups but ignores subsequent increments. When retention deletes a base backup from storage, PBM also deletes its dependent increments.
 * **Runs one backup at a time.** It holds a lock for each running backup. Other backups wait in the `waiting` state.
 * **Waits for a healthy cluster.** A backup doesn't start until the cluster is `ready`, unless you set `unsafeFlags.backupIfUnhealthy`. With `startingDeadlineSeconds` set, a backup that doesn't start in time fails.
 * Writes the PBM configuration from the `backup` section of the CR, and keeps it in sync.

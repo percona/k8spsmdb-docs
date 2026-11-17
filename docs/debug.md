@@ -60,7 +60,7 @@ A growing `RESTARTS` count means a container keeps failing. The `STATUS` column 
 Find the Operator Deployment. Its name depends on how you installed the Operator: `percona-server-mongodb-operator` for a `kubectl` installation, and usually a name that ends with `psmdb-operator` for Helm:
 
 ```bash
-kubectl get deployments -A | grep -E 'percona-server-mongodb-operator|psmdb-operator'
+kubectl get deployments -n <operator-namespace> | grep -E 'percona-server-mongodb-operator|psmdb-operator'
 ```
 
 Read its recent logs:
