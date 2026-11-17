@@ -60,7 +60,7 @@ user. Use it to connect to the database.
     * Run the container with a MongoDB client and connect its console output to your terminal. The following command does this, naming the new Pod `percona-client`:
 
         ```bash
-        kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb80recommended }} --restart=Never -- bash -il
+        kubectl -n <namespace> run -i --rm --tty percona-client --image=percona/percona-server-mongodb:{{ mongodb83recommended }} --restart=Never -- bash -il
         ```
 
     * Connect to Percona Server for MongoDB using the connection string from step 2:
