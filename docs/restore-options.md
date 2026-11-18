@@ -164,7 +164,7 @@ Specifies the path to the backup on the storage.
 
 ### `backupSource.s3.credentialsSecret`
 
-Specifies the Secrets object name with the credentials to access the storage with a backup. 
+Specifies the Secrets object name with the credentials to access the storage with a backup. The Secret contains the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. For temporary credentials, it also contains the `AWS_SESSION_TOKEN` key, starting with version 1.24.0.
 
 | Value type  | Example    |
 | ----------- | ---------- |

@@ -28,6 +28,7 @@ You must specify the following information:
 
 * `metadata.name` is the name of the Kubernetes secret which you will reference in the Custom Resource
 * `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are base64-encoded keys to access your S3 storage
+* `AWS_SESSION_TOKEN` is an optional base64-encoded session token. Add it if your storage gives you temporary credentials, for example through MinIO Security Token Service. Available starting with version 1.24.0. To keep temporary credentials valid, see [Use temporary credentials](backups-storage-s3.md#use-temporary-credentials)
 
 Use the following command to encode the keys:
 
