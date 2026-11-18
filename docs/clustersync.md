@@ -54,6 +54,27 @@ Components of this architecture are:
 
 * **PCSM Deployment** – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can't resume: if it's interrupted, start a new sync. See [Troubleshooting](clustersync-setup.md#troubleshooting).
 
+## TLS connections
+
+!!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+**To the target cluster.** If the target cluster has TLS turned on and its `crVersion` is 1.24.0 or later, PCSM connects to it over TLS. You don't need to configure anything:
+
+* The Operator mounts the target cluster's TLS Secret, set in [`secrets.ssl`](operator.md#secretsssl), into the PCSM Pods.
+* PCSM presents the certificate from this Secret and checks the target cluster's certificate against the Secret's `ca.crt`.
+* PCSM follows the target cluster's [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) setting.
+
+The Operator restarts the PCSM Pods in these cases:
+
+* When the target cluster's certificates change, for example when cert-manager renews them or you rotate them. 
+* When you change `tls.allowInvalidCertificates`. 
+ 
+A restart during the initial clone stops the sync. See [Limitations](#limitations).
+
+With a `crVersion` earlier than 1.24.0, PCSM connects to the target cluster without TLS. This works only if the target accepts connections without TLS, with `tls.mode` set to `preferTLS` or `allowTLS`.
+
+**To the source cluster.** Add TLS options to the connection string in [`source.uri`](clustersync-options.md#sourceuri), for example `tls=true`. The Operator doesn't add certificates for the source connection.
+
 ## High availability
 
 !!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"

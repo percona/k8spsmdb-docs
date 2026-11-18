@@ -423,6 +423,24 @@ Common causes:
 * Target cluster is not `ready`
 * Source and target major MongoDB versions differ
 
+### PCSM doesn't start because of the target TLS Secret
+
+**Symptom:** PCSM doesn't start, and `status.error` of the ClusterSync object starts with `target tls:`, for example `target tls: target ssl secret <namespace>/<secret-name> is missing ca.crt`.
+
+**Cause:** the target cluster has TLS turned on and `crVersion` 1.24.0 or later, so the Operator mounts its TLS Secret into the PCSM Pods. The Secret doesn't exist or lacks one of the `ca.crt`, `tls.crt` and `tls.key` keys.
+
+**Fix:**
+
+1. Check the error:
+
+    ```bash
+    kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.error}{"\n"}'
+    ```
+
+2. Make sure the Secret set in the target cluster's `secrets.ssl` exists and has all three keys. If you provide your own certificates, see [Generate certificates manually](tls-manual.md).
+
+The Operator retries on its own and starts PCSM once the Secret is correct. See [TLS connections](clustersync.md#tls-connections).
+
 ### Status shows `failed`
 
 Inspect the error:

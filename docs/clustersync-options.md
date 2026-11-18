@@ -93,7 +93,7 @@ Defines how PCSM connects to the source MongoDB cluster. You manage the source.
 
 ### `source.uri`
 
-Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed.
+Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed. TLS options here apply only to the source. The Operator sets up TLS to the target cluster for you. See [TLS connections](clustersync.md#tls-connections).
 
 For replica sets, use replica set members and `replicaSet`. For sharded clusters, use the `mongos` endpoint.
 
