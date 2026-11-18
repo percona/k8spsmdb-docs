@@ -251,7 +251,7 @@ Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clu
 * `spec.source.uri` - specify the endpoint to the source cluster.
 * `spec.source.credentialsSecret` - reference the Secret that stores the credentials of the PCSM user from the source cluster.
 * `spec.mode` defaults to `running`, so replication starts when the PCSM Pod is ready.
-* `spec.size` defaults to `1`. To run PCSM in high-availability mode, set it to `2` or more. In this mode, an active instance replicates and standby instances that take over if the active one fails. See [High availability](clustersync.md#high-availability).
+* `spec.size` defaults to `1`. To run PCSM in high-availability mode, first ensure that the Operator and its CRDs are version **1.24.0 or later**, then set `spec.size` to `2` or more. In this mode, an active instance replicates while standby instances take over if it fails. See [High availability](clustersync.md#high-availability).
 
 === "Replica set"
 
@@ -451,7 +451,7 @@ Initial sync cannot be resumed after a hard failure. This includes a failover of
 
 ### Inspect PCSM from inside the Pod
 
-For advanced troubleshooting, run `pcsm` commands in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with `not_active`.
+For advanced troubleshooting on Operator **1.24.0 or later**, run the commands below in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with `not_active`. On Operator **1.23.x**, use `kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status` instead.
 
 ```bash
 ACTIVE_POD=$(kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.activeInstance}')

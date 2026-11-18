@@ -388,7 +388,7 @@ Common fields:
 - `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
 - `status.startedAt` – timestamp of the first time PCSM reported `running`
 - `status.size` – number of PCSM instances requested in `spec.size`
-- `status.readyReplicas` – number of ready PCSM Pods. The value lower than in `status.size` means the group has lost instances but can still replicate.
+- `status.readyReplicas` – number of ready PCSM Pods. A value lower than `status.size` means some requested instances are not ready; check `status.state`, `status.activeInstance`, and replication lag to assess whether replication is continuing.
 - `status.activeInstance` – name of the PCSM Pod that holds the lease and replicates. See [High availability in PCSM](clustersync.md#high-availability).
 - `status.conditions` – condition list with reason and message
 
