@@ -1662,6 +1662,8 @@ OpenShift environment demonstrates the process:">
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1700,6 +1702,26 @@ OpenShift environment demonstrates the process:">
   
   
   
+    <li class="md-nav__item">
+      <a href="update-crversion.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How crVersion works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
     
     
       
@@ -1714,7 +1736,7 @@ OpenShift environment demonstrates the process:">
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_1">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2">
         
           
           
@@ -1729,14 +1751,14 @@ OpenShift environment demonstrates the process:">
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_1">
+              <label class="md-nav__link " for="__nav_8_2">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
             <span class="md-nav__icon md-icon"></span>
             Upgrade CRD and the Operator
           </label>
@@ -1853,7 +1875,7 @@ OpenShift environment demonstrates the process:">
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_3">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_4">
         
           
           
@@ -1868,14 +1890,14 @@ OpenShift environment demonstrates the process:">
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_3">
+              <label class="md-nav__link " for="__nav_8_4">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
             <span class="md-nav__icon md-icon"></span>
             Upgrade Percona Server for MongoDB
           </label>
@@ -4640,6 +4662,8 @@ OpenShift environment demonstrates the process:">
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4744,6 +4768,26 @@ OpenShift environment demonstrates the process:">
   
   <span class="md-ellipsis">
     Troubleshoot backups and restores
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-upgrade.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot upgrades and crVersion
   </span>
   
 
@@ -6556,6 +6600,10 @@ option to <code>Disabled</code>. Otherwise <a href="update.html#update-strategie
 will try using the image recommended by the Version Service instead of the
 custom one.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a cluster’s <code>crVersion</code> is older than the Operator and you don’t set <code>initImage</code>, the Operator pulls the Operator image tag that matches <code>crVersion</code> for the init container. For example, Operator 1.23.1 running a cluster with <code>crVersion: 1.22.0</code> uses the <code>1.22.0</code> tag. Push that tag to your registry too, or set <code>initImage</code> explicitly. See <a href="update-crversion.html#init-image">Init image</a>.</p>
+</div>
 </li>
 <li>
 <p>Now follow the standard Percona Operator for MongoDB <a href="System-Requirements.html#installation-guidelines">installation instruction</a>.</p>
@@ -6563,6 +6611,7 @@ custom one.</p>
 </ol>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
+<li><a href="update-crversion.html#what-crversion-does">What <code>crVersion</code> does</a></li>
 <li><a href="debug.html">Troubleshooting</a> - environment variables, reconciliation concurrency, and hook scripts are exactly what gets tuned in response to an observed problem</li>
 </ul>
 <hr>
@@ -6570,7 +6619,7 @@ custom one.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 15:27:31 UTC">November 18, 2026</span>
       
         <br>
         Created:

@@ -1659,6 +1659,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -1697,6 +1699,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="update-crversion.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How crVersion works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
     
     
       
@@ -1711,7 +1733,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_1">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2">
         
           
           
@@ -1726,14 +1748,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_1">
+              <label class="md-nav__link " for="__nav_8_2">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
             <span class="md-nav__icon md-icon"></span>
             Upgrade CRD and the Operator
           </label>
@@ -1850,7 +1872,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_3">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_4">
         
           
           
@@ -1865,14 +1887,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_3">
+              <label class="md-nav__link " for="__nav_8_4">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
             <span class="md-nav__icon md-icon"></span>
             Upgrade Percona Server for MongoDB
           </label>
@@ -4582,6 +4604,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4686,6 +4710,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot backups and restores
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-upgrade.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot upgrades and crVersion
   </span>
   
 
@@ -20061,7 +20105,8 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="crversion"><code>crVersion</code><a class="headerlink" href="#crversion" title="Permanent link">¶</a></h3>
-<p>Version of the Operator the Custom Resource belongs to.</p>
+<p>The Operator version whose behavior the cluster follows. Changing this value rolls the database Pods.</p>
+<p>The option is optional. If you omit it, the Operator writes its own version into the Custom Resource on the first reconcile and keeps that value after later Operator upgrades. We recommend setting it explicitly. See <a href="update-crversion.html#what-crversion-does">What <code>crVersion</code> does</a>.</p>
 <table>
 <thead>
 <tr>
@@ -29408,7 +29453,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 15:27:31 UTC">November 18, 2026</span>
       
         <br>
         Created:

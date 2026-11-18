@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-operator.html">
       
       
-        <link rel="prev" href="update.html">
+        <link rel="prev" href="update-crversion.html">
       
       
         <link rel="next" href="update-crd-manual.html">
@@ -1661,6 +1661,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -1698,6 +1700,26 @@
                 
   
   
+  
+    <li class="md-nav__item">
+      <a href="update-crversion.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How crVersion works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1715,7 +1737,7 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_1" checked="">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_2" checked="">
         
           
           
@@ -1730,14 +1752,14 @@
 
             </a>
             
-              <label class="md-nav__link md-nav__link--active" for="__nav_8_1">
+              <label class="md-nav__link md-nav__link--active" for="__nav_8_2">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_8_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8_2">
             <span class="md-nav__icon md-icon"></span>
             Upgrade CRD and the Operator
           </label>
@@ -1854,7 +1876,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_3">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_8_4">
         
           
           
@@ -1869,14 +1891,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_8_3">
+              <label class="md-nav__link " for="__nav_8_4">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
             <span class="md-nav__icon md-icon"></span>
             Upgrade Percona Server for MongoDB
           </label>
@@ -4586,6 +4608,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4690,6 +4714,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot backups and restores
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-upgrade.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot upgrades and crVersion
   </span>
   
 
@@ -6366,13 +6410,8 @@ window.addEventListener('afterprint', (event) => {
   
     
     
-      
-  
-  
-    
-    
       <li class="md-path__item">
-        <a href="update-crd-manual.html" class="md-path__link">
+        <a href="update-crversion.html" class="md-path__link">
           
   <span class="md-ellipsis">
     Upgrade and version management
@@ -6380,9 +6419,6 @@ window.addEventListener('afterprint', (event) => {
 
         </a>
       </li>
-    
-  
-
     
   
 
@@ -6448,7 +6484,8 @@ window.addEventListener('afterprint', (event) => {
 <p>Check the <a href="RN/index.html">Release notes index</a> for the list of the Operator versions.</p>
 </li>
 <li>
-<p>CRD supports <strong>the last 3 minor versions of the Operator</strong>. This means it is compatible with the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.</p>
+<p>Percona supports the CRD with <strong>the last 3 minor versions of the Operator</strong>: the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.</p>
+<p>The same support window applies to the <code>crVersion</code> of your database clusters. The Operator doesn’t reject an older <code>crVersion</code>, so keeping your clusters inside the window is up to you. See <a href="update-crversion.html#what-crversion-does">What <code>crVersion</code> does</a>.</p>
 </li>
 <li>
 <p>Starting from version 1.14.0, the Operator configures replica set members
@@ -6507,7 +6544,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 15:27:31 UTC">November 18, 2026</span>
       
         <br>
         Created:
