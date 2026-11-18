@@ -76,6 +76,7 @@ Use **Annotations** when:
 | `percona.com/configuration-hash` | Services | Used to track and validate configuration changes in the MySQL cluster components | `percona.com/last-applied-secret: "hashvalue"`|
 | `percona.com/last-config-hash` | Services | Stores the hash of the most recent configuration |
 | `percona.com/ssl-hash` | Pods | Stores the hash of the most recent TLS configuration | 
+| `percona.com/pbm-tls-hash` | Pods | Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It's also set on `mongos` Pods, so they restart too. Available starting with version 1.24.0. | |
 | `percona.com/ssl-internal-hash` | Pods | Stores the hash of the most recent TLS configuration for internal communication |
 | `percona.com/passwords-updated`| Secrets | Indicates when passwords were last updated in the Secret |
 | `percona.com/external-dns-managed` | Services | Set by the Operator when External DNS `/hostname` and `/ttl` annotations are generated from values defined in `expose.externalDNS`. Marks ownership of those annotations.  Do not set or remove it manually. See [How the Operator manages External DNS annotations](expose.md#how-the-operator-manages-external-dns-annotations). | `"true"` |

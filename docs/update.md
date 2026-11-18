@@ -56,6 +56,8 @@ Check whether any of these apply to you:
 | You run Operator 1.19.0 or 1.19.1 with a sharded cluster and MongoDB 8.0 | Point-in-time recovery can fail. See [Considerations](update-operator.md#considerations). |
 | You re-apply a manifest that omits `crVersion`, or you deploy with Argo CD | A re-applied manifest can roll the Pods unexpectedly, and Argo CD can report drift. See [Why to set `crVersion` explicitly](update-crversion.md#why-to-set-crversion-explicitly). |
 
+To apply a security build for the Operator version you already run, see [Operator security builds](security-builds.md).
+
 ## How an upgrade works
 
 You decide when to run each stage. Stage 2 does not have to follow stage 1 immediately.
@@ -93,6 +95,10 @@ That window is also the limit. Once your Operator is more than two minor version
 
 For what `crVersion` does and how the Operator handles different values, see [`crVersion` behavior](update-crversion.md).
 
+### Apply a security build
+
+Apply a security build to patch the Operator version you already run with the fixes for High and Critical Common Vulnerabilities and Exposures (CVE). See [Apply security builds](security-builds.md).
+
 ## Update strategies
 
 Set `updateStrategy` in the [Custom Resource](operator.md) to choose how the Operator or Kubernetes updates your cluster:
@@ -118,6 +124,7 @@ spec:
 ## See also
 
 * [Upgrade the Operator and CRD](update-operator.md)
+* [Apply security builds](security-builds.md)
 * [Upgrade Percona Server for MongoDB](update-db.md)
 * [`crVersion` behavior](update-crversion.md)
 * [Known limitations](limitations.md)

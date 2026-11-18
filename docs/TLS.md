@@ -1,11 +1,27 @@
 # Transport Layer Security (TLS)
 
-Percona Operator for MongoDB uses Transport Layer Security (TLS) cryptographic protocol for the following types of communication:
+Percona Operator for MongoDB uses the Transport Layer Security (TLS) protocol to encrypt connections to and inside the cluster. Every party in a TLS connection presents its own certificate, so the cluster uses a separate certificate for each role:
 
-* External - to enable client applications communicate with the cluster
-* Internal - for communication between Percona Server for MongoDB instances in the cluster. The internal certificate is also used as an authorization method.
+| Certificate | Default Secret name | Custom Resource option | Who presents it | What it's for |
+| --- | --- | --- | --- | --- |
+| External | `<cluster-name>-ssl` | `secrets.ssl` | `mongod` and `mongos` | Connections from client applications |
+| Internal | `<cluster-name>-ssl-internal` | `secrets.sslInternal` | Cluster members | Connections between Percona Server for MongoDB instances. The internal certificate also authorizes members of the cluster. |
+| PBM client | `<cluster-name>-pbm` | `secrets.sslPBM` | The backup agents, and the Operator when it connects for backups and restores | Connections that Percona Backup for MongoDB (PBM) makes to the database. Available starting with version 1.24.0, when backups are enabled. |
 
-These certificates are stored in Secrets. Default Secret names are `<cluster-name>-ssl` and `<cluster-name>-ssl-internal`. These Secrets are referenced in the `secrets.ssl` and `secrets.sslInternal` Custom Resource options.
+The following diagram shows which certificate each connection uses:
+
+```mermaid
+flowchart LR
+    App[Client application] -- client certificate --> S[mongod / mongos]
+    S -- External certificate --> App
+    S <-- Internal certificate --> M[Other cluster members]
+    O[The Operator, for backups and restores] -- PBM client certificate --> S
+    B[Backup agent sidecar] -- PBM client certificate --> S
+```
+
+The same certificate authority (CA) signs all three certificates. `mongod` and `mongos` check the certificates that clients present against the CA in the `ca.crt` key of the internal Secret. If there's no separate internal Secret, they use the `ca.crt` key of the external Secret. Clients check the server certificate against the `ca.crt` key of the external Secret.
+
+The PBM client certificate is a client-only certificate. It has no hostnames and carries its own subject, with the organization set to `PBM`.
 
 You control TLS usage with the `tls.mode` option in the Custom Resource. This setting defines how Percona Server for MongoDB cluster handles TLS for both internal and external connections. You can choose from the following modes:
 
@@ -36,7 +52,7 @@ You can configure TLS security in several ways:
 | Manual Secrets | Full control, air-gapped or custom PKI workflows | Manual |
 
 * By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
-certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates two Secrets objects named `<cluster-name>-ssl` and `<cluster-name>-ssl-internal`. These Secrets are referenced in the `secrets.ssl` and `secrets.sslInternal` options in the Custom Resource.
+certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets `<cluster-name>-ssl` and `<cluster-name>-ssl-internal`. When backups are enabled, it also creates `<cluster-name>-pbm`. These Secrets are referenced in the `secrets.ssl`, `secrets.sslInternal` and `secrets.sslPBM` options in the Custom Resource.
 
     Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.
 
@@ -82,27 +98,70 @@ See [Configure the TLS certificate management policy](tls-cert-management-policy
 
 ### Connect with a client certificate
 
-Any client that connects over TLS needs the same certificate the Operator generated for
-the cluster (see `clusterAuthMode` above). Extract it from the `<cluster-name>-ssl` Secret
-and pass it to your client:
+`mongod` and `mongos` require a client certificate on every TLS connection. They check that the cluster CA signed it only when [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) is `false`. Give each client application its own client certificate. Don't reuse the external server certificate: MongoDB logs a warning for every connection that presents the server's own certificate.
+
+To issue a client certificate with the CA that the Operator created, use one of the following ways:
+
+=== "cert-manager"
+
+    Create a `Certificate` that the Operator's issuer signs. Save the following manifest as `my-app-client.yaml`. Replace `my-cluster-name` with your cluster name and `my-app` with a name for your application:
+
+    ```yaml
+    apiVersion: cert-manager.io/v1
+    kind: Certificate
+    metadata:
+      name: my-app-client
+    spec:
+      secretName: my-app-client
+      commonName: my-app
+      subject:
+        organizations:
+          - my-app
+      usages:
+        - digital signature
+        - key encipherment
+        - client auth
+      issuerRef:
+        name: my-cluster-name-psmdb-issuer
+        kind: Issuer
+    ```
+
+    `my-cluster-name-psmdb-issuer` of kind `Issuer` is the default issuer that the Operator creates. If you use [another issuer](tls-cert-manager.md#use-an-existing-clusterissuer), set its name and kind.
+
+    ```bash
+    kubectl apply -f my-app-client.yaml -n <namespace>
+    kubectl get secret my-app-client -n <namespace> -o jsonpath='{.data.tls\.crt}' | base64 -d > tls.crt
+    kubectl get secret my-app-client -n <namespace> -o jsonpath='{.data.tls\.key}' | base64 -d > tls.key
+    kubectl get secret my-app-client -n <namespace> -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+    ```
+
+=== "Operator-generated certificates"
+
+    Sign a client certificate with the CA from the `<cluster-name>-ca-cert` Secret:
+
+    ```bash
+    kubectl get secret my-cluster-name-ca-cert -n <namespace> -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+    kubectl get secret my-cluster-name-ca-cert -n <namespace> -o jsonpath='{.data.ca\.key}' | base64 -d > ca.key
+    openssl req -new -newkey rsa:2048 -nodes -keyout tls.key -subj "/O=my-app/CN=my-app" -out client.csr
+    openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 365 \
+      -extfile <(printf "extendedKeyUsage=clientAuth") -out tls.crt
+    ```
+
+    Keep `ca.key` safe, and delete it from your workstation when you're done.
+
+Combine the certificate and the key into one file, then pass it and `ca.crt` to your client. For `mongosh`:
 
 ```bash
-kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.crt}' | base64 -d > tls.crt
-kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.tls\.key}' | base64 -d > tls.key
-kubectl get secret <cluster-name>-ssl -n <namespace> -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
 cat tls.crt tls.key > client.pem
-```
-
-Then pass `client.pem` and `ca.crt` to your client. For `mongosh`:
-
-```bash
-mongosh "<connection-string>" --tlsCertificateKeyFile client.pem --tlsCAFile ca.crt
+mongosh "<connection-string>" --tls --tlsCertificateKeyFile client.pem --tlsCAFile ca.crt
 ```
 
 Run this wherever your client actually runs - on your own machine if you
 [exposed the cluster](expose.md), or inside a Pod if you're connecting from within
 Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
 [Connection secrets](connection-secrets.md#open-an-interactive-shell-with-mongosh).
+
+If you use your own CA, sign the client certificate with a CA that the `ca.crt` key of the `<cluster-name>-ssl-internal` Secret contains. If you don't use a separate internal Secret, use the CA from `<cluster-name>-ssl`.
 
 ## TLS configuration
 

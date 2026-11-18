@@ -175,7 +175,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: percona-client
-    image: percona/percona-server-mongodb:{{ mongodb80recommended }}
+    image: percona/percona-server-mongodb:{{ mongodb83recommended }}
     command: ["sleep", "3600"]
     volumeMounts:
     - name: ssl

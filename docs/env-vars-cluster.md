@@ -36,6 +36,7 @@ These variables are injected into the PBM backup agent sidecar:
 | `POD_NAME` | Pod name (from `metadata.name`). |
 | `PBM_MONGODB_URI` | MongoDB connection string URI constructed by the Operator. |
 | `PBM_AGENT_TLS_ENABLED` | `"true"` when TLS is enabled. |
+| `PBM_AGENT_TLS_DIR` | Directory with the PBM client certificate, `/etc/mongodb-pbm`. The backup agent reads `tls.crt` and `tls.key` from it. Set when TLS and backups are enabled and `crVersion` is 1.24.0 or later. During a physical restore, the Operator also sets it on the `mongod` container. See [Transport Layer Security (TLS)](TLS.md). |
 
 ## Scheduled backup job
 

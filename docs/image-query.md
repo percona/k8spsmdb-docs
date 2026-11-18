@@ -1,6 +1,8 @@
 # Retrieve Percona certified images
 
-When preparing for the upgrade, you must have the list of compatible images for a specific Operator version and the database version you wish to update to. You can either manually find the images in the [list of certified images](images.md) or you can get this list by querying the **Version Service** server. 
+When preparing for the upgrade, you must have the list of compatible images for a specific Operator version and the database version you wish to update to. You can either manually find the images in the [list of certified images](images.md) or you can get this list by querying the **Version Service** server.
+
+Security builds use numbered tags that the Version Service does not list. See [Operator security builds](security-builds.md) to find and use those tags. 
 
 ### What is the Version Service?
 

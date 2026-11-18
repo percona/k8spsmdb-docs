@@ -53,7 +53,10 @@ The Operator does not copy data itself. It writes a document into the Percona Ba
     1. The Operator terminates `mongos` and arbiter nodes, prepares StatefulSets as for a physical restore, and starts `pbm restore --external`.
     2. PBM shuts down `mongod`, wipes `dbPath`, and leaves nodes in **`copyReady`**.
     3. The Operator scales StatefulSets to zero and runs `pbm-agent restore-finish` on every node with PBM config, replica set name, node name, and (when needed) MongoDB `db` config for encryption at rest.
-    4. It recreates each data PVC from the `VolumeSnapshot` in the backup or in `backupSource.snapshots`, one PVC at a time.
+    4. It recreates each data PVC from the `VolumeSnapshot` for that replica set. Snapshot names come from the backup, or from `backupSource.snapshots`.
+
+        Starting with version 1.24.0, the Operator restores replica sets in parallel. On a sharded cluster, every shard and the config server replica set move forward together. Inside one replica set, PVCs are recreated one at a time, because those members share one snapshot. Data-bearing members are recreated first, then non-voting and hidden members if you use them. A single replica set recreates one PVC at a time.
+
     5. It scales StatefulSets back up and runs `pbm restore-finish` so PBM applies metadata and brings the cluster to a consistent state.
     6. After success, it cleans up temporary restore configuration and returns the cluster to normal operation.
 
