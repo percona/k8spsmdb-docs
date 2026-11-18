@@ -53,6 +53,40 @@ Allowed values:
 | ---------- | ------- |
 | :material-code-string: string | `running` |
 
+### `size`
+
+The number of PCSM instances. With `1`, PCSM runs as a single instance. With `2` or more, the instances form an active/standby group: one replicates, and the others take over if it fails. See [High availability](clustersync.md#high-availability). Available starting with version 1.24.0.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-numeric-1-box: int | `2` |
+
+### `imagePullPolicy`
+
+The [policy used to update the PCSM image :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/images/#updating-images).
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `Always` |
+
+### `imagePullSecrets`
+
+The [Kubernetes imagePullSecrets :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) for a private registry.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: array | `[{name: my-registry-secret}]` |
+
+### `env`
+
+Environment variables for the PCSM container. Use them for PCSM settings that have no option in the ClusterSync resource, for example `PCSM_HA_LEASE_TTL`. See the list of [available environment variables :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/install/parameters.html#environment-variables).
+
+The Operator sets `PCSM_SOURCE_URI`, `PCSM_TARGET_URI` and `PCSM_GROUP_NAME` itself and ignores them here.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: array | `[{name: PCSM_HA_LEASE_TTL, value: "30s"}]` |
+
 ## The `source` subsection
 
 Defines how PCSM connects to the source MongoDB cluster. You manage the source.
@@ -95,6 +129,14 @@ Sets the PCSM log level. Allowed values: `debug`, `info`, `warn`, `error`.
 | ---------- | ------- |
 | :material-code-string: string | `info` |
 
+### `pcsmConfig.logJSON`
+
+Writes PCSM logs in JSON format.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-toggle-switch-outline: boolean | `true` |
+
 ## Pod and scheduling options
 
 These options configure the PCSM Deployment Pod the same way as other Operator-managed workloads.
@@ -107,3 +149,108 @@ Specifies CPU and memory requests and limits for the PCSM container.
 | ---------- | ------- |
 | :material-code-string: object | `requests: {cpu: 500m, memory: 512Mi}` |
 
+### `nodeSelector`
+
+[Kubernetes nodeSelector :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) for the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-label-outline: label | `disktype: ssd` |
+
+### `tolerations`
+
+[Kubernetes Pod tolerations :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) for the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: array | `[{key: node.alpha.kubernetes.io/unreachable, operator: Exists, effect: NoExecute}]` |
+
+### `affinity.antiAffinityTopologyKey`
+
+The topology key for [Pod anti-affinity :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) between PCSM Pods. When you set it, PCSM Pods must run in different topology domains. Set `none` to turn anti-affinity off.
+
+If you leave `affinity` unset and the target cluster's `crVersion` is 1.24.0 or later, the Operator prefers to place PCSM Pods on different nodes, but still schedules them on one node if no other node fits.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `kubernetes.io/hostname` |
+
+### `affinity.advanced`
+
+A full [Kubernetes affinity :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) definition. It replaces `affinity.antiAffinityTopologyKey`.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | |
+
+### `podDisruptionBudget.maxUnavailable`
+
+The maximum number of PCSM Pods that can be unavailable during a voluntary disruption, such as a node drain. The Operator creates the PodDisruptionBudget only when `size` is `2` or more. The default is `1`.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-numeric-1-box: int | `1` |
+
+### `podDisruptionBudget.minAvailable`
+
+The minimum number of PCSM Pods that must stay available during a voluntary disruption. Use it instead of `podDisruptionBudget.maxUnavailable`.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-numeric-1-box: int | `1` |
+
+### `annotations`
+
+[Kubernetes annotations :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) for the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-label-outline: label | `example.com/team: data` |
+
+### `labels`
+
+[Kubernetes labels :octicons-link-external-16:](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-label-outline: label | `team: data` |
+
+### `runtimeClassName`
+
+The [runtime class :octicons-link-external-16:](https://kubernetes.io/docs/concepts/containers/runtime-class/) for the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-code-string: string | `image-rc` |
+
+### `containerSecurityContext`
+
+The [security context :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM container. If you set `readOnlyRootFilesystem: true` and the target cluster uses TLS, the Operator mounts a writable `/tmp` volume for the TLS files.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | `readOnlyRootFilesystem: true` |
+
+### `podSecurityContext`
+
+The [security context :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | `runAsNonRoot: true` |
+
+### `livenessProbe`
+
+A [liveness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. The default probe queries the PCSM HTTP endpoint on port `2242` every 10 seconds. When the target cluster's `crVersion` is 1.24.0 or later, it uses `/metrics`, which both active and standby instances answer. Earlier versions use `/status`.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | |
+
+### `readinessProbe`
+
+A [readiness probe :octicons-link-external-16:](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. It uses the same endpoint as the default liveness probe.
+
+| Value type | Example |
+| ---------- | ------- |
+| :material-text-long: subdoc | |
