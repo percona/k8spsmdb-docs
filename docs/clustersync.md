@@ -87,7 +87,13 @@ PCSM supports these topologies:
 * Sharded cluster to sharded cluster
 * Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.
 
-The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0. See [Supported MongoDB deployments in the PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html).
+See [Supported MongoDB deployments in the PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html).
+
+## Supported MongoDB versions
+
+The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0. 
+
+To learn more, see [Version compatibility matrix in PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/version-compatibility.html#version-compatibility-matrix).
 
 ## Replication modes and states
 
