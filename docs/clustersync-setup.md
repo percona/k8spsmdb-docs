@@ -303,7 +303,7 @@ To check the status of your Percona ClusterSync (PCSM), use the following comman
 kubectl get psmdb-clustersync -n $NAMESPACE
 ```
 
-This displays a summary table with the `MODE`, `STATE`, replication lag, the number of ready PCSM Pods and the active PCSM Pod.
+This displays a summary table with the `MODE`, `STATE` and replication lag. With Operator and CRDs version **1.24.0 or later**, it also shows the number of ready PCSM Pods and the active PCSM Pod, as in the sample below.
 
 ??? example "Sample output"
 
