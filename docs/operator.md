@@ -3987,7 +3987,7 @@ Enable or disable verification of the storage server TLS certificate. Disabling 
 
 ### `backup.storages.STORAGE-NAME.s3.credentialsSecret`
 
-The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. For temporary credentials, it also contains the `AWS_SESSION_TOKEN` key, starting with version 1.24.0. See [Use temporary credentials](backups-storage-s3.md#use-temporary-credentials).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4115,7 +4115,7 @@ Disables verification of the storage server TLS certificate. This enables data u
 
 ### `backup.storages.STORAGE-NAME.minio.credentialsSecret`
 
-The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the  `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. Sarting with version 1.24.0, it also contains the `AWS_SESSION_TOKEN` key, if your storage gives you temporary credentials, for example through MinIO Security Token Service. See [Use temporary credentials](backups-storage-s3.md#use-temporary-credentials).
 
 | Value type  | Example    |
 | ----------- | ---------- |
