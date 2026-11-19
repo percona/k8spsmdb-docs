@@ -1140,7 +1140,7 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 
 ### `replsets.sidecarPVCs`
 
-[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+[Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4544,7 +4544,7 @@ Number of minutes between the uploads of oplogs.
 
 ### `backup.pitr.compressionType`
 
-The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups).
+The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4552,7 +4552,7 @@ The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4,
 
 ### `backup.pitr.compressionLevel`
 
-The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups)).
+The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4706,7 +4706,7 @@ The name of the S3-compatible storage for backups, configured in the storages su
 
 ### `backup.tasks.compressionType`
 
-The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup).
+The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#configure-backup-compression).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4714,7 +4714,7 @@ The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or no
 
 ### `backup.tasks.compressionLevel`
 
-The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)).
+The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#compression-level-setup)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
