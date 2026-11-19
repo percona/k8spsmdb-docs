@@ -100,6 +100,7 @@ Common fields:
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
 - `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
+- `status.pvcShrink` – progress of a storage shrink, with one entry per StatefulSet: `targetSize`, `startedAt`, `phase`, `processedPods` and `primaryPod`. Present only while a shrink runs. See [Monitor the shrink](scaling-storage-resize.md#monitor-the-shrink).
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values

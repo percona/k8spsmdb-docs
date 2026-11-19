@@ -102,6 +102,22 @@ Enables or disables [storage scaling / volume expansion](scaling-storage-resize.
 | ----------- | ---------- |
 | :material-toggle-switch-outline: boolean     | `false`  |
 
+### `storageScaling.enableVolumeShrink`
+
+Enables or disables [shrinking storage](scaling-storage-resize.md#shrink-storage). When enabled and you set a smaller storage size, the Operator replaces the PVCs one member at a time, and each member resyncs its data through an initial sync. Turned off by default. Available starting with version 1.24.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-toggle-switch-outline: boolean     | `false`  |
+
+### `storageScaling.shrinkOpts.maxDiskUsagePercent`
+
+The maximum disk usage on any Pod, as a percentage of the new, smaller size. If the usage is higher, the Operator rejects the shrink. Minimum value is 1, maximum is 99. Default value is 80. Available starting with version 1.24.0.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-numeric-1-box: int         | `80`        |
+
 ### `storageScaling.enableExternalAutoscaling`
 
 Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability)

@@ -32,7 +32,7 @@ Scale your database infrastructure as demand grows:
 
 * **Horizontal scaling** — [Add replica set members](scaling.md) or scale [shards and mongos](sharding.md) when sharding is enabled.
 * **Vertical scaling** — Adjust CPU and memory limits in the PerconaServerMongoDB custom resource.
-* **Storage expansion** — Expand PersistentVolumeClaims for database volumes when your storage class supports it.
+* **Storage scaling** — [Expand PersistentVolumeClaims](scaling-storage-resize.md) for database volumes when your storage class supports it, or [shrink them](scaling-storage-resize.md#shrink-storage) to cut storage costs after your data size decreases.
 * **Pod placement** — Use [affinity and anti-affinity](constraints.md) to control which nodes run MongoDB Pods, arbiters, or mongos.
 
 ### Security and compliance
