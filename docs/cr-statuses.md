@@ -99,7 +99,7 @@ Common fields:
 - `status.backupVersion` / `status.backupImage` – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs `spec.backup.image`. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With [automatic upgrades](update-minor-automatic.md), the Operator sets `status.backupVersion` to the target version as soon as it starts the upgrade. `status.backupImage` updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
-- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
+- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the `mongos` log PVCs. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values
