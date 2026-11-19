@@ -6665,7 +6665,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
 <p>Taking the value from the Secret rather than typing a URI keeps the host, the replica set name, and the TLS settings correct without you tracking them. Your app reads the variable at startup. In Kubernetes, you can inject it from a <a href="app-credentials.html#use-the-connection-string-in-your-app">Secret</a> or ConfigMap.</p>
 <p>Use a <a href="app-credentials.html">dedicated application user</a> rather than the database admin account, with only the roles it needs. That limits the damage if the credentials leak.</p>
 <h2 id="retries-and-connection-pooling">Retries and connection pooling<a class="headerlink" href="#retries-and-connection-pooling" title="Permanent link">¶</a></h2>
-<p>MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example <a href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/">Node.js</a>, <a href="https://pymongo.readthedocs.io/en/stable/faq.html#connection-pooling">Python</a>, <a href="https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/">Go</a>) for options like connection timeouts and retry logic.</p>
+<p>MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example <a href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/">Node.js</a>, <a href="https://www.mongodb.com/docs/languages/python/pymongo-driver/current/connect/connection-options/connection-pools/">Python</a>, <a href="https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/">Go</a>) for options like connection timeouts and retry logic.</p>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="troubleshoot-connection.html">Troubleshoot connection issues <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
 <hr>
@@ -6673,7 +6673,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 3, 2026 08:29:17 UTC">September 3, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 19, 2026 10:32:35 UTC">November 19, 2026</span>
       
         <br>
         Created:
