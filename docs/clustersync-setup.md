@@ -9,8 +9,8 @@ For concepts, architecture, modes, and limitations, see [Real-time replication a
 Before you start, make sure that:
 
 * You run Percona Operator for MongoDB **1.23.0** or later.
-* The source and target clusters use the **same major MongoDB version**. Minimum supported versions are listed in [Supported MongoDB deployments](clustersync.md#supported-mongodb-deployments).
-* The source and target topologies are compatible for your scenario (replica set to replica set, or sharded cluster to sharded cluster). 
+* The source and target MongoDB versions are supported. See [Supported MongoDB deployments](clustersync.md#supported-mongodb-deployments).
+* The source and target topologies are supported: replica set to replica set, sharded cluster to sharded cluster, or sharded cluster to replica set.
 * The PCSM Pod can reach the source cluster endpoint over the network.
 * You understand the [limitations](clustersync.md#limitations), including that users and roles are not synchronized and initial sync is not resumable after a hard failure.
 
@@ -31,7 +31,7 @@ Replace them with your values, if needed.
 Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:
 
 ```
-percona/percona-clustersync-mongodb:0.9.0
+percona/percona-clustersync-mongodb:{{clustersync}}
 ```
 
 ## Configuration
@@ -53,13 +53,21 @@ percona/percona-clustersync-mongodb:0.9.0
 
 ### 2. Deploy the Operator
 
-Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:
+The Operator manages every cluster in the namespace it watches, so one Operator in `$NAMESPACE` manages both the source and the target cluster.
 
-```bash
-kubectl apply --server-side -f deploy/cw-bundle.yaml
-```
+1. Create the namespace:
 
-Refer to the [Install the Operator in the cluster-wide mode](cluster-wide.md#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode) for how to install the Operator in another namespace.
+    ```bash
+    kubectl create namespace $NAMESPACE
+    ```
+
+2. Deploy the Operator in it:
+
+    ```bash
+    kubectl apply --server-side -f deploy/bundle.yaml -n $NAMESPACE
+    ```
+
+If the source cluster runs in another namespace, deploy a separate Operator there, or install one Operator in [cluster-wide mode](cluster-wide.md) to watch both namespaces.
 
 ### 3. Deploy the source cluster 
 
@@ -243,6 +251,7 @@ Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clu
 * `spec.source.uri` - specify the endpoint to the source cluster.
 * `spec.source.credentialsSecret` - reference the Secret that stores the credentials of the PCSM user from the source cluster.
 * `spec.mode` defaults to `running`, so replication starts when the PCSM Pod is ready.
+* `spec.size` defaults to `1`. To run PCSM in high-availability mode, first ensure that the Operator and its CRDs are version **1.24.0 or later**, then set `spec.size` to `2` or more. In this mode, an active instance replicates while standby instances take over if it fails. See [High availability](clustersync.md#high-availability).
 
 === "Replica set"
 
@@ -264,7 +273,7 @@ Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clu
 
 === "Sharded cluster"
 
-    For sharded clusters, specify the `mongos` Service name for the source URI. Sharded replication is in tech preview. See [Sharding support in PCSM](clustersync.md#sharding-support-in-pcsm-tech-preview).
+    For sharded clusters, specify the `mongos` Service name for the source URI. See [Sharding support](clustersync.md#sharding-support).
 
     ```yaml title="clustersync-sharded.yaml"
     apiVersion: psmdb.percona.com/v1
@@ -294,13 +303,13 @@ To check the status of your Percona ClusterSync (PCSM), use the following comman
 kubectl get psmdb-clustersync -n $NAMESPACE
 ```
 
-This displays a summary table including the `MODE`, `STATE`, and replication lag time.
+This displays a summary table with the `MODE`, `STATE` and replication lag. With Operator and CRDs version **1.24.0 or later**, it also shows the number of ready PCSM Pods and the active PCSM Pod, as in the sample below.
 
 ??? example "Sample output"
 
-    ```text
-    NAME              CLUSTER             MODE      STATE     LAG(S)   AGE
-    my-cluster-sync   my-target-cluster   running   running            39m
+    ```{.text .no-copy}
+    NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+    my-cluster-sync   my-target-cluster   running   running   2        1       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
     ```
 
 To get detailed information about a ClusterSync resource and see the replication status, use:
@@ -402,7 +411,7 @@ This removes the PCSM Deployment and Operator-owned Secrets. The source credenti
 Check the Deployment and Pod:
 
 ```bash
-kubectl get deploy,pods -l app.kubernetes.io/component=clustersync -n $NAMESPACE
+kubectl get deploy,pods -l app.kubernetes.io/instance=my-cluster-sync,app.kubernetes.io/component=pcsm -n $NAMESPACE
 kubectl describe deploy my-cluster-sync-pcsm -n $NAMESPACE
 kubectl logs deploy/my-cluster-sync-pcsm -n $NAMESPACE
 ```
@@ -413,6 +422,24 @@ Common causes:
 * Source credentials Secret is missing or has wrong keys (`username` / `password`)
 * Target cluster is not `ready`
 * Source and target major MongoDB versions differ
+
+### PCSM doesn't start because of the target TLS Secret
+
+**Symptom:** PCSM doesn't start, and `status.error` of the ClusterSync object starts with `target tls:`, for example `target tls: target ssl secret <namespace>/<secret-name> is missing ca.crt`.
+
+**Cause:** the target cluster has TLS turned on and `crVersion` 1.24.0 or later, so the Operator mounts its TLS Secret into the PCSM Pods. The Secret doesn't exist or lacks one of the `ca.crt`, `tls.crt` and `tls.key` keys.
+
+**Fix:**
+
+1. Check the error:
+
+    ```bash
+    kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.error}{"\n"}'
+    ```
+
+2. Make sure the Secret set in the target cluster's `secrets.ssl` exists and has all three keys. If you provide your own certificates, see [Generate certificates manually](tls-manual.md).
+
+The Operator retries on its own and starts PCSM once the Secret is correct. See [TLS connections](clustersync.md#tls-connections).
 
 ### Status shows `failed`
 
@@ -437,15 +464,16 @@ If the failure keeps recurring:
 2. Fix the root cause on the source or network side.
 3. Resume with `mode: running`, or delete and recreate the ClusterSync CR to start a fresh initial sync.
 
-Initial sync cannot be resumed after a hard failure. Recreate the ClusterSync CR to start over. See [Limitations](clustersync.md#limitations).
+Initial sync cannot be resumed after a hard failure. This includes a failover of the active PCSM instance during the clone: `status.error` then contains `initial clone interrupted by failover and is not resumable`. Recreate the ClusterSync CR to start over. See [Limitations](clustersync.md#limitations).
 
 
 ### Inspect PCSM from inside the Pod
 
-For advanced troubleshooting:
+For advanced troubleshooting on Operator **1.24.0 or later**, run the commands below in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with `not_active`. On Operator **1.23.x**, use `kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status` instead.
 
 ```bash
-kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status
+ACTIVE_POD=$(kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.activeInstance}')
+kubectl exec -it $ACTIVE_POD -n $NAMESPACE -- pcsm status
 ```
 
 Use manual `pcsm` commands only when you need details beyond the Custom Resource status.

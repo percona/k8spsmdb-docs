@@ -387,7 +387,17 @@ Common fields:
 - `status.lagTimeSeconds` – replication lag in seconds
 - `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
 - `status.startedAt` – timestamp of the first time PCSM reported `running`
+- `status.size` – number of PCSM instances requested in `spec.size`
+- `status.readyReplicas` – number of ready PCSM Pods. A value lower than `status.size` means some requested instances are not ready; check `status.state`, `status.activeInstance`, and replication lag to assess whether replication is continuing.
+- `status.activeInstance` – name of the PCSM Pod that holds the lease and replicates. See [High availability in PCSM](clustersync.md#high-availability).
 - `status.conditions` – condition list with reason and message
+
+`kubectl get psmdb-clustersync` shows the main fields as columns:
+
+```{.text .no-copy}
+NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        2       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
+```
 
 ### ClusterSync mode values
 
@@ -423,6 +433,14 @@ Conditions show more detail about ClusterSync state changes in `status.condition
 | `Running` | `True` while `status.state` is `running`; otherwise `False` with reason such as `PCSMNotRunning`. |
 | `Finalized` | `True` once `status.state` is `finalized`. Remains set afterwards. |
 
+### Events
+
+When another PCSM instance becomes active, the Operator records a `PCSMFailover` event on the ClusterSync resource with the message `Active PCSM instance changed from "<old-pod>" to "<new-pod>"`. To see the events:
+
+```bash
+kubectl describe psmdb-clustersync <clustersync-name> -n <namespace>
+```
+
 ### Example status
 
 ```yaml
@@ -430,12 +448,15 @@ status:
   mode: running
   state: running
   lagTimeSeconds: 72
+  size: 2
+  readyReplicas: 2
+  activeInstance: my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p
   startedAt: "2026-07-01T12:00:00Z"
   conditions:
     - type: Running
       status: "True"
-      reason: PCSMReplicating
-      message: PCSM is applying changes from source
+      reason: PCSMRunning
+      message: PCSM is replicating from source to target
 ```
 
 On failure:
