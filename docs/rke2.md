@@ -94,3 +94,7 @@ Deploy the Operator and Percona Server for MongoDB.
 [Single-namespace deployment](kubectl.md){.md-button}
 [Multi-namespace deployment](cluster-wide.md){.md-button}
 [Install with Helm](helm.md){.md-button}
+
+## See also
+
+* [Install from Rancher Apps](rancher.md) to install the Operator and the database from the Rancher UI when Rancher manages your cluster

@@ -5,6 +5,10 @@ Operator with the `helm upgrade` command.
 
 The `helm upgrade` command updates only the Operator deployment. The [update flow for the database management system](update-db.md) is the same for all installation methods, whether it was installed via Helm or `kubectl`.
 
+!!! note
+
+    If you installed the Operator from Rancher Apps, use [Upgrade with Rancher Apps](update-rancher.md) instead. 
+
 --8<-- "update-critical-notice.md"
 
 ## CRD management by Helm
@@ -19,6 +23,26 @@ To update the CRDs you have the following options:
 
 * update them manually before you update the Operator deployment. Use this option if you run the Operator version *before* 1.22.0.
 * install a dedicated CRD chart and update the CRDs using Helm
+
+## Find the chart versions
+
+This procedure upgrades to Operator {{ release }} with the `psmdb-operator-crds` chart {{ crdchart }} and the `psmdb-operator` chart {{ operatorchart }}. Percona can release a newer chart version for the same Operator version after this documentation is published. Before you proceed, check the chart versions and use the latest ones in the commands. The command needs the [jq :octicons-link-external-16:](https://jqlang.org/) command-line JSON processor. To upgrade to another Operator version, replace `{{ release }}` in the command:
+
+```bash
+helm repo update
+helm search repo percona/psmdb --versions -o json \
+  | jq -r '.[] | select(.app_version == "{{ release }}") | [.name, .version, .app_version] | @tsv'
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    percona/psmdb-db	{{ dbchart }}	{{ release }}
+    percona/psmdb-operator	{{ operatorchart }}	{{ release }}
+    percona/psmdb-operator-crds	{{ crdchart }}	{{ release }}
+    ```
+
+The columns are the chart name, the chart version and the app version. If a chart has several chart versions for the same app version, use the latest one. See [Chart and Operator versions](helm.md#chart-and-operator-versions).
 
 ## Upgrade steps
 
@@ -47,7 +71,7 @@ To update the CRDs you have the following options:
             ```bash
             helm upgrade --install psmdb-operator-crds percona/psmdb-operator-crds \
               --namespace $NAMESPACE \
-              --version {{ release }} \
+              --version {{ crdchart }} \
               --take-ownership
             ```
 
@@ -76,7 +100,7 @@ To update the CRDs you have the following options:
                 ```bash
                 helm install psmdb-operator-crds percona/psmdb-operator-crds \
                 --namespace $NAMESPACE \
-                --version {{ release }}
+                --version {{ crdchart }}
                 ```
 
         !!! important
@@ -103,7 +127,7 @@ To update the CRDs you have the following options:
         To upgrade the Operator installed with default parameters, use the following command: 
 
         ```bash
-        helm upgrade my-op percona/psmdb-operator --version {{ release }}
+        helm upgrade my-op percona/psmdb-operator --version {{ operatorchart }}
         ```
 
     === "With customized parameters"
@@ -119,7 +143,7 @@ To update the CRDs you have the following options:
         2. Pass these options to the upgrade command as follows:
 
             ```bash
-            helm upgrade my-op percona/psmdb-operator --version {{ release }} -f my-values.yaml
+            helm upgrade my-op percona/psmdb-operator --version {{ operatorchart }} -f my-values.yaml
             ```
 
     The `my-op` parameter in the above example is the name of a [release object :octicons-link-external-16:](https://helm.sh/docs/intro/using_helm/#three-big-concepts) which you have chosen for the Operator when installing its Helm chart.
@@ -130,7 +154,7 @@ To update the CRDs you have the following options:
 
 **Error: "invalid ownership metadata" or "CRD already exists"**
 
-This happens when existing CRDs were installed from `crds/` and Helm does not own them. Pass the `--take-ownership` flag when you install the `psmdb-operator-crds` chart (Helm 3.17+). For Helm < 3.17+, add Helm ownership metadata before installing or upgrading `psmdb-operator-crds`.
+This happens when existing CRDs were installed from `crds/` and Helm does not own them. Pass the `--take-ownership` flag when you install the `psmdb-operator-crds` chart (Helm 3.17+). For Helm earlier than 3.17, add Helm ownership metadata before installing or upgrading `psmdb-operator-crds`.
 
 ## Next steps
 

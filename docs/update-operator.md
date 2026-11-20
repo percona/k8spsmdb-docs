@@ -97,4 +97,5 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 [Update manually](update-crd-manual.md){.md-button}
 [Update via Helm](update-crd-helm.md){.md-button}
 [Update via OLM (OpenShift)](update-crd-olm.md){.md-button}
+[Update via Rancher Apps](update-rancher.md){.md-button}
 
