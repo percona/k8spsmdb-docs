@@ -225,6 +225,7 @@ nav:
           - "Rancher Kubernetes Engine (RKE2)": rke2.md
        - Install in a single namespace:
           - From Helm charts: helm.md
+          - From Rancher Apps: rancher.md
           - Using manifests: kubernetes.md
           - "Install the database with customized parameters": custom-install.md
           - "Install on OpenShift": openshift.md
@@ -239,6 +240,7 @@ nav:
             - update-operator.md
             - update-crd-manual.md
             - update-crd-helm.md
+            - update-rancher.md
             - update-crd-olm.md
         - Apply security builds: security-builds.md
         - Upgrade Percona Server for MongoDB: 

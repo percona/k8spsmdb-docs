@@ -33,16 +33,18 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
     For example, to enable [Percona Monitoring and Management (PMM) :octicons-link-external-16:](https://docs.percona.com/percona-monitoring-and-management/3/index.html) for the database cluster, run:
 
     ```bash
-    helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace \
+    helm install my-db percona/psmdb-db --version {{ dbchart }} --namespace my-namespace \
       --set pmm.enabled=true
     ```
+
+    The examples install the `psmdb-db` chart {{ dbchart }}, which installs Operator {{ release }}. Percona can release a newer chart version for the same Operator version after this documentation is published. Before you proceed, [check the chart versions](helm.md#find-the-chart-versions) and use the latest one.
 
     **Using a `values.yaml` file**
 
     Create a `values.yaml` file with your custom parameters and pass it to `helm install` with the `-f` or `--values` flag:
 
     ```bash
-    helm install my-db percona/psmdb-db --version {{ release }} --namespace my-namespace -f values.yaml
+    helm install my-db percona/psmdb-db --version {{ dbchart }} --namespace my-namespace -f values.yaml
     ```
 
     Example `values.yaml`:
