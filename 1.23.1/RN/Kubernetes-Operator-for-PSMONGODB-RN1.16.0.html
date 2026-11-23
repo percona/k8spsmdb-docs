@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6686,7 +6686,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1160">Percona Operator for MongoDB 1.16.0<a class="headerlink" href="#percona-operator-for-mongodb-1160" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1160">Percona Operator for MongoDB 1.16.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1160" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6697,17 +6697,17 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="../System-Requirements.html#installation-guidelines">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="general-availability-of-physical-backups">General availability of Physical Backups<a class="headerlink" href="#general-availability-of-physical-backups" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="general-availability-of-physical-backups">General availability of Physical Backups<a data-markdown-ignore class="headerlink" href="#general-availability-of-physical-backups" title="Permanent link">¶</a></h3>
 <p>Two releases ago we added experimental support for <a href="../backups.html#backup-types">Physical Backups and Restores</a> to significantly reduce Recovery Time Objective (<a href="https://www.percona.com/blog/backups-and-disaster-recovery/#:~:text=Recovery%20time%20objective%20(RTO)%20is,afford%20to%20lose%20after%20recovery">RTO <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>), especially for big data sets. With this release Percona announces the general availability of physical backups and restores for Percona Server for MongoDB with the Operator.</p>
-<h3 id="automated-volume-expansion">Automated volume expansion<a class="headerlink" href="#automated-volume-expansion" title="Permanent link">¶</a></h3>
+<h3 id="automated-volume-expansion">Automated volume expansion<a data-markdown-ignore class="headerlink" href="#automated-volume-expansion" title="Permanent link">¶</a></h3>
 <p>Kubernetes supports the Persistent Volume expansion as a stable feature since v1.24. Using it with the Operator previously involved manual operations. Now this is automated, and users can resize their PVCs <a href="../scaling-storage-resize.html">by just changing the value</a> of the <code>resources.requests.storage</code> option in the PerconaServerMongoDB custom resource. This feature is in a technical preview stage and is not recommended for production environments.</p>
 <p><em>Update from September 16, 2025</em> Though the Operator automates the storage resizing, the users must still trigger the process by modifying the Custom Resource and applying the new configuration.  </p>
-<h3 id="support-for-mongodb-7">Support for MongoDB 7<a class="headerlink" href="#support-for-mongodb-7" title="Permanent link">¶</a></h3>
+<h3 id="support-for-mongodb-7">Support for MongoDB 7<a data-markdown-ignore class="headerlink" href="#support-for-mongodb-7" title="Permanent link">¶</a></h3>
 <p>Starting from this release, MongoDB 7.0 is now supported. Read our take on top-5 changes in MongoDB version 7 in this <a href="https://www.percona.com/blog/5-changes-you-should-know-in-mongodb-7-0/">blog post <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h3 id="support-for-arm-architecture-technical-preview">Support for ARM architecture (technical preview)<a class="headerlink" href="#support-for-arm-architecture-technical-preview" title="Permanent link">¶</a></h3>
+<h3 id="support-for-arm-architecture-technical-preview">Support for ARM architecture (technical preview)<a data-markdown-ignore class="headerlink" href="#support-for-arm-architecture-technical-preview" title="Permanent link">¶</a></h3>
 <p>ARM architecture meets the intensive growth of its usage nowadays, both in a segment of highly efficient cloud computing based on systems like AWS Graviton, and the Internet of Things or Edge. <a href="../images.html">Officially certified images for ARM</a> are now available for the Operator, as well as Percona Server for MongoDB and Percona Backup for MongoDB, while database monitoring based on PMM Client is yet to follow.</p>
-<h3 id="fixing-the-overloaded-allowunsafeconfigurations-flag">Fixing the overloaded allowUnsafeConfigurations flag<a class="headerlink" href="#fixing-the-overloaded-allowunsafeconfigurations-flag" title="Permanent link">¶</a></h3>
+<h3 id="fixing-the-overloaded-allowunsafeconfigurations-flag">Fixing the overloaded allowUnsafeConfigurations flag<a data-markdown-ignore class="headerlink" href="#fixing-the-overloaded-allowunsafeconfigurations-flag" title="Permanent link">¶</a></h3>
 <p>In the previous Operator versions <code>allowUnsafeConfigurations</code> Custom Resource option was used to allow configuring a cluster with unsafe parameters, such as starting it with less than 3 replica set instances. In fact, setting this option to <code>true</code> resulted in a wide range of reduced safety features without the user’s explicit intent: disabling TLS, allowing backups in unhealthy clusters, etc.</p>
 <p>With this release, a separate <code>unsafeFlags</code> Custom Resource section is introduced for the fine-grained control of the safety loosening features:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">unsafeFlags</span><span class="p">:</span>
@@ -6718,14 +6718,14 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">backupIfUnhealthy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>Also, TLS configuration is now enabled or disabled by a special <code>tls.mode</code> Custom Resource option, which can be set to <code>disabled</code>, <code>allowTLS</code>, <code>preferTLS</code>, or <code>requireTLS</code> values.</p>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1000">K8SPSMDB-1000</a>: Users who store backups on Azure Blob Storage can now use <a href="../operator.html#backupstoragesstorage-nameazureendpointurl">private endpoints</a></li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1055">K8SPSMDB-1055</a>: The <code>kubectl get psmdb-backup</code> command now shows <a href="../backups-pitr-restore.html#choose-the-target-time">latest restorable time</a> to make it easier to pick a point-in-time recovery target</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-491">K8SPSMDB-491</a>: It is now possible to specify the <a href="../operator.html#tlsissuerconfname">existing cert-manager issuer</a> which should be used by the Operator</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-733">K8SPSMDB-733</a>: It is now possible to <a href="../scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">resize Persistent Volume Claims</a> by patching the PerconaServerMongoDB custom resource: change  <code>persistentVolumeClaim.resources.requests.storage</code> and let the Operator do the scaling</li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1004">K8SPSMDB-1004</a>: <a href="../expose.html#exposing-replica-set-with-split-horizon-dns">Exposing replica set with split-horizon DNS</a> allows to specify URIs with non-standard port numbers, which are particularly useful with the NodePort service type</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1013">K8SPSMDB-1013</a>: MongoDB 7.0 is now supported.</li>
@@ -6742,7 +6742,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-780">K8SPSMDB-780</a>: Removing <code>allowUnsafeConfigurations</code> Custom Resource option in favor of fine-grained safety control in the <code>unsafeFlags</code> subsection</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1042">K8SPSMDB-1042</a>: Helm chart for Percona Server for MongoDB now accepts replica set options as the map argument instead of the array one used in previous releases; this simplifies <a href="../custom-install.html#__tabbed_2_1">how arguments are specified in the command line</a> and allows to specify only part of the replica set parameters, relying on the default values for the other part. <strong>Take this change into account</strong> if you are installing database via helm and want to use set of custom options from previous releases</li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1011">K8SPSMDB-1011</a>: Fix a bug where custom logins for system users stopped working after deleting and recreating back the users Secret (thanks for Patrick Wolleb for report)</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1014">K8SPSMDB-1014</a>: Fix a bug that certificate rotation was bringing the sharded MongoDB cluster down for clusters originally created with the Operator version prior to 1.15.0 (thanks to Stiliyan Stefanov for reporting)</li>
@@ -6757,7 +6757,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-940">K8SPSMDB-940</a>: Fix a bug due to which the Operator didn’t allow to set serviceAccount for mongos Pods</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-985">K8SPSMDB-985</a>: Fix a bug where <code>pbmPod</code> key in backup object was only showing one replica/pod</li>
 </ul>
-<h2 id="deprecation-and-removal">Deprecation and removal<a class="headerlink" href="#deprecation-and-removal" title="Permanent link">¶</a></h2>
+<h2 id="deprecation-and-removal">Deprecation and removal<a data-markdown-ignore class="headerlink" href="#deprecation-and-removal" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>Starting from now, <code>allowUnsafeConfigurations</code> Custom Resource option is deprecated in favor of a number of options under the <code>unsafeFlags</code> subsection. Setting <code>allowUnsafeConfigurations</code> won’t have any effect; upgrading existing clusters with <code>allowUnsafeConfigurations=true</code> will cause everything under <a href="../operator.html#operator-unsafeflags-section">unsafeFlags</a> set to true and <a href="../tls-disable.html">TLS funuctionality disabled</a></p>
@@ -6766,7 +6766,7 @@ window.addEventListener('afterprint', (event) => {
 <p>MongoDB 4.4 support in the Operator has reached its end-of-life. Starting from now Percona will not provide <a href="../images.html">officially certified images</a> for it. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0. You can use <a href="../update-major.html">major version upgrade functionality</a>.</p>
 </li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with Percona Server for MongoDB 5.0.26-22,
 6.0.15-12, and 7.0.8-5. Other options may also work but have not been tested. The
 Operator also uses Percona Backup for MongoDB 2.4.1.</p>

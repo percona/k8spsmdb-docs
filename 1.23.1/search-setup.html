@@ -25,7 +25,7 @@ index, and run a $vectorSearch query.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ index, and run a $vectorSearch query.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6652,7 +6652,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-search-and-vector-search">Configure search and vector search<a class="headerlink" href="#configure-search-and-vector-search" title="Permanent link">¶</a></h1>
+<h1 id="configure-search-and-vector-search">Configure search and vector search<a data-markdown-ignore class="headerlink" href="#configure-search-and-vector-search" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -6672,9 +6672,9 @@ index, and run a <code>$vectorSearch</code> query.</p>
 <ul>
 <li>Percona Operator for MongoDB 1.23.0</li>
 <li>Percona Server for MongoDB 8.3</li>
-<li>Percona Search for MongoDB {{ mongot }}.</li>
+<li>Percona Search for MongoDB 1.70.5-3.</li>
 </ul>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ol>
 <li>Make sure you understand <a href="search-overview.html#availability-and-requirements">requirements</a> and <a href="search-overview.html#limitations">limitations</a> of using Percona Search for MongoDB.</li>
 <li>
@@ -6690,12 +6690,12 @@ index, and run a <code>$vectorSearch</code> query.</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="deploy-the-operator">Deploy the Operator<a class="headerlink" href="#deploy-the-operator" title="Permanent link">¶</a></h2>
+<h2 id="deploy-the-operator">Deploy the Operator<a data-markdown-ignore class="headerlink" href="#deploy-the-operator" title="Permanent link">¶</a></h2>
 <p>Install the Operator by applying the <code>deploy/bundle.yaml</code> manifest. This also installs CRDs, Role-based access control (RBAC) and the Operator deployment:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/bundle.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>As the result you will have the Operator Pod up and running.</p>
-<h2 id="install-percona-server-for-mongodb-and-enable-percona-search-for-mongodb">Install Percona Server for MongoDB and enable Percona Search for MongoDB<a class="headerlink" href="#install-percona-server-for-mongodb-and-enable-percona-search-for-mongodb" title="Permanent link">¶</a></h2>
+<h2 id="install-percona-server-for-mongodb-and-enable-percona-search-for-mongodb">Install Percona Server for MongoDB and enable Percona Search for MongoDB<a data-markdown-ignore class="headerlink" href="#install-percona-server-for-mongodb-and-enable-percona-search-for-mongodb" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Edit the <code>deploy/cr.yaml</code> Custom Resource. Specify the following keys:</p>
@@ -6717,7 +6717,7 @@ index, and run a <code>$vectorSearch</code> query.</p>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perconalab/percona-server-mongodb:8.3</span>
 <span class="w">  </span><span class="nt">search</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:{{ mongot }}</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:1.70.5-3</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
@@ -6753,7 +6753,7 @@ index, and run a <code>$vectorSearch</code> query.</p>
 </code></pre></div>
 </li>
 </ol>
-<h3 id="verify-that-percona-search-for-mongodb-is-ready">Verify that Percona Search for MongoDB is ready<a class="headerlink" href="#verify-that-percona-search-for-mongodb-is-ready" title="Permanent link">¶</a></h3>
+<h3 id="verify-that-percona-search-for-mongodb-is-ready">Verify that Percona Search for MongoDB is ready<a data-markdown-ignore class="headerlink" href="#verify-that-percona-search-for-mongodb-is-ready" title="Permanent link">¶</a></h3>
 <p>Wait until the Percona Search for MongoDB pod is running. For a cluster named <code>my-cluster-name</code>
 with replica set <code>rs0</code>, the pod is <code>my-cluster-name-rs0-search-0</code>:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>search
@@ -6773,7 +6773,7 @@ with replica set <code>rs0</code>, the pod is <code>my-cluster-name-rs0-search-0
 </details>
 <p>When search is ready, <code>status.search</code> shows the replica set or shard entry with
 <code>status: ready</code>.</p>
-<h2 id="connect-to-the-cluster">Connect to the cluster<a class="headerlink" href="#connect-to-the-cluster" title="Permanent link">¶</a></h2>
+<h2 id="connect-to-the-cluster">Connect to the cluster<a data-markdown-ignore class="headerlink" href="#connect-to-the-cluster" title="Permanent link">¶</a></h2>
 <p>Open a MongoDB client session using the steps in <a href="connection-secrets.html#open-an-interactive-shell-with-mongosh">Connection
 secrets</a>. Use an application user
 with <code>readWrite</code> and <code>dbAdmin</code> (or equivalent) on the database where you will
@@ -6795,7 +6795,7 @@ store vectors — not the Operator’s <code>searchCoordinator</code> system use
 <span class="p">})</span>
 </code></pre></div>
 <p>Then authenticate as that user, or reconnect with those credentials.</p>
-<h2 id="insert-vector-data">Insert vector data<a class="headerlink" href="#insert-vector-data" title="Permanent link">¶</a></h2>
+<h2 id="insert-vector-data">Insert vector data<a data-markdown-ignore class="headerlink" href="#insert-vector-data" title="Permanent link">¶</a></h2>
 <p>Switch to your application database and insert documents that include an
 embedding field. Each embedding is an array of numbers. In a real workload you
 generate embeddings with an embedding model; here we use small sample vectors
@@ -6812,7 +6812,7 @@ so you can try the feature quickly.</p>
 <p>Confirm the documents are there:</p>
 <div class="highlight" data-prompt="myApp&gt;"><pre><span></span><code><span class="nx">myApp</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">vectors</span><span class="p">.</span><span class="nx">find</span><span class="p">().</span><span class="nx">pretty</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="create-a-vector-search-index">Create a vector search index<a class="headerlink" href="#create-a-vector-search-index" title="Permanent link">¶</a></h2>
+<h2 id="create-a-vector-search-index">Create a vector search index<a data-markdown-ignore class="headerlink" href="#create-a-vector-search-index" title="Permanent link">¶</a></h2>
 <p>Create a <code>vectorSearch</code> index on the <code>embedding</code> field. The
 <code>numDimensions</code> value must match the length of your embedding arrays (here,
 <code>3</code>). The <code>similarity</code> metric can be <code>cosine</code>, <code>euclidean</code>, or <code>dotProduct</code> —
@@ -6862,7 +6862,7 @@ use the same metric your embedding model expects.</p>
 </details>
 <p>If the index is still building, wait a short time and run
 <code>getSearchIndexes</code> again.</p>
-<h2 id="run-a-vector-search-query">Run a vector search query<a class="headerlink" href="#run-a-vector-search-query" title="Permanent link">¶</a></h2>
+<h2 id="run-a-vector-search-query">Run a vector search query<a data-markdown-ignore class="headerlink" href="#run-a-vector-search-query" title="Permanent link">¶</a></h2>
 <p>Use the <code>$vectorSearch</code> aggregation stage. The <code>queryVector</code> must have the same
 number of dimensions as the indexed field. This example finds the three nearest
 neighbors to <code>[1.0, 0.0, 0.0]</code> (closest to <code>"apple"</code>):</p>
@@ -6891,7 +6891,7 @@ neighbors to <code>[1.0, 0.0, 0.0]</code> (closest to <code>"apple"</code>):</p>
 <code>$project</code>) to shape the output.</p>
 <p>For more index and query options, see the
 <a href="https://www.mongodb.com/docs/vector-search/">MongoDB Vector Search documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="security.html">Security</a> - <code>mongot</code> authenticates like any other client</li>
 </ul>

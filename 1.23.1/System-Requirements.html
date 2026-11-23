@@ -27,7 +27,7 @@ tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -144,7 +144,7 @@ tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6552,13 +6552,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="system-requirements">System Requirements<a class="headerlink" href="#system-requirements" title="Permanent link">¶</a></h1>
+<h1 id="system-requirements">System Requirements<a data-markdown-ignore class="headerlink" href="#system-requirements" title="Permanent link">¶</a></h1>
 <p>The Operator was developed and tested with Percona Server for MongoDB
 7.0.43-23, 
 8.0.32-14, and 8.3.13-4. Other options may also work but have not been
 tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
 2.15.0 and Percona ClusterSync for MongoDB.</p>
-<h2 id="officially-supported-platforms">Officially supported platforms<a class="headerlink" href="#officially-supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="officially-supported-platforms">Officially supported platforms<a data-markdown-ignore class="headerlink" href="#officially-supported-platforms" title="Permanent link">¶</a></h2>
 <p>The following platforms were tested and are officially supported by the Operator
 1.23.1:</p>
 <ul>
@@ -6570,10 +6570,10 @@ tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.39.0 with Kubernetes v1.37.0</li>
 </ul>
 <p>Other Kubernetes platforms may also work but have not been tested.</p>
-<h2 id="cpu-microarchitecture">CPU microarchitecture<a class="headerlink" href="#cpu-microarchitecture" title="Permanent link">¶</a></h2>
+<h2 id="cpu-microarchitecture">CPU microarchitecture<a data-markdown-ignore class="headerlink" href="#cpu-microarchitecture" title="Permanent link">¶</a></h2>
 <p>Starting with version 1.22.0, the Operator base image was upgraded from UBI 9 to UBI 10.</p>
 <p>RHEL 10 / UBI 10 enforces a minimum CPU microarchitecture of <strong>x86-64-v3</strong> on <code>amd64</code> (requires AVX2, BMI1, BMI2, FMA — Intel Haswell 2013+ / AMD Excavator 2015+).</p>
-<h2 id="resource-limits">Resource Limits<a class="headerlink" href="#resource-limits" title="Permanent link">¶</a></h2>
+<h2 id="resource-limits">Resource Limits<a data-markdown-ignore class="headerlink" href="#resource-limits" title="Permanent link">¶</a></h2>
 <p>A cluster running an officially supported platform contains at least 3 Nodes
 and the following resources (if <a href="sharding.html">sharding</a> is
 turned off):</p>
@@ -6591,7 +6591,7 @@ is not enabled.</p>
 <p>Use Storage Class with XFS as the default filesystem if possible
 <a href="https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb">to achieve better MongoDB performance  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 </div>
-<h2 id="installation-guidelines">Installation guidelines<a class="headerlink" href="#installation-guidelines" title="Permanent link">¶</a></h2>
+<h2 id="installation-guidelines">Installation guidelines<a data-markdown-ignore class="headerlink" href="#installation-guidelines" title="Permanent link">¶</a></h2>
 <p>Choose how you wish to install the Operator:</p>
 <p><a class="md-button" href="helm.html">With Helm</a>
 <a class="md-button" href="kubectl.html">Using manifests with kubectl</a></p>

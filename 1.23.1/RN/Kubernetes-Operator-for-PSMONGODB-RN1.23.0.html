@@ -24,7 +24,7 @@ Upgrade">
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Upgrade">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -7195,36 +7195,36 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1230-2026-07-23">Percona Operator for MongoDB 1.23.0 (2026-07-23)<a class="headerlink" href="#percona-operator-for-mongodb-1230-2026-07-23" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1230-2026-07-23">Percona Operator for MongoDB 1.23.0 (2026-07-23)<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1230-2026-07-23" title="Permanent link">¶</a></h1>
 <p><a class="md-button" href="../quickstart.html">Get started with the Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a>
 <a class="md-button" href="../update.html">Upgrade <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="whats-new-at-a-glance">What’s new at a glance<a class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
-<h3 id="data-management">Data management<a class="headerlink" href="#data-management" title="Permanent link">¶</a></h3>
+<h2 id="whats-new-at-a-glance">What’s new at a glance<a data-markdown-ignore class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
+<h3 id="data-management">Data management<a data-markdown-ignore class="headerlink" href="#data-management" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#migrate-and-keep-clusters-in-sync-with-the-operator-managed-percona-clustersync-for-mongodb">Real-time replication or near zero-downtime migration with Percona ClusterSync for MongoDB</a></li>
 <li><a href="#run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview">Vector search support in the Operator (tech preview)</a></li>
 </ul>
-<h3 id="storage-management">Storage management<a class="headerlink" href="#storage-management" title="Permanent link">¶</a></h3>
+<h3 id="storage-management">Storage management<a data-markdown-ignore class="headerlink" href="#storage-management" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview">Boost backup and restore performance with PVC snapshot support (tech preview)</a></li>
 <li><a href="#native-backups-to-oracle-cloud-infrastructure-object-storage">Native support of OCI Object Storage</a></li>
 <li><a href="#support-of-alibaba-cloud-oss-for-backups">Alibaba Cloud Object Storage Service (OSS) support</a></li>
 <li><a href="#workload-identity-authentication-support-for-gcs-backups">Workload Identity authentication support for GCS backups</a></li>
 </ul>
-<h3 id="backup-and-restore-operations">Backup and restore operations<a class="headerlink" href="#backup-and-restore-operations" title="Permanent link">¶</a></h3>
+<h3 id="backup-and-restore-operations">Backup and restore operations<a data-markdown-ignore class="headerlink" href="#backup-and-restore-operations" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#restore-a-collection-under-a-different-name">Improved troubleshooting with the ability to restore a collection under a different name</a></li>
 </ul>
-<h3 id="security-improvements">Security improvements<a class="headerlink" href="#security-improvements" title="Permanent link">¶</a></h3>
+<h3 id="security-improvements">Security improvements<a data-markdown-ignore class="headerlink" href="#security-improvements" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#use-your-existing-cert-manager-clusterissuer-for-mongodb-tls">Use your existing cert-manager ClusterIssuer for TLS management</a></li>
 </ul>
-<h3 id="developer-experience">Developer experience<a class="headerlink" href="#developer-experience" title="Permanent link">¶</a></h3>
+<h3 id="developer-experience">Developer experience<a data-markdown-ignore class="headerlink" href="#developer-experience" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#connect-applications-using-operator-generated-connection-string-secrets">Operator-generated connection strings in Secrets</a></li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="migrate-and-keep-clusters-in-sync-with-the-operator-managed-percona-clustersync-for-mongodb">Migrate and keep clusters in sync with the Operator-managed Percona ClusterSync for MongoDB<a class="headerlink" href="#migrate-and-keep-clusters-in-sync-with-the-operator-managed-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="migrate-and-keep-clusters-in-sync-with-the-operator-managed-percona-clustersync-for-mongodb">Migrate and keep clusters in sync with the Operator-managed Percona ClusterSync for MongoDB<a data-markdown-ignore class="headerlink" href="#migrate-and-keep-clusters-in-sync-with-the-operator-managed-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h3>
 <p>You can now run <a href="https://docs.percona.com/percona-clustersync-for-mongodb/">Percona ClusterSync for MongoDB (PCSM) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> through the Operator. PCSM clones existing data from source MongoDB deployment to target one and uses MongoDB change stream events to track the changes on the source and replicate them to the target in real time.</p>
 <p>You could use PCSM with the Operator before but you had to deploy it yourself, wire up connection strings and run <code>pcsm</code> commands manually. Now you declare the source, target, and replication mode in a dedicated <code>PerconaServerMongoDBClusterSync</code> Custom Resource. The Operator deploys PCSM, connects the clusters, manages the replication lifecycle, and reports lag and status in the same way it manages your Percona Server for MongoDB.</p>
 <p>With Percona ClusterSync for MongoDB available in the Operator you can:</p>
@@ -7234,13 +7234,13 @@ window.addEventListener('afterprint', (event) => {
 <li>Run hybrid-cloud sync between external MongoDB and Kubernetes without a separate PCSM stack to maintain</li>
 </ul>
 <p>See the <a href="../clustersync.html">documentation</a> for setup and day-2 operations.</p>
-<h3 id="run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview">Run AI and semantic search workloads with vector search available in Percona Operator for MongoDB (tech preview)<a class="headerlink" href="#run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview" title="Permanent link">¶</a></h3>
+<h3 id="run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview">Run AI and semantic search workloads with vector search available in Percona Operator for MongoDB (tech preview)<a data-markdown-ignore class="headerlink" href="#run-ai-and-semantic-search-workloads-with-vector-search-available-in-percona-operator-for-mongodb-tech-preview" title="Permanent link">¶</a></h3>
 <p>You can now use full-text and vector search with Percona Operator for MongoDB. Full-text search finds documents by matching keywords and phrases in the text. Vector search retrieves results based on meaning rather than exact word matches, so you can store and query vector data alongside traditional data in Percona Server for MongoDB. Use it for AI and retrieval-augmented generation (RAG) workloads, semantic search and similarity queries. As a result, you have the same capability that MongoDB Atlas customers and self-managed upstream users already have.</p>
 <p>Full-text and vector search are provided by a separate tool called Percona Search for MongoDB that runs the <code>mongot</code> search process. You manage it declaratively in the Custom Resource. The Operator deploys and manages the <code>mongot</code> alongside your cluster, wires authentication and TLS, and keeps search in sync with your data for both replica set and sharded deployments. Existing clusters that don’t enable search continue to run unchanged after you upgrade.</p>
 <p>Full-text and vector search require Percona Server for MongoDB 8.3 or later. You must explicitly specify Percona Server for MongoDB 8.3 images in the Custom Resource.</p>
 <p>This feature is available as a tech preview and is not recommended for production use yet. Try it in staging or testing environments and share your feedback to help us shape its future.</p>
 <p>Learn more in the <a href="../search-overview.html">documentation</a> and <a href="../search-setup.html">setup tutorial</a>.</p>
-<h3 id="boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview">Boost backup and restore performance with PVC snapshot support (tech preview)<a class="headerlink" href="#boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview" title="Permanent link">¶</a></h3>
+<h3 id="boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview">Boost backup and restore performance with PVC snapshot support (tech preview)<a data-markdown-ignore class="headerlink" href="#boost-backup-and-restore-performance-with-pvc-snapshot-support-tech-preview" title="Permanent link">¶</a></h3>
 <p>You can now use PVC snapshots to speed up backups and restores in your Percona Server for MongoDB clusters. A PVC snapshot is a point-in-time copy of your data volumes taken directly at the storage layer. Instead of streaming data to cloud storage, the Operator creates fast, storage level snapshots. This is especially beneficial for large data set owners, boosting their backup and restore performance.</p>
 <p>This feature is in the tech preview stage and is not recommended for production use yet. We encourage you to try it out in testing or staging environment and leave your feedback.</p>
 <p>Using PVC snapshots, you benefit from:</p>
@@ -7252,7 +7252,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>The Operator uses the PBM workflow for external backups and restores, automating all required steps. You only need to create the <code>VolumeSnapshotClass</code>, reference it in the backup object for on demand backups or in the Custom Resource for scheduled backups, and specify the backup type as <code>external</code>.</p>
 <p>You can find details about the workflow, requirements, and limitations in the <a href="../backups-pvc-snapshots.html">PVC snapshot support documentation</a>. For setup and usage instructions, refer to our <a href="../backups-pvc-setup.html">tutorial</a>.</p>
-<h3 id="connect-applications-using-operator-generated-connection-string-secrets">Connect applications using operator-generated connection string Secrets<a class="headerlink" href="#connect-applications-using-operator-generated-connection-string-secrets" title="Permanent link">¶</a></h3>
+<h3 id="connect-applications-using-operator-generated-connection-string-secrets">Connect applications using operator-generated connection string Secrets<a data-markdown-ignore class="headerlink" href="#connect-applications-using-operator-generated-connection-string-secrets" title="Permanent link">¶</a></h3>
 <p>The Operator now creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the <code>databaseAdmin</code> user and for each operator-managed custom user. The Secret names are <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code> and <code>&lt;cluster-name&gt;-custom-user-secret-conn-str</code> respectively. You no longer need to assemble URIs yourself from Pod names, Services, credentials, and TLS settings.</p>
 <p>After you deploy a cluster, the Operator generates connection strings that reflect your actual topology — replica set size, sharded layout, internal DNS names, and exposed endpoints when you enable them. Application teams can mount these Secrets directly in Deployments, Jobs, or CI pipelines instead of maintaining separate connection logic.</p>
 <p>The use of connection secrets helps you:</p>
@@ -7262,7 +7262,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Support GitOps and platform workflows — platform teams can standardize on a predictable Secret naming pattern instead of documenting hand-built connection strings for every cluster.</li>
 </ul>
 <p>For details about connection Secrets, see <a href="../connection-secrets.html">connection Secrets documentation</a>.</p>
-<h3 id="workload-identity-authentication-support-for-gcs-backups">Workload Identity authentication support for GCS backups<a class="headerlink" href="#workload-identity-authentication-support-for-gcs-backups" title="Permanent link">¶</a></h3>
+<h3 id="workload-identity-authentication-support-for-gcs-backups">Workload Identity authentication support for GCS backups<a data-markdown-ignore class="headerlink" href="#workload-identity-authentication-support-for-gcs-backups" title="Permanent link">¶</a></h3>
 <p>You can now make backup to Google Cloud Storage without storing service account JSON keys in Kubernetes Secrets. This unblocks GKE environments that use <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">Workload Identity <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and policies that forbid exporting service account keys.</p>
 <p>To use it:</p>
 <ol>
@@ -7281,7 +7281,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">        </span><span class="c1"># credentialsSecret omitted — PBM uses Workload Identity / ADC</span>
 </code></pre></div>
 <p>This improvement makes keyless GCS backups a first-class option in the Operator. For configuration guidelines, refer to <a href="../backups-storage-gcp.html#automate-access-to-google-cloud-storage-using-workload-identity">documentation</a>.</p>
-<h3 id="native-backups-to-oracle-cloud-infrastructure-object-storage">Native backups to Oracle Cloud Infrastructure Object Storage<a class="headerlink" href="#native-backups-to-oracle-cloud-infrastructure-object-storage" title="Permanent link">¶</a></h3>
+<h3 id="native-backups-to-oracle-cloud-infrastructure-object-storage">Native backups to Oracle Cloud Infrastructure Object Storage<a data-markdown-ignore class="headerlink" href="#native-backups-to-oracle-cloud-infrastructure-object-storage" title="Permanent link">¶</a></h3>
 <p>You can now store MongoDB backups directly in Oracle Cloud Infrastructure (OCI) Object Storage. If your MongoDB cluster runs on Oracle Cloud or Oracle Kubernetes Engine (OKE), you can store backups in OCI Object Storage natively and no longer need to use an S3-compatible endpoint as a workaround.</p>
 <p>The Operator embeds this capability from Percona Backup for MongoDB, so you get the latest PBM storage enhancements through the familiar Custom Resource workflow.</p>
 <p>Configure storage in the Custom Resource with the <code>type: oci</code>, and choose how to authenticate:</p>
@@ -7292,7 +7292,7 @@ window.addEventListener('afterprint', (event) => {
 <p>You can also encrypt backups at rest with OCI Vault or a customer-provided key.</p>
 <p>With the support of OCI Object Storage, you get the same Operator-managed backup and restore experience on Oracle Cloud as with the other <a href="../backups-storage.html">supported storage services</a>. When you use workload identity, you also benefit from less credential handling.</p>
 <p>Read more about OCI support in our <a href="../backups-storage-oci.html">documentation</a>.</p>
-<h3 id="support-of-alibaba-cloud-oss-for-backups">Support of Alibaba Cloud OSS for backups<a class="headerlink" href="#support-of-alibaba-cloud-oss-for-backups" title="Permanent link">¶</a></h3>
+<h3 id="support-of-alibaba-cloud-oss-for-backups">Support of Alibaba Cloud OSS for backups<a data-markdown-ignore class="headerlink" href="#support-of-alibaba-cloud-oss-for-backups" title="Permanent link">¶</a></h3>
 <p>You can now store backups made through the Operator in <a href="https://www.alibabacloud.com/en/product/object-storage-service">Alibaba Cloud Object Storage Service (OSS) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. If you operate in Asia-Pacific or China region or already use Alibaba Cloud infrastructure, this ability lets you reduce latency, simplify compliance, and achieve fewer cross-cloud hops.</p>
 <p>With the new <code>oss</code> storage type, configure backups the same way as for other cloud storages: create a Secret with Alibaba credentials, point the Custom Resource at your OSS bucket and endpoint, then run on-demand or scheduled backups and restores as usual.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">backup</span><span class="p">:</span>
@@ -7309,7 +7309,7 @@ window.addEventListener('afterprint', (event) => {
 <p>The Secret must include <code>ALIBABA_ACCESS_KEY_ID</code> and <code>ALIBABA_ACCESS_KEY_SECRET</code>. Optional settings cover upload retries, multipart upload size, and server-side encryption (SSE-OSS or SSE-KMS) via a per-storage SSE Secret.</p>
 <p>See our <a href="../backups-storage-oss.html">documentation</a> for configuration and examples.</p>
 <p>With this integration, you no longer need a workaround or a second cloud for backups, since logical, physical, and incremental backups now go straight to OSS.</p>
-<h3 id="restore-a-collection-under-a-different-name">Restore a collection under a different name<a class="headerlink" href="#restore-a-collection-under-a-different-name" title="Permanent link">¶</a></h3>
+<h3 id="restore-a-collection-under-a-different-name">Restore a collection under a different name<a data-markdown-ignore class="headerlink" href="#restore-a-collection-under-a-different-name" title="Permanent link">¶</a></h3>
 <p>You can now restore a single collection from a full logical backup under a different name up to a certain point in time alongside the current collection in the same database, to a different database or to a different cluster. This is useful when you need to recover from an accidental delete or bad write. Restore the collection side by side, compare or validate the data, then merge what you need back into production.</p>
 <p>The Operator automates the full flow through the Restore Custom Resource, so you don’t need to exec into pods or run PBM manually. You get safer partial recovery with less operational risk and a clear, trackable restore status.</p>
 <p>Set the source and target namespaces in the <code>PerconaServerMongoDBRestore</code> Custom Resource:</p>
@@ -7325,7 +7325,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>The feature is supported for replica sets and unsharded collections. Refer to our <a href="../backups-restore-new-name.html">documentation</a> for configuration examples and workflows.</p>
-<h3 id="configure-external-nodes-as-arbiters">Configure external nodes as arbiters<a class="headerlink" href="#configure-external-nodes-as-arbiters" title="Permanent link">¶</a></h3>
+<h3 id="configure-external-nodes-as-arbiters">Configure external nodes as arbiters<a data-markdown-ignore class="headerlink" href="#configure-external-nodes-as-arbiters" title="Permanent link">¶</a></h3>
 <p>You can now declare an external node as an arbiter in your Custom Resource by setting <code>arbiterOnly: true</code> under <code>replsets.externalNodes</code>. This lets you add a lightweight tie-breaker vote in a third location without running another data-bearing member in Kubernetes.</p>
 <p>Here’s the example configuration:
 </p><div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
@@ -7337,7 +7337,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">        </span><span class="nt">arbiterOnly</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div><p></p>
 <p>For deployments distributed across multiple regions or data centers, this is a practical way to keep an odd number of voters without having to manually restore the majority configuration during a failover. Instead, you can deploy a main cluster with 2 voting members, a replica cluster with 2 voting member and another cluster with only an arbiter in another region . With this setup, you get reliable elections and quorum without the cost and operational overhead of another full replica.</p>
-<h3 id="more-control-over-tls-certificate-management">More control over TLS certificate management<a class="headerlink" href="#more-control-over-tls-certificate-management" title="Permanent link">¶</a></h3>
+<h3 id="more-control-over-tls-certificate-management">More control over TLS certificate management<a data-markdown-ignore class="headerlink" href="#more-control-over-tls-certificate-management" title="Permanent link">¶</a></h3>
 <p>If you manage TLS certificates manually, such as through Kubernetes Secrets synced from AWS Secrets Manager or via External Secrets, losing access to those Secrets even briefly can lead to a service outage.</p>
 <p>By default, the Operator treats a missing TLS Secret as a signal to create new certificates, restart the database Pods, and apply the new CA. Applications that still trust your original CA may lose connectivity.</p>
 <p>Starting with version 1.23.0, you can control the Operator’s behavior with the <code>spec.tls.certManagementPolicy</code> option in the Custom Resource. Available policies are:</p>
@@ -7354,13 +7354,13 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl</span>
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
 </code></pre></div>
-<h3 id="use-your-existing-cert-manager-clusterissuer-for-mongodb-tls">Use your existing cert-manager ClusterIssuer for MongoDB TLS<a class="headerlink" href="#use-your-existing-cert-manager-clusterissuer-for-mongodb-tls" title="Permanent link">¶</a></h3>
+<h3 id="use-your-existing-cert-manager-clusterissuer-for-mongodb-tls">Use your existing cert-manager ClusterIssuer for MongoDB TLS<a data-markdown-ignore class="headerlink" href="#use-your-existing-cert-manager-clusterissuer-for-mongodb-tls" title="Permanent link">¶</a></h3>
 <p>If you already run <code>cert-manager</code> with a cluster-wide issuer, you can now point the Operator at that ClusterIssuer instead of letting it create its own CA chain. This way you include Percona Server for MongoDB managed by the Operator in your organization’s PKI and apply the same renewal and trust policies you already use elsewhere in the cluster.</p>
 <p>Configure your cluster to use your issuer by setting <code>tls.issuerConf.kind</code> to <code>ClusterIssuer</code> and referencing your existing ClusterIssuer in <code>tls.issuerConf.name</code>. The Operator then creates Certificate resources that cert-manager signs through your CA.</p>
 <p>If you pre-create Certificate or ClusterIssuer resources before deploying the cluster, the Operator detects and uses them. This gives you a clean path when your platform team owns cert-manager and you only need the Operator to wire MongoDB into that setup.</p>
 <p>To use the cluster-wide ClusterIssuer resource, the Operator must know the namespace where the <code>cert-manager</code> is deployed.  By default that namespace is <code>cert-manager</code>. If you installed cert-manager elsewhere, set the <code>CERTMANAGER_NAMESPACE</code> environment variable on the Operator deployment.  </p>
 <p>With this improvement, you keep a single source of truth for TLS in your Kubernetes cluster. The Operator fits seamlessly into the way you already manage TLS across your platform. You keep control, avoid duplication, and Percona Server for MongoDB aligns with the same trusted process your other workloads use.</p>
-<h3 id="tune-the-operator-reconciliation-interval-to-reduce-kubernetes-api-load">Tune the Operator reconciliation interval to reduce Kubernetes API load<a class="headerlink" href="#tune-the-operator-reconciliation-interval-to-reduce-kubernetes-api-load" title="Permanent link">¶</a></h3>
+<h3 id="tune-the-operator-reconciliation-interval-to-reduce-kubernetes-api-load">Tune the Operator reconciliation interval to reduce Kubernetes API load<a data-markdown-ignore class="headerlink" href="#tune-the-operator-reconciliation-interval-to-reduce-kubernetes-api-load" title="Permanent link">¶</a></h3>
 <p>The Operator re-runs reconciliation on a fixed schedule to keep each cluster aligned with its Custom Resource. Before this release, that interval was hardcoded to 5 seconds. In environments with many clusters, that default can generate a high volume of Kubernetes API requests.</p>
 <p>You can now tune the reconciliation behavior to match your environment. Set the <code>RECONCILE_INTERVAL</code> environment variable on the Operator Deployment to reduce API traffic in stable production setups, ease pressure on shared Kubernetes clusters or avoid throttling without rebuilding images. The default value remains <code>5s</code> seconds, so existing deployments behave as before.</p>
 <p>Set the value as a Go duration string (for example, <code>30s</code> or <code>1m</code>):
@@ -7369,7 +7369,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div><p></p>
 <p>To learn more, see the documentation for <a href="../env-vars-operator.html">Operator environment variables</a> and <a href="../reconciliation-concurrency.html">Configure concurrent reconciliation</a>.</p>
-<h3 id="control-statefulset-revision-history-from-your-custom-resource">Control StatefulSet revision history from your Custom Resource<a class="headerlink" href="#control-statefulset-revision-history-from-your-custom-resource" title="Permanent link">¶</a></h3>
+<h3 id="control-statefulset-revision-history-from-your-custom-resource">Control StatefulSet revision history from your Custom Resource<a data-markdown-ignore class="headerlink" href="#control-statefulset-revision-history-from-your-custom-resource" title="Permanent link">¶</a></h3>
 <p>Every configuration change creates a new revision in the StatefulSet history. Without a limit, old revisions can accumulate and clutter the namespace.</p>
 <p>With this release, you can configure how many past revisions Kubernetes keeps for your database StatefulSets. Set the value for the <code>spec.revisionHistoryLimit</code> option in the <code>PerconaServerMongoDB</code> Custom Resource:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -7378,7 +7378,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 <p>The default number of revisions is 10.</p>
 <p>By adjusting the <code>revisionHistoryLimit</code>, you choose the balance that fits your operations: either to keep fewer revisions for a cleaner environment, or to retain more if you rely on additional rollback points during frequent configuration changes.</p>
-<h3 id="configure-query-analytics-source-for-pmm">Configure query analytics source for PMM<a class="headerlink" href="#configure-query-analytics-source-for-pmm" title="Permanent link">¶</a></h3>
+<h3 id="configure-query-analytics-source-for-pmm">Configure query analytics source for PMM<a data-markdown-ignore class="headerlink" href="#configure-query-analytics-source-for-pmm" title="Permanent link">¶</a></h3>
 <p>You can now choose how PMM collects Query Analytics (QAN) data for your MongoDB clusters: via a <code>profiler</code> (default) or via a <code>mongolog</code> tool. </p>
 <p><code>mongolog</code> reads slow-query data directly from <code>mongod</code> log files so PMM needs almost no ongoing database connections and has minimal impact on the server. You keep full QAN visibility in PMM while reducing the operational cost of query monitoring. This is especially useful in production clusters where using the <code>profiler</code> has been a concern.</p>
 <p>The <code>profiler</code> remains the default query analytics source, so existing monitoring setups are unchanged.</p>
@@ -7402,7 +7402,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">          </span><span class="no">mode: off</span>
 <span class="w">          </span><span class="no">slowOpThresholdMs: 200</span>
 </code></pre></div>
-<h3 id="custom-health-probes-for-sidecar-containers">Custom health probes for sidecar containers<a class="headerlink" href="#custom-health-probes-for-sidecar-containers" title="Permanent link">¶</a></h3>
+<h3 id="custom-health-probes-for-sidecar-containers">Custom health probes for sidecar containers<a data-markdown-ignore class="headerlink" href="#custom-health-probes-for-sidecar-containers" title="Permanent link">¶</a></h3>
 <p>With this release, you can configure custom liveness and readiness probes for <code>pmm-client</code>, <code>backup</code>, <code>logcollector</code> and <code>logrotate</code> sidecar containers. By default, only the PMM Client has a built-in liveness probe; the other sidecars have none.</p>
 <p>Custom probes help when you need to:</p>
 <ul>
@@ -7412,23 +7412,23 @@ window.addEventListener('afterprint', (event) => {
 <li>Use environment-specific checks (HTTP, TCP, or exec) instead of a one-size-fits-all default</li>
 </ul>
 <p>Configure probes in the Custom Resource under <code>pmm</code>, <code>backup</code>, <code>logcollector</code>, and <code>logcollector.logrotate</code> sections. Defaults stay unchanged until you set a probe. </p>
-<h3 id="official-support-for-rancher-kubernetes-engine-rke2">Official support for Rancher Kubernetes Engine (RKE2)<a class="headerlink" href="#official-support-for-rancher-kubernetes-engine-rke2" title="Permanent link">¶</a></h3>
+<h3 id="official-support-for-rancher-kubernetes-engine-rke2">Official support for Rancher Kubernetes Engine (RKE2)<a data-markdown-ignore class="headerlink" href="#official-support-for-rancher-kubernetes-engine-rke2" title="Permanent link">¶</a></h3>
 <p><a href="https://docs.rke2.io/">Rancher Kubernetes Engine (RKE2) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is now an officially supported platform. Every Operator release is now tested on RKE2 to ensure that you can run it on Rancher-managed Kubernetes clusters with confidence.</p>
-<h3 id="the-operator-is-now-fully-supported-on-arm64-architectures">The Operator is now fully supported on ARM64 architectures<a class="headerlink" href="#the-operator-is-now-fully-supported-on-arm64-architectures" title="Permanent link">¶</a></h3>
+<h3 id="the-operator-is-now-fully-supported-on-arm64-architectures">The Operator is now fully supported on ARM64 architectures<a data-markdown-ignore class="headerlink" href="#the-operator-is-now-fully-supported-on-arm64-architectures" title="Permanent link">¶</a></h3>
 <p>All Operator images are now available for ARM64, giving you native support on ARM based clusters with no extra setup.</p>
-<h2 id="documentation-improvements">Documentation improvements<a class="headerlink" href="#documentation-improvements" title="Permanent link">¶</a></h2>
+<h2 id="documentation-improvements">Documentation improvements<a data-markdown-ignore class="headerlink" href="#documentation-improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li>Added a new chapter to the documentation covering how to configure OIDC authentication in the Operator.</li>
 <li>Added instructions how to install the Operator with customized parameters using Helm as well as how to override release names.</li>
 </ul>
-<h2 id="crd-changes">CRD Changes<a class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
+<h2 id="crd-changes">CRD Changes<a data-markdown-ignore class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
 <ul>
 <li>A new CRD <code>PerconaServerMongoDBClusterSync</code> is added</li>
 <li>The <code>backup.storages.gcs.secret</code> option is now optional if you use Workload Identity Federation. See <a href="../backups-storage-gcp.html">Google Cloud storage</a> to learn more.</li>
 <li>The <code>.spec.type</code> option has a new value <code>external</code></li>
 </ul>
-<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
-<h3 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
+<h2 id="changelog">Changelog<a data-markdown-ignore class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
+<h3 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1031">K8SPSMDB-1031</a> - Added support for configuring an external node as an arbiter in multi-datacenter replica sets. This lets you place a voting arbiter in a third region for high availability without replicating full data copies to that site. (Thank you @tariktunahanakan for contributing to this feature)</p>
@@ -7482,7 +7482,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1728">K8SPSMDB-1728</a> - Added Custom Resource options to override liveness probes and define readiness probes for the <code>logcollector</code> and <code>logrotate</code> sidecars. Defaults remain unchanged, so these sidecars stay without probes unless you configure them.</p>
 </li>
 </ul>
-<h3 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
+<h3 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-680">K8SPSMDB-680</a> - Added the ability to set <code>enableLocalhostAuthBypass=false</code> for MongoDB instances managed by the Operator. This helps environments that require stricter localhost authentication bypass controls to meet security policy.</p>
@@ -7506,7 +7506,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1711">K8SPSMDB-1711</a> - Switched the Operator Deployment probes to the standard <code>/healthz</code> and <code>/readyz</code> endpoints. This aligns Operator health checks with common Kubernetes controller patterns and improves readiness detection. (Thank you Ilia Lazebnik for contributing to this issue)</p>
 </li>
 </ul>
-<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">¶</a></h3>
+<h3 id="bug-fixes">Bug Fixes<a data-markdown-ignore class="headerlink" href="#bug-fixes" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1139">K8SPSMDB-1139</a> - Fixed unnecessary PVC resize attempts on platforms that provision volumes with <code>G</code> units instead of <code>Gi</code>. The Operator now handles both unit styles correctly and no longer triggers resize right after cluster creation on environments such as k3d or some on-premises clusters.</p>
@@ -7569,7 +7569,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1710">K8SPSMDB-1710</a> - Fixed startup crashes when <code>readOnlyRootFilesystem</code> is enabled by providing a writable <code>/tmp</code> mount for <code>mongod</code> and the backup agent. Containers can again create temporary TLS and WiredTiger files required at runtime. (Thank you Olawale (Walz) Ogundiran for contributing to this issue)</p>
 </li>
 </ul>
-<h2 id="supported-software">Supported software<a class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
+<h2 id="supported-software">Supported software<a data-markdown-ignore class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with the following software:</p>
 <ul>
 <li>Percona Server for MongoDB 6.0.29-23, 7.0.37-20, and 8.0.26-11</li>
@@ -7580,7 +7580,7 @@ window.addEventListener('afterprint', (event) => {
 <li>LogCollector based on fluent-bit: 5.0.9-1</li>
 </ul>
 <p>Other options may also work but have not been tested.</p>
-<h2 id="supported-platforms">Supported platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.33 - 1.35</li>
@@ -7591,7 +7591,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.38.1 with Kubernetes v1.35.1</li>
 </ul>
 <p>This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.</p>
-<h2 id="percona-certified-images">Percona certified images<a class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
+<h2 id="percona-certified-images">Percona certified images<a data-markdown-ignore class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
 <p>Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:</p>
 <table>
 <thead>

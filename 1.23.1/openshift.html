@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6948,20 +6948,20 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="install-percona-operator-for-mongodb-on-openshift">Install Percona Operator for MongoDB on OpenShift<a class="headerlink" href="#install-percona-operator-for-mongodb-on-openshift" title="Permanent link">¶</a></h1>
+<h1 id="install-percona-operator-for-mongodb-on-openshift">Install Percona Operator for MongoDB on OpenShift<a data-markdown-ignore class="headerlink" href="#install-percona-operator-for-mongodb-on-openshift" title="Permanent link">¶</a></h1>
 <p>Percona Operator for MongoDB is a <a href="https://connect.redhat.com/en/partner-with-us/red-hat-openshift-certification">Red Hat Certified Operator  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. This means that Percona Operator is portable across hybrid clouds and fully supports the Red Hat OpenShift lifecycle.</p>
 <p>To install Percona Server for MongoDB on OpenShift means:</p>
 <ul>
 <li>Install the Percona Operator for MongoDB Deployment,</li>
 <li>Install Percona Server for MongoDB using the Operator.</li>
 </ul>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <ul>
 <li>OpenShift cluster with administrative access</li>
 <li><code>oc</code> command-line tool installed</li>
 <li>Git client installed</li>
 </ul>
-<h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
+<h2 id="before-you-start">Before you start<a data-markdown-ignore class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
 <p>Check the <a href="System-Requirements.html">System Requirements</a> to ensure your environment meets the necessary prerequisites.</p>
 <p>You can install Percona Operator for MongoDB on OpenShift using either:</p>
 <ul>
@@ -6969,7 +6969,7 @@ window.addEventListener('afterprint', (event) => {
 <li>The command-line interface</li>
 </ul>
 <p>Choose the method that best suits your needs. The web interface is recommended for beginners, while the CLI method offers more control and automation capabilities.</p>
-<h2 id="install-the-operator-via-the-operator-lifecycle-manager-olm">Install the Operator via the Operator Lifecycle Manager (OLM)<a class="headerlink" href="#install-the-operator-via-the-operator-lifecycle-manager-olm" title="Permanent link">¶</a></h2>
+<h2 id="install-the-operator-via-the-operator-lifecycle-manager-olm">Install the Operator via the Operator Lifecycle Manager (OLM)<a data-markdown-ignore class="headerlink" href="#install-the-operator-via-the-operator-lifecycle-manager-olm" title="Permanent link">¶</a></h2>
 <p>Operator Lifecycle Manager (OLM) is a part of the <a href="https://github.com/operator-framework">Operator Framework <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> that allows you to install, update, and manage the Operators lifecycle on the OpenShift platform.</p>
 <ol>
 <li>Login to the OpenShift console.</li>
@@ -6990,7 +6990,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>You can track the install process on the Installed Operators page. The Operator should report the <code>Succeeded</code> status.</p>
-<h3 id="deploy-percona-server-for-mongodb">Deploy Percona Server for MongoDB<a class="headerlink" href="#deploy-percona-server-for-mongodb" title="Permanent link">¶</a></h3>
+<h3 id="deploy-percona-server-for-mongodb">Deploy Percona Server for MongoDB<a data-markdown-ignore class="headerlink" href="#deploy-percona-server-for-mongodb" title="Permanent link">¶</a></h3>
 <p>Now you can deploy Percona Server for MongoDB.</p>
 <ol>
 <li>Click the Operator you installed.</li>
@@ -7012,7 +7012,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Upon successful installation, you should see the “Ready” status for the database cluster.</p>
 </li>
 </ol>
-<h2 id="install-the-operator-via-the-command-line-interface">Install the Operator via the command-line interface<a class="headerlink" href="#install-the-operator-via-the-command-line-interface" title="Permanent link">¶</a></h2>
+<h2 id="install-the-operator-via-the-command-line-interface">Install the Operator via the command-line interface<a data-markdown-ignore class="headerlink" href="#install-the-operator-via-the-command-line-interface" title="Permanent link">¶</a></h2>
 <p>The following steps install the latest version of the Operator with default parameters. To install a specific version, replace the <code>v1.23.1</code> tag with your value. See the full list of tags <a href="https://github.com/percona/percona-server-mongodb-operator/tags">in the Operator repository <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> on GitHub.</p>
 <p>To install the Operator with customized parameters, see <a href="custom-install.html">Install Percona Server for MongoDB with customized parameters</a>.</p>
 <p>Choose the approach that fits your needs:</p>
@@ -7020,7 +7020,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="#quick-install"><strong>Quick install</strong></a> — Apply a single bundle file. Use this when you want to get started quickly with default settings.</li>
 <li><a href="#step-by-step-installation"><strong>Step-by-step install</strong></a> — Run each installation step separately. Use this when you want more control over the installation process or you need to customize the installation.</li>
 </ul>
-<h3 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">¶</a></h3>
+<h3 id="quick-install">Quick install<a data-markdown-ignore class="headerlink" href="#quick-install" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Clone the <code>percona-server-mongodb-operator</code> repository and change the directory to <code>percona-server-mongodb-operator</code>.</p>
@@ -7060,9 +7060,9 @@ deployment.apps/percona-server-mongodb-operator serverside-applied
 </details>
 </li>
 </ol>
-<h3 id="step-by-step-installation">Step-by-step installation<a class="headerlink" href="#step-by-step-installation" title="Permanent link">¶</a></h3>
+<h3 id="step-by-step-installation">Step-by-step installation<a data-markdown-ignore class="headerlink" href="#step-by-step-installation" title="Permanent link">¶</a></h3>
 <p>This section splits the installation flow into separate steps giving you more control over the process.</p>
-<h4 id="step-1-clone-the-repository">Step 1: Clone the repository<a class="headerlink" href="#step-1-clone-the-repository" title="Permanent link">¶</a></h4>
+<h4 id="step-1-clone-the-repository">Step 1: Clone the repository<a data-markdown-ignore class="headerlink" href="#step-1-clone-the-repository" title="Permanent link">¶</a></h4>
 <p>Use the following commands to clone the <code>percona-server-mongodb-operator</code> repository and change the directory to <code>percona-server-mongodb-operator</code>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -7071,7 +7071,7 @@ deployment.apps/percona-server-mongodb-operator serverside-applied
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v1.23.1<span class="w"> </span>https://github.com/percona/percona-server-mongodb-operator
 <span class="nb">cd</span><span class="w"> </span>percona-server-mongodb-operator
 </code></pre></div>
-<h4 id="step-2-create-the-custom-resource-definition">Step 2: Create the Custom Resource Definition<a class="headerlink" href="#step-2-create-the-custom-resource-definition" title="Permanent link">¶</a></h4>
+<h4 id="step-2-create-the-custom-resource-definition">Step 2: Create the Custom Resource Definition<a data-markdown-ignore class="headerlink" href="#step-2-create-the-custom-resource-definition" title="Permanent link">¶</a></h4>
 <p>At this step you must create the Custom Resource Definition for Percona Operator for MongoDB from the <code>deploy/crd.yaml</code> file.</p>
 <p>The Custom Resource Definition extends the standard set of resources which Kubernetes “knows” about with new items.</p>
 <p>You create the Custom Resource Definition only once. It is not bound to a specific namespace and all other deployments will use this Custom Resource Definition.</p>
@@ -7082,7 +7082,7 @@ deployment.apps/percona-server-mongodb-operator serverside-applied
 <p class="admonition-title">Warning</p>
 <p>This step requires cluster-admin privileges. If you’re using a non-privileged user, you’ll need to set up additional permissions.</p>
 </div>
-<h4 id="step-3-optional-set-up-user-permissions">Step 3: (optional) Set up user permissions<a class="headerlink" href="#step-3-optional-set-up-user-permissions" title="Permanent link">¶</a></h4>
+<h4 id="step-3-optional-set-up-user-permissions">Step 3: (optional) Set up user permissions<a data-markdown-ignore class="headerlink" href="#step-3-optional-set-up-user-permissions" title="Permanent link">¶</a></h4>
 <p>If you’re using a non-privileged user, grant the required permissions by applying the following clusterrole:</p>
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>create<span class="w"> </span>clusterrole<span class="w"> </span>psmdb-admin<span class="w"> </span>--verb<span class="o">=</span><span class="s2">"*"</span><span class="w"> </span>--resource<span class="o">=</span>perconaservermongodbs.psmdb.percona.com,perconaservermongodbs.psmdb.percona.com/status,perconaservermongodbbackups.psmdb.percona.com,perconaservermongodbbackups.psmdb.percona.com/status,perconaservermongodbrestores.psmdb.percona.com,perconaservermongodbrestores.psmdb.percona.com/status
 oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </span>add-cluster-role-to-user<span class="w"> </span>psmdb-admin<span class="w"> </span>&lt;some-user&gt;
@@ -7091,7 +7091,7 @@ oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </sp
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>create<span class="w"> </span>clusterrole<span class="w"> </span>cert-admin<span class="w"> </span>--verb<span class="o">=</span><span class="s2">"*"</span><span class="w"> </span>--resource<span class="o">=</span>issuers.certmanager.k8s.io,certificates.certmanager.k8s.io
 oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </span>add-cluster-role-to-user<span class="w"> </span>cert-admin<span class="w"> </span>&lt;some-user&gt;
 </code></pre></div>
-<h4 id="step-4-create-a-project">Step 4: Create a project<a class="headerlink" href="#step-4-create-a-project" title="Permanent link">¶</a></h4>
+<h4 id="step-4-create-a-project">Step 4: Create a project<a data-markdown-ignore class="headerlink" href="#step-4-create-a-project" title="Permanent link">¶</a></h4>
 <p>A project in OpenShift corresponds to a Kubernetes namespace. When you create a new project, you isolate workloads in it.</p>
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>new-project<span class="w"> </span>psmdb
 </code></pre></div>
@@ -7100,17 +7100,17 @@ oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </sp
 <p>Now using project “psmdb” on server “https://api.openshift-4-15-my-cluster.example.com:6443”.</p>
 </details>
 <p>The command automatically sets context to this project so that all further resources are created in it.</p>
-<h4 id="step-5-configure-rbac">Step 5: Configure RBAC<a class="headerlink" href="#step-5-configure-rbac" title="Permanent link">¶</a></h4>
+<h4 id="step-5-configure-rbac">Step 5: Configure RBAC<a data-markdown-ignore class="headerlink" href="#step-5-configure-rbac" title="Permanent link">¶</a></h4>
 <p>Role-Based Access Control (RBAC) manages resource access in OpenShift. The Operator needs specific permissions to run Percona Server for MongoDB properly. These permissions are defined within roles.</p>
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/rbac.yaml
 </code></pre></div>
-<h4 id="step-6-deploy-the-operator">Step 6: Deploy the Operator<a class="headerlink" href="#step-6-deploy-the-operator" title="Permanent link">¶</a></h4>
+<h4 id="step-6-deploy-the-operator">Step 6: Deploy the Operator<a data-markdown-ignore class="headerlink" href="#step-6-deploy-the-operator" title="Permanent link">¶</a></h4>
 <p>Now you can deploy the Operator with the following command:</p>
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/operator.yaml
 </code></pre></div>
-<h2 id="install-percona-server-for-mongodb">Install Percona Server for MongoDB<a class="headerlink" href="#install-percona-server-for-mongodb" title="Permanent link">¶</a></h2>
+<h2 id="install-percona-server-for-mongodb">Install Percona Server for MongoDB<a data-markdown-ignore class="headerlink" href="#install-percona-server-for-mongodb" title="Permanent link">¶</a></h2>
 <p>After installing the Operator, you can deploy Percona Server for MongoDB. This section guides you through the process of setting up secrets, certificates, and creating your first cluster.</p>
-<h3 id="step-1-configure-secrets-optional">Step 1: Configure secrets (optional)<a class="headerlink" href="#step-1-configure-secrets-optional" title="Permanent link">¶</a></h3>
+<h3 id="step-1-configure-secrets-optional">Step 1: Configure secrets (optional)<a data-markdown-ignore class="headerlink" href="#step-1-configure-secrets-optional" title="Permanent link">¶</a></h3>
 <p>By default, the Operator generates users Secrets automatically, so you don’t have to do anything. Yet if you wish to use your own Secrets, here’s how:</p>
 <ol>
 <li>
@@ -7122,7 +7122,7 @@ oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </sp
 </code></pre></div>
 </li>
 </ol>
-<h3 id="step-2-configure-certificates-optional">Step 2: Configure certificates (optional)<a class="headerlink" href="#step-2-configure-certificates-optional" title="Permanent link">¶</a></h3>
+<h3 id="step-2-configure-certificates-optional">Step 2: Configure certificates (optional)<a data-markdown-ignore class="headerlink" href="#step-2-configure-certificates-optional" title="Permanent link">¶</a></h3>
 <p>The Operator handles certificate generation automatically, so you don’t have to do anything. However, if you need custom certificates:</p>
 <ol>
 <li>Generate your certificates</li>
@@ -7130,7 +7130,7 @@ oc<span class="w"> </span>adm<span class="w"> </span>policy<span class="w"> </sp
 <li>Reference the Secret in your cluster configuration</li>
 </ol>
 <p>See <a href="TLS.html">TLS instructions</a> for detailed guidance.</p>
-<h3 id="step-3-deploy-the-database-cluster">Step 3: Deploy the database cluster<a class="headerlink" href="#step-3-deploy-the-database-cluster" title="Permanent link">¶</a></h3>
+<h3 id="step-3-deploy-the-database-cluster">Step 3: Deploy the database cluster<a data-markdown-ignore class="headerlink" href="#step-3-deploy-the-database-cluster" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Uncomment the <code>deploy/cr.yaml</code> field <code>#platform:</code> and set it to <code>platform: openshift</code>. The result should look like this:</p>
@@ -7173,7 +7173,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m
 <p>The <code>ready</code> status indicates that your cluster is fully operational.</p>
 </li>
 </ol>
-<h2 id="verify-the-cluster-operation">Verify the cluster operation<a class="headerlink" href="#verify-the-cluster-operation" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-cluster-operation">Verify the cluster operation<a data-markdown-ignore class="headerlink" href="#verify-the-cluster-operation" title="Permanent link">¶</a></h2>
 <p>When <code>oc get psmdb</code> shows the cluster status as <code>ready</code>, you can try to connect to the cluster.</p>
 <p>To connect to Percona Server for MongoDB, use the connection string Secret that the Operator creates for the <code>databaseAdmin</code> user. This Secret is available starting with Operator version 1.23.0 and newer. For previous versions, refer to the <a href="#connect-manually-alternative">Connect manually</a> section.</p>
 <ol>
@@ -7185,7 +7185,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m
 </li>
 <li>
 <p>Retrieve the connection string</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Sharding is on</label><label for="__tabbed_1_2">Sharding is off</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Sharding is on</label><label for="__tabbed_1_2">Sharding is off</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;clusterName&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -7215,7 +7215,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m
 </code></pre></div>
 </li>
 </ol>
-<h2 id="connect-manually-alternative">Connect manually (alternative)<a class="headerlink" href="#connect-manually-alternative" title="Permanent link">¶</a></h2>
+<h2 id="connect-manually-alternative">Connect manually (alternative)<a data-markdown-ignore class="headerlink" href="#connect-manually-alternative" title="Permanent link">¶</a></h2>
 <p>If you need to build a connection URI yourself, retrieve credentials from the user Secret and construct the URI.</p>
 <ol>
 <li>
@@ -7238,7 +7238,7 @@ oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </sp
 </li>
 <li>
 <p>Now run <code>mongosh</code> tool inside the <code>percona-client</code> command shell using the admin user credentials you obtained from the Secret, and a proper namespace name instead of the <code>&lt;namespace name&gt;</code> placeholder. The command will look different depending on whether sharding is on (the default behavior) or off:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.&lt;namespace name&gt;.svc.cluster.local/admin?ssl=false"</span>
@@ -7252,7 +7252,7 @@ oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </sp
 </div>
 </li>
 </ol>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="verify-cluster.html">Verify the cluster operation</a></p>
 <hr>
 <div class="md-source-file">

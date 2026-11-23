@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6642,7 +6642,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1190">Percona Operator for MongoDB 1.19.0<a class="headerlink" href="#percona-operator-for-mongodb-1190" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1190">Percona Operator for MongoDB 1.19.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1190" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6653,8 +6653,8 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="../System-Requirements.html#installation-guidelines">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="using-remote-file-server-for-backups-tech-preview">Using remote file server for backups (tech preview)<a class="headerlink" href="#using-remote-file-server-for-backups-tech-preview" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="using-remote-file-server-for-backups-tech-preview">Using remote file server for backups (tech preview)<a data-markdown-ignore class="headerlink" href="#using-remote-file-server-for-backups-tech-preview" title="Permanent link">¶</a></h3>
 <p>The new <code>filesystem</code> backup storage type was added in this release in addition to already existing <code>s3</code> and <code>azure</code> types. 
  It allows users to mount a remote file server to a local directory, and make Percona Backup for MongoDB using this directory as a storage for backups. The approach is based on common Network File System (NFS) protocol, and should be useful in network-restricted environments without S3-compatible storage or in cases with a non-standard storage service supporting NFS access.</p>
 <p>To use NFS-capable remote file server as a backup storage, user needs to mount the remote storage as a sidecar volume in the <code>replsets</code> section of the Custom Resource (and also <code>configsvrReplSet</code> in case of a sharded cluster):</p>
@@ -6681,7 +6681,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup-nfs</span>
 </code></pre></div>
 <p>See more in our <a href="../backups-storage-filesystem.html">documentation about this storage type</a>.</p>
-<h3 id="generated-passwords-for-custom-mongodb-users">Generated passwords for custom MongoDB users<a class="headerlink" href="#generated-passwords-for-custom-mongodb-users" title="Permanent link">¶</a></h3>
+<h3 id="generated-passwords-for-custom-mongodb-users">Generated passwords for custom MongoDB users<a data-markdown-ignore class="headerlink" href="#generated-passwords-for-custom-mongodb-users" title="Permanent link">¶</a></h3>
 <p>A new improvement for the <a href="../app-users.html">declarative management of custom MongoDB users</a> brings the possibility to use automatic generation of users passwords. When you specify a new user in <code>deploy/cr.yaml</code> configuration file, you can omit specifying a reference to an already existing Secret with the user’s password, and the Operator will generate it automatically:</p>
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
 <span class="nt">users</span><span class="p">:</span>
@@ -6694,17 +6694,17 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">        </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>Find more details on this automatically created Secret <a href="../app-users.html#custom-mongodb-roles">in our documentation</a>.</p>
-<h3 id="percona-server-for-mongodb-80-support">Percona Server for MongoDB 8.0 support<a class="headerlink" href="#percona-server-for-mongodb-80-support" title="Permanent link">¶</a></h3>
+<h3 id="percona-server-for-mongodb-80-support">Percona Server for MongoDB 8.0 support<a data-markdown-ignore class="headerlink" href="#percona-server-for-mongodb-80-support" title="Permanent link">¶</a></h3>
 <p>Percona Server for MongoDB 8.0 is now supported by the Operator in addition to 6.0 and 7.0 versions. The appropriate images are now included into the <a href="../images.html">list of Percona-certified images</a>.
 See <a href="https://www.percona.com/blog/percona-server-for-mongodb-8-0-most-performant-ever/">this blogpost <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for details about the latest MongoDB 8.0 features with the added reliability and performance improvements.</p>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1109">K8SPSMDB-1109</a>: Backups can now be <a href="../backups-storage-filesystem.html">stored on a remote file server</a></li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-921">K8SPSMDB-921</a>: <a href="../backups-storage-s3.html#automate-access-to-amazon-s3-using-iam-instance-profile">IAM Roles for Service Accounts (IRSA)</a> allow automating access to AWS S3 buckets based on Identity Access Management with no need to specify the S3 credentials explicitly</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1133">K8SPSMDB-1133</a>: Manual change of Replica Set Member Priority in Percona Server MongoDB Operator <a href="../operator.html#replsetsreplsetoverridesmember-namepriority">is now possible</a> with the new <code>replsetOverrides.MEMBER-NAME.priority</code> Custom Resource option</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1164">K8SPSMDB-1164</a>: Add the possibility to create users in the <code>$external</code> database for external authentication purposes </li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1123">K8SPSMDB-1123</a>: Percona Server for MongoDB 8.0 is now supported</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1171">K8SPSMDB-1171</a>: The <a href="../app-users.html#create-users-via-custom-resource">declarative user management</a> was enchanced with the possibility to automatically generate passwords</li>
@@ -6712,7 +6712,7 @@ See <a href="https://www.percona.com/blog/percona-server-for-mongodb-8-0-most-pe
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1179">K8SPSMDB-1179</a>: It is now possible to configure externalTrafficPolicy for <a href="../operator.html#replsetsexposeexternaltrafficpolicy">mongod</a>, <a href="../operator.html#shardingconfigsvrreplsetexposeexternaltrafficpolicy">configsvr</a> and <a href="../operator.html#shardingmongosexternaltrafficpolicy">mongos</a> instances</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1205">K8SPSMDB-1205</a>: Backups in unmanaged clusters <a href="../replication-backups.html">are now supported</a>, removing a long-standing limitation of <a href="../replication.html">cross-site replication</a> that didn’t allow backups on replica clusters</li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1215">K8SPSMDB-1215</a>: Fix a bug where ExternalTrafficPolicy was incorrectly set for LoadBalancer and NodePort services (Thanks to Anton Averianov for contributing)</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-675">K8SPSMDB-675</a>: Fix a bug where disabling sharding failed on a running cluster with enabled backups</li>
@@ -6722,12 +6722,12 @@ See <a href="https://www.percona.com/blog/percona-server-for-mongodb-8-0-most-pe
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1172">K8SPSMDB-1172</a>: Fix a bug where backup user’s password username with special characters caused Percona Backup for MongoDB to fail</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1212">K8SPSMDB-1212</a>: Stop disabling balancer during restores, because it is not required for Percona Backup for MongoDB 2.x</li>
 </ul>
-<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
+<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a data-markdown-ignore class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
 <ul>
 <li>The <code>psmdbCluster</code> option from the <code>deploy/backup/backup.yaml</code> manifest used for <a href="../backups-ondemand.html">on-demand backups</a>, which was deprecated since the Operator version 1.12.0 in favor of the <code>clusterName</code> option, has been removed and is no longer supported.</li>
 <li>Percona Server for MongoDB 5.0 has reached its end of life and in no longer supported by the Operator</li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with Percona Server for MongoDB 6.0.19-16, 7.0.15-9, and 8.0.4-1. Other options may also work but have not been tested. The Operator also uses Percona Backup for MongoDB 2.8.0.</p>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below for Operator version 1.19.0:</p>
 <ul>

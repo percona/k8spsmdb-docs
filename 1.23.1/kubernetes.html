@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation">
+        <meta name="description" content="Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.">
       
       
         <meta name="author" content="Percona LLC">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6570,11 +6570,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="install-percona-server-for-mongodb-on-kubernetes">Install Percona server for MongoDB on Kubernetes<a class="headerlink" href="#install-percona-server-for-mongodb-on-kubernetes" title="Permanent link">¶</a></h1>
-<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
+<h1 id="install-percona-server-for-mongodb-on-kubernetes">Install Percona server for MongoDB on Kubernetes<a data-markdown-ignore class="headerlink" href="#install-percona-server-for-mongodb-on-kubernetes" title="Permanent link">¶</a></h1>
+<h2 id="assumptions">Assumptions<a data-markdown-ignore class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
 <p>This guide walks you through installing Percona Operator for MongoDB in a <a href="namespace-mode.html#single-namespace-deployment">single-namespace mode</a> with default parameters.</p>
 <p>For how to install Percona Operator for MongoDB in a multi-namespace mode, see <a href="cluster-wide.html">Install in a multi-namespace mode</a>. For how to install Percona Operator for MongoDB with customized parameters, see <a href="custom-install.html">Install Percona Operator for MongoDB with customized parameters</a>.</p>
-<h2 id="what-you-will-install">What you will install<a class="headerlink" href="#what-you-will-install" title="Permanent link">¶</a></h2>
+<h2 id="what-you-will-install">What you will install<a data-markdown-ignore class="headerlink" href="#what-you-will-install" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>The Operator - the custom controller that uses the custom resources to install and manage the lifecycle of your database cluster. It consists of the following components:</p>
@@ -6589,7 +6589,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ul>
 <p>The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with <a href="sharding.html">enabled sharding</a>.</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¶</a></h2>
+<h2 id="installation">Installation<a data-markdown-ignore class="headerlink" href="#installation" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Clone the percona-server-mongodb-operator repository:</p>
@@ -6685,7 +6685,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m
 </details>
 </li>
 </ol>
-<h2 id="verifying-the-cluster-operation">Verifying the cluster operation<a class="headerlink" href="#verifying-the-cluster-operation" title="Permanent link">¶</a></h2>
+<h2 id="verifying-the-cluster-operation">Verifying the cluster operation<a data-markdown-ignore class="headerlink" href="#verifying-the-cluster-operation" title="Permanent link">¶</a></h2>
 <p>It may take ten minutes to get the cluster started. When <code>kubectl get psmdb</code>
 command finally shows you the cluster status as <code>ready</code>, you can try to connect
 to the cluster.</p>
@@ -6699,7 +6699,7 @@ to the cluster.</p>
 </li>
 <li>
 <p>Retrieve the connection string</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Sharding is on</label><label for="__tabbed_1_2">Sharding is off</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Sharding is on</label><label for="__tabbed_1_2">Sharding is off</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;clusterName&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -6729,7 +6729,7 @@ to the cluster.</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="connect-manually-alternative">Connect manually (alternative)<a class="headerlink" href="#connect-manually-alternative" title="Permanent link">¶</a></h2>
+<h2 id="connect-manually-alternative">Connect manually (alternative)<a data-markdown-ignore class="headerlink" href="#connect-manually-alternative" title="Permanent link">¶</a></h2>
 <p>If you need to build a connection URI yourself, retrieve credentials from the user Secret and construct the URI.</p>
 <ol>
 <li>
@@ -6752,7 +6752,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 </li>
 <li>
 <p>Now run <code>mongosh</code> tool inside the <code>percona-client</code> command shell using the admin user credentials you obtained from the Secret, and a proper namespace name instead of the <code>&lt;namespace name&gt;</code> placeholder. The command will look different depending on whether sharding is on (the default behavior) or off:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.&lt;namespace name&gt;.svc.cluster.local/admin?ssl=false"</span>

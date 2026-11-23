@@ -1,0 +1,185 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Install Percona Operator for MongoDB with customized parameters
+
+You can customize the configuration of Percona Server for MongoDB and install it with customized parameters.
+
+To check available configuration options, see [`deploy/cr.yaml`](https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.23.1/deploy/cr.yaml) and [Custom Resource Options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html).
+
+**kubectl**
+
+To customize the configuration, do the following:
+
+1. Clone the repository with all manifests and source code by executing the following command:
+
+   ```
+   git clone -b v1.23.1 https://github.com/percona/percona-server-mongodb-operator
+   ```
+
+1. Edit the required options and apply the modified `deploy/cr.yaml` file as follows:
+
+   ```
+   kubectl apply -f deploy/cr.yaml
+   ```
+
+**Helm**
+
+You can install the Operator deployment and Percona Server for MongoDB clusters with custom parameters using Helm. You can review the available configuration options for the [Operator chart](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart) and the [Database chart](https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart) .
+
+You can provide custom parameters to Helm using either the `--set` flag or a `values.yaml` file. The `--set` flag is suitable for overriding a small number of parameters directly from the command line, while a `values.yaml` file is ideal when you want to manage many custom settings together. Both methods are fully supported by Helm and can be used as preferred for your deployment.
+
+**Using `--set` flags**
+
+To pass a custom parameter to Helm, use the `--set key=value` flag with the `helm install` command.
+
+For example, to enable [Percona Monitoring and Management (PMM)](https://docs.percona.com/percona-monitoring-and-management/3/index.html) for the database cluster, run:
+
+```
+helm install my-db percona/psmdb-db --version 1.23.1 --namespace my-namespace \
+  --set pmm.enabled=true
+```
+
+**Using a `values.yaml` file**
+
+Create a `values.yaml` file with your custom parameters and pass it to `helm install` with the `-f` or `--values` flag:
+
+```
+helm install my-db percona/psmdb-db --version 1.23.1 --namespace my-namespace -f values.yaml
+```
+
+Example `values.yaml`:
+
+```
+pmm:
+  enabled: false
+  image:
+    repository: percona/pmm-client
+    tag: 3.9.1
+```
+
+## Naming conventions for Helm resources
+
+When you install a chart, Helm creates a release and uses the release name and chart name to generate resource names. By default, resources are named `release-name-chart-name`.
+
+You can override the default naming with the `nameOverride` or `fullnameOverride` options. Pass them using the `--set` flag or in your `values.yaml` file.
+
+| Option             | Effect                                                                   | Example                      |
+| ------------------ | ------------------------------------------------------------------------ | ---------------------------- |
+| `nameOverride`     | Replaces the chart name but keeps the release name in the generated name | `release-name-name-override` |
+| `fullnameOverride` | Replaces the entire generated name with the specified value              | `fullname-override`          |
+
+*Using `nameOverride`* — replaces the chart name but keeps the release name:
+
+```
+helm install my-operator percona/psmdb-operator --namespace my-namespace \
+  --set nameOverride=mongo-operator
+```
+
+Deployment name: `my-operator-mongo-operator`.
+
+```
+helm install cluster1 percona/psmdb-db -n my-namespace \
+  --set nameOverride=mongodb
+```
+
+Cluster name: `cluster1-mongodb`.
+
+*Using `fullnameOverride`* — replaces the full resource name:
+
+```
+helm install my-operator percona/psmdb-operator --namespace my-namespace \
+  --set fullnameOverride=percona-mongodb-operator
+```
+
+Deployment name: `percona-mongodb-operator`.
+
+```
+helm install cluster1 percona/psmdb-db -n my-namespace \
+  --set fullnameOverride=my-db
+```
+
+Cluster name: `my-db`.
+
+Cluster name length
+
+For the psmdb-db chart, keep release names and overrides short enough to satisfy Kubernetes resource name limits (for example, many DNS-label resource names such as Services are limited to 63 characters).
+
+## Common Helm values reference
+
+The following table lists commonly used values for the Operator and database charts. For the full list of options, see the chart values files.
+
+| Value                | Charts                                                                                                                                                                                                         | Description                                                                                                                            |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `nameOverride`       | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml), [psmdb-db](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-db/values.yaml) | Replaces the chart name in generated resource names                                                                                    |
+| `fullnameOverride`   | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml), [psmdb-db](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-db/values.yaml) | Replaces the entire generated resource name                                                                                            |
+| `watchAllNamespaces` | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml)                                                                                                   | Deploy the Operator in cluster-wide mode to watch all namespaces                                                                       |
+| `disableTelemetry`   | [psmdb-operator](https://github.com/percona/percona-helm-charts/blob/main/charts/psmdb-operator/values.yaml)                                                                                                   | Disable telemetry collection. See [Telemetry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/telemetry.html) for details |
+
+## Configure ports for MongoDB cluster components
+
+By default, the Operator starts Percona Server for MongoDB with the default port `27017` for all cluster components: `mongod`, `mongos` and `configsvrReplSet` Pods. Starting with version 1.20.0, you can start a new cluster with custom ports for all components or for a specific one.
+
+Here’s how to do it.
+
+**kubectl**
+
+1. Edit the `deploy/cr.yaml` file and specify the following configuration:
+
+   ```
+   spec: 
+     ...
+     replsets:
+       - name: rs0
+         configuration: |
+           net:
+             port: 27018
+     sharding:
+       configsvrReplSet:
+         configuration: |
+           net:
+             port: 27019
+       mongos:
+         configuration: |
+           net:
+             port: 27017
+   ```
+
+1. Apply the `deploy/cr.yaml` to deploy Percona Server for MongoDB:
+
+   ```
+   kubectl apply -f deploy/cr.yaml
+   ```
+
+**Helm**
+
+1. Create a yaml file with the desired configuration. For example, `values.yaml`:
+
+   values.yaml
+
+   ```
+   replsets:
+     rs0:
+       name: rs0
+       configuration: |
+         net:
+           port: 27018
+   sharding:
+     configsvrReplSet:
+       configuration: |
+         net:
+           port: 27019
+     mongos:
+       configuration: |
+         net:
+           port: 27017
+   ```
+
+1. Install Percona Server for MongoDB with the specified configuration:
+
+   ```
+   helm install my-db percona/psmdb-db --namespace psmdb -f values.yaml
+   ```
+
+## Next steps
+
+[Verify the cluster operation](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/verify-cluster.html)

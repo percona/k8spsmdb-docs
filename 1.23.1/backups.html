@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6630,10 +6630,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="backup-and-restore">Backup and restore<a class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h1>
+<h1 id="backup-and-restore">Backup and restore<a data-markdown-ignore class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h1>
 <p>The Operator uses <a href="https://github.com/percona/percona-backup-mongodb">Percona Backup for MongoDB (PBM) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to back up and restore Percona Server for MongoDB. PBM runs as a <a href="sidecar.html">sidecar</a> in your database Pods.</p>
 <p>Use this page to choose a backup type, storage, restore method, and whether you need point-in-time recovery. When you know what you need, go to <a href="backups-configure.html">Configure backups</a>.</p>
-<h2 id="how-backup-and-restore-work">How backup and restore work<a class="headerlink" href="#how-backup-and-restore-work" title="Permanent link">¶</a></h2>
+<h2 id="how-backup-and-restore-work">How backup and restore work<a data-markdown-ignore class="headerlink" href="#how-backup-and-restore-work" title="Permanent link">¶</a></h2>
 <p>The Operator does not copy data itself. It writes a document into the Percona Backup for MongoDB control collections, and a <code>pbm-agent</code> beside one of the secondary nodes does the work. You do not need this to configure backups, but it explains what you see in the logs and why a restore behaves the way it does.</p>
 <details class="info">
 <summary>Show the backup and restore flows</summary>
@@ -6691,7 +6691,7 @@ window.addEventListener('afterprint', (event) => {
 </ol>
 <p>For steps, see <a href="backups-pitr-restore.html">Restore to a point in time</a>.</p>
 </details>
-<h2 id="choose-a-path">Choose a path<a class="headerlink" href="#choose-a-path" title="Permanent link">¶</a></h2>
+<h2 id="choose-a-path">Choose a path<a data-markdown-ignore class="headerlink" href="#choose-a-path" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6733,7 +6733,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="backup-types">Backup types<a class="headerlink" href="#backup-types" title="Permanent link">¶</a></h2>
+<h2 id="backup-types">Backup types<a data-markdown-ignore class="headerlink" href="#backup-types" title="Permanent link">¶</a></h2>
 <p>You can run backups on a schedule or on demand. Starting with version 1.23.0, you can also use Kubernetes volume snapshots.</p>
 <table>
 <thead>
@@ -6782,7 +6782,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p><a class="md-button" href="backups-configure.html">Configure backups</a></p>
-<h2 id="backup-storage">Backup storage<a class="headerlink" href="#backup-storage" title="Permanent link">¶</a></h2>
+<h2 id="backup-storage">Backup storage<a data-markdown-ignore class="headerlink" href="#backup-storage" title="Permanent link">¶</a></h2>
 <p>Store backups outside the Kubernetes cluster on one of these remote storages:</p>
 <ul>
 <li><a href="backups-storage-s3.html">Amazon S3</a></li>
@@ -6797,7 +6797,7 @@ window.addEventListener('afterprint', (event) => {
 <p>PVC snapshots keep the data on the storage backend. You still need at least one entry in <code>backup.storages</code> so PBM can save <strong>backup metadata</strong> (including encryption-related information). Snapshot backups do not upload database files to that storage.</p>
 <p>Starting with version 1.20.0, you can define <a href="multi-storage.html">multiple backup storages</a>. You can take a backup or restore from any configured storage without waiting for the Operator to reconfigure the cluster. Point-in-time recovery from any storage is supported because PBM keeps oplog on the main storage.</p>
 <p><a class="md-button" href="backups-storage.html">Configure storage</a></p>
-<h2 id="restore-options">Restore options<a class="headerlink" href="#restore-options" title="Permanent link">¶</a></h2>
+<h2 id="restore-options">Restore options<a data-markdown-ignore class="headerlink" href="#restore-options" title="Permanent link">¶</a></h2>
 <p>You can restore:</p>
 <ul>
 <li>On the <a href="backups-restore.html#restore-on-the-same-cluster">same cluster</a></li>
@@ -6808,7 +6808,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>Use <code>backupName</code> when the Backup object still exists in the cluster. Use <code>backupSource</code> when it does not — for example, when you restore to a new cluster.</p>
 <p><a class="md-button" href="backups-restore.html">Restore from a backup</a></p>
-<h2 id="point-in-time-recovery">Point-in-time recovery<a class="headerlink" href="#point-in-time-recovery" title="Permanent link">¶</a></h2>
+<h2 id="point-in-time-recovery">Point-in-time recovery<a data-markdown-ignore class="headerlink" href="#point-in-time-recovery" title="Permanent link">¶</a></h2>
 <p>Point-in-time recovery rolls the cluster back to a specific date and time. The Operator restores a full backup, then replays the operations log (oplog) up to that moment.</p>
 <p>You can use PITR with logical and physical backups from Operator <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.html">1.15.0</a> onward. PVC snapshot (<code>external</code>) backups do <strong>not</strong> support PITR.</p>
 <p>You need:</p>
@@ -6818,7 +6818,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>PBM writes oplog to remote storage. With <a href="multi-storage.html">multiple storages</a>, oplog goes only to the <strong>main</strong> storage so you can still recover to a point in time from a backup on any storage. For Operator version 1.19.1 and earlier, PITR requires a single storage.</p>
 <p><a class="md-button" href="backups-pitr.html">Enable point-in-time recovery</a></p>
-<h2 id="limits-you-should-know">Limits you should know<a class="headerlink" href="#limits-you-should-know" title="Permanent link">¶</a></h2>
+<h2 id="limits-you-should-know">Limits you should know<a data-markdown-ignore class="headerlink" href="#limits-you-should-know" title="Permanent link">¶</a></h2>
 <p>See <a href="limitations.html#backups-and-restores">Known limitations</a> for the full list. The ones that change the backup design are:</p>
 <ul>
 <li>No PITR and no selective restore for PVC snapshots.</li>
@@ -6826,9 +6826,9 @@ window.addEventListener('afterprint', (event) => {
 <li>Restore a collection under a different name works only on replica sets for unsharded collections, and requires a full logical backup.</li>
 <li>After a failed restore, the Operator cannot guarantee data consistency.</li>
 </ul>
-<h2 id="backup-lifecycle">Backup lifecycle<a class="headerlink" href="#backup-lifecycle" title="Permanent link">¶</a></h2>
+<h2 id="backup-lifecycle">Backup lifecycle<a data-markdown-ignore class="headerlink" href="#backup-lifecycle" title="Permanent link">¶</a></h2>
 <p>Each backup object has the <code>delete-backup</code> finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with <a href="operator.html#backuptasksretentioncount">backup.tasks.retention</a>. See <a href="backups-delete.html#configure-backup-retention">Configure retention policy</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-configure.html">Configure backups</a></p>
 <hr>
 <div class="md-source-file">

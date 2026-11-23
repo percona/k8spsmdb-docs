@@ -24,7 +24,7 @@ Now backups can be taken on primary and replica clusters.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Now backups can be taken on primary and replica clusters.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6503,7 +6503,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="backups-with-cross-site-replication">Backups with cross-site replication<a class="headerlink" href="#backups-with-cross-site-replication" title="Permanent link">¶</a></h1>
+<h1 id="backups-with-cross-site-replication">Backups with cross-site replication<a data-markdown-ignore class="headerlink" href="#backups-with-cross-site-replication" title="Permanent link">¶</a></h1>
 <p>Before the Operator version 1.19.0 <a href="backups.html">Backups</a> were supported for the primary (managed) cluster only.
 Now backups can be taken on primary and replica clusters.</p>
 <p>Still, backups on cross-site configurations have some specifics.</p>
@@ -6514,7 +6514,7 @@ Now backups can be taken on primary and replica clusters.</p>
    because Percona Backup for MongoDB (PBM) automatically assigns lower priority to primary member to avoid affecting the write performance. This can be overwritten with <a href="operator.html#backupconfigurationbackupoptionspriority">custom PBM configuration</a>.</li>
 <li>PBM configuration is shared across all clusters. The Operator will reconfigure PBM every time it runs a backup, and setting PBM configuration in one cluster will affect other clusters too. For example, setting <code>backup.configuration.backupOptions.oplogSpanMin</code> to 2 in a secondary cluster will be applied to primary cluster as well.</li>
 </ul>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups.html">Backup and restore</a></li>
 <li><a href="replication.html">About multi-cluster and multi-region deployments</a></li>

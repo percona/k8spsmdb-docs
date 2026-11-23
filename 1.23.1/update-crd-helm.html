@@ -24,7 +24,7 @@ Operator with the helm upgrade command.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Operator with the helm upgrade command.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6563,18 +6563,18 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="upgrade-the-operator-and-crd-with-helm">Upgrade the Operator and CRD with Helm<a class="headerlink" href="#upgrade-the-operator-and-crd-with-helm" title="Permanent link">¶</a></h1>
+<h1 id="upgrade-the-operator-and-crd-with-helm">Upgrade the Operator and CRD with Helm<a data-markdown-ignore class="headerlink" href="#upgrade-the-operator-and-crd-with-helm" title="Permanent link">¶</a></h1>
 <p>If you have <a href="helm.html">installed the Operator using Helm</a>, you can upgrade the
 Operator with the <code>helm upgrade</code> command.</p>
 <p>The <code>helm upgrade</code> command updates only the Operator deployment. The <a href="update-db.html">update flow for the database management system</a> is the same for all installation methods, whether it was installed via Helm or <code>kubectl</code>.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>Read <a href="update.html#before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
 before you proceed. It is important that you get familiar with the backup requirement, version-jump rules, and known
 problematic version combinations.</li>
 <li>Check <a href="update-operator.html#considerations">Considerations</a> for Kubernetes cluster versions and upgrades if you plan to update the Kubernetes cluster.</li>
 </ul>
-<h2 id="crd-management-by-helm">CRD management by Helm<a class="headerlink" href="#crd-management-by-helm" title="Permanent link">¶</a></h2>
+<h2 id="crd-management-by-helm">CRD management by Helm<a data-markdown-ignore class="headerlink" href="#crd-management-by-helm" title="Permanent link">¶</a></h2>
 <p>If you installed the Operator deployment from the main <code>psmdb-operator</code> chart, Helm installs the CRDs from the <code>crds/</code> directory.</p>
 <p>Helm v3 doesn’t update the CRDs by default to prevent accidental CRD upgrades that could break existing resources. Starting with version 1.22.0, a dedicated CRD chart <code>psmdb-operator-crds</code> was added that enables Helm to handle automatic CRD updates. The use of the separate CRD chart also provides better compatibility with GitOPs tools such as ArgoCD and FluxCD and ensures version control and rollback capability for CRDs.</p>
 <p><a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">Learn more about the dedicated CRD chart</a>.</p>
@@ -6583,7 +6583,7 @@ problematic version combinations.</li>
 <li>update them manually before you update the Operator deployment. Use this option if you run the Operator version <em>before</em> 1.22.0.</li>
 <li>install a dedicated CRD chart and update the CRDs using Helm</li>
 </ul>
-<h2 id="upgrade-steps">Upgrade steps<a class="headerlink" href="#upgrade-steps" title="Permanent link">¶</a></h2>
+<h2 id="upgrade-steps">Upgrade steps<a data-markdown-ignore class="headerlink" href="#upgrade-steps" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>You must have the compatible version of the Custom Resource Definition (CRD) in all namespaces that the Operator manages. Starting with version 1.21.0, you can check it using the following command:</p>
@@ -6597,11 +6597,11 @@ problematic version combinations.</li>
 </li>
 <li>
 <p>Update the <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resource Definition <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the Operator.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Add the CRD chart (recommended)</label><label for="__tabbed_1_2">Update manually</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Add the CRD chart (recommended)</label><label for="__tabbed_1_2">Update manually</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>The steps differ slightly depending on the Helm version you run.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Helm v3.17.x and later</label><label for="__tabbed_2_2">Helm earlier than v3.17.x</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">Helm v3.17.x and later</label><label for="__tabbed_2_2">Helm earlier than v3.17.x</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Install the <code>psmdb-operator-crds</code> Helm chart that contains the CRDs</p>
@@ -6656,7 +6656,7 @@ kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="
 </li>
 <li>
 <p>Upgrade the Operator deployment</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">With default parameters</label><label for="__tabbed_3_2">With customized parameters</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_3_1">With default parameters</label><label for="__tabbed_3_2">With customized parameters</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>To upgrade the Operator installed with default parameters, use the following command: </p>
@@ -6684,10 +6684,10 @@ kubectl<span class="w"> </span>annotate<span class="w"> </span>crds<span class="
 <p>During the upgrade, you may see a warning to manually apply the CRD if it has the outdated version. In this case, refer to step 3 to upgrade the CRD and then step 4 to upgrade the deployment.</p>
 </li>
 </ol>
-<h2 id="troubleshooting-crd-upgrades-with-helm">Troubleshooting CRD upgrades with Helm<a class="headerlink" href="#troubleshooting-crd-upgrades-with-helm" title="Permanent link">¶</a></h2>
+<h2 id="troubleshooting-crd-upgrades-with-helm">Troubleshooting CRD upgrades with Helm<a data-markdown-ignore class="headerlink" href="#troubleshooting-crd-upgrades-with-helm" title="Permanent link">¶</a></h2>
 <p><strong>Error: “invalid ownership metadata” or “CRD already exists”</strong></p>
 <p>This happens when existing CRDs were installed from <code>crds/</code> and Helm does not own them. Pass the <code>--take-ownership</code> flag when you install the <code>psmdb-operator-crds</code> chart (Helm 3.17+). For Helm &lt; 3.17+, add Helm ownership metadata before installing or upgrading <code>psmdb-operator-crds</code>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="update-db.html">Upgrade the database</a></p>
 <hr>
 <div class="md-source-file">

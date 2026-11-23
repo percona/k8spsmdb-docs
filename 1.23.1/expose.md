@@ -1,0 +1,397 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Networking and external access
+
+The Operator provides entry points for accessing the database by client applications in several scenarios. In all cases, the cluster is exposed using regular Kubernetes [Service objects](https://kubernetes.io/docs/concepts/services-networking/service/) , which the Operator configures.
+
+This document describes how to use [Custom Resource manifest options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html) to expose clusters deployed with the Operator.
+
+## Choose how to expose your cluster
+
+Exposure is two separate questions: **who needs to reach the database**, and **how they resolve its addresses**. Start here rather than reading the whole page.
+
+| What you need                                                           | Go to                                                                                                                     |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Clients inside the same Kubernetes cluster, sharded deployment          | [Using a single entry point in a sharded cluster](#using-a-single-entry-point-in-a-sharded-cluster)                       |
+| Clients inside the cluster, replica set deployment                      | [Accessing replica set Pods](#accessing-replica-set-pods)                                                                 |
+| Clients outside Kubernetes                                              | [Connecting from outside Kubernetes](#connecting-from-outside-kubernetes)                                                 |
+| A separate address for every Pod, so drivers can reach members directly | [Service per Pod](#service-per-pod)                                                                                       |
+| Stable DNS names managed for you                                        | [Automatic DNS records with External DNS](#automatic-dns-records-with-external-dns)                                       |
+| Members advertised under names clients can actually resolve             | [Controlling hostnames in replset configuration](#controlling-hostnames-in-replset-configuration)                         |
+| One replica set reachable under different names from inside and outside | [Exposing replica set with split-horizon DNS](#exposing-replica-set-with-split-horizon-dns)                               |
+| A service mesh in front of the database                                 | [Application protocol support for service mesh integrations](#application-protocol-support-for-service-mesh-integrations) |
+
+Important
+
+A replica set advertises the hostnames its members were configured with. If clients outside Kubernetes cannot resolve those names, exposing the Service is not enough - the connection still fails. That is what [Controlling hostnames in replset configuration](#controlling-hostnames-in-replset-configuration) and split-horizon DNS exist to solve, and it is the most common reason an external connection fails after the Service is created.
+
+## Using a single entry point in a sharded cluster
+
+By default, the Operator deploys Percona Server for MongoDB as a [sharded cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html). This means the database cluster runs special `mongos` Pods - query routers, which act as entry points for client applications:
+
+By default, the Operator creates `mongos` Service with a ClusterIP service type Service. The service type is controlled by the [sharding.mongos.expose.type](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosexposetype) option in the Custom Resource. The Service works in a round-robin fashion between all the `mongos` Pods.
+
+To view the Service endpoints, run the following command:
+
+```
+kubectl get psmdb
+```
+
+Expected output
+
+```
+NAME              ENDPOINT                                             STATUS   AGE
+my-cluster-name   my-cluster-name-mongos.<namespace>.svc.cluster.local     ready    85m
+```
+
+To connect to MongoDB, you need the MongoDB connection string URI. The Operator automatically constructs it for the `databaseAdmin` user and stores it in the connection Secret `<cluster-name>-databaseadmin-conn-str`. To learn more about connection secrets, see [Connection secrets](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/connection-secrets.html).
+
+For a sharded cluster, use the value from the `databaseAdmin_mongos_connectionString` key of the connection Secret.
+
+Run the following command to retrieve the value:
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+```
+
+Sample output
+
+```
+mongodb://databaseAdmin:databaseAdminPassword@34.118.227.158:27017/admin?authSource=admin
+```
+
+Alternatively, you can construct the MongoDB connection string URI manually. For the sharded cluster, specify the `mongos` endpoint. This is the example format:
+
+```
+mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.<namespace>.svc.cluster.local/admin?authSource=admin"
+```
+
+Make sure every part of the connection string reflects your environment:
+
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
+- **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
+- **`<namespace>`**: the Kubernetes namespace where your cluster is deployed
+
+If [TLS is enabled](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html), include the appropriate TLS parameters in the URI or use the connection string Secret, which adds them automatically. Note that a generated connection string has `tls=true` and this also requires a client certificate - see [Connect with a client certificate](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html#connect-with-a-client-certificate) for how to extract and use one.
+
+Warning
+
+A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos Pods by using the NodePort or Load Balancer Service types. See the [Connecting from outside Kubernetes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#connecting-from-outside-kubernetes) section below for details.
+
+## Accessing replica set Pods
+
+If Percona Server for MongoDB [sharding mode](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html) is turned **off**, the Operator deploys Percona Server for MongoDB as a replica set. In this case, an application needs to connect to all the MongoDB Pods of the replica set:
+
+When Kubernetes creates Pods, each Pod gets an IP address in the internal virtual network of the cluster. Since Pod creation and destruction is a dynamic process, binding communication to specific IP addresses would cause problems as the cluster scales or undergoes maintenance. For this reason, you should connect to Percona Server for MongoDB using Kubernetes internal DNS names in the connection string URI.
+
+By default, the Operator creates Services for mongod Pods with a ClusterIP service type Service. The service type is controlled by the [replsets.expose.type](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#replsetsexposetype) option. The Service works in a round-robin fashion between all the mongod Pods of the replica set.
+
+You can get the actual Service endpoints by running the following command:
+
+```
+kubectl get psmdb
+```
+
+Expected output
+
+```
+NAME              ENDPOINT                                             STATUS   AGE
+my-cluster-name   my-cluster-name-rs0.<namespace>.svc.cluster.local        ready    2m19s
+```
+
+To connect to a MongoDB replica set, use the `databaseAdmin_<replset>_connectionString` or `databaseAdmin_<replset>_connectionStringSrv` key from the `<cluster-name>-databaseadmin-conn-str` Secret. See [Connection secrets](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/connection-secrets.html).
+
+Alternatively, construct the URI manually. This is the example format:
+
+```
+mongosh "mongodb+srv://databaseAdmin:databaseAdminPassword@my-cluster-name-rs0.<namespace name>.svc.cluster.local/admin?authSource=admin&replicaSet=rs0"
+```
+
+Make sure every part of the connection string reflects your environment:
+
+- **databaseAdmin** and **databaseAdminPassword**: replace with your admin username and the actual admin password. Get them from the Kubernetes Secret created for your cluster, or use a ready-made URI from the connection string Secret.
+- **my-cluster-name**: use the name of your database cluster. Get the name by running `kubectl get psmdb` command
+- **`<namespace>`**: the Kubernetes namespace where your cluster is deployed
+
+Warning
+
+A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongod Pods by using the NodePort or Load Balancer Service types. See the [Connecting from outside Kubernetes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#connecting-from-outside-kubernetes) section below for details.
+
+## Connecting from outside Kubernetes
+
+If you need to connect to a cluster from outside Kubernetes, you cannot reach the Pods using Kubernetes internal DNS names. To make the Pods accessible from outside the cluster, Percona Operator for MongoDB can create [Kubernetes Services](https://kubernetes.io/docs/concepts/services-networking/service/) with external access.
+
+To expose Pods externally, configure the following option in the Custom Resource:
+
+- Set `expose.enabled` to `true` to enable exposing the Pods via Services.
+
+- Set `expose.type` to specify the type of Service to use:
+
+  - **`ClusterIP`**: Exposes the Pod with an internal static IP address. This makes the Service reachable only from within the Kubernetes cluster.
+
+  - **`NodePort`**: Exposes the Pod on each Kubernetes Node’s IP address at a static port. A ClusterIP Service is automatically created, and the Node port routes traffic to it. The Service is reachable from outside the cluster using the Node address and port number, but the address is bound to a specific Kubernetes Node.
+
+    If the NodePort type is used, the URI looks like this:
+
+    ```
+    mongodb://databaseAdmin:databaseAdminPassword@<node1>:<port1>,<node2>:<port2>,<node3>:<port3>/admin?replicaSet=rs0&ssl=false
+    ```
+
+    All Node addresses should be *directly* reachable by the application.
+
+    The `expose.externalTrafficPolicy` Custom Resource option in [`replsets`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#replsetsexposeexternaltrafficpolicy), [`sharding.configsvrReplSet`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingconfigsvrreplsetexposeexternaltrafficpolicy), and [`sharding.mongos`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosexternaltrafficpolicy) subsections controls how external traffic is routed:
+
+    - `Local`: Traffic is routed to node-local endpoints. External requests will be dropped if there is no available Pod on the Node.
+    - `Cluster`: Traffic can be routed to any Node in the cluster, but this adds extra latency and does not preserve the client IP address.
+
+  - **`LoadBalancer`**: Exposes the Pod externally using a cloud provider’s load balancer. Both [ClusterIP and NodePort Services are automatically created](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) in this variant.
+
+When replica sets or `mongos` Pods are exposed, the Operator adds `_connectionStringExposed` keys to the connection Secret. Use them instead of building external URIs manually. See [Connection secrets](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/connection-secrets.html).
+
+## Automatic DNS records with External DNS
+
+Starting from Operator version 1.23.0, you can configure the Operator and [External DNS](https://github.com/kubernetes-sigs/external-dns) to work together.
+
+In the cluster Custom Resource, define how External DNS should create records: specify your `domain` (required) and optionally `prefix` and `ttl` under `expose.externalDNS`. The Operator then adds the `external-dns.alpha.kubernetes.io/hostname` annotation to each exposed per-Pod Service with a unique value in the format `<prefix>-<replset-name>-<pod-index>.<domain>`. External DNS reads this annotation and automatically creates a DNS record in your external DNS server: Amazon Route53, Cloud DNS, Azure DNS, or others.
+
+If you set `ttl`, the Operator also adds `external-dns.alpha.kubernetes.io/ttl` on each Service. The value is the DNS record lifetime in **seconds**. External DNS passes this TTL to your DNS provider when it creates or updates records. Omit `ttl` to let External DNS and the provider use their defaults.
+
+External DNS continuously watches for resource changes and updates the DNS records automatically when a new Service is created or its configuration or state changes. This automation simplifies connectivity for applications that must reach Percona Server for MongoDB from outside Kubernetes, reduces the risk of misconfiguration and supports environments that scale or change frequently. With `prefix`, you can enforce consistent DNS naming across clusters and environments.
+
+You can use External DNS for both replica sets and sharded clusters. By assigning DNS hostnames to each `mongod`, `mongos`, and `configsvrReplSet` Pod, you enable applications to connect to any node using simple, human-readable domain names.
+
+### Prerequisites
+
+To use External DNS, ensure you have:
+
+- Services exposed with the type `LoadBalancer`. Check your configuration to have `expose.enabled: true` with `expose.type: LoadBalancer` for replica sets and config servers
+- A DNS zone that External DNS can manage for the `domain` you specify
+
+### Configuration example
+
+**Replica set**
+
+```
+replsets:
+  - name: rs0
+    size: 3
+    expose:
+      enabled: true
+      type: LoadBalancer
+      externalDNS:
+        prefix: db-prod              # optional; defaults to the CR metadata.name
+        domain: mongo.example.com    # required
+        ttl: 300                     # optional; seconds, passed to External DNS
+```
+
+After you apply the configuration, the Operator annotates each per-Pod Service for the cluster named `my-cluster-name` like this:
+
+| Service (example)       | `external-dns.alpha.kubernetes.io/hostname` (example) |
+| ----------------------- | ----------------------------------------------------- |
+| `my-cluster-name-rs0-0` | `db-prod-rs0-0.mongo.example.com`                     |
+| `my-cluster-name-rs0-1` | `db-prod-rs0-1.mongo.example.com`                     |
+| `my-cluster-name-rs0-2` | `db-prod-rs0-2.mongo.example.com`                     |
+
+**Sharded cluster**
+
+```
+replsets:
+  - name: rs0
+    size: 3
+    expose:
+      enabled: true
+      type: LoadBalancer
+      externalDNS:
+        prefix: db-prod              # optional; defaults to the CR metadata.name
+        domain: mongo.example.com    # required
+        ttl: 300                     # optional; DNS TTL in seconds
+sharding:
+  enabled: true
+  configsvrReplSet:
+    size: 3
+    expose:
+      enabled: true
+      type: LoadBalancer
+      externalDNS:
+        prefix: shard-prod                # optional; defaults to the CR metadata.name
+        domain: mongo.example.com         # required
+        ttl: 300                         # optional; DNS TTL in seconds
+  mongos:
+    expose:
+      enabled: true
+      type: LoadBalancer
+      servicePerPod: true                # optional, enables service for each mongos pod
+      externalDNS:
+        prefix: mongos-prod              # optional; defaults to the CR metadata.name
+        domain: mongo.example.com        # required
+        ttl: 300                        # optional; DNS TTL in seconds
+```
+
+You can set `expose.externalDNS` under [`sharding.configsvrReplSet`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingconfigsvrreplsetexposeexternaldnsprefix) and [`sharding.mongos`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosexposeexternaldnsprefix). Hostname patterns depend on the component:
+
+| Component                                                                                                                                           | Hostname pattern                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| Replica sets                                                                                                                                        | `{prefix}-{replsetName}-{podIndex}.{domain}` |
+| Config servers                                                                                                                                      | `{prefix}-cfgsvr-{podIndex}.{domain}`        |
+| Mongos with [`servicePerPod`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosexposeserviceperpod) enabled | `{prefix}-mongos-{podIndex}.{domain}`        |
+| Mongos with `servicePerPod` disabled                                                                                                                | `{prefix}-mongos.{domain}`                   |
+
+If you omit `prefix`, the Operator uses `metadata.name` from the custom resource instead. With `metadata.name: my-cluster-name` and no `prefix` field, the hostname for the first Pod would be `my-cluster-name-rs0-0.mongo.example.com`.
+
+With `ttl: 300`, each Service also gets `external-dns.alpha.kubernetes.io/ttl: "300"`. External DNS uses that value when publishing the record; check your DNS provider for allowed TTL ranges and minimums.
+
+### How the Operator manages External DNS annotations
+
+The Operator owns the External DNS annotations it generates. The rules are:
+
+- When the Operator annotates the Service with the `external-dns.alpha.kubernetes.io/hostname` (and `/ttl`, if set) annotations defined via the Custom Resource, it also adds the `percona.com/external-dns-managed: "true"` annotation to this Service. The Operator uses this marker to track its ownership over the Service. Do not set or remove the `percona.com/external-dns-managed: "true"` annotation manually.
+- For the Service annotated with `percona.com/external-dns-managed: "true"`, the `/hostname` and `/ttl` always follow the Custom Resource. The Operator overwrites manual edits of these two annotations on the next reconcile. To customize them, use the `externalDNS` section of the Custom Resource.
+- If you edit or remove the `expose.externalDNS` configuration in the Custom Resource, the operator-written `/hostname` and `/ttl` annotations on the Services are edited or removed accordingly. External DNS then deletes the DNS records for the disabled or changed configuration.
+- External DNS annotations that you add manually on Services without the `percona.com/external-dns-managed: "true"` marker, and any other External DNS keys (for example `/target` or `/alias`) on any Service, are never modified by the Operator. The manual per-Service annotation workflow keeps working.
+- If `expose.annotations` already contains `external-dns.alpha.kubernetes.io/hostname`, the Operator replaces it with the hostname from `expose.externalDNS`.
+- If `externalDNS` is set while `expose.enabled` is `false` (replica sets and config servers), the Operator does not add DNS annotations.
+
+## Service per Pod
+
+To make all database Pods accessible, Percona Operator for MongoDB can assign a [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) to each Pod. This Service per Pod option allows your application to handle Cursor tracking instead of relying on a single Service. This solves the problem of `CursorNotFound` errors that occur when a Service transparently cycles between mongos instances while your client is still iterating a cursor on a large collection.
+
+This feature can be enabled for both sharded and non-sharded clusters by setting the [sharding.mongos.expose.servicePerPod](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosexposeserviceperpod) Custom Resource option to `true` in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file.
+
+If this feature is enabled with the `expose.type: NodePort`, the created Services look like this:
+
+```
+kubectl get svc
+NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
+my-cluster-name-mongos-0   NodePort       10.38.158.103   <none>         27017:31689/TCP              12s
+my-cluster-name-mongos-1   NodePort       10.38.155.250   <none>         27017:31389/TCP              12s
+...
+```
+
+## Controlling hostnames in replset configuration
+
+Starting from v1.14, the Operator configures replica set members using local fully-qualified domain names (FQDN), which are resolvable and available only from inside the Kubernetes cluster. Exposing the replica set using the options described above will not affect hostname usage in the replica set configuration.
+
+Note
+
+Before v1.14, the Operator used the exposed IP addresses in the replica set configuration in the case of the exposed replica set.
+
+You can still restore the previous behavior. For example, to configure the replica set with external IP addresses for [multi-cluster deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication.html).
+
+The `clusterServiceDNSMode` field in the Custom Resource controls which addresses the Operator writes into the replica set configuration. You can set it to one of the following values:
+
+1. **`Internal`**: Use local FQDNs (i.e., `cluster1-rs0-0.cluster1-rs0.psmdb.svc.cluster.local`) in replica set configuration even if the replica set is exposed. **This is the default value.**
+1. **`ServiceMesh`**: Use a special FQDN using the Pod name (i.e., `cluster1-rs0-0.psmdb.svc.cluster.local`), assuming it’s resolvable and available in all clusters. This mode is designed for service mesh environments where Pod names are resolvable across clusters. Starting with version 1.22.0, the integration with service meshes is improved. See [application protocol support](#application-protocol-support-for-service-mesh-integrations) to learn more.
+1. **`External`**: Use exposed IP addresses in replica set configuration if the replica set is exposed; otherwise, use local FQDN. **This copies the behavior of the Operator v1.13.**
+
+Warning
+
+Be careful with the `clusterServiceDNSMode=External` variant. Using IP addresses instead of DNS hostnames is discouraged in MongoDB. IP addresses make reconfiguration and recovery more complicated, and are **generally problematic in scenarios where IP addresses change**. In particular, if you delete and recreate the cluster with `clusterServiceDNSMode=External` without deleting its volumes (having `percona.com/delete-psmdb-pvc` finalizer unset), your cluster will crash and there will be no straightforward way to recover it.
+
+If backups are enabled in your cluster, you need to restart replica set and config server replica set Pods after changing `clusterServiceDNSMode`. This option changes the hostnames inside the replica set configuration. Since `pbm-agents` running in your cluster don’t discover this change, you must restart them too. You may see errors in `backup-agent` container logs, and your backups may not work until you restart the agents.
+
+To make a manual restart, run the `kubectl rollout restart sts <clusterName>-<replsetName>` command for each replica set in the `spec.replsets`. For sharded cluster, also restart config servers with the `kubectl rollout restart sts <clusterName>-cfg`.
+
+Alternatively, you can simply [restart your cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/pause.html).
+
+### Override hostnames with external domain names
+
+When members must be reachable by externally resolvable DNS names such as through an Ingress, TransportServer, LoadBalancer hostname, or another cross-cluster DNS entry — use [`replsets.replsetOverrides`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#replsetsreplsetoverridesmember-namehost) instead of relying on `clusterServiceDNSMode=External` and IP addresses.
+
+With `replsetOverrides`, you replace the default local FQDN of each Pod with a custom host and, optionally, port in the MongoDB replica set configuration. Typical use cases include:
+
+- Cross-cluster or multi-data-center replica sets where sites reach each other by external domain names
+- Ingress or TLS passthrough endpoints (for example `r1.example.com:443`) in front of each Pod’s Service
+
+**Important considerations:**
+
+- The Operator does **not** validate overridden hostnames. **You must ensure DNS resolution and network connectivity from every replica set member to those names**.
+- Include every overridden hostname in your TLS certificates. Operator-generated certificates usually are not enough for external domain names; [generate certificates manually](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-manual.html) when needed.
+- [Expose the Pods](#connecting-from-outside-kubernetes) so the external name can route to the correct Service.
+- After you set replica set name overrides, the Operator updates replica set hosts one by one (secondaries first, primary last).
+
+Set `replsetOverrides` under the replica set in `deploy/cr.yaml`. Each key must be the **Pod name**. The value of `host` is the external domain name. Also include the port if it is not the default `27017` port:
+
+```
+...
+replsets:
+- name: rs0
+  size: 3
+  expose:
+    enabled: true
+    type: ClusterIP
+  replsetOverrides:
+    my-cluster-name-rs0-0:
+      host: rs0-0.example.com:27017
+    my-cluster-name-rs0-1:
+      host: rs0-1.example.com:27017
+    my-cluster-name-rs0-2:
+      host: rs0-2.example.com:27017
+```
+
+You can also add custom tags to members under the same override:
+
+```
+replsetOverrides:
+  my-cluster-name-rs0-0:
+    host: rs0-0.example.com:27017
+    tags:
+      team: cloud
+```
+
+You can use these external domain names when you [split a replica set across multiple data centers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-multi-dc.html). Override each local member with `replsetOverrides`, and register remote members with `externalNodes` using the same style of externally reachable hostnames.
+
+### Application protocol support for service mesh integrations
+
+Starting from version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for all Services (replica sets, config servers, and mongos). This configuration is essential when using service mesh implementations such as Istio.
+
+MongoDB uses a server-first protocol, meaning the server sends data first when establishing a connection. Without explicit protocol specification, service meshes cannot properly detect the protocol and may fail to establish Mutual TLS (mTLS) connections. By setting `appProtocol: mongo`, the Operator tells the service mesh which protocol to expect, enabling proper protocol detection and ensuring mTLS connections work correctly.
+
+The `appProtocol` field is set automatically by the Operator and cannot be configured manually.
+
+## Exposing replica set with split-horizon DNS
+
+[Split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS) provides each replica set Pod with a set of DNS URIs for external usage. This allows you to communicate with replica set Pods both from inside the Kubernetes cluster and from outside Kubernetes.
+
+Split-horizon can be configured via the `replset.splitHorizons` subsection in the Custom Resource options. Set it in the `deploy/cr.yaml` configuration file as follows:
+
+```
+    ...
+    replsets:
+      - name: rs0
+        expose:
+          enabled: true
+          type: LoadBalancer
+        splitHorizons:
+          cluster1-rs0-0:
+            external: rs0-0.mycluster.xyz
+            external-2: rs0-0.mycluster2.xyz
+          cluster1-rs0-1:
+            external: rs0-1.mycluster.xyz
+            external-2: rs0-1.mycluster2.xyz
+          cluster1-rs0-2:
+            external: rs0-2.mycluster.xyz
+            external-2: rs0-2.mycluster2.xyz
+```
+
+URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.
+
+Starting with version 1.22.0, the Operator adds the DNS records defined in the `splitHorizons` subsection to the certificates it generates.
+
+Split horizon has following limitations:
+
+- duplicating domain names in horizons is not allowed by MongoDB
+- using IP addresses in horizons is not allowed by MongoDB
+- horizons should be set for *all Pods of a replica set* or not set at all
+
+## Limitations
+
+- Exposing a cluster with `LoadBalancer` Services creates one cloud load balancer per exposed Pod, which has a direct cost and may hit provider quotas.
+- Multi-cluster and multi-region deployments have their own connectivity rules on top of these - see [Disaster recovery and multi-site](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication.html).
+- `clusterServiceDNSMode: ServiceMesh` cannot be combined with multi-cluster Services. See [Known limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/limitations.html).
+
+## See also
+
+- [Disaster recovery and multi-site](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication.html)
+- [Transport encryption (TLS/SSL)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) - external endpoints should require TLS
+- [About security](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/security.html)

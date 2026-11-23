@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6698,10 +6698,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="system-users">System users<a class="headerlink" href="#system-users" title="Permanent link">¶</a></h1>
+<h1 id="system-users">System users<a data-markdown-ignore class="headerlink" href="#system-users" title="Permanent link">¶</a></h1>
 <p>To automate the deployment and management of cluster components, the Operator requires system-level MongoDB users.</p>
 <p>Credentials for these users are stored in a <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes Secrets <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> object. The Operator first checks if a Secret already exists with the name specified in the <code>spec.secrets.users</code> field of your <code>deploy/cr.yaml</code> configuration file and reuses it if found. If no matching Secret exists, the Operator automatically creates a new Secret with randomly generated passwords during cluster creation.</p>
-<h2 id="system-users-secrets">System users Secrets<a class="headerlink" href="#system-users-secrets" title="Permanent link">¶</a></h2>
+<h2 id="system-users-secrets">System users Secrets<a data-markdown-ignore class="headerlink" href="#system-users-secrets" title="Permanent link">¶</a></h2>
 <p>The default name of the Secrets object for the system users is <code>percona-server-mongodb-users</code>. If <code>spec.secrets.users</code> is defined in the Custom Resource, the Operator uses that name instead. The sample configuration sets this field to <code>&lt;cluster-name&gt;-secrets</code> (for example, <code>my-cluster-name-secrets</code>).</p>
 <p>Aside from this Secret, the Operator creates an internal secret for its own internal purposes. See <a href="#internal-secret-and-its-usage">Internal Secret and its usage</a> to learn more.</p>
 <div class="admonition warning">
@@ -6750,7 +6750,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>For PMM Server, store the service account token in <code>PMM_SERVER_TOKEN</code>. The Operator signs in to PMM Server with the username <code>service_token</code>.</p>
-<h3 id="system-users-and-mongodb-roles">System users and MongoDB roles<a class="headerlink" href="#system-users-and-mongodb-roles" title="Permanent link">¶</a></h3>
+<h3 id="system-users-and-mongodb-roles">System users and MongoDB roles<a data-markdown-ignore class="headerlink" href="#system-users-and-mongodb-roles" title="Permanent link">¶</a></h3>
 <p>The following table maps MongoDB roles to system users:</p>
 <table>
 <thead>
@@ -6787,7 +6787,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>If you change credentials for the <code>MONGODB_CLUSTER_MONITOR</code> user, the cluster Pods will go into a restart cycle, and the cluster may not be accessible through the <code>mongos</code> service until this cycle finishes.</p>
-<h3 id="yaml-object-format">YAML object format<a class="headerlink" href="#yaml-object-format" title="Permanent link">¶</a></h3>
+<h3 id="yaml-object-format">YAML object format<a data-markdown-ignore class="headerlink" href="#yaml-object-format" title="Permanent link">¶</a></h3>
 <p>You can create your own Secret and reference it in the CR for your cluster in <code>spec.secrets.users</code> key.</p>
 <p>When you create the Secret object yourself, your YAML file should match the following simple format:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
@@ -6809,14 +6809,14 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">PMM_SERVER_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">token</span>
 </code></pre></div>
 <p>The example above matches the default <code>deploy/secrets.yaml</code> file, which includes sample passwords and PMM Server credentials. These are intended only for development or automated testing. <strong>Don’t use them in production</strong>.</p>
-<h3 id="update-the-secret">Update the Secret<a class="headerlink" href="#update-the-secret" title="Permanent link">¶</a></h3>
+<h3 id="update-the-secret">Update the Secret<a data-markdown-ignore class="headerlink" href="#update-the-secret" title="Permanent link">¶</a></h3>
 <p>When you create the Secrets object, you use the <code>stringData</code> type and specify all values for each key/value in plain text format. However, the resulting Secrets object contains passwords stored as base64-encoded strings in the <code>data</code> type.</p>
 <p>To update any field, you’ll need to encode the value into base64 format. </p>
 <p class="power-number">Here’s how to do it:</p>
 <ol>
 <li>
 <p>Run the following command in your local shell to encode the new value. Replace the <code>new_password</code> with your value:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Linux</label><label for="__tabbed_1_2">in macOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Linux</label><label for="__tabbed_1_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"new_password"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
@@ -6831,7 +6831,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Update the Secrets object. For example, the following command updates the Database Admin user’s password to <code>new_password</code> in the <code>percona-server-mongodb-users</code> object can be done with the following command:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">in Linux</label><label for="__tabbed_2_2">in macOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">in Linux</label><label for="__tabbed_2_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>secret/percona-server-mongodb-users<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"data":{"MONGODB_DATABASE_ADMIN_PASSWORD": "'</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>new_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span><span class="k">)</span><span class="s1">'"}}'</span>
@@ -6845,13 +6845,13 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </li>
 </ol>
-<h3 id="password-rotation-policies-and-timing">Password rotation policies and timing<a class="headerlink" href="#password-rotation-policies-and-timing" title="Permanent link">¶</a></h3>
+<h3 id="password-rotation-policies-and-timing">Password rotation policies and timing<a data-markdown-ignore class="headerlink" href="#password-rotation-policies-and-timing" title="Permanent link">¶</a></h3>
 <p>When there is a change in user secrets, the Operator creates the necessary transaction to change passwords. This rotation happens almost instantly (the delay can be up to a few seconds), and you don’t need to take any action beyond changing the password.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Please don’t change the <code>secrets.users</code> option in the CR. Make changes inside the secrets object itself.</p>
 </div>
-<h3 id="reproduce-system-users-for-migration">Reproduce system users for migration<a class="headerlink" href="#reproduce-system-users-for-migration" title="Permanent link">¶</a></h3>
+<h3 id="reproduce-system-users-for-migration">Reproduce system users for migration<a data-markdown-ignore class="headerlink" href="#reproduce-system-users-for-migration" title="Permanent link">¶</a></h3>
 <p>In some situations, you may need to reproduce system users in a bare-bones MongoDB. For example, this is a required step in <a href="https://www.percona.com/blog/migrating-mongodb-to-kubernetes">migration scenarios <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to move existing on-premises MongoDB databases to Kubernetes-based MongoDB clusters managed by the Operator. You can use the following example script that produces a text file with mongo shell commands to create the needed system users with appropriate roles:</p>
 <details class="example">
 <summary>gen_users.sh</summary>
@@ -6881,7 +6881,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
 <span class="s">EOF</span>
 </code></pre></div>
 </details>
-<h2 id="development-mode">Development mode<a class="headerlink" href="#development-mode" title="Permanent link">¶</a></h2>
+<h2 id="development-mode">Development mode<a data-markdown-ignore class="headerlink" href="#development-mode" title="Permanent link">¶</a></h2>
 <p>To make development and testing easier, the <code>deploy/secrets.yaml</code> secrets file contains default passwords for MongoDB system users.</p>
 <p>These development-mode credentials from <code>deploy/secrets.yaml</code> are:</p>
 <table>
@@ -6938,10 +6938,10 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; user-mongo-shell.txt
 <p class="admonition-title">Warning</p>
 <p>Do not use the default MongoDB users in production!</p>
 </div>
-<h2 id="internal-secret-and-its-usage">Internal Secret and its usage<a class="headerlink" href="#internal-secret-and-its-usage" title="Permanent link">¶</a></h2>
+<h2 id="internal-secret-and-its-usage">Internal Secret and its usage<a data-markdown-ignore class="headerlink" href="#internal-secret-and-its-usage" title="Permanent link">¶</a></h2>
 <p>The Operator creates and updates an additional Secrets object which is named based on the cluster name, like <code>internal-my-cluster-name-users</code>. This Secrets object is used only by the Operator. Users must not change it.</p>
 <p>This object contains secrets with the same passwords as the one specified in <code>spec.secrets.users</code> (e.g., <code>percona-server-mongodb-users</code>). When the user updates the <code>percona-server-mongodb-users</code> Secret, the Operator propagates these changes to the internal <code>internal-my-cluster-name-users</code> Secrets object.</p>
-<h2 id="connection-string-secret">Connection string Secret<a class="headerlink" href="#connection-string-secret" title="Permanent link">¶</a></h2>
+<h2 id="connection-string-secret">Connection string Secret<a data-markdown-ignore class="headerlink" href="#connection-string-secret" title="Permanent link">¶</a></h2>
 <p>Starting with Operator version 1.23.0, the Operator creates a <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code> Secret with ready-to-use MongoDB connection strings for the <strong><code>databaseAdmin</code></strong> user. The Secret includes URIs for internal cluster access, SRV-style endpoints, and exposed endpoints when applicable.</p>
 <p>The Operator updates this Secret when cluster topology, exposure settings, or the <code>databaseAdmin</code> password change. Do not edit it manually.</p>
 <p>Use this Secret to connect to the cluster or wire applications to MongoDB. See <a href="connection-secrets.html">Connection secrets</a> for key names and usage examples.</p>

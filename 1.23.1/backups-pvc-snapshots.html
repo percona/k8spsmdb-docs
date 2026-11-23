@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6485,11 +6485,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="pvc-snapshots">PVC snapshots<a class="headerlink" href="#pvc-snapshots" title="Permanent link">¶</a></h1>
+<h1 id="pvc-snapshots">PVC snapshots<a data-markdown-ignore class="headerlink" href="#pvc-snapshots" title="Permanent link">¶</a></h1>
 <p>Starting with version 1.23.0, you can back up and restore using Kubernetes volume snapshots. A snapshot is a point-in-time copy of a Persistent Volume Claim created through the <a href="https://kubernetes.io/docs/concepts/storage/volume-snapshots/">Volume Snapshot API <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. Data stays on the storage backend instead of uploading to object storage.</p>
 <p>For how snapshots compare to logical and physical backups, and what they do not support, see <a href="backups.html#backup-types">Backup types</a>. This page lists what you need before you configure them.</p>
 <p>If you already know you want snapshots, go to <a href="backups-pvc-setup.html">Configure PVC snapshots</a>. On Amazon EKS, start with <a href="backups-pvc-setup.html#add-a-volumesnapshotclass-on-eks">Set up PVC snapshots on EKS</a>.</p>
-<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
+<h2 id="requirements">Requirements<a data-markdown-ignore class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Your Kubernetes cluster must have a CSI driver that supports the <code>VolumeSnapshot</code> API. Examples: <code>pd.csi.storage.gke.io</code> on GKE, <code>ebs.csi.aws.com</code> on EKS.</p>
@@ -6514,16 +6514,16 @@ window.addEventListener('afterprint', (event) => {
 <p>The cluster Custom Resource must include at least one <a href="backups-storage.html">backup storage</a> entry. PBM stores snapshot <strong>metadata</strong> there. It does not upload database files for <code>external</code> backups.</p>
 </li>
 </ol>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Point-in-time recovery and selective restore are not available for <code>external</code> backups.</li>
 </ul>
-<h2 id="backup-and-restore-flow">Backup and restore flow<a class="headerlink" href="#backup-and-restore-flow" title="Permanent link">¶</a></h2>
+<h2 id="backup-and-restore-flow">Backup and restore flow<a data-markdown-ignore class="headerlink" href="#backup-and-restore-flow" title="Permanent link">¶</a></h2>
 <p>PBM treats snapshot backups as type <code>external</code>. For what the Operator and PBM do during backup and restore, see <a href="backups.html#from-pvc-snapshot-external-backup">How backup and restore work</a>.</p>
 <p>Track restore progress in the Restore resource <code>status.conditions</code> field. See <a href="cr-statuses.html#pvc-snapshot-restore-conditions">PVC snapshot restore conditions</a>.</p>
-<h2 id="restore-flow">Restore flow<a class="headerlink" href="#restore-flow" title="Permanent link">¶</a></h2>
+<h2 id="restore-flow">Restore flow<a data-markdown-ignore class="headerlink" href="#restore-flow" title="Permanent link">¶</a></h2>
 <p>See <a href="backups.html#from-pvc-snapshot-external-backup">How backup and restore work</a> for the restore sequence.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-pvc-setup.html">Configure PVC snapshots</a></p>
 <hr>
 <div class="md-source-file">

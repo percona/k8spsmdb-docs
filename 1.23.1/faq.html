@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation">
+        <meta name="description" content="Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.">
       
       
         <meta name="author" content="Percona LLC">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6572,8 +6572,8 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="frequently-asked-questions">Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">¶</a></h1>
-<h2 id="why-do-we-need-to-follow-the-kubernetes-way-when-kubernetes-was-never-intended-to-run-databases">Why do we need to follow “the Kubernetes way” when Kubernetes was never intended to run databases?<a class="headerlink" href="#why-do-we-need-to-follow-the-kubernetes-way-when-kubernetes-was-never-intended-to-run-databases" title="Permanent link">¶</a></h2>
+<h1 id="frequently-asked-questions">Frequently Asked Questions<a data-markdown-ignore class="headerlink" href="#frequently-asked-questions" title="Permanent link">¶</a></h1>
+<h2 id="why-do-we-need-to-follow-the-kubernetes-way-when-kubernetes-was-never-intended-to-run-databases">Why do we need to follow “the Kubernetes way” when Kubernetes was never intended to run databases?<a data-markdown-ignore class="headerlink" href="#why-do-we-need-to-follow-the-kubernetes-way-when-kubernetes-was-never-intended-to-run-databases" title="Permanent link">¶</a></h2>
 <p>As it is well known, the Kubernetes approach is targeted at stateless
 applications but provides ways to store state (in Persistent Volumes, etc.) if
 the application needs it. Generally, a stateless mode of operation is supposed
@@ -6585,12 +6585,12 @@ composed in a right way to avoid crashes, data loss, or data inconsistencies
 during hardware failure. Percona Operator for MongoDB provides
 out-of-the-box functionality to automate provisioning and
 management of highly available MongoDB database clusters on Kubernetes.</p>
-<h2 id="how-can-i-contact-the-developers">How can I contact the developers?<a class="headerlink" href="#how-can-i-contact-the-developers" title="Permanent link">¶</a></h2>
+<h2 id="how-can-i-contact-the-developers">How can I contact the developers?<a data-markdown-ignore class="headerlink" href="#how-can-i-contact-the-developers" title="Permanent link">¶</a></h2>
 <p>The best place to discuss Percona Operator for MongoDB with developers and other
 community members is the <a href="https://forums.percona.com/categories/kubernetes-operator-percona-server-mongodb">community forum  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <p>If you would like to report a bug, use the Percona Operator for MongoDB
 <a href="https://jira.percona.com/projects/K8SPSMDB">project in JIRA  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="what-is-the-difference-between-the-operator-quickstart-and-advanced-installation-ways">What is the difference between the Operator quickstart and advanced installation ways?<a class="headerlink" href="#what-is-the-difference-between-the-operator-quickstart-and-advanced-installation-ways" title="Permanent link">¶</a></h2>
+<h2 id="what-is-the-difference-between-the-operator-quickstart-and-advanced-installation-ways">What is the difference between the Operator quickstart and advanced installation ways?<a data-markdown-ignore class="headerlink" href="#what-is-the-difference-between-the-operator-quickstart-and-advanced-installation-ways" title="Permanent link">¶</a></h2>
 <p>As you have noticed, the installation section of docs contains both quickstart
 and advanced installation guides.</p>
 <p>The quickstart guide is simpler. It has fewer installation steps in favor of
@@ -6604,7 +6604,7 @@ some additional steps needed for these platforms.</p>
 <p>Generally, rely on the quickstart guide if you are a beginner user of the
 specific platform and/or you are new to the Percona Operator for MongoDB as a
 whole.</p>
-<h2 id="which-versions-of-mongodb-does-the-operator-support">Which versions of MongoDB does the Operator support?<a class="headerlink" href="#which-versions-of-mongodb-does-the-operator-support" title="Permanent link">¶</a></h2>
+<h2 id="which-versions-of-mongodb-does-the-operator-support">Which versions of MongoDB does the Operator support?<a data-markdown-ignore class="headerlink" href="#which-versions-of-mongodb-does-the-operator-support" title="Permanent link">¶</a></h2>
 <p>Percona Operator for MongoDB works
 with all active major versions of Percona Server for MongoDB. The exact version is
 determined by the Docker image in use.</p>
@@ -6612,7 +6612,7 @@ determined by the Docker image in use.</p>
 For example, Percona Server for MongoDB 8.3 is supported with the following
 recommended version: 8.3.13-4. </p>
 <p>Check the <a href="https://docs.percona.com/percona-server-for-mongodb/latest/release_notes/index.html">Percona Server for MongoDB release notes <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for more details on the exact version of the latest major version. Use the version switcher to check other major versions.</p>
-<h2 id="how-can-i-add-custom-sidecar-containers-to-my-cluster">How can I add custom sidecar containers to my cluster?<a class="headerlink" href="#how-can-i-add-custom-sidecar-containers-to-my-cluster" title="Permanent link">¶</a></h2>
+<h2 id="how-can-i-add-custom-sidecar-containers-to-my-cluster">How can I add custom sidecar containers to my cluster?<a data-markdown-ignore class="headerlink" href="#how-can-i-add-custom-sidecar-containers-to-my-cluster" title="Permanent link">¶</a></h2>
 <p>The Operator allows you to deploy additional containers to
 the Pod. Such containers are called <em>sidecar</em> containers. </p>
 <p>You can use sidecar containers to run debugging tools, some specific
@@ -6638,7 +6638,7 @@ and <code>sharding.mongos</code> sections.</p>
 they should be used carefully and by experienced users only.</p>
 </div>
 <p>Find more information on sidecar containers in the appropriate <a href="sidecar.html">documentation page</a>.</p>
-<h2 id="how-to-provoke-the-initial-sync-of-a-pod">How to provoke the initial sync of a Pod?<a class="headerlink" href="#how-to-provoke-the-initial-sync-of-a-pod" title="Permanent link">¶</a></h2>
+<h2 id="how-to-provoke-the-initial-sync-of-a-pod">How to provoke the initial sync of a Pod?<a data-markdown-ignore class="headerlink" href="#how-to-provoke-the-initial-sync-of-a-pod" title="Permanent link">¶</a></h2>
 <p>There are certain situations where it might be necessary to delete all MongoDB
 instance data to force the resync. For example, there may be the following
 reasons:</p>

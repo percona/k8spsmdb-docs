@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6586,7 +6586,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1120">Percona Operator for MongoDB 1.12.0<a class="headerlink" href="#percona-operator-for-mongodb-1120" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1120">Percona Operator for MongoDB 1.12.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1120" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6597,7 +6597,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>With this release, the Operator turns to a simplified naming convention and
@@ -6624,7 +6624,7 @@ which allows Kubernetes to perform Custom Resource validation and saves user
 from occasionally applying <code>deploy/cr.yaml</code> with syntax typos</p>
 </li>
 </ul>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-185">K8SPSMDB-185</a>: Allow using AWS EC2 instances for backups with IAM
@@ -6641,7 +6641,7 @@ enabling replication over a service mesh (Thanks to Jo Lyshoel  for
 contribution)</p>
 </li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-473">K8SPSMDB-473</a>: Allow to skip TLS verification for backup storage,
@@ -6673,7 +6673,7 @@ database Pod if pmm-agent is not working properly</p>
 and validate Custom Resource</p>
 </li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-597">K8SPSMDB-597</a>: Fix a bug in the Operator helm chart which caused
@@ -6743,13 +6743,13 @@ set to all members in the Replica Set</p>
 special character for a system user was breaking the cluster</p>
 </li>
 </ul>
-<h2 id="known-issues">Known Issues<a class="headerlink" href="#known-issues" title="Permanent link">¶</a></h2>
+<h2 id="known-issues">Known Issues<a data-markdown-ignore class="headerlink" href="#known-issues" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-686">K8SPSMDB-686</a>: The Operator versions 1.11.0 and 1.12.0 can not be
 downscaled from a sharding to non-sharding/Replica Set configuration on
 Google Kubernetes Engine (GKE) 1.19-1.21 (GKE 1.22 is not affected)</li>
 </ul>
-<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
+<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a data-markdown-ignore class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-596">K8SPSMDB-596</a>: The <code>spec.mongod</code> section is removed from the
@@ -6776,7 +6776,7 @@ parameters to proper places!</p>
 on-demand backup configuration file <code>backup/backup.yaml</code> was renamed to
 <code>spec.clusterName</code> (<code>psmdbCluster</code> will be valid till 1.15 version)</li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The following platforms were tested and are officially supported by the Operator
 1.12.0:</p>
 <ul>

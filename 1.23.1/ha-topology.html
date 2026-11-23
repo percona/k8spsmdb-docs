@@ -25,7 +25,7 @@ it. This page explains the options so you can pick one before you start configur
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ it. This page explains the options so you can pick one before you start configur
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6566,11 +6566,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-high-availability-and-topology">About high availability and topology<a class="headerlink" href="#about-high-availability-and-topology" title="Permanent link">¶</a></h1>
+<h1 id="about-high-availability-and-topology">About high availability and topology<a data-markdown-ignore class="headerlink" href="#about-high-availability-and-topology" title="Permanent link">¶</a></h1>
 <p>The Operator runs Percona Server for MongoDB as a replica set. The topology you choose
 decides how many node failures the cluster survives, how it scales, and how clients reach
 it. This page explains the options so you can pick one before you start configuring.</p>
-<h2 id="choose-your-topology">Choose your topology<a class="headerlink" href="#choose-your-topology" title="Permanent link">¶</a></h2>
+<h2 id="choose-your-topology">Choose your topology<a data-markdown-ignore class="headerlink" href="#choose-your-topology" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6599,7 +6599,7 @@ it. This page explains the options so you can pick one before you start configur
   configures the config server replica set and <code>sharding.mongos</code> configures the routers.</li>
 </ul>
 <p>Sharding is not a one-way door: see <a href="sharding.html#turning-sharding-on-and-off">Turning sharding on and off</a>.</p>
-<h2 id="replica-set-members">Replica set members<a class="headerlink" href="#replica-set-members" title="Permanent link">¶</a></h2>
+<h2 id="replica-set-members">Replica set members<a data-markdown-ignore class="headerlink" href="#replica-set-members" title="Permanent link">¶</a></h2>
 <p>A replica set combines several member types. Only data-bearing voting members serve normal
 reads and writes; the others exist to shape failover behavior, add read capacity, or carry
 workloads that must not affect clients.</p>
@@ -6647,14 +6647,14 @@ workloads that must not affect clients.</p>
 <a href="arbiter.html#default-read-and-write-concern-for-replica-sets-with-an-arbiter">Default read and write concern for replica sets with an Arbiter</a>
 before you add one.</p>
 </div>
-<h2 id="read-and-write-concerns">Read and write concerns<a class="headerlink" href="#read-and-write-concerns" title="Permanent link">¶</a></h2>
+<h2 id="read-and-write-concerns">Read and write concerns<a data-markdown-ignore class="headerlink" href="#read-and-write-concerns" title="Permanent link">¶</a></h2>
 <p>The <code>defaultRWConcern</code> section sets the cluster-wide defaults that apply when a client does
 not specify its own:</p>
 <ul>
 <li><code>defaultRWConcern.readConcern</code> accepts <code>local</code>, <code>available</code>, or <code>majority</code>.</li>
 <li><code>defaultRWConcern.writeConcern</code> sets the default write concern.</li>
 </ul>
-<h2 id="where-pods-run">Where Pods run<a class="headerlink" href="#where-pods-run" title="Permanent link">¶</a></h2>
+<h2 id="where-pods-run">Where Pods run<a data-markdown-ignore class="headerlink" href="#where-pods-run" title="Permanent link">¶</a></h2>
 <p>Surviving the loss of a node, a rack, or a zone depends on the Pods being spread across
 them. The Operator applies anti-affinity by default, and you can shape placement further
 with node selectors, topology spread constraints, tolerations, and priority classes. See
@@ -6668,11 +6668,11 @@ a voluntary disruption can take down at once, and is what actually closes that g
 <p>Arbiters need particular attention here, because an arbiter sharing a host with a
 data-bearing member removes the redundancy it was added to provide. See
 <a href="arbiter.html#prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members">Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members</a>.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <p>Topology choices interact with other features - selective restores, cross-site replication,
 and search each place their own constraints on sharding and member types. See
 <a href="limitations.html">Known limitations</a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="sharding.html">MongoDB sharding</a></li>
 <li><a href="arbiter.html">Replica set members</a></li>

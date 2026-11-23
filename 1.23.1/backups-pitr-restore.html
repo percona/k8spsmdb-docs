@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6676,12 +6676,12 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="make-a-point-in-time-restore">Make a point in time restore<a class="headerlink" href="#make-a-point-in-time-restore" title="Permanent link">¶</a></h1>
+<h1 id="make-a-point-in-time-restore">Make a point in time restore<a data-markdown-ignore class="headerlink" href="#make-a-point-in-time-restore" title="Permanent link">¶</a></h1>
 <p>Use this guide to run a point-in-time recovery (PITR): recover the cluster to a specific date and time, or to the latest restorable transaction. The Operator restores a backup, then replays oplog up to that moment.</p>
 <p>Turn oplog collection on first. See <a href="backups-pitr.html">Enable point-in-time recovery</a>. PVC snapshot (<code>external</code>) backups do not support this restore.</p>
 <p>To restore a backup without replaying oplog, use <a href="backups-restore.html#restore-on-the-same-cluster">Restore on the same cluster</a> or <a href="backups-restore.html#restore-on-a-new-cluster">Restore on a new cluster</a>.</p>
 <p>Restore options for the <code>pitr</code> stanza are listed in the <a href="restore-options.html#the-pitr-subsection">Restore resource reference</a>.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups-pitr.html#enable-oplog-collection">Enable oplog collection</a> and wait until oplog is uploading (about 10 minutes by default).</li>
 <li>You need a successful backup (full logical, physical, or incremental base) to use as the restore base. After a restore, take a new backup before you rely on PITR again.</li>
@@ -6707,7 +6707,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ul>
-<h2 id="choose-the-target-time">Choose the target time<a class="headerlink" href="#choose-the-target-time" title="Permanent link">¶</a></h2>
+<h2 id="choose-the-target-time">Choose the target time<a data-markdown-ignore class="headerlink" href="#choose-the-target-time" title="Permanent link">¶</a></h2>
 <p>In the Restore object, set <code>spec.pitr.type</code> to one of:</p>
 <ul>
 <li>
@@ -6720,7 +6720,7 @@ window.addEventListener('afterprint', (event) => {
 <p><code>latest</code> — recover to the latest possible transaction.</p>
 </li>
 </ul>
-<h2 id="restore-on-the-same-cluster">Restore on the same cluster<a class="headerlink" href="#restore-on-the-same-cluster" title="Permanent link">¶</a></h2>
+<h2 id="restore-on-the-same-cluster">Restore on the same cluster<a data-markdown-ignore class="headerlink" href="#restore-on-the-same-cluster" title="Permanent link">¶</a></h2>
 <p>Use this path when the Backup object still exists in the cluster. Set <code>spec.backupName</code>. Do not set <code>spec.backupSource</code> in the same Restore object.</p>
 <ol>
 <li>
@@ -6736,7 +6736,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Pass this configuration to the Operator:</p>
 </li>
 </ol>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">via the YAML manifest</label><label for="__tabbed_1_2">via the command line</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">via the YAML manifest</label><label for="__tabbed_1_2">via the command line</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -6779,7 +6779,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </div>
 <p>If a physical restore fails, see <a href="backups-restore.html#if-a-physical-restore-fails">If a physical restore fails</a>.</p>
-<h2 id="restore-on-a-new-cluster">Restore on a new cluster<a class="headerlink" href="#restore-on-a-new-cluster" title="Permanent link">¶</a></h2>
+<h2 id="restore-on-a-new-cluster">Restore on a new cluster<a data-markdown-ignore class="headerlink" href="#restore-on-a-new-cluster" title="Permanent link">¶</a></h2>
 <p>Use this path when you restore into a different Kubernetes environment and there is no Backup object on the target. Set <code>spec.backupSource</code> (and storage) instead of <code>spec.backupName</code>.</p>
 <ol>
 <li>
@@ -6791,7 +6791,7 @@ window.addEventListener('afterprint', (event) => {
 </ol>
 <p>PBM must know where the backup and oplog live. Define storage in the Restore object, or pre-configure it on the target cluster and reference it by name.</p>
 <p>If the target replica set names differ from the source, add <code>replsetRemapping</code>. See <a href="backups-restore.html#with-different-replica-set-names">Restore to a new cluster with different replica set names</a>.</p>
-<h3 id="storage-defined-in-the-restore-object">Storage defined in the Restore object<a class="headerlink" href="#storage-defined-in-the-restore-object" title="Permanent link">¶</a></h3>
+<h3 id="storage-defined-in-the-restore-object">Storage defined in the Restore object<a data-markdown-ignore class="headerlink" href="#storage-defined-in-the-restore-object" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Set these keys in <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/backup/restore.yaml">deploy/backup/restore.yaml <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>:</p>
@@ -6838,7 +6838,7 @@ window.addEventListener('afterprint', (event) => {
 <p>After the restore, set the <a href="multi-storage.html#define-the-main-storage">main storage</a> on the target cluster so you can take further backups.</p>
 </li>
 </ol>
-<h3 id="storage-already-defined-on-the-target">Storage already defined on the target<a class="headerlink" href="#storage-already-defined-on-the-target" title="Permanent link">¶</a></h3>
+<h3 id="storage-already-defined-on-the-target">Storage already defined on the target<a data-markdown-ignore class="headerlink" href="#storage-already-defined-on-the-target" title="Permanent link">¶</a></h3>
 <p>If <code>backup.storages</code> on the target <code>deploy/cr.yaml</code> already points at the source backup location, reference that storage by name.</p>
 <ol>
 <li>
@@ -6875,7 +6875,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ol>
-<h2 id="verify-the-restore">Verify the restore<a class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-restore">Verify the restore<a data-markdown-ignore class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
 <p>Watch the Restore object until it finishes:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6886,7 +6886,7 @@ failed; for physical restores read
 retrying, because a failed physical restore is not rolled back.</p>
 <p>Then connect to the cluster and confirm the data is there: compare database and collection
 names, and document counts for your largest collections, against what you expect.</p>
-<h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">¶</a></h2>
+<h2 id="related">Related<a data-markdown-ignore class="headerlink" href="#related" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups-restore-new-name.html#point-in-time-recovery-with-namespace-remapping">Restore a collection under a different name</a> — combine remapping with PITR</li>
 <li><a href="backups-restore.html#with-different-replica-set-names">Restore to a new cluster with different replica set names</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6768,7 +6768,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-operator-environment-variables">Configure Operator environment variables<a class="headerlink" href="#configure-operator-environment-variables" title="Permanent link">¶</a></h1>
+<h1 id="configure-operator-environment-variables">Configure Operator environment variables<a data-markdown-ignore class="headerlink" href="#configure-operator-environment-variables" title="Permanent link">¶</a></h1>
 <p>You can configure the Percona Operator for MongoDB by setting environment variables in the Operator Deployment. This lets you tune logging, scope the namespaces that are watched, and adjust reconciliation behavior without rebuilding images.</p>
 <p>You can set environment variables in the following ways:</p>
 <ul>
@@ -6776,8 +6776,8 @@ window.addEventListener('afterprint', (event) => {
 <li>For Helm installations, set environment variables through Helm values.</li>
 <li>For installations on OpenShift, configure environment variables through the OLM subscription.</li>
 </ul>
-<h2 id="available-environment-variables">Available environment variables<a class="headerlink" href="#available-environment-variables" title="Permanent link">¶</a></h2>
-<h3 id="log_structured"><code>LOG_STRUCTURED</code><a class="headerlink" href="#log_structured" title="Permanent link">¶</a></h3>
+<h2 id="available-environment-variables">Available environment variables<a data-markdown-ignore class="headerlink" href="#available-environment-variables" title="Permanent link">¶</a></h2>
+<h3 id="log_structured"><code>LOG_STRUCTURED</code><a data-markdown-ignore class="headerlink" href="#log_structured" title="Permanent link">¶</a></h3>
 <p>Controls whether Operator logs are structured (JSON) or plain text.</p>
 <table>
 <thead>
@@ -6800,7 +6800,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_STRUCTURED</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
-<h3 id="log_level"><code>LOG_LEVEL</code><a class="headerlink" href="#log_level" title="Permanent link">¶</a></h3>
+<h3 id="log_level"><code>LOG_LEVEL</code><a data-markdown-ignore class="headerlink" href="#log_level" title="Permanent link">¶</a></h3>
 <p>Sets the verbosity level of Operator logs.</p>
 <table>
 <thead>
@@ -6830,7 +6830,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_LEVEL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"DEBUG"</span>
 </code></pre></div>
-<h3 id="watch_namespace"><code>WATCH_NAMESPACE</code><a class="headerlink" href="#watch_namespace" title="Permanent link">¶</a></h3>
+<h3 id="watch_namespace"><code>WATCH_NAMESPACE</code><a data-markdown-ignore class="headerlink" href="#watch_namespace" title="Permanent link">¶</a></h3>
 <p>Specifies which namespaces the Operator watches for Custom Resources.</p>
 <table>
 <thead>
@@ -6858,7 +6858,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WATCH_NAMESPACE</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"psmdb,psmdb-prod"</span>
 </code></pre></div>
-<h3 id="disable_telemetry"><code>DISABLE_TELEMETRY</code><a class="headerlink" href="#disable_telemetry" title="Permanent link">¶</a></h3>
+<h3 id="disable_telemetry"><code>DISABLE_TELEMETRY</code><a data-markdown-ignore class="headerlink" href="#disable_telemetry" title="Permanent link">¶</a></h3>
 <p>Disables telemetry data collection.</p>
 <table>
 <thead>
@@ -6881,7 +6881,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DISABLE_TELEMETRY</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
-<h3 id="reconcile_interval"><code>RECONCILE_INTERVAL</code><a class="headerlink" href="#reconcile_interval" title="Permanent link">¶</a></h3>
+<h3 id="reconcile_interval"><code>RECONCILE_INTERVAL</code><a data-markdown-ignore class="headerlink" href="#reconcile_interval" title="Permanent link">¶</a></h3>
 <p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).</p>
 <table>
 <thead>
@@ -6910,7 +6910,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECONCILE_INTERVAL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div>
-<h3 id="max_concurrent_reconciles"><code>MAX_CONCURRENT_RECONCILES</code><a class="headerlink" href="#max_concurrent_reconciles" title="Permanent link">¶</a></h3>
+<h3 id="max_concurrent_reconciles"><code>MAX_CONCURRENT_RECONCILES</code><a data-markdown-ignore class="headerlink" href="#max_concurrent_reconciles" title="Permanent link">¶</a></h3>
 <p>Controls the maximum number of concurrent reconciliation operations.</p>
 <table>
 <thead>
@@ -6933,7 +6933,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAX_CONCURRENT_RECONCILES</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"3"</span>
 </code></pre></div>
-<h3 id="certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code><a class="headerlink" href="#certmanager_namespace" title="Permanent link">¶</a></h3>
+<h3 id="certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code><a data-markdown-ignore class="headerlink" href="#certmanager_namespace" title="Permanent link">¶</a></h3>
 <p>Specifies the namespace where the Operator creates the intermediate CA
 <code>Certificate</code> when <a href="operator.html#tlsissuerconfkind"><code>tls.issuerConf.kind</code></a> is
 <code>ClusterIssuer</code> and the Operator manages the CA chain.</p>
@@ -6968,14 +6968,14 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CERTMANAGER_NAMESPACE</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"cert-manager"</span>
 </code></pre></div>
-<h2 id="automatic-environment-variables">Automatic environment variables<a class="headerlink" href="#automatic-environment-variables" title="Permanent link">¶</a></h2>
+<h2 id="automatic-environment-variables">Automatic environment variables<a data-markdown-ignore class="headerlink" href="#automatic-environment-variables" title="Permanent link">¶</a></h2>
 <p>The following values are set by Kubernetes or the deployment manifest and should not be changed:</p>
 <ul>
 <li><code>POD_NAME</code> - Set from <code>metadata.name</code>.</li>
 <li><code>OPERATOR_NAME</code> - Set to <code>percona-server-mongodb-operator</code>.</li>
 </ul>
-<h2 id="update-environment-variables">Update environment variables<a class="headerlink" href="#update-environment-variables" title="Permanent link">¶</a></h2>
-<h3 id="using-kubectl-patch">Using <code>kubectl patch</code><a class="headerlink" href="#using-kubectl-patch" title="Permanent link">¶</a></h3>
+<h2 id="update-environment-variables">Update environment variables<a data-markdown-ignore class="headerlink" href="#update-environment-variables" title="Permanent link">¶</a></h2>
+<h3 id="using-kubectl-patch">Using <code>kubectl patch</code><a data-markdown-ignore class="headerlink" href="#using-kubectl-patch" title="Permanent link">¶</a></h3>
 <p>To update environment variables and keep the existing ones, use the full <code>env</code> list in your patch:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>deployment<span class="w"> </span>percona-server-mongodb-operator<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-p<span class="w"> </span><span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"percona-server-mongodb-operator","env":[</span>
@@ -6984,7 +6984,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="s1">    {"name":"LOG_LEVEL","value":"DEBUG"}</span>
 <span class="s1">  ]}}]}}}'</span>
 </code></pre></div>
-<h3 id="using-kubectl-edit">Using <code>kubectl edit</code><a class="headerlink" href="#using-kubectl-edit" title="Permanent link">¶</a></h3>
+<h3 id="using-kubectl-edit">Using <code>kubectl edit</code><a data-markdown-ignore class="headerlink" href="#using-kubectl-edit" title="Permanent link">¶</a></h3>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>edit<span class="w"> </span>deployment<span class="w"> </span>percona-server-mongodb-operator
 </code></pre></div>
 <p>Then update the <code>env</code> section in the container specification.</p>

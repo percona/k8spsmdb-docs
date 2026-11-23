@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6446,11 +6446,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="features">Features<a class="headerlink" href="#features" title="Permanent link">¶</a></h1>
+<h1 id="features">Features<a data-markdown-ignore class="headerlink" href="#features" title="Permanent link">¶</a></h1>
 <p>The Percona Operator for MongoDB is a Kubernetes-native controller that automatically manages the full lifecycle of Percona Server for MongoDB clusters. The Operator offloads your teams from manual day-to-day database management so you can focus on building applications and running the platform.</p>
-<h2 id="core-capabilities">Core capabilities<a class="headerlink" href="#core-capabilities" title="Permanent link">¶</a></h2>
+<h2 id="core-capabilities">Core capabilities<a data-markdown-ignore class="headerlink" href="#core-capabilities" title="Permanent link">¶</a></h2>
 <p>Here is what the Operator brings to your infrastructure:</p>
-<h3 id="high-availability-and-failover">High availability and failover<a class="headerlink" href="#high-availability-and-failover" title="Permanent link">¶</a></h3>
+<h3 id="high-availability-and-failover">High availability and failover<a data-markdown-ignore class="headerlink" href="#high-availability-and-failover" title="Permanent link">¶</a></h3>
 <p><strong>MongoDB’s built-in high availability</strong> — Replica sets and sharding give you data redundancy and automatic failover at the database layer. A <a href="architecture.html#replica-set">replica set</a> uses elections to promote a new primary when the current one fails, with no manual intervention. With <a href="sharding.html">sharding</a>, data is distributed across shards (each shard is a replica set), and mongos routes traffic. Both topologies are designed for availability and scale.</p>
 <p><strong>What the Operator adds</strong> — The Operator runs these topologies reliably in Kubernetes:</p>
 <ul>
@@ -6459,7 +6459,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Rolling upgrades</strong> — <a href="update-operator.html">Upgrade the Operator</a> and <a href="update-db.html">Percona Server for MongoDB</a> with minimal or no downtime.</li>
 <li><strong>Multi-cluster and multi-region</strong> — Use <a href="replication.html">multi-cluster or multi-region deployments</a> (including <a href="replication-mcs.html">Multi-cluster Services (MCS)</a> where supported) for disaster recovery, cross-site replication, and migration. You can replicate data across clusters or regions so that if one site fails, another can serve traffic.</li>
 </ul>
-<h3 id="backup-and-restore">Backup and restore<a class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h3>
+<h3 id="backup-and-restore">Backup and restore<a data-markdown-ignore class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h3>
 <p>Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The <a href="backups.html">Backup and restore</a> overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow <a href="backups-configure.html">Configure backups</a>.</p>
 <ul>
 <li><strong>Scheduled and on-demand backups</strong> — <a href="backups-scheduled.html">Run backups on a schedule</a> or <a href="backups-ondemand.html">create one when you need it</a>.</li>
@@ -6467,7 +6467,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Point-in-time recovery</strong> — Roll back the database to a specific time.</li>
 <li><strong>Restore</strong> — <a href="backups-restore.html">Restore on the same cluster or a new cluster</a>.</li>
 </ul>
-<h3 id="automated-scaling-and-resource-management">Automated scaling and resource management<a class="headerlink" href="#automated-scaling-and-resource-management" title="Permanent link">¶</a></h3>
+<h3 id="automated-scaling-and-resource-management">Automated scaling and resource management<a data-markdown-ignore class="headerlink" href="#automated-scaling-and-resource-management" title="Permanent link">¶</a></h3>
 <p>Scale your database infrastructure as demand grows:</p>
 <ul>
 <li><strong>Horizontal scaling</strong> — <a href="scaling.html">Add replica set members</a> or scale <a href="sharding.html">shards and mongos</a> when sharding is enabled.</li>
@@ -6475,7 +6475,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Storage expansion</strong> — Expand PersistentVolumeClaims for database volumes when your storage class supports it.</li>
 <li><strong>Pod placement</strong> — Use <a href="constraints.html">affinity and anti-affinity</a> to control which nodes run MongoDB Pods, arbiters, or mongos.</li>
 </ul>
-<h3 id="security-and-compliance">Security and compliance<a class="headerlink" href="#security-and-compliance" title="Permanent link">¶</a></h3>
+<h3 id="security-and-compliance">Security and compliance<a data-markdown-ignore class="headerlink" href="#security-and-compliance" title="Permanent link">¶</a></h3>
 <p>Keep your data and backups secure with built-in options:</p>
 <ul>
 <li><strong>Transport encryption</strong> — <a href="TLS.html">Enable TLS</a> for client and server; use <a href="tls-cert-manager.html">cert-manager</a> or <a href="tls-manual.html">custom certificates</a>.</li>
@@ -6483,7 +6483,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Users and roles</strong> — Manage <a href="app-users.html">application users</a> and <a href="system-users.html">system users</a>; optionally use <a href="system-users-vault.html">Vault</a> for system user credentials.</li>
 <li><strong>Backup encryption</strong> — <a href="backups-encryption.html">Encrypt backups</a> in object storage.</li>
 </ul>
-<h3 id="monitoring-and-observability">Monitoring and observability<a class="headerlink" href="#monitoring-and-observability" title="Permanent link">¶</a></h3>
+<h3 id="monitoring-and-observability">Monitoring and observability<a data-markdown-ignore class="headerlink" href="#monitoring-and-observability" title="Permanent link">¶</a></h3>
 <p>Gain visibility into your database and cluster:</p>
 <ul>
 <li><strong>Percona Monitoring and Management (PMM)</strong> — <a href="monitoring.html">Integrate PMM</a> via sidecar for metrics, query analysis, and dashboards.</li>
@@ -6492,9 +6492,9 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Custom options</strong> — <a href="options.html">Tune MongoDB options</a> and <a href="options-pbm.html">PBM options</a> via the custom resource.</li>
 <li><strong>Sidecars</strong> — Add <a href="sidecar.html">sidecar containers</a> (e.g. custom exporters or tools) to replica set, config server, or mongos Pods.</li>
 </ul>
-<h2 id="understand-how-it-works">Understand how it works<a class="headerlink" href="#understand-how-it-works" title="Permanent link">¶</a></h2>
+<h2 id="understand-how-it-works">Understand how it works<a data-markdown-ignore class="headerlink" href="#understand-how-it-works" title="Permanent link">¶</a></h2>
 <p>The <a href="how-it-works.html">How the Operator works</a> and <a href="architecture.html">Design and architecture</a> pages explain the controller model and the components it manages.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p>Get up and running in minutes, whether you build an application or need to deploy and operate the database.</p>
 <p><a class="md-button" href="quickstart.html">Get started</a></p>
 <hr>

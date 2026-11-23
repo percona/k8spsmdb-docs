@@ -25,7 +25,7 @@ on the node the emptyDir and hostPath.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ on the node the emptyDir and hostPath.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6550,11 +6550,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="local-storage-support-for-the-percona-operator-for-mongodb">Local Storage support for the Percona Operator for MongoDB<a class="headerlink" href="#local-storage-support-for-the-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
+<h1 id="local-storage-support-for-the-percona-operator-for-mongodb">Local Storage support for the Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#local-storage-support-for-the-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
 <p>Among the wide rage of volume types, supported by Kubernetes, there are two
 volume types which allow Pod containers to access part of the local filesystem
 on the node the <em>emptyDir</em> and <em>hostPath</em>.</p>
-<h2 id="choose-the-right-storage-option">Choose the right storage option<a class="headerlink" href="#choose-the-right-storage-option" title="Permanent link">¶</a></h2>
+<h2 id="choose-the-right-storage-option">Choose the right storage option<a data-markdown-ignore class="headerlink" href="#choose-the-right-storage-option" title="Permanent link">¶</a></h2>
 <p>This page covers node-local volume types - <code>emptyDir</code> and <code>hostPath</code> - for the
 special cases described below. For most data-bearing members, you instead want a
 cluster-provisioned <code>PersistentVolumeClaim</code>, configured through
@@ -6563,7 +6563,7 @@ cluster-provisioned <code>PersistentVolumeClaim</code>, configured through
 <li>To grow an existing volume’s size, see <a href="scaling-storage-resize.html">Resize storage</a>.</li>
 <li>For snapshot-based backup support, see <a href="backups-pvc-snapshots.html">PVC snapshots</a>.</li>
 </ul>
-<h2 id="emptydir">emptyDir<a class="headerlink" href="#emptydir" title="Permanent link">¶</a></h2>
+<h2 id="emptydir">emptyDir<a data-markdown-ignore class="headerlink" href="#emptydir" title="Permanent link">¶</a></h2>
 <p>A Pod <a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir">emptyDir volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 is created when the Pod is assigned to a Node. The volume is initially empty and
 is erased when the Pod is removed from the Node. The containers in the Pod can
@@ -6571,7 +6571,7 @@ read and write the files in the emptyDir volume.</p>
 <p>The <code>emptyDir</code> options in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 file can be used to turn the emptyDir volume on by setting the directory name.</p>
 <p>The <code>emptyDir</code> is useful when you use <a href="https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html">Percona Memory Engine  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="hostpath">hostPath<a class="headerlink" href="#hostpath" title="Permanent link">¶</a></h2>
+<h2 id="hostpath">hostPath<a data-markdown-ignore class="headerlink" href="#hostpath" title="Permanent link">¶</a></h2>
 <p>A <a href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath">hostPath volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 mounts an existing file or directory from the host node’s filesystem into
 the Pod. If the pod is removed, the data persists in the host node’s filesystem.</p>
@@ -6597,7 +6597,7 @@ during the first run and require improved disk performance.
 Consider using the tolerations settings to avoid a cluster migration to
 different hardware in case of a reboot or a hardware failure.</p>
 <p>More details can be found in the <a href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath">official hostPath Kubernetes documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling-storage-resize.html">Resize storage</a></li>
 <li><a href="volume-attributes-class.html">Configure VolumeAttributesClass</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6546,13 +6546,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="enable-multi-cluster-services-on-eks">Enable multi-cluster Services on EKS<a class="headerlink" href="#enable-multi-cluster-services-on-eks" title="Permanent link">¶</a></h1>
+<h1 id="enable-multi-cluster-services-on-eks">Enable multi-cluster Services on EKS<a data-markdown-ignore class="headerlink" href="#enable-multi-cluster-services-on-eks" title="Permanent link">¶</a></h1>
 <p>The <a href="https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s">AWS Cloud Map MCS Controller</a> is an open-source Kubernetes controller that implements the Multi-Cluster Services API using <a href="https://docs.aws.amazon.com/cloud-map/latest/dg/what-is-cloud-map.html">AWS Cloud Map</a> as the backend. It allows services exported from one cluster to be discovered and consumed in another using the DNS format:</p>
 <div class="highlight"><pre><span></span><code>SERVICE_NAME.NAMESPACE.svc.clusterset.local
 </code></pre></div>
 <p>Read more about how AWS Cloud Map MCS Controller works in the <a href="https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/">AWS blog post <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <p>Also, learn more about <a href="https://aws.amazon.com/cloud-map/pricing/">AWS Cloud Map pricing <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <p>Before you get started with MCS on EKS, ensure you have the following:</p>
 <ol>
 <li>
@@ -6563,7 +6563,7 @@ window.addEventListener('afterprint', (event) => {
 <p>For more information about IAM policies for AWS Cloud Map, see the <a href="https://docs.aws.amazon.com/cloud-map/latest/dg/security-iam.html#security_iam_access-manage">Identity and Access Management for AWS Cloud Map <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> documentation.</p>
 </li>
 </ol>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
+<h2 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
 <p>Follow the steps from the <a href="https://aws.amazon.com/blogs/opensource/introducing-the-aws-cloud-map-multicluster-service-controller-for-k8s-for-kubernetes-multicluster-service-discovery/">AWS Cloud Map MCS Controller for K8s <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> guide to configure multi-cloud Services.</p>
 <p>Before you enable MCS on the clusters, create the ClusterProperty objects on each cluster:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">about.k8s.io/v1alpha1</span>
@@ -6581,7 +6581,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Your ClusterSet identifier</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <p>Check the <a href="https://github.com/aws/aws-cloud-map-mcs-controller-for-k8s#usage">AWS MCS controller repository  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for more information.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="replication-main.html">Deploy the Main site</a></p>
 <hr>
 <div class="md-source-file">

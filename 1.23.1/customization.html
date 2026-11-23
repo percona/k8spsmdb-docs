@@ -25,7 +25,7 @@ something the defaults do not cover.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ something the defaults do not cover.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6588,11 +6588,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-customization-and-extensibility">About customization and extensibility<a class="headerlink" href="#about-customization-and-extensibility" title="Permanent link">¶</a></h1>
+<h1 id="about-customization-and-extensibility">About customization and extensibility<a data-markdown-ignore class="headerlink" href="#about-customization-and-extensibility" title="Permanent link">¶</a></h1>
 <p>The default Custom Resource is meant to be a good starting point, not a straitjacket. This
 page collects the ways to change the Operator’s behavior when your environment needs
 something the defaults do not cover.</p>
-<h2 id="change-what-the-database-does">Change what the database does<a class="headerlink" href="#change-what-the-database-does" title="Permanent link">¶</a></h2>
+<h2 id="change-what-the-database-does">Change what the database does<a data-markdown-ignore class="headerlink" href="#change-what-the-database-does" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6617,7 +6617,7 @@ something the defaults do not cover.</p>
 </table>
 <p>MongoDB settings live in the <code>configuration</code> field of each replica set, and are passed
 through to the server as its configuration file.</p>
-<h2 id="change-what-runs-beside-the-database">Change what runs beside the database<a class="headerlink" href="#change-what-runs-beside-the-database" title="Permanent link">¶</a></h2>
+<h2 id="change-what-runs-beside-the-database">Change what runs beside the database<a data-markdown-ignore class="headerlink" href="#change-what-runs-beside-the-database" title="Permanent link">¶</a></h2>
 <p>Sidecar containers let you run your own process in the database Pod. Use <code>sidecars</code>,
 <code>sidecarVolumes</code>, and <code>sidecarPVCs</code> in the Custom Resource for that. See
 <a href="sidecar.html">Add sidecar containers</a>.</p>
@@ -6629,7 +6629,7 @@ influence:</p>
   companions.</li>
 <li><a href="env-vars-custom.html">Define custom environment variables</a> - your own values.</li>
 </ul>
-<h2 id="change-how-objects-are-labelled-and-scoped">Change how objects are labelled and scoped<a class="headerlink" href="#change-how-objects-are-labelled-and-scoped" title="Permanent link">¶</a></h2>
+<h2 id="change-how-objects-are-labelled-and-scoped">Change how objects are labelled and scoped<a data-markdown-ignore class="headerlink" href="#change-how-objects-are-labelled-and-scoped" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="annotations.html">Labels and annotations</a> - Tell the Operator  to leave certain
   labels and annotations alone with <code>ignoreLabels</code> and <code>ignoreAnnotations</code>. This matters
@@ -6639,7 +6639,7 @@ influence:</p>
 <li><a href="reconciliation-concurrency.html">Configure concurrent reconciliation</a> - how many clusters
   the Operator reconciles at once.</li>
 </ul>
-<h2 id="change-where-images-and-backups-come-from">Change where images and backups come from<a class="headerlink" href="#change-where-images-and-backups-come-from" title="Permanent link">¶</a></h2>
+<h2 id="change-where-images-and-backups-come-from">Change where images and backups come from<a data-markdown-ignore class="headerlink" href="#change-where-images-and-backups-come-from" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="custom-registry.html">How to use private registry</a> - pull images from your own registry
   with <code>imagePullSecrets</code>.</li>
@@ -6647,7 +6647,7 @@ influence:</p>
   your own network.</li>
 <li><a href="custom-install.html">Install the database with customized parameters</a> - tune the Operator and database at startup if you already know what extra configuration you need.</li>
 </ul>
-<h2 id="unsafe-configurations">Unsafe configurations<a class="headerlink" href="#unsafe-configurations" title="Permanent link">¶</a></h2>
+<h2 id="unsafe-configurations">Unsafe configurations<a data-markdown-ignore class="headerlink" href="#unsafe-configurations" title="Permanent link">¶</a></h2>
 <p>The <code>unsafeFlags</code> section lets you run configurations the Operator would otherwise refuse,
 such as a replica set below the member count needed for high availability.</p>
 <div class="admonition warning">
@@ -6655,7 +6655,7 @@ such as a replica set below the member count needed for high availability.</p>
 <p>Each <code>unsafeFlags</code> setting removes a specific safety guardrail the Operator otherwise
 enforces - check what a flag does before enabling it in a production cluster. </p>
 </div>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Customizations are yours to maintain. A sidecar, hook script, or custom <code>configuration</code>
   block that worked on one Operator version is not automatically revalidated on the next -
@@ -6664,7 +6664,7 @@ enforces - check what a flag does before enabling it in a production cluster. </
   not validate them, so a typo surfaces as a database that will not start rather than as a
   rejected Custom Resource.</li>
 </ul>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="options.html">Changing MongoDB options</a></li>
 <li><a href="sidecar.html">Add sidecar containers</a></li>

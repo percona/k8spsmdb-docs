@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6596,7 +6596,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="major-version-automated-upgrades">Major version automated upgrades<a class="headerlink" href="#major-version-automated-upgrades" title="Permanent link">¶</a></h1>
+<h1 id="major-version-automated-upgrades">Major version automated upgrades<a data-markdown-ignore class="headerlink" href="#major-version-automated-upgrades" title="Permanent link">¶</a></h1>
 <p>Major version upgrade is moving from the current major version to the next one. For example, from 8.0.x to 8.3.x.</p>
 <p>It is a more complicated task than a minor version upgrade because it might potentially affect how data is stored and how
 applications interact with the database (in case of some API changes). Therefore, we recommend to test the major version upgrade on a staging environment first.</p>
@@ -6604,17 +6604,17 @@ applications interact with the database (in case of some API changes). Therefore
 for example, from 8.0 to 8.3. To upgrade Percona Server for MongoDB from 6.0 to 8.0,
 you should first upgrade it to 7.0, and then make a separate upgrade from 7.0
 to 8.0. The same is true for major version downgrades.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>Read <a href="update.html#before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
 before you proceed. It is important that you get familiar with the backup requirement, version-jump rules, and known
 problematic version combinations.</li>
 <li>Check <a href="update-operator.html#considerations">Considerations</a> for Kubernetes cluster versions and upgrades if you plan to update the Kubernetes cluster.</li>
 </ul>
-<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
+<h2 id="assumptions">Assumptions<a data-markdown-ignore class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
 <p>For the procedures in this tutorial, we assume that you have set up the Smart Update strategy to update the objects in your database cluster. </p>
 <p>Read more about the Smart Update strategy and other available ones in the <a href="update.html#update-strategies">Upgrade strategies</a> section.</p>
-<h2 id="procedure">Procedure<a class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
+<h2 id="procedure">Procedure<a data-markdown-ignore class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
 <ol>
 <li>Check the version of the Operator you have in your Kubernetes environment. If you need to update it, refer to the <a href="update-operator.html">Operator upgrade guide</a>.</li>
 <li>
@@ -6631,7 +6631,7 @@ key in the <code>deploy/cr.yaml</code> Custom Resource manifest to <code>&lt;ver
 </code></pre></div>
 </li>
 </ol>
-<h3 id="feature-compatibility-version">Feature Compatibility Version<a class="headerlink" href="#feature-compatibility-version" title="Permanent link">¶</a></h3>
+<h3 id="feature-compatibility-version">Feature Compatibility Version<a data-markdown-ignore class="headerlink" href="#feature-compatibility-version" title="Permanent link">¶</a></h3>
 <p>By default, the Operator doesn’t set
 <a href="https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/">FeatureCompatibilityVersion (FCV)  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 to match the new version. This ensures that backwards-incompatible features
@@ -6644,13 +6644,13 @@ any moment (after the upgrade or even before it) by setting the
 <p>Note that with this setting, the Operator doesn’t yet support major version rollback if the<code>setFeatureCompatibilityVersion</code> is set. Therefore it is recommended to stay without enabling this flag for some time after the major upgrade to ensure that everything works as expected and you won’t have to downgrade. </p>
 <p>You can set the <code>setFCV</code> flag to <code>true</code> simultaneously with the <code>apply</code> flag but you must be absolutely sure that the whole
     procedure is tested on staging environment and works as expected.</p>
-<h2 id="downgrades">Downgrades<a class="headerlink" href="#downgrades" title="Permanent link">¶</a></h2>
+<h2 id="downgrades">Downgrades<a data-markdown-ignore class="headerlink" href="#downgrades" title="Permanent link">¶</a></h2>
 <p>When making downgrades (e.g. changing version from 7.0 to 6.0), make
 sure to remove incompatible features that are persisted and/or update
 incompatible configuration settings. Compatibility issues between major
 MongoDB versions can be found in
 <a href="https://www.mongodb.com/docs/manual/release-notes/7.0/#std-label-7.0-downgrade-considerations">upstream documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update.html">Choose your upgrade path</a></li>
 </ul>

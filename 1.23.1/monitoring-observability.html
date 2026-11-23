@@ -25,7 +25,7 @@ components write. The Operator has a separate mechanism for each.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ components write. The Operator has a separate mechanism for each.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6544,11 +6544,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-monitoring-and-observability">About monitoring and observability<a class="headerlink" href="#about-monitoring-and-observability" title="Permanent link">¶</a></h1>
+<h1 id="about-monitoring-and-observability">About monitoring and observability<a data-markdown-ignore class="headerlink" href="#about-monitoring-and-observability" title="Permanent link">¶</a></h1>
 <p>Knowing that a cluster is healthy takes three different signals: database metrics and
 query performance, the state of the Kubernetes objects underneath, and the logs the
 components write. The Operator has a separate mechanism for each.</p>
-<h2 id="what-to-monitor-with-what">What to monitor with what<a class="headerlink" href="#what-to-monitor-with-what" title="Permanent link">¶</a></h2>
+<h2 id="what-to-monitor-with-what">What to monitor with what<a data-markdown-ignore class="headerlink" href="#what-to-monitor-with-what" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6575,17 +6575,17 @@ components write. The Operator has a separate mechanism for each.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="database-monitoring-with-pmm">Database monitoring with PMM<a class="headerlink" href="#database-monitoring-with-pmm" title="Permanent link">¶</a></h2>
+<h2 id="database-monitoring-with-pmm">Database monitoring with PMM<a data-markdown-ignore class="headerlink" href="#database-monitoring-with-pmm" title="Permanent link">¶</a></h2>
 <p>PMM runs as a client container beside each database Pod and reports to a PMM Server you
 run yourself. It is enabled with <code>pmm.enabled</code> and pointed at a server with
 <code>pmm.serverHost</code>. You can pass extra collection flags for <code>mongod</code> and <code>mongos</code> through
 <code>pmm.mongodParams</code> and <code>pmm.mongosParams</code>.</p>
 <p>See <a href="monitoring.html">Monitor with Percona Monitoring and Management (PMM)</a>.</p>
-<h2 id="kubernetes-layer-monitoring">Kubernetes-layer monitoring<a class="headerlink" href="#kubernetes-layer-monitoring" title="Permanent link">¶</a></h2>
+<h2 id="kubernetes-layer-monitoring">Kubernetes-layer monitoring<a data-markdown-ignore class="headerlink" href="#kubernetes-layer-monitoring" title="Permanent link">¶</a></h2>
 <p>PMM tells you about the database; it does not tell you that a PVC is full or a Pod is
 stuck Pending. For that, monitor the Kubernetes objects themselves - see
 <a href="monitor-kubernetes.html">Monitor Kubernetes</a>.</p>
-<h2 id="logs">Logs<a class="headerlink" href="#logs" title="Permanent link">¶</a></h2>
+<h2 id="logs">Logs<a data-markdown-ignore class="headerlink" href="#logs" title="Permanent link">¶</a></h2>
 <p>Container logs vanish when a Pod is replaced, which is precisely when you most want them.
 The <code>logcollector</code> section enables a collector that keeps logs beyond the life of the
 Pod, and rotation keeps them from filling the volume.</p>
@@ -6593,7 +6593,7 @@ Pod, and rotation keeps them from filling the volume.</p>
 <li><a href="persistent-logging.html">Persistent logging</a></li>
 <li><a href="logrotate.html">Log rotation</a></li>
 </ul>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="monitoring.html">Monitor with Percona Monitoring and Management (PMM)</a></li>
 <li><a href="persistent-logging.html">Persistent logging</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6610,7 +6610,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="application-level-unprivileged-users">Application-level (unprivileged) users<a class="headerlink" href="#application-level-unprivileged-users" title="Permanent link">¶</a></h1>
+<h1 id="application-level-unprivileged-users">Application-level (unprivileged) users<a data-markdown-ignore class="headerlink" href="#application-level-unprivileged-users" title="Permanent link">¶</a></h1>
 <p>The Operator doesn’t create application-level (unprivileged) user accounts by default.</p>
 <p>You can create these unprivileged users in the following ways:</p>
 <ul>
@@ -6618,7 +6618,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="#create-users-manually">Manually in Percona Server for MongoDB</a></li>
 </ul>
 <p>Regardless of how you create users, their usernames must be unique.</p>
-<h2 id="create-users-via-custom-resource">Create users via Custom Resource<a class="headerlink" href="#create-users-via-custom-resource" title="Permanent link">¶</a></h2>
+<h2 id="create-users-via-custom-resource">Create users via Custom Resource<a data-markdown-ignore class="headerlink" href="#create-users-via-custom-resource" title="Permanent link">¶</a></h2>
 <p>Starting from Operator version 1.17.0, you can create users in Percona Server for MongoDB via the <code>users</code> subsection in the Custom Resource. This is called declarative user management.</p>
 <p>You can modify the <code>users</code> section in the <code>deploy/cr.yaml</code> configuration file either at cluster creation time or adjust it over time.</p>
 <p>For every new user in the <code>deploy/cr.yaml</code> configuration file, specify the following:</p>
@@ -6641,7 +6641,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">        </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>After you apply the configuration, the Operator creates a Secret named <code>&lt;cluster-name&gt;-custom-user-secret</code>, generates a password for the user, and sets it by the key named after the user name.</p>
-<h3 id="generate-user-passwords-manually">Generate user passwords manually<a class="headerlink" href="#generate-user-passwords-manually" title="Permanent link">¶</a></h3>
+<h3 id="generate-user-passwords-manually">Generate user passwords manually<a data-markdown-ignore class="headerlink" href="#generate-user-passwords-manually" title="Permanent link">¶</a></h3>
 <p>If you don’t want the Operator to generate a user password automatically, you can create a Secret resource that contains the user password. Then specify a reference to this Secret resource in the <code>passwordSecretRef</code> key. You can find a detailed description of the corresponding options in the <a href="operator.html#operator-users-section">Custom Resource reference</a>.</p>
 <p class="power-number">Here’s how to do it:</p>
 <ol>
@@ -6690,7 +6690,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 <p>The Operator tracks password changes in the Secret object and updates the user password in the database. This applies to <a href="#create-users-manually">manually created users</a> as well: if a user was created manually in the database before creating the user via Custom Resource, the existing user is updated.</p>
 <p>However, manual password updates in the database are not tracked: the Operator doesn’t overwrite changed passwords with the old ones from the users Secret.</p>
-<h3 id="custom-mongodb-roles">Custom MongoDB roles<a class="headerlink" href="#custom-mongodb-roles" title="Permanent link">¶</a></h3>
+<h3 id="custom-mongodb-roles">Custom MongoDB roles<a data-markdown-ignore class="headerlink" href="#custom-mongodb-roles" title="Permanent link">¶</a></h3>
 <p><a href="https://www.mongodb.com/docs/manual/core/security-user-defined-roles/">Custom MongoDB roles <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> allow providing fine-grained access control over your MongoDB deployment.</p>
 <p>You can define custom MongoDB roles declaratively via the <code>roles</code> subsection in the Custom Resource.</p>
 <p>This subsection contains an array of roles, each with:</p>
@@ -6727,13 +6727,13 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">          </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>Find more information about available options and their accepted values in the <a href="operator.html#roles-section">roles subsection of the Custom Resource reference</a>.</p>
-<h3 id="delete-users-and-roles">Delete users and roles<a class="headerlink" href="#delete-users-and-roles" title="Permanent link">¶</a></h3>
+<h3 id="delete-users-and-roles">Delete users and roles<a data-markdown-ignore class="headerlink" href="#delete-users-and-roles" title="Permanent link">¶</a></h3>
 <p>You can unassign a role from a user by updating the Custom Resource. Upon reconciliation, the Operator updates the user record in the database.</p>
 <p>However, the Operator does not delete users when they are removed from the Custom Resource. This prevents accidental removal of pre-existing users.</p>
 <p>To delete a user or a role, remove its entry from the Custom Resource and delete it from the database.</p>
-<h2 id="create-users-manually">Create users manually<a class="headerlink" href="#create-users-manually" title="Permanent link">¶</a></h2>
+<h2 id="create-users-manually">Create users manually<a data-markdown-ignore class="headerlink" href="#create-users-manually" title="Permanent link">¶</a></h2>
 <p class="power-number">You can create application-level users manually. Run the commands below, substituting the <code>&lt;namespace name&gt;</code> placeholder with the real namespace of your database cluster:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">If sharding is enabled</label><label for="__tabbed_1_2">If sharding is disabled</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">If sharding is enabled</label><label for="__tabbed_1_2">If sharding is disabled</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>

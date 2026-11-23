@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6554,17 +6554,17 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="disable-the-localhost-authentication-bypass">Disable the localhost authentication bypass<a class="headerlink" href="#disable-the-localhost-authentication-bypass" title="Permanent link">¶</a></h1>
+<h1 id="disable-the-localhost-authentication-bypass">Disable the localhost authentication bypass<a data-markdown-ignore class="headerlink" href="#disable-the-localhost-authentication-bypass" title="Permanent link">¶</a></h1>
 <p>By default, you can connect to Percona Server for MongoDB from <code>localhost</code> without authentication to perform administrative actions such as creating the first user. This is called the <strong>localhost exception</strong>. The Operator relies on this exception to bootstrap the cluster.</p>
 <p>After the Operator sets up the cluster and creates the system users, Percona Server for MongoDB itself closes the localhost exception. You can make the closure permanent, protecting against scenarios where the exception could otherwise re-open.</p>
 <p>The Percona Server for MongoDB parameter <code>enableLocalhostAuthBypass</code> controls whether the localhost exception is available. It is <code>true</code> by default. To disable it, set it in the <code>setParameter</code> block within the custom <code>configuration</code> section of the Custom Resource.</p>
-<h2 id="considerations">Considerations<a class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
+<h2 id="considerations">Considerations<a data-markdown-ignore class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
 <p>Here’s what you need to know before disabling the localhost exception:</p>
 <ol>
 <li>Never disable the localhost exception when you create a new cluster. Setting <code>enableLocalhostAuthBypass: false</code> <strong>before</strong> the Operator creates system users prevents it from initializing the replica set. You will see repeated failures logged in the Operator.</li>
 <li>Disabling localhost exception means you can no longer use it as a recovery mechanism if you lost all your admin credentials. Therefore, ensure you have working backups of the cluster data and the Kubernetes Secrets containing the cluster credentials. See <a href="backups.html">Backup and restore</a> and <a href="system-users.html">System users</a>. </li>
 </ol>
-<h2 id="disable-localhost-authentication-bypass-on-running-clusters">Disable localhost authentication bypass on running clusters<a class="headerlink" href="#disable-localhost-authentication-bypass-on-running-clusters" title="Permanent link">¶</a></h2>
+<h2 id="disable-localhost-authentication-bypass-on-running-clusters">Disable localhost authentication bypass on running clusters<a data-markdown-ignore class="headerlink" href="#disable-localhost-authentication-bypass-on-running-clusters" title="Permanent link">¶</a></h2>
 <p>Perform the following steps on your <strong>running</strong> cluster. Review the <a href="#considerations">Considerations</a> section for important information.</p>
 <ol>
 <li>
@@ -6575,7 +6575,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Edit the <code>deploy/cr.yaml</code> Custom Resource manifest and add the <code>setParameter</code> block to the <code>configuration</code> section for each replica set:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Non-sharded cluster</label><label for="__tabbed_1_2">Sharded cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Non-sharded cluster</label><label for="__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
@@ -6622,7 +6622,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>For more information about Percona Server for MongoDB configuration options, see <a href="options.html">Changing MongoDB options</a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="monitoring-observability.html">Monitoring and observability</a></li>
 </ul>

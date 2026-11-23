@@ -29,7 +29,7 @@ more of the database than it has to.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -146,7 +146,7 @@ more of the database than it has to.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6732,7 +6732,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="control-pod-scheduling">Control Pod scheduling<a class="headerlink" href="#control-pod-scheduling" title="Permanent link">¶</a></h1>
+<h1 id="control-pod-scheduling">Control Pod scheduling<a data-markdown-ignore class="headerlink" href="#control-pod-scheduling" title="Permanent link">¶</a></h1>
 <p>The Operator does a good job of automatically assigning new Pods to nodes to
 achieve balanced distribution across the cluster. There are situations when you
 must ensure that Pods land on specific nodes: for example, for the speed of an
@@ -6743,7 +6743,7 @@ more of the database than it has to.</p>
 <p>The appropriate (sub)sections (<code>replsets</code>, <code>replsets.arbiter</code>, <code>backup</code>, etc.)
 of the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 file contain the keys which can be used to do assign pods to nodes.</p>
-<h2 id="choose-your-approach">Choose your approach<a class="headerlink" href="#choose-your-approach" title="Permanent link">¶</a></h2>
+<h2 id="choose-your-approach">Choose your approach<a data-markdown-ignore class="headerlink" href="#choose-your-approach" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6785,7 +6785,7 @@ file contain the keys which can be used to do assign pods to nodes.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="node-selector">Node selector<a class="headerlink" href="#node-selector" title="Permanent link">¶</a></h2>
+<h2 id="node-selector">Node selector<a data-markdown-ignore class="headerlink" href="#node-selector" title="Permanent link">¶</a></h2>
 <p>The <code>nodeSelector</code> contains one or more key-value pairs. If the node is not
 labeled with each key-value pair from the Pod’s <code>nodeSelector</code>, the Pod will not
 be able to land on it.</p>
@@ -6795,7 +6795,7 @@ be able to land on it.</p>
 <span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span>
 </code></pre></div>
-<h2 id="affinity-and-anti-affinity">Affinity and anti-affinity<a class="headerlink" href="#affinity-and-anti-affinity" title="Permanent link">¶</a></h2>
+<h2 id="affinity-and-anti-affinity">Affinity and anti-affinity<a data-markdown-ignore class="headerlink" href="#affinity-and-anti-affinity" title="Permanent link">¶</a></h2>
 <p>Affinity attracts Pods to nodes that already run Pods with specific labels; anti-affinity repels them. Use affinity to keep Pods with heavy data exchange on the same node or availability zone and cut cross-node traffic. Use anti-affinity to spread Pods across different nodes or zones, so the loss of one doesn’t take several replica set members down together.</p>
 <p>Percona Operator for MongoDB provides two approaches for doing this:</p>
 <ul>
@@ -6803,7 +6803,7 @@ be able to land on it.</p>
 <li>more advanced approach based on using standard Kubernetes
     constraints.</li>
 </ul>
-<h3 id="simple-approach-use-antiaffinitytopologykey-of-the-percona-operator-for-mongodb">Simple approach - use antiAffinityTopologyKey of the Percona Operator for MongoDB<a class="headerlink" href="#simple-approach-use-antiaffinitytopologykey-of-the-percona-operator-for-mongodb" title="Permanent link">¶</a></h3>
+<h3 id="simple-approach-use-antiaffinitytopologykey-of-the-percona-operator-for-mongodb">Simple approach - use antiAffinityTopologyKey of the Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#simple-approach-use-antiaffinitytopologykey-of-the-percona-operator-for-mongodb" title="Permanent link">¶</a></h3>
 <p>Percona Operator for MongoDB provides an <code>antiAffinityTopologyKey</code> option, which
 may have one of the following values:</p>
 <ul>
@@ -6820,7 +6820,7 @@ the same node:</p>
 <span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 </code></pre></div>
-<h3 id="advanced-approach-use-standard-kubernetes-constraints">Advanced approach - use standard Kubernetes constraints<a class="headerlink" href="#advanced-approach-use-standard-kubernetes-constraints" title="Permanent link">¶</a></h3>
+<h3 id="advanced-approach-use-standard-kubernetes-constraints">Advanced approach - use standard Kubernetes constraints<a data-markdown-ignore class="headerlink" href="#advanced-approach-use-standard-kubernetes-constraints" title="Permanent link">¶</a></h3>
 <p>The previous method can be used without special knowledge of the Kubernetes way
 of assigning Pods to specific nodes. Still, in some cases, more complex
 tuning may be needed. In this case, the <code>advanced</code> option placed in the
@@ -6870,7 +6870,7 @@ the use of the standard Kubernetes affinity constraints of any complexity:</p>
 </code></pre></div>
 <p>See explanation of the advanced affinity options <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature">in Kubernetes
 documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="priority-classes">Priority Classes<a class="headerlink" href="#priority-classes" title="Permanent link">¶</a></h2>
+<h2 id="priority-classes">Priority Classes<a data-markdown-ignore class="headerlink" href="#priority-classes" title="Permanent link">¶</a></h2>
 <p>Pods may belong to a <em>priority class</em>. This lets the scheduler distinguish more and less important Pods when needed - for example, when a higher-priority Pod cannot be scheduled without evicting a lower-priority one first.</p>
 <p>Without a <code>priorityClassName</code> set, MongoDB Pods carry Kubernetes’ default priority and are exactly as evictable as anything else in the cluster. In a resource-constrained cluster, nothing protects the database from being bumped for a less critical workload unless you set this explicitly.</p>
 <p>To use it, add one or more PriorityClasses to your Kubernetes cluster, then set <code>priorityClassName</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file:</p>
@@ -6879,7 +6879,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 </code></pre></div>
 <p>See the <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption">Kubernetes Pods Priority and Preemption documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 to find out how to define and use priority classes in your cluster.</p>
-<h2 id="pod-disruption-budgets">Pod Disruption Budgets<a class="headerlink" href="#pod-disruption-budgets" title="Permanent link">¶</a></h2>
+<h2 id="pod-disruption-budgets">Pod Disruption Budgets<a data-markdown-ignore class="headerlink" href="#pod-disruption-budgets" title="Permanent link">¶</a></h2>
 <p>Affinity and anti-affinity covered above only control <em>where</em> Pods land - they do nothing to stop a <em>voluntary</em> disruption. A <code>kubectl drain</code> during a node upgrade, or a cluster autoscaler action, can evict two anti-affinitized replica set members back to back, breaking quorum through routine maintenance instead of hardware failure. A <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is what limits how many Pods can go down at once during such <em>voluntary disruptions</em> - the specific gap anti-affinity leaves open. The <code>maxUnavailable</code> and <code>minAvailable</code> options in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file set these limits.</p>
 <p>For the standard 3-member data-bearing replica set, losing 2 members at once breaks quorum - you need a majority of the 3 to elect a primary - so <code>maxUnavailable: 1</code> is the most you can afford to lose there:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
@@ -6891,7 +6891,7 @@ to find out how to define and use priority classes in your cluster.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 kubectl<span class="w"> </span>get<span class="w"> </span>pdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<h3 id="where-you-can-set-priorityclassname-and-poddisruptionbudget">Where you can set priorityClassName and podDisruptionBudget<a class="headerlink" href="#where-you-can-set-priorityclassname-and-poddisruptionbudget" title="Permanent link">¶</a></h3>
+<h3 id="where-you-can-set-priorityclassname-and-poddisruptionbudget">Where you can set priorityClassName and podDisruptionBudget<a data-markdown-ignore class="headerlink" href="#where-you-can-set-priorityclassname-and-poddisruptionbudget" title="Permanent link">¶</a></h3>
 <p>Both options are configurable per component, but not uniformly. The following table reflects what’s configurable.</p>
 <table>
 <thead>
@@ -6939,7 +6939,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pdb<span class="w"> </
 </tr>
 </tbody>
 </table>
-<h2 id="topology-spread-constraints">Topology Spread Constraints<a class="headerlink" href="#topology-spread-constraints" title="Permanent link">¶</a></h2>
+<h2 id="topology-spread-constraints">Topology Spread Constraints<a data-markdown-ignore class="headerlink" href="#topology-spread-constraints" title="Permanent link">¶</a></h2>
 <p><em>Topology Spread Constraints</em>  allow you to control how Pods are distributed
 across the cluster based on regions, zones, nodes, and other topology specifics.
 This can be useful for both high availability and resource efficiency.</p>
@@ -6957,7 +6957,7 @@ This can be useful for both high availability and resource efficiency.</p>
 <span class="w">      </span><span class="nt">whenUnsatisfiable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DoNotSchedule</span>
 </code></pre></div>
 <p>You can see the explanation of these affinity options <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/">in Kubernetes documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="tolerations">Tolerations<a class="headerlink" href="#tolerations" title="Permanent link">¶</a></h2>
+<h2 id="tolerations">Tolerations<a data-markdown-ignore class="headerlink" href="#tolerations" title="Permanent link">¶</a></h2>
 <p><em>Tolerations</em> allow Pods having them to be able to land onto nodes with matching
 <em>taints</em>. Toleration is expressed as a <code>key</code> with and <code>operator</code>, which is
 either <code>exists</code> or <code>equal</code> (the equal variant requires a corresponding <code>value</code>
@@ -6981,7 +6981,7 @@ example defines this effect and the removal interval:</p>
 </code></pre></div>
 <p>The <a href="https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/">Kubernetes Taints and Toleratins  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 contains more examples on this topic.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling-about.html">Scaling and storage</a></li>
 <li><a href="replication.html">Disaster recovery and multi-site</a></li>

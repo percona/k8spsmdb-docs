@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6598,9 +6598,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="crversion-behavior"><code>crVersion</code> behavior<a class="headerlink" href="#crversion-behavior" title="Permanent link">¶</a></h1>
+<h1 id="crversion-behavior"><code>crVersion</code> behavior<a data-markdown-ignore class="headerlink" href="#crversion-behavior" title="Permanent link">¶</a></h1>
 <p>Use this page to understand what the Operator does with each <code>crVersion</code> value before you change it.</p>
-<h2 id="what-crversion-does">What <code>crVersion</code> does<a class="headerlink" href="#what-crversion-does" title="Permanent link">¶</a></h2>
+<h2 id="what-crversion-does">What <code>crVersion</code> does<a data-markdown-ignore class="headerlink" href="#what-crversion-does" title="Permanent link">¶</a></h2>
 <p>The <code>spec.crVersion</code> option in the Custom Resource sets the behavior level of a cluster. The Operator compares it against its own feature thresholds to decide which features, defaults, and StatefulSet settings to apply. That is why <code>crVersion</code> is more than a label: changing it in either direction can update the StatefulSet Pod templates. Pod restarts follow the configured <a href="update.html#update-strategies">update strategy</a>.</p>
 <p>Check the value of a running cluster:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.crVersion}'</span>
@@ -6610,7 +6610,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code>1.23.1
 </code></pre></div>
 </details>
-<h3 id="how-the-operator-handles-different-values">How the Operator handles different values<a class="headerlink" href="#how-the-operator-handles-different-values" title="Permanent link">¶</a></h3>
+<h3 id="how-the-operator-handles-different-values">How the Operator handles different values<a data-markdown-ignore class="headerlink" href="#how-the-operator-handles-different-values" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -6649,11 +6649,11 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="why-to-set-crversion-explicitly">Why to set <code>crVersion</code> explicitly<a class="headerlink" href="#why-to-set-crversion-explicitly" title="Permanent link">¶</a></h3>
+<h3 id="why-to-set-crversion-explicitly">Why to set <code>crVersion</code> explicitly<a data-markdown-ignore class="headerlink" href="#why-to-set-crversion-explicitly" title="Permanent link">¶</a></h3>
 <p>Omitting <code>crVersion</code> works, but we recommend setting it explicitly in your manifest. With an explicit value, you decide when the cluster behavior changes and when the Pods roll.</p>
 <p>When your manifest omits the option, the value the Operator filled in lives only in the live Custom Resource. Some ways of re-applying the manifest remove it. The Operator then sets <code>crVersion</code> to its own version, which rolls the Pods and moves the cluster to the new behavior at a time you didn’t plan.</p>
 <p>If you deploy with CI tools like Argo CD, an omitted <code>crVersion</code> also makes the cluster drift from Git. See <a href="#keep-argo-cd-in-sync-with-crversion">Keep Argo CD in sync with <code>crVersion</code></a>.</p>
-<h3 id="re-apply-a-manifest-that-omits-crversion">Re-apply a manifest that omits <code>crVersion</code><a class="headerlink" href="#re-apply-a-manifest-that-omits-crversion" title="Permanent link">¶</a></h3>
+<h3 id="re-apply-a-manifest-that-omits-crversion">Re-apply a manifest that omits <code>crVersion</code><a data-markdown-ignore class="headerlink" href="#re-apply-a-manifest-that-omits-crversion" title="Permanent link">¶</a></h3>
 <p>The following table shows what happens to a running cluster when you re-apply a manifest without <code>crVersion</code>, with a newer Operator installed:</p>
 <table>
 <thead>
@@ -6693,7 +6693,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="keep-argo-cd-in-sync-with-crversion">Keep Argo CD in sync with <code>crVersion</code><a class="headerlink" href="#keep-argo-cd-in-sync-with-crversion" title="Permanent link">¶</a></h3>
+<h3 id="keep-argo-cd-in-sync-with-crversion">Keep Argo CD in sync with <code>crVersion</code><a data-markdown-ignore class="headerlink" href="#keep-argo-cd-in-sync-with-crversion" title="Permanent link">¶</a></h3>
 <p>If the manifest in Git omits <code>crVersion</code>, the Operator adds the field to the live Custom Resource. Git then no longer matches the cluster:</p>
 <ul>
 <li>With manual sync, Argo CD shows the application as out of sync all the time.</li>
@@ -6718,10 +6718,10 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>With this option, Argo CD preserves the live <code>crVersion</code> when it pre-patches the desired manifest for an existing Custom Resource, so changing <code>crVersion</code> in Git doesn’t change that cluster. The option does not apply when the resource is first created: Argo CD applies the Git manifest as-is. To upgrade an existing cluster while the field is ignored, change <code>crVersion</code> directly in the cluster, for example with <code>kubectl patch</code>.</p>
-<h3 id="init-image">Init image<a class="headerlink" href="#init-image" title="Permanent link">¶</a></h3>
+<h3 id="init-image">Init image<a data-markdown-ignore class="headerlink" href="#init-image" title="Permanent link">¶</a></h3>
 <p>The <code>mongo-init</code> init container copies the entrypoint scripts and helper binaries from the Operator image into the database Pods. If you don’t set <a href="operator.html#initimage"><code>initImage</code></a> and <code>crVersion</code> differs from the Operator version, the Operator builds the init image name from its own image and replaces the tag with <code>crVersion</code>. For example, Operator <code>1.23.1</code> running a cluster with <code>crVersion: 1.22.0</code> uses <code>percona/percona-server-mongodb-operator:1.22.0</code>.</p>
 <p>That image tag must exist in the registry you pull from. If you use a <a href="custom-registry.html">custom registry</a>, mirror the Operator image tags that match the <code>crVersion</code> of your clusters, or set <code>initImage</code> explicitly.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update.html">Update Percona Operator for MongoDB</a></li>
 <li><a href="update-operator.html">Upgrade the Operator and CRD</a></li>

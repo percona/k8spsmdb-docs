@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6444,13 +6444,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="upgrade-the-operator-and-crd">Upgrade the Operator and CRD<a class="headerlink" href="#upgrade-the-operator-and-crd" title="Permanent link">¶</a></h1>
+<h1 id="upgrade-the-operator-and-crd">Upgrade the Operator and CRD<a data-markdown-ignore class="headerlink" href="#upgrade-the-operator-and-crd" title="Permanent link">¶</a></h1>
 <p>To update the Operator, you need to update the Custom Resource Definition (CRD) and the Operator deployment. Also we recommend to update the Kubernetes database cluster configuration by updating the Custom Resource and the database components to the latest version. This step ensures that all new features that come with the Operator release work in your environment.</p>
 <p>The upgrade process is similar for all installation methods, including Helm and OLM.</p>
 <p>This page covers an upgrade to a new Operator version. To stay on your current version and apply only security fixes, see <a href="security-builds.html">Apply security builds</a>.</p>
-<h2 id="considerations">Considerations<a class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
+<h2 id="considerations">Considerations<a data-markdown-ignore class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
 <p><strong>Read all of these before you upgrade.</strong> </p>
-<h3 id="for-kubernetes-cluster-versions-and-upgrades">For Kubernetes Cluster versions and upgrades<a class="headerlink" href="#for-kubernetes-cluster-versions-and-upgrades" title="Permanent link">¶</a></h3>
+<h3 id="for-kubernetes-cluster-versions-and-upgrades">For Kubernetes Cluster versions and upgrades<a data-markdown-ignore class="headerlink" href="#for-kubernetes-cluster-versions-and-upgrades" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Before upgrading the Kubernetes cluster, have a disaster recovery plan in place. Ensure that a backup is taken prior to the upgrade, and that point-in-time recovery is enabled to meet your Recovery Point Objective (RPO).</p>
@@ -6470,7 +6470,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Regardless of the upgrade approach, pods will be rescheduled or recycled. Plan your Kubernetes cluster upgrade accordingly to minimize downtime and service disruption.</p>
 </li>
 </ol>
-<h3 id="for-the-operator-upgrades">For the Operator upgrades<a class="headerlink" href="#for-the-operator-upgrades" title="Permanent link">¶</a></h3>
+<h3 id="for-the-operator-upgrades">For the Operator upgrades<a data-markdown-ignore class="headerlink" href="#for-the-operator-upgrades" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>The Operator version has three digits separated by a dot (<code>.</code>) in the format <code>major.minor.patch</code>. Here’s how you can understand the version <code>1.18.0</code>:</p>
@@ -6535,7 +6535,7 @@ window.addEventListener('afterprint', (event) => {
 <p>If TLS and backups are enabled and you provide your own external certificate in <code>secrets.ssl</code>, create the PBM client Secret <strong>before</strong> you set <code>crVersion</code> to <code>1.24.0</code>. Otherwise the Operator stops reconciling the cluster. See <a href="tls-manual.html#generate-certificates">Generate TLS certificates manually</a> for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.</p>
 </li>
 </ol>
-<h2 id="update-guides">Update guides<a class="headerlink" href="#update-guides" title="Permanent link">¶</a></h2>
+<h2 id="update-guides">Update guides<a data-markdown-ignore class="headerlink" href="#update-guides" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="update-crd-manual.html">Update manually</a>
 <a class="md-button" href="update-crd-helm.html">Update via Helm</a>
 <a class="md-button" href="update-crd-olm.html">Update via OLM (OpenShift)</a></p>

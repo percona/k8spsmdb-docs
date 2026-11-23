@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6564,7 +6564,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1140">Percona Operator for MongoDB 1.14.0<a class="headerlink" href="#percona-operator-for-mongodb-1140" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1140">Percona Operator for MongoDB 1.14.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1140" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6575,12 +6575,12 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="../quickstart.html">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
 <ul>
 <li>Backups and Restores are critical for business continuity. With this release you can significantly reduce your Recovery Time Objective (RTO) with <a href="../backups.html#backup-types">Physical backups</a> support in the Operator. The feature is now in technical preview.</li>
 <li>MongoDB 6.0 <a href="https://www.percona.com/blog/mongodb-6-0-should-you-upgrade-now/">comes with a variety <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> of improvements and new features. It is now fully supported by the Operator. See our <a href="../update-major.html">documentation</a> to learn how to upgrade.</li>
 </ul>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-713">K8SPSMDB-713</a> <a href="../backups.html#backup-types">Physical backups</a> are now supported by the Operator to recover big data sets faster</p>
@@ -6592,7 +6592,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-824">K8SPSMDB-824</a> New <code>ignoreAnnotations</code> and <code>ignoreLabels</code> Custom Resource options allow to list <a href="../annotations.html">specific annotations and labels</a> for Kubernetes Service objects, which the Operator should ignore (useful with various Kubernetes flavors which add annotations to the objects managed by the Operator)</p>
 </li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-658">K8SPSMDB-658</a> The Operator log messages appearing during the pause/unpause of the cluster were improved to more clearly indicate this event</p>
@@ -6634,7 +6634,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-867">K8SPSMDB-867</a> The Operator now <a href="../expose.html#controlling-hostnames-in-replset-configuration">configures replset members</a> using local fully-qualified domain names (FQDN) resolvable and available only from inside the cluster instead of using IP addresses; the old behavior can be restored by setting the <code>clusterServiceDNSMode</code> option to <code>External</code></p>
 </li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-784">K8SPSMDB-784</a> Fix a bug due to which the <code>enableEncryption</code> MongoDB configuration option was always activated when using psmdb-db Helm Chart</p>
@@ -6685,7 +6685,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-866">K8SPSMDB-866</a> Fix the bug due to which the Operator was continuously flooding the log with error messages if the PMM server credentials were missing</p>
 </li>
 </ul>
-<h2 id="known-issues-and-limitations">Known Issues and Limitations<a class="headerlink" href="#known-issues-and-limitations" title="Permanent link">¶</a></h2>
+<h2 id="known-issues-and-limitations">Known Issues and Limitations<a data-markdown-ignore class="headerlink" href="#known-issues-and-limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-875">K8SPSMDB-875</a> Physical backups cannot be restored on the clusters with <a href="../arbiter.html#arbiter-nodes">arbiter</a>, <a href="../arbiter.html#non-voting-nodes">non-voting</a>, or <a href="https://www.mongodb.com/docs/v6.0/core/replica-set-delayed-member/">delayed <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> members due to current Percona Backup for MongoDB limitations</p>
@@ -6694,7 +6694,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-846">K8SPSMDB-846</a> After switching the cluster to unsafe mode by setting allowUnsafeConfig: true, it is not possible to switch back into safe mode. The user can still scale the cluster safely, but the flag is ignored</p>
 </li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with Percona Server for MongoDB 4.4.18, 5.0.14, and 6.0.4. Other options may also work but have not been tested.</p>
 <p>The following platforms were tested and are officially supported by the Operator 1.14.0:</p>
 <ul>

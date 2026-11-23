@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6454,7 +6454,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="exec-into-the-containers">Exec into the containers<a class="headerlink" href="#exec-into-the-containers" title="Permanent link">¶</a></h1>
+<h1 id="exec-into-the-containers">Exec into the containers<a data-markdown-ignore class="headerlink" href="#exec-into-the-containers" title="Permanent link">¶</a></h1>
 <p>If you want to examine the contents of a container “in place” using remote access to it, you can use the <code>kubectl exec</code> command. It allows you to run any command or just open an interactive shell session in the container. Of course, you can have shell access to the container only if container supports it and has a “Running” state.</p>
 <p>In the following examples we will access the container <code>mongod</code> of the <code>my-cluster-name-rs0-0</code> Pod.</p>
 <ul>
@@ -6503,7 +6503,7 @@ ls<span class="w"> </span>/var/log/mongo/mongod.log
 </code></pre></div>
 </li>
 </ul>
-<h2 id="avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Avoid the restart-on-fail loop for Percona Server for MongoDB containers<a class="headerlink" href="#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers" title="Permanent link">¶</a></h2>
+<h2 id="avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Avoid the restart-on-fail loop for Percona Server for MongoDB containers<a data-markdown-ignore class="headerlink" href="#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers" title="Permanent link">¶</a></h2>
 <p>The restart-on-fail loop takes place when the container entry point fails
 (e.g. <code>mongod</code> crashes). In such a situation, Pod is continuously restarting.
 Continuous restarts prevent to get console access to the container, and so a

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6586,9 +6586,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="troubleshoot-connection-issues">Troubleshoot connection issues<a class="headerlink" href="#troubleshoot-connection-issues" title="Permanent link">¶</a></h1>
+<h1 id="troubleshoot-connection-issues">Troubleshoot connection issues<a data-markdown-ignore class="headerlink" href="#troubleshoot-connection-issues" title="Permanent link">¶</a></h1>
 <p>Use this page when your application cannot connect to Percona Server for MongoDB. For cluster or Operator issues (pods not starting, backups failing, and so on), see <a href="debug.html">Troubleshooting</a>.</p>
-<h2 id="connection-refused">Connection refused<a class="headerlink" href="#connection-refused" title="Permanent link">¶</a></h2>
+<h2 id="connection-refused">Connection refused<a data-markdown-ignore class="headerlink" href="#connection-refused" title="Permanent link">¶</a></h2>
 <p><strong>Symptom:</strong> The driver reports “connection refused” or “ECONNREFUSED.”</p>
 <p><strong>Common causes:</strong></p>
 <ul>
@@ -6596,7 +6596,7 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Port-forward is not running.</strong> If you use port-forward, keep the <code>kubectl port-forward</code> command running while you connect.</li>
 <li><strong>Wrong port.</strong> Default MongoDB port is 27017. If you use NodePort, use the NodePort number in your URI.</li>
 </ul>
-<h2 id="authentication-failed">Authentication failed<a class="headerlink" href="#authentication-failed" title="Permanent link">¶</a></h2>
+<h2 id="authentication-failed">Authentication failed<a data-markdown-ignore class="headerlink" href="#authentication-failed" title="Permanent link">¶</a></h2>
 <p><strong>Symptom:</strong> “Authentication failed” or “auth failed.”</p>
 <p><strong>Common causes:</strong></p>
 <ul>
@@ -6604,21 +6604,21 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Wrong database in the URI.</strong> The user may be defined on the <code>admin</code> database; use <code>/admin</code> in the URI path (for example <code>mongodb://user:pass@host/admin</code>).</li>
 <li><strong>User does not exist yet.</strong> If you added a user in the Custom Resource, apply the change and wait for the Operator to create the user and Secret.</li>
 </ul>
-<h2 id="wrong-replica-set-name-or-hostname">Wrong replica set name or hostname<a class="headerlink" href="#wrong-replica-set-name-or-hostname" title="Permanent link">¶</a></h2>
+<h2 id="wrong-replica-set-name-or-hostname">Wrong replica set name or hostname<a data-markdown-ignore class="headerlink" href="#wrong-replica-set-name-or-hostname" title="Permanent link">¶</a></h2>
 <p><strong>Symptom:</strong> “No primary found” or “replica set name does not match.”</p>
 <p><strong>Common causes:</strong></p>
 <ul>
 <li><strong>Replica set name missing or wrong.</strong> For a non-sharded cluster, the URI must include <code>replicaSet=rs0</code> (for example <code>.../admin?replicaSet=rs0</code>). See <a href="connect-from-app.html#get-a-connection-string">Connect your application</a>.</li>
 <li><strong>Sharded vs replica set.</strong> If the cluster is sharded (default), connect to the <strong>mongos</strong> host (<code>&lt;cluster-name&gt;-mongos.&lt;namespace&gt;.svc.cluster.local</code>), not the replica set host. If sharding is off, use the <strong>rs0</strong> host and <code>replicaSet=rs0</code>.</li>
 </ul>
-<h2 id="cannot-resolve-hostname">Cannot resolve hostname<a class="headerlink" href="#cannot-resolve-hostname" title="Permanent link">¶</a></h2>
+<h2 id="cannot-resolve-hostname">Cannot resolve hostname<a data-markdown-ignore class="headerlink" href="#cannot-resolve-hostname" title="Permanent link">¶</a></h2>
 <p><strong>Symptom:</strong> “getaddrinfo ENOTFOUND” or “no such host.”</p>
 <p><strong>Common causes:</strong></p>
 <ul>
 <li><strong>App runs outside the cluster.</strong> Internal DNS names (<code>.svc.cluster.local</code>) resolve only inside the cluster. Use <a href="connect-from-outside.html">Connect from your laptop or CI</a>: port-forward (then use <code>localhost</code> in the URI) or expose the cluster and use the external hostname or IP.</li>
 <li><strong>Typo in cluster name or namespace.</strong> Check with <code>kubectl get psmdb -A</code>. Use the exact cluster name and namespace in the URI.</li>
 </ul>
-<h2 id="tlsssl-errors">TLS/SSL errors<a class="headerlink" href="#tlsssl-errors" title="Permanent link">¶</a></h2>
+<h2 id="tlsssl-errors">TLS/SSL errors<a data-markdown-ignore class="headerlink" href="#tlsssl-errors" title="Permanent link">¶</a></h2>
 <p><strong>Symptom:</strong> SSL handshake or certificate errors.</p>
 <p><strong>Common causes:</strong></p>
 <ul>
@@ -6627,13 +6627,13 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>“No certificate provided by peer” even though the URI and cluster agree on TLS.</strong> The Operator’s default <code>clusterAuthMode: x509</code> requires a client certificate for any TLS connection, not just internal replica-set traffic. This applies even under the default <code>preferTLS</code> mode, and isn’t configurable through the Custom Resource. See <a href="TLS.html#connect-with-a-client-certificate">Connect with a client certificate</a>, or connect without <code>tls=true</code> in the URI if a plain connection is acceptable.</li>
 </ul>
 <hr>
-<h2 id="more-help">More help<a class="headerlink" href="#more-help" title="Permanent link">¶</a></h2>
+<h2 id="more-help">More help<a data-markdown-ignore class="headerlink" href="#more-help" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="connect-from-app.html">Connect your application</a> — URI format and where to get each part.</li>
 <li><a href="connect-from-outside.html">Connect from your laptop or CI</a> — Port-forward and external access.</li>
 <li><a href="debug.html">Troubleshooting</a> — Operator and cluster-level debugging.</li>
 </ul>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="what-next.html">What’s next for developers?</a></p>
 <hr>
 <div class="md-source-file">

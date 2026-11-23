@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6620,13 +6620,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">¶</a></h1>
+<h1 id="known-limitations">Known limitations<a data-markdown-ignore class="headerlink" href="#known-limitations" title="Permanent link">¶</a></h1>
 <p>This page describes known limitations of Percona Operator for MongoDB. Understanding these constraints helps you plan deployments and avoid unexpected behavior.</p>
-<h2 id="hardware-and-cpu-requirements">Hardware and CPU requirements<a class="headerlink" href="#hardware-and-cpu-requirements" title="Permanent link">¶</a></h2>
-<h3 id="x86-64-v3-cpu-microarchitecture-operator-1220-and-later">x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)<a class="headerlink" href="#x86-64-v3-cpu-microarchitecture-operator-1220-and-later" title="Permanent link">¶</a></h3>
+<h2 id="hardware-and-cpu-requirements">Hardware and CPU requirements<a data-markdown-ignore class="headerlink" href="#hardware-and-cpu-requirements" title="Permanent link">¶</a></h2>
+<h3 id="x86-64-v3-cpu-microarchitecture-operator-1220-and-later">x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)<a data-markdown-ignore class="headerlink" href="#x86-64-v3-cpu-microarchitecture-operator-1220-and-later" title="Permanent link">¶</a></h3>
 <p>Starting with Operator version <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a>, the Operator image is based on <a href="https://catalog.redhat.com/software/base-images">Red Hat Universal Base Image (UBI) 10 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. RHEL 10 / UBI 10 requires the <strong>x86-64-v3</strong> CPU microarchitecture on <code>amd64</code> hosts. That level includes AVX2, BMI1, BMI2, and FMA (roughly Intel Haswell 2013 or newer, or AMD Excavator 2015 or newer).</p>
 <p>This requirement is stricter than the <a href="https://docs.percona.com/percona-server-for-mongodb/8.0/system-requirements.html">AVX requirement for MongoDB 5.0 and later <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.</p>
-<h2 id="backups-and-restores">Backups and restores<a class="headerlink" href="#backups-and-restores" title="Permanent link">¶</a></h2>
+<h2 id="backups-and-restores">Backups and restores<a data-markdown-ignore class="headerlink" href="#backups-and-restores" title="Permanent link">¶</a></h2>
 <ul>
 <li>Point-in-time recovery and selective restore are not available for <a href="backups-pvc-snapshots.html">PVC snapshot backups</a> (type <code>external</code>).</li>
 <li>When you delete an incremental base backup, Percona Backup for MongoDB also deletes all increments that derived from it from the backup storage. The <code>percona.com/delete-backup</code> finalizer applies to the base backup and is ignored for increments. This means that the Operator deletes the Backup resource for the base incremental backup but the Backup resources for increments remain because the Operator doesn’t control their deletion.</li>
@@ -6634,14 +6634,14 @@ window.addEventListener('afterprint', (event) => {
 <li>Selective restores have additional constraints in Percona Backup for MongoDB. See the <a href="https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores">selective restore limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
 <li>After a failed restore, the Operator cannot guarantee data consistency because it does not know at which stage the failure happened. See <a href="backups-restore.html">Restore from a backup</a>.</li>
 </ul>
-<h2 id="multi-cluster-and-multi-region-deployments">Multi-cluster and multi-region deployments<a class="headerlink" href="#multi-cluster-and-multi-region-deployments" title="Permanent link">¶</a></h2>
+<h2 id="multi-cluster-and-multi-region-deployments">Multi-cluster and multi-region deployments<a data-markdown-ignore class="headerlink" href="#multi-cluster-and-multi-region-deployments" title="Permanent link">¶</a></h2>
 <ul>
 <li>The Operator cannot place MongoDB Pods in other data centers by itself. Cross-site topologies need an Operator deployment on each site, with unmanaged clusters registered as <code>externalNodes</code> on the Main site. Setup and scaling require manual operations. See <a href="replication-multi-dc.html">Splitting a replica set across multiple data centers</a>.</li>
 <li>Backups are supported on the Main site only, not on Replica sites in a multi-datacenter replica set split.</li>
 <li>Multi-cluster Services (MCS) can add cloud-provider limits. For example, on GKE all participating Pods must be in the same project. Avoid exporting Services from the <code>default</code> and <code>kube-system</code> namespaces. See <a href="replication-mcs.html">Multi-cluster Services</a>.</li>
 <li>Setting <code>clusterServiceDNSMode</code> to <code>ServiceMesh</code> supersedes multi-cluster settings. You cannot combine <code>ServiceMesh</code> DNS mode with multi-cluster Services. See the <a href="operator.html#clusterservicednsmode">Custom Resource options</a>.</li>
 </ul>
-<h2 id="networking-and-exposure">Networking and exposure<a class="headerlink" href="#networking-and-exposure" title="Permanent link">¶</a></h2>
+<h2 id="networking-and-exposure">Networking and exposure<a data-markdown-ignore class="headerlink" href="#networking-and-exposure" title="Permanent link">¶</a></h2>
 <p>Split horizon DNS has these MongoDB constraints:</p>
 <ul>
 <li>You cannot duplicate domain names in horizons</li>
@@ -6649,7 +6649,7 @@ window.addEventListener('afterprint', (event) => {
 <li>You must set horizons for all Pods of a replica set, or for none of them</li>
 </ul>
 <p>See <a href="expose.html">Exposing the cluster</a>.</p>
-<h2 id="search-and-vector-search">Search and vector search<a class="headerlink" href="#search-and-vector-search" title="Permanent link">¶</a></h2>
+<h2 id="search-and-vector-search">Search and vector search<a data-markdown-ignore class="headerlink" href="#search-and-vector-search" title="Permanent link">¶</a></h2>
 <p>Percona Search for MongoDB is in the tech preview stage. Notable limits include:</p>
 <ul>
 <li>a single search Pod per replica set or shard, </li>
@@ -6658,7 +6658,7 @@ window.addEventListener('afterprint', (event) => {
 <li>search index data is not included in backups. </li>
 </ul>
 <p>See <a href="search-overview.html#limitations">Limitations</a> in the search overview.</p>
-<h2 id="real-time-replication-with-percona-clustersync-for-mongodb">Real-time replication with Percona ClusterSync for MongoDB<a class="headerlink" href="#real-time-replication-with-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h2>
+<h2 id="real-time-replication-with-percona-clustersync-for-mongodb">Real-time replication with Percona ClusterSync for MongoDB<a data-markdown-ignore class="headerlink" href="#real-time-replication-with-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h2>
 <p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <p>Notable constraints:</p>
 <ul>
@@ -6671,7 +6671,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
 <li>External authentication (LDAP, Kerberos, AWS IAM) is not supported for PCSM connections.</li>
 </ul>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="quickstart.html">Get started</a></p>
 <hr>
 <div class="md-source-file">

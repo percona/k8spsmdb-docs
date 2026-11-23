@@ -24,7 +24,7 @@ Upgrade">
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Upgrade">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6721,13 +6721,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1231-2026-10-05">Percona Operator for MongoDB 1.23.1 (2026-10-05)<a class="headerlink" href="#percona-operator-for-mongodb-1231-2026-10-05" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1231-2026-10-05">Percona Operator for MongoDB 1.23.1 (2026-10-05)<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1231-2026-10-05" title="Permanent link">¶</a></h1>
 <p><a class="md-button" href="../quickstart.html">Get started with the Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a>
 <a class="md-button" href="../update.html">Upgrade <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="whats-new-at-a-glance">What’s new at a glance<a class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
+<h2 id="whats-new-at-a-glance">What’s new at a glance<a data-markdown-ignore class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
 <p>This release focuses on day-to-day operations. It adds persistent logging for mongos Pods, so you can troubleshoot the query router after a restart. You can also set how often the Operator contacts HashiCorp Vault for system user passwords.</p>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="persistent-logging-for-mongos">Persistent logging for <code>mongos</code><a class="headerlink" href="#persistent-logging-for-mongos" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="persistent-logging-for-mongos">Persistent logging for <code>mongos</code><a data-markdown-ignore class="headerlink" href="#persistent-logging-for-mongos" title="Permanent link">¶</a></h3>
 <p><code>mongos</code> is the query router in a sharded cluster. Its logs record connection failures, slow queries, authentication errors, and which shard received a query.</p>
 <p>Starting with this release, persistent logging also covers <code>mongos</code> Pods. This enables you to see what the
 router did after a rollout, an out-of-memory restart, a node
@@ -6737,7 +6737,7 @@ drain or another incident.</p>
 <p>If you turn persistent logging off, the Operator removes the sidecars but keeps existing <code>mongos</code> log PVCs. Files already on the volume stay readable.</p>
 <p><code>logrotate</code> uses one cluster-wide policy for <code>mongod</code> and <code>mongos</code>. It rotates logs daily, when they exceed 100 MB and keeps up to 7 rotated files. When you change that policy, include the configuration for both <code>mongod</code> and <code>mongos</code>.</p>
 <p>Read more in the <a href="../persistent-logging.html#for-mongos-pods">persistent logging</a> and <a href="../logrotate.html">log rotation</a> documentation.</p>
-<h3 id="control-how-often-the-operator-contacts-hashicorp-vault">Control how often the Operator contacts HashiCorp Vault<a class="headerlink" href="#control-how-often-the-operator-contacts-hashicorp-vault" title="Permanent link">¶</a></h3>
+<h3 id="control-how-often-the-operator-contacts-hashicorp-vault">Control how often the Operator contacts HashiCorp Vault<a data-markdown-ignore class="headerlink" href="#control-how-often-the-operator-contacts-hashicorp-vault" title="Permanent link">¶</a></h3>
 <p>When you store system user passwords in HashiCorp Vault, you can now configure how often the Operator reaches Vault to read those passwords and to sign in. The Operator creates a Vault client to sign in, and uses it for password reads.</p>
 <p>Use these options in the Custom Resource:</p>
 <ul>
@@ -6751,7 +6751,7 @@ drain or another incident.</p>
 <span class="w">    </span><span class="nt">requestInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
 </code></pre></div>
 <p>Learn more in <a href="../system-users-vault.html">Manage system users with Vault</a>.</p>
-<h2 id="crd-changes">CRD Changes<a class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
+<h2 id="crd-changes">CRD Changes<a data-markdown-ignore class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
 <ul>
 <li>The <code>.status.oci.credentials.secretName</code> field has now the minimum length of <code>1</code> and maximum length of <code>253</code>. An empty name is rejected, and a name longer than 253 characters is rejected.</li>
 <li>The <code>status.oci.credentials</code> field requires the <code>secretName</code> to be present when <code>credentials.type</code> is <code>userPrincipal</code>.</li>
@@ -6763,16 +6763,16 @@ drain or another incident.</p>
 </li>
 <li><code>vault.requestInterval</code> and <code>vault.reinitInterval</code> to control Vault password-read and client reinitialization intervals.</li>
 </ul>
-<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
-<h3 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
+<h2 id="changelog">Changelog<a data-markdown-ignore class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
+<h3 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1795">K8SPSMDB-1795</a> - Added persistent logging for <code>mongos</code> Pods so you can keep query router logs after a Pod restart or rollout. Those logs survive a restart only when you configure <code>sharding.mongos.logs.persistentVolumeClaim</code>.</li>
 </ul>
-<h3 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
+<h3 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1778">K8SPSMDB-1778</a> - Added Custom Resource options so you can set how often the Operator reads system user passwords from HashiCorp Vault and how often it creates a new Vault client to sign in. A longer <code>vault.requestInterval</code> sends fewer Vault requests when passwords change infrequently, <code>vault.reinitInterval</code> can match short-lived tokens (default 30 minutes), and an update to <code>vault.syncUsers.tokenSecret</code> applies on the next reconciliation.</li>
 </ul>
-<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">¶</a></h3>
+<h3 id="bug-fixes">Bug Fixes<a data-markdown-ignore class="headerlink" href="#bug-fixes" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1794">K8SPSMDB-1794</a> - Fixed Percona ClusterSync target connection failures caused by a missing slash in the generated MongoDB URI. The Operator now writes a valid <code>target-uri</code> so Percona ClusterSync for MongoDB can connect to the target cluster.</p>
@@ -6784,7 +6784,7 @@ drain or another incident.</p>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1834">K8SPSMDB-1834</a> - Fixed endless Smart Update Pod restarts after you upgrade from Operator 1.22 to 1.23 when <code>spec.tls.issuerConf.kind</code> is <code>ClusterIssuer</code>. The Operator now keeps leaf certificate <code>issuerRef.kind</code> set to <code>ClusterIssuer</code>, so cert-manager no longer reissues those certificates in a loop.</p>
 </li>
 </ul>
-<h2 id="supported-software">Supported software<a class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
+<h2 id="supported-software">Supported software<a data-markdown-ignore class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with the following software:</p>
 <ul>
 <li>Percona Server for MongoDB 6.0.29-23, 7.0.43-23, and 8.0.32-14</li>
@@ -6794,7 +6794,7 @@ drain or another incident.</p>
 <li>LogCollector based on fluent-bit: 5.1.2-1</li>
 </ul>
 <p>Other options may also work but have not been tested.</p>
-<h2 id="supported-platforms">Supported platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.34 - 1.35</li>
@@ -6805,7 +6805,7 @@ drain or another incident.</p>
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.39.0 with Kubernetes v1.37.0</li>
 </ul>
 <p>This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.</p>
-<h2 id="percona-certified-images">Percona certified images<a class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
+<h2 id="percona-certified-images">Percona certified images<a data-markdown-ignore class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
 <p>Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:</p>
 <table>
 <thead>

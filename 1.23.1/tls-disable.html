@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6576,14 +6576,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="disable-tls">Disable TLS<a class="headerlink" href="#disable-tls" title="Permanent link">¶</a></h1>
+<h1 id="disable-tls">Disable TLS<a data-markdown-ignore class="headerlink" href="#disable-tls" title="Permanent link">¶</a></h1>
 <p>You can run Percona Server for MongoDB without TLS. For example, for testing or demonstration purposes. However, we recommend that you have the TLS protocol enabled.</p>
 <p>You can start a new cluster without TLS or disable the TLS protocol for a running cluster. See the corresponding sections for steps.</p>
 <p>Export your namespace so the commands below can use it. Replace <code>&lt;namespace&gt;</code>
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="disable-tls-for-a-new-cluster">Disable TLS for a new cluster<a class="headerlink" href="#disable-tls-for-a-new-cluster" title="Permanent link">¶</a></h2>
+<h2 id="disable-tls-for-a-new-cluster">Disable TLS for a new cluster<a data-markdown-ignore class="headerlink" href="#disable-tls-for-a-new-cluster" title="Permanent link">¶</a></h2>
 <p>To disable TLS protocol for a new cluster, edit the <code>deploy/cr.yaml</code> Custom Resource manifest as follows:</p>
 <ul>
 <li>set the <code>tls.mode</code> key to <code>disabled</code> </li>
@@ -6601,7 +6601,7 @@ with your value:</p>
 <p>Apply the manifest:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="disable-tls-for-a-running-cluster">Disable TLS for a running cluster<a class="headerlink" href="#disable-tls-for-a-running-cluster" title="Permanent link">¶</a></h2>
+<h2 id="disable-tls-for-a-running-cluster">Disable TLS for a running cluster<a data-markdown-ignore class="headerlink" href="#disable-tls-for-a-running-cluster" title="Permanent link">¶</a></h2>
 <p>To disable TLS protocol for a running cluster, follow these steps:</p>
 <ol>
 <li>
@@ -6646,7 +6646,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local:27017   pause
 <p>Wait for the cluster to be resumed. Check the status with the <code>kubectl get psmdb</code> command.</p>
 </li>
 </ol>
-<h2 id="re-enable-tls">Re-enable TLS<a class="headerlink" href="#re-enable-tls" title="Permanent link">¶</a></h2>
+<h2 id="re-enable-tls">Re-enable TLS<a data-markdown-ignore class="headerlink" href="#re-enable-tls" title="Permanent link">¶</a></h2>
 <p>To re-enable TLS protocol for a running cluster, follow these steps:</p>
 <ol>
 <li>
@@ -6701,7 +6701,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local:27017   pause
 <p class="admonition-title">Note</p>
 <p>If you also need to disable authentication in addition to TLS, see <a href="auth-disable.html">Disable authentication</a>. Note that TLS must be disabled before you can disable authentication.</p>
 </div>
-<h2 id="verify-tls-is-disabled">Verify TLS is disabled<a class="headerlink" href="#verify-tls-is-disabled" title="Permanent link">¶</a></h2>
+<h2 id="verify-tls-is-disabled">Verify TLS is disabled<a data-markdown-ignore class="headerlink" href="#verify-tls-is-disabled" title="Permanent link">¶</a></h2>
 <p>Confirm the mode took effect and the cluster came back:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[*].spec.tls.mode}'</span>
 kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>

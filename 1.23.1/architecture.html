@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6654,9 +6654,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="design-and-architecture">Design and architecture<a class="headerlink" href="#design-and-architecture" title="Permanent link">¶</a></h1>
+<h1 id="design-and-architecture">Design and architecture<a data-markdown-ignore class="headerlink" href="#design-and-architecture" title="Permanent link">¶</a></h1>
 <p>The Percona Operator for MongoDB automates deploying and operating Percona Server for MongoDB on Kubernetes. This document explains what components the Operator uses and how they work together to provide a highly available MongoDB database. See also <a href="how-it-works.html">How the Operator works</a>.</p>
-<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">¶</a></h2>
+<h2 id="components">Components<a data-markdown-ignore class="headerlink" href="#components" title="Permanent link">¶</a></h2>
 <p>The Operator deploys and manages the following components:</p>
 <ul>
 <li>
@@ -6679,29 +6679,29 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ul>
 <p>It can also include <a href="sidecar.html">sidecar containers</a> that you can add to replica set, config server, or mongos Pods. Examples of sidecar containers are Percona Monitoring and Management (PMM) client for <a href="monitoring.html">monitoring</a>, or custom exporters and tools. The Operator supports multiple sidecars per Pod with configurable images, commands, and volume mounts.</p>
-<h2 id="percona-server-for-mongodb-topology">Percona Server for MongoDB topology<a class="headerlink" href="#percona-server-for-mongodb-topology" title="Permanent link">¶</a></h2>
+<h2 id="percona-server-for-mongodb-topology">Percona Server for MongoDB topology<a data-markdown-ignore class="headerlink" href="#percona-server-for-mongodb-topology" title="Permanent link">¶</a></h2>
 <p>The design of the Operator is tied to the Percona Server for MongoDB replica set and sharded cluster model.</p>
-<h3 id="replica-set">Replica set<a class="headerlink" href="#replica-set" title="Permanent link">¶</a></h3>
+<h3 id="replica-set">Replica set<a data-markdown-ignore class="headerlink" href="#replica-set" title="Permanent link">¶</a></h3>
 <p>A replica set consists of one primary and one or more secondary nodes. The primary accepts writes; secondaries replicate data and can serve reads. The following diagram shows a simple replica set.</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/replication.svg" data-desc-position="bottom"><img alt="image" src="assets/images/replication.svg"></a></p>
 <p>Client applications connect to the replica set using a MongoDB driver and a connection string from the Operator’s <a href="connection-secrets.html">connection Secrets</a>. Prefer the <code>mongodb+srv</code> URI.</p>
-<h3 id="sharded-cluster">Sharded cluster<a class="headerlink" href="#sharded-cluster" title="Permanent link">¶</a></h3>
+<h3 id="sharded-cluster">Sharded cluster<a data-markdown-ignore class="headerlink" href="#sharded-cluster" title="Permanent link">¶</a></h3>
 <p>When you need horizontal scaling, you enable sharding. Each shard is a replica set holding a subset of the data. The <strong>mongos</strong> query router is the entry point for clients; <strong>config servers</strong> store sharding metadata. A simplified view:</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/sharding.svg" data-desc-position="bottom"><img alt="image" src="assets/images/sharding.svg"></a></p>
 <p>For details, see <a href="sharding.html">Percona Server for MongoDB Sharding</a>.</p>
 <p>By default, the Operator creates a three-member replica set - the minimal recommended configuration, providing high availability out of the box. See <a href="how-it-works.html#default-database-deployment">Default database deployment</a> for supported replica set sizes.</p>
-<h2 id="high-availability">High availability<a class="headerlink" href="#high-availability" title="Permanent link">¶</a></h2>
+<h2 id="high-availability">High availability<a data-markdown-ignore class="headerlink" href="#high-availability" title="Permanent link">¶</a></h2>
 <p>High-availability is natively supported via Percona Server for MongoDB replica set or sharded cluster topology. </p>
 <p>The Operator adds to it through replica set topology, Pod distribution, automatic recovery, and client connectivity.</p>
-<h3 id="pod-distribution">Pod distribution<a class="headerlink" href="#pod-distribution" title="Permanent link">¶</a></h3>
+<h3 id="pod-distribution">Pod distribution<a data-markdown-ignore class="headerlink" href="#pod-distribution" title="Permanent link">¶</a></h3>
 <p>The Operator uses <a href="constraints.html">node affinity and anti-affinity</a> to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can <a href="constraints.html">tune affinity</a> rules in the <code>PerconaServerMongoDB</code> custom resource.</p>
-<h3 id="automatic-recovery">Automatic recovery<a class="headerlink" href="#automatic-recovery" title="Permanent link">¶</a></h3>
+<h3 id="automatic-recovery">Automatic recovery<a data-markdown-ignore class="headerlink" href="#automatic-recovery" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Node or Pod failure</strong> — Kubernetes reschedules the Pod on another healthy node. The mongod process starts and rejoins the replica set. If the failed node was the primary, the replica set holds an <a href="https://www.mongodb.com/docs/manual/core/replica-set-elections/">election</a> and promotes a secondary to primary.</li>
 <li><strong>Operator failure</strong> — If the node running the Operator fails, Kubernetes restarts the Operator on another node. The Operator resumes watching PerconaServerMongoDB resources and reconciling state.</li>
 </ul>
 <p>The database cluster is deployed as a replica set with at least three nodes (or as a sharded cluster whose shards and config servers are replica sets), so there is no single point of failure for the data path.</p>
-<h3 id="client-connectivity">Client connectivity<a class="headerlink" href="#client-connectivity" title="Permanent link">¶</a></h3>
+<h3 id="client-connectivity">Client connectivity<a data-markdown-ignore class="headerlink" href="#client-connectivity" title="Permanent link">¶</a></h3>
 <p>The Operator creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the <code>databaseAdmin</code> user and for application users you declare in the Custom Resource. Use those URIs in your app instead of assembling hostnames and credentials yourself. The Operator refreshes the Secrets when topology, exposure, or passwords change.</p>
 <p>Prefer a <strong>mongodb+srv</strong> URI (the <code>_connectionStringSrv</code> key). MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the Services and DNS entries those URIs rely on. For connections from outside the cluster, use the <code>_connectionStringExposed</code> key after you <a href="expose.html">expose the Service</a>.</p>
 <p>See <a href="connection-secrets.html">Connection secrets</a> for Secret names and keys.</p>
@@ -6710,7 +6710,7 @@ window.addEventListener('afterprint', (event) => {
 <p class="admonition-title">Note</p>
 <p>The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the <a href="System-Requirements.html#installation-guidelines">installation instructions</a>.</p>
 </div>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="quickstart.html">Get started with the Operator</a>
 <a class="md-button" href="compare.html">Compare with other solutions</a></p>
 <hr>

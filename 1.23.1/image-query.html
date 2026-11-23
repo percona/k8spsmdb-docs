@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6504,12 +6504,12 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="retrieve-percona-certified-images">Retrieve Percona certified images<a class="headerlink" href="#retrieve-percona-certified-images" title="Permanent link">¶</a></h1>
+<h1 id="retrieve-percona-certified-images">Retrieve Percona certified images<a data-markdown-ignore class="headerlink" href="#retrieve-percona-certified-images" title="Permanent link">¶</a></h1>
 <p>When preparing for the upgrade, you must have the list of compatible images for a specific Operator version and the database version you wish to update to. You can either manually find the images in the <a href="images.html">list of certified images</a> or you can get this list by querying the <strong>Version Service</strong> server.</p>
 <p>Security builds use numbered tags that the Version Service does not list. See <a href="security-builds.html">Operator security builds</a> to find and use those tags. </p>
-<h3 id="what-is-the-version-service">What is the Version Service?<a class="headerlink" href="#what-is-the-version-service" title="Permanent link">¶</a></h3>
+<h3 id="what-is-the-version-service">What is the Version Service?<a data-markdown-ignore class="headerlink" href="#what-is-the-version-service" title="Permanent link">¶</a></h3>
 <p>The <strong>Version Service</strong> is a centralized repository that the Percona Operator for MySQL connects to at scheduled times to get the latest information on compatible versions and valid image paths. This service is a crucial part of the automatic upgrade process, and it is enabled by default. Its landing page, <code>check.percona.com</code>, provides more details about the service itself.</p>
-<h3 id="how-to-query-the-version-service">How to query the Version Service<a class="headerlink" href="#how-to-query-the-version-service" title="Permanent link">¶</a></h3>
+<h3 id="how-to-query-the-version-service">How to query the Version Service<a data-markdown-ignore class="headerlink" href="#how-to-query-the-version-service" title="Permanent link">¶</a></h3>
 <p>You can manually query the Version Service using the <code>curl</code> command. The basic syntax is:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://check.percona.com/versions/v1/psmdb-operator/&lt;operator-version&gt;/&lt;psmdb-version&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.versions[].matrix'</span>
 </code></pre></div>

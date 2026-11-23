@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6480,7 +6480,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="data-at-rest-encryption">Data-at-rest encryption<a class="headerlink" href="#data-at-rest-encryption" title="Permanent link">¶</a></h1>
+<h1 id="data-at-rest-encryption">Data-at-rest encryption<a data-markdown-ignore class="headerlink" href="#data-at-rest-encryption" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.html">1.1.0</a></p>
 </div>
@@ -6491,14 +6491,14 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="#use-an-encryption-key-secret">uses an encryption key stored in a Secret</a></li>
 <li><a href="#use-hashicorp-vault-to-store-and-manage-encryption-keys">gets encryption key from the HashiCorp Vault key storage</a>. </li>
 </ul>
-<h2 id="use-an-encryption-key-secret">Use an encryption key Secret<a class="headerlink" href="#use-an-encryption-key-secret" title="Permanent link">¶</a></h2>
+<h2 id="use-an-encryption-key-secret">Use an encryption key Secret<a data-markdown-ignore class="headerlink" href="#use-an-encryption-key-secret" title="Permanent link">¶</a></h2>
 <p>You can configure data-at-rest encryption in Percona Server for MongoDB using an encryption key stored in a Kubernetes Secret. This is the default approach when you are not using an external key management store such as HashiCorp Vault.</p>
 <p>How it works:</p>
 <p>The Operator uses a single encryption key to protect MongoDB data files on disk. You tell the Operator which Secret holds that key by setting the <code>secrets.encryptionKey</code> option in the cluster Custom Resource.</p>
 <p>The Operator creates a Secret with the specified name and generates a random 32-byte key (base64-encoded), if such a Secret doesn’t already exist. You can also use your own key and create a Secret object with it; the key must be a <a href="https://www.mongodb.com/docs/manual/tutorial/configure-encryption/#local-key-management">32-character string encoded in base64</a>. Reference your Secret in the Custom Resource for the Operator to use it.</p>
 <p>Next, enable encryption and choose the cipher mode in the MongoDB configuration for all Pods where you want to encrypt data: regular replica set members (primary and secondary) as well as arbiter, hidden and/or non-voting replica set members, and config servers if you use sharding. The Operator mounts the key from the Secret into the MongoDB pods so the database can encrypt and decrypt data at rest.</p>
 <p>Once configured, encryption is transparent to your applications; no code changes are required.</p>
-<h2 id="use-hashicorp-vault-to-store-and-manage-encryption-keys">Use HashiCorp Vault to store and manage encryption keys<a class="headerlink" href="#use-hashicorp-vault-to-store-and-manage-encryption-keys" title="Permanent link">¶</a></h2>
+<h2 id="use-hashicorp-vault-to-store-and-manage-encryption-keys">Use HashiCorp Vault to store and manage encryption keys<a data-markdown-ignore class="headerlink" href="#use-hashicorp-vault-to-store-and-manage-encryption-keys" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.html">1.13.0</a></p>
 </div>
@@ -6514,9 +6514,9 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>How it works:</p>
 <p>You create a Kubernetes Secret that holds the token that the Operator uses to authenticate to Vault. In the Custom Resource you set <code>secrets.vault</code> to that Secret’s name and add Vault-related options to the MongoDB configuration (server address, secret path, token mount path, and optionally TLS). The Operator reads the encryption key from Vault and makes it available to the <code>mongod</code> pods. Percona Server for MongoDB uses that key to encrypt and decrypt data on disk, the same as with <a href="#use-an-encryption-key-secret">an encryption key stored in a Kubernetes Secret</a>. Encryption remains transparent to your applications.</p>
-<h3 id="supported-secrets-engine">Supported secrets engine<a class="headerlink" href="#supported-secrets-engine" title="Permanent link">¶</a></h3>
+<h3 id="supported-secrets-engine">Supported secrets engine<a data-markdown-ignore class="headerlink" href="#supported-secrets-engine" title="Permanent link">¶</a></h3>
 <p>The Operator expects the encryption key to be stored in Vault’s <strong>KV (Key-Value) secrets engine</strong>. Percona Server for MongoDB supports the <strong>KV version 2</strong> (<code>kv-v2</code>) with versioning enabled. You enable the secrets engine at a path (for example <code>secret/</code>). This is where the encryption keys are stored. The Custom Resource configuration must reference that path so the Operator can read the key. Other Vault secrets engines (for example Transit or KMIP) are not used for this integration.</p>
-<h2 id="configuration-guides">Configuration guides<a class="headerlink" href="#configuration-guides" title="Permanent link">¶</a></h2>
+<h2 id="configuration-guides">Configuration guides<a data-markdown-ignore class="headerlink" href="#configuration-guides" title="Permanent link">¶</a></h2>
 <p>Choose a setup guide based on your security requirements:</p>
 <ul>
 <li><a href="encryption-keyfile.html">Configure data-at-rest encryption using an encryption key Secret</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6642,7 +6642,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1180">Percona Operator for MongoDB 1.18.0<a class="headerlink" href="#percona-operator-for-mongodb-1180" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1180">Percona Operator for MongoDB 1.18.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1180" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6653,8 +6653,8 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="../System-Requirements.html#installation-guidelines">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="enhancements-of-the-declarative-user-management">Enhancements of the declarative user management<a class="headerlink" href="#enhancements-of-the-declarative-user-management" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="enhancements-of-the-declarative-user-management">Enhancements of the declarative user management<a data-markdown-ignore class="headerlink" href="#enhancements-of-the-declarative-user-management" title="Permanent link">¶</a></h3>
 <p>The <a href="../app-users.html">declarative management of custom MongoDB users</a> was improved compared to its initial implementation in the previous release, where the Operator did not track and sync user-related changes in the Custom Resource and the database. Also, starting from now you can create custom MongoDB roles on various databases just like users in the <code>deploy/cr.yaml</code> manifest:</p>
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
 <span class="nt">roles</span><span class="p">:</span>
@@ -6664,7 +6664,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>See <a href="../app-users.html#custom-mongodb-roles">the documentation</a> to find more details about this feature.</p>
-<h3 id="support-for-selective-restores">Support for selective restores<a class="headerlink" href="#support-for-selective-restores" title="Permanent link">¶</a></h3>
+<h3 id="support-for-selective-restores">Support for selective restores<a data-markdown-ignore class="headerlink" href="#support-for-selective-restores" title="Permanent link">¶</a></h3>
 <p>Percona Backup for MongoDB 2.0.0 has introduced a new functionality that allows partial restores, which means selectively restoring only with the desired subset of data. Now the Operator also supports this feature, allowing you to restore a specific database or a collection from a backup. You can achieve this by using an additional <code>selective</code> section in the <code>PerconaServerMongoDBRestore</code> Custom Resource:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">selective</span><span class="p">:</span>
@@ -6673,17 +6673,17 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db.collection"</span>
 </code></pre></div>
 <p>You can find more on selective restores and their limitations <a href="../backups-restore.html#selective-restore">in our documentation</a>.</p>
-<h3 id="splitting-the-replica-set-of-the-database-cluster-over-multiple-kubernetes-clusters">Splitting the replica set of the database cluster over multiple Kubernetes clusters<a class="headerlink" href="#splitting-the-replica-set-of-the-database-cluster-over-multiple-kubernetes-clusters" title="Permanent link">¶</a></h3>
+<h3 id="splitting-the-replica-set-of-the-database-cluster-over-multiple-kubernetes-clusters">Splitting the replica set of the database cluster over multiple Kubernetes clusters<a data-markdown-ignore class="headerlink" href="#splitting-the-replica-set-of-the-database-cluster-over-multiple-kubernetes-clusters" title="Permanent link">¶</a></h3>
 <p>Recent improvements in cross-site replication made it possible to <a href="../replication-multi-dc.html">keep the replica set of the database cluster in different data centers</a>. The Operator itself cannot deploy MongoDB replicas to other data centers, but this still can be achieved with a number of Operator deployments, equal to the size of your replica set: one Operator to control the replica set via cross-site replication, and at least two Operators to bootstrap the unmanaged clusters with other MongoDB replica set instances. Splitting the replica set of the database cluster over multiple Kubernetes clusters can be useful to get a fault-tolerant system in which all replicas are in different data centers.
 You can find more about configuring such a multi-datacenter MongoDB cluster and the limitations of this solution on the <a href="../replication-multi-dc.html">dedicated documentation page</a>.</p>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-894">K8SPSMDB-894</a>:  It is now possible to restore a subset of data (a specific database or a collection) from a backup which is useful to reduce time on restore operations when fixing corrupted data fragment</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1113">K8SPSMDB-1113</a>: The new <code>percona.com/delete-pitr-chunks</code> finalizer allows the deletion of PITR log files from the backup storage when deleting a cluster so that leftover data does not continue to take up space in the cloud</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1124">K8SPSMDB-1124</a> and <a href="https://jira.percona.com/browse/K8SPSMDB-1146">K8SPSMDB-1146</a>: Declarative user management now covers creating and managing user roles, and syncs user-related changes between the Custom Resource and the database</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1140">K8SPSMDB-1140</a> and <a href="https://jira.percona.com/browse/K8SPSMDB-1141">K8SPSMDB-1141</a>: Multi-datacenter cluster deployment <a href="../replication-multi-dc.html">is now possible</a></li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-739">K8SPSMDB-739</a>: A number of Service exposure options in the <code>replsets</code>, <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code>  were renamed for unification with other Percona Operators</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1002">K8SPSMDB-1002</a>: New Custom Resource options under the <a href="../operator.html#replsetsprimaryprefertagselectorregion">replsets.primaryPreferTagSelector`</a> subsection allow providing Primary instance selection preferences based on specific zone and region, which may be especially useful within the planned zone switchover process (Thanks to sergelogvinov for contribution)</li>
@@ -6693,7 +6693,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1160">K8SPSMDB-1160</a>: The <a href="../scaling-storage-resize.html">PVC resize</a> feature introduced in previous release can now be enabled or disabled via the <code>enableVolumeExpansion</code> Custom Resource option (<code>false</code> by default), which protects the cluster from storage resize triggered by mistake </li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1132">K8SPSMDB-1132</a>: A new <a href="../operator.html#secretskeyfile"><code>secrets.keyFile</code></a> Custom Resource option allows to configure custom name for the Secret with the MongoDB internal auth key file </li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-912">K8SPSMDB-912</a>: Fix a bug where the full backup connection string including the password was visible in logs in case of the Percona Backup for MongoDB errors</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1047">K8SPSMDB-1047</a>: Fix a bug where the Operator was changing <a href="https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.writeConcernMajorityJournalDefault">writeConcernMajorityJournalDefault</a> to “true” during the replica set reconfiguring, ignoring the value set by user</li>
@@ -6702,7 +6702,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1184">K8SPSMDB-1184</a>: Fix a bug where the Operator failed to reconcile when using the container security context with <code>readOnlyRootFilesystem</code> set to <code>true</code> (Thanks to applejag for contribution)</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1180">K8SPSMDB-1180</a>: Fix a bug where rotation functionality didn’t work for scheduled backups</li>
 </ul>
-<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
+<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a data-markdown-ignore class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>The new <code>enableVolumeExpansion</code> Custom Resource option allows users to disable the <a href="../scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">automated storage scaling with Volume Expansion capability</a>. The default value of this option is <code>false</code>, which means that the automated scaling is turned off by default.</p>
@@ -6716,7 +6716,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 </ul>
 </li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with Percona Server for MongoDB 5.0.29-25,
 6.0.18-15, and 7.0.14-8. Other options may also work but have not been tested. The
 Operator also uses Percona Backup for MongoDB 2.7.0.</p>

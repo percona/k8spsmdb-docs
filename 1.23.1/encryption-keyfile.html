@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6532,13 +6532,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-encryption-using-an-encryption-key-secret">Configure encryption using an encryption key Secret<a class="headerlink" href="#configure-encryption-using-an-encryption-key-secret" title="Permanent link">¶</a></h1>
+<h1 id="configure-encryption-using-an-encryption-key-secret">Configure encryption using an encryption key Secret<a data-markdown-ignore class="headerlink" href="#configure-encryption-using-an-encryption-key-secret" title="Permanent link">¶</a></h1>
 <p>Data-at-rest encryption using a Kubernetes Secret allows you to securely store the encryption key used by Percona Server for MongoDB directly in your cluster, without relying on an external key management service. This guide explains how to configure the Operator to use a Secret for managing your MongoDB encryption key.</p>
 <p>Export your namespace so the commands below can use it. Replace <code>&lt;namespace&gt;</code>
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="configuration-steps">Configuration steps<a class="headerlink" href="#configuration-steps" title="Permanent link">¶</a></h2>
+<h2 id="configuration-steps">Configuration steps<a data-markdown-ignore class="headerlink" href="#configuration-steps" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Set the encryption key Secret name. </p>
@@ -6596,7 +6596,7 @@ with your value:</p>
 </details>
 </li>
 </ol>
-<h2 id="verify-encryption-is-active">Verify encryption is active<a class="headerlink" href="#verify-encryption-is-active" title="Permanent link">¶</a></h2>
+<h2 id="verify-encryption-is-active">Verify encryption is active<a data-markdown-ignore class="headerlink" href="#verify-encryption-is-active" title="Permanent link">¶</a></h2>
 <p>The encryption key Secret must exist before the cluster starts, and its name must match
 <code>secrets.encryptionKey</code>:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>encryption-key

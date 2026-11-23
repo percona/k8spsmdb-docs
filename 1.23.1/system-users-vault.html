@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6539,10 +6539,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="manage-system-users-with-vault">Manage system users with Vault<a class="headerlink" href="#manage-system-users-with-vault" title="Permanent link">¶</a></h1>
+<h1 id="manage-system-users-with-vault">Manage system users with Vault<a data-markdown-ignore class="headerlink" href="#manage-system-users-with-vault" title="Permanent link">¶</a></h1>
 <p>You can integrate the Percona Server for MongoDB Operator with HashiCorp Vault to fetch and manage system user credentials.</p>
 <p>This allows you to centralize password management, enforce rotation policies, and maintain a single source of truth for sensitive credentials.</p>
-<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
+<h2 id="how-it-works">How it works<a data-markdown-ignore class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
 <p>When <a href="system-users-vault-setup.html#configure-vault">Vault is enabled</a>, the Operator:</p>
 <ul>
 <li>Retrieves system user passwords from Vault during cluster creation</li>
@@ -6565,7 +6565,7 @@ window.addEventListener('afterprint', (event) => {
     H --&gt; J{"Credentials changed?"}
     J -- Yes --&gt; G["Patch Kubernetes Secret&lt;br/&gt;Continue reconciliation"]
     J -- No --&gt; I["Continue normal reconciliation&lt;br/&gt;Create/Update StatefulSets&lt;br/&gt;Configure MongoDB users&lt;br/&gt;Initialize/Update cluster"]</code></pre>
-<h3 id="default-path-for-user-credentials">Default path for user credentials<a class="headerlink" href="#default-path-for-user-credentials" title="Permanent link">¶</a></h3>
+<h3 id="default-path-for-user-credentials">Default path for user credentials<a data-markdown-ignore class="headerlink" href="#default-path-for-user-credentials" title="Permanent link">¶</a></h3>
 <p>By default, the user credentials are stored  at the path <code>secret/data/psmdb/{role}/{namespace}/{name}/users</code>, where:</p>
 <ul>
 <li><code>{role}</code> is the role for the Operator that you create in Vault</li>
@@ -6573,15 +6573,15 @@ window.addEventListener('afterprint', (event) => {
 <li><code>{name}</code> is the Percona Server for MongoDB cluster name as defined in the Custom Resource</li>
 </ul>
 <p>You can override this path using the <code>vault.syncUsers.mountPath</code> and <code>vault.syncUsers.keyPath</code> options in the Custom Resource.</p>
-<h3 id="authentication-options-for-vault">Authentication options for Vault<a class="headerlink" href="#authentication-options-for-vault" title="Permanent link">¶</a></h3>
+<h3 id="authentication-options-for-vault">Authentication options for Vault<a data-markdown-ignore class="headerlink" href="#authentication-options-for-vault" title="Permanent link">¶</a></h3>
 <p>The Operator can authenticate in Vault in two ways:</p>
 <ul>
 <li><strong>Using Kubernetes service accounts</strong> - The Operator authenticates to Vault using its Service Account JWT. This method is recommended when Vault runs in the same Kubernetes cluster</li>
 <li><strong>Using Vault tokens</strong> - The Operator authenticates to Vault using a pre-created Vault token. This method is used when Vault is deployed outside Kubernetes or in another cluster.</li>
 </ul>
-<h2 id="control-how-often-the-operator-contacts-vault">Control how often the Operator contacts Vault<a class="headerlink" href="#control-how-often-the-operator-contacts-vault" title="Permanent link">¶</a></h2>
+<h2 id="control-how-often-the-operator-contacts-vault">Control how often the Operator contacts Vault<a data-markdown-ignore class="headerlink" href="#control-how-often-the-operator-contacts-vault" title="Permanent link">¶</a></h2>
 <p>Two options control Vault traffic. Both settings accept a time duration value, such as <code>30m</code> or <code>1m</code>.</p>
-<h3 id="reinitialize-the-vault-client">Reinitialize the Vault client<a class="headerlink" href="#reinitialize-the-vault-client" title="Permanent link">¶</a></h3>
+<h3 id="reinitialize-the-vault-client">Reinitialize the Vault client<a data-markdown-ignore class="headerlink" href="#reinitialize-the-vault-client" title="Permanent link">¶</a></h3>
 <p><a href="operator.html#vaultreinitinterval"><code>vault.reinitInterval</code></a> sets how often the Operator creates a new Vault client and authenticates again. The default is 30 minutes (<code>30m</code>).</p>
 <p>The Operator also creates a new client on the next reconciliation in these cases:</p>
 <ul>
@@ -6589,7 +6589,7 @@ window.addEventListener('afterprint', (event) => {
 <li>You change the data in the Secret referenced in <code>vault.syncUsers.tokenSecret</code></li>
 </ul>
 <p>The Operator does not wait for <code>reinitInterval</code> in either case. With Kubernetes authentication, each new client logs in to Vault and receives a new token.</p>
-<h3 id="limit-reads-of-user-passwords">Limit reads of user passwords<a class="headerlink" href="#limit-reads-of-user-passwords" title="Permanent link">¶</a></h3>
+<h3 id="limit-reads-of-user-passwords">Limit reads of user passwords<a data-markdown-ignore class="headerlink" href="#limit-reads-of-user-passwords" title="Permanent link">¶</a></h3>
 <p>The <a href="operator.html#vaultrequestinterval"><code>vault.requestInterval</code></a> option sets how often the Operator reads the system user secret from Vault.</p>
 <p>Leave it unset to read Vault on every reconciliation. Set it when password changes do not need to reach the cluster on the next reconciliation. The Operator then waits until the interval has elapsed since the last read and records that time in the <a href="cr-statuses.html#perconaservermongodb-status"><code>status.vaultLastRequestedAt</code></a> field.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6598,7 +6598,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">reinitInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30m</span>
 <span class="w">    </span><span class="nt">requestInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
 </code></pre></div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
+<h2 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
 <p>See <a href="system-users-vault-setup.html">Configure Vault for system user management</a></p>
 <hr>
 <div class="md-source-file">

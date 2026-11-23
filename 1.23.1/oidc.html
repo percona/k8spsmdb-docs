@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6698,7 +6698,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="oidc-authentication">OIDC authentication<a class="headerlink" href="#oidc-authentication" title="Permanent link">¶</a></h1>
+<h1 id="oidc-authentication">OIDC authentication<a data-markdown-ignore class="headerlink" href="#oidc-authentication" title="Permanent link">¶</a></h1>
 <p>OpenID Connect (OIDC) is an identity authentication protocol built on top of the OAuth 2.0 framework. OIDC is designed to verify user identities and provide authentication, ensuring that users are who they claim to be. OAuth 2.0 is used for user authorization to access resources.</p>
 <p>If your organization already uses an identity provider (IdP) such as Okta or Microsoft Entra ID, you can connect Percona Server for MongoDB to it through OpenID Connect (OIDC). This lets your users sign in with familiar corporate credentials while you manage user credentials, access policies, and roles in a centralized place — on the IdP side.</p>
 <p>This guide walks you through integrating an already-configured 
@@ -6709,15 +6709,15 @@ identity provider with Percona Server for MongoDB managed by the Operator. </p>
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="version-availability">Version availability<a class="headerlink" href="#version-availability" title="Permanent link">¶</a></h2>
+<h2 id="version-availability">Version availability<a data-markdown-ignore class="headerlink" href="#version-availability" title="Permanent link">¶</a></h2>
 <p>OIDC authentication is available with the following software versions:</p>
 <ul>
 <li>Percona Server for MongoDB 8.0.12-4 and later</li>
 <li>Percona Server for MongoDB 7.0.24-13 and later</li>
 <li>Percona Operator for MongoDB 1.21.0 and later</li>
 </ul>
-<h2 id="configure-oidc-authentication">Configure OIDC authentication<a class="headerlink" href="#configure-oidc-authentication" title="Permanent link">¶</a></h2>
-<h3 id="where-to-add-oidc-configuration">Where to add OIDC configuration<a class="headerlink" href="#where-to-add-oidc-configuration" title="Permanent link">¶</a></h3>
+<h2 id="configure-oidc-authentication">Configure OIDC authentication<a data-markdown-ignore class="headerlink" href="#configure-oidc-authentication" title="Permanent link">¶</a></h2>
+<h3 id="where-to-add-oidc-configuration">Where to add OIDC configuration<a data-markdown-ignore class="headerlink" href="#where-to-add-oidc-configuration" title="Permanent link">¶</a></h3>
 <p>The configuration examples in each provider tutorial are provided for <code>mongod</code> instances.</p>
 <p>You must add these configuration options to the <code>configuration</code> subsection of the custom resource in <code>deploy/cr.yaml</code>.</p>
 <ul>
@@ -6735,9 +6735,9 @@ with your value:</p>
 <p>To apply the configuration, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h3 id="set-up-an-identity-provider-and-configure-authentication-in-the-operator">Set up an Identity Provider and configure authentication in the Operator<a class="headerlink" href="#set-up-an-identity-provider-and-configure-authentication-in-the-operator" title="Permanent link">¶</a></h3>
+<h3 id="set-up-an-identity-provider-and-configure-authentication-in-the-operator">Set up an Identity Provider and configure authentication in the Operator<a data-markdown-ignore class="headerlink" href="#set-up-an-identity-provider-and-configure-authentication-in-the-operator" title="Permanent link">¶</a></h3>
 <p>Pick your identity provider:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Okta</label><label for="__tabbed_1_2">Microsoft Entra ID</label><label for="__tabbed_1_3">Ping Identity</label><label for="__tabbed_1_4">Keycloak</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Okta</label><label for="__tabbed_1_2">Microsoft Entra ID</label><label for="__tabbed_1_3">Ping Identity</label><label for="__tabbed_1_4">Keycloak</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>On the Okta side, you need to complete the following steps as part of your IdP setup:</p>
@@ -6868,7 +6868,7 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 </div>
 </div>
 </div>
-<h3 id="map-identity-provider-groups-to-mongodb-roles">Map identity-provider groups to MongoDB roles<a class="headerlink" href="#map-identity-provider-groups-to-mongodb-roles" title="Permanent link">¶</a></h3>
+<h3 id="map-identity-provider-groups-to-mongodb-roles">Map identity-provider groups to MongoDB roles<a data-markdown-ignore class="headerlink" href="#map-identity-provider-groups-to-mongodb-roles" title="Permanent link">¶</a></h3>
 <p>To enable users to access Percona Server for MongoDB, you must create roles and define privileges for them.</p>
 <p>The role name must match the identity provider group name and must have the prefix that matches the <code>authNamePrefix</code> in Percona Server for MongoDB configuration. The role name format is therefore <code>&lt;authNamePrefix&gt;/&lt;group&gt;</code>, where <code>&lt;group&gt;</code> is the value the provider puts into the authorization claim.</p>
 <p>Declare the role in the <code>roles</code> subsection of <code>deploy/cr.yaml</code>, so the Operator creates and reconciles it.</p>
@@ -6883,7 +6883,7 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <span class="w">          </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>Apply the change with <code>kubectl apply -f deploy/cr.yaml</code>. See <a href="app-users.html#custom-mongodb-roles">Custom MongoDB roles</a> for the full <code>roles</code> reference.</p>
-<h2 id="log-in">Log in<a class="headerlink" href="#log-in" title="Permanent link">¶</a></h2>
+<h2 id="log-in">Log in<a data-markdown-ignore class="headerlink" href="#log-in" title="Permanent link">¶</a></h2>
 <p>OIDC uses an interactive (human) flow: with <code>--oidcFlows auth-code</code> <code>mongosh</code> opens a browser, with <code>--oidcFlows device-auth</code> it prints a URL and a code to enter from any browser:</p>
 <div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://&lt;your_cluster_name&gt;-rs0.&lt;your_namespace&gt;.svc.cluster.local/admin?replicaSet=rs0&amp;ssl=false"</span><span class="w"> </span>--authenticationMechanism<span class="w"> </span>MONGODB-OIDC<span class="w"> </span>--oidcFlows<span class="w"> </span>auth-code
 </code></pre></div>
@@ -6908,7 +6908,7 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <span class="w">  </span><span class="err">ok</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="p">}</span>
 </code></pre></div>
-<h2 id="multiple-identity-providers">Multiple identity providers<a class="headerlink" href="#multiple-identity-providers" title="Permanent link">¶</a></h2>
+<h2 id="multiple-identity-providers">Multiple identity providers<a data-markdown-ignore class="headerlink" href="#multiple-identity-providers" title="Permanent link">¶</a></h2>
 <p>You can configure more than one provider on a single cluster — <code>oidcIdentityProviders</code> is a JSON array. MongoDB routes a login to a provider by matching the supplied user name against each provider’s <code>matchPattern</code> (a regular expression); the order of the array sets the priority (the first match wins).</p>
 <p>The example below routes <code>@example.com</code> users to Okta and <code>@corp.com</code> users to Microsoft Entra:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">security</span><span class="p">:</span>
@@ -6946,13 +6946,13 @@ For instructions on how to configure a sharded cluster, refer to the <a href="#w
 <li><strong>The user name you pass must equal the token’s principal.</strong> MongoDB compares the user name used for routing with the principal in the issued token and rejects the login if they differ (<code>principal names ... are not equal</code>). The principal comes from the <code>principalName</code> claim (default <code>sub</code>). If a provider’s <code>sub</code> is an opaque identifier (Microsoft Entra, for example), set <code>principalName</code> to a claim that equals what users type, such as <code>preferred_username</code>.</li>
 </ul>
 <p>Create one role per provider (<code>okta/&lt;group&gt;</code>, <code>entra/&lt;group&gt;</code>, and so on), then log in by passing a user name that matches the intended provider’s <code>matchPattern</code>.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <p>The <code>issuer</code> must present a <strong>publicly trusted TLS certificate</strong>. To validate a token, mongod fetches the provider’s keys (JWKS) from the <code>issuer</code> over HTTPS and must trust that certificate; the Operator currently provides no way to add a custom CA to the database nodes. Public identity providers (Okta, Microsoft Entra, Ping, and a Keycloak fronted by a publicly trusted certificate) work out of the box.</p>
 <p>A self-hosted identity provider with a <strong>private or self-signed certificate</strong> (for example a Keycloak running inside your network) is therefore <strong>not supported yet</strong> — mongod cannot fetch the JWKS and OIDC logins fail with:</p>
 <div class="highlight"><pre><span></span><code>Failed to load JWKs from issuer ... SSL peer certificate or SSH remote key was not OK
 </code></pre></div>
 <p>As a workaround, front the identity provider with a publicly trusted certificate.</p>
-<h2 id="verify-oidc-authentication">Verify OIDC authentication<a class="headerlink" href="#verify-oidc-authentication" title="Permanent link">¶</a></h2>
+<h2 id="verify-oidc-authentication">Verify OIDC authentication<a data-markdown-ignore class="headerlink" href="#verify-oidc-authentication" title="Permanent link">¶</a></h2>
 <p>Confirm that the cluster accepts the OIDC mechanism and that your identity provider’s claims
 map to MongoDB roles:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>mongosh<span class="w"> </span><span class="se">\</span>

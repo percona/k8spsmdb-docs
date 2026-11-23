@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6602,7 +6602,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="log-rotation">Log rotation<a class="headerlink" href="#log-rotation" title="Permanent link">¶</a></h1>
+<h1 id="log-rotation">Log rotation<a data-markdown-ignore class="headerlink" href="#log-rotation" title="Permanent link">¶</a></h1>
 <p><code>logrotate</code> is a tool to manage the log file growth. MongoDB logs can grow quickly. Without rotation, logs may fill the filesystem and disrupt the database. <code>logrotate</code> ensures predictable log retention and disk usage.</p>
 <p>When <a href="persistent-logging.html">log collection</a> is enabled, <code>logrotate</code> runs in a <code>logrotate</code> sidecar container next to the MongoDB container. Each Pod gets its own <code>logrotate</code> sidecar, which rotates the log file of that Pod:</p>
 <ul>
@@ -6626,7 +6626,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>Deletes any <code>mongod.log.*</code> files (for <code>mongod</code>) or <code>mongos.log.*</code> files (for <code>mongos</code>) in <code>/data/db/logs/</code> that are older than 7 days.</li>
 </ul>
-<h2 id="configure-log-rotation">Configure log rotation<a class="headerlink" href="#configure-log-rotation" title="Permanent link">¶</a></h2>
+<h2 id="configure-log-rotation">Configure log rotation<a data-markdown-ignore class="headerlink" href="#configure-log-rotation" title="Permanent link">¶</a></h2>
 <p>You can customize log rotation if you need different retention, size limits, or want to rotate additional files (for example, audit logs). This gives you predictable disk usage and keeps compliance or troubleshooting logs available for as long as you need.</p>
 <p>You can configure log rotation in the following ways:</p>
 <ul>
@@ -6635,7 +6635,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Set a custom log rotation schedule</li>
 </ul>
 <p>Regardless of the method you use, after you apply the new configuration, the Operator will restart the database Pods.</p>
-<h3 id="override-the-default-logrotate-configuration">Override the default logrotate configuration<a class="headerlink" href="#override-the-default-logrotate-configuration" title="Permanent link">¶</a></h3>
+<h3 id="override-the-default-logrotate-configuration">Override the default logrotate configuration<a data-markdown-ignore class="headerlink" href="#override-the-default-logrotate-configuration" title="Permanent link">¶</a></h3>
 <p>Use the <code>logcollector.logrotate.configuration</code> section in the Custom Resource to completely override the default <code>logrotate</code> settings. For example, you can configure it to rotate logs when their size is between 100 KB (minimum) and 200 MB (maximum).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -6695,7 +6695,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h3 id="add-extra-logrotate-configuration">Add extra logrotate configuration<a class="headerlink" href="#add-extra-logrotate-configuration" title="Permanent link">¶</a></h3>
+<h3 id="add-extra-logrotate-configuration">Add extra logrotate configuration<a data-markdown-ignore class="headerlink" href="#add-extra-logrotate-configuration" title="Permanent link">¶</a></h3>
 <p>You can pass additional configuration options for the default logrotate configuration via a ConfigMap or a Secret. Use <code>logcollector.logrotate.extraConfig.name</code> to load an additional <code>.conf</code> file from a ConfigMap or Secret. The file name must end with <code>.conf</code>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -6752,7 +6752,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 </code></pre></div>
 </li>
 </ol>
-<h3 id="set-a-custom-schedule">Set a custom schedule<a class="headerlink" href="#set-a-custom-schedule" title="Permanent link">¶</a></h3>
+<h3 id="set-a-custom-schedule">Set a custom schedule<a data-markdown-ignore class="headerlink" href="#set-a-custom-schedule" title="Permanent link">¶</a></h3>
 <p>Starting with version 1.22.0, the default logrotate schedule changed from running once per hour to running once per day.</p>
 <p>Use the <code>logcollector.logrotate.schedule</code> option in the Custom Resource to set a custom rotation schedule as a cron expression. For example, set the new rotation time to 2:15 a.m every Sunday:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6763,7 +6763,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling-about.html">Scaling and storage</a></li>
 <li><a href="security.html">Security</a></li>

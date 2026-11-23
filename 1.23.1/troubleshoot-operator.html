@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6520,10 +6520,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-troubleshooting">Percona Operator troubleshooting<a class="headerlink" href="#percona-operator-troubleshooting" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-troubleshooting">Percona Operator troubleshooting<a data-markdown-ignore class="headerlink" href="#percona-operator-troubleshooting" title="Permanent link">¶</a></h1>
 <p>This section provides information on how to troubleshoot issues when you install Percona Operator for MongoDB.</p>
 <p>Make sure you have CLI tool <code>kubectl</code> installed to interact with Kubernetes API.</p>
-<h2 id="check-connection-to-kubernetes-cluster">Check connection to Kubernetes cluster<a class="headerlink" href="#check-connection-to-kubernetes-cluster" title="Permanent link">¶</a></h2>
+<h2 id="check-connection-to-kubernetes-cluster">Check connection to Kubernetes cluster<a data-markdown-ignore class="headerlink" href="#check-connection-to-kubernetes-cluster" title="Permanent link">¶</a></h2>
 <p>It may happen that <code>kubectl</code> you installed locally is not connected to your Kubernetes cluster. </p>
 <p>To check connectivity to your Kubernetes API, run the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>cluster-info
@@ -6553,7 +6553,7 @@ CoreDNS is running at https://&lt;control-plane-ip&gt;:49475/api/v1/namespaces/k
 </li>
 </ol>
 <p>If you are still running into issues, check with your Kubernetes cluster administrator to resolve the connectivity or configuration issues. </p>
-<h2 id="troubleshoot-operator-installation-issues">Troubleshoot Operator installation issues<a class="headerlink" href="#troubleshoot-operator-installation-issues" title="Permanent link">¶</a></h2>
+<h2 id="troubleshoot-operator-installation-issues">Troubleshoot Operator installation issues<a data-markdown-ignore class="headerlink" href="#troubleshoot-operator-installation-issues" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Check the Operator logs</p>
@@ -6592,7 +6592,7 @@ https://docs.percona.com/percona-operator-for-mongodb/index.html
 <p>Events provide good information about affinity issues, resource issues etc.</p>
 </li>
 </ol>
-<h2 id="troubleshooting-database-cluster-issues">Troubleshooting database cluster issues<a class="headerlink" href="#troubleshooting-database-cluster-issues" title="Permanent link">¶</a></h2>
+<h2 id="troubleshooting-database-cluster-issues">Troubleshooting database cluster issues<a data-markdown-ignore class="headerlink" href="#troubleshooting-database-cluster-issues" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>The Operator deployment must be in the <code>Running</code> state for the database cluster to function properly. Check the Operator Pod for restarts to identify potential issues.</p>
@@ -6664,7 +6664,7 @@ Check the information in the `Status` section. The `State` and `State Descriptio
 <p>See the <a href="debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Avoid the restart-on-fail loop for Percona Server for MongoDB containers</a> section for steps.</p>
 <p>For backup and restore failures, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
 <p>If the problem started after an upgrade or a <code>crVersion</code> change, see <a href="debug-upgrade.html">Troubleshoot upgrades and <code>crVersion</code></a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="System-Requirements.html">Installation</a></li>
 </ul>

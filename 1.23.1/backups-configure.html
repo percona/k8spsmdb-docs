@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6501,9 +6501,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-backups">Configure backups<a class="headerlink" href="#configure-backups" title="Permanent link">¶</a></h1>
+<h1 id="configure-backups">Configure backups<a data-markdown-ignore class="headerlink" href="#configure-backups" title="Permanent link">¶</a></h1>
 <p>Use this path when you are ready to set up backups and restores. To learn more about backup types, storage, or whether you need point-in-time recovery, start with <a href="backups.html">Backup and restore</a>.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>The cluster is running.</li>
 <li>You can create Kubernetes Secrets in the cluster namespace, or your platform provides
@@ -6523,27 +6523,27 @@ used to recover to an arbitrary moment, and they are still unencrypted.</p>
 </code></pre></div>
 </li>
 </ul>
-<h2 id="1-configure-storage">1. Configure storage<a class="headerlink" href="#1-configure-storage" title="Permanent link">¶</a></h2>
+<h2 id="1-configure-storage">1. Configure storage<a data-markdown-ignore class="headerlink" href="#1-configure-storage" title="Permanent link">¶</a></h2>
 <p><a href="backups-storage.html">Configure storage</a> — required for every backup type. PVC snapshots still need object storage for backup metadata, even though they do not upload database files there.</p>
 <p>Need more than one bucket? See <a href="multi-storage.html">Multiple storages for backups</a>.</p>
-<h2 id="2-enable-capabilities-that-must-come-first">2. Enable capabilities that must come first<a class="headerlink" href="#2-enable-capabilities-that-must-come-first" title="Permanent link">¶</a></h2>
+<h2 id="2-enable-capabilities-that-must-come-first">2. Enable capabilities that must come first<a data-markdown-ignore class="headerlink" href="#2-enable-capabilities-that-must-come-first" title="Permanent link">¶</a></h2>
 <p>Decide these now, before you take backups you may later depend on:</p>
 <ul>
 <li><a href="backups-pitr.html">Enable point-in-time recovery</a> — lets you recover to any moment, not just to a backup.</li>
 <li><a href="backups-encryption.html">Encrypt backups</a> — has the storage encrypt backup data as it is written.</li>
 </ul>
-<h2 id="3-choose-how-to-back-up">3. Choose how to back up<a class="headerlink" href="#3-choose-how-to-back-up" title="Permanent link">¶</a></h2>
+<h2 id="3-choose-how-to-back-up">3. Choose how to back up<a data-markdown-ignore class="headerlink" href="#3-choose-how-to-back-up" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups-scheduled.html">On a schedule</a> — the usual choice for production.</li>
 <li><a href="backups-ondemand.html">On demand</a> — before a risky change, or to test the setup.</li>
 <li><a href="backups-pvc-snapshots.html">PVC snapshots</a> — storage-level copies instead of uploading to object storage. Set them up with <a href="backups-pvc-setup.html">Configure PVC snapshots</a>.</li>
 </ul>
-<h2 id="4-verify-the-backup-works">4. Verify the backup works<a class="headerlink" href="#4-verify-the-backup-works" title="Permanent link">¶</a></h2>
+<h2 id="4-verify-the-backup-works">4. Verify the backup works<a data-markdown-ignore class="headerlink" href="#4-verify-the-backup-works" title="Permanent link">¶</a></h2>
 <p>A backup you have never checked is a guess. Confirm the backup object reaches the <code>ready</code> state:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>A backup in <code>error</code> never completed. <code>running</code> or <code>waiting</code> means it is not finished yet. Only <code>ready</code> is restorable. If it does not get there, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
-<h2 id="5-restore">5. Restore<a class="headerlink" href="#5-restore" title="Permanent link">¶</a></h2>
+<h2 id="5-restore">5. Restore<a data-markdown-ignore class="headerlink" href="#5-restore" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups-restore.html#restore-on-the-same-cluster">On the same cluster</a>, or on a <a href="backups-restore.html#restore-on-a-new-cluster">new cluster</a>.</li>
 <li><a href="backups-pitr-restore.html">Restore to a point in time</a> — roll the database back to a specific moment.</li>
@@ -6552,11 +6552,11 @@ used to recover to an arbitrary moment, and they are still unencrypted.</p>
 <li><a href="backups-restore.html#with-different-replica-set-names">Restore to a new cluster with different replica set names</a>.</li>
 </ul>
 <p>Practise a restore before you need one. Restores are the only proof that backups work.</p>
-<h2 id="6-manage-retention-and-delete-backups">6. Manage retention and delete backups<a class="headerlink" href="#6-manage-retention-and-delete-backups" title="Permanent link">¶</a></h2>
+<h2 id="6-manage-retention-and-delete-backups">6. Manage retention and delete backups<a data-markdown-ignore class="headerlink" href="#6-manage-retention-and-delete-backups" title="Permanent link">¶</a></h2>
 <p><a href="backups-delete.html">Manage retention and delete backups</a> — control how many backups you keep and remove the ones you no longer need.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-storage.html">Configure storage for backups</a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <p>Bringing data in from outside Kubernetes? See <a href="backups-move-from-external-db.html">Move an external database to Kubernetes</a>.</p>
 <hr>
 <div class="md-source-file">

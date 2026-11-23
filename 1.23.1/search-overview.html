@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6730,7 +6730,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-full-text-and-vector-search">About full-text and vector search<a class="headerlink" href="#about-full-text-and-vector-search" title="Permanent link">¶</a></h1>
+<h1 id="about-full-text-and-vector-search">About full-text and vector search<a data-markdown-ignore class="headerlink" href="#about-full-text-and-vector-search" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -6747,7 +6747,7 @@ feature in future releases.</p>
 <li><strong>Vector search</strong> finds documents by meaning. It compares numerical representations (embeddings) of content, such as text or images so that results can be relevant even when they don’t share the same words.</li>
 </ul>
 <p>You get the same capability that MongoDB Atlas customers and self-managed upstream users already have. The Operator automates the deployment and lifecycle of search, providing the same experience it offers for Percona Server for MongoDB clusters.</p>
-<h2 id="what-you-can-achieve-with-percona-search-for-mongodb">What you can achieve with Percona Search for MongoDB<a class="headerlink" href="#what-you-can-achieve-with-percona-search-for-mongodb" title="Permanent link">¶</a></h2>
+<h2 id="what-you-can-achieve-with-percona-search-for-mongodb">What you can achieve with Percona Search for MongoDB<a data-markdown-ignore class="headerlink" href="#what-you-can-achieve-with-percona-search-for-mongodb" title="Permanent link">¶</a></h2>
 <p>Typical use cases include:</p>
 <ul>
 <li><strong>Semantic search</strong> — find documents that are close in meaning to a query,
@@ -6758,7 +6758,7 @@ feature in future releases.</p>
   language models and AI agents from data already stored in MongoDB</li>
 </ul>
 <p><a class="md-button" href="search-setup.html">Configure vector search</a></p>
-<h2 id="architecture-and-components">Architecture and components<a class="headerlink" href="#architecture-and-components" title="Permanent link">¶</a></h2>
+<h2 id="architecture-and-components">Architecture and components<a data-markdown-ignore class="headerlink" href="#architecture-and-components" title="Permanent link">¶</a></h2>
 <p>Full-text and vector search are provided by a separate tool called Percona Search for MongoDB.
 You manage Percona Search for MongoDB declaratively through the cluster Custom
 Resource. </p>
@@ -6770,7 +6770,7 @@ named <code>&lt;cluster-name&gt;-&lt;rs-name&gt;-search</code> and has its own P
 <p>Existing deployments continue to work as before after you upgrade the
 Operator: if you haven’t enabled search for the cluster, the Operator does not deploy
 search components.</p>
-<h2 id="how-mongod-and-mongot-communicate">How <code>mongod</code> and <code>mongot</code> communicate<a class="headerlink" href="#how-mongod-and-mongot-communicate" title="Permanent link">¶</a></h2>
+<h2 id="how-mongod-and-mongot-communicate">How <code>mongod</code> and <code>mongot</code> communicate<a data-markdown-ignore class="headerlink" href="#how-mongod-and-mongot-communicate" title="Permanent link">¶</a></h2>
 <p>Percona Search for MongoDB runs as a separate <code>mongot</code> process. Your applications and users never connect to it
 directly. They still connect to Percona Server for MongoDB (to  <code>mongod</code> or to <code>mongos</code> in a sharded
 cluster). The database acts as a proxy: it forwards search commands to
@@ -6797,7 +6797,7 @@ reads data changes as they happen.</p>
 <li><strong><code>mongod</code> → <code>mongot</code></strong> — forwards client search queries and index-management
   commands</li>
 </ul>
-<h3 id="replica-set-workflow">Replica set workflow<a class="headerlink" href="#replica-set-workflow" title="Permanent link">¶</a></h3>
+<h3 id="replica-set-workflow">Replica set workflow<a data-markdown-ignore class="headerlink" href="#replica-set-workflow" title="Permanent link">¶</a></h3>
 <p>From the client’s perspective, a search query looks like any other
 aggregation against <code>mongod</code>:</p>
 <pre class="mermaid"><code>flowchart LR
@@ -6814,7 +6814,7 @@ aggregation against <code>mongod</code>:</p>
 <li><code>mongod</code> loads the corresponding documents and returns the result set to the
    client.</li>
 </ol>
-<h3 id="sharded-cluster-workflow">Sharded cluster workflow<a class="headerlink" href="#sharded-cluster-workflow" title="Permanent link">¶</a></h3>
+<h3 id="sharded-cluster-workflow">Sharded cluster workflow<a data-markdown-ignore class="headerlink" href="#sharded-cluster-workflow" title="Permanent link">¶</a></h3>
 <p>In a sharded cluster, the Operator deploys one <code>mongot</code> StatefulSet per shard.
 <code>mongos</code> is the client entry point and coordinates cross-shard search queries.
 It scatter-gathers the search across shards and merges results by
@@ -6840,7 +6840,7 @@ It scatter-gathers the search across shards and merges results by
 <p>Each shard’s <code>mongod</code> members point at that shard’s <code>mongot</code>. For index
 management, <code>mongos</code> is configured with the <code>mongot</code> endpoint of the first
 shard (<code>shard0</code>).</p>
-<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">¶</a></h2>
+<h2 id="authentication">Authentication<a data-markdown-ignore class="headerlink" href="#authentication" title="Permanent link">¶</a></h2>
 <p>When you enable search, the Operator creates a dedicated MongoDB system user with the built-in
 <code>searchCoordinator</code> role. Credentials are
 stored in the cluster users Secret under <code>MONGODB_SEARCH_USER</code> and
@@ -6853,7 +6853,7 @@ cluster’s internal TLS material. The Operator extends the TLS certificate SANs
 <p>Don’t use the <code>searchCoordinator</code> system user from your applications. Create
 application users with the privileges your workloads need, the same as for any
 other MongoDB feature.</p>
-<h2 id="backups-and-restores">Backups and restores<a class="headerlink" href="#backups-and-restores" title="Permanent link">¶</a></h2>
+<h2 id="backups-and-restores">Backups and restores<a data-markdown-ignore class="headerlink" href="#backups-and-restores" title="Permanent link">¶</a></h2>
 <p>Percona Backup for MongoDB (PBM) does <strong>not</strong> back up Percona Search for MongoDB PVCs. Search
 indexes are derivable from <code>mongod</code> data through change streams, so only
 database data is included in backups.</p>
@@ -6862,13 +6862,13 @@ database data is included in backups.</p>
 <p>Restore completion does <strong>not</strong> wait for Percona Search for MongoDB to become ready. Database
 availability returns when the restore finishes; search availability is eventual
 and depends on how long index rebuild takes for your dataset.</p>
-<h2 id="observability-and-metrics">Observability and metrics<a class="headerlink" href="#observability-and-metrics" title="Permanent link">¶</a></h2>
+<h2 id="observability-and-metrics">Observability and metrics<a data-markdown-ignore class="headerlink" href="#observability-and-metrics" title="Permanent link">¶</a></h2>
 <p>You can scrape metrics from the headless search Service
 (<code>&lt;cluster&gt;-&lt;rs&gt;-search</code>) on port <code>9946</code>. Dedicated PMM dashboards for <code>mongot</code>
 are not included in this tech preview; use the metrics endpoint with your
 existing Prometheus-compatible stack, and watch <code>status.search</code> on the cluster
 Custom Resource for readiness.</p>
-<h2 id="availability-and-requirements">Availability and requirements<a class="headerlink" href="#availability-and-requirements" title="Permanent link">¶</a></h2>
+<h2 id="availability-and-requirements">Availability and requirements<a data-markdown-ignore class="headerlink" href="#availability-and-requirements" title="Permanent link">¶</a></h2>
 <p>To use full-text and vector search with the Operator, you must meet the following
 requirements:</p>
 <ol>
@@ -6884,7 +6884,7 @@ requirements:</p>
 <li><strong>Kubernetes resources.</strong> Default requests are 2 CPU and 2Gi memory per
    Percona Search for MongoDB pod. Size resources for your index and query load.</li>
 </ol>
-<h2 id="implementation-specifics">Implementation specifics<a class="headerlink" href="#implementation-specifics" title="Permanent link">¶</a></h2>
+<h2 id="implementation-specifics">Implementation specifics<a data-markdown-ignore class="headerlink" href="#implementation-specifics" title="Permanent link">¶</a></h2>
 <ul>
 <li>One Percona Search for MongoDB deployment per data-bearing replica set (or per shard in a
   sharded cluster).</li>
@@ -6902,7 +6902,7 @@ requirements:</p>
 <li>Cluster status exposes <code>status.search</code> keyed by replica set or shard name
   (<code>size</code>, <code>ready</code>, <code>status</code>, <code>message</code>). Read more about available statuses in <a href="cr-statuses.html">Custom resource statuses</a></li>
 </ul>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Single Percona Search for MongoDB pod per replica set or shard.</strong> The search StatefulSet is
   limited to <code>size: 1</code>. Kubernetes <code>Service</code> ClusterIP load balancing is L4-only
@@ -6920,9 +6920,9 @@ requirements:</p>
 <li><strong>Search index data are not included in backups.</strong> Plan for reindex time after
   restore when you estimate recovery objectives for the search surface.</li>
 </ul>
-<h2 id="next-step">Next step<a class="headerlink" href="#next-step" title="Permanent link">¶</a></h2>
+<h2 id="next-step">Next step<a data-markdown-ignore class="headerlink" href="#next-step" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="search-setup.html">Configure search and vector search</a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="security.html">About security</a> - <code>mongot</code> authenticates to the database like any other client</li>
 </ul>

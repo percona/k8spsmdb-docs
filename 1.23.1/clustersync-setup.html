@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6914,10 +6914,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="set-up-and-use-percona-clustersync-for-mongodb">Set up and use Percona ClusterSync for MongoDB<a class="headerlink" href="#set-up-and-use-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h1>
+<h1 id="set-up-and-use-percona-clustersync-for-mongodb">Set up and use Percona ClusterSync for MongoDB<a data-markdown-ignore class="headerlink" href="#set-up-and-use-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h1>
 <p>This tutorial shows how to configure <a href="https://docs.percona.com/percona-clustersync-for-mongodb/">Percona ClusterSync for MongoDB (PCSM) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the Operator, start replication from a source MongoDB deployment to an Operator-managed target cluster, and manage the replication lifecycle.</p>
 <p>For concepts, architecture, modes, and limitations, see <a href="clustersync.html">Real-time replication and near-zero downtime migration with PCSM</a>.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <p>Before you start, make sure that:</p>
 <ul>
 <li>You run Percona Operator for MongoDB <strong>1.23.0</strong> or later.</li>
@@ -6962,8 +6962,8 @@ window.addEventListener('afterprint', (event) => {
 <p>Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:</p>
 <div class="highlight"><pre><span></span><code>percona/percona-clustersync-mongodb:0.9.0
 </code></pre></div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
-<h3 id="1-prepare-the-environment">1. Prepare the environment<a class="headerlink" href="#1-prepare-the-environment" title="Permanent link">¶</a></h3>
+<h2 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
+<h3 id="1-prepare-the-environment">1. Prepare the environment<a data-markdown-ignore class="headerlink" href="#1-prepare-the-environment" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Clone the Percona Operator repository to get access to sample manifests and configuration files:</p>
@@ -6977,12 +6977,12 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ol>
-<h3 id="2-deploy-the-operator">2. Deploy the Operator<a class="headerlink" href="#2-deploy-the-operator" title="Permanent link">¶</a></h3>
+<h3 id="2-deploy-the-operator">2. Deploy the Operator<a data-markdown-ignore class="headerlink" href="#2-deploy-the-operator" title="Permanent link">¶</a></h3>
 <p>Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/cw-bundle.yaml
 </code></pre></div>
 <p>Refer to the <a href="cluster-wide.html#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode">Install the Operator in the cluster-wide mode</a> for how to install the Operator in another namespace.</p>
-<h3 id="3-deploy-the-source-cluster">3. Deploy the source cluster<a class="headerlink" href="#3-deploy-the-source-cluster" title="Permanent link">¶</a></h3>
+<h3 id="3-deploy-the-source-cluster">3. Deploy the source cluster<a data-markdown-ignore class="headerlink" href="#3-deploy-the-source-cluster" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Deploy the source cluster. Edit the <code>deploy/cr.yaml</code> and change the <code>metadata.name</code> to <code>my-source-cluster</code>. You can keep the default settings. Rename the file to <code>cr-source.yaml</code></p>
@@ -6998,7 +6998,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ol>
-<h3 id="4-prepare-the-source-cluster-for-replication">4. Prepare the source cluster for replication<a class="headerlink" href="#4-prepare-the-source-cluster-for-replication" title="Permanent link">¶</a></h3>
+<h3 id="4-prepare-the-source-cluster-for-replication">4. Prepare the source cluster for replication<a data-markdown-ignore class="headerlink" href="#4-prepare-the-source-cluster-for-replication" title="Permanent link">¶</a></h3>
 <p>You manage the source cluster regardless how it is deployed. Create a MongoDB user for PCSM and store its credentials in a Kubernetes Secret that the Operator can read.</p>
 <ol>
 <li>
@@ -7076,7 +7076,7 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 </ul>
 </li>
 </ol>
-<h3 id="5-deploy-the-target-cluster">5. Deploy the target cluster<a class="headerlink" href="#5-deploy-the-target-cluster" title="Permanent link">¶</a></h3>
+<h3 id="5-deploy-the-target-cluster">5. Deploy the target cluster<a data-markdown-ignore class="headerlink" href="#5-deploy-the-target-cluster" title="Permanent link">¶</a></h3>
 <p>Deploy an Operator-managed Percona Server for MongoDB cluster that will receive the replicated data. Edit the <code>deploy/cr.yaml</code> file and change the <code>metadata.name</code> to <code>my-target-cluster</code>. Rename the file to differentiate the configurations.</p>
 <div class="highlight"><span class="filename">cr-target.yaml</span><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDB</span>
@@ -7137,7 +7137,7 @@ my-source-cluster-rs0-2.psmdb-operator.svc.cluster.local:27017
 kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-target-cluster<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-w
 </code></pre></div>
 <p>The cluster status must be <code>ready</code> before you create the Percona ClusterSync for MongoDB Custom Resource.</p>
-<h3 id="6-set-up-percona-clustersync-for-mongodb">6. Set up Percona ClusterSync for MongoDB<a class="headerlink" href="#6-set-up-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h3>
+<h3 id="6-set-up-percona-clustersync-for-mongodb">6. Set up Percona ClusterSync for MongoDB<a data-markdown-ignore class="headerlink" href="#6-set-up-percona-clustersync-for-mongodb" title="Permanent link">¶</a></h3>
 <p>Create a <code>PerconaServerMongoDBClusterSync</code> Custom Resource. Edit the <code>deploy/clustersync.yaml</code> configuration file. Specify the following keys:</p>
 <ul>
 <li><code>spec.clusterName</code> - specify the name of the target cluster</li>
@@ -7145,7 +7145,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <li><code>spec.source.credentialsSecret</code> - reference the Secret that stores the credentials of the PCSM user from the source cluster.</li>
 <li><code>spec.mode</code> defaults to <code>running</code>, so replication starts when the PCSM Pod is ready.</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Replica set</label><label for="__tabbed_1_2">Sharded cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Replica set</label><label for="__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Use a replica set connection string for the source. List replica set members, the replica set name and authentication database. If you use TLS, include TLS options too.</p>
@@ -7155,7 +7155,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:{{ clustersync }}</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:1.1.0</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">source</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://my-source-cluster-rs0-0.psmdb-operator.svc.cluster.local:27017,my-source-cluster-rs0-1.psmdb-operator.svc.cluster.local:27017/admin?replicaSet=rs0</span>
@@ -7170,7 +7170,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:{{ clustersync }}</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:1.1.0</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">source</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://my-source-cluster-mongos.psmdb-operator.svc.cluster.local:27017/admin</span>
@@ -7182,7 +7182,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <p>Create the <code>PerconaServerMongoDBClusterSync</code> Custom Resource:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>clustersync-rs.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<h3 id="7-check-pcsm-status">7. Check PCSM status<a class="headerlink" href="#7-check-pcsm-status" title="Permanent link">¶</a></h3>
+<h3 id="7-check-pcsm-status">7. Check PCSM status<a data-markdown-ignore class="headerlink" href="#7-check-pcsm-status" title="Permanent link">¶</a></h3>
 <p>To check the status of your Percona ClusterSync (PCSM), use the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -7202,8 +7202,8 @@ my-cluster-sync   my-target-cluster   running   running            39m
 - <code>status.lagTimeSeconds</code>: Current replication lag in seconds
 - <code>status.error</code>: Any error messages if replication fails</p>
 <p>Monitor these fields to verify active and healthy replication.</p>
-<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">¶</a></h2>
-<h3 id="verify-the-replication">Verify the replication<a class="headerlink" href="#verify-the-replication" title="Permanent link">¶</a></h3>
+<h2 id="usage">Usage<a data-markdown-ignore class="headerlink" href="#usage" title="Permanent link">¶</a></h2>
+<h3 id="verify-the-replication">Verify the replication<a data-markdown-ignore class="headerlink" href="#verify-the-replication" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Insert some data into the source cluster:</p>
@@ -7221,17 +7221,17 @@ my-cluster-sync   my-target-cluster   running   running            39m
 </code></pre></div>
 </li>
 </ol>
-<h3 id="pause-replication">Pause replication<a class="headerlink" href="#pause-replication" title="Permanent link">¶</a></h3>
+<h3 id="pause-replication">Pause replication<a data-markdown-ignore class="headerlink" href="#pause-replication" title="Permanent link">¶</a></h3>
 <p>To pause replication, change the replication mode to <code>paused</code> in the Custom Resource. Since it is a running deployment, a recommended way is to patch it.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"paused"}}'</span>
 </code></pre></div>
-<h3 id="resume-replication">Resume replication<a class="headerlink" href="#resume-replication" title="Permanent link">¶</a></h3>
+<h3 id="resume-replication">Resume replication<a data-markdown-ignore class="headerlink" href="#resume-replication" title="Permanent link">¶</a></h3>
 <p>To resume replication, change the replication mode to <code>running</code>.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"mode":"running"}}'</span>
 </code></pre></div>
-<h3 id="finalize-the-replication">Finalize the replication<a class="headerlink" href="#finalize-the-replication" title="Permanent link">¶</a></h3>
+<h3 id="finalize-the-replication">Finalize the replication<a data-markdown-ignore class="headerlink" href="#finalize-the-replication" title="Permanent link">¶</a></h3>
 <p>To finalize replication, change the replication mode to <code>finalized</code>.</p>
 <ol>
 <li>
@@ -7257,13 +7257,13 @@ my-cluster-sync   my-target-cluster   running   running            39m
 <p>Point your applications to the target cluster using its connection Secret - see <a href="connection-secrets.html#use-in-an-application-deployment">Connection secrets</a>.</p>
 </li>
 </ol>
-<h3 id="clean-up">Clean up<a class="headerlink" href="#clean-up" title="Permanent link">¶</a></h3>
+<h3 id="clean-up">Clean up<a data-markdown-ignore class="headerlink" href="#clean-up" title="Permanent link">¶</a></h3>
 <p>When you no longer need the ClusterSync record, remove it:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>This removes the PCSM Deployment and Operator-owned Secrets. The source credentials Secret and the MongoDB sync user on the target are not deleted automatically.</p>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
-<h3 id="pcsm-pod-is-not-ready">PCSM Pod is not ready<a class="headerlink" href="#pcsm-pod-is-not-ready" title="Permanent link">¶</a></h3>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h3 id="pcsm-pod-is-not-ready">PCSM Pod is not ready<a data-markdown-ignore class="headerlink" href="#pcsm-pod-is-not-ready" title="Permanent link">¶</a></h3>
 <p>Check the Deployment and Pod:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,pods<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>describe<span class="w"> </span>deploy<span class="w"> </span>my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7276,7 +7276,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <li>Target cluster is not <code>ready</code></li>
 <li>Source and target major MongoDB versions differ</li>
 </ul>
-<h3 id="status-shows-failed">Status shows <code>failed</code><a class="headerlink" href="#status-shows-failed" title="Permanent link">¶</a></h3>
+<h3 id="status-shows-failed">Status shows <code>failed</code><a data-markdown-ignore class="headerlink" href="#status-shows-failed" title="Permanent link">¶</a></h3>
 <p>Inspect the error:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.error}{"\n"}'</span>
@@ -7296,7 +7296,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <li>Resume with <code>mode: running</code>, or delete and recreate the ClusterSync CR to start a fresh initial sync.</li>
 </ol>
 <p>Initial sync cannot be resumed after a hard failure. Recreate the ClusterSync CR to start over. See <a href="clustersync.html#limitations">Limitations</a>.</p>
-<h3 id="inspect-pcsm-from-inside-the-pod">Inspect PCSM from inside the Pod<a class="headerlink" href="#inspect-pcsm-from-inside-the-pod" title="Permanent link">¶</a></h3>
+<h3 id="inspect-pcsm-from-inside-the-pod">Inspect PCSM from inside the Pod<a data-markdown-ignore class="headerlink" href="#inspect-pcsm-from-inside-the-pod" title="Permanent link">¶</a></h3>
 <p>For advanced troubleshooting:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pcsm<span class="w"> </span>status
 </code></pre></div>

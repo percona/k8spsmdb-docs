@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6590,7 +6590,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="interconnect-sites-for-replication">Interconnect sites for replication<a class="headerlink" href="#interconnect-sites-for-replication" title="Permanent link">¶</a></h1>
+<h1 id="interconnect-sites-for-replication">Interconnect sites for replication<a data-markdown-ignore class="headerlink" href="#interconnect-sites-for-replication" title="Permanent link">¶</a></h1>
 <p>At this step, you should let the clusters know about each other and interconnect them for replication. To do so, you need to add the Replica site’s nodes as external nodes for the Main site. In the same way, you add the Main’s site nodes as external ones for the Replica site.</p>
 <p>Configure two of each site’s three replica set members (and two of the three config server members) as voting external nodes, and the third as non-voting (<code>votes: 0</code>, <code>priority: 0</code>). This is a deliberate choice, not automatic Operator behavior - it avoids split-brain and unwanted primary elections if the other site goes down or the network between sites is disrupted.</p>
 <p>In this way, the <code>main</code> cluster managed by the Operator is able to reach the <code>replica</code> nodes.</p>
@@ -6601,7 +6601,7 @@ window.addEventListener('afterprint', (event) => {
 <p>The requirements to the site with the arbiter are the same as for the replica site. </p>
 <p>To learn how to deploy the site with the arbiter node, see <a href="replication-multi-dc.html#deploy-the-arbiter-site">Deploy the Arbiter site</a>.</p>
 </div>
-<h2 id="list-the-services">List the services<a class="headerlink" href="#list-the-services" title="Permanent link">¶</a></h2>
+<h2 id="list-the-services">List the services<a data-markdown-ignore class="headerlink" href="#list-the-services" title="Permanent link">¶</a></h2>
 <p>Ensure that the nodes are exposed by listing the services. Run the following command on both clusters:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>services
 </code></pre></div>
@@ -6633,7 +6633,7 @@ main-cluster-rs0-1    ClusterIP      34.118.239.165   &lt;none&gt;          2701
 main-cluster-rs0-2    ClusterIP      34.118.225.3     &lt;none&gt;          27017/TCP         42m
 </code></pre></div>
 </details>
-<h2 id="add-the-replica-site-nodes-to-the-main-site">Add the Replica site nodes to the Main site<a class="headerlink" href="#add-the-replica-site-nodes-to-the-main-site" title="Permanent link">¶</a></h2>
+<h2 id="add-the-replica-site-nodes-to-the-main-site">Add the Replica site nodes to the Main site<a data-markdown-ignore class="headerlink" href="#add-the-replica-site-nodes-to-the-main-site" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Modify the <code>deploy/cr-main.yaml</code> file of the Main site and define the exposed nodes of the Replica site in the
@@ -6710,7 +6710,7 @@ should be used for non-voting members of the cluster).</li>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="add-main-site-nodes-to-the-replica-site">Add Main site nodes to the Replica site<a class="headerlink" href="#add-main-site-nodes-to-the-replica-site" title="Permanent link">¶</a></h2>
+<h2 id="add-main-site-nodes-to-the-replica-site">Add Main site nodes to the Replica site<a data-markdown-ignore class="headerlink" href="#add-main-site-nodes-to-the-replica-site" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Modify the <code>deploy/cr-replica.yaml</code> file of the Replica site and define the exposed nodes of the Main site in the
@@ -6756,7 +6756,7 @@ subsections.</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="check-cluster-connectivity">Check cluster connectivity<a class="headerlink" href="#check-cluster-connectivity" title="Permanent link">¶</a></h2>
+<h2 id="check-cluster-connectivity">Check cluster connectivity<a data-markdown-ignore class="headerlink" href="#check-cluster-connectivity" title="Permanent link">¶</a></h2>
 <p>Verify that the clusters are interconnected by connecting to one of them. </p>
 <ol>
 <li>
@@ -6824,7 +6824,7 @@ subsections.</p>
 </ol>
 <p>The members from both clusters appear in the list and the configuration looks like this:</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/mcs-setup.png" data-desc-position="bottom"><img alt="image" src="assets/images/mcs-setup.png"></a></p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="replication-failover.html">Test services failover</a></p>
 <hr>
 <div class="md-source-file">

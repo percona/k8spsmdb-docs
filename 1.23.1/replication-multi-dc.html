@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6846,7 +6846,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="splitting-a-replica-set-across-multiple-data-centers">Splitting a replica set across multiple data centers<a class="headerlink" href="#splitting-a-replica-set-across-multiple-data-centers" title="Permanent link">¶</a></h1>
+<h1 id="splitting-a-replica-set-across-multiple-data-centers">Splitting a replica set across multiple data centers<a data-markdown-ignore class="headerlink" href="#splitting-a-replica-set-across-multiple-data-centers" title="Permanent link">¶</a></h1>
 <p>Splitting a replica set over multiple Kubernetes clusters gives you a fault-tolerant system where members live in different data centers.</p>
 <p>The Operator cannot place MongoDB Pods in other data centers by itself. You achieve this by deploying an Operator on each site: the Operator on the <em>Main</em> site manages the replica set configuration through cross-site replication. Operators on other sites bootstrap the unmanaged clusters whose members you register on the Main site as <code>externalNodes</code>. You configure hostnames, TLS, and membership manually.</p>
 <p>This solution has the following limitations:</p>
@@ -6854,7 +6854,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Setup and scaling require manual operations.</li>
 <li>Backups are supported on the <em>Main</em> site only, not on the <em>Replica</em> sites.</li>
 </ul>
-<h2 id="choose-your-topology">Choose your topology<a class="headerlink" href="#choose-your-topology" title="Permanent link">¶</a></h2>
+<h2 id="choose-your-topology">Choose your topology<a data-markdown-ignore class="headerlink" href="#choose-your-topology" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6886,8 +6886,8 @@ window.addEventListener('afterprint', (event) => {
 <li>Export Secrets from the main site</li>
 </ol>
 <p>In the following example setups we deploy sites in separate namespaces within a single Kubernetes cluster to emulate isolation and communication boundaries between data centers. In production, you will use separate Kubernetes clusters or physically distinct data centers to achieve true fault isolation, scalability, and resilience.</p>
-<h2 id="common-steps">Common steps<a class="headerlink" href="#common-steps" title="Permanent link">¶</a></h2>
-<h3 id="initial-preparation">Initial preparation<a class="headerlink" href="#initial-preparation" title="Permanent link">¶</a></h3>
+<h2 id="common-steps">Common steps<a data-markdown-ignore class="headerlink" href="#common-steps" title="Permanent link">¶</a></h2>
+<h3 id="initial-preparation">Initial preparation<a data-markdown-ignore class="headerlink" href="#initial-preparation" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Clone the repository with all manifests and source code:</p>
@@ -6897,7 +6897,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Export namespace variables. Use the set that matches your topology:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Three data-bearing sites</label><label for="__tabbed_1_2">PSA architecture</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Three data-bearing sites</label><label for="__tabbed_1_2">PSA architecture</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main
@@ -6916,7 +6916,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Create the namespaces for your topology:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Three data-bearing sites</label><label for="__tabbed_2_2">PSA architecture</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">Three data-bearing sites</label><label for="__tabbed_2_2">PSA architecture</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span><span class="nv">$MAIN</span>
@@ -6939,7 +6939,7 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 </code></pre></div>
 </li>
 </ol>
-<h3 id="deploy-the-main-site">Deploy the Main site<a class="headerlink" href="#deploy-the-main-site" title="Permanent link">¶</a></h3>
+<h3 id="deploy-the-main-site">Deploy the Main site<a data-markdown-ignore class="headerlink" href="#deploy-the-main-site" title="Permanent link">¶</a></h3>
 <p>TLS certificates generated by the Operator are not enough for multi-site layouts. You need to generate certificates manually on the Main site before you create the database cluster, and include the Main cluster name and the hostname of every replica set member you will connect.</p>
 <ol>
 <li>
@@ -6994,7 +6994,7 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <p>Expected output: <code>state: Ready</code>.</p>
 </li>
 </ol>
-<h3 id="export-secrets-from-the-main-site">Export Secrets from the Main site<a class="headerlink" href="#export-secrets-from-the-main-site" title="Permanent link">¶</a></h3>
+<h3 id="export-secrets-from-the-main-site">Export Secrets from the Main site<a data-markdown-ignore class="headerlink" href="#export-secrets-from-the-main-site" title="Permanent link">¶</a></h3>
 <p>All replica set sites must share the same user credentials and TLS certificates. For this reason, export them from the main site and create the corresponding Secrets on the replica sites. Follow the steps in the <a href="replication-main.html#export-the-cluster-secrets-and-certificates-to-be-copied-from-main-to-replica">Export the Secrets</a> section.</p>
 <p>Also, update the namespace in each Secret to point to the target namespace. Depending on the topology you chose, the target namespaces are: <code>$REPLICA1</code>/<code>$REPLICA2</code> for the replica clusters, or <code>$REPLICA</code>/ <code>$ARBITER</code> for the PSA. </p>
 <p>Replace the <code>&lt;target-namespace&gt;</code>, <code>&lt;cluster-name&gt;-&lt;secret-name&gt;</code> placeholders as needed in the following command:</p>
@@ -7010,7 +7010,7 @@ sed -i.bak "s/namespace: $MAIN/namespace: $REPLICA/" "&lt;cluster-name&gt;-&lt;s
 <li><code>&lt;cluster-name&gt;-mongodb-encryption-key.yaml</code> - encryption key file.</li>
 </ul>
 <p>Continue with <a href="#distribute-data-bearing-members-across-sites">Distribute data-bearing members across sites</a> or <a href="#deploy-primary-secondary-arbiter-across-sites">Deploy Primary-Secondary-Arbiter across sites</a> for further configuration.</p>
-<h2 id="distribute-data-bearing-members-across-sites">Distribute data-bearing members across sites<a class="headerlink" href="#distribute-data-bearing-members-across-sites" title="Permanent link">¶</a></h2>
+<h2 id="distribute-data-bearing-members-across-sites">Distribute data-bearing members across sites<a data-markdown-ignore class="headerlink" href="#distribute-data-bearing-members-across-sites" title="Permanent link">¶</a></h2>
 <p>In this site you deploy one Main site and two Replica sites. Each site contains a single data-bearing member. Together they form a three-member replica set with an odd number of voters and a full data copy in every data center.</p>
 <table>
 <thead>
@@ -7046,7 +7046,7 @@ sed -i.bak "s/namespace: $MAIN/namespace: $REPLICA/" "&lt;cluster-name&gt;-&lt;s
 </tr>
 </tbody>
 </table>
-<h3 id="deploy-the-replica-sites">Deploy the Replica sites<a class="headerlink" href="#deploy-the-replica-sites" title="Permanent link">¶</a></h3>
+<h3 id="deploy-the-replica-sites">Deploy the Replica sites<a data-markdown-ignore class="headerlink" href="#deploy-the-replica-sites" title="Permanent link">¶</a></h3>
 <p>Make sure you have completed the <a href="#common-steps">Common steps</a> before you proceed.</p>
 <p>Repeat the following for <strong>each</strong> Replica site (<code>replica1-cluster</code> and <code>replica2-cluster</code>). The steps differ only by cluster name and namespace.</p>
 <p>The commands below show the configuration of the <code>replica1-cluster</code> cluster.</p>
@@ -7109,7 +7109,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <p>Repeat steps 2 and 3 and deploy the <code>replica2-cluster</code>. Replace the cluster name and the namespace.</p>
 </li>
 </ol>
-<h3 id="add-replica-sites-to-the-main-site">Add replica sites to the Main site<a class="headerlink" href="#add-replica-sites-to-the-main-site" title="Permanent link">¶</a></h3>
+<h3 id="add-replica-sites-to-the-main-site">Add replica sites to the Main site<a data-markdown-ignore class="headerlink" href="#add-replica-sites-to-the-main-site" title="Permanent link">¶</a></h3>
 <p>On the Main site, register both Replica members under <code>replsets.externalNodes</code> as voting members (<code>votes: 1</code>, <code>priority: 1</code>).</p>
 <p>Specify endpoints as <code>&lt;pod-name&gt;.&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local:27017</code> (the service name is typically <code>&lt;cluster-name&gt;-&lt;replset-name&gt;</code>). Confirm endpoint names with <code>kubectl get pods</code> and <code>kubectl get svc</code> on each site. If you use MCS or external hostnames, use those reachable names instead and include them in TLS certificates.</p>
 <div class="highlight"><span class="filename">cr-main.yaml</span><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
@@ -7126,7 +7126,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <p>Apply the updated Main site Custom Resource:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr-main.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$MAIN</span>
 </code></pre></div>
-<h2 id="deploy-primary-secondary-arbiter-across-sites">Deploy Primary-Secondary-Arbiter across sites<a class="headerlink" href="#deploy-primary-secondary-arbiter-across-sites" title="Permanent link">¶</a></h2>
+<h2 id="deploy-primary-secondary-arbiter-across-sites">Deploy Primary-Secondary-Arbiter across sites<a data-markdown-ignore class="headerlink" href="#deploy-primary-secondary-arbiter-across-sites" title="Permanent link">¶</a></h2>
 <p>Use this layout when you want <strong>two data-bearing sites</strong> and a third site that only participates in elections. This third site hosts the <a href="arbiter.html">arbiter</a> node that stores no data and cannot become primary.  The arbiter breaks election ties so the replica set keeps an odd number of voters.</p>
 <p>This topology uses <code>replsets.externalNodes.arbiterOnly</code> and requires Percona Operator for MongoDB 1.23.0 or later. </p>
 <table>
@@ -7163,7 +7163,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 </tr>
 </tbody>
 </table>
-<h3 id="deploy-the-replica-site-data-bearing">Deploy the Replica site (data-bearing)<a class="headerlink" href="#deploy-the-replica-site-data-bearing" title="Permanent link">¶</a></h3>
+<h3 id="deploy-the-replica-site-data-bearing">Deploy the Replica site (data-bearing)<a data-markdown-ignore class="headerlink" href="#deploy-the-replica-site-data-bearing" title="Permanent link">¶</a></h3>
 <p>Make sure you have completed the <a href="#common-steps">Common steps</a> before you proceed.</p>
 <p>Deploy one unmanaged data-bearing Replica site following the steps from <a href="#deploy-the-replica-sites">Deploy the replica site</a>. 
 Create the Secrets from the files you created for the <code>replica-cluster</code>.</p>
@@ -7197,7 +7197,7 @@ Create the Secrets from the files you created for the <code>replica-cluster</cod
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="c1">#The rest of your configuration</span>
 </code></pre></div>
-<h3 id="deploy-the-arbiter-site">Deploy the arbiter site<a class="headerlink" href="#deploy-the-arbiter-site" title="Permanent link">¶</a></h3>
+<h3 id="deploy-the-arbiter-site">Deploy the arbiter site<a data-markdown-ignore class="headerlink" href="#deploy-the-arbiter-site" title="Permanent link">¶</a></h3>
 <p>Deploy a third cluster that hosts the arbiter node. You can run this site on Kubernetes (shown here) or as a standalone <code>mongod</code> arbiter outside Kubernetes.</p>
 <ol>
 <li>
@@ -7255,7 +7255,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <p>The arbiter Pod is named <code>{cluster}-{replset}-arbiter-0</code> (for example, <code>arbiter-cluster-rs0-arbiter-0</code>).</p>
 </li>
 </ol>
-<h3 id="add-the-replica-member-and-external-arbiter-to-the-main-site">Add the Replica member and external arbiter to the Main site<a class="headerlink" href="#add-the-replica-member-and-external-arbiter-to-the-main-site" title="Permanent link">¶</a></h3>
+<h3 id="add-the-replica-member-and-external-arbiter-to-the-main-site">Add the Replica member and external arbiter to the Main site<a data-markdown-ignore class="headerlink" href="#add-the-replica-member-and-external-arbiter-to-the-main-site" title="Permanent link">¶</a></h3>
 <p>On the Main site, register both remote members under <code>replsets.externalNodes</code>:</p>
 <ul>
 <li>The Replica site data member as a normal voting member</li>
@@ -7275,7 +7275,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <span class="w">    </span><span class="nt">arbiterOnly</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p>If the arbiter runs outside Kubernetes, use its externally reachable hostname instead.</p>
-<h2 id="verify-replica-set">Verify replica set<a class="headerlink" href="#verify-replica-set" title="Permanent link">¶</a></h2>
+<h2 id="verify-replica-set">Verify replica set<a data-markdown-ignore class="headerlink" href="#verify-replica-set" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Get the <code>databaseAdmin</code> password from the Main site:</p>
@@ -7291,7 +7291,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 </li>
 </ol>
 <p>The output differs per deployed topology:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Three data-bearing sites</label><label for="__tabbed_3_2">PSA architecture</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_3_1">Three data-bearing sites</label><label for="__tabbed_3_2">PSA architecture</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>You should see <strong>three</strong> data-bearing voting members (Main, Replica 1, Replica 2), all with <code>health: 1</code> when network and TLS configuration are correct.</p>
@@ -7301,9 +7301,9 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 </div>
 </div>
 </div>
-<h2 id="using-more-than-one-data-bearing-member-per-site">Using more than one data-bearing member per site<a class="headerlink" href="#using-more-than-one-data-bearing-member-per-site" title="Permanent link">¶</a></h2>
+<h2 id="using-more-than-one-data-bearing-member-per-site">Using more than one data-bearing member per site<a data-markdown-ignore class="headerlink" href="#using-more-than-one-data-bearing-member-per-site" title="Permanent link">¶</a></h2>
 <p>You can scale the same idea beyond single-member sites. For example, deploy two data-bearing members on the Main site and two on the Replica site (<code>size: 2</code> on each), then add a single external arbiter so the total number of voters stays odd (2 + 2 + 1). Use <code>unsafeFlags.replsetSize: true</code> when a site has an even number of local members without a local arbiter. The interconnect pattern is the same: list remote data members and the shared arbiter under <code>externalNodes</code>, with <code>arbiterOnly: true</code> on the arbiter entry.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="replication.html">About multi-cluster and multi-region deployments</a></li>
 <li><a href="backups.html">Backup and restore</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6720,24 +6720,24 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1200-2025-05-19">Percona Operator for MongoDB 1.20.0 (2025-05-19)<a class="headerlink" href="#percona-operator-for-mongodb-1200-2025-05-19" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1200-2025-05-19">Percona Operator for MongoDB 1.20.0 (2025-05-19)<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1200-2025-05-19" title="Permanent link">¶</a></h1>
 <p><a class="md-button" href="../quickstart.html">Get started with the Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
 <p>This release of Percona Operator for MongoDB includes the following new features and improvements:</p>
-<h3 id="point-in-time-recovery-from-any-backup-storage">Point-in-time recovery from any backup storage<a class="headerlink" href="#point-in-time-recovery-from-any-backup-storage" title="Permanent link">¶</a></h3>
+<h3 id="point-in-time-recovery-from-any-backup-storage">Point-in-time recovery from any backup storage<a data-markdown-ignore class="headerlink" href="#point-in-time-recovery-from-any-backup-storage" title="Permanent link">¶</a></h3>
 <p>The Operator now natively supports <a href="../multi-storage.html">multiple backup storages</a> inheriting this feature from Percona Backup for MongoDB (PBM). This enables you to make a point-in-time recovery from any backup stored on any storage - PBM and the Operator maintain the data consistency for you. And you no longer have to wait till the Operator reconfigures a cluster after you select a different storage for a backup or a restore. As a result, overall performance of your backup flow improves.</p>
-<h3 id="improve-rto-with-the-added-support-of-incremental-physical-backups-tech-preview">Improve RTO with the added support of incremental physical backups (tech preview)<a class="headerlink" href="#improve-rto-with-the-added-support-of-incremental-physical-backups-tech-preview" title="Permanent link">¶</a></h3>
+<h3 id="improve-rto-with-the-added-support-of-incremental-physical-backups-tech-preview">Improve RTO with the added support of incremental physical backups (tech preview)<a data-markdown-ignore class="headerlink" href="#improve-rto-with-the-added-support-of-incremental-physical-backups-tech-preview" title="Permanent link">¶</a></h3>
 <p>Using <a href="../backups.html#backup-types">incremental physical backups</a> in the Operator, you can now back up only the changes happened since the previous backup. Since increments are smaller in size than the whole backup, the backup completion is faster and you also save on the storage and data transfer costs. Using incremental backups and point-in-time recovery improves your recovery time objective (RTO).</p>
 <p>You do need the base backup to start the incremental backup chain and you must make the whole chain from the same storage. Also note that the <code>percona.com/delete-backup</code> finalizer and the <a href="../operator.html#backuptaskskeep"><code>.spec.backup.tasks.[].keep</code></a> option apply for the incremental base backup but are ignored for subsequent incremental backups.</p>
-<h3 id="improved-monitoring-for-clusters-in-multi-region-or-multi-namespace-deployments-in-pmm">Improved monitoring for clusters in multi-region or multi-namespace deployments in PMM<a class="headerlink" href="#improved-monitoring-for-clusters-in-multi-region-or-multi-namespace-deployments-in-pmm" title="Permanent link">¶</a></h3>
+<h3 id="improved-monitoring-for-clusters-in-multi-region-or-multi-namespace-deployments-in-pmm">Improved monitoring for clusters in multi-region or multi-namespace deployments in PMM<a data-markdown-ignore class="headerlink" href="#improved-monitoring-for-clusters-in-multi-region-or-multi-namespace-deployments-in-pmm" title="Permanent link">¶</a></h3>
 <p>Now you can define a custom name for your clusters deployed in different data centers. This name helps Percona Management and Monitoring (PMM) Server to correctly recognize clusters as connected and monitor them as one deployment. Similarly, PMM Server identifies clusters deployed with the same names in different namespaces as separate ones and correctly displays performance metrics for you on dashboards. </p>
 <p>To assign a custom name, define this configuration in the Custom Resource manifest for your cluster:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">pmm</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">customClusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo-cluster</span>
 </code></pre></div>
-<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
-<h3 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
+<h2 id="changelog">Changelog<a data-markdown-ignore class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
+<h3 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1237">K8SPSMDB-1237</a> - Added support for incremental physical backups</p>
@@ -6746,7 +6746,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1329">K8SPSMDB-1329</a> - Allowed setting loadBalancerClass service type and using a custom implementation of a load balancer rather than the cloud provider default one.  </p>
 </li>
 </ul>
-<h3 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
+<h3 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-621">K8SPSMDB-621</a> - Set <code>PBM_MONGODB_URI</code> env variable in PBM container to avoid defining it for every shell session and improve setup automation (Thank you Damiano Albani for reporting this issue)</p>
@@ -6782,7 +6782,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1337">K8SPSMDB-1337</a> Add imagePullSecrets for PMM and backup images</p>
 </li>
 </ul>
-<h3 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h3>
+<h3 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1197">K8SPSMDB-1197</a> - Fixed the healthcheck log rotation routine to delete log file created 1 day before.</p>
@@ -6821,7 +6821,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1347">K8SPSMDB-1347</a> - Fixed the issue with the Operator throwing errors when auto generating password for multiple users by properly updating the secret after a password generation</p>
 </li>
 </ul>
-<h2 id="upgrade-considerations">Upgrade considerations<a class="headerlink" href="#upgrade-considerations" title="Permanent link">¶</a></h2>
+<h2 id="upgrade-considerations">Upgrade considerations<a data-markdown-ignore class="headerlink" href="#upgrade-considerations" title="Permanent link">¶</a></h2>
 <p>The <a href="../multi-storage.html">added support for multiple backup storages</a> requires specifying the main storage. If you use a single storage, it will automatically be marked as main in the Custom Resource manifest during the upgrade. If you use multiple storages, you must define one of them as the main storage when you upgrade to version 1.20.0. The following command shows how to set the <code>s3-us-west</code> storage as the main one:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">    "spec": {</span>
@@ -6841,7 +6841,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="s1">    }</span>
 <span class="s1">  }'</span>
 </code></pre></div>
-<h2 id="supported-software">Supported software<a class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
+<h2 id="supported-software">Supported software<a data-markdown-ignore class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with the following software:</p>
 <ul>
 <li>Percona Server for MongoDB 6.0.21-18, 7.0.18-11, and 8.0.8-3. </li>
@@ -6849,7 +6849,7 @@ window.addEventListener('afterprint', (event) => {
 <li>PMM Client: 2.44.1</li>
 </ul>
 <p>Other options may also work but have not been tested. </p>
-<h2 id="supported-platforms">Supported platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.30-1.32</li>
@@ -6859,7 +6859,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.35.0 based on Kubernetes 1.32.0</li>
 </ul>
 <p>This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.</p>
-<h2 id="percona-certified-images">Percona certified images<a class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
+<h2 id="percona-certified-images">Percona certified images<a data-markdown-ignore class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
 <p>Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:</p>
 <p><strong>Images released with the Operator version 1.20.0</strong>:</p>
 <table>

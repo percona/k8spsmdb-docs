@@ -24,7 +24,7 @@ with your value:">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ with your value:">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6765,12 +6765,12 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-tls-using-cert-manager">Configure TLS using cert-manager<a class="headerlink" href="#configure-tls-using-cert-manager" title="Permanent link">¶</a></h1>
+<h1 id="configure-tls-using-cert-manager">Configure TLS using cert-manager<a data-markdown-ignore class="headerlink" href="#configure-tls-using-cert-manager" title="Permanent link">¶</a></h1>
 <p>Export your namespace so the commands below can use it. Replace <code>&lt;namespace&gt;</code>
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="about-the-cert-manager">About the <em>cert-manager</em><a class="headerlink" href="#about-the-cert-manager" title="Permanent link">¶</a></h2>
+<h2 id="about-the-cert-manager">About the <em>cert-manager</em><a data-markdown-ignore class="headerlink" href="#about-the-cert-manager" title="Permanent link">¶</a></h2>
 <p>The <a href="https://cert-manager.io/docs/">cert-manager <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is a Kubernetes certificate
 management controller which is widely used to automate the management and issuance
 of TLS certificates. It is community-driven and open source.</p>
@@ -6788,7 +6788,7 @@ of TLS certificates. It is community-driven and open source.</p>
 </ul>
 <p>See <a href="TLS.html">Transport Layer Security (TLS)</a> for a comparison of cert-manager integration
 with manual certificate generation.</p>
-<h2 id="install-the-cert-manager">Install the <em>cert-manager</em><a class="headerlink" href="#install-the-cert-manager" title="Permanent link">¶</a></h2>
+<h2 id="install-the-cert-manager">Install the <em>cert-manager</em><a data-markdown-ignore class="headerlink" href="#install-the-cert-manager" title="Permanent link">¶</a></h2>
 <p>The cert-manager requires its own namespace. By default, this is the <code>cert-manager</code> namespace. </p>
 <ol>
 <li>
@@ -6831,11 +6831,11 @@ cert-manager-webhook-84fcdcd5d-697k4       1/1     Running   0          3m8s
 <li><a href="#operator-environment-variable">Operator environment variable</a></li>
 <li><a href="#verify-the-certificates">Verify the certificates</a></li>
 </ul>
-<h2 id="customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager<a class="headerlink" href="#customize-certificate-duration-for-cert-manager" title="Permanent link">¶</a></h2>
+<h2 id="customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager<a data-markdown-ignore class="headerlink" href="#customize-certificate-duration-for-cert-manager" title="Permanent link">¶</a></h2>
 <p>When you deploy the cluster using the default configuration, the Operator triggers the cert-manager to create certificates
 with default duration of 90 days.</p>
 <p>You can customize the certificate duration. For example, to align certificate lifetimes with your organization’s security and compliance policies.</p>
-<h3 id="rules-and-limitations">Rules and limitations<a class="headerlink" href="#rules-and-limitations" title="Permanent link">¶</a></h3>
+<h3 id="rules-and-limitations">Rules and limitations<a data-markdown-ignore class="headerlink" href="#rules-and-limitations" title="Permanent link">¶</a></h3>
 <p>Check the following rules and limitations for setting up the certificate duration:</p>
 <ol>
 <li>You can set the duration <strong>only when you create a new cluster</strong>. Updating it in a running cluster is not supported.</li>
@@ -6851,7 +6851,7 @@ with default duration of 90 days.</p>
 <p>Minimum CA certificate duration is 730 hours (approximately 30 days). Do not set the duration to exactly 730 hours; the Operator will fail to generate the correct certificate object if you do.</p>
 </li>
 </ol>
-<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
+<h3 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
 <p>To set the custom duration, specify the <code>.spec.tls.certValidityDuration</code> option in the Custom Resource. This option defines the validity period for TLS certificates</p>
 <p>Here’s the example configuration:</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
@@ -6863,7 +6863,7 @@ with default duration of 90 days.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>To verify the duration, you can <a href="tls-update.html#check-your-certificates-for-expiration">check certificates for expiration</a> at any time. This ensures your certificates are valid and helps you plan for renewals before they expire.</p>
-<h2 id="operator-managed-namespace-scoped-issuers-default">Operator-managed namespace-scoped issuers (default)<a class="headerlink" href="#operator-managed-namespace-scoped-issuers-default" title="Permanent link">¶</a></h2>
+<h2 id="operator-managed-namespace-scoped-issuers-default">Operator-managed namespace-scoped issuers (default)<a data-markdown-ignore class="headerlink" href="#operator-managed-namespace-scoped-issuers-default" title="Permanent link">¶</a></h2>
 <p>Once you create the database with the Operator and cert-manager is running, the
 Operator automatically creates:</p>
 <ul>
@@ -6881,7 +6881,7 @@ Operator automatically creates:</p>
 <p>cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a>
 to <code>true</code> (the default) for this self-signed setup. </p>
-<h2 id="operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope<a class="headerlink" href="#operator-managed-issuers-with-clusterissuer-scope" title="Permanent link">¶</a></h2>
+<h2 id="operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope<a data-markdown-ignore class="headerlink" href="#operator-managed-issuers-with-clusterissuer-scope" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -6918,7 +6918,7 @@ kubectl<span class="w"> </span>create<span class="w"> </span>clusterrolebinding<
 </li>
 </ol>
 <p>If you installed cert-manager in a custom namespace, set the <a href="env-vars-operator.html#certmanager_namespace"><code>CERTMANAGER_NAMESPACE</code></a> environment variable on the Operator Deployment.</p>
-<h2 id="use-an-existing-clusterissuer">Use an existing ClusterIssuer<a class="headerlink" href="#use-an-existing-clusterissuer" title="Permanent link">¶</a></h2>
+<h2 id="use-an-existing-clusterissuer">Use an existing ClusterIssuer<a data-markdown-ignore class="headerlink" href="#use-an-existing-clusterissuer" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -6947,7 +6947,7 @@ Operator does not create a parallel CA or overwrite your issuer.</p>
 when processing <code>Certificate</code> objects. You do not need to add extra Operator
 permissions to use an existing <code>ClusterIssuer</code>.</p>
 </div>
-<h2 id="use-an-existing-namespace-scoped-issuer">Use an existing namespace-scoped Issuer<a class="headerlink" href="#use-an-existing-namespace-scoped-issuer" title="Permanent link">¶</a></h2>
+<h2 id="use-an-existing-namespace-scoped-issuer">Use an existing namespace-scoped Issuer<a data-markdown-ignore class="headerlink" href="#use-an-existing-namespace-scoped-issuer" title="Permanent link">¶</a></h2>
 <p>To use a cert-manager <code>Issuer</code> that already exists in the database namespace,
 set <a href="operator.html#tlsissuerconfname"><code>tls.issuerConf.name</code></a> to that issuer’s name.
 You can leave <code>kind</code> at the default value (<code>Issuer</code>).</p>
@@ -6962,7 +6962,7 @@ You can leave <code>kind</code> at the default value (<code>Issuer</code>).</p>
 <p>When the issuer name refers to an existing resource, the Operator creates TLS
 <code>Certificate</code> resources that cert-manager signs through your issuer. It does not
 recreate the issuer or its CA chain.</p>
-<h2 id="pre-create-certificates-before-deployment">Pre-create certificates before deployment<a class="headerlink" href="#pre-create-certificates-before-deployment" title="Permanent link">¶</a></h2>
+<h2 id="pre-create-certificates-before-deployment">Pre-create certificates before deployment<a data-markdown-ignore class="headerlink" href="#pre-create-certificates-before-deployment" title="Permanent link">¶</a></h2>
 <p>If your platform team manages cert-manager objects directly, you can create
 <code>Certificate</code> (and optionally <code>ClusterIssuer</code>) resources before deploying the
 cluster. When the Operator starts reconciliation, it preserves user-created
@@ -6983,7 +6983,7 @@ cert-manager resources that are not owned by the Operator.</p>
 <p>Alternatively, you can supply TLS material as Kubernetes Secrets and reference
 them in <a href="tls-manual.html#configure-your-cluster"><code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code></a>
 without using cert-manager at all.</p>
-<h2 id="operator-environment-variable">Operator environment variable<a class="headerlink" href="#operator-environment-variable" title="Permanent link">¶</a></h2>
+<h2 id="operator-environment-variable">Operator environment variable<a data-markdown-ignore class="headerlink" href="#operator-environment-variable" title="Permanent link">¶</a></h2>
 <p>When the Operator manages a CA chain with <code>tls.issuerConf.kind: ClusterIssuer</code>,
 it stores the intermediate CA <code>Certificate</code> in the cert-manager namespace.
 By default this namespace is <code>cert-manager</code>. If you installed cert-manager
@@ -6992,7 +6992,7 @@ environment variable on the Operator Deployment.</p>
 <p>For more details on all cert-manager-related Custom Resource options, see the
 <a href="operator.html#tlsissuerconfname"><code>tls.issuerConf</code> section</a> in the
 Operator spec reference.</p>
-<h2 id="verify-the-certificates">Verify the certificates<a class="headerlink" href="#verify-the-certificates" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-certificates">Verify the certificates<a data-markdown-ignore class="headerlink" href="#verify-the-certificates" title="Permanent link">¶</a></h2>
 <p>Confirm cert-manager issued the Secrets and that they are populated. The
 <code>my-cluster-name-pbm</code> Secret exists only when backups are enabled:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>my-cluster-name-ssl-internal<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>

@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation">
+        <meta name="description" content="Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.">
       
       
         <meta name="author" content="Percona LLC">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6574,8 +6574,8 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="upgrade-the-operator-and-crd-on-openshift-via-operator-lifecycle-manager-olm">Upgrade the Operator and CRD on OpenShift via Operator Lifecycle Manager (OLM)<a class="headerlink" href="#upgrade-the-operator-and-crd-on-openshift-via-operator-lifecycle-manager-olm" title="Permanent link">¶</a></h1>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h1 id="upgrade-the-operator-and-crd-on-openshift-via-operator-lifecycle-manager-olm">Upgrade the Operator and CRD on OpenShift via Operator Lifecycle Manager (OLM)<a data-markdown-ignore class="headerlink" href="#upgrade-the-operator-and-crd-on-openshift-via-operator-lifecycle-manager-olm" title="Permanent link">¶</a></h1>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>Read <a href="update.html#before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
 before you proceed. It is important that you get familiar with the backup requirement, version-jump rules, and known
@@ -6584,7 +6584,7 @@ problematic version combinations.</li>
 </ul>
 <p>If you have <a href="openshift.html#install-the-operator-via-the-operator-lifecycle-manager-olm">installed the Operator on the OpenShift platform using OLM</a>, you can upgrade the Operator within it.</p>
 <p>If you know the OLM upgrade workflow, jump to the <a href="#upgrade-the-operator-via-olm">update Deployment steps</a>.</p>
-<h2 id="understand-how-olm-applies-operator-upgrades">Understand how OLM applies Operator upgrades<a class="headerlink" href="#understand-how-olm-applies-operator-upgrades" title="Permanent link">¶</a></h2>
+<h2 id="understand-how-olm-applies-operator-upgrades">Understand how OLM applies Operator upgrades<a data-markdown-ignore class="headerlink" href="#understand-how-olm-applies-operator-upgrades" title="Permanent link">¶</a></h2>
 <p>OLM manages the Operator using a resource called a <code>ClusterServiceVersion</code> (CSV).
 Each CSV represents a specific version of the Operator and contains:</p>
 <ul>
@@ -6605,7 +6605,7 @@ The following items are replaced with the values defined in the new CSV:</p>
 <p>If you previously customized the Operator Deployment manually, these changes are overwritten during the upgrade.</p>
 <p>The CRD may be updated too, if the new Operator version introduces schema changes.
 However, OLM doesn’t modify the <code>PerconaServerMongoDB</code> Custom Resource. It remains unchanged and continues running with its current configuration. For how to update it, refer to <a href="update-openshift.html">Update Percona Server for MongoDB</a>.</p>
-<h3 id="persisting-custom-operator-configuration">Persisting custom Operator configuration<a class="headerlink" href="#persisting-custom-operator-configuration" title="Permanent link">¶</a></h3>
+<h3 id="persisting-custom-operator-configuration">Persisting custom Operator configuration<a data-markdown-ignore class="headerlink" href="#persisting-custom-operator-configuration" title="Permanent link">¶</a></h3>
 <p>If you need to customize the Operator Deployment (for example, to adjust resource limits or set environment variables), you can do it through the Subscription.</p>
 <p>A Subscription is the OLM resource that defines which operator you want to install and how you want it to be upgraded. A Subscription connects your cluster to an Operator package in a CatalogSource and ensures that OLM continuously manages that Operator according to your chosen update strategy.</p>
 <p>Here’s how you can customize the Operator Deployment. This example command sets an environment variable for the Operator:</p>
@@ -6625,7 +6625,7 @@ However, OLM doesn’t modify the <code>PerconaServerMongoDB</code> Custom Resou
 <li>affinity</li>
 </ul>
 <p>These overrides are applied on top of the CSV and persist across upgrades. All other fields are overridden by the values from the new CSV during the Operator Deployment upgrade.</p>
-<h2 id="upgrade-the-operator-via-olm">Upgrade the Operator via OLM<a class="headerlink" href="#upgrade-the-operator-via-olm" title="Permanent link">¶</a></h2>
+<h2 id="upgrade-the-operator-via-olm">Upgrade the Operator via OLM<a data-markdown-ignore class="headerlink" href="#upgrade-the-operator-via-olm" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Find the initial Operator installation image with <code>kubectl get deploy</code> command:</p>
@@ -6655,7 +6655,7 @@ However, OLM doesn’t modify the <code>PerconaServerMongoDB</code> Custom Resou
 <p>Click the “Upgrade available” link to see upgrade details, then click “Preview InstallPlan” button, and finally “Approve” to upgrade the Operator.</p>
 </li>
 </ol>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="update-openshift.html">Upgrade the database</a></p>
 <hr>
 <div class="md-source-file">

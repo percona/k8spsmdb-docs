@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6572,7 +6572,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-concurrency-for-a-cluster-reconciliation">Configure concurrency for a cluster reconciliation<a class="headerlink" href="#configure-concurrency-for-a-cluster-reconciliation" title="Permanent link">¶</a></h1>
+<h1 id="configure-concurrency-for-a-cluster-reconciliation">Configure concurrency for a cluster reconciliation<a data-markdown-ignore class="headerlink" href="#configure-concurrency-for-a-cluster-reconciliation" title="Permanent link">¶</a></h1>
 <p>Reconciliation is the process by which the Operator continuously compares the desired state with the actual state of the cluster. The desired state is defined in a Kubernetes custom resource, like PerconaServerMongoDB.</p>
 <p>If the actual state does not match the desired state, the Operator takes actions to bring the system into alignment. This means creating, updating, or deleting Kubernetes resources (Pods, Services, ConfigMaps, etc.) or performing database-specific operations like scaling, backups, or failover.</p>
 <p>Reconciliation is triggered by a variety of events, including:</p>
@@ -6587,12 +6587,12 @@ window.addEventListener('afterprint', (event) => {
 <li><code>RECONCILE_INTERVAL</code> — how long the Operator waits before re-queuing reconciliation for each cluster</li>
 </ul>
 <p>See <a href="env-vars-operator.html">Configure Operator environment variables</a> for the full list of supported values and defaults.</p>
-<h2 id="configure-concurrent-reconciliation-workers">Configure concurrent reconciliation workers<a class="headerlink" href="#configure-concurrent-reconciliation-workers" title="Permanent link">¶</a></h2>
+<h2 id="configure-concurrent-reconciliation-workers">Configure concurrent reconciliation workers<a data-markdown-ignore class="headerlink" href="#configure-concurrent-reconciliation-workers" title="Permanent link">¶</a></h2>
 <p>By default, the Operator has one reconciliation worker. This means that if you deploy or update 2 clusters at the same time, the Operator will reconcile them sequentially.</p>
 <p>The <code>MAX_CONCURRENT_RECONCILES</code> environment variable controls the number of concurrent workers that can reconcile resources in Percona Server for MongoDB clusters in parallel.</p>
 <p>Thus, to extend the previous example, if you set the number of reconciliation workers to <code>2</code>, the Operator will reconcile both clusters in parallel. This also helps you with benchmarking the Operator performance.</p>
 <p>The general recommendation is to set the number of concurrent workers equal to the number of Percona Server for MongoDB clusters. When the number of workers is greater, the excessive workers will remain idle.</p>
-<h3 id="set-the-number-of-reconciliation-workers">Set the number of reconciliation workers<a class="headerlink" href="#set-the-number-of-reconciliation-workers" title="Permanent link">¶</a></h3>
+<h3 id="set-the-number-of-reconciliation-workers">Set the number of reconciliation workers<a data-markdown-ignore class="headerlink" href="#set-the-number-of-reconciliation-workers" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Check the index of the <code>MAX_CONCURRENT_RECONCILES</code> environment variable using the following command:</p>
@@ -6644,10 +6644,10 @@ window.addEventListener('afterprint', (event) => {
 <div class="no-copy highlight"><pre><span></span><code>2
 </code></pre></div>
 </details>
-<h2 id="configure-the-reconciliation-interval">Configure the reconciliation interval<a class="headerlink" href="#configure-the-reconciliation-interval" title="Permanent link">¶</a></h2>
+<h2 id="configure-the-reconciliation-interval">Configure the reconciliation interval<a data-markdown-ignore class="headerlink" href="#configure-the-reconciliation-interval" title="Permanent link">¶</a></h2>
 <p>After each reconcile loop, the Operator schedules the next one using the <code>RECONCILE_INTERVAL</code> environment variable. The default is <code>5s</code>.</p>
 <p>Increasing this value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. Values below <code>5s</code>, zero, negative, or invalid duration strings fall back to <code>5s</code>.</p>
-<h3 id="set-the-reconciliation-interval">Set the reconciliation interval<a class="headerlink" href="#set-the-reconciliation-interval" title="Permanent link">¶</a></h3>
+<h3 id="set-the-reconciliation-interval">Set the reconciliation interval<a data-markdown-ignore class="headerlink" href="#set-the-reconciliation-interval" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Check the current value:</p>

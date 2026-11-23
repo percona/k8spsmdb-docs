@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6676,7 +6676,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="openldap-integration">OpenLDAP integration<a class="headerlink" href="#openldap-integration" title="Permanent link">¶</a></h1>
+<h1 id="openldap-integration">OpenLDAP integration<a data-markdown-ignore class="headerlink" href="#openldap-integration" title="Permanent link">¶</a></h1>
 <p>Enterprises use LDAP services provided by software like OpenLDAP, Microsoft Active Directory, etc. to control information about users, systems, networks, services and applications and manage corresponding access rights for the authentication/authorization process in a centralized way.</p>
 <p>The following guide describes the integration of OpenLDAP with Percona Server for MongoDB managed by the Operator. We assume your OpenLDAP server is already installed and running.</p>
 <p>To help you understand and perform the integration of OpenLDAP with Percona Server for MongoDB and the Operator, refer to the following resources:</p>
@@ -6685,7 +6685,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Follow the official <a href="https://www.openldap.org/doc/admin26/">OpenLDAP documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for detailed instructions on how to install and configure OpenLDAP.</li>
 <li>Review the <a href="https://docs.percona.com/percona-server-for-mongodb/latest/authentication.html">Percona Server for MongoDB documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for guidance on configuring MongoDB to work with LDAP.</li>
 </ul>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>An OpenLDAP server is installed, running, and reachable from the Kubernetes cluster.
   This guide does not cover installing OpenLDAP.</li>
@@ -6704,7 +6704,7 @@ where. A replica set needs <code>mongod</code> configuration only; a sharded clu
 <code>mongos</code> (authentication) and the config server replica set (authorization). Pick the
 matching section below.</p>
 </div>
-<h2 id="configure-the-openldap-server">Configure the OpenLDAP server<a class="headerlink" href="#configure-the-openldap-server" title="Permanent link">¶</a></h2>
+<h2 id="configure-the-openldap-server">Configure the OpenLDAP server<a data-markdown-ignore class="headerlink" href="#configure-the-openldap-server" title="Permanent link">¶</a></h2>
 <p>Add users to your LDAP directory. To do that, use <a href="https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format">LDIF  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> (LDAP Data Interchange Format) files. LDIF is a standard plain-text format for representing LDAP entries and operations. You create LDIF files to define new users, groups, or other LDAP directory entries, and then apply them to your directory using LDAP utilities like <code>ldapadd</code>. LDIF can describe any LDAP entry or modification, making it essential for managing your LDAP Data Information Tree (DIT).</p>
 <ol>
 <li>
@@ -6749,9 +6749,9 @@ matching section below.</p>
 <p class="admonition-title">Note</p>
 <p>If you are not sure about the approach to make references between user and group objects, <a href="https://www.openldap.org/doc/admin24/overlays.html">OpenLDAP overlays  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> provide one of the possible ways to go.</p>
 </div>
-<h2 id="configure-the-operator-and-percona-server-for-mongodb">Configure the Operator and Percona Server for MongoDB<a class="headerlink" href="#configure-the-operator-and-percona-server-for-mongodb" title="Permanent link">¶</a></h2>
+<h2 id="configure-the-operator-and-percona-server-for-mongodb">Configure the Operator and Percona Server for MongoDB<a data-markdown-ignore class="headerlink" href="#configure-the-operator-and-percona-server-for-mongodb" title="Permanent link">¶</a></h2>
 <p>The following steps will look different depending on your MongoDB topology.</p>
-<h3 id="replica-set">Replica set<a class="headerlink" href="#replica-set" title="Permanent link">¶</a></h3>
+<h3 id="replica-set">Replica set<a data-markdown-ignore class="headerlink" href="#replica-set" title="Permanent link">¶</a></h3>
 <p>To connect MongoDB to OpenLDAP in a non-sharded (replica set) cluster, you need to configure both:</p>
 <ul>
 <li><code>mongod</code></li>
@@ -6899,7 +6899,7 @@ matching section below.</p>
 </details>
 </li>
 </ol>
-<h3 id="sharded-cluster">Sharded cluster<a class="headerlink" href="#sharded-cluster" title="Permanent link">¶</a></h3>
+<h3 id="sharded-cluster">Sharded cluster<a data-markdown-ignore class="headerlink" href="#sharded-cluster" title="Permanent link">¶</a></h3>
 <p>To connect MongoDB to OpenLDAP in a sharded cluster, you need to configure the following components:</p>
 <ul>
 <li><code>mongod</code></li>
@@ -7077,10 +7077,10 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 </details>
 </li>
 </ol>
-<h2 id="oidc-authentication-and-ldap-authorization">OIDC authentication and LDAP authorization<a class="headerlink" href="#oidc-authentication-and-ldap-authorization" title="Permanent link">¶</a></h2>
+<h2 id="oidc-authentication-and-ldap-authorization">OIDC authentication and LDAP authorization<a data-markdown-ignore class="headerlink" href="#oidc-authentication-and-ldap-authorization" title="Permanent link">¶</a></h2>
 <p>A configuration file provided via a Secret takes precedence over Custom Resource settings (<code>spec.configuration</code>).</p>
 <p>If you use <a href="oidc.html">OIDC authentication</a> with LDAP authorization, merge both setups in one place — either in the Secret or in the Custom Resource — so one configuration does not overwrite the other. In this case, also update the authentication mechanisms to include <code>MONGODB-OIDC</code>.</p>
-<h2 id="using-ldap-over-tls-connection">Using LDAP over TLS connection<a class="headerlink" href="#using-ldap-over-tls-connection" title="Permanent link">¶</a></h2>
+<h2 id="using-ldap-over-tls-connection">Using LDAP over TLS connection<a data-markdown-ignore class="headerlink" href="#using-ldap-over-tls-connection" title="Permanent link">¶</a></h2>
 <p><a href="https://www.openldap.org/faq/data/cache/185.html">LDAP over TLS  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> allows you to use Transport Layer Security, encrypting your communication between MongoDB and OpenLDAP server.</p>
 <p>Here are the needed modifications to <a href="#configure-the-operator-and-percona-server-for-mongodb">Configure the Operator and Percona Server for MongoDB</a> subsection which will enable it:</p>
 <ol>
@@ -7140,7 +7140,7 @@ kubectl create secret generic my-cluster-name-cfg-mongod --from-file=mongod.conf
 </code></pre></div>
 </li>
 </ol>
-<h2 id="verify-ldap-authentication">Verify LDAP authentication<a class="headerlink" href="#verify-ldap-authentication" title="Permanent link">¶</a></h2>
+<h2 id="verify-ldap-authentication">Verify LDAP authentication<a data-markdown-ignore class="headerlink" href="#verify-ldap-authentication" title="Permanent link">¶</a></h2>
 <p>Connect to the cluster as one of your LDAP users, authenticating against the <code>$external</code>
 database with the <code>PLAIN</code> mechanism:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>mongosh<span class="w"> </span><span class="se">\</span>

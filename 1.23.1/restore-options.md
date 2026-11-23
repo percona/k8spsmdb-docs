@@ -1,0 +1,259 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Restore Resource options
+
+A Restore resource is a Kubernetes object that tells the Operator how to restore your database from a specific backup. The `deploy/backup/restore.yaml` file is a template for creating restore resources. It defines the `PerconaServerMongoDBRestore` resource.
+
+This document describes all available options that you can use to customize a restore.
+
+## `apiVersion`
+
+Specifies the API version of the Custom Resource. `psmdb.percona.com` indicates the group, and `v1` is the version of the API.
+
+## `kind`
+
+Defines the type of resource being created: `PerconaServerMongoDBRestore`.
+
+## `metadata`
+
+The metadata part of the `deploy/backup/restore.yaml` contains metadata about the resource, such as its name and other attributes. It includes the following keys:
+
+- `name` - The name of the restore object used to identify it in your deployment. You use this name to track the restore operation status and view information about it.
+
+## `spec`
+
+This section includes the configuration of a restore resource.
+
+### `clusterName`
+
+Specifies the name of the MongoDB cluster to restore.
+
+| Value type | Example           |
+| ---------- | ----------------- |
+| string     | `my-cluster-name` |
+
+### `storageName`
+
+Specifies the name of the storage where a backup is located. The storage name must match the name in the `backup.storages` subsection of the `deploy/cr.yaml` file. Use this option together with the `backupSource` option. For more information on the flow and restore steps, see [Restore from a backup on a new cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore.html#approach-2-the-storage-is-defined-on-target)
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `s3-us-west` |
+
+### `backupName`
+
+Specifies the name of a backup to be used for a restore. This backup should be from the same cluster.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `backup1` |
+
+## The `selective` subsection
+
+Controls the selective restore, which enables you to restore a specific subset of namespaces - databases and collections.
+
+### `selective.withUsersAndRoles`
+
+Allows restoring specified custom databases with users and roles that were created against them. Read more about [Selective restore with users and roles](https://docs.percona.com/percona-backup-mongodb/features/selective-backup.html#restore-a-database-with-users-and-roles) in PBM documentation.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `selective.namespaces`
+
+Specifies the list of namespaces to restore. The namespace has the format `<db.collection>`
+
+| Value type | Example                                  |
+| ---------- | ---------------------------------------- |
+| array      | `["db1.collection1", "db2.collection2"]` |
+
+### `selective.nsFrom`
+
+Specifies the source namespace to restore from when remapping a namespace during a selective restore. The namespace has the format `<db.collection>`. Use it together with the `selective.nsTo` option: both must be set, and they must not be the same. Read more about [restoring a collection under a different name](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore-new-name.html).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `myApp.test` |
+
+### `selective.nsTo`
+
+Specifies the target namespace to restore to when remapping a namespace during a selective restore. The collection from `selective.nsFrom` is restored under this name. The namespace has the format `<db.collection>`. Use it together with the `selective.nsFrom` option: both must be set, and they must not be the same. Read more about [restoring a collection under a different name](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore-new-name.html).
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `myApp.test_remapped` |
+
+## `replsetRemapping`
+
+Defines mapping between source and target replica set names during a restore. This should be a dictionary where each key is the replica set name from the source cluster, and the corresponding value is the desired replica set name in the target cluster. Read more about [restores to the cluster with different replica set names](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore.html#with-different-replica-set-names).
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| array      | `sourceRs0: targetRs0` |
+
+## The `pitr` subsection
+
+Controls how to make a point-in-time restore. Read more about [restoring to a point in time](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html).
+
+### `pitr.type`
+
+Specifies the type of a point-in-time restore. Available options:
+
+- `date` - restore to a specific date.
+- `latest` - recover to the latest possible transaction
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `date`  |
+
+### `pitr.date`
+
+Specifies the timestamp for the restore in the datetime format `YYYY-MM-DD hh:mm:ss`.
+
+Use it together with the `type=date` option.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `YYYY-MM-DD hh:mm:ss` |
+
+## The `backupSource` subsection
+
+Contains the configuration options to restore from a backup made in a different cluster, namespace, or Kubernetes environment.
+
+### `backupSource.type`
+
+Specifies the backup type. Available options: `logical`, `physical`, `incremental`, `external`.
+
+Use `external` when restoring from [PVC snapshot backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-usage.html#make-a-restore-to-a-new-cluster).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `physical` |
+
+### `backupSource.snapshots`
+
+Lists `VolumeSnapshot` objects to restore from when `backupSource.type` is `external`. Required for cross-cluster or manual snapshot restores when no `PerconaServerMongoDBBackup` exists in the target namespace.
+
+Each item includes:
+
+| Field          | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `replsetName`  | Replica set name.                               |
+| `snapshotName` | `VolumeSnapshot` name in the restore namespace. |
+
+Example:
+
+```
+backupSource:
+  type: external
+  snapshots:
+    - replsetName: rs0
+      snapshotName: my-snapshot-backup-rs0-0
+```
+
+When you use `spec.backupName` instead, the Operator reads snapshots from the Backup resource `status.snapshots`.
+
+### `backupSource.destination`
+
+Specifies the path to the backup on the storage.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `s3://bucket-name/backup-destination/` |
+
+### `backupSource.s3.credentialsSecret`
+
+Specifies the Secrets object name with the credentials to access the storage with a backup.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| string     | `my-cluster-name-backup-s3` |
+
+### `backupSource.s3.serverSideEncryption.kmsKeyID`
+
+Specifies your customer-managed key stored in the AWS Key Management Service (AWS KMS). This key is used to encrypt backup data uploaded to S3 buckets if you don’t wish to use the default server-side encryption with Amazon S3 managed keys (SSE-S3)
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `1234abcd-12ab-34cd-56ef-1234567890ab` |
+
+### `backupSource.s3.serverSideEncryption.sseAlgorithm`
+
+The encryption algorithm used to encrypt data
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `AES256` |
+
+### `backupSource.s3.serverSideEncryption.sseCustomerAlgorithm`
+
+The encryption algorithm used for server-side encryption with customer-provided keys (SSE-C).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `AES256` |
+
+### `backupSource.s3.serverSideEncryption.sseCustomerKey`
+
+The customer-provided encryption key.
+
+| Value type | Example            |
+| ---------- | ------------------ |
+| string     | `Y3VzdG9tZXIta2V5` |
+
+### `backupSource.s3.region`
+
+The [AWS region](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `us-west-2` |
+
+### `backupSource.s3.bucket`
+
+The [Amazon S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) name for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backupSource.s3.endpointUrl`
+
+The URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).
+
+| Value type | Example                               |
+| ---------- | ------------------------------------- |
+| string     | `https://s3.us-west-2.amazonaws.com/` |
+
+### `backupSource.s3.prefix`
+
+The path to the data directory in the bucket. If undefined, backups are stored in the bucket’s root directory.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backupSource.azure.credentialsSecret`
+
+Specifies the Secrets object name with the credentials to access the Azure Blob storage with a backup.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backupSource.azure.prefix`
+
+The path to the data directory in the bucket. If undefined, backups are stored in the bucket’s root directory.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backupSource.s3.container`
+
+The name of the storage container. See the [naming conventions](https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#container-names)
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |

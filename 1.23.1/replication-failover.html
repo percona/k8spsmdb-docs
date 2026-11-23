@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6568,14 +6568,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="fail-over-services-to-the-replica-site">Fail over services to the Replica site<a class="headerlink" href="#fail-over-services-to-the-replica-site" title="Permanent link">¶</a></h1>
+<h1 id="fail-over-services-to-the-replica-site">Fail over services to the Replica site<a data-markdown-ignore class="headerlink" href="#fail-over-services-to-the-replica-site" title="Permanent link">¶</a></h1>
 <p>Failing over services to the Replica site ensures your applications remain available if the Main site needs maintenance or becomes unavailable. You might need to do this during planned maintenance windows or in response to unexpected outages. The following sections explain how to handle both planned and unplanned failover scenarios.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>Your sites must already be interconnected before you can fail over between them. See <a href="replication-interconnect.html">Interconnect sites</a> (Multi-cluster Services) or <a href="replication-multi-dc.html">Splitting a replica set across multiple data centers</a> (manual/multi-region) if you haven’t set that up yet.</li>
 <li>The example hostnames below (<code>main-cluster-rs0-0.psmdb.svc.clusterset.local</code>) use the Multi-cluster Services DNS suffix from <a href="replication-interconnect.html">Interconnect sites</a>. If you interconnected sites manually instead, substitute your own hostnames (for example, <code>svc.cluster.local</code> or an externally reachable name) — the <code>rs.status()</code>/<code>rs.conf()</code>/<code>rs.reconfig()</code> commands themselves are the same either way.</li>
 </ul>
-<h2 id="planned-services-switchover">Planned services switchover<a class="headerlink" href="#planned-services-switchover" title="Permanent link">¶</a></h2>
+<h2 id="planned-services-switchover">Planned services switchover<a data-markdown-ignore class="headerlink" href="#planned-services-switchover" title="Permanent link">¶</a></h2>
 <p>You can switch over services to the Replica site while doing some planned maintenance on the Main site. </p>
 <p class="power-number">Here’s how to do it:</p>
 <ol>
@@ -6607,7 +6607,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Connect to one of the Replica site Pods and check the replica set status. You should see that it has re-elected the new primary.</p>
 </li>
 </ol>
-<h2 id="fail-over-services-in-a-disaster-recovery-scenario">Fail over services in a disaster recovery scenario<a class="headerlink" href="#fail-over-services-in-a-disaster-recovery-scenario" title="Permanent link">¶</a></h2>
+<h2 id="fail-over-services-in-a-disaster-recovery-scenario">Fail over services in a disaster recovery scenario<a data-markdown-ignore class="headerlink" href="#fail-over-services-in-a-disaster-recovery-scenario" title="Permanent link">¶</a></h2>
 <p>A disaster can strike at any moment and the Main site may be down or unavailable. In this case, you must fail over the services to the Replica site.</p>
 <p class="power-number">Here’s how to do it:</p>
 <ol>
@@ -6694,7 +6694,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Connect to the Replica site and check the replica set configuration.</li>
 <li>Reconfigure your MongoDB clients to connect to the Replica site.</li>
 </ol>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="replication.html">About multi-cluster and multi-region deployments</a></li>
 <li><a href="backups.html">Backup and restore</a></li>

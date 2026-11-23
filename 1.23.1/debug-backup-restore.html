@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6798,7 +6798,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="troubleshoot-backups-and-restores">Troubleshoot backups and restores<a class="headerlink" href="#troubleshoot-backups-and-restores" title="Permanent link">¶</a></h1>
+<h1 id="troubleshoot-backups-and-restores">Troubleshoot backups and restores<a data-markdown-ignore class="headerlink" href="#troubleshoot-backups-and-restores" title="Permanent link">¶</a></h1>
 <p>You can troubleshoot failed backups or restores by checking the status of backup and restore objects, reviewing Percona Backup for MongoDB (PBM) agent logs, and verifying storage and cluster configuration.</p>
 <p>Percona Operator for MongoDB uses PBM as a <code>backup-agent</code> sidecar in every database Pod. Backup and restore work through PBM control collections. For an overview of the flow, see <a href="backups.html#how-backup-and-restore-work">How backup and restore work</a>.</p>
 <p>The overall troubleshooting workflow looks like this:</p>
@@ -6814,8 +6814,8 @@ window.addEventListener('afterprint', (event) => {
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="backups">Backups<a class="headerlink" href="#backups" title="Permanent link">¶</a></h2>
-<h3 id="check-backup-status">Check backup status<a class="headerlink" href="#check-backup-status" title="Permanent link">¶</a></h3>
+<h2 id="backups">Backups<a data-markdown-ignore class="headerlink" href="#backups" title="Permanent link">¶</a></h2>
+<h3 id="check-backup-status">Check backup status<a data-markdown-ignore class="headerlink" href="#check-backup-status" title="Permanent link">¶</a></h3>
 <p>Start by checking the status of your backup objects:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6827,7 +6827,7 @@ backup1   my-cluster-name   s3-us-west   s3://my-bucket/2025-09-23T10:34:59Z log
 backup2   my-cluster-name   s3-us-west                                       logical              error               2m
 </code></pre></div>
 </details>
-<h3 id="check-backup-error-details">Check backup error details<a class="headerlink" href="#check-backup-error-details" title="Permanent link">¶</a></h3>
+<h3 id="check-backup-error-details">Check backup error details<a data-markdown-ignore class="headerlink" href="#check-backup-error-details" title="Permanent link">¶</a></h3>
 <p>When a backup fails, use <code>kubectl describe</code> or inspect the full object to get detailed error information:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6853,13 +6853,13 @@ Status:
 <li><strong>Network issues</strong>: Problems connecting to the storage service</li>
 <li><strong>PBM not ready</strong>: PBM agents or storage configuration are not ready yet (check the cluster <code>PBMReady</code> condition)</li>
 </ul>
-<h3 id="check-pbm-readiness-on-the-cluster">Check PBM readiness on the cluster<a class="headerlink" href="#check-pbm-readiness-on-the-cluster" title="Permanent link">¶</a></h3>
+<h3 id="check-pbm-readiness-on-the-cluster">Check PBM readiness on the cluster<a data-markdown-ignore class="headerlink" href="#check-pbm-readiness-on-the-cluster" title="Permanent link">¶</a></h3>
 <p>Before you start a backup, confirm that PBM is ready on the cluster:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[?(@.type=="PBMReady")]}{.type}{"\n"}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'</span>
 </code></pre></div>
 <p>If <code>PBMReady</code> is <code>False</code>, resolve the reported reason before retrying the backup. See <a href="cr-statuses.html#conditions">Custom resource statuses</a> for condition details.</p>
-<h3 id="find-the-pod-that-ran-the-backup">Find the Pod that ran the backup<a class="headerlink" href="#find-the-pod-that-ran-the-backup" title="Permanent link">¶</a></h3>
+<h3 id="find-the-pod-that-ran-the-backup">Find the Pod that ran the backup<a data-markdown-ignore class="headerlink" href="#find-the-pod-that-ran-the-backup" title="Permanent link">¶</a></h3>
 <p>Each backup object records which Pod ran PBM for the operation. Retrieve the Pod map as follows:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.pbmPods}'</span>
 </code></pre></div>
@@ -6871,7 +6871,7 @@ Status:
 <div class="no-copy highlight"><pre><span></span><code>{"cfg":"my-cluster-name-cfg-1.my-cluster-name-cfg.&lt;namespace&gt;.svc.cluster.local:27017","rs0":"my-cluster-name-rs0-2.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017"}
 </code></pre></div>
 <p>In this example, check the <code>my-cluster-name-cfg-1</code> and <code>my-cluster-name-rs0-2</code> Pods.</p>
-<h3 id="view-backup-agent-logs">View backup-agent logs<a class="headerlink" href="#view-backup-agent-logs" title="Permanent link">¶</a></h3>
+<h3 id="view-backup-agent-logs">View backup-agent logs<a data-markdown-ignore class="headerlink" href="#view-backup-agent-logs" title="Permanent link">¶</a></h3>
 <p>To see detailed logs from the Pod that ran the backup, check the <code>backup-agent</code> container:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6880,8 +6880,8 @@ Status:
 </code></pre></div>
 <p>These logs show PBM backup execution, including storage uploads and any errors that occurred.</p>
 <p>You can also run PBM diagnostics inside the container. See <a href="debug-shell.html">Exec into the container</a> and the <a href="https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html">PBM troubleshooting guide <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="restores">Restores<a class="headerlink" href="#restores" title="Permanent link">¶</a></h2>
-<h3 id="check-restore-status">Check restore status<a class="headerlink" href="#check-restore-status" title="Permanent link">¶</a></h3>
+<h2 id="restores">Restores<a data-markdown-ignore class="headerlink" href="#restores" title="Permanent link">¶</a></h2>
+<h3 id="check-restore-status">Check restore status<a data-markdown-ignore class="headerlink" href="#check-restore-status" title="Permanent link">¶</a></h3>
 <p>To check the status of restore operations, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6893,7 +6893,7 @@ restore1   my-cluster-name   error     5m56s
 restore2   my-cluster-name   ready     5m37s
 </code></pre></div>
 </details>
-<h3 id="check-restore-error-details">Check restore error details<a class="headerlink" href="#check-restore-error-details" title="Permanent link">¶</a></h3>
+<h3 id="check-restore-error-details">Check restore error details<a data-markdown-ignore class="headerlink" href="#check-restore-error-details" title="Permanent link">¶</a></h3>
 <p>When a restore fails, use the <code>kubectl describe</code> command or inspect the full object:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-restore<span class="w"> </span>&lt;restore-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6917,13 +6917,13 @@ Status:
 <li><strong>Cluster state conflicts</strong>: The cluster is not in a state that allows restore</li>
 <li><strong>Insufficient resources</strong>: Not enough disk space or memory to complete the restore</li>
 </ul>
-<h3 id="view-restore-logs">View restore logs<a class="headerlink" href="#view-restore-logs" title="Permanent link">¶</a></h3>
+<h3 id="view-restore-logs">View restore logs<a data-markdown-ignore class="headerlink" href="#view-restore-logs" title="Permanent link">¶</a></h3>
 <p>How you view restore logs depends on the restore type.</p>
-<h4 id="logical-restore">Logical restore<a class="headerlink" href="#logical-restore" title="Permanent link">¶</a></h4>
+<h4 id="logical-restore">Logical restore<a data-markdown-ignore class="headerlink" href="#logical-restore" title="Permanent link">¶</a></h4>
 <p>For a logical restore, PBM runs in the <code>backup-agent</code> sidecar. Check logs from a replica set Pod:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<h4 id="physical-restore">Physical restore<a class="headerlink" href="#physical-restore" title="Permanent link">¶</a></h4>
+<h4 id="physical-restore">Physical restore<a data-markdown-ignore class="headerlink" href="#physical-restore" title="Permanent link">¶</a></h4>
 <p>For a physical restore, the Operator moves PBM into the <code>mongod</code> container and removes the <code>backup-agent</code> sidecar for the duration of the restore. Check <code>mongod</code> logs:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>mongod<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6931,11 +6931,11 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>mongod<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/data/db/pbm-restore-logs
 </code></pre></div>
 <p>PBM keeps only the latest restore logs because it cleans up the data directory during the process.</p>
-<h3 id="if-a-physical-restore-fails">If a physical restore fails<a class="headerlink" href="#if-a-physical-restore-fails" title="Permanent link">¶</a></h3>
+<h3 id="if-a-physical-restore-fails">If a physical restore fails<a data-markdown-ignore class="headerlink" href="#if-a-physical-restore-fails" title="Permanent link">¶</a></h3>
 <p>If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.</p>
 <p>The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.</p>
 <p>See also <a href="backups-restore.html#if-a-physical-restore-fails">If a physical restore fails</a> in the restore guide.</p>
-<h3 id="physical-restore-finishes-with-crashloopbackoff">Physical restore finishes with CrashLoopBackOff<a class="headerlink" href="#physical-restore-finishes-with-crashloopbackoff" title="Permanent link">¶</a></h3>
+<h3 id="physical-restore-finishes-with-crashloopbackoff">Physical restore finishes with CrashLoopBackOff<a data-markdown-ignore class="headerlink" href="#physical-restore-finishes-with-crashloopbackoff" title="Permanent link">¶</a></h3>
 <p>A physical restore can finish successfully, but one of the Pods may end up in the <code>CrashLoopBackOff</code> state. This is a known issue in Percona Backup for MongoDB. See <a href="https://perconadev.atlassian.net/browse/PBM-1554">PBM-1554</a> for details.</p>
 <p>To recover the affected Pod, delete its PVC and the Pod so the Operator can recreate them and the member can resync from the other replica set members:</p>
 <ol>
@@ -6952,7 +6952,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 </li>
 </ol>
 <p>The Operator automatically recreates the Pod and PVC after deletion.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups.html">Backup and restore</a></li>
 </ul>

@@ -25,7 +25,7 @@ Pods are created and set to available Kubernetes nodes.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ Pods are created and set to available Kubernetes nodes.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6499,7 +6499,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="scale-percona-server-for-mongodb-on-kubernetes">Scale Percona Server for MongoDB on Kubernetes<a class="headerlink" href="#scale-percona-server-for-mongodb-on-kubernetes" title="Permanent link">¶</a></h1>
+<h1 id="scale-percona-server-for-mongodb-on-kubernetes">Scale Percona Server for MongoDB on Kubernetes<a data-markdown-ignore class="headerlink" href="#scale-percona-server-for-mongodb-on-kubernetes" title="Permanent link">¶</a></h1>
 <p>One of the great advantages brought by Kubernetes is
 the ease of an application scaling. Scaling a Deployment up or down ensures new
 Pods are created and set to available Kubernetes nodes.</p>
@@ -6510,8 +6510,8 @@ scaled separately - see <a href="scaling-storage-resize.html">Resize storage</a>
 looks technically similar to horizontal scaling, because it also involves additional
 nodes, but the reason is maintaining liveness of the system in case of server or
 network failures.</p>
-<h2 id="vertical-scaling">Vertical scaling<a class="headerlink" href="#vertical-scaling" title="Permanent link">¶</a></h2>
-<h3 id="scale-compute-resources">Scale compute resources<a class="headerlink" href="#scale-compute-resources" title="Permanent link">¶</a></h3>
+<h2 id="vertical-scaling">Vertical scaling<a data-markdown-ignore class="headerlink" href="#vertical-scaling" title="Permanent link">¶</a></h2>
+<h3 id="scale-compute-resources">Scale compute resources<a data-markdown-ignore class="headerlink" href="#scale-compute-resources" title="Permanent link">¶</a></h3>
 <p>The Operator deploys and manages multiple components, such as MongoDB replica
 set instances, <code>mongos</code> and config server replica set instances, and others. You can manage CPU or memory for every component separately by editing corresponding sections in the Custom Resource. We follow
 the structure for requests and limits that <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">Kubernetes provides  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
@@ -6531,8 +6531,8 @@ section in the Custom Resource:</p>
 for more details about other components.</p>
 <p><a name="scale-storage"></a></p>
 <p>Storage capacity is scaled separately - see <a href="scaling-storage-resize.html">Resize storage</a>.</p>
-<h2 id="horizontal-scaling">Horizontal scaling<a class="headerlink" href="#horizontal-scaling" title="Permanent link">¶</a></h2>
-<h3 id="replica-sets">Replica Sets<a class="headerlink" href="#replica-sets" title="Permanent link">¶</a></h3>
+<h2 id="horizontal-scaling">Horizontal scaling<a data-markdown-ignore class="headerlink" href="#horizontal-scaling" title="Permanent link">¶</a></h2>
+<h3 id="replica-sets">Replica Sets<a data-markdown-ignore class="headerlink" href="#replica-sets" title="Permanent link">¶</a></h3>
 <p>You can change the size separately for different components of your MongoDB replica set by setting these options in the appropriate subsections:</p>
 <ul>
 <li><a href="operator.html#replsetssize">replsets.size</a> allows you to set the size of the MongoDB Replica Set,</li>
@@ -6564,7 +6564,7 @@ cluster’s overall readiness:</p>
 <code>kubectl get psmdb &lt;cluster-name&gt; -n $NAMESPACE -o yaml</code> must both reflect the new
 member count. See <a href="cr-statuses.html">Custom resource statuses</a> for the full status field
 reference.</p>
-<h3 id="sharding">Sharding<a class="headerlink" href="#sharding" title="Permanent link">¶</a></h3>
+<h3 id="sharding">Sharding<a data-markdown-ignore class="headerlink" href="#sharding" title="Permanent link">¶</a></h3>
 <p>You can change the size for different components of your MongoDB sharded cluster by setting these options in the appropriate subsections:</p>
 <ul>
 <li><a href="operator.html#shardingconfigsvrreplsetsize">sharding.configsvrReplSet.size</a> allows you to set the number of <a href="https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/">Config Server instances  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> in a sharded cluster,</li>
@@ -6578,7 +6578,7 @@ set the same way, by its component label:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongod,app.kubernetes.io/replset<span class="o">=</span>cfg
 </code></pre></div>
 <p>The number of Pods must match <code>sharding.configsvrReplSet.size</code> or your custom config server replica set name if you changed it. For more details, see the section on <a href="sharding.html#configuring-instances-of-a-sharded-cluster">Configuring instances of a sharded cluster</a>.</p>
-<h4 id="changing-the-number-of-shards">Changing the number of shards<a class="headerlink" href="#changing-the-number-of-shards" title="Permanent link">¶</a></h4>
+<h4 id="changing-the-number-of-shards">Changing the number of shards<a data-markdown-ignore class="headerlink" href="#changing-the-number-of-shards" title="Permanent link">¶</a></h4>
 <p>You can change the number of shards of an existing cluster by adding or removing members in the <a href="operator.html#operator-replsets-section">spec.replsets</a> subsection.</p>
 <p>For example, given the following cluster that has 2 shards:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6617,7 +6617,7 @@ set the same way, by its component label:</p>
 <p class="admonition-title">Note</p>
 <p>The Operator will not allow you to remove existing shards unless they don’t have any user-created collections. It is your responsibility to ensure the shard’s data is <a href="https://www.mongodb.com/docs/manual/tutorial/remove-shards-from-cluster">migrated to the remaining shards</a> in the cluster before trying to applying this change.</p>
 </div>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling-about.html">Scaling and storage</a></li>
 <li><a href="scaling-storage-resize.html">Resize storage</a></li>

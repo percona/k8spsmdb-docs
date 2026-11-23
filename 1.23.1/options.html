@@ -25,7 +25,7 @@ Then you pass these options to MongoDB instances in the cluster in one of the fo
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ Then you pass these options to MongoDB instances in the cluster in one of the fo
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6562,7 +6562,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="changing-mongodb-options">Changing MongoDB options<a class="headerlink" href="#changing-mongodb-options" title="Permanent link">¶</a></h1>
+<h1 id="changing-mongodb-options">Changing MongoDB options<a data-markdown-ignore class="headerlink" href="#changing-mongodb-options" title="Permanent link">¶</a></h1>
 <p>When you deploy a new Percona Server for MongoDB cluster, the Operator spins it up with the set of defaults that ensure its correct operation. However, your application may need additional configuration of MongoDB. You can define this configuration using the <code>mongod.conf</code> configuration file options. 
 You can configure mongod Pods, mongos Pods and config server replica set Pods separately, based on your requirements.<br>
 Then you pass these options to MongoDB instances in the cluster in one of the following ways:</p>
@@ -6581,14 +6581,14 @@ Then you pass these options to MongoDB instances in the cluster in one of the fo
 <p class="admonition-title">Important</p>
 <p>When you set options through <code>configuration</code>, the Operator passes them to the database as-is and does not validate them. If you make a typo, the database will not start. The Operator will not reject the Custom Resource.</p>
 </div>
-<h2 id="edit-the-deploycryaml-file">Edit the <code>deploy/cr.yaml</code> file<a class="headerlink" href="#edit-the-deploycryaml-file" title="Permanent link">¶</a></h2>
+<h2 id="edit-the-deploycryaml-file">Edit the <code>deploy/cr.yaml</code> file<a data-markdown-ignore class="headerlink" href="#edit-the-deploycryaml-file" title="Permanent link">¶</a></h2>
 <p>You can add MongoDB configuration options to the following keys of the <code>deploy/cr.yaml</code>: </p>
 <ul>
 <li><a href="operator.html#replsetsconfiguration">replsets.configuration</a></li>
 <li><a href="operator.html#shardingmongosconfiguration">sharding.mongos.configuration</a></li>
 <li><a href="operator.html#shardingconfigsvrreplsetconfiguration">sharding.configsvrReplSet.configuration</a></li>
 </ul>
-<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¶</a></h3>
+<h3 id="example">Example<a data-markdown-ignore class="headerlink" href="#example" title="Permanent link">¶</a></h3>
 <p>This example shows how to enable <a href="https://docs.percona.com/percona-server-for-mongodb/rate-limit.html">rate limit for database profiler</a> and define the default verbosity level for system log:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
@@ -6610,7 +6610,7 @@ Then you pass these options to MongoDB instances in the cluster in one of the fo
 <li><a href="https://docs.percona.com/percona-server-for-mongodb/LATEST/log-redaction.html">Log redaction  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></li>
 <li><a href="https://docs.percona.com/percona-server-for-mongodb/LATEST/audit-logging.html">Audit logging <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
 </ul>
-<h2 id="use-a-configmap">Use a ConfigMap<a class="headerlink" href="#use-a-configmap" title="Permanent link">¶</a></h2>
+<h2 id="use-a-configmap">Use a ConfigMap<a data-markdown-ignore class="headerlink" href="#use-a-configmap" title="Permanent link">¶</a></h2>
 <p>You can use a <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMap  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 and the cluster restart to reset configuration options. A ConfigMap allows
 Kubernetes to pass or update configuration data inside a containerized
@@ -6653,7 +6653,7 @@ cluster has updated the configuration (see details on how to connect in the
 <a href="kubernetes.html">Install Percona Server for MongoDB on Kubernetes</a>
 page).</p>
 </div>
-<h2 id="use-a-secret-object">Use a Secret Object<a class="headerlink" href="#use-a-secret-object" title="Permanent link">¶</a></h2>
+<h2 id="use-a-secret-object">Use a Secret Object<a data-markdown-ignore class="headerlink" href="#use-a-secret-object" title="Permanent link">¶</a></h2>
 <p>The Operator can also store configuration options in <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes Secrets  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
 This can be useful if you need additional protection for some sensitive data.</p>
 <p>You should create a Secret object with a specific name, composed of your cluster
@@ -6684,7 +6684,7 @@ several MongoDB options we used in the previous example:</p>
 </code></pre></div>
 <p>You can get a Base64 encoded string from your options via the command line as
 follows:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">in Linux</label><label for="__tabbed_1_2">in macOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">in Linux</label><label for="__tabbed_1_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>mongod.conf<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>

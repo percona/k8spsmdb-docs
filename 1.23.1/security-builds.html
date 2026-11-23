@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6542,13 +6542,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="operator-security-builds">Operator security builds<a class="headerlink" href="#operator-security-builds" title="Permanent link">¶</a></h1>
+<h1 id="operator-security-builds">Operator security builds<a data-markdown-ignore class="headerlink" href="#operator-security-builds" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: 1.24.0</p>
 </div>
 <p>The Operator has access to your cluster’s credentials and other sensitive configuration. A vulnerability in the Operator image is a path to that data, even when your MongoDB cluster itself is fully patched. Security builds close that gap on a release you already run, without waiting for the next Operator version.</p>
 <p>This page covers patching your current Operator version. To move to a newer Operator version, see <a href="update-operator.html">Upgrade the Operator and CRD</a>.</p>
-<h2 id="understand-a-security-build">Understand a security build<a class="headerlink" href="#understand-a-security-build" title="Permanent link">¶</a></h2>
+<h2 id="understand-a-security-build">Understand a security build<a data-markdown-ignore class="headerlink" href="#understand-a-security-build" title="Permanent link">¶</a></h2>
 <p>A security build is a new Operator image that fixes a High or Critical vulnerability in a release you already run.</p>
 <p>Each Operator release gets a dedicated security branch (for example, <code>security/1.24.0</code>), created from that release the first time a security build runs. Every later build starts from this same branch, so earlier fixes carry forward.</p>
 <p>A scan of the Operator image runs every week. When it finds a High or Critical Common Vulnerabilities and Exposures (CVE) in a Go dependency, the Go version or a library that ships with Go, the build moves the affected dependency or toolchain to a version that includes the fix.</p>
@@ -6559,7 +6559,7 @@ window.addEventListener('afterprint', (event) => {
 <li>The rebuilt image goes through a final Trivy scan and the Operator end-to-end (E2E) test suite before publication.</li>
 </ul>
 <p>A security build rebuilds <strong>only the Operator image</strong>. Percona Server for MongoDB, Percona Backup for MongoDB, and the other component images stay on the versions from the original release. Vulnerabilities in those images are outside a security build.</p>
-<h2 id="read-the-image-tags">Read the image tags<a class="headerlink" href="#read-the-image-tags" title="Permanent link">¶</a></h2>
+<h2 id="read-the-image-tags">Read the image tags<a data-markdown-ignore class="headerlink" href="#read-the-image-tags" title="Permanent link">¶</a></h2>
 <p>Each release is published with these tags. The following table uses version <code>1.24.0</code>. Later releases follow the same pattern:</p>
 <table>
 <thead>
@@ -6593,16 +6593,16 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>Look up digests for numbered security-build tags (<code>1.24.0-2</code>, <code>1.24.0-3</code>, …) on <a href="https://hub.docker.com/r/percona/percona-server-mongodb-operator/tags">Docker Hub <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The Version Service lists the original release tag only.</p>
-<h2 id="switch-to-a-security-build">Switch to a security build<a class="headerlink" href="#switch-to-a-security-build" title="Permanent link">¶</a></h2>
+<h2 id="switch-to-a-security-build">Switch to a security build<a data-markdown-ignore class="headerlink" href="#switch-to-a-security-build" title="Permanent link">¶</a></h2>
 <p>Set the Operator image to the security tag you chose. The examples use <code>1.24.0-2</code>. Replace that tag with the one you picked.</p>
 <p>You stay on Operator 1.24.0. Leave the Custom Resource Definitions and the database Custom Resource unchanged. The image change does not restart your database Pods.</p>
 <p>This procedure is the same on all <a href="System-Requirements.html#officially-supported-platforms">supported platforms</a> except OpenShift.</p>
 <p>On OpenShift, it works when you installed the Operator with a community bundle, with Helm or by applying the manifests manually.</p>
 <p>The OpenShift Certified Operator and Operator Lifecycle Manager (OLM) bundles do not include security builds yet. If you installed through one of those bundles, keep the image the bundle provides.</p>
-<h2 id="security-build-lifecycle">Security build lifecycle<a class="headerlink" href="#security-build-lifecycle" title="Permanent link">¶</a></h2>
+<h2 id="security-build-lifecycle">Security build lifecycle<a data-markdown-ignore class="headerlink" href="#security-build-lifecycle" title="Permanent link">¶</a></h2>
 <p>Security builds for a release continue until the next Operator release. Security builds for 1.24.0 stop when Operator 1.25.0 is released. Those images stay available and keep the same digest.</p>
 <p>After Operator 1.25.0 is released, new fixes land in security builds for 1.25.0.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update-operator.html">Upgrade the Operator and CRD</a></li>
 </ul>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6676,9 +6676,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="use-pvc-snapshots-for-backups-and-restores">Use PVC snapshots for backups and restores<a class="headerlink" href="#use-pvc-snapshots-for-backups-and-restores" title="Permanent link">¶</a></h1>
+<h1 id="use-pvc-snapshots-for-backups-and-restores">Use PVC snapshots for backups and restores<a data-markdown-ignore class="headerlink" href="#use-pvc-snapshots-for-backups-and-restores" title="Permanent link">¶</a></h1>
 <p>Once you <a href="backups-pvc-setup.html">configure PVC snapshots</a>, you can use them for backups and restores.</p>
-<h2 id="configure-remote-backup-storage-in-the-cluster">Configure remote backup storage in the cluster<a class="headerlink" href="#configure-remote-backup-storage-in-the-cluster" title="Permanent link">¶</a></h2>
+<h2 id="configure-remote-backup-storage-in-the-cluster">Configure remote backup storage in the cluster<a data-markdown-ignore class="headerlink" href="#configure-remote-backup-storage-in-the-cluster" title="Permanent link">¶</a></h2>
 <p>PBM requires access to remote backup storage to store backup metadata and oplog files. Therefore, you must configure at least one backup storage and define it in your cluster resource. Refer to the <a href="backups-storage.html#storage-setup-guides">storage setup guides</a> to find the corresponding tutorial for your storage service.</p>
 <p>Here’s the example configuration for the S3 storage:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6691,7 +6691,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">          </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-bucket</span>
 <span class="w">          </span><span class="nt">credentialsSecret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup-s3</span>
 </code></pre></div>
-<h2 id="make-an-on-demand-backup-from-a-pvc-snapshot">Make an on-demand backup from a PVC snapshot<a class="headerlink" href="#make-an-on-demand-backup-from-a-pvc-snapshot" title="Permanent link">¶</a></h2>
+<h2 id="make-an-on-demand-backup-from-a-pvc-snapshot">Make an on-demand backup from a PVC snapshot<a data-markdown-ignore class="headerlink" href="#make-an-on-demand-backup-from-a-pvc-snapshot" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Configure the <code>PerconaServerMongoDBBackup</code> object. Edit the <code>deploy/backup/backup.yaml</code> manifest and specify the following keys: </p>
@@ -6753,7 +6753,7 @@ my-snapshot-backup   my-cluster-name             external             ready    5
 </details>
 </li>
 </ol>
-<h2 id="make-a-scheduled-snapshot-based-backup">Make a scheduled snapshot-based backup<a class="headerlink" href="#make-a-scheduled-snapshot-based-backup" title="Permanent link">¶</a></h2>
+<h2 id="make-a-scheduled-snapshot-based-backup">Make a scheduled snapshot-based backup<a data-markdown-ignore class="headerlink" href="#make-a-scheduled-snapshot-based-backup" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Configure the backup schedule in your cluster Custom Resource. Add a task under <code>backup.tasks</code>:</p>
@@ -6792,7 +6792,7 @@ my-snapshot-backup   my-cluster-name             external             ready    5
 </ol>
 <p>The Operator creates a <code>PerconaServerMongoDBBackup</code> resource for each scheduled run. Retention with <code>deleteFromStorage: true</code> removes old <code>VolumeSnapshot</code> objects and PBM metadata when backups age out.</p>
 <p>See <a href="backups-scheduled.html">Making scheduled backups</a> for general scheduling and retention concepts.</p>
-<h2 id="make-an-in-place-restore-from-a-pvc-snapshot-backup">Make an in-place restore from a PVC snapshot backup<a class="headerlink" href="#make-an-in-place-restore-from-a-pvc-snapshot-backup" title="Permanent link">¶</a></h2>
+<h2 id="make-an-in-place-restore-from-a-pvc-snapshot-backup">Make an in-place restore from a PVC snapshot backup<a data-markdown-ignore class="headerlink" href="#make-an-in-place-restore-from-a-pvc-snapshot-backup" title="Permanent link">¶</a></h2>
 <p>An in-place restore is a restore to the same cluster where the backup was taken.</p>
 <p>You can only restore the data in the PVC snapshot up to the time when the backup was taken. Point-in-time recovery is not supported.</p>
 <ol>
@@ -6878,9 +6878,9 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-restore<spa
 <p>Expected conditions when finished include <code>ReplsetPVCsRestoredFromSnapshot</code> and <code>PBMRestoreFinished</code>.</p>
 </li>
 </ol>
-<h2 id="make-a-restore-to-a-new-cluster">Make a restore to a new cluster<a class="headerlink" href="#make-a-restore-to-a-new-cluster" title="Permanent link">¶</a></h2>
+<h2 id="make-a-restore-to-a-new-cluster">Make a restore to a new cluster<a data-markdown-ignore class="headerlink" href="#make-a-restore-to-a-new-cluster" title="Permanent link">¶</a></h2>
 <p>You can use a PVC snapshot to restore data to a <strong>different cluster</strong> or when you have <code>VolumeSnapshot</code> objects but no <code>PerconaServerMongoDBBackup</code> in the target namespace. In this scenario you configure the Restore object using the <code>spec.backupSource</code>.</p>
-<h3 id="preconditions">Preconditions<a class="headerlink" href="#preconditions" title="Permanent link">¶</a></h3>
+<h3 id="preconditions">Preconditions<a data-markdown-ignore class="headerlink" href="#preconditions" title="Permanent link">¶</a></h3>
 <ol>
 <li>When restoring to a new cluster, make sure it has a Secrets object with the same user passwords as in the original cluster.</li>
 <li>When using data-at-rest encryption, set the corresponding encryption key of the target cluster. Find more details about encryption in <a href="encryption.html">Data-at-rest encryption</a>. The name of the required Secrets object can be found out from the spec.secrets key in the <code>deploy/cr.yaml</code> (<code>my-cluster-name-secrets</code> by default).</li>
@@ -6977,7 +6977,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-restore<spa
 <p>Expected conditions when finished include <code>ReplsetPVCsRestoredFromSnapshot</code> and <code>PBMRestoreFinished</code>.</p>
 </li>
 </ol>
-<h2 id="post-restore-steps">Post-restore steps<a class="headerlink" href="#post-restore-steps" title="Permanent link">¶</a></h2>
+<h2 id="post-restore-steps">Post-restore steps<a data-markdown-ignore class="headerlink" href="#post-restore-steps" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Verify cluster health:</p>
@@ -6989,7 +6989,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> <
 <p>Make a <strong>new</strong> base backup (logical, physical, or snapshot) before relying on this cluster for disaster recovery again. </p>
 </li>
 </ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>

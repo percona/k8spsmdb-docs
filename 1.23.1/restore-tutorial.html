@@ -26,7 +26,7 @@ the same thing you’d do to recover from real data loss.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -143,7 +143,7 @@ the same thing you’d do to recover from real data loss.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6589,12 +6589,12 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="4-restore-sample-data">4. Restore sample data<a class="headerlink" href="#4-restore-sample-data" title="Permanent link">¶</a></h1>
+<h1 id="4-restore-sample-data">4. Restore sample data<a data-markdown-ignore class="headerlink" href="#4-restore-sample-data" title="Permanent link">¶</a></h1>
 <p>Now that you have a backup, verify you can actually restore from it — this is worth
 confirming before you need it for real. In this tutorial you deliberately remove the sample
 data you inserted earlier, then use the restore to bring it back onto the same cluster —
 the same thing you’d do to recover from real data loss.</p>
-<h2 id="considerations-and-prerequisites">Considerations and prerequisites<a class="headerlink" href="#considerations-and-prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="considerations-and-prerequisites">Considerations and prerequisites<a data-markdown-ignore class="headerlink" href="#considerations-and-prerequisites" title="Permanent link">¶</a></h2>
 <ul>
 <li>The backup you restore from (<code>backup1</code>) must be in the <code>ready</code> state.</li>
 <li>Restoring causes downtime. This tutorial uses a logical restore on the default
@@ -6608,7 +6608,7 @@ the same thing you’d do to recover from real data loss.</p>
   <a href="backups-restore.html">Restore from a backup</a> and the <a href="restore-options.html">Restore Resource
   options</a> reference.</li>
 </ul>
-<h2 id="delete-the-test-data">Delete the test data<a class="headerlink" href="#delete-the-test-data" title="Permanent link">¶</a></h2>
+<h2 id="delete-the-test-data">Delete the test data<a data-markdown-ignore class="headerlink" href="#delete-the-test-data" title="Permanent link">¶</a></h2>
 <p>To confirm the restore actually recovers your data rather than just running the mechanics,
 remove the <code>test</code> collection you created in <a href="connect.html#insert-sample-data">Insert sample data</a>:</p>
 <div class="highlight" data-prompt="admin&gt;"><pre><span></span><code><span class="nx">admin</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">drop</span><span class="p">()</span>
@@ -6626,7 +6626,7 @@ remove the <code>test</code> collection you created in <a href="connect.html#ins
 <div class="no-copy highlight"><pre><span></span><code>0
 </code></pre></div>
 </details>
-<h2 class="power-number" id="restore-from-the-backup">Restore from the backup<a class="headerlink" href="#restore-from-the-backup" title="Permanent link">¶</a></h2>
+<h2 class="power-number" id="restore-from-the-backup">Restore from the backup<a data-markdown-ignore class="headerlink" href="#restore-from-the-backup" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Verify the backup is ready:</p>
@@ -6668,7 +6668,7 @@ restore1   my-cluster-name   ready    47s
 <p>When the status changes to <code>ready</code>, the restore is complete.</p>
 </li>
 </ol>
-<h2 id="verify-the-data">Verify the data<a class="headerlink" href="#verify-the-data" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-data">Verify the data<a data-markdown-ignore class="headerlink" href="#verify-the-data" title="Permanent link">¶</a></h2>
 <p>Connect to the database the same way you did in <a href="connect.html">Connect and insert sample
 data</a>, and confirm the sample data from <a href="connect.html#insert-sample-data">Insert sample
 data</a> is back:</p>
@@ -6679,15 +6679,15 @@ data</a> is back:</p>
 <div class="no-copy highlight"><pre><span></span><code>50
 </code></pre></div>
 </details>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <p>If you face issues with the restore, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
 <p>Congratulations! You have restored your first backup. Continue with <a href="backups-restore.html">Restore from a
 backup</a> to learn about restoring to a new cluster, restoring to a point
 in time, and other restore scenarios. For all configuration options, see <a href="restore-options.html">Restore Resource
 options</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="delete.html">Delete the Operator and database <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <p><a href="what-next-operations.html">What’s next for the operator</a></p>
 <hr>
 <div class="md-source-file">

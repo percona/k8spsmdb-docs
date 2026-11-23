@@ -11,7 +11,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation">
+        <meta name="description" content="Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.">
       
       
         <meta name="author" content="Percona LLC">
@@ -26,7 +26,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9141,7 +9141,7 @@ window.addEventListener('afterprint', (event) => {
 
 <h1>Operator for MongoDB</h1>
 
-<h1>Documentation</h1>
+<h1>Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.</h1>
  
 <h2> 1.23.1 (October 5, 2026)</h2>
         </section>
@@ -27966,7 +27966,7 @@ index, and run a <code>$vectorSearch</code> query.</p>
 <ul>
 <li>Percona Operator for MongoDB 1.23.0</li>
 <li>Percona Server for MongoDB 8.3</li>
-<li>Percona Search for MongoDB {{ mongot }}.</li>
+<li>Percona Search for MongoDB 1.70.5-3.</li>
 </ul>
 <h2 id="search-setup-before-you-begin">Before you begin<a class="headerlink" href="#search-setup-before-you-begin" title="Permanent link">¶</a></h2>
 <ol>
@@ -28011,7 +28011,7 @@ index, and run a <code>$vectorSearch</code> query.</p>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perconalab/percona-server-mongodb:8.3</span>
 <span class="w">  </span><span class="nt">search</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:{{ mongot }}</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:1.70.5-3</span>
 <span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
@@ -28439,7 +28439,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:{{ clustersync }}</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:1.1.0</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">source</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://my-source-cluster-rs0-0.psmdb-operator.svc.cluster.local:27017,my-source-cluster-rs0-1.psmdb-operator.svc.cluster.local:27017/admin?replicaSet=rs0</span>
@@ -28454,7 +28454,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-target-cluster</span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:{{ clustersync }}</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-clustersync-mongodb:1.1.0</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">source</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb://my-source-cluster-mongos.psmdb-operator.svc.cluster.local:27017/admin</span>
@@ -41383,7 +41383,7 @@ Percona Server for MongoDB backups.</p>
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>percona/percona-clustersync-mongodb:{{ clustersync }}</code></td>
+<td><code>percona/percona-clustersync-mongodb:1.1.0</code></td>
 </tr>
 </tbody>
 </table>

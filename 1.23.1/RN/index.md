@@ -1,0 +1,37 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Percona Operator for MongoDB Release Notes
+
+Use the [public roadmap](https://github.com/orgs/percona/projects/10/views/1) to see what the team is working on next. For planned release windows, see the [release timeline](https://github.com/orgs/percona/projects/10/views/10) .
+
+- [Percona Operator for MongoDB 1.23.1 (2026-10-05)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.html)
+- [Percona Operator for MongoDB 1.23.0 (2026-07-23)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html)
+- [Percona Operator for MongoDB 1.22.0 (2026-02-25)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html)
+- [Percona Operator for MongoDB 1.21.2 (2026-01-12)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.2.html)
+- [Percona Operator for MongoDB 1.21.1 (2025-10-30)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.1.html)
+- [Percona Operator for MongoDB 1.21.0 (2025-10-20)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.21.0.html)
+- [Percona Operator for MongoDB 1.20.1 (2025-06-04)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.1.html)
+- [Percona Operator for MongoDB 1.20.0 (2025-05-19)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.20.0.html)
+- [Percona Operator for MongoDB 1.19.1 (2025-02-20)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.1.html)
+- [Percona Operator for MongoDB 1.19.0 (2025-01-21)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.19.0.html)
+- [Percona Operator for MongoDB 1.18.0 (2024-11-14)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.18.0.html)
+- [Percona Operator for MongoDB 1.17.0 (2024-09-09)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.17.0.html)
+- [Percona Operator for MongoDB 1.16.2 (2024-07-23)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.2.html)
+- [Percona Operator for MongoDB 1.16.1 (2024-06-24)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.1.html)
+- [Percona Operator for MongoDB 1.16.0 (2024-05-24)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html)
+- [Percona Operator for MongoDB 1.15.0 (2023-10-09)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.15.0.html)
+- [Percona Operator for MongoDB 1.14.0 (2023-03-13)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.14.0.html)
+- [Percona Operator for MongoDB 1.13.0 (2022-09-08)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.13.0.html)
+- [Percona Operator for MongoDB 1.12.0 (2022-05-05)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.12.0.html)
+- \*[Percona Distribution for MongoDB Operator\* 1.11.0 (2021-12-21)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.11.0.html)
+- \*[Percona Distribution for MongoDB Operator\* 1.10.0 (2021-09-30)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.10.0.html)
+- \*[Percona Distribution for MongoDB Operator\* 1.9.0 (2021-07-29)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.9.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.8.0 (2021-05-06)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.8.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.7.0 (2021-03-08)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.7.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.6.0 (2020-12-22)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.6.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.5.0 (2020-09-07)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.5.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.4.0 (2020-03-31)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.4.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.3.0 (2019-12-11)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.3.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.2.0 (2019-09-20)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.2.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.1.0 (2019-07-15)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.1.0.html)
+- \*[Percona Kubernetes Operator for Percona Server for MongoDB\* 1.0.0 (2019-05-29)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.0.0.html)

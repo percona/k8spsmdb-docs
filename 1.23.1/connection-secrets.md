@@ -1,0 +1,246 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Connection secrets
+
+Version added: [1.23.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html)
+
+The Operator creates and maintains Kubernetes Secrets that contain ready-to-use MongoDB connection strings your applications need. This gives your developers and administrators a single, reliable source of connection information without manual configuration.
+
+The Operator updates connection Secrets when cluster topology, external access settings, or user passwords change. If you try to manually update a connection Secret, the Operator overwrites your changes with the next reconciliation.
+
+## Secret names
+
+The Operator creates connection Secrets for the following users:
+
+- The **`databaseAdmin`** system user.
+- **Operator-managed application-level users** declared in the Custom Resource.
+
+| User type                             | Password Secret                       | Connection string Secret                     |
+| ------------------------------------- | ------------------------------------- | -------------------------------------------- |
+| `databaseAdmin`                       | `<cluster-name>-secrets` (by default) | `<cluster-name>-databaseadmin-conn-str`      |
+| Custom user (auto-generated password) | `<cluster-name>-custom-user-secret`   | `<cluster-name>-custom-user-secret-conn-str` |
+| Custom user (manual password)         | Name from `passwordSecretRef.name`    | `<passwordSecretRef.name>-conn-str`          |
+
+The `<cluster-name>` value is the `metadata.name` of your `PerconaServerMongoDB` Custom Resource.
+
+### `databaseAdmin` connection Secret
+
+The Operator creates a dedicated connection Secret for the `databaseAdmin` system user, named `<cluster-name>-databaseadmin-conn-str`. Credentials for `databaseAdmin` and all other system users such as `userAdmin`, `clusterAdmin`, `backup`, and so on, are included in the password Secret `<cluster-name>-secrets`.
+
+### Connection Secret for application users
+
+For application users that you define in the cluster Custom Resource, the Operator creates one connection Secret per password Secret. If several application users share the same password Secret, the Operator stores connection strings for all of them in a single connection Secret. Each user has its own set of keys inside that Secret.
+
+The Operator does **not** create connection Secrets for users in the **`$external`** database — the ones you create for LDAP and other external authentication methods.
+
+## Secret structure
+
+A connection Secret is a standard Kubernetes `Secret`. Its `data` map holds one base64-encoded MongoDB URI per key. Each key name tells you which user, target, and connection type the URI is for.
+
+Keys follow the pattern `<user>_<target>_<suffix>`:
+
+- The `<user>` part matches the Percona Server for MongoDB username. For example, `databaseAdmin`. Characters that are not allowed in Kubernetes Secret keys are replaced with underscores.
+- The `<target>` part is the name of each replica set. For sharded clusters, `<target>` matches the name of each shard, config server replica set and `mongos`.
+- The `<suffix>` part defines the connection type. Available types are:
+- `_connectionString` - for internal connection using internal replica-set addresses.
+- `_connectionStringSrv` - for connection using the replica set Service hostname
+- `_connectionStringExposed` - for external access when a replica set or `mongos` Service is [exposed](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html) and its exposed endpoint differs from its internal URI.
+
+The following is the example of the `data` map for the sharded cluster:
+
+**<cluster-name>-databaseadmin-conn-str Secret**
+
+```
+data:
+  databaseAdmin_cfg_connectionString: <base64>           # config server — internal Pod addresses
+  databaseAdmin_cfg_connectionStringSrv: <base64>        # config server — via Service DNS (mongodb+srv)
+  databaseAdmin_cfg_connectionStringExposed: <base64>  # config server — external endpoints (when exposed)
+  databaseAdmin_rs0_connectionString: <base64>           # shard rs0 — internal Pod addresses
+  databaseAdmin_rs0_connectionStringSrv: <base64>        # shard rs0 — via Service DNS (mongodb+srv)
+  databaseAdmin_rs0_connectionStringExposed: <base64>  # shard rs0 — external endpoints (when exposed)
+  databaseAdmin_mongos_connectionString: <base64>        # mongos router — internal access
+  databaseAdmin_mongos_connectionStringExposed: <base64>        # mongos router — external endpoints (when service per Pod is enabled)
+```
+
+**<appl-user>-conn-str Secret**
+
+For custom users on sharded clusters, only `mongos` keys are present.
+
+```
+data:
+  <username>_mongos_connectionString: <base64> # mongos router — internal access 
+  <username>_mongos_connectionStringExposed: <base64> # mongos router — external endpoints (when service per Pod is enabled)
+```
+
+## URI format
+
+Generated URIs include:
+
+- URL-encoded username and password
+- `authSource` — `admin` for the `databaseAdmin` user, or the user’s database for custom users
+- `replicaSet` — for replica set connection strings
+- `tls=true` — when [TLS is enabled](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for the cluster
+
+When TLS is disabled, the URI does not include TLS parameters.
+
+## Retrieve a connection string
+
+Replace `<cluster-name>`, `<namespace>`, and the key name with your values.
+
+**Sharded cluster (via mongos)**
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_mongos_connectionString}' | base64 --decode && echo
+```
+
+Sample output
+
+```
+mongodb://databaseAdmin:databaseAdmin123456@my-cluster-name-mongos.<namespace>.svc.cluster.local:27017/?authSource=admin&tls=true
+```
+
+**Replica set (standard URI)**
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_rs0_connectionString}' | base64 --decode && echo
+```
+
+Sample output
+
+```
+mongodb://databaseAdmin:databaseAdmin123456@my-cluster-name-rs0-0.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017,my-cluster-name-rs0-1.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017,my-cluster-name-rs0-2.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017/?authSource=admin&replicaSet=rs0&tls=true
+```
+
+**Replica set (SRV URI)**
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_rs0_connectionStringSrv}' | base64 --decode && echo
+```
+
+Sample output
+
+```
+mongodb+srv://databaseAdmin:databaseAdmin123456@my-cluster-name-rs0.mongodb-operator.svc.cluster.local/?authSource=admin&replicaSet=rs0
+```
+
+**Exposed replica set**
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> \
+  -o jsonpath='{.data.databaseAdmin_rs0_connectionStringExposed}' | base64 --decode && echo
+```
+
+Sample output
+
+```
+mongodb://databaseAdmin:databaseAdmin123456@35.254.99.120:27017,34.132.106.13:27017,136.64.169.49:27017/?authSource=admin&replicaSet=rs0&tls=true
+```
+
+To inspect all available keys:
+
+```
+kubectl get secret <cluster-name>-databaseadmin-conn-str -n <namespace> -o jsonpath='{.data}' | jq 'keys'
+```
+
+Expected output
+
+```
+[
+  "databaseAdmin_cfg_connectionString",
+  "databaseAdmin_cfg_connectionStringExposed",
+  "databaseAdmin_cfg_connectionStringSrv",
+  "databaseAdmin_mongos_connectionString",
+  "databaseAdmin_rs0_connectionString",
+  "databaseAdmin_rs0_connectionStringExposed",
+  "databaseAdmin_rs0_connectionStringSrv"
+]
+```
+
+## Open an interactive shell with mongosh
+
+The database cluster encrypts connections with TLS by default, and MongoDB requires a TLS client to present a certificate - not just a username and password. The Operator already created one for you in the `<cluster-name>-ssl` Secret, so run a container with a MongoDB client that mounts it:
+
+```
+kubectl apply -n <namespace> -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: percona-client
+spec:
+  restartPolicy: Never
+  containers:
+  - name: percona-client
+    image: percona/percona-server-mongodb:8.3.13-4
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: ssl
+      mountPath: /etc/mongodb-ssl
+      readOnly: true
+  volumes:
+  - name: ssl
+    secret:
+      secretName: <cluster-name>-ssl
+EOF
+```
+
+Open a shell inside that Pod:
+
+```
+kubectl exec -it percona-client -n <namespace> -- bash -il
+```
+
+The rest of the commands run inside this shell. Combine the mounted certificate and key into the single file `mongosh` expects:
+
+```
+cat /etc/mongodb-ssl/tls.crt /etc/mongodb-ssl/tls.key > /tmp/client.pem
+```
+
+Connect using the connection string and user you retrieved above, the certificate file you just created, and the mounted CA certificate so `mongosh` trusts the server:
+
+```
+mongosh "<connection-string>" --tlsCertificateKeyFile /tmp/client.pem --tlsCAFile /etc/mongodb-ssl/ca.crt
+```
+
+Example
+
+The following example connects to the `admin` database of a Percona Server for MongoDB 8.0 sharded cluster named `my-cluster-name` in the `mongodb-operator` namespace, using the connection string and user you retrieved above:
+
+```
+mongosh "mongodb://databaseAdmin:databaseAdminPassword@my-cluster-name-mongos.mongodb-operator.svc.cluster.local/admin?authSource=admin" --tlsCertificateKeyFile /tmp/client.pem --tlsCAFile /etc/mongodb-ssl/ca.crt
+```
+
+The exact URI depends on your cluster configuration and user. Use the value retrieved from the connection string Secret.
+
+When you’re done, exit `mongosh` and the shell (`exit` or Ctrl+D, twice), then delete the Pod:
+
+```
+kubectl delete pod percona-client -n <namespace>
+```
+
+## Use in an application Deployment
+
+Reference the connection string Secret in your application manifest:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: app
+        image: my-app:latest
+        env:
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: my-cluster-name-custom-user-secret-conn-str
+              key: my-user_mongos_connectionString
+```
+
+For the `databaseAdmin` user, use `<cluster-name>-databaseadmin-conn-str` as the Secret name. Prefer [application-level users](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/app-users.html) for application workloads instead of system users.

@@ -25,7 +25,7 @@ platform. For more information on the EKS, see the Amazon EKS official documenta
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ platform. For more information on the EKS, see the Amazon EKS official documenta
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6550,11 +6550,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="create-an-amazon-elastic-kubernetes-service-eks-cluster">Create an Amazon Elastic Kubernetes Service (EKS) cluster<a class="headerlink" href="#create-an-amazon-elastic-kubernetes-service-eks-cluster" title="Permanent link">¶</a></h1>
+<h1 id="create-an-amazon-elastic-kubernetes-service-eks-cluster">Create an Amazon Elastic Kubernetes Service (EKS) cluster<a data-markdown-ignore class="headerlink" href="#create-an-amazon-elastic-kubernetes-service-eks-cluster" title="Permanent link">¶</a></h1>
 <p>This guide walks you through creating a Kubernetes cluster on Amazon
 Elastic Kubernetes Service (EKS). The document assumes some experience with the
 platform. For more information on the EKS, see the <a href="https://aws.amazon.com/eks/">Amazon EKS official documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <p>Install and configure the following:</p>
 <ol>
 <li><strong>AWS Command Line Interface (AWS CLI)</strong> for interacting with AWS. See the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html">installation guide  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for your system.</li>
@@ -6562,7 +6562,7 @@ platform. For more information on the EKS, see the <a href="https://aws.amazon.c
 <li><strong>kubectl</strong> — to manage Kubernetes. See the <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">official kubectl installation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
 </ol>
 <p>Configure the AWS CLI with your credentials using the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">official guide  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="create-the-eks-cluster">Create the EKS cluster<a class="headerlink" href="#create-the-eks-cluster" title="Permanent link">¶</a></h2>
+<h2 id="create-the-eks-cluster">Create the EKS cluster<a data-markdown-ignore class="headerlink" href="#create-the-eks-cluster" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Decide on the following:</p>
@@ -6580,9 +6580,9 @@ platform. For more information on the EKS, see the <a href="https://aws.amazon.c
 <p>Install the <a href="https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html">Amazon EBS CSI driver  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> on the cluster so you can use EBS volumes for persistent storage. See <a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html">Managing the Amazon EBS CSI add-on  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 </li>
 </ol>
-<h2 id="delete-eks-cluster">Delete EKS cluster<a class="headerlink" href="#delete-eks-cluster" title="Permanent link">¶</a></h2>
+<h2 id="delete-eks-cluster">Delete EKS cluster<a data-markdown-ignore class="headerlink" href="#delete-eks-cluster" title="Permanent link">¶</a></h2>
 <p>To remove the Kubernetes cluster and all resources, see <a href="delete.html#delete-the-kubernetes-cluster-platform-specific">Delete the Operator and database</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p>Deploy the Operator and Percona Server for MongoDB.</p>
 <p><a class="md-button" href="kubectl.html">Single-namespace deployment</a>
 <a class="md-button" href="cluster-wide.html">Multi-namespace deployment</a></p>

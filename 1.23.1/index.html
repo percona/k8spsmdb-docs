@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -136,7 +136,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6518,7 +6518,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb">Percona Operator for MongoDB<a class="headerlink" href="#percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb">Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
 <p>The Percona Operator for MongoDB runs and manages Percona Server for MongoDB inside Kubernetes for you. You describe the database you want (for example how many nodes, where to store backups), and the Operator keeps the cluster running that way: it creates the right pods, handles failures, and applies upgrades when you ask for them.</p>
 <p><strong>Why use it?</strong> You get a production-ready MongoDB cluster on Kubernetes without wiring every detail yourself. The Operator handles provisioning, scaling, backups, and high availability so you can focus on building your application or operating the platform.</p>
 <p><a class="md-button" href="#get-started">Get started <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 4h2v12l5.5-5.5 1.42 1.42L12 19.84l-7.92-7.92L5.5 10.5 11 16z"></path></svg></span></a>
@@ -6531,7 +6531,7 @@ and when to expect it in the
 <a href="https://github.com/orgs/percona/projects/10/views/10">release timeline <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 </div>
 <hr>
-<h2 id="understand-the-operator">Understand the Operator<a class="headerlink" href="#understand-the-operator" title="Permanent link">¶</a></h2>
+<h2 id="understand-the-operator">Understand the Operator<a data-markdown-ignore class="headerlink" href="#understand-the-operator" title="Permanent link">¶</a></h2>
 <p>Just evaluating? See how the Operator works, how it’s designed and how it stands out among other ways to run MongoDB on Kubernetes:</p>
 <ul>
 <li><a href="how-it-works.html">How the Operator works</a></li>
@@ -6540,7 +6540,7 @@ and when to expect it in the
 <li><a href="features.html">Features</a></li>
 </ul>
 <hr>
-<h2 id="get-started">Get started<a class="headerlink" href="#get-started" title="Permanent link">¶</a></h2>
+<h2 id="get-started">Get started<a data-markdown-ignore class="headerlink" href="#get-started" title="Permanent link">¶</a></h2>
 <p>Choose how you want to use the Operator:</p>
 <ul>
 <li>
@@ -6555,7 +6555,7 @@ and when to expect it in the
 <hr>
 <div data-grid="data-grid">
 <div data-banner="data-banner">
-<h2 class="title" id="installation-and-upgrade"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2.03c4.73.47 8.5 4.22 8.95 8.97A9.976 9.976 0 0 1 13 21.93v-2c3.64-.43 6.5-3.32 6.96-6.96A7.994 7.994 0 0 0 13 4.05V2.03m-2 .03v2c-1.43.2-2.78.78-3.9 1.68L5.67 4.26A9.83 9.83 0 0 1 11 2.06M4.26 5.67 5.69 7.1A8 8 0 0 0 4.05 11h-2c.2-1.96.95-3.81 2.21-5.33M2.06 13h2c.18 1.42.75 2.77 1.63 3.9l-1.42 1.43A10.04 10.04 0 0 1 2.06 13m5.04 5.37c1.13.88 2.48 1.45 3.9 1.63v2c-1.96-.21-3.82-1-5.33-2.26zM12 16.5 7.5 12H11V8h2v4h3.5z"></path></svg></span> Installation and upgrade<a class="headerlink" href="#installation-and-upgrade" title="Permanent link">¶</a></h2>
+<h2 class="title" id="installation-and-upgrade"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2.03c4.73.47 8.5 4.22 8.95 8.97A9.976 9.976 0 0 1 13 21.93v-2c3.64-.43 6.5-3.32 6.96-6.96A7.994 7.994 0 0 0 13 4.05V2.03m-2 .03v2c-1.43.2-2.78.78-3.9 1.68L5.67 4.26A9.83 9.83 0 0 1 11 2.06M4.26 5.67 5.69 7.1A8 8 0 0 0 4.05 11h-2c.2-1.96.95-3.81 2.21-5.33M2.06 13h2c.18 1.42.75 2.77 1.63 3.9l-1.42 1.43A10.04 10.04 0 0 1 2.06 13m5.04 5.37c1.13.88 2.48 1.45 3.9 1.63v2c-1.96-.21-3.82-1-5.33-2.26zM12 16.5 7.5 12H11V8h2v4h3.5z"></path></svg></span> Installation and upgrade<a data-markdown-ignore class="headerlink" href="#installation-and-upgrade" title="Permanent link">¶</a></h2>
 <p>Ready to run robust, production-grade Percona Server for MongoDB on Kubernetes, or keep an existing deployment current?</p>
 <ul>
 <li><a href="namespace-mode.html">Full installation options</a></li>
@@ -6563,7 +6563,7 @@ and when to expect it in the
 </ul>
 </div>
 <div data-banner="" markdown="">
-<h2 class="title" id="day-to-day-operations"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4v18h16v2H4c-1.1 0-2-.9-2-2V4zm11 3h5.5L15 1.5zM8 0h8l6 6v12c0 1.11-.89 2-2 2H8a2 2 0 0 1-2-2V2c0-1.11.89-2 2-2m9 16v-2H8v2zm3-4v-2H8v2z"></path></svg></span> Day-to-day operations<a class="headerlink" href="#day-to-day-operations" title="Permanent link">¶</a></h2>
+<h2 class="title" id="day-to-day-operations"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4v18h16v2H4c-1.1 0-2-.9-2-2V4zm11 3h5.5L15 1.5zM8 0h8l6 6v12c0 1.11-.89 2-2 2H8a2 2 0 0 1-2-2V2c0-1.11.89-2 2-2m9 16v-2H8v2zm3-4v-2H8v2z"></path></svg></span> Day-to-day operations<a data-markdown-ignore class="headerlink" href="#day-to-day-operations" title="Permanent link">¶</a></h2>
 <p>Configure, scale, and secure your cluster for ongoing use.</p>
 <ul>
 <li><a href="backups-configure.html">Configure backups</a></li>
@@ -6575,7 +6575,7 @@ and when to expect it in the
 </ul>
 </div>
 <div data-banner="data-banner">
-<h2 class="title" id="troubleshooting"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4"></path></svg></span> Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h2 class="title" id="troubleshooting"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4"></path></svg></span> Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <p>Diagnose and resolve issues with your Operator installation and database.</p>
 <ul>
 <li><a href="troubleshoot-operator.html">Troubleshoot the Operator installation</a></li>
@@ -6584,7 +6584,7 @@ and when to expect it in the
 </ul>
 </div>
 <div data-banner="data-banner">
-<h2 class="title" id="reference-materials"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.82 17 13 19.28V22H6c-1.11 0-2-.89-2-2V4a2 2 0 0 1 2-2h1v7l2.5-1.5L12 9V2h6a2 2 0 0 1 2 2v8.54l-1.5-.82zM24 17l-5.5-3-5.5 3 5.5 3zm-9 2.09v2L18.5 23l3.5-1.91v-2L18.5 21z"></path></svg></span> Reference materials<a class="headerlink" href="#reference-materials" title="Permanent link">¶</a></h2>
+<h2 class="title" id="reference-materials"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.82 17 13 19.28V22H6c-1.11 0-2-.89-2-2V4a2 2 0 0 1 2-2h1v7l2.5-1.5L12 9V2h6a2 2 0 0 1 2 2v8.54l-1.5-.82zM24 17l-5.5-3-5.5 3 5.5 3zm-9 2.09v2L18.5 23l3.5-1.91v-2L18.5 21z"></path></svg></span> Reference materials<a data-markdown-ignore class="headerlink" href="#reference-materials" title="Permanent link">¶</a></h2>
 <p>Explore Custom Resource, backup and restore options, certified images and version compatibility.</p>
 <ul>
 <li><a href="operator.html">Custom Resource options</a></li>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6586,7 +6586,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="troubleshoot-upgrades-and-crversion-problems">Troubleshoot upgrades and <code>crVersion</code> problems<a class="headerlink" href="#troubleshoot-upgrades-and-crversion-problems" title="Permanent link">¶</a></h1>
+<h1 id="troubleshoot-upgrades-and-crversion-problems">Troubleshoot upgrades and <code>crVersion</code> problems<a data-markdown-ignore class="headerlink" href="#troubleshoot-upgrades-and-crversion-problems" title="Permanent link">¶</a></h1>
 <p>Use this page when a cluster misbehaves after an upgrade, after you changed <code>crVersion</code>, or after you re-applied a manifest. Find your symptom:</p>
 <ul>
 <li><a href="#troubleshoot-upgrades-and-crversion-problems">Troubleshoot upgrades and <code>crVersion</code> problems</a><ul>
@@ -6601,14 +6601,14 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ul>
 <p>For what the Operator does with each <code>crVersion</code> value, see <a href="update-crversion.html"><code>crVersion</code> behavior</a>.</p>
-<h2 id="pods-stuck-in-initerrimagepull">Pods stuck in <code>Init:ErrImagePull</code><a class="headerlink" href="#pods-stuck-in-initerrimagepull" title="Permanent link">¶</a></h2>
+<h2 id="pods-stuck-in-initerrimagepull">Pods stuck in <code>Init:ErrImagePull</code><a data-markdown-ignore class="headerlink" href="#pods-stuck-in-initerrimagepull" title="Permanent link">¶</a></h2>
 <p><strong>Impact:</strong> The affected Pods can’t start, because the init container image doesn’t exist in your registry. Check how many Pods are affected with <code>kubectl get pods -n &lt;namespace&gt;</code>.</p>
 <p><strong>Cause:</strong> <code>crVersion</code> is newer than the Operator or is a pre-release value, or the Operator image tag that matches <code>crVersion</code> is missing from your registry. Unless you set <code>initImage</code>, the Operator uses <code>crVersion</code> as the tag of the init container image.</p>
 <p><strong>Check:</strong> Describe the Pod and look at the <code>mongo-init</code> container image in the Events:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p><strong>Fix:</strong> Set <code>crVersion</code> to a released version that is not newer than the Operator. With a custom registry, mirror the Operator image tag that matches <code>crVersion</code>, or set <a href="operator.html#initimage"><code>initImage</code></a>. See <a href="update-crversion.html#init-image">Init image</a>.</p>
-<h2 id="cluster-stuck-in-initializing-with-malformed-version-in-the-log">Cluster stuck in <code>initializing</code> with <code>malformed version</code> in the log<a class="headerlink" href="#cluster-stuck-in-initializing-with-malformed-version-in-the-log" title="Permanent link">¶</a></h2>
+<h2 id="cluster-stuck-in-initializing-with-malformed-version-in-the-log">Cluster stuck in <code>initializing</code> with <code>malformed version</code> in the log<a data-markdown-ignore class="headerlink" href="#cluster-stuck-in-initializing-with-malformed-version-in-the-log" title="Permanent link">¶</a></h2>
 <p><strong>Impact:</strong> Every reconcile of this cluster fails until you fix the value. The Operator stops managing this cluster until you fix the value. On a running cluster, the Operator Pod can also restart once, which briefly affects all clusters it manages. The <code>kubectl get psmdb &lt;cluster-name&gt; -n &lt;namespace&gt;</code> shows the last state (for example, <code>ready</code>).</p>
 <p><strong>Cause:</strong> <code>crVersion</code> is not a version string, for example <code>abc</code>. The Kubernetes API server accepts it, but the Operator can’t parse it. The cluster status keeps its last value: empty for a new cluster, <code>ready</code> for a running one.</p>
 <p><strong>Check:</strong> Look for <code>malformed version</code> in the Operator log:</p>
@@ -6617,22 +6617,22 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Fix:</strong> Set a valid <code>major.minor.patch</code> value. The cluster recovers once the value is valid. For example:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{"spec":{"crVersion":"&lt;version&gt;"}}'</span>
 </code></pre></div>
-<h2 id="api-server-rejects-crversion">API server rejects <code>crVersion</code><a class="headerlink" href="#api-server-rejects-crversion" title="Permanent link">¶</a></h2>
+<h2 id="api-server-rejects-crversion">API server rejects <code>crVersion</code><a data-markdown-ignore class="headerlink" href="#api-server-rejects-crversion" title="Permanent link">¶</a></h2>
 <p><strong>Impact:</strong> None. The Kubernetes API server refuses the Custom Resource, so the cluster is not changed.</p>
 <p><strong>Cause:</strong> You wrote an unquoted two-part number such as <code>1.24</code>. YAML reads it as a number, and the error is <code>spec.crVersion in body must be of type string</code>.</p>
 <p><strong>Fix:</strong> Quote the value and use the full <code>major.minor.patch</code> version, for example <code>"1.24.0"</code>.</p>
-<h2 id="pods-restarted-after-you-re-applied-a-manifest">Pods restarted after you re-applied a manifest<a class="headerlink" href="#pods-restarted-after-you-re-applied-a-manifest" title="Permanent link">¶</a></h2>
+<h2 id="pods-restarted-after-you-re-applied-a-manifest">Pods restarted after you re-applied a manifest<a data-markdown-ignore class="headerlink" href="#pods-restarted-after-you-re-applied-a-manifest" title="Permanent link">¶</a></h2>
 <p><strong>Impact:</strong> The Operator moved the cluster to its own version, and the Pods roll. With the default <a href="update.html#update-strategies">Smart Update</a> strategy, the Operator restarts Pods one at a time and updates the primary last.</p>
 <p><strong>Cause:</strong> Your manifest omits <code>crVersion</code>, and re-applying it removed the value. Whether this happens depends on how you applied the manifest. See <a href="update-crversion.html#re-apply-a-manifest-that-omits-crversion">Re-apply a manifest that omits <code>crVersion</code></a>.</p>
 <p><strong>Check:</strong> Read the current value:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.crVersion}'</span>
 </code></pre></div>
 <p><strong>Fix:</strong> Decide which version the cluster should run, and set <code>crVersion</code> explicitly in your manifest. Changing it again rolls the Pods again.</p>
-<h2 id="argo-cd-shows-the-application-as-out-of-sync">Argo CD shows the application as out of sync<a class="headerlink" href="#argo-cd-shows-the-application-as-out-of-sync" title="Permanent link">¶</a></h2>
+<h2 id="argo-cd-shows-the-application-as-out-of-sync">Argo CD shows the application as out of sync<a data-markdown-ignore class="headerlink" href="#argo-cd-shows-the-application-as-out-of-sync" title="Permanent link">¶</a></h2>
 <p><strong>Impact:</strong> The cluster keeps running. With automated sync, Argo CD and the Operator can keep undoing each other’s changes.</p>
 <p><strong>Cause:</strong> The manifest in Git omits <code>crVersion</code>, and the Operator adds the field to the live Custom Resource.</p>
 <p><strong>Fix:</strong> See <a href="update-crversion.html#keep-argo-cd-in-sync-with-crversion">Keep Argo CD in sync with <code>crVersion</code></a>.</p>
-<h2 id="none-of-these-match">None of these match<a class="headerlink" href="#none-of-these-match" title="Permanent link">¶</a></h2>
+<h2 id="none-of-these-match">None of these match<a data-markdown-ignore class="headerlink" href="#none-of-these-match" title="Permanent link">¶</a></h2>
 <p>Compare the <code>crVersion</code> of the cluster with the version of the Operator:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.crVersion}'</span>
 </code></pre></div>
@@ -6644,7 +6644,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/&lt;operator-deployment-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>For general checks of the cluster, see <a href="troubleshoot-operator.html#troubleshooting-database-cluster-issues">Troubleshooting database cluster issues</a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update.html">Update Percona Operator for MongoDB</a></li>
 <li><a href="update-crversion.html"><code>crVersion</code> behavior</a></li>

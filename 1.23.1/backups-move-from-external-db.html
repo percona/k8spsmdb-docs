@@ -27,7 +27,7 @@ makes it a way to move that cluster in.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -144,7 +144,7 @@ makes it a way to move that cluster in.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6618,7 +6618,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="use-backups-to-move-an-external-database-to-kubernetes">Use backups to move an external database to Kubernetes<a class="headerlink" href="#use-backups-to-move-an-external-database-to-kubernetes" title="Permanent link">¶</a></h1>
+<h1 id="use-backups-to-move-an-external-database-to-kubernetes">Use backups to move an external database to Kubernetes<a data-markdown-ignore class="headerlink" href="#use-backups-to-move-an-external-database-to-kubernetes" title="Permanent link">¶</a></h1>
 <p>The Operator can restore a backup not only on the Kubernetes cluster where it was made, but
 on any Kubernetes-based environment running the Operator. Both sides use
 <a href="https://github.com/percona/percona-backup-mongodb">Percona Backup for MongoDB (PBM)  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>,
@@ -6636,7 +6636,7 @@ described in <a href="https://www.percona.com/blog/migrating-mongodb-to-kubernet
 <p>The backup must live on storage both clusters can reach, so use remote storage - Amazon S3
 or S3-compatible, Google Cloud Storage, or Azure Blob Storage. A backup written to local
 disk on the source cluster is not reachable from the destination.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>PBM packages are installed on the replica set nodes of the <em>source</em> cluster, following the
   <a href="https://docs.percona.com/percona-backup-mongodb/installation.html">official installation instructions  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>,
@@ -6648,7 +6648,7 @@ disk on the source cluster is not reachable from the destination.</p>
 <li>Ideally the <em>source</em> and <em>destination</em> have the same topology. If they do not, PBM
   supports <a href="backups-restore.html#with-different-replica-set-names">replica set remapping</a>.</li>
 </ul>
-<h2 id="1-configure-backup-storage-on-the-source-cluster">1. Configure backup storage on the source cluster<a class="headerlink" href="#1-configure-backup-storage-on-the-source-cluster" title="Permanent link">¶</a></h2>
+<h2 id="1-configure-backup-storage-on-the-source-cluster">1. Configure backup storage on the source cluster<a data-markdown-ignore class="headerlink" href="#1-configure-backup-storage-on-the-source-cluster" title="Permanent link">¶</a></h2>
 <p>Follow the <a href="https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html">PBM storage configuration guide  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
 For Amazon S3, the config file looks like this:</p>
 <div class="highlight"><span class="filename">pbm_config.yaml</span><pre><span></span><code><span class="nt">storage</span><span class="p">:</span>
@@ -6669,10 +6669,10 @@ the storage configuration.</p>
 nodes:</p>
 <div class="highlight"><pre><span></span><code>pbm<span class="w"> </span>config<span class="w"> </span>--file<span class="w"> </span>pbm_config.yaml
 </code></pre></div>
-<h2 id="2-start-pbm-agent">2. Start pbm-agent<a class="headerlink" href="#2-start-pbm-agent" title="Permanent link">¶</a></h2>
+<h2 id="2-start-pbm-agent">2. Start pbm-agent<a data-markdown-ignore class="headerlink" href="#2-start-pbm-agent" title="Permanent link">¶</a></h2>
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>pbm-agent
 </code></pre></div>
-<h2 id="3-take-a-backup-on-the-source-cluster">3. Take a backup on the source cluster<a class="headerlink" href="#3-take-a-backup-on-the-source-cluster" title="Permanent link">¶</a></h2>
+<h2 id="3-take-a-backup-on-the-source-cluster">3. Take a backup on the source cluster<a data-markdown-ignore class="headerlink" href="#3-take-a-backup-on-the-source-cluster" title="Permanent link">¶</a></h2>
 <div class="highlight"><pre><span></span><code>pbm<span class="w"> </span>backup<span class="w"> </span>--wait
 </code></pre></div>
 <p>The output contains the <em>backup name</em>, which you need for the restore:</p>
@@ -6690,12 +6690,12 @@ S3 us-west-2/pbm-test-bucket
 </code></pre></div>
 <p>If the storage line shows something other than the bucket you configured, <code>pbm config</code> did
 not take effect - check the <code>storage:</code> key in the config file.</p>
-<h2 id="4-restore-into-the-kubernetes-cluster">4. Restore into the Kubernetes cluster<a class="headerlink" href="#4-restore-into-the-kubernetes-cluster" title="Permanent link">¶</a></h2>
+<h2 id="4-restore-into-the-kubernetes-cluster">4. Restore into the Kubernetes cluster<a data-markdown-ignore class="headerlink" href="#4-restore-into-the-kubernetes-cluster" title="Permanent link">¶</a></h2>
 <p>The remaining work happens on the <em>destination</em> cluster and is described in
 <a href="backups-restore.html#restore-on-a-new-cluster">Restore from a backup to a new Kubernetes-based environment</a>.
 Use the backup name from the previous step and the storage parameters you configured on the
 source, so the destination reads from the same bucket.</p>
-<h2 id="verify-the-migration">Verify the migration<a class="headerlink" href="#verify-the-migration" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-migration">Verify the migration<a data-markdown-ignore class="headerlink" href="#verify-the-migration" title="Permanent link">¶</a></h2>
 <p>Export the <em>destination</em> cluster’s namespace, replacing <code>&lt;namespace&gt;</code> with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
@@ -6723,7 +6723,7 @@ and see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a
 database and collection names, and document counts for your largest collections, with the
 source. A restore that reports success still needs this check, because a backup taken from a
 partially configured source can restore cleanly and be incomplete.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="clustersync.html">Percona ClusterSync for MongoDB</a> - migrate with near-zero downtime instead</li>
 <li><a href="backups-restore.html#with-different-replica-set-names">Restore to a new cluster with different replica set names</a></li>

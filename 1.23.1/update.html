@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6463,7 +6463,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="update-percona-operator-for-mongodb">Update Percona Operator for MongoDB<a class="headerlink" href="#update-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
+<h1 id="update-percona-operator-for-mongodb">Update Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#update-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
 <p>Use this page to understand how upgrades work, check compatibility before you start, and pick the right procedure.</p>
 <p>An upgrade has two independent stages:</p>
 <ul>
@@ -6475,8 +6475,8 @@ window.addEventListener('afterprint', (event) => {
 <p class="admonition-title">Something already went wrong?</p>
 <p>If Pods are stuck in <code>Init:ErrImagePull</code>, a cluster is stuck in <code>initializing</code>, or Pods restarted after you re-applied a manifest, see <a href="debug-upgrade.html">Troubleshoot upgrades and <code>crVersion</code> problems</a>.</p>
 </div>
-<h2 id="choose-your-upgrade-path">Choose your upgrade path<a class="headerlink" href="#choose-your-upgrade-path" title="Permanent link">¶</a></h2>
-<h3 id="upgrade-the-operator-and-crd">Upgrade the Operator and CRD<a class="headerlink" href="#upgrade-the-operator-and-crd" title="Permanent link">¶</a></h3>
+<h2 id="choose-your-upgrade-path">Choose your upgrade path<a data-markdown-ignore class="headerlink" href="#choose-your-upgrade-path" title="Permanent link">¶</a></h2>
+<h3 id="upgrade-the-operator-and-crd">Upgrade the Operator and CRD<a data-markdown-ignore class="headerlink" href="#upgrade-the-operator-and-crd" title="Permanent link">¶</a></h3>
 <p>Upgrade the Operator and CRD when new database features need changes in this Operator version, when you want automation or fixes from the new Operator, or when compatibility between the Operator and the database requires a synchronized update.</p>
 <table>
 <thead>
@@ -6500,7 +6500,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="upgrade-the-database">Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permanent link">¶</a></h3>
+<h3 id="upgrade-the-database">Upgrade the database<a data-markdown-ignore class="headerlink" href="#upgrade-the-database" title="Permanent link">¶</a></h3>
 <p>Upgrade the database after you have already upgraded the Operator and now want to move the database forward, or when the new database version has features or fixes unrelated to the Operator. Check the <a href="versions.html">version compatibility matrix</a> first to confirm that your current Operator version supports the new database version.</p>
 <table>
 <thead>
@@ -6529,7 +6529,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>On OpenShift, database upgrades follow a different procedure. See <a href="update-openshift.html">Upgrade Percona Server for MongoDB on OpenShift</a>.</p>
-<h2 id="before-you-upgrade">Before you upgrade<a class="headerlink" href="#before-you-upgrade" title="Permanent link">¶</a></h2>
+<h2 id="before-you-upgrade">Before you upgrade<a data-markdown-ignore class="headerlink" href="#before-you-upgrade" title="Permanent link">¶</a></h2>
 <p>Do these for every upgrade:</p>
 <ul>
 <li><strong>Take a backup first.</strong> See <a href="backups.html">Backup and restore</a> or <a href="backup-tutorial.html">On-demand backup</a>.</li>
@@ -6568,7 +6568,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>To apply a security build for the Operator version you already run, see <a href="security-builds.html">Operator security builds</a>.</p>
-<h2 id="how-an-upgrade-works">How an upgrade works<a class="headerlink" href="#how-an-upgrade-works" title="Permanent link">¶</a></h2>
+<h2 id="how-an-upgrade-works">How an upgrade works<a data-markdown-ignore class="headerlink" href="#how-an-upgrade-works" title="Permanent link">¶</a></h2>
 <p>You decide when to run each stage. Stage 2 does not have to follow stage 1 immediately.</p>
 <div style="text-align: center">
 <pre class="mermaid"><code>%%{init: {"flowchart": {"nodeSpacing": 14, "rankSpacing": 22, "useMaxWidth": false}, "themeVariables": {"fontSize": "12px"}} }%%
@@ -6587,13 +6587,13 @@ flowchart TB
 <p class="admonition-title">Note</p>
 <p>The procedures on the individual upgrade pages patch <code>crVersion</code> and the images in one command, which runs both stages back to back. To keep the stages apart, upgrade the CRD and Operator first, then patch <code>crVersion</code> and the images later.</p>
 </div>
-<h3 id="why-the-stages-can-be-separated">Why the stages can be separated<a class="headerlink" href="#why-the-stages-can-be-separated" title="Permanent link">¶</a></h3>
+<h3 id="why-the-stages-can-be-separated">Why the stages can be separated<a data-markdown-ignore class="headerlink" href="#why-the-stages-can-be-separated" title="Permanent link">¶</a></h3>
 <p>The CRD supports clusters whose <code>crVersion</code> is within the last three minor Operator versions: the current one and the two before it. For example, with Operator 1.23.0 installed, clusters that still declare <code>crVersion: 1.22.0</code> or <code>crVersion: 1.21.0</code> are supported and keep running normally. A cluster does not have to move the moment you upgrade the Operator.</p>
 <p>That window is also the limit. Once your Operator is more than two minor versions ahead of a cluster’s <code>crVersion</code>, the cluster has to catch up. Plan stage 2 before your Operator gets more than two minor versions ahead of a cluster’s <code>crVersion</code>. See <a href="update-operator.html#considerations">Considerations</a>.</p>
 <p>For what <code>crVersion</code> does and how the Operator handles different values, see <a href="update-crversion.html"><code>crVersion</code> behavior</a>.</p>
-<h3 id="apply-a-security-build">Apply a security build<a class="headerlink" href="#apply-a-security-build" title="Permanent link">¶</a></h3>
+<h3 id="apply-a-security-build">Apply a security build<a data-markdown-ignore class="headerlink" href="#apply-a-security-build" title="Permanent link">¶</a></h3>
 <p>Apply a security build to patch the Operator version you already run with the fixes for High and Critical Common Vulnerabilities and Exposures (CVE). See <a href="security-builds.html">Apply security builds</a>.</p>
-<h2 id="update-strategies">Update strategies<a class="headerlink" href="#update-strategies" title="Permanent link">¶</a></h2>
+<h2 id="update-strategies">Update strategies<a data-markdown-ignore class="headerlink" href="#update-strategies" title="Permanent link">¶</a></h2>
 <p>Set <code>updateStrategy</code> in the <a href="operator.html">Custom Resource</a> to choose how the Operator or Kubernetes updates your cluster:</p>
 <p><a name="smart-update"></a><a name="rolling-update"></a><a name="on-delete"></a></p>
 <table>
@@ -6628,7 +6628,7 @@ flowchart TB
 <span class="w">  </span><span class="nt">updateStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SmartUpdate</span>
 <span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </code></pre></div>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update-operator.html">Upgrade the Operator and CRD</a></li>
 <li><a href="security-builds.html">Apply security builds</a></li>

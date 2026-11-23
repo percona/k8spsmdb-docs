@@ -1,0 +1,68 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Known limitations
+
+This page describes known limitations of Percona Operator for MongoDB. Understanding these constraints helps you plan deployments and avoid unexpected behavior.
+
+## Hardware and CPU requirements
+
+### x86-64-v3 CPU microarchitecture (Operator 1.22.0 and later)
+
+Starting with Operator version [1.22.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html), the Operator image is based on [Red Hat Universal Base Image (UBI) 10](https://catalog.redhat.com/software/base-images) . RHEL 10 / UBI 10 requires the **x86-64-v3** CPU microarchitecture on `amd64` hosts. That level includes AVX2, BMI1, BMI2, and FMA (roughly Intel Haswell 2013 or newer, or AMD Excavator 2015 or newer).
+
+This requirement is stricter than the [AVX requirement for MongoDB 5.0 and later](https://docs.percona.com/percona-server-for-mongodb/8.0/system-requirements.html) . Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.
+
+## Backups and restores
+
+- Point-in-time recovery and selective restore are not available for [PVC snapshot backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-snapshots.html) (type `external`).
+- When you delete an incremental base backup, Percona Backup for MongoDB also deletes all increments that derived from it from the backup storage. The `percona.com/delete-backup` finalizer applies to the base backup and is ignored for increments. This means that the Operator deletes the Backup resource for the base incremental backup but the Backup resources for increments remain because the Operator doesn’t control their deletion.
+- Restoring a collection under a different name is supported only on replica set clusters for unsharded collections from a full logical backup. It is not supported on sharded clusters. See [Restore a collection under a different name](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore-new-name.html#limitations).
+- Selective restores have additional constraints in Percona Backup for MongoDB. See the [selective restore limitations](https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores) .
+- After a failed restore, the Operator cannot guarantee data consistency because it does not know at which stage the failure happened. See [Restore from a backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore.html).
+
+## Multi-cluster and multi-region deployments
+
+- The Operator cannot place MongoDB Pods in other data centers by itself. Cross-site topologies need an Operator deployment on each site, with unmanaged clusters registered as `externalNodes` on the Main site. Setup and scaling require manual operations. See [Splitting a replica set across multiple data centers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-multi-dc.html).
+- Backups are supported on the Main site only, not on Replica sites in a multi-datacenter replica set split.
+- Multi-cluster Services (MCS) can add cloud-provider limits. For example, on GKE all participating Pods must be in the same project. Avoid exporting Services from the `default` and `kube-system` namespaces. See [Multi-cluster Services](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-mcs.html).
+- Setting `clusterServiceDNSMode` to `ServiceMesh` supersedes multi-cluster settings. You cannot combine `ServiceMesh` DNS mode with multi-cluster Services. See the [Custom Resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#clusterservicednsmode).
+
+## Networking and exposure
+
+Split horizon DNS has these MongoDB constraints:
+
+- You cannot duplicate domain names in horizons
+- You cannot use IP addresses in horizons
+- You must set horizons for all Pods of a replica set, or for none of them
+
+See [Exposing the cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html).
+
+## Search and vector search
+
+Percona Search for MongoDB is in the tech preview stage. Notable limits include:
+
+- a single search Pod per replica set or shard,
+- no automated embedding,
+- no migration from externally managed `mongot`, and
+- search index data is not included in backups.
+
+See [Limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html#limitations) in the search overview.
+
+## Real-time replication with Percona ClusterSync for MongoDB
+
+PCSM follows upstream [known issues and limitations](https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html) .
+
+Notable constraints:
+
+- Same **major** MongoDB version required on source and target.
+- Single source / single target pair only.
+- Reverse synchronization is not supported.
+- Initial sync is **not resumable**. If PCSM failed during initial sync, it restarts it from scratch.
+- PCSM connects to the **primary** only; `directConnection` to secondaries is ignored.
+- Users, roles, and `system.*` collections are not synchronized.
+- Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.
+- External authentication (LDAP, Kerberos, AWS IAM) is not supported for PCSM connections.
+
+## Next steps
+
+[Get started](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/quickstart.html)

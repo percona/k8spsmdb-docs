@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6601,7 +6601,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="restore-from-a-backup">Restore from a backup<a class="headerlink" href="#restore-from-a-backup" title="Permanent link">¶</a></h1>
+<h1 id="restore-from-a-backup">Restore from a backup<a data-markdown-ignore class="headerlink" href="#restore-from-a-backup" title="Permanent link">¶</a></h1>
 <p>You can restore a backup:</p>
 <ul>
 <li><a href="#restore-on-the-same-cluster">onto the cluster that produced it</a> </li>
@@ -6611,7 +6611,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Compare these options in <a href="backups.html#restore-options">Backup and restore</a>.</p>
 <p>Every restore is a <code>PerconaServerMongoDBRestore</code> object, created from the
 <a href="https://github.com/percona/percona-server-mongodb-operator/blob/v1.23.1/deploy/backup/restore.yaml"><code>deploy/backup/restore.yaml</code>  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> manifest.</p>
-<h2 id="downtime-to-expect">Downtime to expect<a class="headerlink" href="#downtime-to-expect" title="Permanent link">¶</a></h2>
+<h2 id="downtime-to-expect">Downtime to expect<a data-markdown-ignore class="headerlink" href="#downtime-to-expect" title="Permanent link">¶</a></h2>
 <p>Every restore causes downtime. How much and whether Pods are replaced depends on the
 restore type and on whether the cluster is sharded:</p>
 <table>
@@ -6642,7 +6642,7 @@ restore type and on whether the cluster is sharded:</p>
 </table>
 <p>Also check PBM’s <a href="https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations">restore considerations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 for keeping MongoDB clients away from the database while the restore runs.</p>
-<h2 id="choose-backupname-or-backupsource">Choose <code>backupName</code> or <code>backupSource</code><a class="headerlink" href="#choose-backupname-or-backupsource" title="Permanent link">¶</a></h2>
+<h2 id="choose-backupname-or-backupsource">Choose <code>backupName</code> or <code>backupSource</code><a data-markdown-ignore class="headerlink" href="#choose-backupname-or-backupsource" title="Permanent link">¶</a></h2>
 <p>Every restore names its source in one of two ways. Use exactly one - setting both is not allowed.</p>
 <table>
 <thead>
@@ -6671,7 +6671,7 @@ for keeping MongoDB clients away from the database while the restore runs.</p>
 </tbody>
 </table>
 <p><code>backupSource</code> also works for restores onto the same cluster, if you prefer it.</p>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <p>Two preconditions are easy to miss:</p>
 <ul>
 <li>The backup you restore from must be in the <code>ready</code> state. A backup still in <code>running</code>,
@@ -6700,14 +6700,14 @@ for keeping MongoDB clients away from the database while the restore runs.</p>
 </code></pre></div>
 </li>
 </ul>
-<h2 id="restore-on-the-same-cluster">Restore on the same cluster<a class="headerlink" href="#restore-on-the-same-cluster" title="Permanent link">¶</a></h2>
+<h2 id="restore-on-the-same-cluster">Restore on the same cluster<a data-markdown-ignore class="headerlink" href="#restore-on-the-same-cluster" title="Permanent link">¶</a></h2>
 <p>Configure a <code>PerconaServerMongoDBRestore</code> object to restore your cluster from any backup. The <a href="https://github.com/percona/percona-server-mongodb-operator/blob/v1.23.1/deploy/backup/restore.yaml"><code>deploy/backup/restore.yaml</code>  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> manifest is the same for all restore types. Set these keys:</p>
 <ul>
 <li><code>spec.clusterName</code> - the name of the target cluster to restore the backup on</li>
 <li><code>spec.backupName</code> - the name of your backup, from the output of <code>kubectl get psmdb-backup</code>. PBM detects the backup type automatically and runs the matching restore procedure.</li>
 </ul>
 <p>Pass this configuration to the Operator:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">via the YAML manifest</label><label for="__tabbed_1_2">via the command line</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">via the YAML manifest</label><label for="__tabbed_1_2">via the command line</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -6744,10 +6744,10 @@ for keeping MongoDB clients away from the database while the restore runs.</p>
 </div>
 </div>
 </div>
-<h2 id="restore-on-a-new-cluster">Restore on a new cluster<a class="headerlink" href="#restore-on-a-new-cluster" title="Permanent link">¶</a></h2>
+<h2 id="restore-on-a-new-cluster">Restore on a new cluster<a data-markdown-ignore class="headerlink" href="#restore-on-a-new-cluster" title="Permanent link">¶</a></h2>
 <p>Restore a backup into a <strong>different</strong> Kubernetes environment than the one it was taken in. To restore onto the cluster that made the backup, see <a href="#restore-on-the-same-cluster">Restore on the same cluster</a>.</p>
 <p>Check the <a href="restore-options.html">restore options reference</a> for all available options.</p>
-<h3 id="preconditions-for-a-new-environment">Preconditions for a new environment<a class="headerlink" href="#preconditions-for-a-new-environment" title="Permanent link">¶</a></h3>
+<h3 id="preconditions-for-a-new-environment">Preconditions for a new environment<a data-markdown-ignore class="headerlink" href="#preconditions-for-a-new-environment" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>When restoring to a new Kubernetes-based environment, make sure it has a Secrets object with the same user passwords as in the original cluster. </p>
@@ -6757,7 +6757,7 @@ for keeping MongoDB clients away from the database while the restore runs.</p>
 </li>
 </ol>
 <p>PBM must know where to take the backup from and have access to that storage. You can define it in two ways: within the restore object configuration, or pre-configured on the target cluster’s <code>cr.yaml</code> file.</p>
-<h3 id="approach-1-define-storage-configuration-in-the-restore-object">Approach 1: Define storage configuration in the restore object<a class="headerlink" href="#approach-1-define-storage-configuration-in-the-restore-object" title="Permanent link">¶</a></h3>
+<h3 id="approach-1-define-storage-configuration-in-the-restore-object">Approach 1: Define storage configuration in the restore object<a data-markdown-ignore class="headerlink" href="#approach-1-define-storage-configuration-in-the-restore-object" title="Permanent link">¶</a></h3>
 <p>Use this approach if you haven’t defined storage in the target cluster’s <code>cr.yaml</code> file.</p>
 <ol>
 <li>
@@ -6804,7 +6804,7 @@ below.</p>
 <p>After the restore, configure the <a href="multi-storage.html#define-the-main-storage">main storage</a> in the target cluster’s <code>cr.yaml</code> so you can make subsequent backups.</p>
 </li>
 </ol>
-<h3 id="approach-2-the-storage-is-defined-on-target">Approach 2: The storage is defined on target<a class="headerlink" href="#approach-2-the-storage-is-defined-on-target" title="Permanent link">¶</a></h3>
+<h3 id="approach-2-the-storage-is-defined-on-target">Approach 2: The storage is defined on target<a data-markdown-ignore class="headerlink" href="#approach-2-the-storage-is-defined-on-target" title="Permanent link">¶</a></h3>
 <p>Use this approach if you already <a href="backups-storage.html">defined</a> the storage in the <code>backup.storages</code> subsection of the target cluster’s <code>deploy/cr.yaml</code> file. Reference it by name in the restore configuration.</p>
 <ol>
 <li>
@@ -6828,7 +6828,7 @@ below.</p>
 </code></pre></div>
 </li>
 </ol>
-<h3 id="with-different-replica-set-names">With different replica set names<a class="headerlink" href="#with-different-replica-set-names" title="Permanent link">¶</a></h3>
+<h3 id="with-different-replica-set-names">With different replica set names<a data-markdown-ignore class="headerlink" href="#with-different-replica-set-names" title="Permanent link">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a></p>
 </div>
@@ -6854,12 +6854,12 @@ below.</p>
 </code></pre></div>
 <p>A restore that violates the shard-count rule above, or maps to a replica set name that
 doesn’t exist on the target, is rejected - see <a href="#verify-the-restore">Verify the restore</a>.</p>
-<h2 id="point-in-time-recovery">Point-in-time recovery<a class="headerlink" href="#point-in-time-recovery" title="Permanent link">¶</a></h2>
+<h2 id="point-in-time-recovery">Point-in-time recovery<a data-markdown-ignore class="headerlink" href="#point-in-time-recovery" title="Permanent link">¶</a></h2>
 <p>For point-in-time recovery on a new cluster, see <a href="backups-pitr-restore.html#restore-on-a-new-cluster">Restore to a point in time</a>.</p>
-<h2 id="restore-from-a-backup-with-a-prefix-in-a-bucket-path">Restore from a backup with a prefix in a bucket path<a class="headerlink" href="#restore-from-a-backup-with-a-prefix-in-a-bucket-path" title="Permanent link">¶</a></h2>
+<h2 id="restore-from-a-backup-with-a-prefix-in-a-bucket-path">Restore from a backup with a prefix in a bucket path<a data-markdown-ignore class="headerlink" href="#restore-from-a-backup-with-a-prefix-in-a-bucket-path" title="Permanent link">¶</a></h2>
 <p>If you defined a prefix (a folder) in your backup bucket, specify it in the <code>spec.backupSource</code> subsection of the restore configuration.</p>
 <p>For example, say you defined the prefix <code>my-prefix</code> for your AWS S3 bucket <code>my-example-bucket</code>, and you want to restore the logical backup <code>2025-05-19T07:23:46Z</code>. The pull path to this backup is <code>"s3://my-example-bucket/my-prefix/2025-05-19T07:23:46Z"</code>. Your restore configuration looks like this:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Storage defined in a Restore object</label><label for="__tabbed_2_2">Storage defined on target</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">Storage defined in a Restore object</label><label for="__tabbed_2_2">Storage defined on target</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
@@ -6897,7 +6897,7 @@ doesn’t exist on the target, is rejected - see <a href="#verify-the-restore">V
 <p>Apply the configuration to start a restore:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/backup/restore.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<h2 id="selective-restore">Selective restore<a class="headerlink" href="#selective-restore" title="Permanent link">¶</a></h2>
+<h2 id="selective-restore">Selective restore<a data-markdown-ignore class="headerlink" href="#selective-restore" title="Permanent link">¶</a></h2>
 <p>Starting with version 1.18.0, you can restore a desired subset of data from a <strong>full</strong> logical backup. Selective logical backups are not yet supported.</p>
 <p>Selective restores have limitations - see the <a href="https://docs.percona.com/percona-backup-mongodb/features/known-limitations.html#selective-backups-and-restores">current selective restore limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> in the Percona Backup for MongoDB documentation.</p>
 <p>Control selective restores with the <code>selective</code> section in the <code>PerconaServerMongoDBRestore</code> Custom Resource. Use it to specify the database or collection you want to restore:</p>
@@ -6915,7 +6915,7 @@ doesn’t exist on the target, is rejected - see <a href="#verify-the-restore">V
 <li>a single star <code>*</code> to restore all databases and collections</li>
 </ul>
 <p>Set <code>selective.withUsersAndRoles</code> to <code>true</code> to also restore users and roles for the selected database. Read more about this functionality in the <a href="https://docs.percona.com/percona-backup-mongodb/usage/restore-selective.html#restore-with-users-and-roles">PBM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="if-a-physical-restore-fails">If a physical restore fails<a class="headerlink" href="#if-a-physical-restore-fails" title="Permanent link">¶</a></h2>
+<h2 id="if-a-physical-restore-fails">If a physical restore fails<a data-markdown-ignore class="headerlink" href="#if-a-physical-restore-fails" title="Permanent link">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>A failed physical restore is not rolled back, and the Operator cannot guarantee data
@@ -6925,7 +6925,7 @@ restored. Read this section before you start a physical restore, not after.</p>
 <p>If a physical restore fails, the Operator does not roll back the changes it made while preparing for the restore - it doesn’t know at which stage the failure happened, so it cannot guarantee data consistency. Retry the restore, or delete the StatefulSet yourself to return the cluster to its normal configuration; deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.</p>
 <p>To inspect restore logs, exec into the <code>mongod</code> container and check the PBM logs. PBM keeps only the latest restore logs, because it cleans up the data directory during the process.</p>
 <p>For step-by-step diagnostics, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
-<h2 id="verify-the-restore">Verify the restore<a class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-restore">Verify the restore<a data-markdown-ignore class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
 <p>Watch the Restore object until it finishes:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -6936,7 +6936,7 @@ failed; for physical restores read
 retrying, because a failed physical restore is not rolled back.</p>
 <p>Then connect to the cluster and confirm the data is there: compare database and collection
 names, and document counts for your largest collections, against what you expect.</p>
-<h2 id="other-restore-scenarios">Other restore scenarios<a class="headerlink" href="#other-restore-scenarios" title="Permanent link">¶</a></h2>
+<h2 id="other-restore-scenarios">Other restore scenarios<a data-markdown-ignore class="headerlink" href="#other-restore-scenarios" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="backups-pitr-restore.html">Restore to a point in time</a> - recover to a specific date and time.</li>
 <li><a href="backups-restore-new-name.html">Restore a collection under a different name</a></li>

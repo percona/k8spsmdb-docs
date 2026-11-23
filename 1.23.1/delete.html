@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6676,7 +6676,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="delete-percona-operator-for-mongodb">Delete Percona Operator for MongoDB<a class="headerlink" href="#delete-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
+<h1 id="delete-percona-operator-for-mongodb">Delete Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#delete-percona-operator-for-mongodb" title="Permanent link">¶</a></h1>
 <p>You may have different reasons to clean up your Kubernetes environment: moving from trial deployment to a production one, testing experimental configurations and the like. In either case, you need to remove some (or all) of these objects:</p>
 <ul>
 <li>Percona Distribution for MongoDB cluster managed by the Operator</li>
@@ -6684,7 +6684,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Custom Resource Definitions deployed with the Operator</li>
 <li>Resources like PVCs and Secrets</li>
 </ul>
-<h2 id="delete-the-database-cluster">Delete the database cluster<a class="headerlink" href="#delete-the-database-cluster" title="Permanent link">¶</a></h2>
+<h2 id="delete-the-database-cluster">Delete the database cluster<a data-markdown-ignore class="headerlink" href="#delete-the-database-cluster" title="Permanent link">¶</a></h2>
 <p>To delete the database cluster means to delete the Custom Resource associated with it.</p>
 <p>There are two <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers">finalizers  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> defined in the Custom Resource, which are related to cluster deletion:</p>
 <ul>
@@ -6723,9 +6723,9 @@ window.addEventListener('afterprint', (event) => {
 </details>
 </li>
 </ol>
-<h2 id="delete-the-operator">Delete the Operator<a class="headerlink" href="#delete-the-operator" title="Permanent link">¶</a></h2>
+<h2 id="delete-the-operator">Delete the Operator<a data-markdown-ignore class="headerlink" href="#delete-the-operator" title="Permanent link">¶</a></h2>
 <p>Choose the instructions relevant to the way you installed the Operator.</p>
-<h3 id="use-kubectl">Use kubectl<a class="headerlink" href="#use-kubectl" title="Permanent link">¶</a></h3>
+<h3 id="use-kubectl">Use kubectl<a data-markdown-ignore class="headerlink" href="#use-kubectl" title="Permanent link">¶</a></h3>
 <p class="power-number">To uninstall the Operator, delete the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> related to it.</p>
 <ol>
 <li>
@@ -6768,7 +6768,7 @@ customresourcedefinition.apiextensions.k8s.io "perconaservermongodbs.psmdb.perco
 </details>
 </li>
 </ol>
-<h3 id="use-helm">Use Helm<a class="headerlink" href="#use-helm" title="Permanent link">¶</a></h3>
+<h3 id="use-helm">Use Helm<a data-markdown-ignore class="headerlink" href="#use-helm" title="Permanent link">¶</a></h3>
 <p class="power-number">To delete the Operator, do the following:</p>
 <ol>
 <li>
@@ -6804,7 +6804,7 @@ my-op       &lt;namespace&gt;         1           2023-10-31 10:15:18.41444 +010
 </code></pre></div>
 </li>
 </ol>
-<h2 id="clean-up-resources">Clean up resources<a class="headerlink" href="#clean-up-resources" title="Permanent link">¶</a></h2>
+<h2 id="clean-up-resources">Clean up resources<a data-markdown-ignore class="headerlink" href="#clean-up-resources" title="Permanent link">¶</a></h2>
 <p>By default, TLS-related objects and data volumes remain in Kubernetes environment after you delete the cluster to allow you to recreate it without losing the data. </p>
 <p>You can automate resource cleanup by turning on <code>percona.com/delete-psmdb-pvc</code> <a href="operator.html#metadata">finalizer</a>. Note that in this case user Secrets will also be deleted.</p>
 <p>You can also delete TLS-related objects and PVCs manually.</p>
@@ -6863,30 +6863,30 @@ persistentvolumeclaim "mongod-data-my-cluster-name-rs0-2" deleted
 </ol>
 </li>
 </ol>
-<h2 id="delete-the-kubernetes-cluster-platform-specific">Delete the Kubernetes cluster (platform-specific)<a class="headerlink" href="#delete-the-kubernetes-cluster-platform-specific" title="Permanent link">¶</a></h2>
+<h2 id="delete-the-kubernetes-cluster-platform-specific">Delete the Kubernetes cluster (platform-specific)<a data-markdown-ignore class="headerlink" href="#delete-the-kubernetes-cluster-platform-specific" title="Permanent link">¶</a></h2>
 <p>To remove the Kubernetes cluster itself (and all workloads in it), use the platform’s tools. This step is optional and typically done after you have deleted the Operator and database as described above.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Deleting the cluster removes all data and resources in it. This cannot be undone.</p>
 </div>
-<h3 id="amazon-eks">Amazon EKS<a class="headerlink" href="#amazon-eks" title="Permanent link">¶</a></h3>
+<h3 id="amazon-eks">Amazon EKS<a data-markdown-ignore class="headerlink" href="#amazon-eks" title="Permanent link">¶</a></h3>
 <p>You need the cluster name and AWS region. With <code>eksctl</code>:</p>
 <div class="highlight"><pre><span></span><code>eksctl<span class="w"> </span>delete<span class="w"> </span>cluster<span class="w"> </span>--region<span class="o">=</span>&lt;region&gt;<span class="w"> </span>--name<span class="o">=</span><span class="s2">"&lt;cluster name&gt;"</span>
 </code></pre></div>
 <p>Deletion can take several minutes.</p>
-<h3 id="google-kubernetes-engine-gke">Google Kubernetes Engine (GKE)<a class="headerlink" href="#google-kubernetes-engine-gke" title="Permanent link">¶</a></h3>
+<h3 id="google-kubernetes-engine-gke">Google Kubernetes Engine (GKE)<a data-markdown-ignore class="headerlink" href="#google-kubernetes-engine-gke" title="Permanent link">¶</a></h3>
 <p>Using <code>gcloud</code> (replace placeholders with your cluster name, zone, and project ID):</p>
 <div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>delete<span class="w"> </span>&lt;cluster<span class="w"> </span>name&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--zone<span class="w"> </span>&lt;zone&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--project<span class="w"> </span>&lt;project<span class="w"> </span>ID&gt;
 </code></pre></div>
 <p>Type <code>y</code> when prompted to confirm. Deletion can take several minutes.</p>
-<h3 id="microsoft-azure-kubernetes-service-aks">Microsoft Azure Kubernetes Service (AKS)<a class="headerlink" href="#microsoft-azure-kubernetes-service-aks" title="Permanent link">¶</a></h3>
+<h3 id="microsoft-azure-kubernetes-service-aks">Microsoft Azure Kubernetes Service (AKS)<a data-markdown-ignore class="headerlink" href="#microsoft-azure-kubernetes-service-aks" title="Permanent link">¶</a></h3>
 <p>Using Azure CLI (replace placeholders with your resource group and cluster name):</p>
 <div class="highlight"><pre><span></span><code>az<span class="w"> </span>aks<span class="w"> </span>delete<span class="w"> </span>--name<span class="w"> </span>&lt;cluster<span class="w"> </span>name&gt;<span class="w"> </span>--resource-group<span class="w"> </span>&lt;resource<span class="w"> </span>group&gt;<span class="w"> </span>--yes<span class="w"> </span>--no-wait
 </code></pre></div>
 <p>The cluster is removed asynchronously; it may take several minutes.</p>
-<h3 id="minikube">Minikube<a class="headerlink" href="#minikube" title="Permanent link">¶</a></h3>
+<h3 id="minikube">Minikube<a data-markdown-ignore class="headerlink" href="#minikube" title="Permanent link">¶</a></h3>
 <p>To stop the local cluster:</p>
 <div class="highlight"><pre><span></span><code>minikube<span class="w"> </span>stop
 </code></pre></div>

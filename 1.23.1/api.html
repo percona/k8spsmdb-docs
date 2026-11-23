@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6950,7 +6950,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="manage-clusters-with-the-kubernetes-api">Manage clusters with the Kubernetes API<a class="headerlink" href="#manage-clusters-with-the-kubernetes-api" title="Permanent link">¶</a></h1>
+<h1 id="manage-clusters-with-the-kubernetes-api">Manage clusters with the Kubernetes API<a data-markdown-ignore class="headerlink" href="#manage-clusters-with-the-kubernetes-api" title="Permanent link">¶</a></h1>
 <p>Percona Operator for MongoDB extends the <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Kubernetes API <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with Custom Resources (CRs). You manage database clusters the same way you manage other Kubernetes objects:</p>
 <ul>
 <li>with <code>kubectl</code></li>
@@ -6992,7 +6992,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="cr-statuses.html">Custom resource statuses</a></li>
 </ul>
 <p>For general Kubernetes API access and authentication, see the <a href="https://kubernetes.io/docs/reference/">official Kubernetes API documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Deploy the Operator and install the CRDs in your cluster. See <a href="kubectl.html">Install on Kubernetes</a>.</p>
@@ -7021,10 +7021,10 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 <p class="admonition-title">Warning</p>
 <p>The <code>-k</code> flag in the <code>curl</code> examples skips TLS certificate verification. Prefer proper trust configuration for production use.</p>
 </div>
-<h2 id="cluster-lifecycle">Cluster lifecycle<a class="headerlink" href="#cluster-lifecycle" title="Permanent link">¶</a></h2>
-<h3 id="create-a-cluster">Create a cluster<a class="headerlink" href="#create-a-cluster" title="Permanent link">¶</a></h3>
+<h2 id="cluster-lifecycle">Cluster lifecycle<a data-markdown-ignore class="headerlink" href="#cluster-lifecycle" title="Permanent link">¶</a></h2>
+<h3 id="create-a-cluster">Create a cluster<a data-markdown-ignore class="headerlink" href="#create-a-cluster" title="Permanent link">¶</a></h3>
 <p>Create a <code>PerconaServerMongoDB</code> object. The usual path is to maintain <code>deploy/cr.yaml</code> and apply it. The same object can be posted as JSON to the API.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">kubectl</label><label for="__tabbed_1_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">kubectl</label><label for="__tabbed_1_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7091,8 +7091,8 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 </div>
 </div>
 </div>
-<h3 id="list-clusters">List clusters<a class="headerlink" href="#list-clusters" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">kubectl</label><label for="__tabbed_2_2">curl</label></div>
+<h3 id="list-clusters">List clusters<a data-markdown-ignore class="headerlink" href="#list-clusters" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">kubectl</label><label for="__tabbed_2_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7114,8 +7114,8 @@ kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span clas
 </div>
 </div>
 </div>
-<h3 id="get-cluster-details-and-status">Get cluster details and status<a class="headerlink" href="#get-cluster-details-and-status" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">kubectl</label><label for="__tabbed_3_2">curl</label></div>
+<h3 id="get-cluster-details-and-status">Get cluster details and status<a data-markdown-ignore class="headerlink" href="#get-cluster-details-and-status" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_3_1">kubectl</label><label for="__tabbed_3_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span>json
@@ -7139,9 +7139,9 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <li><code>status.replsets</code> — per replica set status</li>
 </ul>
 <p>Full state values and conditions are documented in <a href="cr-statuses.html">Custom resource statuses</a>.</p>
-<h3 id="scale-a-replica-set">Scale a replica set<a class="headerlink" href="#scale-a-replica-set" title="Permanent link">¶</a></h3>
+<h3 id="scale-a-replica-set">Scale a replica set<a data-markdown-ignore class="headerlink" href="#scale-a-replica-set" title="Permanent link">¶</a></h3>
 <p>Prefer a JSON Patch that changes only <code>size</code>, so you do not overwrite the rest of the replica set spec.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"><input id="__tabbed_4_2" name="__tabbed_4" type="radio"><div class="tabbed-labels"><label for="__tabbed_4_1">kubectl</label><label for="__tabbed_4_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"><input id="__tabbed_4_2" name="__tabbed_4" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_4_1">kubectl</label><label for="__tabbed_4_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
@@ -7163,13 +7163,13 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 <p>Replace <code>/spec/replsets/0</code> with the index of the replica set you want to change.</p>
-<h4 id="scale-to-zero">Scale to zero<a class="headerlink" href="#scale-to-zero" title="Permanent link">¶</a></h4>
+<h4 id="scale-to-zero">Scale to zero<a data-markdown-ignore class="headerlink" href="#scale-to-zero" title="Permanent link">¶</a></h4>
 <p>Setting <code>replsets[].size</code> to <code>0</code> scales that replica set down. It does <strong>not</strong> delete the <code>PerconaServerMongoDB</code> object, and data on Persistent Volume Claims remains unless you delete those volumes separately.</p>
 <p>To use a size below the Operator’s safe defaults (including <code>0</code>), enable the corresponding unsafe flag, for example <code>spec.unsafeFlags.replsetSize: true</code>. See <a href="operator.html#operator-unsafeflags-section">unsafeFlags</a>.</p>
 <p>To remove the cluster itself, <a href="#delete-a-cluster">delete the Custom Resource</a>.</p>
-<h3 id="add-a-replica-set">Add a replica set<a class="headerlink" href="#add-a-replica-set" title="Permanent link">¶</a></h3>
+<h3 id="add-a-replica-set">Add a replica set<a data-markdown-ignore class="headerlink" href="#add-a-replica-set" title="Permanent link">¶</a></h3>
 <p>The following command adds a new shard (deployed as the replica set) to the sharded cluster. This command is available only for sharded clusters. To expand the replica set deployment, see <a href="#scale-a-replica-set">Scale a replica set</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"><input id="__tabbed_5_2" name="__tabbed_5" type="radio"><div class="tabbed-labels"><label for="__tabbed_5_1">kubectl</label><label for="__tabbed_5_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"><input id="__tabbed_5_2" name="__tabbed_5" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_5_1">kubectl</label><label for="__tabbed_5_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
@@ -7222,7 +7222,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 </div>
-<h3 id="remove-a-replica-set">Remove a replica set<a class="headerlink" href="#remove-a-replica-set" title="Permanent link">¶</a></h3>
+<h3 id="remove-a-replica-set">Remove a replica set<a data-markdown-ignore class="headerlink" href="#remove-a-replica-set" title="Permanent link">¶</a></h3>
 <p>To remove a shard (deployed as a replica set) from a sharded cluster, you must first drain the shard of all data. Follow this process:</p>
 <ol>
 <li>
@@ -7233,7 +7233,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </li>
 </ol>
 <p>Remove by array index (check the current order with <code>kubectl get psmdb my-cluster-name -o json</code> first):</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"><input id="__tabbed_6_2" name="__tabbed_6" type="radio"><div class="tabbed-labels"><label for="__tabbed_6_1">kubectl</label><label for="__tabbed_6_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"><input id="__tabbed_6_2" name="__tabbed_6" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_6_1">kubectl</label><label for="__tabbed_6_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
@@ -7254,8 +7254,8 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 </div>
-<h3 id="update-the-mongodb-image">Update the MongoDB image<a class="headerlink" href="#update-the-mongodb-image" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"><input id="__tabbed_7_2" name="__tabbed_7" type="radio"><div class="tabbed-labels"><label for="__tabbed_7_1">kubectl</label><label for="__tabbed_7_2">curl</label></div>
+<h3 id="update-the-mongodb-image">Update the MongoDB image<a data-markdown-ignore class="headerlink" href="#update-the-mongodb-image" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"><input id="__tabbed_7_2" name="__tabbed_7" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_7_1">kubectl</label><label for="__tabbed_7_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>json<span class="w"> </span>-p<span class="o">=</span><span class="s1">'[</span>
@@ -7276,9 +7276,9 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 </div>
-<h3 id="delete-a-cluster">Delete a cluster<a class="headerlink" href="#delete-a-cluster" title="Permanent link">¶</a></h3>
+<h3 id="delete-a-cluster">Delete a cluster<a data-markdown-ignore class="headerlink" href="#delete-a-cluster" title="Permanent link">¶</a></h3>
 <p>Deleting the <code>PerconaServerMongoDB</code> Custom Resource deletes the cluster. Finalizers control whether PVCs and related objects are removed. By default, PVCs are kept so you can recreate the cluster without losing data. See <a href="delete.html#delete-the-database-cluster">Delete the database cluster</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"><input id="__tabbed_8_2" name="__tabbed_8" type="radio"><div class="tabbed-labels"><label for="__tabbed_8_1">kubectl</label><label for="__tabbed_8_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"><input id="__tabbed_8_2" name="__tabbed_8" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_8_1">kubectl</label><label for="__tabbed_8_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7293,10 +7293,10 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 </div>
-<h3 id="connection-details">Connection details<a class="headerlink" href="#connection-details" title="Permanent link">¶</a></h3>
+<h3 id="connection-details">Connection details<a data-markdown-ignore class="headerlink" href="#connection-details" title="Permanent link">¶</a></h3>
 <p>Starting with Operator version 1.23.0, the Operator creates a Kubernetes Secret with ready-to-use MongoDB connection strings. For the default <code>databaseAdmin</code> user, the Secret is named <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code>.</p>
 <p>Example for a sharded cluster:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"><input id="__tabbed_9_2" name="__tabbed_9" type="radio"><div class="tabbed-labels"><label for="__tabbed_9_1">kubectl</label><label for="__tabbed_9_2">curl</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"><input id="__tabbed_9_2" name="__tabbed_9" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_9_1">kubectl</label><label for="__tabbed_9_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
@@ -7316,10 +7316,10 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 <p>For a non-sharded replica set, use the <code>databaseAdmin_rs0_connectionStringSrv</code> key instead. See <a href="connection-secrets.html">Connection secrets</a> for all available keys.</p>
-<h2 id="backup-lifecycle">Backup lifecycle<a class="headerlink" href="#backup-lifecycle" title="Permanent link">¶</a></h2>
+<h2 id="backup-lifecycle">Backup lifecycle<a data-markdown-ignore class="headerlink" href="#backup-lifecycle" title="Permanent link">¶</a></h2>
 <p>Backup storage, schedules, and retention live on the cluster Custom Resource under <code>spec.backup</code>. On-demand backups are separate <code>PerconaServerMongoDBBackup</code> objects. See <a href="backups.html">Backup and restore</a> and <a href="backups-configure.html">Configure backups</a>.</p>
 <p>To manage backups, you must configure the backup storage. See <a href="backups-storage.html">Configure storage for backups</a> for details.</p>
-<h3 id="configure-backup-settings-and-retention">Configure backup settings and retention<a class="headerlink" href="#configure-backup-settings-and-retention" title="Permanent link">¶</a></h3>
+<h3 id="configure-backup-settings-and-retention">Configure backup settings and retention<a data-markdown-ignore class="headerlink" href="#configure-backup-settings-and-retention" title="Permanent link">¶</a></h3>
 <p>Patch <code>spec.backup</code> on the cluster. Example: enable backups, set a schedule, and keep the last 3 successful backups:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">'{</span>
 <span class="s1">  "spec": {</span>
@@ -7357,8 +7357,8 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <p class="admonition-title">Note</p>
 <p>A merge patch that replaces <code>storages</code> or <code>tasks</code> overwrites those objects/arrays. Prefer editing your maintained <code>deploy/cr.yaml</code> and applying it when you manage complex backup configuration.</p>
 </div>
-<h3 id="create-a-backup">Create a backup<a class="headerlink" href="#create-a-backup" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"><input id="__tabbed_10_2" name="__tabbed_10" type="radio"><div class="tabbed-labels"><label for="__tabbed_10_1">kubectl</label><label for="__tabbed_10_2">curl</label></div>
+<h3 id="create-a-backup">Create a backup<a data-markdown-ignore class="headerlink" href="#create-a-backup" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"><input id="__tabbed_10_2" name="__tabbed_10" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_10_1">kubectl</label><label for="__tabbed_10_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/backup/backup.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7404,8 +7404,8 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </div>
 </div>
 </div>
-<h3 id="list-backups-and-check-status">List backups and check status<a class="headerlink" href="#list-backups-and-check-status" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio"><input id="__tabbed_11_2" name="__tabbed_11" type="radio"><div class="tabbed-labels"><label for="__tabbed_11_1">kubectl</label><label for="__tabbed_11_2">curl</label></div>
+<h3 id="list-backups-and-check-status">List backups and check status<a data-markdown-ignore class="headerlink" href="#list-backups-and-check-status" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio"><input id="__tabbed_11_2" name="__tabbed_11" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_11_1">kubectl</label><label for="__tabbed_11_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7422,15 +7422,15 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 </div>
 </div>
 <p>Useful status fields: <code>status.state</code> (<code>waiting</code>, <code>running</code>, <code>ready</code>, <code>error</code>, …), <code>status.size</code>, <code>status.destination</code>, <code>status.type</code>, <code>status.completed</code>. See <a href="cr-statuses.html#perconaservermongodbbackup-status">Backup status</a>.</p>
-<h2 id="restore-lifecycle">Restore lifecycle<a class="headerlink" href="#restore-lifecycle" title="Permanent link">¶</a></h2>
+<h2 id="restore-lifecycle">Restore lifecycle<a data-markdown-ignore class="headerlink" href="#restore-lifecycle" title="Permanent link">¶</a></h2>
 <p>Restores are <code>PerconaServerMongoDBRestore</code> objects. You can restore onto the same cluster, onto a new cluster, run point-in-time recovery, or restore selected namespaces (databases/collections). Details and limitations:</p>
 <ul>
 <li><a href="backups-restore.html#restore-on-the-same-cluster">Restore on the same cluster</a></li>
 <li><a href="backups-restore.html#restore-on-a-new-cluster">Restore to a new cluster</a></li>
 <li><a href="backups-restore.html#selective-restore">Selective restore</a></li>
 </ul>
-<h3 id="restore-to-the-same-cluster">Restore to the same cluster<a class="headerlink" href="#restore-to-the-same-cluster" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio"><input id="__tabbed_12_2" name="__tabbed_12" type="radio"><div class="tabbed-labels"><label for="__tabbed_12_1">kubectl</label><label for="__tabbed_12_2">curl</label></div>
+<h3 id="restore-to-the-same-cluster">Restore to the same cluster<a data-markdown-ignore class="headerlink" href="#restore-to-the-same-cluster" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio"><input id="__tabbed_12_2" name="__tabbed_12" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_12_1">kubectl</label><label for="__tabbed_12_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/backup/restore.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -7469,13 +7469,13 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 </div>
 </div>
 </div>
-<h3 id="restore-to-a-new-cluster">Restore to a new cluster<a class="headerlink" href="#restore-to-a-new-cluster" title="Permanent link">¶</a></h3>
+<h3 id="restore-to-a-new-cluster">Restore to a new cluster<a data-markdown-ignore class="headerlink" href="#restore-to-a-new-cluster" title="Permanent link">¶</a></h3>
 <ol>
 <li>Create the target <code>PerconaServerMongoDB</code> cluster (create flow above).</li>
 <li>Create a <code>PerconaServerMongoDBRestore</code> that points at that cluster and at the backup source (often via <code>spec.backupSource</code> when the backup object does not exist in the new environment).</li>
 </ol>
 <p>See <a href="backups-restore.html#restore-on-a-new-cluster">Restore to a new cluster</a> for storage, Secrets, and <code>backupSource</code> examples.</p>
-<h3 id="selective-partial-restore">Selective (partial) restore<a class="headerlink" href="#selective-partial-restore" title="Permanent link">¶</a></h3>
+<h3 id="selective-partial-restore">Selective (partial) restore<a data-markdown-ignore class="headerlink" href="#selective-partial-restore" title="Permanent link">¶</a></h3>
 <p>For a logical backup, you can restore specific databases or collections with <code>spec.selective</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDBRestore</span>
@@ -7490,8 +7490,8 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db1.collection1"</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"db2.*"</span>
 </code></pre></div>
-<h3 id="check-restore-status">Check restore status<a class="headerlink" href="#check-restore-status" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio"><input id="__tabbed_13_2" name="__tabbed_13" type="radio"><div class="tabbed-labels"><label for="__tabbed_13_1">kubectl</label><label for="__tabbed_13_2">curl</label></div>
+<h3 id="check-restore-status">Check restore status<a data-markdown-ignore class="headerlink" href="#check-restore-status" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio"><input id="__tabbed_13_2" name="__tabbed_13" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_13_1">kubectl</label><label for="__tabbed_13_2">curl</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>

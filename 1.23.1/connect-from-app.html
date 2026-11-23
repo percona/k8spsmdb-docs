@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6520,10 +6520,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="connect-your-application">Connect your application<a class="headerlink" href="#connect-your-application" title="Permanent link">¶</a></h1>
+<h1 id="connect-your-application">Connect your application<a data-markdown-ignore class="headerlink" href="#connect-your-application" title="Permanent link">¶</a></h1>
 <p>The Operator creates Kubernetes Secrets with ready-to-use MongoDB connection strings. Use those URIs in your application instead of building the connection string by hand. Any <a href="https://www.mongodb.com/docs/drivers/">MongoDB driver</a> accepts the URI, so your app connects the same way whether it runs inside the cluster or outside it.</p>
 <p>For Secret names, key layout, and exposed endpoints, see <a href="connection-secrets.html">Connection secrets</a>.</p>
-<h2 id="get-a-connection-string">Get a connection string<a class="headerlink" href="#get-a-connection-string" title="Permanent link">¶</a></h2>
+<h2 id="get-a-connection-string">Get a connection string<a data-markdown-ignore class="headerlink" href="#get-a-connection-string" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>List Secrets in your namespace:</p>
@@ -6532,7 +6532,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 <li>
 <p>Retrieve the URI for the user your app should use.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1"><code>databaseAdmin</code> (sharded cluster)</label><label for="__tabbed_1_2"><code>databaseAdmin</code> (replica set, sharding off)</label><label for="__tabbed_1_3">Application user</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1"><code>databaseAdmin</code> (sharded cluster)</label><label for="__tabbed_1_2"><code>databaseAdmin</code> (replica set, sharding off)</label><label for="__tabbed_1_3">Application user</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Secret: <code>&lt;cluster-name&gt;-databaseadmin-conn-str</code></p>
@@ -6558,7 +6558,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>For testing you can use <code>databaseAdmin</code>. For production, create a dedicated <a href="app-credentials.html">application user</a> and use its connection string Secret.</p>
-<h2 id="verify-the-connection-string">Verify the connection string<a class="headerlink" href="#verify-the-connection-string" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-connection-string">Verify the connection string<a data-markdown-ignore class="headerlink" href="#verify-the-connection-string" title="Permanent link">¶</a></h2>
 <p>Test the URI before you put it in your application, so a failure later is your
 code and not the connection. The cluster encrypts connections with TLS by
 default. <code>mongosh</code> needs the CA and a client certificate, not only the URI. These are stored in the
@@ -6652,12 +6652,12 @@ symptoms.</p>
 <p>When you are done, delete the Pod:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>percona-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="use-the-uri-in-your-application">Use the URI in your application<a class="headerlink" href="#use-the-uri-in-your-application" title="Permanent link">¶</a></h2>
+<h2 id="use-the-uri-in-your-application">Use the URI in your application<a data-markdown-ignore class="headerlink" href="#use-the-uri-in-your-application" title="Permanent link">¶</a></h2>
 <p>Pass the decoded URI to your MongoDB driver as the connection string. Example shape (values come from the Secret; do not hardcode passwords):</p>
 <div class="highlight"><pre><span></span><code>mongodb://user:password@host:27017/?authSource=admin
 </code></pre></div>
 <p>If the cluster has <a href="TLS.html">TLS enabled</a>, the Operator includes the TLS parameters in the generated URI. Use an <code>_connectionStringExposed</code> key when your app connects from outside the cluster through an <a href="expose.html">exposed</a> Service.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="app-credentials.html">Get credentials for your app</a>
 <a class="md-button" href="connection-examples.html">Connection examples (Node, Python, Go)</a></p>
 <hr>

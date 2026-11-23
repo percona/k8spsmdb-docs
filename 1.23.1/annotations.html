@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6682,7 +6682,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="labels-and-annotations">Labels and annotations<a class="headerlink" href="#labels-and-annotations" title="Permanent link">¶</a></h1>
+<h1 id="labels-and-annotations">Labels and annotations<a data-markdown-ignore class="headerlink" href="#labels-and-annotations" title="Permanent link">¶</a></h1>
 <p>Labels and annotations are rather similar but differ in purpose.</p>
 <p><strong>Labels</strong> are used by Kubernetes to identify and select objects. They enable filtering and grouping, allowing users to apply selectors for operations like deployments or scaling.</p>
 <p><strong>Annotations</strong> are assigning additional <em>non-identifying</em> information that doesn’t affect how Kubernetes processes resources. They store descriptive information like deployment history, monitoring configurations or external integrations.</p>
@@ -6708,7 +6708,7 @@ window.addEventListener('afterprint', (event) => {
 <li>ConfigMaps and Secrets</li>
 <li>Backup jobs for scheduled backups</li>
 </ul>
-<h2 id="when-to-use-labels-and-annotations">When to use labels and annotations<a class="headerlink" href="#when-to-use-labels-and-annotations" title="Permanent link">¶</a></h2>
+<h2 id="when-to-use-labels-and-annotations">When to use labels and annotations<a data-markdown-ignore class="headerlink" href="#when-to-use-labels-and-annotations" title="Permanent link">¶</a></h2>
 <p>Use <strong>Labels</strong> when:</p>
 <ul>
 <li>The information is used for object selection</li>
@@ -6722,8 +6722,8 @@ window.addEventListener('afterprint', (event) => {
 <li>The information is used for debugging</li>
 <li>The data is used for monitoring configuration</li>
 </ul>
-<h2 id="labels-and-annotations-used-by-percona-operator-for-mongodb">Labels and annotations used by Percona Operator for MongoDB<a class="headerlink" href="#labels-and-annotations-used-by-percona-operator-for-mongodb" title="Permanent link">¶</a></h2>
-<h3 id="labels">Labels<a class="headerlink" href="#labels" title="Permanent link">¶</a></h3>
+<h2 id="labels-and-annotations-used-by-percona-operator-for-mongodb">Labels and annotations used by Percona Operator for MongoDB<a data-markdown-ignore class="headerlink" href="#labels-and-annotations-used-by-percona-operator-for-mongodb" title="Permanent link">¶</a></h2>
+<h3 id="labels">Labels<a data-markdown-ignore class="headerlink" href="#labels" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -6802,7 +6802,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="annotations">Annotations<a class="headerlink" href="#annotations" title="Permanent link">¶</a></h3>
+<h3 id="annotations">Annotations<a data-markdown-ignore class="headerlink" href="#annotations" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -6887,9 +6887,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="setting-labels-and-annotations-in-the-custom-resource">Setting labels and annotations in the Custom Resource<a class="headerlink" href="#setting-labels-and-annotations-in-the-custom-resource" title="Permanent link">¶</a></h2>
+<h2 id="setting-labels-and-annotations-in-the-custom-resource">Setting labels and annotations in the Custom Resource<a data-markdown-ignore class="headerlink" href="#setting-labels-and-annotations-in-the-custom-resource" title="Permanent link">¶</a></h2>
 <p>You can define both Labels and Annotations as <code>key-value</code> pairs in the metadata section of a YAML manifest for a specific resource. </p>
-<h3 id="set-labels-and-annotations-for-pods">Set labels and annotations for Pods<a class="headerlink" href="#set-labels-and-annotations-for-pods" title="Permanent link">¶</a></h3>
+<h3 id="set-labels-and-annotations-for-pods">Set labels and annotations for Pods<a data-markdown-ignore class="headerlink" href="#set-labels-and-annotations-for-pods" title="Permanent link">¶</a></h3>
 <p>To specify labels and annotations for Percona Server for MongoDB Pods, use the <code>replsets.&lt;name&gt;.annotations</code> /<code>replsets.&lt;name&gt;.labels</code>, <code>sharding.configsvrReplSet.annotations</code> / <code>sharding.configsvrReplSet.labels</code> and <code>sharding.mongos.annotations</code> / <code>sharding.mongos.labels</code> options in the <code>deploy/cr.yaml</code> Custom Resource. The example configuration for Percona Server for MongoDB database instances looks as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDB</span>
@@ -6902,7 +6902,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">rack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rack-22</span><span class="w"> </span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div>
-<h3 id="set-labels-and-annotations-for-services">Set labels and annotations for Services<a class="headerlink" href="#set-labels-and-annotations-for-services" title="Permanent link">¶</a></h3>
+<h3 id="set-labels-and-annotations-for-services">Set labels and annotations for Services<a data-markdown-ignore class="headerlink" href="#set-labels-and-annotations-for-services" title="Permanent link">¶</a></h3>
 <p>To annotate Services, use the <code>replsets.&lt;name&gt;.expose.annotations</code> / <code>replsets.&lt;name&gt;.expose.labels</code>, <code>sharding.configsvrReplSet.expose.annotations</code> / <code>sharding.configsvrReplSet.expose.labels</code> and <code>sharding.mongos.expose.annotations</code> / <code>sharding.mongos.expose.labels</code> options in the <code>deploy/cr.yaml</code> Custom Resource. The example configuration for <code>mongos</code> is:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
@@ -6913,7 +6913,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">rack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rack-22</span>
 </code></pre></div>
-<h2 id="querying-labels-and-annotations">Querying labels and annotations<a class="headerlink" href="#querying-labels-and-annotations" title="Permanent link">¶</a></h2>
+<h2 id="querying-labels-and-annotations">Querying labels and annotations<a data-markdown-ignore class="headerlink" href="#querying-labels-and-annotations" title="Permanent link">¶</a></h2>
 <p>To check which <strong>labels</strong> are attached to a specific object, use the additional <code>--show-labels</code> option of the <code>kubectl get</code> command.</p>
 <p>For example, to see the Operator version associated with a Custom Resource Definition, use the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span>perconaservermongodbs.psmdb.percona.com<span class="w"> </span>--show-labels
@@ -6930,7 +6930,7 @@ perconaservermongodbs.psmdb.percona.com   2025-09-18T08:27:53Z   app.kubernetes.
 <p>For example:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.annotations}'</span>
 </code></pre></div>
-<h2 id="specifying-labels-and-annotations-ignored-by-the-operator">Specifying labels and annotations ignored by the Operator<a class="headerlink" href="#specifying-labels-and-annotations-ignored-by-the-operator" title="Permanent link">¶</a></h2>
+<h2 id="specifying-labels-and-annotations-ignored-by-the-operator">Specifying labels and annotations ignored by the Operator<a data-markdown-ignore class="headerlink" href="#specifying-labels-and-annotations-ignored-by-the-operator" title="Permanent link">¶</a></h2>
 <p>Sometimes various Kubernetes flavors can add their own annotations to the
 Services managed by the Operator.</p>
 <p>The Operator keeps track of all changes to its objects and can remove

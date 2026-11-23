@@ -1,0 +1,73 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Enable point-in-time recovery (PITR)
+
+Point-in-time recovery rolls the cluster back to a specific date and time. The Operator restores a full backup, then applies oplog on top of it. For what PITR supports and when to use it, see [Point-in-time recovery](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html#point-in-time-recovery).
+
+## Before you begin
+
+- [Configure backup storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage.html). PBM saves oplog to that storage.
+
+- You must have a successful backup (full logical, physical or incremental base) to serve as the base for oplog collection. Without one, Percona Backup for MongoDB does not upload oplog. Take a backup for a new cluster and after you restore from a backup. See [Make a backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.html).
+
+- Export your namespace so the commands on this page can use it:
+
+  ```
+  export NAMESPACE=<namespace>
+  ```
+
+## Enable oplog collection
+
+Set [backup.pitr.enabled](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#backuppitrenabled) in `deploy/cr.yaml`:
+
+```
+backup:
+  ...
+  pitr:
+    enabled: true
+```
+
+After you enable point-in-time recovery, the first oplog chunk is uploaded once the first interval elapses. The interval is set by `backup.pitr.oplogSpanMin` and defaults to 10 minutes, so expect roughly a 10 minute wait before any point in time is recoverable.
+
+## Multiple storages
+
+**Version 1.20.0 and above**
+
+You can enable point-in-time recovery and take backups on a storage of your choice. PBM saves oplog only to the [main storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/multi-storage.html) so data stays consistent. You can then [restore to a point in time](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html) from any backup on any storage.
+
+**Version 1.19.1 and earlier**
+
+You must have a single storage in [spec.backup.storages](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#backupstoragesstorage-nametype). PBM writes oplog to the same bucket as the backup snapshot. If you define several storages and enable PITR, PBM cannot guarantee consistency, so the Operator does not allow it. You will see an error in the Operator logs.
+
+## Verify that oplog is being collected
+
+Enabling the option is not proof that oplog is reaching the storage. After the first interval has passed, check that a backup reports a restorable time:
+
+```
+kubectl get psmdb-backup <backup_name> -n $NAMESPACE -o jsonpath='{.status.latestRestorableTime}'
+```
+
+An empty result means no oplog has been uploaded yet. Give it another interval, then check that a successful base backup exists and that the Operator logs show no storage errors. A value that advances between checks confirms oplog collection is working.
+
+## Restore options
+
+You can restore your database on the same cluster or on a new cluster. Choose your restore path.
+
+- [**This cluster**](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html#restore-on-the-same-cluster) — undo a bad write, or other change on this cluster.
+- [**New cluster**](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html#restore-on-a-new-cluster) — restore that same point in time into another Kubernetes environment. Use this for disaster recovery or when you want to leave the source cluster running.
+
+PVC snapshot (`external`) backups do not support this restore.
+
+```
+flowchart LR
+  A[Enable oplog collection] --> B[Wait until oplog is stored]
+  B --> C{Where do you restore?}
+  C -->|Undo a change here| D[This cluster]
+  C -->|Recover in a new environment| E[New cluster]
+```
+
+To restore a single collection under a different name to a given time, see [Point-in-time recovery with namespace remapping](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore-new-name.html#point-in-time-recovery-with-namespace-remapping).
+
+## Next steps
+
+[Restore to a point in time](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html)

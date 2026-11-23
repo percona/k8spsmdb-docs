@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6542,7 +6542,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-distribution-for-mongodb-operator-1100">Percona Distribution for MongoDB Operator 1.10.0<a class="headerlink" href="#percona-distribution-for-mongodb-operator-1100" title="Permanent link">¶</a></h1>
+<h1 id="percona-distribution-for-mongodb-operator-1100">Percona Distribution for MongoDB Operator 1.10.0<a data-markdown-ignore class="headerlink" href="#percona-distribution-for-mongodb-operator-1100" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6553,7 +6553,7 @@ window.addEventListener('afterprint', (event) => {
 <p>For installation please refer to <a href="https://www.percona.com/doc/kubernetes-operator-for-psmongodb/index.html#installation">the documentation page</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>Starting from this release, the Operator implements as a technical preview the possibility to <a href="../arbiter.html#non-voting-nodes">include non-voting replica set members</a> into the cluster, which do not participate in the primary election process. This feature enables users to deploy non-voting members with the Operator through a Custom Resource object without manual configuration.</p>
@@ -6570,7 +6570,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 </li>
 </ul>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-479">K8SPSMDB-479</a>: Allow users to add <a href="../arbiter.html#non-voting-nodes">non-voting members</a> to MongoDB replica, needed to have more than 7 nodes or to create a node in the edge location</p>
@@ -6579,7 +6579,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-265">K8SPSMDB-265</a>: <a href="../replication.html">Cross region replication</a> feature simplifies the migrations and enables Disaster Recovery capabilities for MongoDB on Kubernetes</p>
 </li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-537">K8SPSMDB-537</a>: PMM container should not cause the crash of the whole database Pod if pmm-agent is not working properly</p>
@@ -6591,7 +6591,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-490">K8SPSMDB-490</a>: Add validation for the Custom Resource name so that cluster name and replica set name do not exceed 51 characters in total</p>
 </li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-504">K8SPSMDB-504</a>: Fixed a race condition that could prevent the cluster with  LoadBalancer-exposed replica set members from becoming ready</p>
@@ -6615,7 +6615,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://jira.percona.com/browse/K8SPSMDB-496">K8SPSMDB-496</a>: Fix a bug where Pods did not restart if custom MongoDB config was updated with a secret or a configmap</p>
 </li>
 </ul>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The following platforms were tested and are officially supported by the Operator 1.10.0:</p>
 <ul>
 <li>

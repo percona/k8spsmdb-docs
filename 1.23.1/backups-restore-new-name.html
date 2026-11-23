@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6620,14 +6620,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="restore-a-collection-under-a-different-name">Restore a collection under a different name<a class="headerlink" href="#restore-a-collection-under-a-different-name" title="Permanent link">¶</a></h1>
+<h1 id="restore-a-collection-under-a-different-name">Restore a collection under a different name<a data-markdown-ignore class="headerlink" href="#restore-a-collection-under-a-different-name" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: 1.23.0</p>
 </div>
 <p>You can restore a single collection from a full logical backup under a different database and/or collection name. The Operator remaps the namespace during the restore: the source collection stays in place, and PBM creates a new collection with the data and indexes from the backup.</p>
 <p>This is useful when you need to inspect or compare restored data without overwriting the live collection. For example, to troubleshoot issues after an accidental delete.</p>
 <p>Use the <code>selective.nsFrom</code> and <code>selective.nsTo</code> fields in the <code>PerconaServerMongoDBRestore</code> Custom Resource. Both fields use the <code>&lt;db.collection&gt;</code> format.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <p>Namespace remapping has these constraints:</p>
 <ul>
 <li>Supported only on <strong>replica set</strong> clusters. It is not supported on sharded clusters.</li>
@@ -6660,7 +6660,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ol>
-<h2 id="restore-under-a-different-collection-name">Restore under a different collection name<a class="headerlink" href="#restore-under-a-different-collection-name" title="Permanent link">¶</a></h2>
+<h2 id="restore-under-a-different-collection-name">Restore under a different collection name<a data-markdown-ignore class="headerlink" href="#restore-under-a-different-collection-name" title="Permanent link">¶</a></h2>
 <p>To restore a collection with a new name in the same database, set <code>nsFrom</code> to the source namespace and <code>nsTo</code> to the new one:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDBRestore</span>
@@ -6677,7 +6677,7 @@ window.addEventListener('afterprint', (event) => {
 <p>Start the restore:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/backup/restore.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<h2 id="restore-to-a-different-database">Restore to a different database<a class="headerlink" href="#restore-to-a-different-database" title="Permanent link">¶</a></h2>
+<h2 id="restore-to-a-different-database">Restore to a different database<a data-markdown-ignore class="headerlink" href="#restore-to-a-different-database" title="Permanent link">¶</a></h2>
 <p>To place the restored collection in another database, change the database part of <code>nsTo</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name</span>
@@ -6687,7 +6687,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"analytics.test_copy"</span>
 </code></pre></div>
 <p>Here, data from <code>myApp.test</code> in the backup is restored as <code>analytics.test_copy</code>. The Operator creates the target database if it does not exist. Ensure that <code>analytics.test_copy</code> does not already exist before you start the restore.</p>
-<h2 id="point-in-time-recovery-with-namespace-remapping">Point-in-time recovery with namespace remapping<a class="headerlink" href="#point-in-time-recovery-with-namespace-remapping" title="Permanent link">¶</a></h2>
+<h2 id="point-in-time-recovery-with-namespace-remapping">Point-in-time recovery with namespace remapping<a data-markdown-ignore class="headerlink" href="#point-in-time-recovery-with-namespace-remapping" title="Permanent link">¶</a></h2>
 <p>You can combine remapping with point-in-time recovery. A precondition is to <a href="backups-pitr.html">enable saving oplog operations</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDBRestore</span>
@@ -6704,7 +6704,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">nsTo</span><span class="p">:</span><span class="w"> </span><span class="s">"myApp.test_remapped"</span>
 </code></pre></div>
 <p>PBM restores the collection from the backup and replays oplog events for that namespace up to the specified time, writing the result to <code>nsTo</code>.</p>
-<h2 id="restore-to-a-different-cluster">Restore to a different cluster<a class="headerlink" href="#restore-to-a-different-cluster" title="Permanent link">¶</a></h2>
+<h2 id="restore-to-a-different-cluster">Restore to a different cluster<a data-markdown-ignore class="headerlink" href="#restore-to-a-different-cluster" title="Permanent link">¶</a></h2>
 <p>You can remap a collection onto another Percona Server for MongoDB cluster managed by the Operator. Requirements:</p>
 <ul>
 <li>The <strong>target</strong> cluster must be a <strong>replica set</strong> (not sharded).</li>
@@ -6732,7 +6732,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 <p>You can also define storage on the target cluster’s <code>cr.yaml</code> and reference it with <code>storageName</code> instead of embedding credentials in <code>backupSource</code>. See <a href="backups-restore.html#restore-on-a-new-cluster">Restore to a new Kubernetes-based environment</a> for storage configuration details.</p>
 <p>This restore adds one collection to the target cluster. It does not replace the whole cluster data.</p>
-<h2 id="verify-the-restore">Verify the restore<a class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-restore">Verify the restore<a data-markdown-ignore class="headerlink" href="#verify-the-restore" title="Permanent link">¶</a></h2>
 <p>Watch the Restore object until it finishes:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6469,7 +6469,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-application-and-system-users">About application and system users<a class="headerlink" href="#about-application-and-system-users" title="Permanent link">¶</a></h1>
+<h1 id="about-application-and-system-users">About application and system users<a data-markdown-ignore class="headerlink" href="#about-application-and-system-users" title="Permanent link">¶</a></h1>
 <p>MongoDB user accounts within the cluster can be divided into two different groups:</p>
 <ul>
 <li><strong>Application-level users</strong>: unprivileged user accounts for applications. You can create and manage these users.</li>
@@ -6480,14 +6480,14 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="app-users.html">Application-level (unprivileged) users</a></li>
 <li><a href="system-users.html">System users</a></li>
 </ul>
-<h2 id="credentials-management">Credentials management<a class="headerlink" href="#credentials-management" title="Permanent link">¶</a></h2>
+<h2 id="credentials-management">Credentials management<a data-markdown-ignore class="headerlink" href="#credentials-management" title="Permanent link">¶</a></h2>
 <p>The Operator stores user credentials in the Secret objects.</p>
 <p>When the Operator creates application-level (unprivileged) users, it uses the username you specify in the Custom Resource (CR). The Operator either generates a password for this user and creates a corresponding Secret, or uses the credentials of a user you have manually created in MongoDB and creates a Secret with that data.</p>
 <p>For system users, the Operator creates the required Secret automatically when it creates the cluster. If a Secret with the expected name already exists (as specified in the CR), the Operator will reuse it. Starting with version 1.22.0, you can also <a href="system-users-vault.html">store and manage system user credentials in HashiCorp Vault</a>. In this case, the Operator retrieves the passwords from Vault and creates or updates the relevant Secrets based on the Vault-stored credentials.</p>
-<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">¶</a></h2>
+<h2 id="authentication">Authentication<a data-markdown-ignore class="headerlink" href="#authentication" title="Permanent link">¶</a></h2>
 <p>Authentication is enabled in Percona Server for MongoDB clusters by default. If you need to disable authentication for development, testing, or migration purposes, see <a href="auth-disable.html">Disable authentication</a>.</p>
 <p>Percona Server for MongoDB allows bypassing authentication by connecting from <code>localhost</code> to create the first user. To permanently disable the MongoDB localhost authentication bypass on a running cluster, see <a href="auth-bypass-localhost.html">Disable localhost authentication bypass</a>.</p>
-<h3 id="mongodb-internal-authentication-key-optional">MongoDB internal authentication key (optional)<a class="headerlink" href="#mongodb-internal-authentication-key-optional" title="Permanent link">¶</a></h3>
+<h3 id="mongodb-internal-authentication-key-optional">MongoDB internal authentication key (optional)<a data-markdown-ignore class="headerlink" href="#mongodb-internal-authentication-key-optional" title="Permanent link">¶</a></h3>
 <p><em>Default Secret name:</em> <code>my-cluster-name-mongodb-keyfile</code></p>
 <p><em>Secret name field:</em> <code>spec.secrets.key</code></p>
 <p>By default, the Operator creates a random, 1024-byte key for <a href="https://docs.mongodb.com/manual/core/security-internal-authentication/">MongoDB Internal Authentication <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> if it does not already exist. If you would like to deploy a different key, create the secret manually before starting the Operator. Example:</p>

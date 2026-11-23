@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6838,22 +6838,22 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="clustersync-resource-options">ClusterSync Resource options<a class="headerlink" href="#clustersync-resource-options" title="Permanent link">¶</a></h1>
+<h1 id="clustersync-resource-options">ClusterSync Resource options<a data-markdown-ignore class="headerlink" href="#clustersync-resource-options" title="Permanent link">¶</a></h1>
 <p>A ClusterSync resource is a Kubernetes object that tells the Operator how to deploy and manage <a href="https://docs.percona.com/percona-clustersync-for-mongodb/">Percona ClusterSync for MongoDB (PCSM) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The <code>deploy/clustersync.yaml</code> file is a template for creating the <code>PerconaServerMongoDBClusterSync</code> resource.</p>
 <p>This document describes the options you can use to configure ClusterSync. For concepts and limitations, see <a href="clustersync.html">Real-time replication with PCSM</a>. For a hands-on walkthrough, see <a href="clustersync-setup.html">Set up and use PCSM</a>.</p>
-<h2 id="apiversion"><code>apiVersion</code><a class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
+<h2 id="apiversion"><code>apiVersion</code><a data-markdown-ignore class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
 <p>Specifies the API version of the Custom Resource.
 <code>psmdb.percona.com</code> indicates the group, and <code>v1</code> is the version of the API.</p>
-<h2 id="kind"><code>kind</code><a class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
+<h2 id="kind"><code>kind</code><a data-markdown-ignore class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
 <p>Defines the type of resource being created: <code>PerconaServerMongoDBClusterSync</code>.</p>
-<h2 id="metadata"><code>metadata</code><a class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
+<h2 id="metadata"><code>metadata</code><a data-markdown-ignore class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
 <p>The metadata part of the ClusterSync manifest contains metadata about the resource, such as its name and other attributes. It includes the following keys:</p>
 <ul>
 <li><code>name</code> - The name of the ClusterSync object. The Operator uses this name for owned resources such as the PCSM Deployment (<code>&lt;name&gt;-pcsm</code>) and related Secrets.</li>
 </ul>
-<h2 id="spec"><code>spec</code><a class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
+<h2 id="spec"><code>spec</code><a data-markdown-ignore class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
 <p>This section includes the configuration of a ClusterSync resource.</p>
-<h3 id="clustername"><code>clusterName</code><a class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
+<h3 id="clustername"><code>clusterName</code><a data-markdown-ignore class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
 <p>Specifies the name of the target <code>PerconaServerMongoDB</code> cluster in the same namespace. The Operator builds the target connection URI from this cluster.</p>
 <table>
 <thead>
@@ -6869,7 +6869,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="image"><code>image</code><a class="headerlink" href="#image" title="Permanent link">¶</a></h3>
+<h3 id="image"><code>image</code><a data-markdown-ignore class="headerlink" href="#image" title="Permanent link">¶</a></h3>
 <p>Specifies the Percona ClusterSync for MongoDB container image. Required.</p>
 <table>
 <thead>
@@ -6881,11 +6881,11 @@ window.addEventListener('afterprint', (event) => {
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>percona/percona-clustersync-mongodb:{{ clustersync }}</code></td>
+<td><code>percona/percona-clustersync-mongodb:1.1.0</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="mode"><code>mode</code><a class="headerlink" href="#mode" title="Permanent link">¶</a></h3>
+<h3 id="mode"><code>mode</code><a data-markdown-ignore class="headerlink" href="#mode" title="Permanent link">¶</a></h3>
 <p>Controls the replication lifecycle. The Operator compares <code>spec.mode</code> with <code>status.mode</code> and runs the matching PCSM command when they differ.</p>
 <p>Allowed values:</p>
 <ul>
@@ -6907,9 +6907,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="the-source-subsection">The <code>source</code> subsection<a class="headerlink" href="#the-source-subsection" title="Permanent link">¶</a></h2>
+<h2 id="the-source-subsection">The <code>source</code> subsection<a data-markdown-ignore class="headerlink" href="#the-source-subsection" title="Permanent link">¶</a></h2>
 <p>Defines how PCSM connects to the source MongoDB cluster. You manage the source.</p>
-<h3 id="sourceuri"><code>source.uri</code><a class="headerlink" href="#sourceuri" title="Permanent link">¶</a></h3>
+<h3 id="sourceuri"><code>source.uri</code><a data-markdown-ignore class="headerlink" href="#sourceuri" title="Permanent link">¶</a></h3>
 <p>Specifies the source MongoDB connection string <strong>without credentials</strong>. Include replica set options, TLS parameters, and other driver options in the URI query string as needed.</p>
 <p>For replica sets, use replica set members and <code>replicaSet</code>. For sharded clusters, use the <code>mongos</code> endpoint.</p>
 <table>
@@ -6926,7 +6926,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="sourcecredentialssecret"><code>source.credentialsSecret</code><a class="headerlink" href="#sourcecredentialssecret" title="Permanent link">¶</a></h3>
+<h3 id="sourcecredentialssecret"><code>source.credentialsSecret</code><a data-markdown-ignore class="headerlink" href="#sourcecredentialssecret" title="Permanent link">¶</a></h3>
 <p>Specifies the name of a Kubernetes Secret in the same namespace with <code>username</code> and <code>password</code> keys for the pcsm user on source. The Operator percent-encodes these values and injects them into the source URI at runtime.</p>
 <table>
 <thead>
@@ -6942,7 +6942,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="excludenamespaces"><code>excludeNamespaces</code><a class="headerlink" href="#excludenamespaces" title="Permanent link">¶</a></h3>
+<h3 id="excludenamespaces"><code>excludeNamespaces</code><a data-markdown-ignore class="headerlink" href="#excludenamespaces" title="Permanent link">¶</a></h3>
 <p>Lists MongoDB namespaces to exclude from replication. A namespace is <code>db</code> or <code>db.collection</code>. These values are passed to PCSM on <code>pcsm start</code> only. Changes after start do not re-filter an already running sync.</p>
 <table>
 <thead>
@@ -6958,9 +6958,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="the-pcsmconfig-subsection">The <code>pcsmConfig</code> subsection<a class="headerlink" href="#the-pcsmconfig-subsection" title="Permanent link">¶</a></h2>
+<h2 id="the-pcsmconfig-subsection">The <code>pcsmConfig</code> subsection<a data-markdown-ignore class="headerlink" href="#the-pcsmconfig-subsection" title="Permanent link">¶</a></h2>
 <p>Controls PCSM process logging.</p>
-<h3 id="pcsmconfigloglevel"><code>pcsmConfig.logLevel</code><a class="headerlink" href="#pcsmconfigloglevel" title="Permanent link">¶</a></h3>
+<h3 id="pcsmconfigloglevel"><code>pcsmConfig.logLevel</code><a data-markdown-ignore class="headerlink" href="#pcsmconfigloglevel" title="Permanent link">¶</a></h3>
 <p>Sets the PCSM log level. Allowed values: <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>.</p>
 <table>
 <thead>
@@ -6976,9 +6976,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="pod-and-scheduling-options">Pod and scheduling options<a class="headerlink" href="#pod-and-scheduling-options" title="Permanent link">¶</a></h2>
+<h2 id="pod-and-scheduling-options">Pod and scheduling options<a data-markdown-ignore class="headerlink" href="#pod-and-scheduling-options" title="Permanent link">¶</a></h2>
 <p>These options configure the PCSM Deployment Pod the same way as other Operator-managed workloads.</p>
-<h3 id="resources"><code>resources</code><a class="headerlink" href="#resources" title="Permanent link">¶</a></h3>
+<h3 id="resources"><code>resources</code><a data-markdown-ignore class="headerlink" href="#resources" title="Permanent link">¶</a></h3>
 <p>Specifies CPU and memory requests and limits for the PCSM container.</p>
 <table>
 <thead>

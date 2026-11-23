@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6620,7 +6620,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1170">Percona Operator for MongoDB 1.17.0<a class="headerlink" href="#percona-operator-for-mongodb-1170" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1170">Percona Operator for MongoDB 1.17.0<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1170" title="Permanent link">¶</a></h1>
 <ul>
 <li>
 <p><strong>Date</strong></p>
@@ -6631,8 +6631,8 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="../System-Requirements.html#installation-guidelines">Installing Percona Operator for MongoDB</a></p>
 </li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="declarative-user-management-technical-preview">Declarative user management (technical preview)<a class="headerlink" href="#declarative-user-management-technical-preview" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="declarative-user-management-technical-preview">Declarative user management (technical preview)<a data-markdown-ignore class="headerlink" href="#declarative-user-management-technical-preview" title="Permanent link">¶</a></h3>
 <p>Before the Operator version 1.17.0 custom MongoDB users had to be created manually. Now the declarative creation of custom MongoDB users <a href="../app-users.html">is supported</a> via the <code>users</code> subsection in the Custom Resource. You can specify a new user in <code>deploy/cr.yaml</code> manifest, setting the user’s login name and database, PasswordSecretRef (a reference to a key in a Secret resource containing user’s password) and as well as MongoDB roles on various databases which should be assigned to this user:</p>
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
 <span class="nt">users</span><span class="p">:</span>
@@ -6648,16 +6648,16 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
 </code></pre></div>
 <p>See <a href="../app-users.html">documentation</a> to find more details about this feature with additional explanations and the list of current limitations.</p>
-<h3 id="liveness-check-improvements">Liveness check improvements<a class="headerlink" href="#liveness-check-improvements" title="Permanent link">¶</a></h3>
+<h3 id="liveness-check-improvements">Liveness check improvements<a data-markdown-ignore class="headerlink" href="#liveness-check-improvements" title="Permanent link">¶</a></h3>
 <p>Several improvements in logging were made related to the liveness checks, to allow getting more information for debugging, and to make these logs persist on failures to allow further examination.</p>
 <p>Liveness check logs are stored in the <code>/data/db/mongod-data/logs/mongodb-healthcheck.log</code> file, which can be <a href="../debug-shell.html">accessed in the corresponding Pod</a> if needed. Starting from now, Liveness check generates more log messages, and the default log level is set to <code>DEBUG</code>.</p>
 <p>Each time the health check fails, the current log is saved to a gzip compressed file named <code>mongodb-healthcheck-&lt;timestamp&gt;.log.gz</code>, and the <code>mongodb-healthcheck.log</code> log file is reset.
 Logs older than 24 hours are automatically deleted.</p>
-<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
+<h2 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-253">K8SPSMDB-253</a>: It is now possible to create and manage users via the Custom Resource </li>
 </ul>
-<h2 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
+<h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-899">K8SPSMDB-899</a>: Add Labels for all Kubernetes objects created by Operator (backups/restores, Secrets, Volumes, etc.) to make them clearly distinguishable</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-919">K8SPSMDB-919</a>: The Operator now checks if the needed Secrets exist and connects to the storage to check the validity of credentials and the existence of a backup before starting the restore process</li>
@@ -6666,7 +6666,7 @@ Logs older than 24 hours are automatically deleted.</p>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1108">K8SPSMDB-1108</a>: The new Custom Resource option allows setting custom containerSecurityContext for PMM containers</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-994">K8SPSMDB-994</a>: Remove a limitation where it wasn’t possible to create a new cluster with splitHorizon enabled, leaving the only way to enable it later on the running cluster</li>
 </ul>
-<h2 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
+<h2 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-925">K8SPSMDB-925</a>: Fix a bug where the Operator generated “failed to start balancer” and “failed to get mongos connection” log messages when using Mongos with servicePerPod and LoadBalancer services, while the cluster was operating properly</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1105">K8SPSMDB-1105</a>: The memory requests and limits for backups were increased in the <code>deploy/cr.yaml</code> configuration file example to reflect the Percona Backup for MongoDB minimal pbm-agents requirement of 1 Gb RAM needed for stable operation</li>
@@ -6676,7 +6676,7 @@ Logs older than 24 hours are automatically deleted.</p>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1094">K8SPSMDB-1094</a>: Fix a bug where it wasn’t possible to create a new cluster with <code>upgradeOptions.setFCV</code> Custom Resource option set to <code>true</code></li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1110">K8SPSMDB-1110</a>: Fix a bug where nil Custom Resource annotations were causing the Operator panic</li>
 </ul>
-<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
+<h2 id="deprecation-rename-and-removal">Deprecation, Rename and Removal<a data-markdown-ignore class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
 <p>Finalizers were renamed to contain fully qualified domain names to comply with the Kubernetes standards.</p>
 <ul>
 <li><code>PerconaServerMongoDB</code> Custom Resource:<ul>
@@ -6690,7 +6690,7 @@ Logs older than 24 hours are automatically deleted.</p>
 </li>
 </ul>
 <p>Key change in <a href="https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db"><code>psmdb-db</code> Helm chart</a>: the parameter for defining <a href="../system-users.html">system users</a> is renamed from <code>users</code> to <code>systemUsers</code>. The <code>users</code> parameter now handles the new <a href="../app-users.html#create-users-via-custom-resource">Declarative user management</a> feature. This change impacts users upgrading to this version via Helm: make sure that values manifests are changed accordingly.</p>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported Platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with Percona Server for MongoDB 5.0.28-24,
 6.0.16-13, and 7.0.12-7. Other options may also work but have not been tested. The
 Operator also uses Percona Backup for MongoDB 2.5.0.</p>

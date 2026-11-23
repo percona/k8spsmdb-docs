@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6554,15 +6554,15 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1212-2026-01-12">Percona Operator for MongoDB 1.21.2 (2026-01-12)<a class="headerlink" href="#percona-operator-for-mongodb-1212-2026-01-12" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1212-2026-01-12">Percona Operator for MongoDB 1.21.2 (2026-01-12)<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1212-2026-01-12" title="Permanent link">¶</a></h1>
 <p><a class="md-button" href="../quickstart.html">Get started with the Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="security-update-mitigation-of-heap-memory-disclosure-vulnerability">Security update: Mitigation of heap memory disclosure vulnerability<a class="headerlink" href="#security-update-mitigation-of-heap-memory-disclosure-vulnerability" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="security-update-mitigation-of-heap-memory-disclosure-vulnerability">Security update: Mitigation of heap memory disclosure vulnerability<a data-markdown-ignore class="headerlink" href="#security-update-mitigation-of-heap-memory-disclosure-vulnerability" title="Permanent link">¶</a></h3>
 <p>This release includes the fix for security vulnerability <a href="https://radar.offseq.com/threat/cve-2025-14847-cwe-130-improper-handling-of-length-dd0a4a45">CVE-2025-14847: CWE-130 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, which is about how MongoDB uses <code>zlib</code> compression library. Attackers with network access to <code>mongod</code> or <code>mongos</code> can extract fragments of uninitialized server memory without authentication if zlib compression is enabled. This memory may contain sensitive data, which poses a serious information disclosure risk.</p>
 <p>The issue is resolved upstream and is included in Percona Server for MongoDB 6.0.27-21, 7.0.28-15 and 8.0.17-6. Percona Operator for MongoDB includes these updated Percona Server for MongoDB images. </p>
 <p>We strongly recommend upgrading to this latest version of the Operator to ensure your deployments remain secure.</p>
 <p>Learn more about the vulnerability in the <a href="https://jira.mongodb.org/browse/SERVER-115508">upstream bug report <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and in Percona Blog: <a href="https://www.percona.com/blog/urgent-security-update-patching-mongobleed-cve-2025-14847-in-percona-server-for-mongodb/">Urgent Security Update: Patching “Mongobleed” (CVE-2025-14847) in Percona Server for MongoDB <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a>.</p>
-<h2 id="supported-software">Supported software<a class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
+<h2 id="supported-software">Supported software<a data-markdown-ignore class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with the following software:</p>
 <ul>
 <li>Percona Server for MongoDB 6.0.27-21, 7.0.28-15, and 8.0.17-6</li>
@@ -6573,7 +6573,7 @@ window.addEventListener('afterprint', (event) => {
 <li>LogCollector based on fluent-bit 4.0.1</li>
 </ul>
 <p>Other options may also work but have not been tested. </p>
-<h2 id="supported-platforms">Supported platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.31 - 1.33</li>
@@ -6583,7 +6583,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.37.0 based on Kubernetes v1.34.0</li>
 </ul>
 <p>This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.</p>
-<h2 id="percona-certified-images">Percona certified images<a class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
+<h2 id="percona-certified-images">Percona certified images<a data-markdown-ignore class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
 <p>Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:</p>
 <table>
 <thead>

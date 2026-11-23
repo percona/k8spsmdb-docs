@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6570,7 +6570,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="extend-startup-logic-for-percona-server-for-mongodb-components">Extend startup logic for Percona Server for MongoDB components<a class="headerlink" href="#extend-startup-logic-for-percona-server-for-mongodb-components" title="Permanent link">¶</a></h1>
+<h1 id="extend-startup-logic-for-percona-server-for-mongodb-components">Extend startup logic for Percona Server for MongoDB components<a data-markdown-ignore class="headerlink" href="#extend-startup-logic-for-percona-server-for-mongodb-components" title="Permanent link">¶</a></h1>
 <p>The Operator supports the <code>hookScript</code> feature that enables you to run custom shell scripts before MongoDB or PBM agent starts.</p>
 <p>Using hook scripts, you can tailor startup behavior to your infrastructure and policies. For example, when you need to:</p>
 <ul>
@@ -6581,7 +6581,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Run specific pre‑backup logic for PBM agent.</li>
 </ul>
 <p>Hook scripts run inside the container, immediately before the main process (<code>mongod</code>, <code>mongos</code>, or <code>pbm-agent</code>) starts.</p>
-<h2 id="how-hookscript-works">How <code>hookScript</code> works<a class="headerlink" href="#how-hookscript-works" title="Permanent link">¶</a></h2>
+<h2 id="how-hookscript-works">How <code>hookScript</code> works<a data-markdown-ignore class="headerlink" href="#how-hookscript-works" title="Permanent link">¶</a></h2>
 <pre class="mermaid"><code>flowchart TD
     A[Operator Reconciliation] --&gt; B{hookScript defined?}
     B -- "Inline script" --&gt; C[Create ConfigMap with hook.sh]
@@ -6603,7 +6603,7 @@ window.addEventListener('afterprint', (event) => {
 <li>If found, it executes <code>hook.sh</code> before starting the main process.</li>
 <li>If the script exits with a non‑zero code, the container startup fails.</li>
 </ol>
-<h2 id="where-hookscript-works">Where <code>hookScript</code> works<a class="headerlink" href="#where-hookscript-works" title="Permanent link">¶</a></h2>
+<h2 id="where-hookscript-works">Where <code>hookScript</code> works<a data-markdown-ignore class="headerlink" href="#where-hookscript-works" title="Permanent link">¶</a></h2>
 <p>You can define hook scripts for:</p>
 <ul>
 <li>Regular replica set members (secondaries, primaries, and config servers).</li>
@@ -6612,9 +6612,9 @@ window.addEventListener('afterprint', (event) => {
 <li>Mongos nodes.</li>
 <li>PBM backup agent.</li>
 </ul>
-<h2 id="configuration-examples">Configuration examples<a class="headerlink" href="#configuration-examples" title="Permanent link">¶</a></h2>
+<h2 id="configuration-examples">Configuration examples<a data-markdown-ignore class="headerlink" href="#configuration-examples" title="Permanent link">¶</a></h2>
 <p>For example, you want to capture the startup time of the container to observe when a <code>mongod</code> or <code>pbm-agent</code> container was last restarted to troubleshoot issues. The following steps show how to do it by defining the script in the Custom Resource directly and using a ConfigMap.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Directly in the Custom Resource</label><label for="__tabbed_1_2">Using a ConfigMap</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Directly in the Custom Resource</label><label for="__tabbed_1_2">Using a ConfigMap</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -6684,7 +6684,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </div>
 </div>
-<h2 id="run-a-hook-script-before-the-pbm-agent-starts">Run a hook script before the PBM agent starts<a class="headerlink" href="#run-a-hook-script-before-the-pbm-agent-starts" title="Permanent link">¶</a></h2>
+<h2 id="run-a-hook-script-before-the-pbm-agent-starts">Run a hook script before the PBM agent starts<a data-markdown-ignore class="headerlink" href="#run-a-hook-script-before-the-pbm-agent-starts" title="Permanent link">¶</a></h2>
 <p>You can also run a hook script before the <code>pbm-agent</code> container starts, using
 <code>spec.backup.hookScript</code>. For example, to register the start of the backup agent in an
 external audit system:</p>
@@ -6707,7 +6707,7 @@ external audit system:</p>
 <span class="w">      </span><span class="nt">configMapRef</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hookscript-configmap</span>
 </code></pre></div>
-<h2 id="best-practices">Best practices<a class="headerlink" href="#best-practices" title="Permanent link">¶</a></h2>
+<h2 id="best-practices">Best practices<a data-markdown-ignore class="headerlink" href="#best-practices" title="Permanent link">¶</a></h2>
 <ul>
 <li>Keep scripts short and deterministic.</li>
 <li>Validate scripts in a test environment before production.</li>

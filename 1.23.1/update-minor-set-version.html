@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation">
+        <meta name="description" content="Percona Operator for MongoDB deploys and manages Percona Server for MongoDB replica sets and sharded clusters on Kubernetes, with backups, scaling, upgrades and monitoring.">
       
       
         <meta name="author" content="Percona LLC">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6540,18 +6540,18 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="upgrade-to-a-specific-version">Upgrade to a specific version<a class="headerlink" href="#upgrade-to-a-specific-version" title="Permanent link">¶</a></h1>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h1 id="upgrade-to-a-specific-version">Upgrade to a specific version<a data-markdown-ignore class="headerlink" href="#upgrade-to-a-specific-version" title="Permanent link">¶</a></h1>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <ul>
 <li>Read <a href="update.html#before-you-upgrade-limits-you-should-know">Before you upgrade: limits you should know</a>
 before you proceed. It is important that you get familiar with the backup requirement, version-jump rules, and known
 problematic version combinations.</li>
 <li>Check <a href="update-operator.html#considerations">Considerations</a> for Kubernetes cluster versions and upgrades if you plan to update the Kubernetes cluster.</li>
 </ul>
-<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
+<h2 id="assumptions">Assumptions<a data-markdown-ignore class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
 <p>For the procedures in this tutorial, we assume that you have set up the Smart Update strategy to update the objects in your database cluster. </p>
 <p>Read more about the Smart Update strategy and other available ones in the <a href="update.html#update-strategies">Upgrade strategies</a> section.</p>
-<h2 id="procedure">Procedure<a class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
+<h2 id="procedure">Procedure<a data-markdown-ignore class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
 <p class="power-number">To upgrade Percona Server for MongoDB to a specific version, do the following:</p>
 <ol>
 <li>
@@ -6583,7 +6583,7 @@ problematic version combinations.</li>
 <p>Starting with version 1.21.0, the Operator supports <a href="persistent-logging.html">persistent logging</a>. To update to version 1.21.0, exclude the <code>logcollector</code> from the list of images to update. </p>
 <p>Since this is a working cluster, the way to update the Custom Resource is to <a href="https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/">apply a patch  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with the <code>kubectl patch psmdb</code> command.</p>
 <p>This example command updates the cluster with the name <code>my-cluster-name</code> to the <code>1.23.1</code> version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the <a href="versions.html">version compatibility matrix</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">With PMM Client</label><label for="__tabbed_1_2">Without PMM Client</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">With PMM Client</label><label for="__tabbed_1_2">Without PMM Client</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{</span>
@@ -6618,7 +6618,7 @@ problematic version combinations.</li>
 </li>
 </ol>
 <p>The update process is successfully finished when all Pods have been restarted. If you turned on <a href="sharding.html">Percona Server for MongoDB Sharding</a>, the mongos and Config Server nodes must be restarted too to complete the upgrade.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="update.html">Choose your upgrade path</a></li>
 <li><a href="cr-statuses.html#perconaservermongodb-status">Custom resource statuses</a></li>

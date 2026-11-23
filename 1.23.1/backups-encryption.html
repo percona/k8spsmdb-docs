@@ -25,7 +25,7 @@ Logical backups need to be encrypted on the cloud.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ Logical backups need to be encrypted on the cloud.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6558,16 +6558,16 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="enable-server-side-encryption-for-backups">Enable server-side encryption for backups<a class="headerlink" href="#enable-server-side-encryption-for-backups" title="Permanent link">¶</a></h1>
+<h1 id="enable-server-side-encryption-for-backups">Enable server-side encryption for backups<a data-markdown-ignore class="headerlink" href="#enable-server-side-encryption-for-backups" title="Permanent link">¶</a></h1>
 <p>Encrypting database backups is done separately for <a href="backups.html">physical and logical backups</a>.
 Physical backups are encrypted if <a href="encryption.html">data-at-rest encryption is turned on</a>.
 Logical backups need to be encrypted on the cloud.</p>
 <p>There is a possibility to enable <a href="https://docs.percona.com/percona-backup-mongodb/details/storage-configuration.html#server-side-encryption">server-side encryption  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for backups stored on S3.
 Starting from the version 1.15.0, the Operator supports Server Side Encryption either with <a href="https://aws.amazon.com/kms/">AWS Key Management Service (KMS)  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, or just encrypt/decrypt backups with AES-256 encryption algorithm with any S3-compatible storage.</p>
 <p>To enable server-side encryption for backups, use <a href="operator.html#backupstoragesstorage-names3serversideencryptionkmskeyid">backup.storages.&lt;storage-name&gt;.s3.serverSideEncryption section</a> in the <code>deploy/cr.yaml</code> configuration file.</p>
-<h2 id="encryption-with-keys-stored-in-aws-kms">Encryption with keys stored in AWS KMS<a class="headerlink" href="#encryption-with-keys-stored-in-aws-kms" title="Permanent link">¶</a></h2>
+<h2 id="encryption-with-keys-stored-in-aws-kms">Encryption with keys stored in AWS KMS<a data-markdown-ignore class="headerlink" href="#encryption-with-keys-stored-in-aws-kms" title="Permanent link">¶</a></h2>
 <p>To use the server-side AWS KMS encryption, specify the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html">ID of your customer-managed key  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and other needed options as follows:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">with kmsKeyID in Custom Resource</label><label for="__tabbed_1_2">with kmsKeyID in Secret object</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">with kmsKeyID in Custom Resource</label><label for="__tabbed_1_2">with kmsKeyID in Secret object</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Set the following Custom Resource options in the <code>deploy/cr.yaml</code> configuration file:</p>
@@ -6621,7 +6621,7 @@ stored in the AWS KMS. It should look similar to the following example value:
 </div>
 </div>
 </div>
-<h2 id="encryption-with-locally-stored-keys-on-any-s3-compatible-storage">Encryption with locally-stored keys on any S3-compatible storage<a class="headerlink" href="#encryption-with-locally-stored-keys-on-any-s3-compatible-storage" title="Permanent link">¶</a></h2>
+<h2 id="encryption-with-locally-stored-keys-on-any-s3-compatible-storage">Encryption with locally-stored keys on any S3-compatible storage<a data-markdown-ignore class="headerlink" href="#encryption-with-locally-stored-keys-on-any-s3-compatible-storage" title="Permanent link">¶</a></h2>
 <p>The Operator also supports server-side encryption with customer-provided keys
 that are stored on the client side. During the backup/restore process,
 encryption key will be provided by the Operator as part of the requests to the
@@ -6631,7 +6631,7 @@ S3-compatible storages different from AWS KMS (the feature was tested with the
 <a href="https://aws.amazon.com/">AWS  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and <a href="https://min.io/">MinIO  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> storages).</p>
 <p>To use the server-side encryption with locally-stored keys, specify your
 encryption key and other needed options:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">with encryption key in Custom Resource</label><label for="__tabbed_2_2">with encryption key in Secret object</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">with encryption key in Custom Resource</label><label for="__tabbed_2_2">with encryption key in Secret object</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Set the following Custom Resource options in the <code>deploy/cr.yaml</code> configuration file:</p>
@@ -6688,7 +6688,7 @@ encryption key encoded in base64.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You can use the following command to get a base64-encoded string from a plain text one:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">in Linux</label><label for="__tabbed_3_2">in macOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_3_1">in Linux</label><label for="__tabbed_3_2">in macOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'plain-text-string'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
@@ -6700,7 +6700,7 @@ encryption key encoded in base64.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'plain-text-string'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
 </code></pre></div>
 </div>
-<h2 id="verify-that-encryption-is-applied">Verify that encryption is applied<a class="headerlink" href="#verify-that-encryption-is-applied" title="Permanent link">¶</a></h2>
+<h2 id="verify-that-encryption-is-applied">Verify that encryption is applied<a data-markdown-ignore class="headerlink" href="#verify-that-encryption-is-applied" title="Permanent link">¶</a></h2>
 <p>Encryption failures are silent from the cluster’s side: an unencrypted backup completes
 exactly like an encrypted one. Take a backup and confirm it succeeds:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
@@ -6711,7 +6711,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 with <code>aws s3api head-object</code> - and confirm it reports the server-side encryption algorithm
 you configured. If the backup succeeds but the object shows no encryption, the storage
 accepted the upload and ignored the setting.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="encryption.html">Data-at-rest encryption</a> - encrypt what you back up the same way you encrypt data at rest</li>
 </ul>

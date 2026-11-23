@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6542,9 +6542,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="connect-from-your-laptop-or-ci">Connect from your laptop or CI<a class="headerlink" href="#connect-from-your-laptop-or-ci" title="Permanent link">¶</a></h1>
+<h1 id="connect-from-your-laptop-or-ci">Connect from your laptop or CI<a data-markdown-ignore class="headerlink" href="#connect-from-your-laptop-or-ci" title="Permanent link">¶</a></h1>
 <p>If your application runs <strong>outside</strong> the Kubernetes cluster (for example on your laptop, in a CI pipeline, or in another cluster), it cannot use the internal DNS names like <code>&lt;cluster-name&gt;-mongos.&lt;namespace&gt;.svc.cluster.local</code>. You need to make the database reachable from outside the cluster, then use a connection string from the Operator’s <a href="connection-secrets.html">connection Secrets</a>.</p>
-<h2 id="option-1-port-forward-local-development">Option 1: Port-forward (local development)<a class="headerlink" href="#option-1-port-forward-local-development" title="Permanent link">¶</a></h2>
+<h2 id="option-1-port-forward-local-development">Option 1: Port-forward (local development)<a data-markdown-ignore class="headerlink" href="#option-1-port-forward-local-development" title="Permanent link">¶</a></h2>
 <p>For quick local testing, forward a port from your machine to the MongoDB service inside the cluster. No changes to the Custom Resource are required.</p>
 <p><strong>Sharded cluster (mongos):</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/&lt;cluster-name&gt;-mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="m">27017</span>:27017
@@ -6568,7 +6568,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>This option is suitable for one developer at a time. For shared dev or staging, use NodePort or LoadBalancer.</p>
-<h2 id="option-2-expose-the-cluster-nodeport-or-loadbalancer">Option 2: Expose the cluster (NodePort or LoadBalancer)<a class="headerlink" href="#option-2-expose-the-cluster-nodeport-or-loadbalancer" title="Permanent link">¶</a></h2>
+<h2 id="option-2-expose-the-cluster-nodeport-or-loadbalancer">Option 2: Expose the cluster (NodePort or LoadBalancer)<a data-markdown-ignore class="headerlink" href="#option-2-expose-the-cluster-nodeport-or-loadbalancer" title="Permanent link">¶</a></h2>
 <p>To allow multiple developers, CI, or other services to reach the database without running <code>kubectl port-forward</code>, expose the cluster using a NodePort or LoadBalancer Service in the Custom Resource (for example <code>deploy/cr.yaml</code>).</p>
 <ul>
 <li><strong>NodePort:</strong> The database is reachable at <code>&lt;node-ip&gt;:&lt;node-port&gt;</code>.</li>
@@ -6576,7 +6576,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>For Custom Resource options (<code>expose.enabled</code>, <code>expose.type</code>, and where to set them for mongos vs replica set), see <a href="expose.html#connecting-from-outside-kubernetes">Configure external access</a>.</p>
 <p>After the Service is exposed, the Operator updates the connection Secrets with <code>_connectionStringExposed</code> keys. Retrieve that URI and use it as-is:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Sharded cluster</label><label for="__tabbed_1_2">Replica set (sharding off)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Sharded cluster</label><label for="__tabbed_1_2">Replica set (sharding off)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -6591,7 +6591,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </div>
 <p>For application users, use the matching <code>_connectionStringExposed</code> key in that user’s connection Secret. See <a href="connection-secrets.html">Connection secrets</a>.</p>
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">¶</a></h2>
+<h2 id="summary">Summary<a data-markdown-ignore class="headerlink" href="#summary" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6611,9 +6611,9 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <p>Use the URI in your app or in <a href="connection-examples.html">Connection examples</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="connection-examples.html">Connection examples (Node, Python, Go)</a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="troubleshoot-connection.html">Troubleshoot connection issues</a></li>
 <li><a href="expose.html">Networking and external access</a> - for a permanent external endpoint rather than port-forward</li>

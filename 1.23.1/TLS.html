@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6480,7 +6480,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="transport-layer-security-tls">Transport Layer Security (TLS)<a class="headerlink" href="#transport-layer-security-tls" title="Permanent link">¶</a></h1>
+<h1 id="transport-layer-security-tls">Transport Layer Security (TLS)<a data-markdown-ignore class="headerlink" href="#transport-layer-security-tls" title="Permanent link">¶</a></h1>
 <p>Percona Operator for MongoDB uses the Transport Layer Security (TLS) protocol to encrypt connections to and inside the cluster. Every party in a TLS connection presents its own certificate, so the cluster uses a separate certificate for each role:</p>
 <table>
 <thead>
@@ -6539,7 +6539,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">tls</span><span class="p p-Indicator">:</span>
 <span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">preferTLS</span>
 </code></pre></div>
-<h2 id="tls-certificates">TLS Certificates<a class="headerlink" href="#tls-certificates" title="Permanent link">¶</a></h2>
+<h2 id="tls-certificates">TLS Certificates<a data-markdown-ignore class="headerlink" href="#tls-certificates" title="Permanent link">¶</a></h2>
 <p>You can configure TLS security in several ways:</p>
 <table>
 <thead>
@@ -6592,7 +6592,7 @@ Custom Resource option is set to <code>true</code> by default. You can set it to
 <p><strong>For testing purposes</strong>, you can use pre-generated certificates available in the
 <code>deploy/ssl-secrets.yaml</code> file. But we strongly recommend
 <strong>to not use them on any production system</strong>!</p>
-<h3 id="certificate-management-policy">Certificate management policy<a class="headerlink" href="#certificate-management-policy" title="Permanent link">¶</a></h3>
+<h3 id="certificate-management-policy">Certificate management policy<a data-markdown-ignore class="headerlink" href="#certificate-management-policy" title="Permanent link">¶</a></h3>
 <p>Starting with Operator version 1.23.0, you can control what happens when TLS Secrets are missing via the <code>spec.tls.certManagementPolicy</code> option in the Custom Resource:</p>
 <ul>
 <li><code>auto</code> (default) — If Secrets are not found, the Operator creates new certificates automatically (self-signed or via cert-manager). New certificates can replace a lost user-managed Secret with a <strong>new CA</strong>, which triggers a rolling restart of all database Pods, and can disconnect clients that trust the original CA.</li>
@@ -6626,10 +6626,10 @@ Custom Resource option is set to <code>true</code> by default. You can set it to
 <span class="w">    </span><span class="nt">sslInternal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-ssl-internal</span>
 </code></pre></div>
 <p>See <a href="tls-cert-management-policy.html">Configure the TLS certificate management policy</a> for setup steps, monitoring, recovery, and policy switching.</p>
-<h3 id="connect-with-a-client-certificate">Connect with a client certificate<a class="headerlink" href="#connect-with-a-client-certificate" title="Permanent link">¶</a></h3>
+<h3 id="connect-with-a-client-certificate">Connect with a client certificate<a data-markdown-ignore class="headerlink" href="#connect-with-a-client-certificate" title="Permanent link">¶</a></h3>
 <p><code>mongod</code> and <code>mongos</code> require a client certificate on every TLS connection. They check that the cluster CA signed it only when <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> is <code>false</code>. Give each client application its own client certificate. Don’t reuse the external server certificate: MongoDB logs a warning for every connection that presents the server’s own certificate.</p>
 <p>To issue a client certificate with the CA that the Operator created, use one of the following ways:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">cert-manager</label><label for="__tabbed_1_2">Operator-generated certificates</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">cert-manager</label><label for="__tabbed_1_2">Operator-generated certificates</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Create a <code>Certificate</code> that the Operator’s issuer signs. Save the following manifest as <code>my-app-client.yaml</code>. Replace <code>my-cluster-name</code> with your cluster name and <code>my-app</code> with a name for your application:</p>
@@ -6679,7 +6679,7 @@ mongosh<span class="w"> </span><span class="s2">"&lt;connection-string&gt;"</spa
 Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
 <a href="connection-secrets.html#open-an-interactive-shell-with-mongosh">Connection secrets</a>.</p>
 <p>If you use your own CA, sign the client certificate with a CA that the <code>ca.crt</code> key of the <code>&lt;cluster-name&gt;-ssl-internal</code> Secret contains. If you don’t use a separate internal Secret, use the CA from <code>&lt;cluster-name&gt;-ssl</code>.</p>
-<h2 id="tls-configuration">TLS configuration<a class="headerlink" href="#tls-configuration" title="Permanent link">¶</a></h2>
+<h2 id="tls-configuration">TLS configuration<a data-markdown-ignore class="headerlink" href="#tls-configuration" title="Permanent link">¶</a></h2>
 <p>The following sections provide guidelines how to:</p>
 <ul>
 <li><a href="tls-cert-manager.html">Configure TLS security with the Operator using cert-manager</a></li>

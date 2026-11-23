@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6940,12 +6940,12 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="custom-resource-statuses">Custom resource statuses<a class="headerlink" href="#custom-resource-statuses" title="Permanent link">¶</a></h1>
+<h1 id="custom-resource-statuses">Custom resource statuses<a data-markdown-ignore class="headerlink" href="#custom-resource-statuses" title="Permanent link">¶</a></h1>
 <p>Status fields show the current state of a Custom Resource (CR). The Operator sets these fields in the <code>.status</code> section of a Custom Resource. You do not edit the status.</p>
 <p>Use status values to confirm progress, detect failures, and decide when it is safe to run the next action (for example, start a restore after a backup is ready).</p>
-<h2 id="how-to-view-custom-resource-statuses">How to view custom resource statuses<a class="headerlink" href="#how-to-view-custom-resource-statuses" title="Permanent link">¶</a></h2>
+<h2 id="how-to-view-custom-resource-statuses">How to view custom resource statuses<a data-markdown-ignore class="headerlink" href="#how-to-view-custom-resource-statuses" title="Permanent link">¶</a></h2>
 <p>To check the status of your Percona custom resources, use the <code>kubectl get &lt;resource-name&gt;</code> or <code>kubectl describe &lt;resource-name&gt;</code> commands. See how to use them to get the quick overview, in-depth details and targeted queries.</p>
-<h3 id="get-a-quick-overview">Get a quick overview<a class="headerlink" href="#get-a-quick-overview" title="Permanent link">¶</a></h3>
+<h3 id="get-a-quick-overview">Get a quick overview<a data-markdown-ignore class="headerlink" href="#get-a-quick-overview" title="Permanent link">¶</a></h3>
 <p>List your resources and check their high-level STATUS:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
@@ -6958,13 +6958,13 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span
 some-name   some-name-mongos.pitr-physical-backup-source-29217.svc.cluster.local:27017   ready    27m
 </code></pre></div>
 </details>
-<h3 id="view-full-details">View full details<a class="headerlink" href="#view-full-details" title="Permanent link">¶</a></h3>
+<h3 id="view-full-details">View full details<a data-markdown-ignore class="headerlink" href="#view-full-details" title="Permanent link">¶</a></h3>
 <p>See all status details as well as conditions and events:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
 kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>Check for the <code>.status</code> field in the output to find the current state, readiness, messages, and conditions.</p>
-<h3 id="query-a-status-field-directly">Query a status field directly<a class="headerlink" href="#query-a-status-field-directly" title="Permanent link">¶</a></h3>
+<h3 id="query-a-status-field-directly">Query a status field directly<a data-markdown-ignore class="headerlink" href="#query-a-status-field-directly" title="Permanent link">¶</a></h3>
 <p>You can extract specific status fields using <code>jsonpath</code>.</p>
 <p><strong>Example 1. View the status of the PBM configuration:</strong></p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -6999,7 +6999,7 @@ False
 TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedOnly
 </code></pre></div>
 </details>
-<h2 id="perconaservermongodb-status">PerconaServerMongoDB status<a class="headerlink" href="#perconaservermongodb-status" title="Permanent link">¶</a></h2>
+<h2 id="perconaservermongodb-status">PerconaServerMongoDB status<a data-markdown-ignore class="headerlink" href="#perconaservermongodb-status" title="Permanent link">¶</a></h2>
 <p>The main cluster state is recorded in the <code>status.state</code> section. For component-level states, see the <a href="#replica-set-and-mongos-status"><code>status.replsets</code> and <code>status.mongos</code></a> and <a href="#vector-search-status"><code>status.search</code></a> sections.</p>
 <p>Common fields:</p>
 <ul>
@@ -7013,7 +7013,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See <a href="scaling-storage-resize.html#automatic-storage-resizing">Automatic storage resizing</a> for more information about this feature.</li>
 <li><code>status.vaultLastRequestedAt</code> – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when <a href="operator.html#vaultrequestinterval"><code>spec.vault.requestInterval</code></a> is set.</li>
 </ul>
-<h3 id="cluster-state-values">Cluster state values<a class="headerlink" href="#cluster-state-values" title="Permanent link">¶</a></h3>
+<h3 id="cluster-state-values">Cluster state values<a data-markdown-ignore class="headerlink" href="#cluster-state-values" title="Permanent link">¶</a></h3>
 <p><code>status.state</code> values are:</p>
 <table>
 <thead>
@@ -7050,7 +7050,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </tbody>
 </table>
 <p>When <a href="operator.html#searchenabled">vector search is enabled</a>, the cluster is not marked <code>ready</code> until every entry in <code>status.search</code> is also <code>ready</code>.</p>
-<h3 id="replica-set-and-mongos-status">Replica set and mongos status<a class="headerlink" href="#replica-set-and-mongos-status" title="Permanent link">¶</a></h3>
+<h3 id="replica-set-and-mongos-status">Replica set and mongos status<a data-markdown-ignore class="headerlink" href="#replica-set-and-mongos-status" title="Permanent link">¶</a></h3>
 <p>The Operator reports the state of each replica set in <code>status.replsets.&lt;rs-name&gt;</code>. In a sharded cluster, this includes the config server replica set (<code>cfg</code>). The Operator reports the state of <code>mongos</code> Pods in <code>status.mongos</code>.</p>
 <p>Common fields under <code>status.replsets.&lt;rs-name&gt;</code> and <code>status.mongos</code>:</p>
 <ul>
@@ -7136,7 +7136,7 @@ my-cluster-name-rs0-1.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 PRIMARY
 my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDARY
 </code></pre></div>
 </details>
-<h3 id="vector-search-status">Vector search status<a class="headerlink" href="#vector-search-status" title="Permanent link">¶</a></h3>
+<h3 id="vector-search-status">Vector search status<a data-markdown-ignore class="headerlink" href="#vector-search-status" title="Permanent link">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -7157,7 +7157,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <div class="no-copy highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"rs0"</span><span class="p">:{</span><span class="nt">"size"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">"ready"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"ready"</span><span class="p">}}</span>
 </code></pre></div>
 </details>
-<h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">¶</a></h3>
+<h3 id="conditions">Conditions<a data-markdown-ignore class="headerlink" href="#conditions" title="Permanent link">¶</a></h3>
 <p>Conditions show more detail about cluster state changes. You can see them in <code>status.conditions[]</code>.</p>
 <p>Common condition fields:</p>
 <ul>
@@ -7238,7 +7238,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </table>
 <p>The Operator sets <code>reason</code> and <code>message</code> values as free-form strings. Common reasons include <code>ErrorReconcile</code>, <code>RSReady</code>, <code>RSStopping</code>, <code>RSPaused</code>, <code>MongosReady</code>, <code>MongosStopping</code>, <code>MongosPaused</code>, <code>PBMConfigurationIsUpToDate</code>, <code>PBMConfigurationIsChanged</code>, <code>TLSSecretNotFound</code>, <code>ImageUpgrade</code>.</p>
 <p>When <code>ImageUpgradeInProgress</code> is <code>True</code>, <code>reason</code> is <code>ImageUpgrade</code>. While a container still differs from the StatefulSet template, <code>message</code> names the containers that are changing, including init containers and containers the template adds that are not on the Pod yet. For example: <code>Image upgrade is in progress for container(s) mongod, backup-agent</code>. After every container matches, the message changes to <code>Image upgrade is waiting for the cluster to be ready</code>. The Operator removes the condition when <code>status.state</code> is <code>ready</code>.</p>
-<h2 id="perconaservermongodbbackup-status">PerconaServerMongoDBBackup status<a class="headerlink" href="#perconaservermongodbbackup-status" title="Permanent link">¶</a></h2>
+<h2 id="perconaservermongodbbackup-status">PerconaServerMongoDBBackup status<a data-markdown-ignore class="headerlink" href="#perconaservermongodbbackup-status" title="Permanent link">¶</a></h2>
 <p>Backup progress and results are in <code>status.state</code>. You also get destination and timing details that help you validate backups and Point-in-time recovery time ranges.</p>
 <p>Common fields:</p>
 <ul>
@@ -7252,7 +7252,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <li><code>status.error</code> – error details when the backup fails</li>
 <li><code>status.pbmPods</code> – nodes that PBM used for the backup, keyed by replica set name. Each value is the host and port of a <code>mongod</code> node. The first part of the hostname is the Pod name, for example <code>my-cluster-name-rs0-2</code> in <code>my-cluster-name-rs0-2.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017</code>. Use it to find the Pod whose <code>backup-agent</code> logs to check.</li>
 </ul>
-<h3 id="backup-state-values">Backup state values<a class="headerlink" href="#backup-state-values" title="Permanent link">¶</a></h3>
+<h3 id="backup-state-values">Backup state values<a data-markdown-ignore class="headerlink" href="#backup-state-values" title="Permanent link">¶</a></h3>
 <p><code>status.state</code> values are:</p>
 <table>
 <thead>
@@ -7288,7 +7288,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<h2 id="perconaservermongodbrestore-status">PerconaServerMongoDBRestore status<a class="headerlink" href="#perconaservermongodbrestore-status" title="Permanent link">¶</a></h2>
+<h2 id="perconaservermongodbrestore-status">PerconaServerMongoDBRestore status<a data-markdown-ignore class="headerlink" href="#perconaservermongodbrestore-status" title="Permanent link">¶</a></h2>
 <p>Restore progress and results are in <code>status.state</code>. Use these fields to confirm when a restore starts, finishes, or fails.</p>
 <p>Common fields:</p>
 <ul>
@@ -7299,7 +7299,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <li><code>status.error</code> – error details when the restore fails</li>
 <li><code>status.conditions</code> – restore progress for PVC snapshot restores. See <a href="#pvc-snapshot-restore-conditions">PVC snapshot restore conditions</a></li>
 </ul>
-<h3 id="restore-state-values">Restore state values<a class="headerlink" href="#restore-state-values" title="Permanent link">¶</a></h3>
+<h3 id="restore-state-values">Restore state values<a data-markdown-ignore class="headerlink" href="#restore-state-values" title="Permanent link">¶</a></h3>
 <p><code>status.state</code> values are:</p>
 <table>
 <thead>
@@ -7339,7 +7339,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<h3 id="error-vs-failed"><code>error</code> vs <code>failed</code><a class="headerlink" href="#error-vs-failed" title="Permanent link">¶</a></h3>
+<h3 id="error-vs-failed"><code>error</code> vs <code>failed</code><a data-markdown-ignore class="headerlink" href="#error-vs-failed" title="Permanent link">¶</a></h3>
 <p>The Restore Custom Resource uses <code>error</code>, not <code>failed</code>.</p>
 <ul>
 <li><strong><code>error</code></strong> – Recoverable. The Operator sets this state when restore field validation fails (for example, missing <code>clusterName</code>, missing both <code>backupName</code> and <code>backupSource</code>, invalid <code>backupSource</code> storage settings, invalid PITR settings, or using <code>selective.nsFrom</code> / <code>selective.nsTo</code> with a non-logical backup). The Operator keeps reconciling the Restore object, so you can correct the CR and unblock the restore without creating a new one. The same state is also used when a restore operation itself fails; check <code>status.error</code> for details.</li>
@@ -7350,7 +7350,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.state}{"\n"}{.status.error}{"\n"}'</span>
 </code></pre></div>
 <p>Fix the Restore CR (for example, add the missing field or correct <code>backupSource</code>), then confirm that <code>status.state</code> moves out of <code>error</code> after the next reconcile.</p>
-<h3 id="pvc-snapshot-restore-conditions">PVC snapshot restore conditions<a class="headerlink" href="#pvc-snapshot-restore-conditions" title="Permanent link">¶</a></h3>
+<h3 id="pvc-snapshot-restore-conditions">PVC snapshot restore conditions<a data-markdown-ignore class="headerlink" href="#pvc-snapshot-restore-conditions" title="Permanent link">¶</a></h3>
 <p>For restores from PVC snapshot backups, the Operator sets <code>status.conditions</code> as each phase completes. These conditions appear only for snapshot restores of the type <code>external</code>. Use them with <code>status.state</code> to see where a long-running restore is stuck.</p>
 <p>Each condition uses the standard Kubernetes fields (<code>type</code>, <code>status</code>, <code>reason</code>, <code>message</code>, <code>lastTransitionTime</code>). When a phase succeeds, the Operator sets the matching condition to <code>status: "True"</code>.</p>
 <table>
@@ -7390,7 +7390,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[*]}{.type}{"\t"}{.status}{"\t"}{.reason}{"\n"}{end}'</span>
 </code></pre></div>
 <p>For the restore sequence, see <a href="backups.html#from-pvc-snapshot-external-backup">How backup and restore work</a>.</p>
-<h2 id="perconaservermongodbclustersync-status">PerconaServerMongoDBClusterSync status<a class="headerlink" href="#perconaservermongodbclustersync-status" title="Permanent link">¶</a></h2>
+<h2 id="perconaservermongodbclustersync-status">PerconaServerMongoDBClusterSync status<a data-markdown-ignore class="headerlink" href="#perconaservermongodbclustersync-status" title="Permanent link">¶</a></h2>
 <p>Percona ClusterSync for MongoDB (PCSM) progress and results are on the <code>PerconaServerMongoDBClusterSync</code> Custom Resource. Use these fields to track replication intent, runtime state, lag, and failures.</p>
 <p><code>spec.mode</code> is your lifecycle intent. <code>status.state</code> is what PCSM is doing. For configuration options, see <a href="clustersync-options.html">ClusterSync Resource options</a>. For concepts, see <a href="clustersync.html">Real-time replication with PCSM</a>.</p>
 <p>Common fields:</p>
@@ -7402,7 +7402,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <li><code>status.startedAt</code> – timestamp of the first time PCSM reported <code>running</code></li>
 <li><code>status.conditions</code> – condition list with reason and message</li>
 </ul>
-<h3 id="clustersync-mode-values">ClusterSync mode values<a class="headerlink" href="#clustersync-mode-values" title="Permanent link">¶</a></h3>
+<h3 id="clustersync-mode-values">ClusterSync mode values<a data-markdown-ignore class="headerlink" href="#clustersync-mode-values" title="Permanent link">¶</a></h3>
 <p><code>status.mode</code> mirrors <code>spec.mode</code> after the Operator applies the matching PCSM command:</p>
 <table>
 <thead>
@@ -7426,7 +7426,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<h3 id="clustersync-state-values">ClusterSync state values<a class="headerlink" href="#clustersync-state-values" title="Permanent link">¶</a></h3>
+<h3 id="clustersync-state-values">ClusterSync state values<a data-markdown-ignore class="headerlink" href="#clustersync-state-values" title="Permanent link">¶</a></h3>
 <p><code>status.state</code> values are:</p>
 <table>
 <thead>
@@ -7462,7 +7462,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<h3 id="conditions_1">Conditions<a class="headerlink" href="#conditions_1" title="Permanent link">¶</a></h3>
+<h3 id="conditions_1">Conditions<a data-markdown-ignore class="headerlink" href="#conditions_1" title="Permanent link">¶</a></h3>
 <p>Conditions show more detail about ClusterSync state changes in <code>status.conditions[]</code>.</p>
 <p><code>status.conditions[].type</code> values:</p>
 <table>
@@ -7483,7 +7483,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
-<h3 id="example-status">Example status<a class="headerlink" href="#example-status" title="Permanent link">¶</a></h3>
+<h3 id="example-status">Example status<a data-markdown-ignore class="headerlink" href="#example-status" title="Permanent link">¶</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>

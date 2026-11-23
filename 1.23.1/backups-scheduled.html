@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6576,9 +6576,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="making-scheduled-backups">Making scheduled backups<a class="headerlink" href="#making-scheduled-backups" title="Permanent link">¶</a></h1>
+<h1 id="making-scheduled-backups">Making scheduled backups<a data-markdown-ignore class="headerlink" href="#making-scheduled-backups" title="Permanent link">¶</a></h1>
 <p>You can automate the backup process with scheduled backups. Define a schedule and the Operator runs backups automatically according to it. This provides reliability and efficiency to your backups strategy and ensures your data is timely and regularly backed up with no gaps.</p>
-<h2 id="configure-a-scheduled-backup">Configure a scheduled backup<a class="headerlink" href="#configure-a-scheduled-backup" title="Permanent link">¶</a></h2>
+<h2 id="configure-a-scheduled-backup">Configure a scheduled backup<a data-markdown-ignore class="headerlink" href="#configure-a-scheduled-backup" title="Permanent link">¶</a></h2>
 <p>To configure scheduled backups, modify the <code>backups</code> section of the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Custom Resource manifest. Specify the following configuration:</p>
 <ol>
 <li><code>backup.enabled</code> - set to <code>true</code>,</li>
@@ -6596,13 +6596,13 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 </li>
 </ol>
-<h2 id="configure-retention">Configure retention<a class="headerlink" href="#configure-retention" title="Permanent link">¶</a></h2>
+<h2 id="configure-retention">Configure retention<a data-markdown-ignore class="headerlink" href="#configure-retention" title="Permanent link">¶</a></h2>
 <p>Retention is set per task, in <code>backup.tasks.retention</code>, and decides how many backups
 are kept before older ones are removed. The fields and their behaviour - including how
 retention treats incremental backups - are documented in
 <a href="backups-delete.html#configure-backup-retention">Configure backup retention</a>.</p>
 <p><strong>Examples</strong></p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Logical</label><label for="__tabbed_1_2">Physical</label><label for="__tabbed_1_3">Incremental</label><label for="__tabbed_1_4">PVC snapshot (external)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Logical</label><label for="__tabbed_1_2">Physical</label><label for="__tabbed_1_3">Incremental</label><label for="__tabbed_1_4">PVC snapshot (external)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>This example shows how to set up backups to run every Saturday night and store them in Amazon S3:</p>
@@ -6721,11 +6721,11 @@ retention treats incremental backups - are documented in
 </div>
 </div>
 </div>
-<h2 id="restore-to-a-new-kubernetes-environment">Restore to a new Kubernetes environment<a class="headerlink" href="#restore-to-a-new-kubernetes-environment" title="Permanent link">¶</a></h2>
+<h2 id="restore-to-a-new-kubernetes-environment">Restore to a new Kubernetes environment<a data-markdown-ignore class="headerlink" href="#restore-to-a-new-kubernetes-environment" title="Permanent link">¶</a></h2>
 <p>To <a href="backups-restore.html#restore-on-a-new-cluster">restore from a backup to a new Kubernetes-based environment</a>, you must create a Secrets object there with the same user passwords as in the original cluster. </p>
 <p>Find the Secrets name object on the source cluster in the <code>spec.secrets</code> key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.</p>
 <p>Find more details about secrets in <a href="system-users.html">System Users</a>. </p>
-<h2 id="verify-the-schedule-works">Verify the schedule works<a class="headerlink" href="#verify-the-schedule-works" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-schedule-works">Verify the schedule works<a data-markdown-ignore class="headerlink" href="#verify-the-schedule-works" title="Permanent link">¶</a></h2>
 <p>A scheduled task is silent until it fires, so confirm the first run rather than waiting for
 an incident. List the backups after the schedule is due:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;

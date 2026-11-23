@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6714,15 +6714,15 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="backup-resource-options">Backup Resource options<a class="headerlink" href="#backup-resource-options" title="Permanent link">¶</a></h1>
+<h1 id="backup-resource-options">Backup Resource options<a data-markdown-ignore class="headerlink" href="#backup-resource-options" title="Permanent link">¶</a></h1>
 <p>A Backup resource is a Kubernetes object that tells the Operator how to create and manage your database backups. The <code>deploy/backup/backup.yaml</code> file is a template for creating backup resources when you make an on-demand backup. It defines the <code>PerconaServerMongoDBBackup</code> resource.</p>
 <p>This document describes all available options that you can use to customize your backups. </p>
-<h2 id="apiversion"><code>apiVersion</code><a class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
+<h2 id="apiversion"><code>apiVersion</code><a data-markdown-ignore class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
 <p>Specifies the API version of the Custom Resource.
 <code>psmdb.percona.com</code> indicates the group, and <code>v1</code> is the version of the API.</p>
-<h2 id="kind"><code>kind</code><a class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
+<h2 id="kind"><code>kind</code><a data-markdown-ignore class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
 <p>Defines the type of resource being created: <code>PerconaServerMongoDBBackup</code>.</p>
-<h2 id="metadata"><code>metadata</code><a class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
+<h2 id="metadata"><code>metadata</code><a data-markdown-ignore class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
 <p>The metadata part of the <code>deploy/backup/backup.yaml</code> contains metadata about the resource, such as its name and other attributes. It includes the following keys:</p>
 <ul>
 <li>
@@ -6735,9 +6735,9 @@ window.addEventListener('afterprint', (event) => {
 <p><code>name</code> - The name of the backup resource used to identify it in your deployment. You also use the backup name for the restore operation.</p>
 </li>
 </ul>
-<h2 id="spec"><code>spec</code><a class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
+<h2 id="spec"><code>spec</code><a data-markdown-ignore class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
 <p>This subsection includes the configuration of a backup resource.</p>
-<h3 id="clustername"><code>clusterName</code><a class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
+<h3 id="clustername"><code>clusterName</code><a data-markdown-ignore class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
 <p>Specifies the name of the MongoDB cluster to back up. </p>
 <table>
 <thead>
@@ -6753,7 +6753,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="storagename"><code>storageName</code><a class="headerlink" href="#storagename" title="Permanent link">¶</a></h3>
+<h3 id="storagename"><code>storageName</code><a data-markdown-ignore class="headerlink" href="#storagename" title="Permanent link">¶</a></h3>
 <p>Specifies the name of the storage where to save a backup. It must match the name you specified in the <code>spec.backup.storages</code> subsection of the <code>deploy/cr.yaml</code> file.</p>
 <p>Not required when <code>type</code> is <code>external</code> (PVC snapshot backups). PBM still uses the cluster backup configuration for metadata.</p>
 <table>
@@ -6770,7 +6770,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="type"><code>type</code><a class="headerlink" href="#type" title="Permanent link">¶</a></h3>
+<h3 id="type"><code>type</code><a data-markdown-ignore class="headerlink" href="#type" title="Permanent link">¶</a></h3>
 <p>Specifies the backup type. Supported types are: <code>logical</code>, <code>physical</code>, <code>incremental-base</code>, <code>incremental</code>, <code>external</code>.</p>
 <p>Use <code>external</code> for <a href="backups-pvc-snapshots.html">PVC snapshot backups</a>.</p>
 <table>
@@ -6787,7 +6787,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="volumesnapshotclass"><code>volumeSnapshotClass</code><a class="headerlink" href="#volumesnapshotclass" title="Permanent link">¶</a></h3>
+<h3 id="volumesnapshotclass"><code>volumeSnapshotClass</code><a data-markdown-ignore class="headerlink" href="#volumesnapshotclass" title="Permanent link">¶</a></h3>
 <p>The name of the Kubernetes <code>VolumeSnapshotClass</code> to use when creating <a href="backups-pvc-snapshots.html">PVC snapshot backups</a>. <strong>Required</strong> when the <code>type</code> is <code>external</code>.</p>
 <table>
 <thead>
@@ -6803,7 +6803,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="compressiontype"><code>compressionType</code><a class="headerlink" href="#compressiontype" title="Permanent link">¶</a></h3>
+<h3 id="compressiontype"><code>compressionType</code><a data-markdown-ignore class="headerlink" href="#compressiontype" title="Permanent link">¶</a></h3>
 <p>Specifies the compression algorithm for backups. Supported values are: <code>gzip</code>, <code>pgzip</code>, <code>zstd</code>, <code>snappy</code>. Read more about compression types in the <a href="https://docs.percona.com/percona-backup-mongodb/usage/compression.html#configure-backup-compression">Configure backup compression <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> section of PBM documentation.</p>
 <table>
 <thead>
@@ -6819,7 +6819,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="compressionlevel"><code>compressionLevel</code><a class="headerlink" href="#compressionlevel" title="Permanent link">¶</a></h3>
+<h3 id="compressionlevel"><code>compressionLevel</code><a data-markdown-ignore class="headerlink" href="#compressionlevel" title="Permanent link">¶</a></h3>
 <p>Specifies the compression level. Note that the higher value you specify, the more time and computing resources it will take to compress the data. The default value depends on the compression method used. Read more about compression levels in the <a href="https://docs.percona.com/percona-backup-mongodb/usage/compression.html#configure-backup-compression">Configure backup compression <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> section of PBM documentation.</p>
 <table>
 <thead>
@@ -6835,7 +6835,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="startingdeadlineseconds"><code>startingDeadlineSeconds</code><a class="headerlink" href="#startingdeadlineseconds" title="Permanent link">¶</a></h3>
+<h3 id="startingdeadlineseconds"><code>startingDeadlineSeconds</code><a data-markdown-ignore class="headerlink" href="#startingdeadlineseconds" title="Permanent link">¶</a></h3>
 <p>The maximum time in seconds for a backup to start. The Operator compares the timestamp of the backup object against the current time. If the backup is not started within the set time, the Operator automatically marks it as “failed”.</p>
 <p>If undefined, the Operator uses the value specified in the Custom Resource, or defaults to 120 seconds. Minimum allowed value is 1 second.</p>
 <table>

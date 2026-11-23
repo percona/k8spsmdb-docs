@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6498,23 +6498,23 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="get-a-cluster">Get a cluster<a class="headerlink" href="#get-a-cluster" title="Permanent link">¶</a></h1>
+<h1 id="get-a-cluster">Get a cluster<a data-markdown-ignore class="headerlink" href="#get-a-cluster" title="Permanent link">¶</a></h1>
 <p>You need a running Percona Server for MongoDB cluster before you can connect your application. Choose one of the options below.</p>
-<h2 id="option-1-quick-install-you-run-kubernetes">Option 1: Quick install (you run Kubernetes)<a class="headerlink" href="#option-1-quick-install-you-run-kubernetes" title="Permanent link">¶</a></h2>
+<h2 id="option-1-quick-install-you-run-kubernetes">Option 1: Quick install (you run Kubernetes)<a data-markdown-ignore class="headerlink" href="#option-1-quick-install-you-run-kubernetes" title="Permanent link">¶</a></h2>
 <p>If you have a Kubernetes cluster (Minikube, kind, or a cloud provider), you can install the Operator and database in a few minutes.</p>
 <ul>
 <li><strong><a href="kubectl.html">Install with kubectl</a></strong> — Apply the Operator and database manifests. Best if you prefer standard Kubernetes workflows.</li>
 <li><strong><a href="helm.html">Install with Helm</a></strong> — Use Helm charts for the same result.</li>
 </ul>
 <p>After installation, get the cluster name and namespace (for example with <code>kubectl get psmdb -n &lt;namespace&gt;</code>). You will need them for the <a href="connect-from-app.html">connection string</a>.</p>
-<h2 id="option-2-your-team-already-has-a-cluster">Option 2: Your team already has a cluster<a class="headerlink" href="#option-2-your-team-already-has-a-cluster" title="Permanent link">¶</a></h2>
+<h2 id="option-2-your-team-already-has-a-cluster">Option 2: Your team already has a cluster<a data-markdown-ignore class="headerlink" href="#option-2-your-team-already-has-a-cluster" title="Permanent link">¶</a></h2>
 <p>If your platform or SRE team runs Percona Operator for MongoDB, ask them for:</p>
 <ul>
 <li>The <strong>connection string</strong> or the <strong>cluster name</strong> and <strong>namespace</strong></li>
 <li><strong>Credentials</strong> (username and password) for an application user, or the Secret name to read them from.</li>
 </ul>
 <p>Then go to <a href="connect-from-app.html">Connect your application</a> and <a href="app-credentials.html">Get credentials for your app</a> if you need to create or use an app user.</p>
-<h2 id="next-step">Next step<a class="headerlink" href="#next-step" title="Permanent link">¶</a></h2>
+<h2 id="next-step">Next step<a data-markdown-ignore class="headerlink" href="#next-step" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="connect-from-app.html">Connect your application <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
 <hr>
 <div class="md-source-file">

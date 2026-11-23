@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6602,7 +6602,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="delete-the-unneeded-backup">Delete the unneeded backup<a class="headerlink" href="#delete-the-unneeded-backup" title="Permanent link">¶</a></h1>
+<h1 id="delete-the-unneeded-backup">Delete the unneeded backup<a data-markdown-ignore class="headerlink" href="#delete-the-unneeded-backup" title="Permanent link">¶</a></h1>
 <p>You can delete backups in the following way:</p>
 <ul>
 <li>Configure the retention policy and have the Operator delete them according to this policy rules</li>
@@ -6612,14 +6612,14 @@ window.addEventListener('afterprint', (event) => {
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="configure-backup-retention">Configure backup retention<a class="headerlink" href="#configure-backup-retention" title="Permanent link">¶</a></h2>
+<h2 id="configure-backup-retention">Configure backup retention<a data-markdown-ignore class="headerlink" href="#configure-backup-retention" title="Permanent link">¶</a></h2>
 <p>Use the <code>backup.tasks.retention</code> subsection to configure the retention policy for backups. Specify the following parameters:</p>
 <ul>
 <li><code>backup.tasks.retention.type</code> - the retention strategy. The default (and currently only supported strategy) is <code>count</code>, which keeps the most recent <code>backup.tasks.retention.count</code> backups and removes older ones.</li>
 <li><code>backup.tasks.retention.count</code> - how many backups to keep. Older backups are removed from the storage. See <a href="#retention-and-incremental-backups">Retention and incremental backups</a> below.</li>
 <li><code>backup.tasks.retention.deleteFromStorage</code> - if to delete backup files from storage as well.</li>
 </ul>
-<h3 id="retention-and-incremental-backups">Retention and incremental backups<a class="headerlink" href="#retention-and-incremental-backups" title="Permanent link">¶</a></h3>
+<h3 id="retention-and-incremental-backups">Retention and incremental backups<a data-markdown-ignore class="headerlink" href="#retention-and-incremental-backups" title="Permanent link">¶</a></h3>
 <p>Two things behave differently for incremental backups:</p>
 <ul>
 <li>The <code>percona.com/delete-backup</code> finalizer applies to an incremental <strong>base</strong> backup and
@@ -6629,7 +6629,7 @@ with your value:</p>
   their deletion to PBM. This is expected to change in a future release.</li>
 <li>Retention counts base backups. It is ignored for increments.</li>
 </ul>
-<h2 id="delete-manually">Delete manually<a class="headerlink" href="#delete-manually" title="Permanent link">¶</a></h2>
+<h2 id="delete-manually">Delete manually<a data-markdown-ignore class="headerlink" href="#delete-manually" title="Permanent link">¶</a></h2>
 <p>To delete a backup manually, you need to specify the backup name. Get the name from the list of available backups returned
 by the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
@@ -6648,7 +6648,7 @@ backup2   some-name   aws-s3       s3://operator-testing/psmdb-scheduled-backup/
 <p class="admonition-title">Delete base backups for point-in-time recovery</p>
 <p>You can delete a backup used <a href="backups-pitr.html">as a base for point-in-time recovery (PITR)</a> starting from the Operator version 1.15.0. Note that  deleting such a backup will delete the stored operations log updates based on this backup.</p>
 </div>
-<h3 id="delete-backups-with-the-legacy-ancestor-label">Delete backups with the legacy <code>ancestor</code> label<a class="headerlink" href="#delete-backups-with-the-legacy-ancestor-label" title="Permanent link">¶</a></h3>
+<h3 id="delete-backups-with-the-legacy-ancestor-label">Delete backups with the legacy <code>ancestor</code> label<a data-markdown-ignore class="headerlink" href="#delete-backups-with-the-legacy-ancestor-label" title="Permanent link">¶</a></h3>
 <p>Starting with Operator version 1.17.0, the backup label changed from <code>ancestor</code> to
 <code>percona.com/backup-ancestor</code>. The Operator deletes backups carrying the new label, but it
 does not remove older backups that use <code>ancestor</code>. Backups created with Operator versions
@@ -6667,7 +6667,7 @@ before 1.17.0 must be removed manually to free storage.</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="replication.html">Disaster recovery and multi-site</a></li>
 <li><a href="clustersync.html">Data migration</a></li>

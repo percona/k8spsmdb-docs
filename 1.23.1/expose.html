@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6786,10 +6786,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="networking-and-external-access">Networking and external access<a class="headerlink" href="#networking-and-external-access" title="Permanent link">¶</a></h1>
+<h1 id="networking-and-external-access">Networking and external access<a data-markdown-ignore class="headerlink" href="#networking-and-external-access" title="Permanent link">¶</a></h1>
 <p>The Operator provides entry points for accessing the database by client applications in several scenarios. In all cases, the cluster is exposed using regular Kubernetes <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service objects  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, which the Operator configures.</p>
 <p>This document describes how to use <a href="operator.html">Custom Resource manifest options</a> to expose clusters deployed with the Operator. </p>
-<h2 id="choose-how-to-expose-your-cluster">Choose how to expose your cluster<a class="headerlink" href="#choose-how-to-expose-your-cluster" title="Permanent link">¶</a></h2>
+<h2 id="choose-how-to-expose-your-cluster">Choose how to expose your cluster<a data-markdown-ignore class="headerlink" href="#choose-how-to-expose-your-cluster" title="Permanent link">¶</a></h2>
 <p>Exposure is two separate questions: <strong>who needs to reach the database</strong>, and <strong>how they
 resolve its addresses</strong>. Start here rather than reading the whole page.</p>
 <table>
@@ -6843,7 +6843,7 @@ connection still fails. That is what
 and split-horizon DNS exist to solve, and it is the most common reason an external
 connection fails after the Service is created.</p>
 </div>
-<h2 id="using-a-single-entry-point-in-a-sharded-cluster">Using a single entry point in a sharded cluster<a class="headerlink" href="#using-a-single-entry-point-in-a-sharded-cluster" title="Permanent link">¶</a></h2>
+<h2 id="using-a-single-entry-point-in-a-sharded-cluster">Using a single entry point in a sharded cluster<a data-markdown-ignore class="headerlink" href="#using-a-single-entry-point-in-a-sharded-cluster" title="Permanent link">¶</a></h2>
 <p>By default, the Operator deploys Percona Server for MongoDB as a <a href="sharding.html">sharded cluster</a>. This means the database cluster runs special
 <code>mongos</code> Pods - query routers, which act as entry points for client applications:</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/mongos_espose.png" data-desc-position="bottom"><img alt="image" src="assets/images/mongos_espose.png"></a></p>
@@ -6883,7 +6883,7 @@ my-cluster-name   my-cluster-name-mongos.&lt;namespace&gt;.svc.cluster.local    
 <p>A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongos Pods by using the NodePort or Load Balancer Service types.
 See the <a href="expose.html#connecting-from-outside-kubernetes">Connecting from outside Kubernetes</a> section below for details.</p>
 </div>
-<h2 id="accessing-replica-set-pods">Accessing replica set Pods<a class="headerlink" href="#accessing-replica-set-pods" title="Permanent link">¶</a></h2>
+<h2 id="accessing-replica-set-pods">Accessing replica set Pods<a data-markdown-ignore class="headerlink" href="#accessing-replica-set-pods" title="Permanent link">¶</a></h2>
 <p>If Percona Server for MongoDB <a href="sharding.html">sharding mode</a> is turned <strong>off</strong>, the Operator deploys Percona Server for MongoDB  as a replica set. In this case, an application needs to connect to all the MongoDB Pods of the replica set:</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/mongod_espose.png" data-desc-position="bottom"><img alt="image" src="assets/images/mongod_espose.png"></a></p>
 <p>When Kubernetes creates Pods, each Pod gets an IP address in the internal virtual network of the cluster. Since Pod creation and destruction is a dynamic process, binding communication to specific IP addresses would cause problems as the cluster scales or undergoes maintenance. For this reason, you should connect to Percona Server for MongoDB using Kubernetes internal DNS names in the connection string URI.</p>
@@ -6912,7 +6912,7 @@ my-cluster-name   my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local       
 <p>A ClusterIP Service endpoint is only reachable inside Kubernetes. If you need to connect from the outside, you need to expose the mongod Pods by using the NodePort or Load Balancer Service types.
 See the <a href="expose.html#connecting-from-outside-kubernetes">Connecting from outside Kubernetes</a> section below for details.</p>
 </div>
-<h2 id="connecting-from-outside-kubernetes">Connecting from outside Kubernetes<a class="headerlink" href="#connecting-from-outside-kubernetes" title="Permanent link">¶</a></h2>
+<h2 id="connecting-from-outside-kubernetes">Connecting from outside Kubernetes<a data-markdown-ignore class="headerlink" href="#connecting-from-outside-kubernetes" title="Permanent link">¶</a></h2>
 <p>If you need to connect to a cluster from outside Kubernetes, you cannot reach the Pods using Kubernetes internal DNS names. To make the Pods accessible from outside the cluster, Percona Operator for MongoDB can create <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Kubernetes Services  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> with external access.</p>
 <p>To expose Pods externally, configure the following option in the Custom Resource:</p>
 <ul>
@@ -6940,20 +6940,20 @@ See the <a href="expose.html#connecting-from-outside-kubernetes">Connecting from
 </li>
 </ul>
 <p>When replica sets or <code>mongos</code> Pods are exposed, the Operator adds <code>_connectionStringExposed</code> keys to the connection Secret. Use them instead of building external URIs manually. See <a href="connection-secrets.html">Connection secrets</a>.</p>
-<h2 id="automatic-dns-records-with-external-dns">Automatic DNS records with External DNS<a class="headerlink" href="#automatic-dns-records-with-external-dns" title="Permanent link">¶</a></h2>
+<h2 id="automatic-dns-records-with-external-dns">Automatic DNS records with External DNS<a data-markdown-ignore class="headerlink" href="#automatic-dns-records-with-external-dns" title="Permanent link">¶</a></h2>
 <p>Starting from Operator version 1.23.0, you can configure the Operator and <a href="https://github.com/kubernetes-sigs/external-dns">External DNS <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to work together. </p>
 <p>In the cluster Custom Resource, define how External DNS should create records: specify your <code>domain</code> (required) and optionally <code>prefix</code> and <code>ttl</code> under <code>expose.externalDNS</code>. The Operator then adds the <code>external-dns.alpha.kubernetes.io/hostname</code> annotation to each exposed per-Pod Service with a unique value in the format <code>&lt;prefix&gt;-&lt;replset-name&gt;-&lt;pod-index&gt;.&lt;domain&gt;</code>. External DNS reads this annotation and automatically creates a DNS record in your external DNS server: Amazon Route53, Cloud DNS, Azure DNS, or others.</p>
 <p>If you set <code>ttl</code>, the Operator also adds <code>external-dns.alpha.kubernetes.io/ttl</code> on each Service. The value is the DNS record lifetime in <strong>seconds</strong>. External DNS passes this TTL to your DNS provider when it creates or updates records. Omit <code>ttl</code> to let External DNS and the provider use their defaults.</p>
 <p>External DNS continuously watches for resource changes and updates the DNS records automatically when a new Service is created or its configuration or state changes. This automation simplifies connectivity for applications that must reach Percona Server for MongoDB from outside Kubernetes, reduces the risk of misconfiguration and supports environments that scale or change frequently. With <code>prefix</code>, you can enforce consistent DNS naming across clusters and environments.</p>
 <p>You can use External DNS for both replica sets and sharded clusters. By assigning DNS hostnames to each <code>mongod</code>, <code>mongos</code>, and <code>configsvrReplSet</code> Pod, you enable applications to connect to any node using simple, human-readable domain names.</p>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
+<h3 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <p>To use External DNS, ensure you have:</p>
 <ul>
 <li>Services exposed with the type <code>LoadBalancer</code>. Check your configuration to have <code>expose.enabled: true</code> with <code>expose.type: LoadBalancer</code> for replica sets and config servers</li>
 <li>A DNS zone that External DNS can manage for the <code>domain</code> you specify</li>
 </ul>
-<h3 id="configuration-example">Configuration example<a class="headerlink" href="#configuration-example" title="Permanent link">¶</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Replica set</label><label for="__tabbed_1_2">Sharded cluster</label></div>
+<h3 id="configuration-example">Configuration example<a data-markdown-ignore class="headerlink" href="#configuration-example" title="Permanent link">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Replica set</label><label for="__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
@@ -7055,7 +7055,7 @@ See the <a href="expose.html#connecting-from-outside-kubernetes">Connecting from
 </div>
 <p>If you omit <code>prefix</code>, the Operator uses <code>metadata.name</code> from the custom resource instead. With <code>metadata.name: my-cluster-name</code> and no <code>prefix</code> field, the hostname for the first Pod would be <code>my-cluster-name-rs0-0.mongo.example.com</code>.</p>
 <p>With <code>ttl: 300</code>, each Service also gets <code>external-dns.alpha.kubernetes.io/ttl: "300"</code>. External DNS uses that value when publishing the record; check your DNS provider for allowed TTL ranges and minimums.</p>
-<h3 id="how-the-operator-manages-external-dns-annotations">How the Operator manages External DNS annotations<a class="headerlink" href="#how-the-operator-manages-external-dns-annotations" title="Permanent link">¶</a></h3>
+<h3 id="how-the-operator-manages-external-dns-annotations">How the Operator manages External DNS annotations<a data-markdown-ignore class="headerlink" href="#how-the-operator-manages-external-dns-annotations" title="Permanent link">¶</a></h3>
 <p>The Operator owns the External DNS annotations it generates. The rules are:</p>
 <ul>
 <li>When the Operator annotates the Service with the <code>external-dns.alpha.kubernetes.io/hostname</code> (and <code>/ttl</code>, if set) annotations defined via the Custom Resource, it also adds the <code>percona.com/external-dns-managed: "true"</code> annotation to this Service. The Operator uses this marker to track its ownership over the Service. Do not set or remove the <code>percona.com/external-dns-managed: "true"</code> annotation manually.</li>
@@ -7065,7 +7065,7 @@ See the <a href="expose.html#connecting-from-outside-kubernetes">Connecting from
 <li>If <code>expose.annotations</code> already contains <code>external-dns.alpha.kubernetes.io/hostname</code>, the Operator replaces it with the hostname from <code>expose.externalDNS</code>.</li>
 <li>If <code>externalDNS</code> is set while <code>expose.enabled</code> is <code>false</code> (replica sets and config servers), the Operator does not add DNS annotations.</li>
 </ul>
-<h2 id="service-per-pod">Service per Pod<a class="headerlink" href="#service-per-pod" title="Permanent link">¶</a></h2>
+<h2 id="service-per-pod">Service per Pod<a data-markdown-ignore class="headerlink" href="#service-per-pod" title="Permanent link">¶</a></h2>
 <p>To make all database Pods accessible, Percona Operator for MongoDB can assign a <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Kubernetes Service  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to each Pod. This Service per Pod option allows your application to handle Cursor tracking instead of relying on a single Service. This solves the problem of <code>CursorNotFound</code> errors that occur when a Service transparently cycles between mongos instances while your client is still iterating a cursor on a large collection.</p>
 <p>This feature can be enabled for both sharded and non-sharded clusters by setting the <a href="operator.html#shardingmongosexposeserviceperpod">sharding.mongos.expose.servicePerPod</a> Custom Resource option to <code>true</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file.</p>
 <p>If this feature is enabled with the <code>expose.type: NodePort</code>, the created Services look like this:</p>
@@ -7075,7 +7075,7 @@ my-cluster-name-mongos-0<span class="w">   </span>NodePort<span class="w">      
 my-cluster-name-mongos-1<span class="w">   </span>NodePort<span class="w">       </span><span class="m">10</span>.38.155.250<span class="w">   </span>&lt;none&gt;<span class="w">         </span><span class="m">27017</span>:31389/TCP<span class="w">              </span>12s
 ...
 </code></pre></div>
-<h2 id="controlling-hostnames-in-replset-configuration">Controlling hostnames in replset configuration<a class="headerlink" href="#controlling-hostnames-in-replset-configuration" title="Permanent link">¶</a></h2>
+<h2 id="controlling-hostnames-in-replset-configuration">Controlling hostnames in replset configuration<a data-markdown-ignore class="headerlink" href="#controlling-hostnames-in-replset-configuration" title="Permanent link">¶</a></h2>
 <p>Starting from v1.14, the Operator configures replica set members using local fully-qualified domain names (FQDN), which are resolvable and available only from inside the Kubernetes cluster. Exposing the replica set using the options described above will not affect hostname usage in the replica set configuration.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -7105,7 +7105,7 @@ my-cluster-name-mongos-1<span class="w">   </span>NodePort<span class="w">      
 <code>kubectl rollout restart sts &lt;clusterName&gt;-cfg</code>.  </p>
 <p>Alternatively, you can simply
 <a href="pause.html">restart your cluster</a>.</p>
-<h3 id="override-hostnames-with-external-domain-names">Override hostnames with external domain names<a class="headerlink" href="#override-hostnames-with-external-domain-names" title="Permanent link">¶</a></h3>
+<h3 id="override-hostnames-with-external-domain-names">Override hostnames with external domain names<a data-markdown-ignore class="headerlink" href="#override-hostnames-with-external-domain-names" title="Permanent link">¶</a></h3>
 <p>When members must be reachable by externally resolvable DNS names such as through an Ingress, TransportServer, LoadBalancer hostname, or another cross-cluster DNS entry — use <a href="operator.html#replsetsreplsetoverridesmember-namehost"><code>replsets.replsetOverrides</code></a> instead of relying on <code>clusterServiceDNSMode=External</code> and IP addresses.</p>
 <p>With <code>replsetOverrides</code>, you replace the default local FQDN of each Pod with a custom host and, optionally, port in the MongoDB replica set configuration. Typical use cases include:</p>
 <ul>
@@ -7143,11 +7143,11 @@ my-cluster-name-mongos-1<span class="w">   </span>NodePort<span class="w">      
 <span class="w">      </span><span class="nt">team</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloud</span>
 </code></pre></div>
 <p>You can use these external domain names when you <a href="replication-multi-dc.html">split a replica set across multiple data centers</a>. Override each local member with <code>replsetOverrides</code>, and register remote members with <code>externalNodes</code> using the same style of externally reachable hostnames.</p>
-<h3 id="application-protocol-support-for-service-mesh-integrations">Application protocol support for service mesh integrations<a class="headerlink" href="#application-protocol-support-for-service-mesh-integrations" title="Permanent link">¶</a></h3>
+<h3 id="application-protocol-support-for-service-mesh-integrations">Application protocol support for service mesh integrations<a data-markdown-ignore class="headerlink" href="#application-protocol-support-for-service-mesh-integrations" title="Permanent link">¶</a></h3>
 <p>Starting from version 1.22.0, the Operator automatically sets <code>appProtocol: mongo</code> on Service ports for all Services (replica sets, config servers, and mongos). This configuration is essential when using service mesh implementations such as Istio.</p>
 <p>MongoDB uses a server-first protocol, meaning the server sends data first when establishing a connection. Without explicit protocol specification, service meshes cannot properly detect the protocol and may fail to establish Mutual TLS (mTLS) connections. By setting <code>appProtocol: mongo</code>, the Operator tells the service mesh which protocol to expect, enabling proper protocol detection and ensuring mTLS connections work correctly.</p>
 <p>The <code>appProtocol</code> field is set automatically by the Operator and cannot be configured manually.</p>
-<h2 id="exposing-replica-set-with-split-horizon-dns">Exposing replica set with split-horizon DNS<a class="headerlink" href="#exposing-replica-set-with-split-horizon-dns" title="Permanent link">¶</a></h2>
+<h2 id="exposing-replica-set-with-split-horizon-dns">Exposing replica set with split-horizon DNS<a data-markdown-ignore class="headerlink" href="#exposing-replica-set-with-split-horizon-dns" title="Permanent link">¶</a></h2>
 <p><a href="https://en.wikipedia.org/wiki/Split-horizon_DNS">Split-horizon DNS  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> provides each replica set Pod with a set of DNS URIs for external usage. This allows you to communicate with replica set Pods both from inside the Kubernetes cluster and from outside Kubernetes.</p>
 <p>Split-horizon can be configured via the <code>replset.splitHorizons</code> subsection in the
 Custom Resource options. Set it in the <code>deploy/cr.yaml</code> configuration file as
@@ -7177,7 +7177,7 @@ follows:</p>
 <li>using IP addresses in horizons is not allowed by MongoDB</li>
 <li>horizons should be set for <em>all Pods of a replica set</em> or not set at all</li>
 </ul>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Exposing a cluster with <code>LoadBalancer</code> Services creates one cloud load balancer per
   exposed Pod, which has a direct cost and may hit provider quotas.</li>
@@ -7186,7 +7186,7 @@ follows:</p>
 <li><code>clusterServiceDNSMode: ServiceMesh</code> cannot be combined with multi-cluster Services. See
   <a href="limitations.html">Known limitations</a>.</li>
 </ul>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="replication.html">Disaster recovery and multi-site</a></li>
 <li><a href="TLS.html">Transport encryption (TLS/SSL)</a> - external endpoints should require TLS</li>

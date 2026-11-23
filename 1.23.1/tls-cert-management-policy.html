@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6732,7 +6732,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-the-tls-certificate-management-policy">Configure the TLS certificate management policy<a class="headerlink" href="#configure-the-tls-certificate-management-policy" title="Permanent link">¶</a></h1>
+<h1 id="configure-the-tls-certificate-management-policy">Configure the TLS certificate management policy<a data-markdown-ignore class="headerlink" href="#configure-the-tls-certificate-management-policy" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: 1.23.0</p>
 </div>
@@ -6756,7 +6756,7 @@ window.addEventListener('afterprint', (event) => {
 Using this approach prevents an unexpected certificate regeneration with a different CA, which can otherwise cause clients that rely on the original CA to lose connectivity, potentially leading to service outages.</p>
 </li>
 </ul>
-<h2 id="when-to-use-each-policy">When to use each policy<a class="headerlink" href="#when-to-use-each-policy" title="Permanent link">¶</a></h2>
+<h2 id="when-to-use-each-policy">When to use each policy<a data-markdown-ignore class="headerlink" href="#when-to-use-each-policy" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6811,8 +6811,8 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 </tbody>
 </table>
 <p>If you provide your own external Secret in the <code>secrets.ssl</code> option and the PBM client Secret is missing, the Operator doesn’t set <code>TLSSecretsReady=False</code> under either policy. The cluster goes to the <code>error</code> state with the message <code>PBM client TLS secret &lt;name&gt; is required when custom SSL secret &lt;name&gt; is provided and backups are enabled</code>. Pods keep running.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
+<h2 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
+<h3 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <p>Ensure you have:</p>
 <ol>
 <li>Created the TLS Secrets in the cluster namespace, or that your sync tool created them before the database Pods must start. When backups are enabled, this includes the PBM client Secret. See <a href="tls-manual.html">Generate TLS certificates manually</a>.</li>
@@ -6829,7 +6829,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <p>Run Percona Operator for MongoDB version 1.23.0 or later.</p>
 </li>
 </ol>
-<h3 id="configure-the-certificate-management-policy">Configure the certificate management policy<a class="headerlink" href="#configure-the-certificate-management-policy" title="Permanent link">¶</a></h3>
+<h3 id="configure-the-certificate-management-policy">Configure the certificate management policy<a data-markdown-ignore class="headerlink" href="#configure-the-certificate-management-policy" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Edit the <code>deploy/cr.yaml</code> Custom Resource manifest and configure the  <code>spec.tls.certManagementPolicy</code> option:</p>
@@ -6861,7 +6861,7 @@ Using this approach prevents an unexpected certificate regeneration with a diffe
 <p class="admonition-title">Note</p>
 <p>Do not set the <code>userProvidedOnly</code> value if you expect the Operator to bootstrap TLS for you. With this policy, missing Secrets at deploy time leave the cluster in the <code>initializing</code> state until the Secrets exist.</p>
 </div>
-<h2 id="monitor-the-cluster-state">Monitor the cluster state<a class="headerlink" href="#monitor-the-cluster-state" title="Permanent link">¶</a></h2>
+<h2 id="monitor-the-cluster-state">Monitor the cluster state<a data-markdown-ignore class="headerlink" href="#monitor-the-cluster-state" title="Permanent link">¶</a></h2>
 <p>If a TLS Secret is missing and <code>spec.tls.certManagementPolicy</code> is set to <code>userProvidedOnly</code>, the Operator updates the <code>TLSSecretsReady</code> cluster condition to <code>False</code> and sets the reason to <code>TLSSecretNotFound</code>.</p>
 <p>To check the condition, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.conditions[?(@.type=="TLSSecretsReady")]}{.status}{"\n"}{.reason}{"\n"}{.message}{"\n"}{end}'</span>
@@ -6876,7 +6876,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <p>The cluster may still show Pods as running while <code>TLSSecretsReady</code> is <code>False</code>. If the missing Secret is the PBM client Secret, the cluster state is also <code>error</code>. Treat this as a <strong>degraded</strong> state: MongoDB continues with certificates already mounted in Pods, but you should restore the Secrets promptly.</p>
 <p>Check Operator logs for errors mentioning <code>certManagementPolicy is userProvidedOnly</code>.</p>
 <p>See <a href="cr-statuses.html#conditions">Custom resource statuses</a> for more on cluster conditions.</p>
-<h2 id="restore-tls-secrets">Restore TLS Secrets<a class="headerlink" href="#restore-tls-secrets" title="Permanent link">¶</a></h2>
+<h2 id="restore-tls-secrets">Restore TLS Secrets<a data-markdown-ignore class="headerlink" href="#restore-tls-secrets" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Confirm which Secret is missing:</p>
@@ -6894,13 +6894,13 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 </li>
 </ol>
 <p>Under <code>userProvidedOnly</code>, restoring Secrets does not by itself force a rolling restart. Pods continue using the certificates already loaded until you <a href="tls-update.html">update certificates</a> intentionally.</p>
-<h2 id="switch-between-policies">Switch between policies<a class="headerlink" href="#switch-between-policies" title="Permanent link">¶</a></h2>
-<h3 id="change-to-userprovidedonly">Change to userProvidedOnly<a class="headerlink" href="#change-to-userprovidedonly" title="Permanent link">¶</a></h3>
+<h2 id="switch-between-policies">Switch between policies<a data-markdown-ignore class="headerlink" href="#switch-between-policies" title="Permanent link">¶</a></h2>
+<h3 id="change-to-userprovidedonly">Change to userProvidedOnly<a data-markdown-ignore class="headerlink" href="#change-to-userprovidedonly" title="Permanent link">¶</a></h3>
 <p>Safe when TLS Secrets already exist and you want to prevent automatic regeneration if they are lost later. Apply the updated Custom Resource; no immediate Pod restart is required solely for this change.</p>
-<h3 id="change-to-auto">Change to auto<a class="headerlink" href="#change-to-auto" title="Permanent link">¶</a></h3>
+<h3 id="change-to-auto">Change to auto<a data-markdown-ignore class="headerlink" href="#change-to-auto" title="Permanent link">¶</a></h3>
 <p>If TLS Secrets are <strong>missing</strong> when you switch to <code>auto</code>, the Operator creates new certificates. That may change the CA and trigger a rolling restart. Only switch back to <code>auto</code> if you intentionally want the Operator to take over certificate creation again.</p>
 <p>There is no Operator guardrail that blocks <code>userProvidedOnly</code> → <code>auto</code> when Secrets are absent. Plan the switch and client CA trust accordingly.</p>
-<h2 id="rotate-certificates-with-userprovidedonly">Rotate certificates with userProvidedOnly<a class="headerlink" href="#rotate-certificates-with-userprovidedonly" title="Permanent link">¶</a></h2>
+<h2 id="rotate-certificates-with-userprovidedonly">Rotate certificates with userProvidedOnly<a data-markdown-ignore class="headerlink" href="#rotate-certificates-with-userprovidedonly" title="Permanent link">¶</a></h2>
 <p>Certificate rotation remains your responsibility:</p>
 <ol>
 <li>Update the TLS Secrets with new certificate material (same Secret names).</li>

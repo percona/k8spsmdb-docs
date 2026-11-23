@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6614,7 +6614,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="single-namespace-and-multi-namespace-deployment-modes">Single-namespace and multi-namespace deployment modes<a class="headerlink" href="#single-namespace-and-multi-namespace-deployment-modes" title="Permanent link">¶</a></h1>
+<h1 id="single-namespace-and-multi-namespace-deployment-modes">Single-namespace and multi-namespace deployment modes<a data-markdown-ignore class="headerlink" href="#single-namespace-and-multi-namespace-deployment-modes" title="Permanent link">¶</a></h1>
 <p>Before you install the Percona Operator for MongoDB, choose how it will be scoped: to a single Kubernetes namespace or to multiple namespaces. That choice determines which installation steps you follow and how you manage clusters afterward.</p>
 <p>The Operator supports two deployment patterns:</p>
 <ul>
@@ -6622,19 +6622,19 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Multi-namespace (cluster-wide)</strong> — One Operator instance manages clusters in multiple namespaces (or all namespaces) in the Kubernetes cluster.</li>
 </ul>
 <p>This page explains both modes, when to use which, and where to find the right installation guide.</p>
-<h2 id="which-mode-should-i-choose">Which mode should I choose?<a class="headerlink" href="#which-mode-should-i-choose" title="Permanent link">¶</a></h2>
+<h2 id="which-mode-should-i-choose">Which mode should I choose?<a data-markdown-ignore class="headerlink" href="#which-mode-should-i-choose" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Choose single-namespace</strong> if you run one or a few MongoDB clusters in one namespace (for example, one team or one application). You get strong isolation, and each namespace can have its own Operator instance. This is the typical choice for most users.</li>
 <li><strong>Choose multi-namespace</strong> if a central platform or database team manages MongoDB clusters in many namespaces (for example, dev, staging, and prod) and you want one Operator to handle all of them. You need cluster-admin (or equivalent) privileges to set up the Operator.</li>
 </ul>
 <p>If you are unsure, start with single-namespace. You can install a separate Operator per namespace; you do not need cluster-wide mode for multiple clusters as long as each cluster lives in its own namespace with its own Operator.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
+<h2 id="overview">Overview<a data-markdown-ignore class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
 <p>The main differences between the two modes are:</p>
 <ol>
 <li><strong>RBAC</strong> — In single-namespace mode the Operator uses Kubernetes <code>Role</code> and <code>RoleBinding</code> resources, which are scoped to one namespace. In multi-namespace mode it uses <code>ClusterRole</code> and <code>ClusterRoleBinding</code>, which are cluster-scoped. The manifests are in the <a href="https://github.com/percona/percona-server-mongodb-operator">percona-server-mongodb-operator</a> repository: <code>deploy/bundle.yaml</code> (single-namespace) and <code>deploy/cw-bundle.yaml</code> (cluster-wide).</li>
 <li><strong>WATCH_NAMESPACE</strong> — In single-namespace mode this environment variable is set to the namespace where the Operator is installed. In multi-namespace mode it is either a comma-separated list of namespaces to watch (for example <code>psmdb,psmdb-prod</code>) or an empty string (<code>""</code>) to watch all namespaces. See <a href="env-vars-operator.html#watch_namespace">Configure Operator environment variables</a> for details.</li>
 </ol>
-<h2 id="single-namespace-deployment">Single-namespace deployment<a class="headerlink" href="#single-namespace-deployment" title="Permanent link">¶</a></h2>
+<h2 id="single-namespace-deployment">Single-namespace deployment<a data-markdown-ignore class="headerlink" href="#single-namespace-deployment" title="Permanent link">¶</a></h2>
 <p>In single-namespace mode, each Operator instance is limited to one Kubernetes namespace. </p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/cluster-wide-1.svg" data-desc-position="bottom"><img alt="image" src="assets/images/cluster-wide-1.svg"></a></p>
 <p><strong>Characteristics:</strong></p>
@@ -6646,7 +6646,7 @@ window.addEventListener('afterprint', (event) => {
 <li>If something goes wrong with the Operator, the impact is limited to one namespace.</li>
 </ul>
 <p>You install in this mode when you use the standard <a href="kubernetes.html">bundle</a> or <a href="helm.html">Helm</a> installation without cluster-wide configuration.</p>
-<h2 id="multi-namespace-cluster-wide-deployment">Multi-namespace (cluster-wide) deployment<a class="headerlink" href="#multi-namespace-cluster-wide-deployment" title="Permanent link">¶</a></h2>
+<h2 id="multi-namespace-cluster-wide-deployment">Multi-namespace (cluster-wide) deployment<a data-markdown-ignore class="headerlink" href="#multi-namespace-cluster-wide-deployment" title="Permanent link">¶</a></h2>
 <p>In multi-namespace mode, one Operator instance can manage Percona Server for MongoDB clusters in several namespaces. </p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/cluster-wide-2.svg" data-desc-position="bottom"><img alt="image" src="assets/images/cluster-wide-2.svg"></a></p>
 <p><strong>Characteristics:</strong></p>
@@ -6660,20 +6660,20 @@ window.addEventListener('afterprint', (event) => {
 <p class="admonition-title">Note</p>
 <p>If more than one Operator is configured to watch the same namespace, which one will take ownership of the Custom Resources in that namespace is undefined. Avoid having multiple Operators watch the same namespace.</p>
 </div>
-<h2 id="installation-and-configuration">Installation and configuration<a class="headerlink" href="#installation-and-configuration" title="Permanent link">¶</a></h2>
+<h2 id="installation-and-configuration">Installation and configuration<a data-markdown-ignore class="headerlink" href="#installation-and-configuration" title="Permanent link">¶</a></h2>
 <p>Use the following guides depending on how you install the Operator:</p>
 <ul>
 <li><strong>Single-namespace:</strong> <a href="kubectl.html">Install with kubectl</a> or <a href="helm.html">Install with Helm</a>. The default bundle and Helm values use single-namespace mode.</li>
 <li><strong>Multi-namespace:</strong> <a href="cluster-wide.html">Install in multi-namespace (cluster-wide) mode</a>. You use the <code>deploy/cw-bundle.yaml</code> (or equivalent Helm/OLM configuration) and set <code>WATCH_NAMESPACE</code> and RBAC subjects as described there.</li>
 </ul>
-<h2 id="important-details">Important details<a class="headerlink" href="#important-details" title="Permanent link">¶</a></h2>
+<h2 id="important-details">Important details<a data-markdown-ignore class="headerlink" href="#important-details" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Cluster names</strong> — You can use the same cluster name in different namespaces (for example <code>my-cluster</code> in both <code>psmdb-dev</code> and <code>psmdb-prod</code>). Each namespace has its own PerconaServerMongoDB resources.</li>
 <li><strong>Custom Resource Definitions (CRDs)</strong> — CRDs are cluster-scoped and shared by all Operator instances. Install them once per cluster. Do not delete CRDs while any Operator or Percona Server for MongoDB cluster is still running.</li>
 <li><strong>WATCH_NAMESPACE when using a list</strong> — When you set <code>WATCH_NAMESPACE</code> to a comma-separated list, it must include the namespace where the Operator Pod runs. For example, if the Operator is in <code>psmdb-operator</code> and you want it to manage <code>psmdb</code> and <code>psmdb-prod</code>, set <code>WATCH_NAMESPACE=psmdb-operator,psmdb,psmdb-prod</code>. If you omit the Operator’s namespace, it will not manage resources in its own namespace.</li>
 <li><strong>Recommendation</strong> — Prefer single-namespace mode for better isolation and a smaller blast radius. Use multi-namespace mode only when you need one Operator to manage clusters in several namespaces.</li>
 </ul>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="System-Requirements.html">System requirements</a></p>
 <hr>
 <div class="md-source-file">

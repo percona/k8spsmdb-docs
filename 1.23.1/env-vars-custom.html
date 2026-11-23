@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6568,7 +6568,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="define-custom-environment-variables">Define custom environment variables<a class="headerlink" href="#define-custom-environment-variables" title="Permanent link">¶</a></h1>
+<h1 id="define-custom-environment-variables">Define custom environment variables<a data-markdown-ignore class="headerlink" href="#define-custom-environment-variables" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a></p>
 </div>
@@ -6579,14 +6579,14 @@ window.addEventListener('afterprint', (event) => {
 <li>Provide credentials or third-party API tokens from a Secret without baking them into images.</li>
 </ul>
 <p>The following sections in this document show how you can define custom environment variables.</p>
-<h2 id="supported-components">Supported components<a class="headerlink" href="#supported-components" title="Permanent link">¶</a></h2>
+<h2 id="supported-components">Supported components<a data-markdown-ignore class="headerlink" href="#supported-components" title="Permanent link">¶</a></h2>
 <p>Custom <code>env</code> and <code>envFrom</code> are supported for these components:</p>
 <ul>
 <li><code>mongod</code> containers: <code>spec.replsets[].env</code> and <code>spec.replsets[].envFrom</code></li>
 <li><code>mongos</code> containers: <code>spec.sharding.mongos.env</code> and <code>spec.sharding.mongos.envFrom</code></li>
 <li>Log collector container: <code>spec.logcollector.env</code> and <code>spec.logcollector.envFrom</code></li>
 </ul>
-<h2 id="set-variables-directly-in-the-custom-resource">Set variables directly in the Custom Resource<a class="headerlink" href="#set-variables-directly-in-the-custom-resource" title="Permanent link">¶</a></h2>
+<h2 id="set-variables-directly-in-the-custom-resource">Set variables directly in the Custom Resource<a data-markdown-ignore class="headerlink" href="#set-variables-directly-in-the-custom-resource" title="Permanent link">¶</a></h2>
 <p>Use this method when you have a small number of non-sensitive values and you want everything in a single file.</p>
 <p>For example, you want to set a time zone to keep logs aligned across containers.</p>
 <ol>
@@ -6608,7 +6608,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>The Operator makes a rolling restart of your Pods.</p>
-<h2 id="load-variables-from-a-configmap">Load variables from a ConfigMap<a class="headerlink" href="#load-variables-from-a-configmap" title="Permanent link">¶</a></h2>
+<h2 id="load-variables-from-a-configmap">Load variables from a ConfigMap<a data-markdown-ignore class="headerlink" href="#load-variables-from-a-configmap" title="Permanent link">¶</a></h2>
 <p>Use this when you want to share the same variables across multiple clusters or update them without editing the Custom resource.</p>
 <p>For example, set a custom runtime flag for <code>mongod</code> across all replica set pods.</p>
 <ol>
@@ -6650,7 +6650,7 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <p>The Operator makes a rolling restart of your Pods.</p>
-<h2 id="load-variables-from-a-secret">Load variables from a Secret<a class="headerlink" href="#load-variables-from-a-secret" title="Permanent link">¶</a></h2>
+<h2 id="load-variables-from-a-secret">Load variables from a Secret<a data-markdown-ignore class="headerlink" href="#load-variables-from-a-secret" title="Permanent link">¶</a></h2>
 <p>Use this when you need to supply sensitive values (tokens, passwords, keys).</p>
 <p>For example, you need to provide a token used by a custom sidecar container.</p>
 <ol>

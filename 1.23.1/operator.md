@@ -1,0 +1,4871 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Custom Resource options
+
+The Operator uses Custom Resources (CRs) to manage the database cluster and related objects such as backups and restores. A CR defines the desired state of an object. The Operator reads the CR and reconciles that object to bring it to the state you define.
+
+There are the following Custom Resources:
+
+- `PerconaServerMongoDB` contains options to configure Percona Server for MongoDB.
+- `PerconaServerMongoDBBackup` contains options for PBM to make backups.
+- `PerconaServerMongoDBRestore` contains options to restore Percona Server for MongoDB from backups.
+- `PerconaServerMongoDBClusterSync` contains options to deploy and manage Percona ClusterSync for MongoDB (PCSM). See [ClusterSync Resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html).
+
+## PerconaServerMongoDB Custom Resource options
+
+To customize PerconaServerMongoDB Custom Resource, edit the `spec` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) .
+
+This document explains every section of the `deploy/cr.yaml` Custom Resource manifest and describes available options.
+
+## `apiVersion`
+
+Specifies the API version of the Custom Resource. `psmdb.percona.com` indicates the group, and `v1` is the version of the API.
+
+This tells Kubernetes which version of the custom resource definition (CRD) to use.
+
+## `kind`
+
+Defines the type of resource being created.
+
+## `metadata`
+
+The metadata part of the `deploy/cr.yaml` contains metadata about the resource, such as its name and other attributes. It includes the following keys:
+
+- `name` sets the name of your Percona Server for MongoDB Cluster. The name must follow these rules:
+
+  - include only [URL-compatible characters](https://datatracker.ietf.org/doc/html/rfc3986#section-2.3) ,
+  - not exceed 22 characters,
+  - start and end with an alphanumeric character
+
+  The default name is `my-cluster-name`.
+
+- `finalizers` ensure safe deletion of resources in Kubernetes under certain conditions. This subsection includes the following finalizers:
+
+  - `percona.com/delete-psmdb-pods-in-order` if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which controls the proper Pods deletion order in case of the cluster deletion event (on by default)
+  - `percona.com/delete-psmdb-pvc` if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes appropriate [Persistent Volume Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) after the cluster deletion event (off by default). It also deletes Secrets.
+  - `percona.com/delete-pitr-chunks` if present, activates the [Finalizer](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers) which deletes all [point-in-time recovery chunks from the cloud storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr.html) on cluster deletion (off by default)
+
+## Toplevel `spec` elements
+
+The spec part of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains the following keys and sections:
+
+### `platform`
+
+Override/set the Kubernetes platform: `kubernetes` or `openshift`.
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `kubernetes` |
+
+### `pause`
+
+Pause/resume: setting it to `true` gracefully stops the cluster, and setting it to `false` after shut down starts the cluster back.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `enableVolumeExpansion`
+
+Enables or disables [storage scaling / volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+This option is deprecated and will be removed in version 1.25.0. Use the [`storageScaling.enableVolumeScaling`](#storagescalingenablevolumescaling) option instead.
+
+### `enableExternalVolumeAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+This option is deprecated and will be removed in version 1.25.0. Use the [`storageScaling.enableExternalAutoscaling`](#storagescalingenableexternalautoscaling) option instead.
+
+### `unmanaged`
+
+Setting it to `true` instructs the Operator to run the cluster in unmanaged state - the Operator does not form replica sets, and does not generate TLS certificates or user credentials. This can be useful for migration scenarios and for [cross-site replication](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `storageScaling.enableVolumeScaling`
+
+Enables or disables [storage scaling / volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `storageScaling.enableExternalAutoscaling`
+
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability)
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `storageScaling.autoscaling.enabled`
+
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
+
+Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. Resize those manually, see [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `storageScaling.autoscaling.triggerThresholdPercent`
+
+The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `80`    |
+
+### `storageScaling.autoscaling.growthStep`
+
+The amount to increase the storage during automatic resizing. Default value is 2Gi
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2Gi`   |
+
+### `storageScaling.autoscaling.maxSize`
+
+The maximum size to which storage can be automatically resized.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `10Gi`  |
+
+### `crVersion`
+
+The Operator version whose behavior the cluster follows. Changing this value rolls the database Pods.
+
+The option is optional. If you omit it, the Operator writes its own version into the Custom Resource on the first reconcile and keeps that value after later Operator upgrades. We recommend setting it explicitly. See [What `crVersion` does](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-crversion.html#what-crversion-does).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `1.23.1` |
+
+### `image`
+
+The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/images.html)).
+
+| Value type | Example                                                         |
+| ---------- | --------------------------------------------------------------- |
+| string     | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
+
+### `imagePullPolicy`
+
+The [policy used to update images](https://kubernetes.io/docs/concepts/containers/images/#updating-images) .
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Always` |
+
+### `imagePullSecrets.name`
+
+The [Kubernetes ImagePullSecret](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) to access the [custom registry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/custom-registry.html).
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `private`-`registry`-`credentials` |
+
+### `initImage`
+
+An alternative image for the initial Operator installation.
+
+| Value type | Example                                          |
+| ---------- | ------------------------------------------------ |
+| string     | `percona/percona-server-mongodb-operator:1.23.1` |
+
+### `initContainerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for the initImage (image, which can be used instead of the default one while the initial Operator installation).
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `ClusterServiceDNSSuffix`
+
+The (non-standard) cluster domain to be used as a suffix of the Service name.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `svc.cluster.local` |
+
+### `clusterServiceDNSMode`
+
+Can be `internal` (local fully-qualified domain names will be used in replset configuration even if the replset is exposed - the default value), `external` (exposed MongoDB instances will use ClusterIP addresses, [should be applied with caution](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#controlling-hostnames-in-replset-configuration)) or `ServiceMesh` (use a [special FQDN based on the Pod name](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#application-protocol-support-for-service-mesh-integrations)). Being set, `ServiceMesh` value suprecedes multiCluster settings, and therefore these two modes cannot be combined together.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `Internal` |
+
+### `allowUnsafeConfigurations`
+
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances, with an [even number of replica set instances without additional arbiter](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html), or without TLS/SSL certificates, or running a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults). *After switching to unsafe configurations permissive mode you will not be able to switch the cluster back by setting `spec.allowUnsafeConfigurations` key to `false`, the flag will be ignored*. **This option is deprecated and will be removed in future releases**. Use `unsafeFlags` subsection instead
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `updateStrategy`
+
+A strategy the Operator uses for [upgrades](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update.html). Possible values are [SmartUpdate](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update.html#update-strategies), [RollingUpdate](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#rolling-updates) and [OnDelete](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#on-delete) .
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `SmartUpdate` |
+
+### `revisionHistoryLimit`
+
+The maximum number of [revisions](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#revision-history-limit) the Operator keeps for Percona Server for MongoDB StatefulSets (replica set members, config servers, and `mongos` Pods). Kubernetes uses this history when you roll a StatefulSet back to a previous Pod template. Lower values reduce the number of retained revisions and help keep the cluster namespace tidy; higher values keep more rollback points. When unset, the default number of revisions is `10`. Available since Operator version 1.23.0.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `ignoreAnnotations`
+
+The list of annotations [to be ignored](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/annotations.html#specifying-labels-and-annotations-ignored-by-the-operator) by the Operator.
+
+| Value type | Example                                                         |
+| ---------- | --------------------------------------------------------------- |
+| subdoc     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` |
+
+### `ignoreLabels`
+
+The list of labels [to be ignored](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/annotations.html#setting-labels-and-annotations-in-the-custom-resource) by the Operator.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `rack`  |
+
+### `multiCluster.enabled`
+
+[Multi-cluster Services (MCS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-mcs.html): setting it to `true` enables [MCS cluster mode](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-services) .
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `multiCluster.DNSSuffix`
+
+The cluster domain to be used as a suffix for [multi-cluster Services](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-mcs.html) used by Kubernetes (`svc.clusterset.local` [by default](https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services) ).
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `svc.clusterset.local` |
+
+### `defaultRWConcern.readConcern`
+
+The default [read concern](https://www.mongodb.com/docs/manual/reference/read-concern/) level for the cluster. The Operator applies it with MongoDB’s [`setDefaultRWConcern`](https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/) command. Allowed values are `local`, `available`, and `majority`.
+
+If you leave this option and `defaultRWConcern.writeConcern.w` unset, the Operator does not change the current value—except for replica sets with an [Arbiter](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html#default-read-and-write-concern-for-replica-sets-with-an-arbiter). For those, it defaults to `majority`. Without that, MongoDB can fall back to write concern `w: 1` after you add an Arbiter, which risks silent rollback of acknowledged writes on failover.
+
+The Operator sets the default read/write concern for every sharded cluster (through `mongos`). For individual replica sets, it sets them when an Arbiter is enabled or when you configure this section explicitly.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `majority` |
+
+### `defaultRWConcern.writeConcern.w`
+
+The `w` field of the default [write concern](https://www.mongodb.com/docs/manual/reference/write-concern/) that the Operator sets cluster-wide. Accepts `majority`, a whole number of nodes, or a custom [`getLastErrorModes`](https://www.mongodb.com/docs/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.settings.getLastErrorModes) tag name. Defaults to `majority`.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `majority` |
+
+### `defaultRWConcern.writeConcern.wtimeout`
+
+The `wtimeout` field (in milliseconds) of the default write concern: how long to wait for the write concern to be satisfied before the write is considered failed.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5000`  |
+
+## Unsafe flags section
+
+The `unsafeFlags` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to prevent users from configuring a cluster with unsafe parameters.
+
+*Once you enable permissive mode with unsafe settings, you cannot disable it by simply turning the same settings back (e.g. by setting a configuration option to `false`). These settings will be ignored if you try to revert them. Reverting the cluster to a secure state may require additional steps or reinitialization.*
+
+### `unsafeFlags.tls`
+
+Prevents users from configuring a cluster without TLS/SSL certificates (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `unsafeFlags.replsetSize`
+
+Prevents users from configuring a cluster with unsafe parameters: starting it with less than 3 replica set instances or with an [even number of replica set instances without additional arbiter](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html) (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `unsafeFlags.mongosSize`
+
+Prevents users from configuring a sharded cluster with less than 3 config server Pods or less than 2 mongos Pods (if `false`, the Operator will automatically change unsafe parameters to safe defaults).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `unsafeFlags.terminationGracePeriod`
+
+Prevents users from configuring a sharded cluster without termination grace period for [replica set](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#replsetsterminationgraceperiodseconds), [config servers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingconfigsvrreplsetterminationgraceperiodseconds) and [mongos](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#shardingmongosterminationgraceperiodseconds) Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `unsafeFlags.backupIfUnhealthy`
+
+Prevents running backup on a cluster with [failed health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### TLS (extended cert-manager configuration section)
+
+The `tls` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options for additional customization of the [Transport Layer Security](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html).
+
+The [`tls.issuerConf`](#tlsissuerconfname) options below control which cert-manager issuer signs MongoDB TLS certificates. See [Configure TLS using cert-manager](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-manager.html) for setup examples.
+
+### `tls.mode`
+
+Controls if the [TLS encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) should be used and/or enforced. Can be `disabled`, `allowTLS`, `preferTLS`, or `requireTLS`. If set to `disabled`, it also requires setting `unsafeFlags.tls option to`true\`.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `preferTLS` |
+
+### `tls.certValidityDuration`
+
+The validity duration of the external certificate for cert manager (90 days by default). This value is used only at cluster creation time and can’t be changed for existing clusters.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2160h` |
+
+### `tls.allowInvalidCertificates`
+
+If `true`, the mongo shell will not attempt to validate the server certificates. **Should be `true` (the default) to use self-signed certificates generated by the Operator when there is no cert-manager.** Set to `false` when using cert-manager with a trusted organizational CA (for example, an existing `ClusterIssuer`).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `tls.certManagementPolicy`
+
+Controls how the Operator manages TLS certificates when it loses access to the Secret that stores them. Supported values are:
+
+- `auto` (default) — Keeps the existing behavior. If TLS Secrets are missing, the Operator creates new certificates automatically.
+- `userProvidedOnly` — The Operator does not create or replace TLS certificates if a TLS Secret is temporarily unavailable. Certificate lifecycle stays entirely under user control. The Operator reports the `TLSSecretsReady` cluster condition and logs an error. Restore the Secrets to return the cluster to a healthy state.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `auto`  |
+
+### `tls.issuerConf.name`
+
+The name of the cert-manager [Issuer](https://cert-manager.io/docs/concepts/issuer/) resource that signs MongoDB TLS certificates.
+
+When set, the Operator creates `Certificate` resources that reference this issuer and does not create its own CA chain. Use this to integrate with an existing organizational PKI. See [Use an existing ClusterIssuer](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-manager.html#use-an-existing-clusterissuer) for setup steps.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `my-org-issuer` |
+
+### `tls.issuerConf.kind`
+
+The cert-manager [issuer type](https://cert-manager.io/docs/configuration/) referenced by MongoDB `Certificate` resources.
+
+Supported values:
+
+- `Issuer` (default) — namespace-scoped issuer in the database namespace.
+- `ClusterIssuer` — cluster-scoped issuer. Available starting with Operator 1.23.0. Use this when your platform team manages a cluster-wide issuer (for example, Smallstep or ACME). Read more in [Use an existing ClusterIssuer](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-manager.html#use-an-existing-clusterissuer)
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `ClusterIssuer` |
+
+### `tls.issuerConf.group`
+
+The cert-manager API group for the issuer referenced in `issuerConf`. Use the `cert-manager.io` for built-in cert-manager certificate issuers
+
+| Value type | Example           |
+| ---------- | ----------------- |
+| string     | `cert-manager.io` |
+
+## Upgrade Options Section
+
+The `upgradeOptions` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options to control Percona Server for MongoDB upgrades.
+
+### `upgradeOptions.versionServiceEndpoint`
+
+The Version Service URL used to check versions compatibility for upgrade.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| string     | `https://check.percona.com` |
+
+### `upgradeOptions.apply`
+
+Specifies how [updates are processed](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-db.html) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `disabled` |
+
+### `upgradeOptions.schedule`
+
+Scheduled time to check for updates, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) .
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `0 2 \* \* \*` |
+
+### `upgradeOptions.setFCV`
+
+If enabled, [FeatureCompatibilityVersion (FCV)](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/) will be set to match the version during major version upgrade.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+## Secrets section
+
+Each spec in its turn may contain some key-value pairs. The secrets one has only two of them:
+
+### `secrets.keyFile`
+
+The secret name for the [MongoDB Internal Auth Key file](https://docs.mongodb.com/manual/core/security-internal-authentication/) . This secret is auto-created by the operator if it doesn’t exist.
+
+| Value type | Example                           |
+| ---------- | --------------------------------- |
+| string     | `my-cluster-name-mongodb-keyfile` |
+
+### `secrets.users`
+
+The name of the Secrets object for the MongoDB users required to run the operator.
+
+| Value type | Example                   |
+| ---------- | ------------------------- |
+| string     | `my-cluster-name-secrets` |
+
+### `secrets.sse`
+
+The name of the Secrets object for [server side encryption credentials](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-encryption.html)
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `my-cluster-name-sse` |
+
+### `secrets.ssl`
+
+A secret with TLS certificate generated for *external* communications. When generated by the Operator, the name defaults to `<cluster-name>-ssl`. See [Transport Layer Security (TLS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for details.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `my-custom-ssl` |
+
+### `secrets.sslInternal`
+
+A secret with TLS certificate generated for *internal* communications. When generated by the Operator, the name defaults to `<cluster-name>-ssl-internal`. See [Transport Layer Security (TLS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for details.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `my-custom-ssl-internal` |
+
+### `secrets.sslPBM`
+
+A Secret with the client TLS certificate that the Operator and the backup agents present when they connect to the database. The Secret holds the `tls.crt` and `tls.key` keys. The name defaults to `<cluster-name>-pbm`. The Operator creates this certificate when TLS and backups are enabled and `crVersion` is 1.24.0 or later, unless you provide your own external certificate in `secrets.ssl`. With cert-manager, the `Certificate` is always named `<cluster-name>-pbm`. This option sets only the Secret name. Available starting with version 1.24.0. See [Transport Layer Security (TLS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for how the certificates work together.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `my-cluster-name-pbm` |
+
+### `secrets.encryptionKey`
+
+Specifies a secret object with the [encryption key](https://docs.mongodb.com/manual/tutorial/configure-encryption/#local-key-management) .
+
+| Value type | Example                                  |
+| ---------- | ---------------------------------------- |
+| string     | `my-cluster-name-mongodb-encryption-key` |
+
+### `secrets.vault`
+
+Specifies a secret object [to provide integration with HashiCorp Vault](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/encryption.html#use-hashicorp-vault-to-store-and-manage-encryption-keys).
+
+| Value type | Example                 |
+| ---------- | ----------------------- |
+| string     | `my-cluster-name-vault` |
+
+### `secrets.ldapSecret`
+
+Specifies a secret object for [LDAP over TLS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/ldap.html#using-ldap-over-tls-connection) connection between MongoDB and OpenLDAP server.
+
+| Value type | Example          |
+| ---------- | ---------------- |
+| string     | `my-ldap-secret` |
+
+## Vault section
+
+The Vault section defines how the Operator connects to HashiCorp Vault to sync system user credentials. Read more about this feature in [Manage system users with Vault](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/system-users-vault.html)
+
+### `vault.endpointURL`
+
+The Vault server address.
+
+| Value type | Example                      |
+| ---------- | ---------------------------- |
+| string     | `https://vault-service:8200` |
+
+### `vault.tlsSecret`
+
+The Kubernetes Secret with Vault TLS certificates. If set, the Operator uses these certificates for TLS connections to Vault.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `my-tls-vault-secret` |
+
+### `vault.reinitInterval`
+
+How often the Operator creates a new Vault client and authenticates again. The default is 30 minutes. If you change Vault configuration in `spec.vault` or update the Secret named by `vault.syncUsers.tokenSecret`, the Operator creates a new client on the next reconciliation. See [Control how often the Operator contacts Vault](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/system-users-vault.html#control-how-often-the-operator-contacts-vault).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `30m`   |
+
+### `vault.requestInterval`
+
+How often the Operator reads system user credentials from Vault. If this value is unset, the Operator reads Vault on every reconciliation. When this value is set, the time of the last read is stored in [`status.vaultLastRequestedAt`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#perconaservermongodb-status).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `1m`    |
+
+### `vault.syncUsers.role`
+
+The Vault Kubernetes auth role name.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `operator` |
+
+### `vault.syncUsers.mountPath`
+
+The root path where a specific secrets engine is enabled inside Vault.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `secret` |
+
+### `vault.syncUsers.keyPath`
+
+The Vault path where system user credentials are stored.
+
+| Value type | Example                                            |
+| ---------- | -------------------------------------------------- |
+| string     | `psmdb/operator/{namespace}/my-cluster-name/users` |
+
+### `vault.syncUsers.tokenSecret`
+
+The Kubernetes Secret that contains a Vault token for token-based authentication. If this value is set, the Operator uses the provided token to authenticate with Vault. If this value is not set and authentication with Kubernetes service account is also enabled, the Operator will use its service account with Vault Kubernetes authentication. If you change the data in this Secret, the Operator creates a new Vault client on the next reconciliation. It does not wait for `vault.reinitInterval`.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `vault-token-operator` |
+
+## Replsets Section
+
+The replsets section controls the MongoDB Replica Set.
+
+### `replsets.name`
+
+The name of the [MongoDB Replica Set](https://docs.mongodb.com/manual/replication/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `rs 0`  |
+
+### `replsets.size`
+
+The size of the MongoDB Replica Set, must be >= 3 for [High-Availability](https://docs.mongodb.com/manual/replication/#redundancy-and-data-availability) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `replsets.terminationGracePeriodSeconds`
+
+The amount of seconds Kubernetes will wait for a clean replica set Pods termination.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `replsets.serviceAccountName`
+
+Name of the separate privileged service account for Replica Set Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `default` |
+
+### `replsets.topologySpreadConstraints.labelSelector.matchLabels`
+
+The label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                                          |
+| ---------- | ------------------------------------------------ |
+| label      | `app.kubernetes.io/name: percona-server-mongodb` |
+
+### `replsets.topologySpreadConstraints.maxSkew`
+
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.topologySpreadConstraints.topologyKey`
+
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.topologySpreadConstraints.whenUnsatisfiable`
+
+What to do with a Pod if it doesn’t satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `DoNotSchedule` |
+
+### `replsets.replsetOverrides.MEMBER-NAME.host`
+
+Use if you need to [override the replica set members FQDNs with custom host names](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#override-hostnames-with-external-domain-names) (for example, external domain names). Each key (`MEMBER-NAME`) under `replsetOverrides` should be name of a Pod. The Operator won’t perform any validation for hostnames, so it’s the user’s responsibility to ensure connectivity.
+
+| Value type | Example                                   |
+| ---------- | ----------------------------------------- |
+| string     | `my-cluster-name-rs0-0.example.net:27017` |
+
+### `replsets.replsetOverrides.MEMBER-NAME.priority`
+
+Use if you need to override the [replica set members priorities](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `replsets.replsetOverrides.MEMBER-NAME.tags`
+
+Optional custom tags which can be added to the replset members to make their identification easier.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| label      | `key: value-0` |
+
+### `replsets.externalNodes.host`
+
+The URL or IP address of the [external replica set instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `34.124.76.90` |
+
+### `replsets.externalNodes.port`
+
+The port number of the [external replset instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `27017` |
+
+### `replsets.externalNodes.votes`
+
+The number of [votes](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external replset instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0`     |
+
+### `replsets.externalNodes.priority`
+
+The [priority](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external replset instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0`     |
+
+### `replsets.externalNodes.arbiterOnly`
+
+Defines whether this [external replset instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-multi-dc.html) acts as an [arbiter](https://www.mongodb.com/docs/manual/core/replica-set-arbiter/) and makes an odd number of voting members in the multi-cluster setup. Available with the Operator version 1.23.0+.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `replsets.configuration`
+
+Custom configuration options for mongod. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options, and [specific](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/rate-limit.html) [Percona](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/inmemory.html) [Server](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/data_at_rest_encryption.html) [for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/log-redaction.html) [docs](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/audit-logging.html) .
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | \`\`\`  |
+
+### `replsets.env.name`
+
+The name of a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `MY_ENV` |
+
+### `replsets.env.value`
+
+The vallue for a custom environment variable for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `MY_VALUE` |
+
+### `replsets.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+|            | `my-configmap` |
+
+### `replsets.envFrom.secretRef.name`
+
+The name of a Sexcret object from where environment variables will be loaded for mongod containers in this replica set (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example         |
+| ---------- | --------------- |
+|            | `custom-secret` |
+
+### `replsets.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Replica Set nodes.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.affinity.advanced`
+
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.tolerations.key`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Replica Set nodes.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.tolerations.operator`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Replica Set nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `replsets.tolerations.effect`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Replica Set nodes.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `replsets.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the Replica Set nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `replsets.primaryPreferTagSelector.region`
+
+Ensures the MongoDB instance is selected as Primary based on specified region
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `us-west-2` |
+
+### `replsets.primaryPreferTagSelector.zone`
+
+Ensures the MongoDB instance is selected as Primary based on specified zone
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `us-west-2c` |
+
+### `replsets.priorityClassName`
+
+The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the Replica Set nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high priority` |
+
+### `replsets.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Replica Set nodes.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.labels`
+
+The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Replica Set nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `rack: rack-22` |
+
+### `replsets.nodeSelector`
+
+The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Replica Set nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `replsets.storage.engine`
+
+Sets the storage.engine option <https://docs.mongodb.com/manual/reference/configuration-options/#storage.engine>\`\_ for the Replica Set nodes.
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `wiredTiger` |
+
+### `replsets.storage.wiredTiger.engineConfig.cacheSizeRatio`
+
+The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.cacheSizeGB) for the Replica Set nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| float      | `0.5`   |
+
+### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
+
+Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `replsets.storage.wiredTiger.engineConfig.journalCompressor`
+
+Sets the [storage.wiredTiger.engineConfig.journalCompressor option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.journalCompressor) for the Replica Set nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `snappy` |
+
+### `replsets.storage.wiredTiger.collectionConfig.blockCompressor`
+
+Sets the [storage.wiredTiger.collectionConfig.blockCompressor option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.collectionConfig.blockCompressor) for the Replica Set nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `snappy` |
+
+### `replsets.storage.wiredTiger.indexConfig.prefixCompression`
+
+Sets the [storage.wiredTiger.indexConfig.prefixCompression option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.indexConfig.prefixCompression) for the Replica Set nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `replsets.storage.inMemory.engineConfig.inMemorySizeRatio`
+
+The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.inMemory.engineConfig.inMemorySizeGB) for the Replica Set nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| float      | `0.9`   |
+
+### `replsets.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `4`     |
+
+### `replsets.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `replsets.livenessProbe.periodSeconds`
+
+How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `replsets.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `replsets.livenessProbe.startupDelaySeconds`
+
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `7200`  |
+
+### `replsets.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `8`     |
+
+### `replsets.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `replsets.readinessProbe.periodSeconds`
+
+How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `replsets.readinessProbe.successThreshold`
+
+Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.readinessProbe.timeoutSeconds`
+
+Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+### `replsets.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| subdoc     | `privileged: false` |
+
+### `replsets.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example                                                       |
+| ---------- | ------------------------------------------------------------- |
+| subdoc     | `runAsUser: 1001 runAsGroup: 1001 supplementalGroups: [1001]` |
+
+### `replsets.runtimeClassName`
+
+Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Replica Set Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `image-rc` |
+
+### `replsets.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the replica set Pods before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `replsets.hookScript.script`
+
+The inline hook script that you can apply to the replica set Pods before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `replsets.sidecars.image`
+
+Image for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Replica Set Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `busybox` |
+
+### `replsets.sidecars.command`
+
+Command for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Replica Set Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| array      | `["/bin/sh"]` |
+
+### `replsets.sidecars.args`
+
+Command arguments for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Replica Set Pods.
+
+| Value type | Example                                                                           |
+| ---------- | --------------------------------------------------------------------------------- |
+| array      | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+
+### `replsets.sidecars.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Replica Set Pods.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `rs-sidecar-1` |
+
+### `replsets.sidecars.volumeMounts.mountPath`
+
+Mount path of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `/volume1` |
+
+### `replsets.sidecars.volumeMounts.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `sidecar-volume-claim` |
+
+### `replsets.sidecarVolumes.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example          |
+| ---------- | ---------------- |
+| string     | `sidecar-config` |
+
+### `replsets.sidecarVolumes.configMap.name`
+
+Name of the [ConfigMap](https://kubernetes.io/docs/concepts/storage/volumes/#configmap) for a [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `myconfigmap` |
+
+### `replsets.sidecarVolumes.secret.secretName`
+
+Name of the [Secret](https://kubernetes.io/docs/concepts/storage/volumes/#secret) for a [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example          |
+| ---------- | ---------------- |
+| string     | `sidecar-secret` |
+
+### `replsets.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example                                 |
+| ---------- | --------------------------------------- |
+| string     | `nfs-service.storage.svc.cluster.local` |
+
+### `replsets.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `/psmdb-some-name-rs0` |
+
+### `replsets.sidecarPVCs`
+
+[Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Replica Set Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.podDisruptionBudget.maxUnavailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.podDisruptionBudget.minAvailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
+
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `rs0-0.mycluster.xyz` |
+
+### `replsets.splitHorizons.REPLICASET-POD-NAME.external-2`
+
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `rs0-0.mycluster2.xyz` |
+
+### `replsets.expose.enabled`
+
+Enable or disable exposing [MongoDB Replica Set](https://docs.mongodb.com/manual/replication/) nodes with dedicated IP addresses.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `replsets.expose.type`
+
+The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `ClusterIP` |
+
+### `replsets.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type | Example                 |
+| ---------- | ----------------------- |
+| string     | `eks.amazonaws.com/nlb` |
+
+### `replsets.expose.loadBalancerSourceRanges`
+
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `10.0.0.0/8` |
+
+### `replsets.expose.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongod daemon.
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.expose.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB Replica Set Service.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `replsets.expose.internalTrafficPolicy`
+
+Specifies whether Service for MongoDB instances should [route internal traffic to cluster-wide or to node-local endpoints](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `Local` |
+
+### `replsets.expose.externalTrafficPolicy`
+
+Specifies whether Service for MongoDB instances [should route external traffic](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#connecting-from-outside-kubernetes).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `Local` |
+
+Service protocol configuration
+
+Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for replica sets. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `replsets.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service using the External DNS controller. The hostnames are generated in the form `{prefix}-{replsetName}-{podIndex}.{domain}`.
+
+Note
+
+The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#how-the-operator-manages-external-dns-annotations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `my-cluster` |
+
+### `replsets.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS Controller. Must be a valid domain name.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `mongo.example.com` |
+
+### `replsets.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `replsets.nonvoting.enabled`
+
+Enable or disable creation of [Replica Set non-voting instances](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html#non-voting-nodes) within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `replsets.nonvoting.size`
+
+The number of [Replica Set non-voting instances](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html#non-voting-nodes) within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.nonvoting.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `replsets.nonvoting.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `replsets.nonvoting.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the non-voting nodes.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.nonvoting.affinity.advanced`
+
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.nonvoting.tolerations.key`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the non-voting nodes.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.nonvoting.tolerations.operator`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the non-voting nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `replsets.nonvoting.tolerations.effect`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the non-voting nodes.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `replsets.nonvoting.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the non-voting nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `replsets.nonvoting.priorityClassName`
+
+The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the non-voting nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high priority` |
+
+### `replsets.nonvoting.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `replsets.nonvoting.hookScript.script`
+
+The inline hook script that you can apply to the non-voting replica set members before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `replsets.nonvoting.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the non-voting nodes.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.nonvoting.labels`
+
+The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the non-voting nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `rack: rack-22` |
+
+### `replsets.nonvoting.nodeSelector`
+
+The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the non-voting nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `replsets.nonvoting.podDisruptionBudget.maxUnavailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among non-voting nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.nonvoting.podDisruptionBudget.minAvailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among non-voting nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.nonvoting.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `replsets.nonvoting.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `replsets.nonvoting.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `replsets.nonvoting.resources.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `replsets.nonvoting.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) , i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `{}`    |
+
+### `replsets.nonvoting.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) , i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `/data` |
+
+### `replsets.nonvoting.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) .
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `Directory` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the non-voting nodes. Use Storage Class with XFS as the default filesystem if possible, \[for better MongoDB performance \](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `standard` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/volume-attributes-class.html) to learn more.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `silver` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the non-voting nodes.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| array      | `[ "ReadWriteOnce" ]` |
+
+### `replsets.nonvoting.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the non-voting nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `3Gi`   |
+
+### `replsets.hidden.enabled`
+
+Enable or disable creation of [Replica Set hidden instances](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html#hidden-nodes) within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `replsets.hidden.size`
+
+The number of [Replica Set hidden instances](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/arbiter.html#hidden-nodes) within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.hidden.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `replsets.hidden.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `replsets.hidden.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the hidden nodes.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.hidden.affinity.advanced`
+
+In cases where the pods require complex tuning, the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.hidden.tolerations.key`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the hidden nodes.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.hidden.tolerations.operator`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the hidden nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `replsets.hidden.tolerations.effect`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the hidden nodes.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `replsets.hidden.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the hidden nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `replsets.hidden.priorityClassName`
+
+The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the hidden nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high priority` |
+
+### `replsets.hidden.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `replsets.hidden. hookScript.script`
+
+The inline hook script that you can apply to the hidden replica set members before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `replsets.hidden.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the hidden nodes.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.hidden.labels`
+
+The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the hidden nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `rack: rack-22` |
+
+### `replsets.hidden.nodeSelector`
+
+The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the hidden nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `replsets.hidden.podDisruptionBudget.maxUnavailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the maximum value for unavailable Pods among hidden nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.hidden.podDisruptionBudget.minAvailable`
+
+The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) limit specifying the minimum value for available Pods among hidden nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.hidden.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `replsets.hidden.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `replsets.hidden.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) , i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `{}`    |
+
+### `replsets.hidden.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) , i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `/data` |
+
+### `replsets.hidden.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) .
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `Directory` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for the hidden nodes. Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) .
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `standard` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/volume-attributes-class.html) to learn more.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `silver` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container for the hidden nodes.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| array      | `[ "ReadWriteOnce" ]` |
+
+### `replsets.hidden.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container for the hidden nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `3Gi`   |
+
+### `replsets.arbiter.enabled`
+
+Enable or disable creation of [Replica Set Arbiter](https://docs.mongodb.com/manual/core/replica-set-arbiter/) nodes within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `replsets.arbiter.size`
+
+The number of [Replica Set Arbiter](https://docs.mongodb.com/manual/core/replica-set-arbiter/) instances within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.arbiter.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for the Arbiter.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.arbiter.affinity.advanced`
+
+In cases where the pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.arbiter.tolerations.key`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for the Arbiter nodes.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.arbiter.tolerations.operator`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for the Arbiter nodes.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `replsets.arbiter.tolerations.effect`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for the Arbiter nodes.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `replsets.arbiter.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for the Arbiter nodes.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `replsets.arbiter.priorityClassName`
+
+The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for the Arbiter nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high priority` |
+
+### `replsets.arbiter.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `replsets.arbiter.hookScript.script`
+
+The inline hook script that you can apply to the arbiter replica set members before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `replsets.arbiter.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Arbiter nodes.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `iam.amazonaws.com/role: role-arn` |
+
+### `replsets.arbiter.labels`
+
+The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for the Arbiter nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `rack: rack-22` |
+
+### `replsets.arbiter.nodeSelector`
+
+The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for the Arbiter nodes.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `replsets.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `replsets.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `replsets.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `replsets.resources.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `replsets.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) , i.e. the directory which will be created on a node, and will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `{}`    |
+
+### `replsets.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) , i.e. the file or directory of a node that will be accessible to the MongoDB Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `/data` |
+
+### `replsets.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) .
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `Directory` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the MongoDB container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) . Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) .
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `standard` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/volume-attributes-class.html) to learn more.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `silver` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the MongoDB container.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| array      | `[ "ReadWriteOnce" ]` |
+
+### `replsets.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the MongoDB container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `3Gi`   |
+
+### `replsets.hostAliases.ip`
+
+The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `"10.10.0.2"` |
+
+### `replsets.hostAliases.hostnames`
+
+Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.search.size`
+
+Per-replica-set override for the number of `mongot` pods for this replica set or shard. Fully replaces [`search.size`](#searchsize) for this replica set. The value must be `1`. Has no effect unless [`search.enabled`](#searchenabled) is `true`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `replsets.search.storage.persistentVolumeClaim.resources.requests.storage`
+
+Per-replica-set override for the `mongot` PVC size. Fully replaces the cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage) value for this replica set or shard.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `20Gi`  |
+
+### `replsets.search.resources.requests.cpu`
+
+Per-replica-set override for `mongot` CPU requests. Fully replaces the cluster-wide [`search.resources`](#searchresourcesrequestscpu) value for this replica set or shard.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `"2"`   |
+
+### `replsets.search.resources.requests.memory`
+
+Per-replica-set override for `mongot` memory requests. Fully replaces the cluster-wide value for this replica set or shard.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2Gi`   |
+
+### `replsets.search.resources.limits.cpu`
+
+Per-replica-set override for `mongot` CPU limits. Fully replaces the cluster-wide value for this replica set or shard.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `"2"`   |
+
+### `replsets.search.resources.limits.memory`
+
+Per-replica-set override for `mongot` memory limits. Fully replaces the cluster-wide value for this replica set or shard.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2Gi`   |
+
+### `replsets.search.jvmFlags`
+
+Per-replica-set override for `mongot` JVM flags. Fully replaces the cluster-wide [`search.jvmFlags`](#searchjvmflags) value for this replica set or shard.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| array      | `["-Xmx1g", "-Xms1g"]` |
+
+### `replsets.search.affinity.antiAffinityTopologyKey`
+
+Per-replica-set override for the `mongot` [topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) . Fully replaces the cluster-wide affinity for this replica set or shard.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `replsets.search.affinity.advanced`
+
+Per-replica-set override that allows advanced Kubernetes affinity constraints for this replica set’s `mongot` Pods. Fully replaces the cluster-wide affinity.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `replsets.search.nodeSelector`
+
+Per-replica-set override for the `mongot` node selector. Fully replaces the cluster-wide value.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `replsets.search.tolerations.key`
+
+Per-replica-set override for `mongot` Pod tolerations. Setting tolerations here replaces the full cluster-wide tolerations list for this replica set or shard.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `replsets.search.tolerations.operator`
+
+The tolerations operator for this replica set’s `mongot` Pods.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `replsets.search.tolerations.effect`
+
+The tolerations effect for this replica set’s `mongot` Pods.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `replsets.search.tolerations.tolerationSeconds`
+
+The toleration seconds for this replica set’s `mongot` Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `replsets.search.annotations`
+
+Per-replica-set override for `mongot` Pod annotations. Fully replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| label      |         |
+
+### `replsets.search.labels`
+
+Per-replica-set override for `mongot` Pod labels. Fully replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| label      |         |
+
+### `replsets.search.containerSecurityContext`
+
+Per-replica-set override for the `mongot` container security context. Fully replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `replsets.search.podSecurityContext`
+
+Per-replica-set override for the `mongot` Pod security context. Fully replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+## PMM Section
+
+The `pmm` section in the deploy/cr.yaml file contains configuration options for Percona Monitoring and Management.
+
+### `pmm.enabled`
+
+Enables or disables monitoring Percona Server for MongoDB with [PMM](https://www.percona.com/doc/percona-monitoring-and-managementindex.metrics-monitor.dashboard.html) .
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `pmm.image`
+
+PMM Client Docker image to use.
+
+| Value type | Example                    |
+| ---------- | -------------------------- |
+| string     | `percona/pmm-client:3.9.1` |
+
+### `pmm.serverHost`
+
+Address of the PMM Server to collect data from the Cluster.
+
+| Value type | Example              |
+| ---------- | -------------------- |
+| string     | `monitoring-service` |
+
+### `pmm.authenticationMechanism`
+
+The authentication mechanism to use when establishing a connection to MongoDB for monitoring with PMM. Supported values are `SCRAM-SHA-256` and `SCRAM-SHA-1`. Available starting with Operator version 1.23.0.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `SCRAM-SHA-256` |
+
+### `pmm.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### pmm.customClusterName
+
+A custom name to define for a cluster. PMM Server uses this name to properly parse the metrics and display them on dashboards. Using a custom name is useful for clusters deployed in different data centers - PMM Server connects them and monitors them as one deployment. Another use case is for clusters deployed with the same name in different namespaces - PMM treats each cluster separately.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `mongo-cluster` |
+
+### `pmm.querySource`
+
+Defines the source for Query Analytics (QAN) data collection. The Operator passes this value to PMM Client as the `--query-source` flag when adding the MongoDB service. Available starting with Operator version 1.23.0.
+
+Supported values:
+
+- `profiler` — collect queries via the MongoDB profiler (default). Requires profiling to be enabled in PMM and in MongoDB. See [Configure the profiler query source](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/monitoring.html#configure-the-profiler-query-source).
+- `mongolog` — collect queries from mongod log files. Requires [log collector](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html) to be enabled so that logs are written to `/data/db/logs/`. See [Configure the mongolog query source](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/monitoring.html#configure-the-mongolog-query-source).
+
+If omitted, the Operator does not pass the `--query-source` flag and PMM uses the profiler method.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `mongolog` |
+
+### `pmm.mongodParams`
+
+Additional parameters which will be passed to the [pmm-admin add mongodb](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html) command for `mongod` Pods.
+
+| Value type | Example                                         |
+| ---------- | ----------------------------------------------- |
+| string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+
+### `pmm.mongosParams`
+
+Additional parameters which will be passed to the [pmm-admin add mongodb](https://docs.percona.com/percona-monitoring-and-management/3/use/commands/pmm-admin.html) command for `mongos` Pods.
+
+| Value type | Example                                         |
+| ---------- | ----------------------------------------------- |
+| string     | `--environment=DEV-ENV --custom-labels=DEV-ENV` |
+
+### `pmm.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `pmm.resources.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `150M`  |
+
+### `pmm.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `400m`  |
+
+### `pmm.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for PMM Client container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `256M`  |
+
+### `pmm.livenessProbe.httpGet`
+
+A custom [Kubernetes liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `pmm-client` sidecar container. When not set, the Operator uses its built-in HTTP GET call on its status page on port 7777 (`:7777/local/Status`). Available starting with Operator version 1.23.0.
+
+| Value type | Example                             |
+| ---------- | ----------------------------------- |
+| subdoc     | ` path: /local/Status   port: 7777` |
+
+### `pmm.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `pmm.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the liveness probe times out
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `pmm.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `pmm.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the liveness probe to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `pmm.readinessProbe`
+
+A custom [Kubernetes readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `pmm-client` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| subdoc     | `tcpSocket: { port: 7777 }` |
+
+### `pmm.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `pmm.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `pmm.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the readiness probe to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+## Search section
+
+The `search` section in the `deploy/cr.yaml` file contains configuration options for [Search](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html) process called `mongot`.
+
+### `search.enabled`
+
+Enables or disables vector search for the cluster. Default: `false`.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `search.image`
+
+`mongot` Docker image to use. **Required** when `search.enabled` is `true`. The same image applies to every `mongot` pod in the cluster.
+
+| Value type | Example                                   |
+| ---------- | ----------------------------------------- |
+| string     | `percona/percona-search-mongodb:1.70.1-1` |
+
+### `search.imagePullPolicy`
+
+The image pull policy for the `mongot` image. Applies to every `mongot` pod in the cluster.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Always` |
+
+### `search.configuration`
+
+Raw `mongot` YAML merged on top of the Operator-generated `mongot.conf`. Only the fields you set are overridden; other generated defaults are preserved. Applies to every `mongot` pod in the cluster.
+
+| Value type | Example                                                     |
+| ---------- | ----------------------------------------------------------- |
+| subdoc     | ` server:       grpc:        tls:           mode: Disabled` |
+
+### `search.size`
+
+Number of `mongot` pods per replica set or shard. Default: `1`. Per-replica-set overrides are accepted for forward compatibility, but every effective value must equal `1`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `search.storage.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `10Gi`  |
+
+### `search.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for the `mongot` container. Per-replica-set override is allowed.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `"2"`   |
+
+### `search.resources.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for the `mongot` container. Per-replica-set override is allowed. Default is 2Gi.
+
+If you do not set `-Xmx` / `-Xms` in [`search.jvmFlags`](#searchjvmflags), the Operator sets the JVM heap to 50% of the effective memory request or limit.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2Gi`   |
+
+### `search.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for the `mongot` container. Per-replica-set override is allowed. Default is 2 CPU.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `"2"`   |
+
+### `search.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for the `mongot` container. Per-replica-set override is allowed.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `2Gi`   |
+
+### `search.jvmFlags`
+
+Extra JVM flags for `mongot`. If you do not set `-Xmx` or `-Xms`, the Operator sets both to half of the effective `resources` memory. Per-replica-set override is allowed.
+
+| Value type | Example                                      |
+| ---------- | -------------------------------------------- |
+| array      | `“-XX:+UseG1GC”  “-XX:MaxGCPauseMillis=200”` |
+
+### `search.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for `mongot` Pods. Per-replica-set override replaces the cluster-wide value.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `search.affinity.advanced`
+
+In cases where the pods require complex tuning, the advanced option turns off the topologyKey effect. This setting allows using the standard Kubernetes affinity constraints of any complexity.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `search.annotations`
+
+[Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) for `mongot` Pods. Per-replica-set override replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| label      |         |
+
+### `search.labels`
+
+[Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for `mongot` Pods. Per-replica-set override replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| label      |         |
+
+### `search.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for `mongot`. If omitted, the Operator sets a default non-root context (`runAsUser` / `runAsGroup` `1001` on Kubernetes). Per-replica-set override replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `search.podSecurityContext`
+
+A custom [Kubernetes Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) for `mongot` Pod. If omitted, the Operator sets a default context (`runAsUser` / `runAsGroup` / `fsGroup` `1001` on Kubernetes). Per-replica-set override replaces the cluster-wide value.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     | `{}`    |
+
+### `search.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) before giving up. Applies to every `mongot` pod. When no probe handler is set, the Operator keeps the default HTTP GET against `/health` on port `8080`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `4`     |
+
+### `search.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `search.livenessProbe.periodSeconds`
+
+How often to perform a liveness probe (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `search.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the liveness probe times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `search.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) before marking the container not ready.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `search.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `search.readinessProbe.periodSeconds`
+
+How often to perform a readiness probe (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `search.readinessProbe.timeoutSeconds`
+
+Number of seconds after which the readiness probe times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+## Sharding Section
+
+The `sharding` section in the deploy/cr.yaml file contains configuration options for Percona Server for MondoDB [sharding](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html).
+
+### `sharding.enabled`
+
+Enables or disables [Percona Server for MondoDB sharding](https://docs.mongodb.com/manual/sharding/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `sharding.configsvrReplSet.size`
+
+The number of [Config Server instances](https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/) within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.configsvrReplSet.terminationGracePeriodSeconds`
+
+The amount of seconds Kubernetes will wait for a clean config server Pods termination.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `sharding.configsvrReplSet.serviceAccountName`
+
+Name of the separate privileged service account for Config Server Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `default` |
+
+### `sharding.configsvrReplSet.topologySpreadConstraints.labelSelector.matchLabels`
+
+The label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                                          |
+| ---------- | ------------------------------------------------ |
+| label      | `app.kubernetes.io/name: percona-server-mongodb` |
+
+### `sharding.configsvrReplSet.topologySpreadConstraints.maxSkew`
+
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `sharding.configsvrReplSet.topologySpreadConstraints.topologyKey`
+
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `sharding.configsvrReplSet.topologySpreadConstraints.whenUnsatisfiable`
+
+What to do with a Pod if it doesn’t satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `DoNotSchedule` |
+
+### `sharding.configsvrReplSet.externalNodes.host`
+
+The URL or IP address of the [external config server instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `34.124.76.90` |
+
+### `sharding.configsvrReplSet.externalNodes.port`
+
+The port number of the [external config server instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `27017` |
+
+### `sharding.configsvrReplSet.externalNodes.votes`
+
+The number of [votes](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.votes) of the [external config server instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0`     |
+
+### `sharding.configsvrReplSet.externalNodes.priority`
+
+The [priority](https://docs.mongodb.com/manual/reference/replica-configuration/#mongodb-rsconf-rsconf.members-n-.priority) of the [external config server instance](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/replication-main.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0`     |
+
+### `sharding.configsvrReplSet.configuration`
+
+Custom configuration options for Config Servers. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | \`\`\`  |
+
+### `sharding.configsvrReplSet.env.name`
+
+The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `MY_ENV` |
+
+### `sharding.configsvrReplSet.env.value`
+
+The value of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `MY_VALUE` |
+
+### `sharding.configsvrReplSet.envFrom.ConfigMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+|            | `my-configmap` |
+
+### `sharding.configsvrReplSet.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example     |
+| ---------- | ----------- |
+|            | `my-secret` |
+
+### `sharding.configsvrReplSet.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `4`     |
+
+### `sharding.configsvrReplSet.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `sharding.configsvrReplSet.livenessProbe.periodSeconds`
+
+How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `sharding.configsvrReplSet.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `sharding.configsvrReplSet.livenessProbe.startupDelaySeconds`
+
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `7200`  |
+
+### `sharding.configsvrReplSet.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.configsvrReplSet.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `sharding.configsvrReplSet.readinessProbe.periodSeconds`
+
+How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.configsvrReplSet.readinessProbe.successThreshold`
+
+Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `sharding.configsvrReplSet.readinessProbe.timeoutSeconds`
+
+Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+### `sharding.configsvrReplSet.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| subdoc     | `privileged: false` |
+
+### `sharding.configsvrReplSet.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example                                                       |
+| ---------- | ------------------------------------------------------------- |
+| subdoc     | `runAsUser: 1001 runAsGroup: 1001 supplementalGroups: [1001]` |
+
+### `sharding.configsvrReplSet.runtimeClassName`
+
+Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for Config Server Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `image-rc` |
+
+### `sharding.configsvrReplSet.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `sharding.configsvrReplSet.hookScript.script`
+
+The inline hook script that you can apply to the config server replica set Pods before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `sharding.configsvrReplSet.sidecars.image`
+
+Image for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Config Server Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `busybox` |
+
+### `sharding.configsvrReplSet.sidecars.command`
+
+Command for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Config Server Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| array      | `["/bin/sh"]` |
+
+### `sharding.configsvrReplSet.sidecars.args`
+
+Command arguments for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Config Server Pods.
+
+| Value type | Example                                                                           |
+| ---------- | --------------------------------------------------------------------------------- |
+| array      | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+
+### `sharding.configsvrReplSet.sidecars.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for Config Server Pods.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `rs-sidecar-1` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Config Server Pods.
+
+| Value type | Example          |
+| ---------- | ---------------- |
+| string     | `sidecar-config` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.server`
+
+The hostname of the NFS server that will provide remote filesystem to the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Config Server Pods.
+
+| Value type | Example                                 |
+| ---------- | --------------------------------------- |
+| string     | `nfs-service.storage.svc.cluster.local` |
+
+### `sharding.configsvrReplSet.sidecarVolumes.nfs.path`
+
+The path on the NFS server that will be provided as a remote filesystem to the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) volume for Config Server Pods.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `/psmdb-some-name-rs0` |
+
+### `sharding.configsvrReplSet.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `sharding.configsvrReplSet.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `sharding.configsvrReplSet.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `sharding.configsvrReplSet.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `sharding.configsvrReplSet.expose.enabled`
+
+Enable or disable exposing [Config Server](https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/) nodes with dedicated IP addresses.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `sharding.configsvrReplSet.expose.type`
+
+The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `ClusterIP` |
+
+### `sharding.configsvrReplSet.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type | Example                 |
+| ---------- | ----------------------- |
+| string     | `eks.amazonaws.com/nlb` |
+
+### `sharding.configsvrReplSet.expose.loadBalancerSourceRanges`
+
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `10.0.0.0/8` |
+
+### `sharding.configsvrReplSet.expose.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the Config Server daemon.
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `sharding.configsvrReplSet.expose.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Config Server Service.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `sharding.configsvrReplSet.expose.internalTrafficPolicy`
+
+Specifies whether Service for config servers should [route internal traffic to cluster-wide or to node-local endpoints](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `Local` |
+
+### `sharding.configsvrReplSet.expose.externalTrafficPolicy`
+
+Specifies whether Service for config servers [should route external traffic](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#connecting-from-outside-kubernetes).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `Local` |
+
+Service protocol configuration
+
+Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for config servers. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.configsvrReplSet.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the config servers using the External DNS controller. The hostnames are generated in the form `{prefix}-cfgsvr-{podIndex}.{domain}`.
+
+Note
+
+The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#how-the-operator-manages-external-dns-annotations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `my-cluster` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for config servers. Must be a valid domain name.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `mongo.example.com` |
+
+### `sharding.configsvrReplSet.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `sharding.configsvrReplSet.volumeSpec.emptyDir`
+
+The [Kubernetes emptyDir volume](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) , i.e. the directory which will be created on a node, and will be accessible to the Config Server Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `{}`    |
+
+### `sharding.configsvrReplSet.volumeSpec.hostPath.path`
+
+[Kubernetes hostPath volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) , i.e. the file or directory of a node that will be accessible to the Config Server Pod containers.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `/data` |
+
+### `sharding.configsvrReplSet.volumeSpec.hostPath.type`
+
+The [Kubernetes hostPath volume type](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) .
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `Directory` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use with the Config Server container [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) . Use Storage Class with XFS as the default filesystem if possible, [for better MongoDB performance](https://dba.stackexchange.com/questions/190578/is-xfs-still-the-best-choice-for-mongodb) .
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `standard` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs bound to MongoDB Pods. See [How to configure VolumeAttributesClass for Persistent Volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/volume-attributes-class.html) to learn more.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `silver` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the Config Server container.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| array      | `[ "ReadWriteOnce" ]` |
+
+### `sharding.configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the Config Server container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `3Gi`   |
+
+### `sharding.configsvrReplSet.hostAliases.ip`
+
+The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for replica set Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `"10.10.0.2"` |
+
+### `sharding.configsvrReplSet.hostAliases.hostnames`
+
+Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for config server Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external`
+
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| string     | `cfg-0.mycluster.xyz` |
+
+### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2`
+
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `cfg-0.mycluster2.xyz` |
+
+### `sharding.mongos.size`
+
+The number of [mongos](https://docs.mongodb.com/manual/core/sharded-cluster-query-router/) instances within the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.mongos.terminationGracePeriodSeconds`
+
+The amount of seconds Kubernetes will wait for a clean mongos Pods termination.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `sharding.mongos.serviceAccountName`
+
+Name of the separate privileged service account for mongos Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `default` |
+
+### `sharding.mongos.topologySpreadConstraints.labelSelector.matchLabels`
+
+The label selector for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                                          |
+| ---------- | ------------------------------------------------ |
+| label      | `app.kubernetes.io/name: percona-server-mongodb` |
+
+### `sharding.mongos.topologySpreadConstraints.maxSkew`
+
+The degree to which Pods may be unevenly distributed under the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `sharding.mongos.topologySpreadConstraints.topologyKey`
+
+The key of node labels for the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `sharding.mongos.topologySpreadConstraints.whenUnsatisfiable`
+
+What to do with a Pod if it doesn’t satisfy the [Kubernetes Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) .
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `DoNotSchedule` |
+
+### `sharding.mongos.configuration`
+
+Custom configuration options for mongos. Please refer to the [official manual](https://docs.mongodb.com/manual/reference/configuration-options/) for the full list of options.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | \`\`\`  |
+
+### `sharding.mongos.env.name`
+
+The name of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `MY_ENV` |
+
+### `sharding.mongos.env.value`
+
+The value of a custom environment variable for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `MY_VALUE` |
+
+### `sharding.mongos.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+|            | `my-configmap` |
+
+### `sharding.mongos.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for mongos containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example     |
+| ---------- | ----------- |
+|            | `my-secret` |
+
+### `sharding.mongos.affinity.antiAffinityTopologyKey`
+
+The [Kubernetes topologyKey](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature) node affinity constraint for mongos.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `sharding.mongos.affinity.advanced`
+
+In cases where the Pods require complex tuning the advanced option turns off the `topologykey` effect. This setting allows the standard Kubernetes affinity constraints of any complexity to be used.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `sharding.mongos.tolerations.key`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) key for mongos instances.
+
+| Value type | Example                                |
+| ---------- | -------------------------------------- |
+| string     | `node.alpha.kubernetes.io/unreachable` |
+
+### `sharding.mongos.tolerations.operator`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) operator for mongos instances.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Exists` |
+
+### `sharding.mongos.tolerations.effect`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) effect for mongos instances.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `NoExecute` |
+
+### `sharding.mongos.tolerations.tolerationSeconds`
+
+The [Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts) time limit for mongos instances.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6000`  |
+
+### `sharding.mongos.priorityClassName`
+
+The [Kuberentes Pod priority class](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass) for mongos instances.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high priority` |
+
+### `sharding.mongos.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the mongos instances.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `iam.amazonaws.com/role: role-arn` |
+
+### `sharding.mongos.labels`
+
+The [Kubernetes affinity labels](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) for mongos instances.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `rack: rack-22` |
+
+### `sharding.mongos.nodeSelector`
+
+The [Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) affinity constraint for mongos instances.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `sharding.mongos.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `4`     |
+
+### `sharding.mongos.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `60`    |
+
+### `sharding.mongos.livenessProbe.periodSeconds`
+
+How often to perform a [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `sharding.mongos.livenessProbe.timeoutSeconds`
+
+Number of seconds after which the [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `sharding.mongos.livenessProbe.startupDelaySeconds`
+
+Time after which the liveness probe is failed if the MongoDB instance didn’t finish its full startup yet.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `7200`  |
+
+### `sharding.mongos.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.mongos.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) .
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `sharding.mongos.readinessProbe.periodSeconds`
+
+How often to perform a [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) (in seconds).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `sharding.mongos.readinessProbe.successThreshold`
+
+Minimum consecutive successes for the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) to be considered successful after having failed.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `sharding.mongos.readinessProbe.timeoutSeconds`
+
+Number of seconds after which the [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) times out.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+### `sharding.mongos.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| subdoc     | `privileged: false` |
+
+### `sharding.mongos.podSecurityContext`
+
+A custom [Kubernetes Security Context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example                                                       |
+| ---------- | ------------------------------------------------------------- |
+| subdoc     | `runAsUser: 1001 runAsGroup: 1001 supplementalGroups: [1001]` |
+
+### `sharding.mongos.runtimeClassName`
+
+Name of the [Kubernetes Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for mongos Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `image-rc` |
+
+### `sharding.mongos.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `sharding.mongos.hookScript.script`
+
+The inline hook script that you can apply to the `mongos` Pods before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `sharding.mongos.sidecars.image`
+
+Image for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for mongos Pods.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `busybox` |
+
+### `sharding.mongos.sidecars.command`
+
+Command for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for mongos Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| array      | `["/bin/sh"]` |
+
+### `sharding.mongos.sidecars.args`
+
+Command arguments for the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for mongos Pods.
+
+| Value type | Example                                                                           |
+| ---------- | --------------------------------------------------------------------------------- |
+| array      | `["-c", "while true; do echo echo $(date -u) 'test' >> /dev/null; sleep 5;done"]` |
+
+### `sharding.mongos.sidecars.name`
+
+Name of the [custom sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) for mongos Pods.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `rs-sidecar-1` |
+
+### `sharding.mongos.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `sharding.mongos.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `sharding.mongos.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `sharding.mongos.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `0.5G`  |
+
+### `sharding.mongos.expose.type`
+
+The [IP address type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to be exposed.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `ClusterIP` |
+
+### `sharding.mongos.expose.servicePerPod`
+
+If set to `true`, a separate ClusterIP Service is created for each mongos instance.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `sharding.mongos.expose.loadBalancerClass`
+
+Define the implementation of the load balancer you want to use. This setting enables you to select a custom or specific load balancer class instead of the default one provided by the cloud provider.
+
+| Value type | Example                 |
+| ---------- | ----------------------- |
+| string     | `eks.amazonaws.com/nlb` |
+
+### `sharding.mongos.expose.loadBalancerSourceRanges`
+
+The range of client IP addresses from which the load balancer should be reachable (if not set, there is no limitations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `10.0.0.0/8` |
+
+### `sharding.mongos.expose.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the MongoDB mongos daemon.
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `sharding.mongos.expose.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the MongoDB mongos Service.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `sharding.mongos.expose.nodePort`
+
+The [Node port number](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) to be allocated for the MongoDB mongos Service when the `sharding.mongos.expose.type` is set to the `NodePort`, and `sharding.mongos.expose.servicePerPod` is not turned on.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `32017` |
+
+### `sharding.mongos.internalTrafficPolicy`
+
+Specifies whether Services for the mongos instances should [route internal traffic to cluster-wide or to node-local endpoints](https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/) (it can influence the load balancing effectiveness).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `Local` |
+
+### `sharding.mongos.externalTrafficPolicy`
+
+Specifies whether Service for the mongos instances [should route external traffic](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip) to cluster-wide (`Cluster`) or to node-local (`Local`) endpoints. It [can influence the load balancing effectiveness](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#connecting-from-outside-kubernetes).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `Local` |
+
+Service protocol configuration
+
+Starting from Operator version 1.22.0, the Operator automatically sets `appProtocol: mongo` on Service ports for mongos instances. This is required for service mesh implementations (such as Istio) because MongoDB uses a server-first protocol, which breaks mTLS without explicit protocol specification. The `appProtocol` field is set automatically and cannot be configured manually.
+
+### `sharding.mongos.expose.externalDNS.prefix`
+
+DNS label prefix for automatically generated hostnames for each per-Pod Service for the mongos using the External DNS controller. The hostnames are generated in the form `{prefix}-mongos-{podIndex}.{domain}`.
+
+Note
+
+The Operator owns `external-dns.alpha.kubernetes.io/hostname` and `/ttl` on Services marked with `percona.com/external-dns-managed: "true"`. Customize those values through this section; do not edit the annotations on the Service directly. See [How the Operator manages External DNS annotations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#how-the-operator-manages-external-dns-annotations).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `my-cluster` |
+
+### `sharding.mongos.expose.externalDNS.domain`
+
+Base domain for automatically generated hostnames by the External DNS controller for mongos. Must be a valid domain name.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `mongo.example.com` |
+
+### `sharding.mongos.expose.externalDNS.ttl`
+
+Optional TTL in seconds for the `external-dns.alpha.kubernetes.io/ttl` annotation on each per-Pod Service.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `sharding.mongos.hostAliases.ip`
+
+The IP address for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods.
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `"10.10.0.2"` |
+
+### `sharding.mongos.hostAliases.hostnames`
+
+Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/) for mongos Pods.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `sharding.mongos.logs.persistentVolumeClaim.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs when [persistent logging](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html#for-mongos-pods) is enabled.
+
+| Value type | Example                                                               |
+| ---------- | --------------------------------------------------------------------- |
+| string     | `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.labels`
+
+The [Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) metadata for the [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `rack: rack-22` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.storageClassName`
+
+The [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use for the [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) that stores mongos logs.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `standard` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.volumeAttributesClassName`
+
+The name of the [volumeAttributesClassName](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) used to modify the provisioned PVCs that store mongos logs. See [How to configure VolumeAttributesClass for Persistent Volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/volume-attributes-class.html) to learn more.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `silver` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.accessModes`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) access modes for the PVC that stores mongos logs. Defaults to `ReadWriteOnce` if not set.
+
+| Value type | Example               |
+| ---------- | --------------------- |
+| array      | `[ "ReadWriteOnce" ]` |
+
+### `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage`
+
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage) to change it.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `1Gi`   |
+
+## Roles section
+
+The `roles` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB user roles via the Custom Resource](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/app-users.html#create-users-via-custom-resource).
+
+### `roles.role`
+
+The [custom MongoDB role](https://www.mongodb.com/docs/manual/core/security-user-defined-roles/) name.
+
+| Value type | Example              |
+| ---------- | -------------------- |
+| string     | `myClusterwideAdmin` |
+
+### `roles.db`
+
+Database in which you want to store the user-defined role.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | \`admin |
+
+### `roles.authenticationRestrictions.clientSource`
+
+List of the IP addresses or CIDR blocks *from which* users assigned this role can connect. MongoDB servers reject connection requests from users with this role if the requests come from a client that is not present in this array.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| subdoc     | `127.0.0.1` |
+
+### `roles.authenticationRestrictions.serverAddress`
+
+List of the IP addresses or CIDR blocks *to which* users assigned this role can connect. MongoDB servers reject connection requests from users with this role if the client requests to connect to a server that is not present in this array.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| subdoc     | `127.0.0.1` |
+
+### `roles.privileges.actions`
+
+List of custom role actions that users granted this role can perform: For a list of accepted values, see [Privilege Actions](https://www.mongodb.com/docs/manual/reference/privilege-actions/#database-management-actions)  in the MongoDB Manual.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| subdoc     | `addShard` |
+
+### `roles.privileges.resource.db`
+
+Database for which the custom role actions apply. An empty string (“”) indicates that the privilege actions apply to all databases.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `roles.privileges.resource.collection`
+
+Collection for which the custom role actions apply. An empty string (“”) indicates that the privilege actions apply to all of the database’s collections.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `roles.privileges.resource.cluster`
+
+If true, the custom role actions apply to all databases and collections in the MongoDB deployment. False by default. If set to true, values for `roles.privileges.resource.db` and `roles.privileges.resource.collection` shouldn’t be provided.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `roles.roles`
+
+An array of roles (with names of the role and the database) from which this role inherits privileges, if any.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| subdoc     | `role: read db: admin` |
+
+## Users section
+
+The `users` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options [to configure custom MongoDB users via the Custom Resource](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/app-users.html#create-users-via-custom-resource).
+
+### `users.name`
+
+The username of the MongoDB user.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `my-user` |
+
+### `users.db`
+
+Database that the user authenticates against.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `admin` |
+
+### `users.passwordSecretRef.name`
+
+Name of the secret that contains the user’s password. If `passwordSecretRef` is not present, password will be [generated automatically](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/app-users.html#create-users-manually).
+
+| Value type | Example            |
+| ---------- | ------------------ |
+| string     | `my-user-password` |
+
+### `users.passwordSecretRef.key`
+
+Key in the secret that corresponds to the value of the user’s password (`password` by default).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `password` |
+
+### `users.roles.role.name`
+
+Name of the MongoDB role assigned to the user. As [built-in roles](https://www.mongodb.com/docs/manual/reference/built-in-roles/#built-in-roles), so [custom roles](https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/docs/deploy-configure.md#define-a-custom-database-role) are supported.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `clusterAdmin` |
+
+### `users.roles.role.db`
+
+Database that the MongoDB role applies to.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `admin` |
+
+## Backup Section
+
+The `backup` section in the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains the following configuration options for the regular Percona Server for MongoDB backups.
+
+### `backup.enabled`
+
+Enables or disables making backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.image`
+
+The Percona Server for MongoDB Docker image to use for the backup.
+
+| Value type | Example                                                 |
+| ---------- | ------------------------------------------------------- |
+| string     | `percona/percona-server-mongodb-operator:1.23.1-backup` |
+
+### `backup.startingDeadlineSeconds`
+
+The maximum time in seconds for a backup to start. The Operator compares the timestamp of the backup object against the current time. If the backup is not started within the set time, the Operator automatically marks it as “failed”.
+
+If your cluster is starting or is not in the READY state when you start a backup, such backup will be marked as `failed`.
+
+You can override this setting for a specific backup in the `deploy/backup/backup.yaml` configuration file.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `300`   |
+
+### `backup.hookScript.configMapRef.name`
+
+The name of the ConfigMap that contains a custom hook script that you can apply to the `pbm-agent` container before the main process.
+
+| Value type | Example                |
+| ---------- | ---------------------- |
+| string     | `hookscript-configmap` |
+
+### `backup.hookScript.script`
+
+The inline hook script that you can apply to tthe `pbm-agent` container before the main process.
+
+| Value type | Example                                              |
+| ---------- | ---------------------------------------------------- |
+| string     | `#!/usr/bin/env bash <br> echo "Hookscript started"` |
+
+### `backup.serviceAccountName`
+
+Name of the separate privileged service account for backups; **service account for backups is not used by the Operator any more, and the option is deprecated since the Operator version 1.16.0**.
+
+| Value type | Example                           |
+| ---------- | --------------------------------- |
+| string     | `percona-server-mongodb-operator` |
+
+### `backup.annotations`
+
+The [Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) metadata for the backup job.
+
+| Value type | Example                            |
+| ---------- | ---------------------------------- |
+| string     | `sidecar.istio.io/inject: "false"` |
+
+### `backup.resources.limits.cpu`
+
+[Kubernetes CPU limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `backup.resources.limits.memory`
+
+[Kubernetes Memory limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `1.2G`  |
+
+### `backup.resources.requests.cpu`
+
+The [Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `300m`  |
+
+### `backup.resources.requests.memory`
+
+The [Kubernetes Memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `1G`    |
+
+### `backup.containerSecurityContext`
+
+A custom [Kubernetes Security Context for a Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to be used instead of the default one.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| subdoc     | `privileged: false` |
+
+### `backup.livenessProbe`
+
+A custom [Kubernetes liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `backup-agent` sidecar container. When not set, the container has no liveness probe. Available starting with Operator version 1.23.0.
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| subdoc     | `exec: { command: [/bin/true] }` |
+
+### `backup.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `backup.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `backup.livenessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the liveness probe to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `backup.readinessProbe`
+
+A custom [Kubernetes readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `backup-agent` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| subdoc     | `exec: { command: [/bin/true] }` |
+
+### `backup.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `backup.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `backup.readinessProbe.failureThreshold`
+
+Number of consecutive unsuccessful tries of the readiness probe to be undertaken before giving up.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `backup.storages.STORAGE-NAME.main`
+
+Marks the storage as main. All other storages you define are added as profiles. The Operator saves backups to all storages but it saves oplog chunks for point-in-time recovery only to the main storage. You can define only one storage as main. Read more about [multiple storages for backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/multi-storage.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.storages.STORAGE-NAME.type`
+
+The cloud storage type used for backups. Supported types are: `s3`, `gcs`, `minio`, `azure`, `oss`, and `filesystem`.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `s3`    |
+
+### `backup.storages.STORAGE-NAME.s3.insecureSkipTLSVerify`
+
+Enable or disable verification of the storage server TLS certificate. Disabling it may be useful e.g. to skip TLS verification for private S3-compatible storage with a self-issued certificate.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.storages.STORAGE-NAME.s3.credentialsSecret`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| string     | `my-cluster-name-backup-s3` |
+
+### `backup.storages.STORAGE-NAME.s3.bucket`
+
+The [Amazon S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) name for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backup.storages.STORAGE-NAME.s3.prefix`
+
+The path (sub-folder) to the backups inside the [bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html) .
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.s3.uploadPartSize`
+
+The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| int        | `10485760` |
+
+### `backup.storages.STORAGE-NAME.s3.maxUploadParts`
+
+The maximum number of data chunks to be uploaded to the storage bucket (10000 by default).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10000` |
+
+### `backup.storages.STORAGE-NAME.s3.storageClass`
+
+The [storage class name](https://aws.amazon.com/s3/storage-classes) of the S3 storage.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `STANDARD` |
+
+### `backup.storages.STORAGE-NAME.s3.retryer.numMaxRetries`
+
+The maximum number of retries to upload data to S3 storage.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `backup.storages.STORAGE-NAME.s3.retryer.minRetryDelay`
+
+The minimum time in milliseconds to wait till the next retry.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `backup.storages.STORAGE-NAME.s3.retryer.maxRetryDelay`
+
+The maximum time in minutes to wait till the next retry.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `backup.storages.STORAGE-NAME.s3.region`
+
+The [AWS region](https://docs.aws.amazon.com/general/latest/gr/rande.html) to use. Please note **this option is mandatory** for Amazon and all S3-compatible storages.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `us-east-1` |
+
+### `backup.storages.STORAGE-NAME.s3.endpointUrl`
+
+The URL of the S3-compatible storage to be used. It is required for Minio storage and is not needed for the original Amazon S3 cloud.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.kmsKeyID`
+
+The [ID of the key stored in the AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys) used by the Operator for [backups server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-encryption.html)
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseAlgorithm`
+
+The key management mode used for [backups server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-encryption.html) with the encryption keys stored in [AWS KMS](https://aws.amazon.com/kms/) - `aws:kms` is the only supported value for now.
+
+| Value type | Example   |
+| ---------- | --------- |
+| string     | `aws:kms` |
+
+### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseCustomerAlgorithm`
+
+The key management mode for [backups server-side encryption with customer-provided keys](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-encryption.html) - `AES256` is the only supported value for now.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `AES256` |
+
+### `backup.storages.STORAGE-NAME.s3.serverSideEncryption.sseCustomerKey`
+
+The locally-stored base64-encoded custom encryption key used by the Operator for [backups server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-encryption.html) on S3-compatible storages.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.minio.insecureSkipTLSVerify`
+
+Disables verification of the storage server TLS certificate. This enables data upload to S3-compatible storage with a self-issued certificate bypassing TLS verification for private. Read more about [using custom CA certificates for S3 storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-minio.html#configure-tls-verification-with-custom-certificates-for-s3-storage)
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.storages.STORAGE-NAME.minio.credentialsSecret`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| string     | `my-cluster-name-backup-minio` |
+
+### `backup.storages.STORAGE-NAME.minio.bucket`
+
+The bucket name for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backup.storages.STORAGE-NAME.minio.prefix`
+
+The path (sub-folder) to the backups inside the bucket.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.minio.region`
+
+The region name of the bucket. This is where the bucket is located
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `us-east-1` |
+
+### `backup.storages.STORAGE-NAME.minio.endpointUrl`
+
+The endpoint URL of the S3-compatible storage service. This points to your storage service and is specific to your cloud provider.
+
+| Value type | Example                                     |
+| ---------- | ------------------------------------------- |
+| string     | `minio.psmdb.svc.cluster.local:9000/minio/` |
+
+### `backup.storages.STORAGE-NAME.minio.secure`
+
+Defines whether to use HTTP or HTTPS protocol for communication with the S3 storage.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.name`
+
+The name of the Secret that stores custom TLS certificates for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-minio.html#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type | Example           |
+| ---------- | ----------------- |
+| string     | `minio-ca-bundle` |
+
+### `backup.storages.STORAGE-NAME.minio.caBundle.key`
+
+The custom CA certificate for TLS communication with S3 storage. See [Configure TLS verification with custom certificates for S3 storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-minio.html#configure-tls-verification-with-custom-certificates-for-s3-storage) for more information.
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `ca.crt` |
+
+### `backup.storages.STORAGE-NAME.gcs.bucket`
+
+The name of the storage bucket. See the [GCS bucket naming guidelines](https://cloud.google.com/storage/docs/naming-buckets#requirements) for bucket name requirements.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.gcs.prefix`
+
+The path to the data directory in the bucket. If undefined, backups are stored in the bucket’s root directory.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.gcs.credentialsSecret`
+
+The [Kubernetes Secret](https://kubernetes.io/docs/concepts/configuration/secret/) with GCS credentials (service account email and JSON private key, or HMAC keys).
+
+This option is optional. Omit it when you use [GKE Workload Identity](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-gcp.html#automate-access-to-google-cloud-storage-using-workload-identity).
+
+If both a Secret and Workload Identity are available, a defined `credentialsSecret` takes precedence.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| string     | `"my-cluster-name-backup-gcs"` |
+
+### `backup.storages.STORAGE-NAME.gcs.chunkSize`
+
+The size of data chunks in bytes to be uploaded to the GCS storage bucket in a single request. Larger data chunks will be split over multiple requests. Default data chunk size is 10MB.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `10485760` |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffInitial`
+
+The time to wait to make an initial retry, in seconds. Default value is 1 sec
+
+| Value type              | Example |
+| ----------------------- | ------- |
+| :material-code-int: int | `1`     |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMax`
+
+The maximum amount of time between retries, in seconds. Default value is 30 sec.
+
+| Value type              | Example |
+| ----------------------- | ------- |
+| :material-code-int: int | `30`    |
+
+### `backup.storages.STORAGE-NAME.gcs.retryer.backoffMultiplier`
+
+Defines the time to increase the wait time after each retry. For example, with the default value of 2 seconds, if the first wait time is 1 second, the next will be 2 seconds, then 4 seconds, and so on, until it reaches the maximum.
+
+| Value type              | Example |
+| ----------------------- | ------- |
+| :material-code-int: int | `2`     |
+
+### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` |
+
+| Value type | Example                   |
+| ---------- | ------------------------- |
+| string     | `my-cluster-azure-secret` |
+
+### `backup.storages.STORAGE-NAME.azure.container`
+
+Name of the [container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) for backups.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `my-container` |
+
+### `backup.storages.STORAGE-NAME.azure.prefix`
+
+The path (sub-folder) to the backups inside the [container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction#containers) .
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.azure.endpointUrl`
+
+The [private endpoint URL](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to use instead of the public endpoint.
+
+| Value type | Example                                     |
+| ---------- | ------------------------------------------- |
+| string     | `https://accountName.blob.core.windows.net` |
+
+### `backup.storages.STORAGE-NAME.oss.credentialsSecret`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `ALIBABA_ACCESS_KEY_ID` and `ALIBABA_ACCESS_KEY_SECRET` keys. See [Alibaba Cloud OSS storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-oss.html) for setup steps.
+
+| Value type | Example                      |
+| ---------- | ---------------------------- |
+| string     | `my-cluster-name-backup-oss` |
+
+### `backup.storages.STORAGE-NAME.oss.bucket`
+
+The [Alibaba Cloud OSS bucket](https://www.alibabacloud.com/help/en/oss/user-guide/bucket-overview) name for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backup.storages.STORAGE-NAME.oss.prefix`
+
+The path (sub-folder) to the backups inside the bucket. If undefined, backups are stored in the bucket’s root directory.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.oss.endpointUrl`
+
+The endpoint URL of the Alibaba Cloud OSS service for the selected region.
+
+| Value type | Example                                 |
+| ---------- | --------------------------------------- |
+| string     | `https://oss-eu-central-1.aliyuncs.com` |
+
+### `backup.storages.STORAGE-NAME.oss.region`
+
+The [Alibaba Cloud OSS region](https://www.alibabacloud.com/help/en/oss/user-guide/regions-and-endpoints) where the bucket is located.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `eu-central-1` |
+
+### `backup.storages.STORAGE-NAME.oss.connectTimeout`
+
+The timeout for establishing a connection to Alibaba Cloud OSS.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `10s`   |
+
+### `backup.storages.STORAGE-NAME.oss.uploadPartSize`
+
+The size of data chunks in bytes to be uploaded to the storage bucket (10 MiB by default).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| int        | `10485760` |
+
+### `backup.storages.STORAGE-NAME.oss.maxUploadParts`
+
+The maximum number of data chunks to be uploaded to the storage bucket (10000 by default).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10000` |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.maxAttempts`
+
+The maximum number of retries to upload data to Alibaba Cloud OSS.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.maxBackoff`
+
+The maximum time to wait until the next retry.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `5m`    |
+
+### `backup.storages.STORAGE-NAME.oss.retryer.baseDelay`
+
+The base delay before the first retry. Later retries use exponential backoff up to `maxBackoff`.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `1s`    |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.secretName`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) that stores the encryption key for [OSS server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-oss.html#server-side-encryption). It must contain the `SSE_CUSTOMER_KEY` key. Use either `secretName` or [`encryptionKeyId`](#backupstoragesstorage-nameossserversideencryptionencryptionkeyid).
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| string     | `my-cluster-name-backup-oss-sse` |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionMethod`
+
+The encryption method used for [OSS server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-oss.html#server-side-encryption). Supported value: `sse`.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `sse`   |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionAlgorithm`
+
+The encryption algorithm used for [OSS server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-oss.html#server-side-encryption). Use `AES256` for OSS-managed keys (SSE-OSS) or `KMS` for Alibaba Cloud Key Management Service (SSE-KMS).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `KMS`   |
+
+### `backup.storages.STORAGE-NAME.oss.serverSideEncryption.encryptionKeyId`
+
+The ID of the customer master key in [Alibaba Cloud Key Management Service](https://www.alibabacloud.com/help/en/kms/product-overview/what-is-key-management-service) used for [OSS server-side encryption](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-oss.html#server-side-encryption). Use either `encryptionKeyId` or [`secretName`](#backupstoragesstorage-nameossserversideencryptionsecretname).
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.filesystem.path`
+
+The mount point for a remote filesystem configured to store backups.
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `/mnt/nfs/` |
+
+### `backup.storages.STORAGE-NAME.oci.bucket`
+
+The name of the Oracle Cloud Infrastructure Object Storage bucket for backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.oci.namespace`
+
+The Object Storage namespace that the bucket belongs to.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.oci.region`
+
+The region where the bucket is located.
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `us-ashburn-1` |
+
+### `backup.storages.STORAGE-NAME.oci.prefix`
+
+The path (sub-folder) to the backups inside the bucket. If undefined, backups are stored in the bucket’s root directory.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.oci.credentials.type`
+
+The authentication method used to access OCI Object Storage. Possible values are `userPrincipal` and `okeWorkloadIdentity`.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `userPrincipal` |
+
+### `backup.storages.STORAGE-NAME.oci.credentials.secretName`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It contains the OCI user principal credentials (`OCI_TENANCY`, `OCI_USER`, `OCI_FINGERPRINT`, `OCI_PRIVATE_KEY`, and optionally `OCI_PRIVATE_KEY_PASSPHRASE`). Required when `credentials.type` is `userPrincipal`.
+
+| Value type | Example                      |
+| ---------- | ---------------------------- |
+| string     | `my-cluster-name-backup-oci` |
+
+### `backup.storages.STORAGE-NAME.oci.serverSideEncryption.kmsKeyID`
+
+The OCID of the OCI Vault key used for server-side encryption of backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `""`    |
+
+### `backup.storages.STORAGE-NAME.oci.serverSideEncryption.secretName`
+
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) that contains the customer-provided (SSE-C) encryption key in the `OCI_SSE_CUSTOMER_KEY` field.
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| string     | `my-cluster-name-backup-oci-sse` |
+
+### `backup.storages.STORAGE-NAME.oci.retryer.maxAttempts`
+
+The total number of attempts, including the first call, to make when uploading a backup. The value `0` uses the PBM default, and `1` disables retries. Unlimited retries are not supported.
+
+| Value type              | Example |
+| ----------------------- | ------- |
+| :material-code-int: int | `3`     |
+
+### `backup.storages.STORAGE-NAME.oci.retryer.maxBackoff`
+
+The maximum time to wait between retries. The value `0` uses the PBM default.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `5m`    |
+
+### `backup.storages.STORAGE-NAME.oci.uploadPartSize`
+
+The size of data chunks in bytes to be uploaded to the bucket in a single request.
+
+| Value type              | Example    |
+| ----------------------- | ---------- |
+| :material-code-int: int | `10485760` |
+
+### `backup.storages.STORAGE-NAME.oci.maxObjSizeGB`
+
+The maximum size in gigabytes of an object stored in the bucket.
+
+| Value type                 | Example |
+| -------------------------- | ------- |
+| :material-code-int: number | `10`    |
+
+### `backup.storages.STORAGE-NAME.oci.uploadConcurrency`
+
+The number of concurrent upload requests. Increasing this value is not recommended by the OCI SDK because it can cause `409` responses or client timeouts.
+
+| Value type              | Example |
+| ----------------------- | ------- |
+| :material-code-int: int | `1`     |
+
+### `backup.volumeMounts.mountPath`
+
+Mount path for the [remote backup storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-filesystem.html).
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `/mnt/nfs/` |
+
+### `backup.volumeMounts.name`
+
+Name of the [remote backup storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-filesystem.html).
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `backup-nfs` |
+
+### `backup.pitr.enabled`
+
+Enables or disables [point-in-time-recovery functionality](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `false` |
+
+### `backup.pitr.oplogOnly`
+
+If true, Percona Backup for MongoDB saves oplog chunks even without the base logical backup snapshot (oplog chunks without a base backup can’t be used with logical backups to restore a backup by the Operator, [but can still be useful for manual restore operations](https://docs.percona.com/percona-backup-mongodb/usage/oplog-replay.html) ).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | false   |
+
+### `backup.pitr.oplogSpanMin`
+
+Number of minutes between the uploads of oplogs.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `backup.pitr.compressionType`
+
+The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices) .
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `gzip`  |
+
+### `backup.pitr.compressionLevel`
+
+The point-in-time-recovery chunks compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices) ).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6`     |
+
+### `backup.configuration.backupOptions.priority`
+
+The list of mongod nodes and their priority for making backups.
+
+| Value type | Example                                         |
+| ---------- | ----------------------------------------------- |
+| subdoc     | `“localhost:28019”: 2.5 “localhost:27018”: 2.5` |
+
+### `backup.configuration.backupOptions.timeouts.startingStatus`
+
+The wait time in seconds Percona Backup for MongoDB should use to start physical backups on all shards. The 0 (zero) value resets the timeout to the default 33 seconds.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `33`    |
+
+### `backup.configuration.backupOptions.oplogSpanMin`
+
+The duration (in minutes) of oplog slices saved by Percona Backup for MongoDB with the logical backup snapshot.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `backup.configuration.restoreOptions.batchSize`
+
+The number of documents Percona Backup for MongoDB should buffer.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `500`   |
+
+### `backup.configuration.restoreOptions.numInsertionWorkers`
+
+The number of workers that Percona Backup for MongoDB should use to add the documents to buffer.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `10`    |
+
+### `backup.configuration.restoreOptions.numDownloadWorkers`
+
+The number of workers that Percona Backup for MongoDB should use to request data chunks from the storage during the restore.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `4`     |
+
+### `backup.configuration.restoreOptions.maxDownloadBufferMb`
+
+The maximum size of the in-memory buffer that Percona Backup for MongoDB should use use when downloading files from the S3 storage.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `0`     |
+
+### `backup.configuration.restoreOptions.downloadChunkMb`
+
+The size of the data chunk in MB, that Percona Backup for MongoDB should use when downloading from the S3 storage.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `32`    |
+
+### `backup.configuration.restoreOptions.mongodLocation`
+
+The custom path to mongod binaries which Percona Backup for MongoDB should use during restore.
+
+| Value type | Example          |
+| ---------- | ---------------- |
+| string     | `/usr/bin/mongo` |
+
+### `backup.configuration.restoreOptions.mongodLocationMap`
+
+The list of custom paths to mongod binaries on every node, which Percona Backup for MongoDB should use during restore.
+
+| Value type | Example                                                        |
+| ---------- | -------------------------------------------------------------- |
+| subdoc     | `“node01:2017”: /usr/bin/mongo “node03:27017”: /usr/bin/mongo` |
+
+### `backup.tasks.name`
+
+The name of the backup.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     |         |
+
+### `backup.tasks.enabled`
+
+Enables or disables this exact backup.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.tasks.schedule`
+
+The scheduled time to make a backup, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) .
+
+| Value type | Example       |
+| ---------- | ------------- |
+| string     | `0 0 \* \* 6` |
+
+### `backup.tasks.keep`
+
+This option is deprecated and kept for backward compatibility. Use the `backup.tasks.retention` subsection instead.
+
+The amount of most recent backups to store. Older backups are automatically deleted. Set `keep` to zero or completely remove it to disable automatic deletion of backups.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `3`     |
+
+### `backup.tasks.retention.type`
+
+Defines how to retain backups. The type of retention defaults to `count`.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `count` |
+
+### `backup.tasks.retention.count`
+
+Defines the number of backups to store. Older backups are automatically deleted from the cluster.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `count` |
+
+### `backup.tasks.retention.deleteFromStorage`
+
+Defines if the backups are deleted from the cloud storage too.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `backup.tasks.storageName`
+
+The name of the S3-compatible storage for backups, configured in the storages subsection.
+
+| Value type | Example      |
+| ---------- | ------------ |
+| string     | `st-us-west` |
+
+### `backup.tasks.compressionType`
+
+The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#configure-backup-compression) .
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `gzip`  |
+
+### `backup.tasks.compressionLevel`
+
+The backup compression level ([higher values result in better but slower compression](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#compression-level-setup) ).
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `6`     |
+
+### `backup.tasks.type`
+
+The backup type. Can be `logical` (default), `physical`, `incremental`, `incremental-base`, or `external` (PVC snapshot). See [backup types](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html#backup-types).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `physical` |
+
+### `backup.tasks.volumeSnapshotClass`
+
+The name of the Kubernetes `VolumeSnapshotClass` for scheduled PVC snapshot backups. **Required** when `backup.tasks.type` is `external`.
+
+| Value type | Example              |
+| ---------- | -------------------- |
+| string     | `gke-snapshot-class` |
+
+## Log Collector section
+
+The `logcollector` section contains configuration options for [Fluent Bit Log Collector](https://fluentbit.io) .
+
+### `logcollector.enabled`
+
+Enables or disables [persistent logging with Fluent Bit](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html).
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
+### `logcollector.image`
+
+Log Collector Docker image to use.
+
+| Value type | Example                                  |
+| ---------- | ---------------------------------------- |
+| string     | `perconalab/fluentbit:main-logcollector` |
+
+### `logcollector.configuration`
+
+Additional configuration options (see [Fluent Bit official documentation](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/configuration-file) for details).
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `logcollector.env.name`
+
+The name of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `MY_ENV` |
+
+### `logcollector.env.value`
+
+The value of a custom environment variable for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `MY_VALUE` |
+
+### `logcollector.envFrom.configMapRef.name`
+
+The name of a ConfigMap from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example        |
+| ---------- | -------------- |
+| string     | `my-configmap` |
+
+### `logcollector.envFrom.secretRef.name`
+
+The name of a Secret from where environment variables will be loaded for the log collector sidecar container (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
+
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `my-secret` |
+
+### `logcollector.livenessProbe`
+
+A custom [Kubernetes liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no liveness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration`:
+
+```
+logcollector:
+  enabled: true
+  configuration: |
+    [SERVICE]
+        HTTP_Server  On
+```
+
+Available starting with Operator version 1.23.0.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| subdoc     | `tcpSocket: { port: 2020 }` |
+
+### `logcollector.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `logcollector.livenessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `logcollector.readinessProbe`
+
+A custom [Kubernetes readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logs` (Fluent Bit) sidecar container. When not set, the container has no readiness probe. A `tcpSocket` or `httpGet` probe on port `2020` requires the Fluent Bit HTTP server to be enabled via `logcollector.configuration` (`HTTP_Server On` under `[SERVICE]`):
+
+```
+logcollector:
+  enabled: true
+  configuration: |
+    [SERVICE]
+        HTTP_Server  On
+```
+
+Available starting with Operator version 1.23.0.
+
+| Value type | Example                     |
+| ---------- | --------------------------- |
+| subdoc     | `tcpSocket: { port: 2020 }` |
+
+### `logcollector.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `logcollector.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `logcollector.logrotate.configuration`
+
+Overrides the default logrotate configuration used by the log collector sidecar container.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `logcollector.logrotate.extraConfig.name`
+
+References a ConfigMap or a Secret containing additional logrotate configuration. The key name must end with `.conf`. The `mongodb.conf` key name is reserved for the main configuration and is not allowed to use.
+
+| Value type | Example            |
+| ---------- | ------------------ |
+| string     | `logrotate-config` |
+
+### `logcollector.logrotate.schedule`
+
+Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `"0 0 0 * * *"` |
+
+### `logcollector.logrotate.livenessProbe`
+
+A custom [Kubernetes liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logrotate` sidecar container. When not set, the container has no liveness probe. Available starting with Operator version 1.23.0.
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| subdoc     | `exec: { command: [/bin/true] }` |
+
+### `logcollector.logrotate.livenessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the liveness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `30`    |
+
+### `logcollector.logrotate.livenessProbe.periodSeconds`
+
+How often to perform the liveness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `logcollector.logrotate.readinessProbe`
+
+A custom [Kubernetes readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for the `logrotate` sidecar container. When not set, the container has no readiness probe. Available starting with Operator version 1.23.0.
+
+| Value type | Example                          |
+| ---------- | -------------------------------- |
+| subdoc     | `exec: { command: [/bin/true] }` |
+
+### `logcollector.logrotate.readinessProbe.initialDelaySeconds`
+
+Number of seconds to wait after the container start before initiating the readiness probe
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `5`     |
+
+### `logcollector.logrotate.readinessProbe.periodSeconds`
+
+How often to perform the readiness probe (in seconds)
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `15`    |
+
+### `logcollector.resources.requests.memory`
+
+The [Kubernetes memory requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for a Log Collector sidecar container in a Percona Server for MongoDB Pod.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `100M`  |
+
+### `logcollector.resources.requests.cpu`
+
+[Kubernetes CPU requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for a Log collector sidecar container in a Percona Server for MongoDB Pod.
+
+| Value type | Example |
+| ---------- | ------- |
+| string     | `200m`  |

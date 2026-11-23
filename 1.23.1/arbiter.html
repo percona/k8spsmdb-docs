@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6638,18 +6638,18 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="arbiter-non-voting-and-hidden-nodes">Arbiter, non-voting and hidden nodes<a class="headerlink" href="#arbiter-non-voting-and-hidden-nodes" title="Permanent link">¶</a></h1>
+<h1 id="arbiter-non-voting-and-hidden-nodes">Arbiter, non-voting and hidden nodes<a data-markdown-ignore class="headerlink" href="#arbiter-non-voting-and-hidden-nodes" title="Permanent link">¶</a></h1>
 <p>A Percona Server for MongoDB replica set is a group of <code>mongod</code> instances that hold the same data, so the cluster survives the loss of any single member. One member is <strong>primary</strong> and accepts all writes; the rest are <strong>secondary</strong>, replicating the data set and, optionally, serving reads to spread the load. Secondary members can also take on a special role - arbiter, non-voting, or hidden.</p>
 <p>The replica set picks its primary through <a href="https://docs.mongodb.com/manual/core/replica-set-elections/#replica-set-elections">elections <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, and elections only work reliably when the number of voting members is odd. An even count risks a tied vote.</p>
 <p>By default, the Operator creates a three-member replica set: one primary and two secondaries. This is the minimum recommended configuration. A replica set can have up to 50 members, with a maximum of 7 voting among them.</p>
-<h2 id="replica-set-member-types">Replica set member types<a class="headerlink" href="#replica-set-member-types" title="Permanent link">¶</a></h2>
+<h2 id="replica-set-member-types">Replica set member types<a data-markdown-ignore class="headerlink" href="#replica-set-member-types" title="Permanent link">¶</a></h2>
 <p>Beyond the primary and regular secondaries, a replica set can include these special member types:</p>
 <ul>
 <li><strong>Arbiter</strong>: participates in elections but stores no data. Add one when cost constraints rule out another full secondary.</li>
 <li><strong>Non-voting</strong>: holds a full copy of the data but does not vote in elections. Use it to scale read capacity beyond the seven-member voting limit.</li>
 <li><strong>Hidden</strong>: holds a full copy of the data but is invisible to client applications. It’s still a voting member by default. Use it for backups or batch jobs that must not affect client traffic.</li>
 </ul>
-<h3 id="arbiter-nodes">Arbiter nodes<a class="headerlink" href="#arbiter-nodes" title="Permanent link">¶</a></h3>
+<h3 id="arbiter-nodes">Arbiter nodes<a data-markdown-ignore class="headerlink" href="#arbiter-nodes" title="Permanent link">¶</a></h3>
 <p>An Arbiter node participates in replica set elections but stores no data. Its role is to break ties in a replica set with an even number of data-bearing nodes, so a primary can always be elected. Because it holds no data, an Arbiter needs minimal resources and no persistent volume. Use it to reduce costs.</p>
 <p>To add an Arbiter node, add an <code>arbiter</code> section under <code>replsets</code> in your <code>deploy/cr.yaml</code> file and set <code>enabled</code> and <code>size</code>.</p>
 <p>This example creates a cluster with 4 data instances and 1 Arbiter:</p>
@@ -6667,7 +6667,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code><span class="nx">rs</span><span class="p">.</span><span class="nx">conf</span><span class="p">().</span><span class="nx">members</span>
 </code></pre></div>
 <p>The same entry shows <code>arbiterOnly: true</code>.</p>
-<h3 id="default-read-and-write-concern-for-replica-sets-with-an-arbiter">Default read and write concern for replica sets with an Arbiter<a class="headerlink" href="#default-read-and-write-concern-for-replica-sets-with-an-arbiter" title="Permanent link">¶</a></h3>
+<h3 id="default-read-and-write-concern-for-replica-sets-with-an-arbiter">Default read and write concern for replica sets with an Arbiter<a data-markdown-ignore class="headerlink" href="#default-read-and-write-concern-for-replica-sets-with-an-arbiter" title="Permanent link">¶</a></h3>
 <p>MongoDB’s <a href="https://www.mongodb.com/docs/manual/reference/write-concern/#implicit-default-write-concern">implicit default write concern  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> falls back to <code>w: 1</code> instead of <code>w: "majority"</code> when a replica set has an Arbiter and the number of data-bearing voting members alone isn’t enough to reach a voting majority — for example, 2 data nodes plus 1 Arbiter, which is exactly the kind of configuration this Operator’s Arbiter feature is meant for. With <code>w: 1</code>, the primary acknowledges a write as soon as it applies it locally. If the primary then fails over before that write replicates to the secondary, the write is silently <a href="https://www.mongodb.com/docs/manual/core/replica-set-rollbacks/">rolled back  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> once the old primary rejoins the set, even though the client already received a success response. To close this gap, the Operator always sets the cluster-wide default read and write concern to <code>majority</code> whenever a replica set has an Arbiter enabled, regardless of the exact node count.</p>
 <p>Note the trade-off: with <code>w: "majority"</code> in a Primary-Secondary-Arbiter (PSA) replica set, the Arbiter holds no data and therefore can never acknowledge a write, so <code>majority</code> effectively requires both the primary and the secondary to be up. If the secondary becomes unavailable, <code>majority</code>-write-concern operations can stall or time out. You can override the Operator’s defaults using the <a href="operator.html#defaultrwconcernreadconcern"><code>defaultRWConcern</code></a> section in your <code>deploy/cr.yaml</code> file if you’d rather favor availability over this durability guarantee:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
@@ -6678,7 +6678,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">wtimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
 </code></pre></div>
 <p>Setting <code>defaultRWConcern</code> also applies the specified default read and write concern to replica sets without an Arbiter, and to sharded clusters.</p>
-<h3 id="prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members">Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members<a class="headerlink" href="#prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members" title="Permanent link">¶</a></h3>
+<h3 id="prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members">Prevent Arbiter nodes on the same Kubernetes hosts with data-bearing replica set members<a data-markdown-ignore class="headerlink" href="#prevent-arbiter-nodes-on-the-same-kubernetes-hosts-with-data-bearing-replica-set-members" title="Permanent link">¶</a></h3>
 <p>By default, Arbiter nodes can run on the same Kubernetes hosts as your data nodes, which keeps the node count down but raises the odds of a 50/50 vote split if the network partitions. To prevent this, apply an <a href="constraints.html#affinity-and-anti-affinity">anti-affinity</a> constraint that forces Arbiter nodes onto separate nodes:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">arbiter</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -6698,7 +6698,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">              </span><span class="nt">app.kubernetes.io/replset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">          </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
 </code></pre></div>
-<h2 id="non-voting-nodes">Non-voting nodes<a class="headerlink" href="#non-voting-nodes" title="Permanent link">¶</a></h2>
+<h2 id="non-voting-nodes">Non-voting nodes<a data-markdown-ignore class="headerlink" href="#non-voting-nodes" title="Permanent link">¶</a></h2>
 <p>A non-voting node is a secondary that holds a full copy of the data but does not vote in primary elections. Use it to scale a replica set beyond the seven-member voting limit, or to place a member in a remote location where network latency would make it a liability as a voter.</p>
 <p>To add non-voting nodes, set <code>replsets.nonvoting.enabled</code> and <code>replsets.nonvoting.size</code> in your <code>deploy/cr.yaml</code> file.</p>
 <p>This example creates a cluster with 3 data instances and 1 non-voting instance:</p>
@@ -6714,7 +6714,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code><span class="nx">rs</span><span class="p">.</span><span class="nx">config</span><span class="p">().</span><span class="nx">members</span>
 </code></pre></div>
 <p>The non-voting member’s entry shows <code>votes: 0</code>.</p>
-<h2 id="hidden-nodes">Hidden nodes<a class="headerlink" href="#hidden-nodes" title="Permanent link">¶</a></h2>
+<h2 id="hidden-nodes">Hidden nodes<a data-markdown-ignore class="headerlink" href="#hidden-nodes" title="Permanent link">¶</a></h2>
 <p>A hidden node is a secondary that holds a full copy of the data but is invisible to client applications - it’s not listed in the replica set’s SRV record, so clients never connect to it. It always has priority <code>0</code> and so can never become primary, but it’s still a voting member by default and can take part in elections. See <a href="#manage-voting-members-in-replica-set">Manage voting members</a> below for how the Operator handles that.</p>
 <p>Hidden nodes are useful for backups, reporting, or other workloads that must not affect primary operations.</p>
 <p>To add a hidden node, set <code>replsets.hidden.enabled</code> and <code>replsets.hidden.size</code> in your <code>deploy/cr.yaml</code> file.</p>
@@ -6730,7 +6730,7 @@ window.addEventListener('afterprint', (event) => {
 <div class="highlight"><pre><span></span><code><span class="nx">rs</span><span class="p">.</span><span class="nx">config</span><span class="p">().</span><span class="nx">members</span>
 </code></pre></div>
 <p>The hidden member’s entry shows <code>hidden: true</code> and <code>priority: 0</code>.</p>
-<h3 id="manage-voting-members-in-replica-set">Manage voting members in replica set<a class="headerlink" href="#manage-voting-members-in-replica-set" title="Permanent link">¶</a></h3>
+<h3 id="manage-voting-members-in-replica-set">Manage voting members in replica set<a data-markdown-ignore class="headerlink" href="#manage-voting-members-in-replica-set" title="Permanent link">¶</a></h3>
 <p>Since hidden nodes can participate in elections, the Operator enforces rules to keep the number of voting members odd and the replica set in a stable, compliant configuration:</p>
 <ul>
 <li>If the total number of voting members is even, the Operator converts one node to non-voting to restore an odd count. It typically converts the last Pod in the list.</li>

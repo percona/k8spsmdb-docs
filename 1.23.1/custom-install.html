@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6548,10 +6548,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="install-percona-operator-for-mongodb-with-customized-parameters">Install Percona Operator for MongoDB with customized parameters<a class="headerlink" href="#install-percona-operator-for-mongodb-with-customized-parameters" title="Permanent link">¶</a></h1>
+<h1 id="install-percona-operator-for-mongodb-with-customized-parameters">Install Percona Operator for MongoDB with customized parameters<a data-markdown-ignore class="headerlink" href="#install-percona-operator-for-mongodb-with-customized-parameters" title="Permanent link">¶</a></h1>
 <p>You can customize the configuration of Percona Server for MongoDB and install it with customized parameters.</p>
 <p>To check available configuration options, see <a href="https://raw.githubusercontent.com/percona/percona-server-mongodb-operator/v1.23.1/deploy/cr.yaml"><code>deploy/cr.yaml</code>  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and <a href="operator.html">Custom Resource Options</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1"><code>kubectl</code></label><label for="__tabbed_1_2">Helm</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1"><code>kubectl</code></label><label for="__tabbed_1_2">Helm</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>To customize the configuration, do the following:</p>
@@ -6588,7 +6588,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/pmm-client</span>
 <span class="w">    </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.9.1</span>
 </code></pre></div>
-<h2 id="naming-conventions-for-helm-resources">Naming conventions for Helm resources<a class="headerlink" href="#naming-conventions-for-helm-resources" title="Permanent link">¶</a></h2>
+<h2 id="naming-conventions-for-helm-resources">Naming conventions for Helm resources<a data-markdown-ignore class="headerlink" href="#naming-conventions-for-helm-resources" title="Permanent link">¶</a></h2>
 <p>When you install a chart, Helm creates a release and uses the release name and chart name to generate resource names. By default, resources are named <code>release-name-chart-name</code>.</p>
 <p>You can override the default naming with the <code>nameOverride</code> or <code>fullnameOverride</code> options. Pass them using the <code>--set</code> flag or in your <code>values.yaml</code> file.</p>
 <table>
@@ -6634,7 +6634,7 @@ window.addEventListener('afterprint', (event) => {
 <p class="admonition-title">Cluster name length</p>
 <p>For the psmdb-db chart, keep release names and overrides short enough to satisfy Kubernetes resource name limits (for example, many DNS-label resource names such as Services are limited to 63 characters).</p>
 </div>
-<h2 id="common-helm-values-reference">Common Helm values reference<a class="headerlink" href="#common-helm-values-reference" title="Permanent link">¶</a></h2>
+<h2 id="common-helm-values-reference">Common Helm values reference<a data-markdown-ignore class="headerlink" href="#common-helm-values-reference" title="Permanent link">¶</a></h2>
 <p>The following table lists commonly used values for the Operator and database charts. For the full list of options, see the chart values files.</p>
 <table>
 <thead>
@@ -6670,10 +6670,10 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </div>
 </div>
-<h2 id="configure-ports-for-mongodb-cluster-components">Configure ports for MongoDB cluster components<a class="headerlink" href="#configure-ports-for-mongodb-cluster-components" title="Permanent link">¶</a></h2>
+<h2 id="configure-ports-for-mongodb-cluster-components">Configure ports for MongoDB cluster components<a data-markdown-ignore class="headerlink" href="#configure-ports-for-mongodb-cluster-components" title="Permanent link">¶</a></h2>
 <p>By default, the Operator starts Percona Server for MongoDB with the default port <code>27017</code> for all cluster components: <code>mongod</code>, <code>mongos</code> and <code>configsvrReplSet</code> Pods. Starting with version 1.20.0, you can start a new cluster with custom ports for all components or for a specific one. </p>
 <p>Here’s how to do it.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">kubectl</label><label for="__tabbed_2_2">Helm</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">kubectl</label><label for="__tabbed_2_2">Helm</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -6734,7 +6734,7 @@ window.addEventListener('afterprint', (event) => {
 </div>
 </div>
 </div>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="verify-cluster.html">Verify the cluster operation</a></p>
 <hr>
 <div class="md-source-file">

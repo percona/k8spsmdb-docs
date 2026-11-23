@@ -25,7 +25,7 @@ what you already get without configuring anything, and what each decision change
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ what you already get without configuring anything, and what each decision change
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6588,11 +6588,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-security">About security<a class="headerlink" href="#about-security" title="Permanent link">¶</a></h1>
+<h1 id="about-security">About security<a data-markdown-ignore class="headerlink" href="#about-security" title="Permanent link">¶</a></h1>
 <p>Securing a cluster comes down to four independent decisions: who may connect, how they prove
 it, how traffic is protected in transit, and how data is protected on disk. This page covers
 what you already get without configuring anything, and what each decision changes.</p>
-<h2 id="what-a-new-cluster-already-gives-you">What a new cluster already gives you<a class="headerlink" href="#what-a-new-cluster-already-gives-you" title="Permanent link">¶</a></h2>
+<h2 id="what-a-new-cluster-already-gives-you">What a new cluster already gives you<a data-markdown-ignore class="headerlink" href="#what-a-new-cluster-already-gives-you" title="Permanent link">¶</a></h2>
 <p>A cluster deployed from the default <code>deploy/cr.yaml</code> is  protected. This is what is available out of the box:</p>
 <table>
 <thead>
@@ -6633,7 +6633,7 @@ what you already get without configuring anything, and what each decision change
 <p>You don’t need to turn on security here - it’s already on. This section is about changing <em>how</em>
 it works: for example, switching to your own certificate authority, meeting a compliance
 policy, or moving key material into an external store.</p>
-<h2 id="manage-users-who-can-connect">Manage users: who can connect<a class="headerlink" href="#manage-users-who-can-connect" title="Permanent link">¶</a></h2>
+<h2 id="manage-users-who-can-connect">Manage users: who can connect<a data-markdown-ignore class="headerlink" href="#manage-users-who-can-connect" title="Permanent link">¶</a></h2>
 <p>The Operator distinguishes <strong>system users</strong>, which it creates and uses to run the cluster,
 from <strong>application users</strong>, which your workloads use. System users are generated into
 Kubernetes Secrets and should not be managed by hand. Application users can be declared in
@@ -6645,7 +6645,7 @@ the Custom Resource so they are created and reconciled like any other resource.<
 <li><a href="connection-secrets.html">Connection secrets</a></li>
 <li><a href="system-users-vault.html">Manage system users with Vault</a></li>
 </ul>
-<h2 id="enable-authentication-how-users-prove-who-they-are">Enable authentication: how users prove who they are<a class="headerlink" href="#enable-authentication-how-users-prove-who-they-are" title="Permanent link">¶</a></h2>
+<h2 id="enable-authentication-how-users-prove-who-they-are">Enable authentication: how users prove who they are<a data-markdown-ignore class="headerlink" href="#enable-authentication-how-users-prove-who-they-are" title="Permanent link">¶</a></h2>
 <p>Beyond the built-in credentials, authentication can be delegated to an external directory or
 identity provider:</p>
 <table>
@@ -6682,7 +6682,7 @@ holding real data.</p>
 <p><a href="auth-bypass-localhost.html">Disable localhost authentication bypass</a> does the opposite: it
 permanently closes MongoDB’s bootstrap-only “localhost exception” on a running cluster,
 tightening security rather than loosening it.</p>
-<h2 id="transport-encryption-protecting-data-in-transit-tls">Transport encryption: protecting data in transit (TLS)<a class="headerlink" href="#transport-encryption-protecting-data-in-transit-tls" title="Permanent link">¶</a></h2>
+<h2 id="transport-encryption-protecting-data-in-transit-tls">Transport encryption: protecting data in transit (TLS)<a data-markdown-ignore class="headerlink" href="#transport-encryption-protecting-data-in-transit-tls" title="Permanent link">¶</a></h2>
 <p>TLS is on by default; what you choose is who issues the certificates and how strictly TLS is
 enforced.</p>
 <table>
@@ -6714,7 +6714,7 @@ connections, <code>requireTLS</code> accepts only TLS, <code>allowTLS</code> dro
 Operator owns is set by the
 <a href="tls-cert-management-policy.html">TLS certificate management policy</a>, and TLS can be turned
 off entirely with <a href="tls-disable.html">Disable TLS</a>.</p>
-<h2 id="data-at-rest-encryption-protecting-data-on-disk">Data-at-rest encryption: protecting data on disk<a class="headerlink" href="#data-at-rest-encryption-protecting-data-on-disk" title="Permanent link">¶</a></h2>
+<h2 id="data-at-rest-encryption-protecting-data-on-disk">Data-at-rest encryption: protecting data on disk<a data-markdown-ignore class="headerlink" href="#data-at-rest-encryption-protecting-data-on-disk" title="Permanent link">¶</a></h2>
 <p>Encryption at rest is on by default; what you choose is where the key lives.</p>
 <table>
 <thead>
@@ -6743,11 +6743,11 @@ generated passwords the Operator stores in Secrets - a separate, optional featur
 in 1.22.0, described in <a href="system-users-vault.html">Manage system users with Vault</a>. Setting
 up one does not set up the other.</p>
 </div>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <p>Security settings interact with other features - <code>requireTLS</code> affects how clients and other
 sites connect, and disabling TLS or authentication constrains cross-site replication. See
 <a href="limitations.html">Known limitations</a>.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="users.html">About application and system users</a></li>
 <li><a href="TLS.html">About TLS security</a></li>

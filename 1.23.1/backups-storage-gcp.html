@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6732,13 +6732,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="google-cloud-storage">Google Cloud storage<a class="headerlink" href="#google-cloud-storage" title="Permanent link">¶</a></h1>
+<h1 id="google-cloud-storage">Google Cloud storage<a data-markdown-ignore class="headerlink" href="#google-cloud-storage" title="Permanent link">¶</a></h1>
 <p>To use <a href="https://cloud.google.com/storage">Google Cloud Storage (GCS) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> as an object store for backups, you need the following:</p>
 <ul>
 <li>A GCS bucket name. Refer to the <a href="https://cloud.google.com/storage/docs/buckets#naming">GCS bucket naming guidelines <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for bucket name requirements</li>
 <li>Authentication to the bucket. See <a href="#choose-the-authentication-method">Choose the authentication method</a> for available options.</li>
 </ul>
-<h2 id="choose-the-authentication-method">Choose the authentication method<a class="headerlink" href="#choose-the-authentication-method" title="Permanent link">¶</a></h2>
+<h2 id="choose-the-authentication-method">Choose the authentication method<a data-markdown-ignore class="headerlink" href="#choose-the-authentication-method" title="Permanent link">¶</a></h2>
 <p>You can use one of the following options to authenticate to GCS:</p>
 <ul>
 <li><a href="#automate-access-to-google-cloud-storage-using-workload-identity"><strong>Workload Identity (recommended on GKE)</strong></a>. Bind a Google service account to the Kubernetes Service Account used by your database Pods. You do not store service account JSON keys in a Kubernetes Secret. Google provides short-lived credentials automatically. This is the recommended approach on Google Kubernetes Engine (GKE) and for environments that forbid exporting service account keys.</li>
@@ -6749,17 +6749,17 @@ window.addEventListener('afterprint', (event) => {
 <p>You can still use the S3-compatible implementation of GCS with HMAC keys. Refer to the <a href="backups-storage-s3.html">Amazon S3 storage setup</a> section for steps.</p>
 <p>However, we don’t recommend their usage due to a <a href="https://docs.percona.com/percona-backup-mongodb/release-notes/2.11.0.html#known-limitations-for-using-hmac-keys-on-gcs">known issue in PBM <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and encourage you to use the native <code>gcs</code> storage type instead.</p>
 </div>
-<h3 id="how-the-operator-chooses-gcs-authentication">How the Operator chooses GCS authentication<a class="headerlink" href="#how-the-operator-chooses-gcs-authentication" title="Permanent link">¶</a></h3>
+<h3 id="how-the-operator-chooses-gcs-authentication">How the Operator chooses GCS authentication<a data-markdown-ignore class="headerlink" href="#how-the-operator-chooses-gcs-authentication" title="Permanent link">¶</a></h3>
 <ul>
 <li>If a Secret with GCS credentials is defined in the Custom Resource (<code>gcs.credentialsSecret</code>), the Operator uses those credentials.</li>
 <li>If <code>gcs.credentialsSecret</code> is omitted, the Operator configures Percona Backup for MongoDB to use Application Default Credentials (ADC), such as GKE Workload Identity.</li>
 </ul>
-<h2 id="automate-access-to-google-cloud-storage-using-workload-identity">Automate access to Google Cloud Storage using Workload Identity<a class="headerlink" href="#automate-access-to-google-cloud-storage-using-workload-identity" title="Permanent link">¶</a></h2>
+<h2 id="automate-access-to-google-cloud-storage-using-workload-identity">Automate access to Google Cloud Storage using Workload Identity<a data-markdown-ignore class="headerlink" href="#automate-access-to-google-cloud-storage-using-workload-identity" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
 <p><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">GKE Workload Identity <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> lets Pods authenticate to Google Cloud as a Google service account. Percona Backup for MongoDB uses Application Default Credentials and receives short-lived tokens automatically. For how PBM uses Workload Identity and ADC, see the <a href="https://docs.percona.com/percona-backup-mongodb/details/workload-identity-auth.html">PBM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
+<h3 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <p>Before you start, make sure you have the following:</p>
 <ul>
 <li>A <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#enable">GKE cluster with Workload Identity enabled <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and the Operator and database deployed. See also <a href="gke.html">Install on GKE</a>.</li>
@@ -6775,7 +6775,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="nb">export</span><span class="w"> </span><span class="nv">KSA_NAME</span><span class="o">=</span>default
 </code></pre></div>
 <p><code>KSA_NAME</code> is the Kubernetes Service Account used by your database Pods. By default this is <code>default</code>. You can override it with the <code>serviceAccountName</code> Custom Resource option in the <code>replsets</code>, <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> subsections of the <code>deploy/cr.yaml</code> manifest.</p>
-<h3 class="power-number" id="configure-google-cloud-access">Configure Google Cloud access<a class="headerlink" href="#configure-google-cloud-access" title="Permanent link">¶</a></h3>
+<h3 class="power-number" id="configure-google-cloud-access">Configure Google Cloud access<a data-markdown-ignore class="headerlink" href="#configure-google-cloud-access" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Create a Google service account (GSA), if you don’t have one already:</p>
@@ -6817,9 +6817,9 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 </code></pre></div>
 </li>
 </ol>
-<h3 id="configure-percona-server-for-mongodb-cluster">Configure Percona Server for MongoDB cluster<a class="headerlink" href="#configure-percona-server-for-mongodb-cluster" title="Permanent link">¶</a></h3>
+<h3 id="configure-percona-server-for-mongodb-cluster">Configure Percona Server for MongoDB cluster<a data-markdown-ignore class="headerlink" href="#configure-percona-server-for-mongodb-cluster" title="Permanent link">¶</a></h3>
 <p>Now you are ready to configure Percona Server for MongoDB to use Workload Identity for GCS backups.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">A new cluster deployment</label><label for="__tabbed_1_2">Existing cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">A new cluster deployment</label><label for="__tabbed_1_2">Existing cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -6887,9 +6887,9 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 </div>
 </div>
 </div>
-<h3 id="verify-access-to-gcs-using-workload-identity">Verify access to GCS using Workload Identity<a class="headerlink" href="#verify-access-to-gcs-using-workload-identity" title="Permanent link">¶</a></h3>
+<h3 id="verify-access-to-gcs-using-workload-identity">Verify access to GCS using Workload Identity<a data-markdown-ignore class="headerlink" href="#verify-access-to-gcs-using-workload-identity" title="Permanent link">¶</a></h3>
 <p><a href="backups-ondemand.html">Run an on-demand backup</a> to confirm that the cluster can write to the GCS bucket. </p>
-<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h3>
+<h3 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Confirm the Service Account annotation.</strong> The Kubernetes Service Account used by the database Pods must have the <code>iam.gke.io/gcp-service-account</code> annotation set to the Google service account email.</li>
 <li><strong>Confirm the IAM binding.</strong> The Google service account must grant <code>roles/iam.workloadIdentityUser</code> to <code>serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]</code>.</li>
@@ -6897,7 +6897,7 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 <li><strong>Remove <code>credentialsSecret</code>.</strong> If <code>gcs.credentialsSecret</code> is still set in the Custom Resource, the Operator uses the Secret instead of Workload Identity.</li>
 <li><strong>Restart Pods after annotation changes.</strong> Existing Pods do not pick up a new Workload Identity annotation until you restart them.</li>
 </ul>
-<h2 id="set-up-google-cloud-storage-access-with-service-account-keys">Set up Google Cloud Storage access with service account keys<a class="headerlink" href="#set-up-google-cloud-storage-access-with-service-account-keys" title="Permanent link">¶</a></h2>
+<h2 id="set-up-google-cloud-storage-access-with-service-account-keys">Set up Google Cloud Storage access with service account keys<a data-markdown-ignore class="headerlink" href="#set-up-google-cloud-storage-access-with-service-account-keys" title="Permanent link">¶</a></h2>
 <p>Follow these steps to authenticate using a service account JSON key. This method works on any Kubernetes environment.</p>
 <p class="power-number"><strong>Configuration steps</strong></p>
 <ol>
@@ -6960,7 +6960,7 @@ kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class
 </code></pre></div>
 </li>
 </ol>
-<h2 id="verify-the-storage-works">Verify the storage works<a class="headerlink" href="#verify-the-storage-works" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-storage-works">Verify the storage works<a data-markdown-ignore class="headerlink" href="#verify-the-storage-works" title="Permanent link">¶</a></h2>
 <p>Storage problems surface as failed backups, not as errors when you apply the Custom
 Resource. Confirm the configuration by taking a backup and watching it finish.</p>
 <p>Set <code>spec.storageName</code> to the storage name you defined under <code>backup.storages</code> (and

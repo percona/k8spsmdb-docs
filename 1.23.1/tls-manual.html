@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6754,7 +6754,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="generate-tls-certificates-manually">Generate TLS certificates manually<a class="headerlink" href="#generate-tls-certificates-manually" title="Permanent link">¶</a></h1>
+<h1 id="generate-tls-certificates-manually">Generate TLS certificates manually<a data-markdown-ignore class="headerlink" href="#generate-tls-certificates-manually" title="Permanent link">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Manual certificate generation didn’t work in Operator version 1.16.0. This issue is fixed starting from version 1.16.1.</p>
@@ -6764,7 +6764,7 @@ window.addEventListener('afterprint', (event) => {
 with your value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="what-youll-create">What you’ll create<a class="headerlink" href="#what-youll-create" title="Permanent link">¶</a></h2>
+<h2 id="what-youll-create">What you’ll create<a data-markdown-ignore class="headerlink" href="#what-youll-create" title="Permanent link">¶</a></h2>
 <p>When you follow the steps from this guide, you’ll generate these certificate files:</p>
 <ul>
 <li><code>server.pem</code> - Server certificate for MongoDB nodes</li>
@@ -6776,7 +6776,7 @@ with your value:</p>
 <li><code>ca.pem</code> - Certificate Authority certificate</li>
 <li><code>ca-key.pem</code> - Certificate Authority private key</li>
 </ul>
-<h2 id="certificate-requirements">Certificate requirements<a class="headerlink" href="#certificate-requirements" title="Permanent link">¶</a></h2>
+<h2 id="certificate-requirements">Certificate requirements<a data-markdown-ignore class="headerlink" href="#certificate-requirements" title="Permanent link">¶</a></h2>
 <p>You need to create the following certificates:</p>
 <ol>
 <li><strong>External certificates</strong> - for client connections from outside the cluster. This set is mandatory</li>
@@ -6792,17 +6792,17 @@ with your value:</p>
 </ol>
 <p>Generating two separate sets of certificates is not mandatory but highly recommended. Using different certificates for internal and external connections gives you more control and improves security. For example, you can choose to renew or replace external certificates more often than internal ones, or set different expiration dates for each. This makes managing and securing your cluster easier in the long run.</p>
 <p>After creating the certificates, you’ll create a Kubernetes Secret for each set and reference them in your cluster configuration.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <p>Before you start, make sure you have:</p>
 <ul>
 <li><code>cfssl</code> and <code>cfssljson</code> tools installed on your system</li>
 <li>Your cluster name and namespace ready</li>
 <li>Access to your Kubernetes cluster</li>
 </ul>
-<h2 id="procedure">Procedure<a class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
-<h3 id="generate-certificates">Generate certificates<a class="headerlink" href="#generate-certificates" title="Permanent link">¶</a></h3>
+<h2 id="procedure">Procedure<a data-markdown-ignore class="headerlink" href="#procedure" title="Permanent link">¶</a></h2>
+<h3 id="generate-certificates">Generate certificates<a data-markdown-ignore class="headerlink" href="#generate-certificates" title="Permanent link">¶</a></h3>
 <p>Replace <code>my-cluster-name</code> and <code>my-namespace</code> with your actual cluster name and namespace in the commands below.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Sharded cluster (sharding is enabled)</label><label for="__tabbed_1_2">Replica set only (no sharding)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Sharded cluster (sharding is enabled)</label><label for="__tabbed_1_2">Replica set only (no sharding)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
@@ -7122,7 +7122,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF | cfssl gencert -ca=ca.pe
 </div>
 </div>
 </div>
-<h3 id="configure-your-cluster">Configure your cluster<a class="headerlink" href="#configure-your-cluster" title="Permanent link">¶</a></h3>
+<h3 id="configure-your-cluster">Configure your cluster<a data-markdown-ignore class="headerlink" href="#configure-your-cluster" title="Permanent link">¶</a></h3>
 <p>After creating the Secrets, add them to your cluster configuration in the <code>deploy/cr.yaml</code> file:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">secrets</span><span class="p">:</span>
@@ -7131,7 +7131,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF | cfssl gencert -ca=ca.pe
 <span class="w">    </span><span class="nt">sslPBM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-name-pbm</span><span class="w">       </span><span class="c1"># PBM client certificate secret</span>
 </code></pre></div>
 <p>If you name the PBM Secret <code>&lt;cluster-name&gt;-pbm</code>, you can omit <code>secrets.sslPBM</code>: that’s the default.</p>
-<h2 id="important-notes">Important notes<a class="headerlink" href="#important-notes" title="Permanent link">¶</a></h2>
+<h2 id="important-notes">Important notes<a data-markdown-ignore class="headerlink" href="#important-notes" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>If you only create the external certificate, the Operator will use it for both external and internal communications instead of generating a separate internal certificate.</p>
@@ -7143,12 +7143,12 @@ cat<span class="w"> </span><span class="s">&lt;&lt;EOF | cfssl gencert -ca=ca.pe
 <p>The commands use <code>rs0</code> as the replica set name (the default). If you set a different name in the <code>replsets.name</code> Custom Resource option, update the commands accordingly.</p>
 </li>
 </ol>
-<h2 id="additional-resources">Additional resources<a class="headerlink" href="#additional-resources" title="Permanent link">¶</a></h2>
+<h2 id="additional-resources">Additional resources<a data-markdown-ignore class="headerlink" href="#additional-resources" title="Permanent link">¶</a></h2>
 <ul>
 <li>Check the sample certificates in <code>deploy/ssl-secrets.yaml</code> for reference</li>
 <li>Review MongoDB certificate requirements in the <a href="https://www.mongodb.com/docs/manual/tutorial/configure-ssl/#member-certificate-requirements">upstream documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></li>
 </ul>
-<h2 id="verify-the-certificates">Verify the certificates<a class="headerlink" href="#verify-the-certificates" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-certificates">Verify the certificates<a data-markdown-ignore class="headerlink" href="#verify-the-certificates" title="Permanent link">¶</a></h2>
 <p>Confirm the Secrets exist and carry the three expected keys:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">','</span><span class="w"> </span><span class="s1">'\n'</span>
 </code></pre></div>
@@ -7172,8 +7172,8 @@ X509v3 Extended Key Usage:
 </code></pre></div>
 <p>The subject shows <code>O=PBM</code>, and the extended key usage is <code>TLS Web Client Authentication</code> only.</p>
 </details>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
-<h3 id="the-cluster-stops-reconciling-after-you-provide-your-own-certificates">The cluster stops reconciling after you provide your own certificates<a class="headerlink" href="#the-cluster-stops-reconciling-after-you-provide-your-own-certificates" title="Permanent link">¶</a></h3>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h3 id="the-cluster-stops-reconciling-after-you-provide-your-own-certificates">The cluster stops reconciling after you provide your own certificates<a data-markdown-ignore class="headerlink" href="#the-cluster-stops-reconciling-after-you-provide-your-own-certificates" title="Permanent link">¶</a></h3>
 <p><strong>Symptom:</strong> the cluster is in the <code>error</code> state. The status message and the Operator log report:</p>
 <div class="no-copy highlight"><pre><span></span><code>TLS secrets handler: "PBM client TLS secret my-cluster-name-pbm is required when custom SSL secret my-cluster-name-ssl is provided and backups are enabled". Please create your TLS secret my-cluster-name-ssl manually or setup cert-manager correctly
 </code></pre></div>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -7212,22 +7212,22 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="restore-resource-options">Restore Resource options<a class="headerlink" href="#restore-resource-options" title="Permanent link">¶</a></h1>
+<h1 id="restore-resource-options">Restore Resource options<a data-markdown-ignore class="headerlink" href="#restore-resource-options" title="Permanent link">¶</a></h1>
 <p>A Restore resource is a Kubernetes object that tells the Operator how to restore your database from a specific backup. The <code>deploy/backup/restore.yaml</code> file is a template for creating restore resources. It defines the <code>PerconaServerMongoDBRestore</code> resource.</p>
 <p>This document describes all available options that you can use to customize a restore. </p>
-<h2 id="apiversion"><code>apiVersion</code><a class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
+<h2 id="apiversion"><code>apiVersion</code><a data-markdown-ignore class="headerlink" href="#apiversion" title="Permanent link">¶</a></h2>
 <p>Specifies the API version of the Custom Resource.
 <code>psmdb.percona.com</code> indicates the group, and <code>v1</code> is the version of the API.</p>
-<h2 id="kind"><code>kind</code><a class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
+<h2 id="kind"><code>kind</code><a data-markdown-ignore class="headerlink" href="#kind" title="Permanent link">¶</a></h2>
 <p>Defines the type of resource being created: <code>PerconaServerMongoDBRestore</code>.</p>
-<h2 id="metadata"><code>metadata</code><a class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
+<h2 id="metadata"><code>metadata</code><a data-markdown-ignore class="headerlink" href="#metadata" title="Permanent link">¶</a></h2>
 <p>The metadata part of the <code>deploy/backup/restore.yaml</code> contains metadata about the resource, such as its name and other attributes. It includes the following keys:</p>
 <ul>
 <li><code>name</code> - The name of the restore object used to identify it in your deployment. You use this name to track the restore operation status and view information about it.</li>
 </ul>
-<h2 id="spec"><code>spec</code><a class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
+<h2 id="spec"><code>spec</code><a data-markdown-ignore class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
 <p>This section includes the configuration of a restore resource.</p>
-<h3 id="clustername"><code>clusterName</code><a class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
+<h3 id="clustername"><code>clusterName</code><a data-markdown-ignore class="headerlink" href="#clustername" title="Permanent link">¶</a></h3>
 <p>Specifies the name of the MongoDB cluster to restore. </p>
 <table>
 <thead>
@@ -7243,7 +7243,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="storagename"><code>storageName</code><a class="headerlink" href="#storagename" title="Permanent link">¶</a></h3>
+<h3 id="storagename"><code>storageName</code><a data-markdown-ignore class="headerlink" href="#storagename" title="Permanent link">¶</a></h3>
 <p>Specifies the name of the storage where a backup is located. The storage name must match the name in the <code>backup.storages</code> subsection of the <code>deploy/cr.yaml</code> file. Use this option together with the <code>backupSource</code> option. For more information on the flow and restore steps, see <a href="backups-restore.html#approach-2-the-storage-is-defined-on-target">Restore from a backup on a new cluster</a></p>
 <table>
 <thead>
@@ -7259,7 +7259,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupname"><code>backupName</code><a class="headerlink" href="#backupname" title="Permanent link">¶</a></h3>
+<h3 id="backupname"><code>backupName</code><a data-markdown-ignore class="headerlink" href="#backupname" title="Permanent link">¶</a></h3>
 <p>Specifies the name of a backup to be used for a restore. This backup should be from the same cluster.</p>
 <table>
 <thead>
@@ -7275,9 +7275,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="the-selective-subsection">The <code>selective</code> subsection<a class="headerlink" href="#the-selective-subsection" title="Permanent link">¶</a></h2>
+<h2 id="the-selective-subsection">The <code>selective</code> subsection<a data-markdown-ignore class="headerlink" href="#the-selective-subsection" title="Permanent link">¶</a></h2>
 <p>Controls the selective restore, which enables you to restore a specific subset of namespaces - databases and collections. </p>
-<h3 id="selectivewithusersandroles"><code>selective.withUsersAndRoles</code><a class="headerlink" href="#selectivewithusersandroles" title="Permanent link">¶</a></h3>
+<h3 id="selectivewithusersandroles"><code>selective.withUsersAndRoles</code><a data-markdown-ignore class="headerlink" href="#selectivewithusersandroles" title="Permanent link">¶</a></h3>
 <p>Allows restoring specified custom databases with users and roles that were created against them. Read more about <a href="https://docs.percona.com/percona-backup-mongodb/features/selective-backup.html#restore-a-database-with-users-and-roles">Selective restore with users and roles <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> in PBM documentation.</p>
 <table>
 <thead>
@@ -7293,7 +7293,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="selectivenamespaces"><code>selective.namespaces</code><a class="headerlink" href="#selectivenamespaces" title="Permanent link">¶</a></h3>
+<h3 id="selectivenamespaces"><code>selective.namespaces</code><a data-markdown-ignore class="headerlink" href="#selectivenamespaces" title="Permanent link">¶</a></h3>
 <p>Specifies the list of namespaces to restore. The namespace has the format <code>&lt;db.collection&gt;</code></p>
 <table>
 <thead>
@@ -7309,7 +7309,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="selectivensfrom"><code>selective.nsFrom</code><a class="headerlink" href="#selectivensfrom" title="Permanent link">¶</a></h3>
+<h3 id="selectivensfrom"><code>selective.nsFrom</code><a data-markdown-ignore class="headerlink" href="#selectivensfrom" title="Permanent link">¶</a></h3>
 <p>Specifies the source namespace to restore from when remapping a namespace during a selective restore. The namespace has the format <code>&lt;db.collection&gt;</code>. Use it together with the <code>selective.nsTo</code> option: both must be set, and they must not be the same. Read more about <a href="backups-restore-new-name.html">restoring a collection under a different name</a>.</p>
 <table>
 <thead>
@@ -7325,7 +7325,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="selectivensto"><code>selective.nsTo</code><a class="headerlink" href="#selectivensto" title="Permanent link">¶</a></h3>
+<h3 id="selectivensto"><code>selective.nsTo</code><a data-markdown-ignore class="headerlink" href="#selectivensto" title="Permanent link">¶</a></h3>
 <p>Specifies the target namespace to restore to when remapping a namespace during a selective restore. The collection from <code>selective.nsFrom</code> is restored under this name. The namespace has the format <code>&lt;db.collection&gt;</code>. Use it together with the <code>selective.nsFrom</code> option: both must be set, and they must not be the same. Read more about <a href="backups-restore-new-name.html">restoring a collection under a different name</a>.</p>
 <table>
 <thead>
@@ -7341,7 +7341,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="replsetremapping"><code>replsetRemapping</code><a class="headerlink" href="#replsetremapping" title="Permanent link">¶</a></h2>
+<h2 id="replsetremapping"><code>replsetRemapping</code><a data-markdown-ignore class="headerlink" href="#replsetremapping" title="Permanent link">¶</a></h2>
 <p>Defines mapping between source and target replica set names during a restore. This should be a dictionary where each key is the replica set name from the source cluster, and the corresponding value is the desired replica set name in the target cluster. Read more about <a href="backups-restore.html#with-different-replica-set-names">restores to the cluster with different replica set names</a>.</p>
 <table>
 <thead>
@@ -7357,9 +7357,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="the-pitr-subsection">The <code>pitr</code> subsection<a class="headerlink" href="#the-pitr-subsection" title="Permanent link">¶</a></h2>
+<h2 id="the-pitr-subsection">The <code>pitr</code> subsection<a data-markdown-ignore class="headerlink" href="#the-pitr-subsection" title="Permanent link">¶</a></h2>
 <p>Controls how to make a point-in-time restore. Read more about <a href="backups-pitr-restore.html">restoring to a point in time</a>.</p>
-<h3 id="pitrtype"><code>pitr.type</code><a class="headerlink" href="#pitrtype" title="Permanent link">¶</a></h3>
+<h3 id="pitrtype"><code>pitr.type</code><a data-markdown-ignore class="headerlink" href="#pitrtype" title="Permanent link">¶</a></h3>
 <p>Specifies the type of a point-in-time restore. Available options:</p>
 <ul>
 <li><code>date</code> - restore to a specific date.</li>
@@ -7379,7 +7379,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="pitrdate"><code>pitr.date</code><a class="headerlink" href="#pitrdate" title="Permanent link">¶</a></h3>
+<h3 id="pitrdate"><code>pitr.date</code><a data-markdown-ignore class="headerlink" href="#pitrdate" title="Permanent link">¶</a></h3>
 <p>Specifies the timestamp for the restore in the datetime format <code>YYYY-MM-DD hh:mm:ss</code>. </p>
 <p>Use it together with the <code>type=date</code> option. </p>
 <table>
@@ -7396,9 +7396,9 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="the-backupsource-subsection">The <code>backupSource</code> subsection<a class="headerlink" href="#the-backupsource-subsection" title="Permanent link">¶</a></h2>
+<h2 id="the-backupsource-subsection">The <code>backupSource</code> subsection<a data-markdown-ignore class="headerlink" href="#the-backupsource-subsection" title="Permanent link">¶</a></h2>
 <p>Contains the configuration options to restore from a backup made in a different cluster, namespace, or Kubernetes environment. </p>
-<h3 id="backupsourcetype"><code>backupSource.type</code><a class="headerlink" href="#backupsourcetype" title="Permanent link">¶</a></h3>
+<h3 id="backupsourcetype"><code>backupSource.type</code><a data-markdown-ignore class="headerlink" href="#backupsourcetype" title="Permanent link">¶</a></h3>
 <p>Specifies the backup type. Available options: <code>logical</code>, <code>physical</code>, <code>incremental</code>, <code>external</code>.</p>
 <p>Use <code>external</code> when restoring from <a href="backups-pvc-usage.html#make-a-restore-to-a-new-cluster">PVC snapshot backups</a>.</p>
 <table>
@@ -7415,7 +7415,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsourcesnapshots"><code>backupSource.snapshots</code><a class="headerlink" href="#backupsourcesnapshots" title="Permanent link">¶</a></h3>
+<h3 id="backupsourcesnapshots"><code>backupSource.snapshots</code><a data-markdown-ignore class="headerlink" href="#backupsourcesnapshots" title="Permanent link">¶</a></h3>
 <p>Lists <code>VolumeSnapshot</code> objects to restore from when <code>backupSource.type</code> is <code>external</code>. Required for cross-cluster or manual snapshot restores when no <code>PerconaServerMongoDBBackup</code> exists in the target namespace.</p>
 <p>Each item includes:</p>
 <table>
@@ -7444,7 +7444,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">snapshotName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-snapshot-backup-rs0-0</span>
 </code></pre></div>
 <p>When you use <code>spec.backupName</code> instead, the Operator reads snapshots from the Backup resource <code>status.snapshots</code>.</p>
-<h3 id="backupsourcedestination"><code>backupSource.destination</code><a class="headerlink" href="#backupsourcedestination" title="Permanent link">¶</a></h3>
+<h3 id="backupsourcedestination"><code>backupSource.destination</code><a data-markdown-ignore class="headerlink" href="#backupsourcedestination" title="Permanent link">¶</a></h3>
 <p>Specifies the path to the backup on the storage.</p>
 <table>
 <thead>
@@ -7460,7 +7460,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3credentialssecret"><code>backupSource.s3.credentialsSecret</code><a class="headerlink" href="#backupsources3credentialssecret" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3credentialssecret"><code>backupSource.s3.credentialsSecret</code><a data-markdown-ignore class="headerlink" href="#backupsources3credentialssecret" title="Permanent link">¶</a></h3>
 <p>Specifies the Secrets object name with the credentials to access the storage with a backup. </p>
 <table>
 <thead>
@@ -7476,7 +7476,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3serversideencryptionkmskeyid"><code>backupSource.s3.serverSideEncryption.kmsKeyID</code><a class="headerlink" href="#backupsources3serversideencryptionkmskeyid" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3serversideencryptionkmskeyid"><code>backupSource.s3.serverSideEncryption.kmsKeyID</code><a data-markdown-ignore class="headerlink" href="#backupsources3serversideencryptionkmskeyid" title="Permanent link">¶</a></h3>
 <p>Specifies your customer-managed key stored in the AWS Key Management Service (AWS KMS). This key is used to encrypt backup data uploaded to S3 buckets if you don’t wish to use the default server-side encryption with Amazon S3 managed keys (SSE-S3)</p>
 <table>
 <thead>
@@ -7492,7 +7492,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3serversideencryptionssealgorithm"><code>backupSource.s3.serverSideEncryption.sseAlgorithm</code><a class="headerlink" href="#backupsources3serversideencryptionssealgorithm" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3serversideencryptionssealgorithm"><code>backupSource.s3.serverSideEncryption.sseAlgorithm</code><a data-markdown-ignore class="headerlink" href="#backupsources3serversideencryptionssealgorithm" title="Permanent link">¶</a></h3>
 <p>The encryption algorithm used to encrypt data</p>
 <table>
 <thead>
@@ -7508,7 +7508,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3serversideencryptionssecustomeralgorithm"><code>backupSource.s3.serverSideEncryption.sseCustomerAlgorithm</code><a class="headerlink" href="#backupsources3serversideencryptionssecustomeralgorithm" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3serversideencryptionssecustomeralgorithm"><code>backupSource.s3.serverSideEncryption.sseCustomerAlgorithm</code><a data-markdown-ignore class="headerlink" href="#backupsources3serversideencryptionssecustomeralgorithm" title="Permanent link">¶</a></h3>
 <p>The encryption algorithm used for server-side encryption with customer-provided keys (SSE-C).</p>
 <table>
 <thead>
@@ -7524,7 +7524,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3serversideencryptionssecustomerkey"><code>backupSource.s3.serverSideEncryption.sseCustomerKey</code><a class="headerlink" href="#backupsources3serversideencryptionssecustomerkey" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3serversideencryptionssecustomerkey"><code>backupSource.s3.serverSideEncryption.sseCustomerKey</code><a data-markdown-ignore class="headerlink" href="#backupsources3serversideencryptionssecustomerkey" title="Permanent link">¶</a></h3>
 <p>The customer-provided encryption key.</p>
 <table>
 <thead>
@@ -7540,7 +7540,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3region"><code>backupSource.s3.region</code><a class="headerlink" href="#backupsources3region" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3region"><code>backupSource.s3.region</code><a data-markdown-ignore class="headerlink" href="#backupsources3region" title="Permanent link">¶</a></h3>
 <p>The <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html">AWS region  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to use. Please note <strong>this option is mandatory</strong> for Amazon and all S3-compatible storages.</p>
 <table>
 <thead>
@@ -7556,7 +7556,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3bucket"><code>backupSource.s3.bucket</code><a class="headerlink" href="#backupsources3bucket" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3bucket"><code>backupSource.s3.bucket</code><a data-markdown-ignore class="headerlink" href="#backupsources3bucket" title="Permanent link">¶</a></h3>
 <p>The <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html">Amazon S3 bucket  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> name for backups.</p>
 <table>
 <thead>
@@ -7572,7 +7572,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3endpointurl"><code>backupSource.s3.endpointUrl</code><a class="headerlink" href="#backupsources3endpointurl" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3endpointurl"><code>backupSource.s3.endpointUrl</code><a data-markdown-ignore class="headerlink" href="#backupsources3endpointurl" title="Permanent link">¶</a></h3>
 <p>The  URL of the S3-compatible storage to be used (not needed for the original Amazon S3 cloud).</p>
 <table>
 <thead>
@@ -7588,7 +7588,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3prefix"><code>backupSource.s3.prefix</code><a class="headerlink" href="#backupsources3prefix" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3prefix"><code>backupSource.s3.prefix</code><a data-markdown-ignore class="headerlink" href="#backupsources3prefix" title="Permanent link">¶</a></h3>
 <p>The path to the data directory in the bucket. If undefined, backups are stored in the bucket’s root directory.</p>
 <table>
 <thead>
@@ -7604,7 +7604,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsourceazurecredentialssecret"><code>backupSource.azure.credentialsSecret</code><a class="headerlink" href="#backupsourceazurecredentialssecret" title="Permanent link">¶</a></h3>
+<h3 id="backupsourceazurecredentialssecret"><code>backupSource.azure.credentialsSecret</code><a data-markdown-ignore class="headerlink" href="#backupsourceazurecredentialssecret" title="Permanent link">¶</a></h3>
 <p>Specifies the Secrets object name with the credentials to access the Azure Blob storage with a backup. </p>
 <table>
 <thead>
@@ -7620,7 +7620,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsourceazureprefix"><code>backupSource.azure.prefix</code><a class="headerlink" href="#backupsourceazureprefix" title="Permanent link">¶</a></h3>
+<h3 id="backupsourceazureprefix"><code>backupSource.azure.prefix</code><a data-markdown-ignore class="headerlink" href="#backupsourceazureprefix" title="Permanent link">¶</a></h3>
 <p>The path to the data directory in the bucket. If undefined, backups are stored in the bucket’s root directory.</p>
 <table>
 <thead>
@@ -7636,7 +7636,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="backupsources3container"><code>backupSource.s3.container</code><a class="headerlink" href="#backupsources3container" title="Permanent link">¶</a></h3>
+<h3 id="backupsources3container"><code>backupSource.s3.container</code><a data-markdown-ignore class="headerlink" href="#backupsources3container" title="Permanent link">¶</a></h3>
 <p>The name of the storage container. See the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#container-names">naming conventions <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></p>
 <table>
 <thead>

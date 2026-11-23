@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6385,7 +6385,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="initial-troubleshooting">Initial troubleshooting<a class="headerlink" href="#initial-troubleshooting" title="Permanent link">¶</a></h1>
+<h1 id="initial-troubleshooting">Initial troubleshooting<a data-markdown-ignore class="headerlink" href="#initial-troubleshooting" title="Permanent link">¶</a></h1>
 <p>Percona Operator for MongoDB uses <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resources  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to manage options for the various components of the cluster.</p>
 <ul>
 <li>
@@ -6422,7 +6422,7 @@ perconaservermongodbs             psmdb              psmdb.percona.com/v1       
 </code></pre></div>
 </details>
 </div>
-<h2 id="check-the-pods">Check the Pods<a class="headerlink" href="#check-the-pods" title="Permanent link">¶</a></h2>
+<h2 id="check-the-pods">Check the Pods<a data-markdown-ignore class="headerlink" href="#check-the-pods" title="Permanent link">¶</a></h2>
 <p>If Custom Resource is not getting <code>Ready</code> status, it makes sense to check
 individual Pods. You can do it as follows:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods
@@ -6498,9 +6498,9 @@ Events:                      &lt;none&gt;
 </details>
 <p>This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.</p>
-<h2 id="check-logs">Check logs<a class="headerlink" href="#check-logs" title="Permanent link">¶</a></h2>
+<h2 id="check-logs">Check logs<a data-markdown-ignore class="headerlink" href="#check-logs" title="Permanent link">¶</a></h2>
 <p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the <a href="debug-logs.html">Check logs</a> section for more information about logs and how to check them.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="cr-statuses.html">Custom resource statuses</a></li>
 </ul>

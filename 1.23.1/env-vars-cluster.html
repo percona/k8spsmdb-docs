@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6668,9 +6668,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="cluster-component-environment-variables">Cluster component environment variables<a class="headerlink" href="#cluster-component-environment-variables" title="Permanent link">¶</a></h1>
+<h1 id="cluster-component-environment-variables">Cluster component environment variables<a data-markdown-ignore class="headerlink" href="#cluster-component-environment-variables" title="Permanent link">¶</a></h1>
 <p>The Operator sets specific environment variables on cluster components to pass service metadata, authentication details, and integration settings. Use this page as a reference for what is injected by default. If you want to add your own variables, see <a href="env-vars-custom.html">Define custom environment variables</a>.</p>
-<h2 id="mongodb-mongod-containers">MongoDB (<code>mongod</code>) containers<a class="headerlink" href="#mongodb-mongod-containers" title="Permanent link">¶</a></h2>
+<h2 id="mongodb-mongod-containers">MongoDB (<code>mongod</code>) containers<a data-markdown-ignore class="headerlink" href="#mongodb-mongod-containers" title="Permanent link">¶</a></h2>
 <p>These variables are injected into every MongoDB container (replica sets and config servers):</p>
 <table>
 <thead>
@@ -6702,7 +6702,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="mongos-containers-sharding"><code>mongos</code> containers (sharding)<a class="headerlink" href="#mongos-containers-sharding" title="Permanent link">¶</a></h2>
+<h2 id="mongos-containers-sharding"><code>mongos</code> containers (sharding)<a data-markdown-ignore class="headerlink" href="#mongos-containers-sharding" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6717,7 +6717,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="backup-agent-sidecar-pbm">Backup agent sidecar (PBM)<a class="headerlink" href="#backup-agent-sidecar-pbm" title="Permanent link">¶</a></h2>
+<h2 id="backup-agent-sidecar-pbm">Backup agent sidecar (PBM)<a data-markdown-ignore class="headerlink" href="#backup-agent-sidecar-pbm" title="Permanent link">¶</a></h2>
 <p>These variables are injected into the PBM backup agent sidecar:</p>
 <table>
 <thead>
@@ -6773,7 +6773,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="scheduled-backup-job">Scheduled backup job<a class="headerlink" href="#scheduled-backup-job" title="Permanent link">¶</a></h2>
+<h2 id="scheduled-backup-job">Scheduled backup job<a data-markdown-ignore class="headerlink" href="#scheduled-backup-job" title="Permanent link">¶</a></h2>
 <p>The scheduled backup job container gets the namespace so it can create backup objects:</p>
 <table>
 <thead>
@@ -6789,7 +6789,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="pmm-sidecar">PMM sidecar<a class="headerlink" href="#pmm-sidecar" title="Permanent link">¶</a></h2>
+<h2 id="pmm-sidecar">PMM sidecar<a data-markdown-ignore class="headerlink" href="#pmm-sidecar" title="Permanent link">¶</a></h2>
 <p>The Operator injects the following variables into the PMM3 sidecar:</p>
 <table>
 <thead>
@@ -6913,8 +6913,8 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="log-collector-sidecars">Log collector sidecars<a class="headerlink" href="#log-collector-sidecars" title="Permanent link">¶</a></h2>
-<h3 id="fluent-bit-logs">Fluent Bit (<code>logs</code>)<a class="headerlink" href="#fluent-bit-logs" title="Permanent link">¶</a></h3>
+<h2 id="log-collector-sidecars">Log collector sidecars<a data-markdown-ignore class="headerlink" href="#log-collector-sidecars" title="Permanent link">¶</a></h2>
+<h3 id="fluent-bit-logs">Fluent Bit (<code>logs</code>)<a data-markdown-ignore class="headerlink" href="#fluent-bit-logs" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -6937,7 +6937,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h3 id="logrotate-logrotate">Logrotate (<code>logrotate</code>)<a class="headerlink" href="#logrotate-logrotate" title="Permanent link">¶</a></h3>
+<h3 id="logrotate-logrotate">Logrotate (<code>logrotate</code>)<a data-markdown-ignore class="headerlink" href="#logrotate-logrotate" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>

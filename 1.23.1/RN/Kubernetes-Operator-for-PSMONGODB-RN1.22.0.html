@@ -24,7 +24,7 @@ Upgrade">
       
       
       <link rel="icon" href="../assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Upgrade">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -7141,11 +7141,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-for-mongodb-1220-2026-02-25">Percona Operator for MongoDB 1.22.0 (2026-02-25)<a class="headerlink" href="#percona-operator-for-mongodb-1220-2026-02-25" title="Permanent link">¶</a></h1>
+<h1 id="percona-operator-for-mongodb-1220-2026-02-25">Percona Operator for MongoDB 1.22.0 (2026-02-25)<a data-markdown-ignore class="headerlink" href="#percona-operator-for-mongodb-1220-2026-02-25" title="Permanent link">¶</a></h1>
 <p><a class="md-button" href="../quickstart.html">Get started with the Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a>
 <a class="md-button" href="../update.html">Upgrade <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="whats-new-at-a-glance">What’s new at a glance<a class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
-<h3 id="backup-and-restore">Backup and restore<a class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h3>
+<h2 id="whats-new-at-a-glance">What’s new at a glance<a data-markdown-ignore class="headerlink" href="#whats-new-at-a-glance" title="Permanent link">¶</a></h2>
+<h3 id="backup-and-restore">Backup and restore<a data-markdown-ignore class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#restore-to-a-cluster-with-different-replica-set-names">Restore into clusters with different replica set names using remapping</a></li>
 <li><a href="#configurable-timeout-for-pbm-to-start-backups">Configure a longer PBM startup timeout to prevent false backup failures</a></li>
@@ -7153,26 +7153,26 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="#use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services">Verify TLS communication for a S3-compatible storage with a private CA certificates</a></li>
 <li><a href="#cluster-readiness-now-reflects-pbm-state">Track PBM readiness via the new <code>PBMReady</code> status condition</a></li>
 </ul>
-<h3 id="operations">Operations<a class="headerlink" href="#operations" title="Permanent link">¶</a></h3>
+<h3 id="operations">Operations<a data-markdown-ignore class="headerlink" href="#operations" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#automatic-storage-resizing">Automatically resize PVCs based on usage thresholds</a></li>
 <li><a href="#configure-log-rotation-for-persistent-logs">Configure log rotation for persistent logs</a></li>
 <li><a href="#ability-to-define-custom-environment-variables">Define custom environment variables for <code>mongod</code>, <code>mongos</code>, and <code>logcollector</code></a></li>
 <li><a href="#hook-script-support">Run pre-start <code>hookScript</code> logic for <code>mongod</code>, <code>mongos</code>, and <code>pbm-agent</code></a></li>
 </ul>
-<h3 id="automation-and-integrations">Automation and integrations<a class="headerlink" href="#automation-and-integrations" title="Permanent link">¶</a></h3>
+<h3 id="automation-and-integrations">Automation and integrations<a data-markdown-ignore class="headerlink" href="#automation-and-integrations" title="Permanent link">¶</a></h3>
 <ul>
 <li><a href="#ensure-smooth-integration-with-service-meshes">Better service mesh compatibility with automatic <code>appProtocol: mongo</code> on services</a></li>
 <li><a href="#separate-crd-chart-for-helm-installations">Improved GitOps workflows via CRD upgrades from a dedicated Helm chart</a></li>
 <li><a href="#speed-up-development-or-testing-pipelines-by-disabling-authentication">Disable authentication for dev/test environments to speed up setup</a></li>
 <li><a href="#vault-integration-for-system-user-password-management">Integrate with HashCorp Vault for system users management</a></li>
 </ul>
-<h2 id="release-highlights">Release Highlights<a class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
-<h3 id="ensure-smooth-integration-with-service-meshes">Ensure smooth integration with service meshes<a class="headerlink" href="#ensure-smooth-integration-with-service-meshes" title="Permanent link">¶</a></h3>
+<h2 id="release-highlights">Release Highlights<a data-markdown-ignore class="headerlink" href="#release-highlights" title="Permanent link">¶</a></h2>
+<h3 id="ensure-smooth-integration-with-service-meshes">Ensure smooth integration with service meshes<a data-markdown-ignore class="headerlink" href="#ensure-smooth-integration-with-service-meshes" title="Permanent link">¶</a></h3>
 <p>The Operator now supports the Kubernetes <code>appProtocol</code> field and automatically sets the <code>mongo</code> application layer protocol on all services.</p>
 <p>For users running MongoDB with service meshes like Istio, this enhancement ensures that the mesh can correctly recognize and interpret MongoDB traffic. The result is reliable cluster formation and secure mutual TLS (mTLS) connections in Kubernetes environments.</p>
 <p>With this enhancement, you gain the full benefits of service meshes such as advanced traffic management, observability, and stronger security without manual configuration or workarounds.</p>
-<h3 id="restore-to-a-cluster-with-different-replica-set-names">Restore to a cluster with different replica set names<a class="headerlink" href="#restore-to-a-cluster-with-different-replica-set-names" title="Permanent link">¶</a></h3>
+<h3 id="restore-to-a-cluster-with-different-replica-set-names">Restore to a cluster with different replica set names<a data-markdown-ignore class="headerlink" href="#restore-to-a-cluster-with-different-replica-set-names" title="Permanent link">¶</a></h3>
 <p>You can now make physical and logical restores to clusters with different replica set names using the Operator. This feature builds on the <a href="https://docs.percona.com/percona-backup-mongodb/features/restore-remapping.html?h=remapp#restoring-into-a-cluster-replica-set-with-a-different-name">implementation in Percona Backup for MongoDB <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and is now embedded directly into the Operator.</p>
 <p>To make a restore, define source and target replica set mappings directly in your <code>PerconaServerMongoDBRestore</code> object:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
@@ -7189,7 +7189,7 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 <p>Define mappings as key-value pairs where the key is the source replica set name and the value is the target replica set name. Read more about how to set it up in the <a href="../backups-restore.html#with-different-replica-set-names">documentation</a>.</p>
 <p>This enhancement expands the number of environments where restores are possible, making recovery more flexible and reliable.</p>
-<h3 id="speed-up-development-or-testing-pipelines-by-disabling-authentication">Speed up development or testing pipelines by disabling authentication<a class="headerlink" href="#speed-up-development-or-testing-pipelines-by-disabling-authentication" title="Permanent link">¶</a></h3>
+<h3 id="speed-up-development-or-testing-pipelines-by-disabling-authentication">Speed up development or testing pipelines by disabling authentication<a data-markdown-ignore class="headerlink" href="#speed-up-development-or-testing-pipelines-by-disabling-authentication" title="Permanent link">¶</a></h3>
 <p>You can now disable authentication in Percona Server for MongoDB clusters managed by the Operator. This helps you:</p>
 <ul>
 <li>Simplify setup in local environments and speed up development</li>
@@ -7199,7 +7199,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>Disable authentication by adding <code>security.authorization: disabled</code> to your MongoDB component configuration in the Custom Resource. For sharded clusters, set this for each replica set, the config server replica set, and <code>mongos</code>. See the <a href="../auth-disable.html">documentation</a> for preconditions and step-by-step guidance.</p>
 <p>Note that disabling authentication poses security risk, that’s why use this feature with caution.</p>
-<h3 id="ability-to-define-custom-environment-variables">Ability to define custom environment variables<a class="headerlink" href="#ability-to-define-custom-environment-variables" title="Permanent link">¶</a></h3>
+<h3 id="ability-to-define-custom-environment-variables">Ability to define custom environment variables<a data-markdown-ignore class="headerlink" href="#ability-to-define-custom-environment-variables" title="Permanent link">¶</a></h3>
 <p>You can now use environment variables to parameterize and control database Pod behavior without hardcoding values in manifests.</p>
 <p>This is useful when you need to:</p>
 <ul>
@@ -7215,7 +7215,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>Custom environment variables make deployments flexible, reproducible, and environment-aware. Instead of maintaining separate manifests for each environment, you inject variables dynamically.</p>
 <p>See our <a href="../env-vars-cluster.html">documentation</a> on how to define custom environment variables.</p>
-<h3 id="separate-crd-chart-for-helm-installations">Separate CRD chart for Helm installations<a class="headerlink" href="#separate-crd-chart-for-helm-installations" title="Permanent link">¶</a></h3>
+<h3 id="separate-crd-chart-for-helm-installations">Separate CRD chart for Helm installations<a data-markdown-ignore class="headerlink" href="#separate-crd-chart-for-helm-installations" title="Permanent link">¶</a></h3>
 <p>By default all components for the Operator Deployment are installed from the same Helm repository. To prevent accidental CRD updates, Helm v3 doesn’t automatically update the CRDs during the upgrade, and you must update them manually, after you update the Operator deployment.</p>
 <p>Starting with version 1.22.0, the Operator has a separate <code>psmdb-operator-crds</code> chart for CRDs. This lets you:</p>
 <ul>
@@ -7225,7 +7225,7 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>You can use the CRD chart on new installs and add it to your upgrade workflow. See the <a href="../update-crd-helm.html">upgrade documentation</a> for step-by-step instructions.</p>
 <p>This change is fully compatible with the previous behavior, where CRDs are installed from the <code>crds/</code> folder of the main Helm chart. We keep this behavior as default for the next three releases to give you more time to adjust your workflows and update.</p>
-<h3 id="configure-log-rotation-for-persistent-logs">Configure log rotation for persistent logs<a class="headerlink" href="#configure-log-rotation-for-persistent-logs" title="Permanent link">¶</a></h3>
+<h3 id="configure-log-rotation-for-persistent-logs">Configure log rotation for persistent logs<a data-markdown-ignore class="headerlink" href="#configure-log-rotation-for-persistent-logs" title="Permanent link">¶</a></h3>
 <p>You can now customize log rotation for persistent logs. This helps you keep the right amount of data for troubleshooting or compliance, rotate additional files like audit logs, and schedule rotations to fit your operational windows.</p>
 <p>You can configure log rotation in these ways:</p>
 <ul>
@@ -7234,7 +7234,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Set a new rotation schedule</li>
 </ul>
 <p>See our <a href="../logrotate.html">documentation</a> for step-by-step instructions for each option.</p>
-<h3 id="configurable-timeout-for-pbm-to-start-backups">Configurable timeout for PBM to start backups<a class="headerlink" href="#configurable-timeout-for-pbm-to-start-backups" title="Permanent link">¶</a></h3>
+<h3 id="configurable-timeout-for-pbm-to-start-backups">Configurable timeout for PBM to start backups<a data-markdown-ignore class="headerlink" href="#configurable-timeout-for-pbm-to-start-backups" title="Permanent link">¶</a></h3>
 <p>You can now configure how long the Operator waits for PBM to report that a backup has begun. Instead of relying on a fixed timeout of 120 seconds, you can tune this value to match your cluster’s performance characteristics.</p>
 <p>This timeout is controlled by the <code>startingDeadlineSeconds</code> option in the Custom Resource.</p>
 <p>With this improvement, you:</p>
@@ -7244,7 +7244,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Get more predictable backup flows where PBM and the Operator stay in sync</li>
 <li>Enable reliable backups in large or memory-intensive clusters. Increasing both memory resources and the PBM startup timeout ensures PBM has enough resources and time to initialize.</li>
 </ul>
-<h3 id="support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages">Support of the <code>minio</code> storage type for backups to S3-compatible storages<a class="headerlink" href="#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages" title="Permanent link">¶</a></h3>
+<h3 id="support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages">Support of the <code>minio</code> storage type for backups to S3-compatible storages<a data-markdown-ignore class="headerlink" href="#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages" title="Permanent link">¶</a></h3>
 <p>The Operator now adds the <code>minio</code> storage type, aligning with <a href="https://docs.percona.com/percona-backup-mongodb/release-notes/2.12.0.html#native-minio-support-in-pbm">recent PBM changes</a>. The use of the <code>minio</code> storage type instructs PBM to use the native MinIO SDK to interact with MinIO and other S3-compatible storage services. This addition helps avoid connectivity and compatibility issues when S3-compatible services don’t support Signature Version 4 (SigV4) used in AWS SDK v2.</p>
 <p>If your S3-compatible storage shows connectivity issues or depends on older signing mechanisms, consider switching to the <code>minio</code> storage type.</p>
 <p>Adjust your Custom Resource configuration as follows:</p>
@@ -7260,7 +7260,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">secure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <p>The use of the <code>minio</code> storage type offers a more stable and straightforward configuration for custom S3 storage services. It also keeps your Operator setup aligned with PBM’s current behavior.</p>
-<h3 id="use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services">Use Private Certificate Authorities (CA) for TLS communication with S3-compatible storage services<a class="headerlink" href="#use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services" title="Permanent link">¶</a></h3>
+<h3 id="use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services">Use Private Certificate Authorities (CA) for TLS communication with S3-compatible storage services<a data-markdown-ignore class="headerlink" href="#use-private-certificate-authorities-ca-for-tls-communication-with-s3-compatible-storage-services" title="Permanent link">¶</a></h3>
 <p>You can now provide a Private Certificate Authority (CA) bundle to verify TLS communication with an S3-compatible storage service. This is essential for organizations utilizing internal PKI to secure backup and restore traffic.</p>
 <p>The configuration is straightforward: create the Secret that stores your private CA and certificates to authorize in the S3-compatible storage. Then reference this Secret and specify the CA certificate in the <code>caBundle</code> option in the Custom Resource. The Operator will verify TLS communication against it.</p>
 <p>Note that you must use the <code>minio</code> storage type for your S3-compatible storage services. Read more about this storage type in the <a href="#support-of-the-minio-storage-type-for-backups-to-s3-compatible-storages">Native MinIO support as a backup storage</a> section.</p>
@@ -7282,11 +7282,11 @@ window.addEventListener('afterprint', (event) => {
 <li>Confidence in backup and restore flows – every S3 interaction is properly verified.</li>
 </ul>
 <p>Read more about the use of private CA certificates in our <a href="../backups-storage-minio.html#configure-tls-verification-with-custom-certificates-for-s3-storage">documentation</a>.</p>
-<h3 id="hook-script-support">Hook Script support<a class="headerlink" href="#hook-script-support" title="Permanent link">¶</a></h3>
+<h3 id="hook-script-support">Hook Script support<a data-markdown-ignore class="headerlink" href="#hook-script-support" title="Permanent link">¶</a></h3>
 <p>A new <code>hookScript</code> option lets you run a custom shell script before <code>mongod</code>, <code>mongos</code>, or a <code>pbm-agent</code> starts, without maintaining custom images or modifying the Operator code. You can define the script inline or provide it via a ConfigMap. The script runs inside the container and can block startup if it exits with a non-zero status. See the <a href="../hookscript.html">documentation</a> for setup details.</p>
 <p><code>hookScript</code> is supported across all major components: replica set members, hidden, arbiter, and non-voting nodes, the config server replica set, <code>mongos</code> Pods, and <code>pbm-agent</code> containers.</p>
 <p>This feature is intended for environments that require additional startup logic. An example of such logic can be retrieving external secrets, enforcing security checks, adjusting configuration files, or registering nodes in external systems. It lets you adapt startup behavior while keeping the deployment fully managed by the Operator.</p>
-<h3 id="automatic-storage-resizing">Automatic storage resizing<a class="headerlink" href="#automatic-storage-resizing" title="Permanent link">¶</a></h3>
+<h3 id="automatic-storage-resizing">Automatic storage resizing<a data-markdown-ignore class="headerlink" href="#automatic-storage-resizing" title="Permanent link">¶</a></h3>
 <p>Starting with version 1.22.0, the Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. The Operator monitors storage usage and when it exceeds the defined threshold, triggers resizing until it reaches the maximum storage size. This gives you:</p>
 <ul>
 <li>Fewer outages from full disks because storage grows with demand</li>
@@ -7306,7 +7306,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">"10Gi"</span>
 </code></pre></div>
 <p>Learn more about the workflow and troubleshooting tips in our <a href="../scaling-storage-resize.html#automatic-storage-resizing">documentation</a>.</p>
-<h3 id="cluster-readiness-now-reflects-pbm-state">Cluster readiness now reflects PBM state<a class="headerlink" href="#cluster-readiness-now-reflects-pbm-state" title="Permanent link">¶</a></h3>
+<h3 id="cluster-readiness-now-reflects-pbm-state">Cluster readiness now reflects PBM state<a data-markdown-ignore class="headerlink" href="#cluster-readiness-now-reflects-pbm-state" title="Permanent link">¶</a></h3>
 <p>The <code>PerconaServerMongoDB</code> Custom Resource status now includes a new <code>PBMReady</code> condition. It provides a clear, stable signal that PBM has finished processing all configured storages, so automation tools can reliably trigger backups and other operations.</p>
 <p>To check the status, use either the <code>kubectl describe psmdb &lt;cluster-name&gt;</code> or <code>kubectl get psmdb &lt;cluster-name&gt; -o yaml</code> command.</p>
 <p>During initialization or configuration changes, the <code>PBMReady</code> condition is <code>false</code> and you clearly see the reason.</p>
@@ -7321,7 +7321,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">  </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PBMConfigurationIsUpToDate</span>
 <span class="w">  </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="s">"2025-12-24T09:06:40Z"</span>
 </code></pre></div>
-<h3 id="vault-integration-for-system-user-password-management">Vault integration for system user password management<a class="headerlink" href="#vault-integration-for-system-user-password-management" title="Permanent link">¶</a></h3>
+<h3 id="vault-integration-for-system-user-password-management">Vault integration for system user password management<a data-markdown-ignore class="headerlink" href="#vault-integration-for-system-user-password-management" title="Permanent link">¶</a></h3>
 <p>You can now integrate the Operator with HashiCorp Vault for system user password management. This allows organizations to centralize password management while keeping the Operator responsible for applying those passwords to the database.</p>
 <p>When this integration is enabled, the Operator authenticates to Vault using either the Kubernetes authentication method or a Vault token. It retrieves system user passwords during cluster creation and generates the corresponding Kubernetes Secret from this data. The Operator periodically checks Vault for password changes and updates the Secret when differences are detected. If Vault is temporarily unavailable or the Operator cannot retrieve the passwords, it logs the event and continues cluster reconciliation to ensure the cluster availability.</p>
 <p>Organizations benefit from this integration when they need:</p>
@@ -7334,26 +7334,26 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>Vault becomes the single source of truth, while the Operator ensures Percona Server for MongoDB always uses the correct credentials.</p>
 <p>Learn more about the workflow and the setup in our <a href="../system-users-vault.html">documentation</a>.</p>
-<h2 id="deprecation-rename-and-removal">Deprecation, rename and removal<a class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
-<h3 id="deprecated-support-for-percona-server-for-mongodb-60">Deprecated support for Percona Server for MongoDB 6.0<a class="headerlink" href="#deprecated-support-for-percona-server-for-mongodb-60" title="Permanent link">¶</a></h3>
+<h2 id="deprecation-rename-and-removal">Deprecation, rename and removal<a data-markdown-ignore class="headerlink" href="#deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
+<h3 id="deprecated-support-for-percona-server-for-mongodb-60">Deprecated support for Percona Server for MongoDB 6.0<a data-markdown-ignore class="headerlink" href="#deprecated-support-for-percona-server-for-mongodb-60" title="Permanent link">¶</a></h3>
 <p>The Operator deprecates the support of Percona Server for MongoDB 6.0 as this major version entered end-of-life stage. You can still run Percona Server for MongoDB 6.0 in the Operator and existing functionality remains compatible. However, we will no longer test new features and improvements against this version.</p>
 <p>Percona Server for MongoDB 6.0 will be removed from the Operator in version 1.24.0.</p>
-<h3 id="deprecated-support-for-pmm2">Deprecated support for PMM2<a class="headerlink" href="#deprecated-support-for-pmm2" title="Permanent link">¶</a></h3>
+<h3 id="deprecated-support-for-pmm2">Deprecated support for PMM2<a data-markdown-ignore class="headerlink" href="#deprecated-support-for-pmm2" title="Permanent link">¶</a></h3>
 <p>The Operator deprecates support for PMM2 as this version entered end-of-life stage. PMM2 remains available so you can still monitor the health of your database using this version. However, we encourage you to plan migration to PMM3 to enjoy all features and fixes that this version provides. See the <a href="https://docs.percona.com/percona-monitoring-and-management/3/pmm-upgrade/migrating_from_pmm_2.html">PMM upgrade <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> documentation for steps.</p>
 <p>The support for PMM2 will be dropped in the Operator in two releases. </p>
-<h3 id="deprecated-options">Deprecated options<a class="headerlink" href="#deprecated-options" title="Permanent link">¶</a></h3>
+<h3 id="deprecated-options">Deprecated options<a data-markdown-ignore class="headerlink" href="#deprecated-options" title="Permanent link">¶</a></h3>
 <p>These options are deprecated and will be removed in version 1.25.0:</p>
 <ul>
 <li><code>spec.enableVolumeExpansion</code>. This option remains working for backward compatibility but it will be removed in version 1.25.0. Use the <code>enableVolumeScaling</code> option under the <code>spec.storageScaling</code> subsection instead.</li>
 <li><code>spec.enableExternalVolumeAutoscaling</code>. This option remains working for backward compatibility but it will be removed in version 1.25.0. Use the <code>enableExternalAutoscaling</code> option under the <code>spec.storageScaling</code> subsection instead.</li>
 </ul>
 <p>After the upgrade, reconfigure your Custom Resource to use the new structure.</p>
-<h2 id="crd-changes">CRD Changes<a class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
+<h2 id="crd-changes">CRD Changes<a data-markdown-ignore class="headerlink" href="#crd-changes" title="Permanent link">¶</a></h2>
 <ul>
 <li>The <code>.spec.startingDeadlineSeconds</code> option has now a minimum value of <code>1</code> and the default value of <code>120</code></li>
 </ul>
-<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
-<h3 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
+<h2 id="changelog">Changelog<a data-markdown-ignore class="headerlink" href="#changelog" title="Permanent link">¶</a></h2>
+<h3 id="new-features">New Features<a data-markdown-ignore class="headerlink" href="#new-features" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1418">K8SPSMDB-1418</a>- Added the ability to load custom SSL certificates for backup operations to S3 storage. This enables secure communication with S3-compatible storage using the certificates approved and trusted by your company</p>
@@ -7374,7 +7374,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1548">K8SPSMDB-1548</a> Added the ability to specify custom environment variables for containers for cluster components via the Custom Resource. This provides more granular control over container configurations.</p>
 </li>
 </ul>
-<h3 id="improvements">Improvements<a class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
+<h3 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1062">K8SPSMDB-1062</a> - Added the <code>appProtocol</code> support to Service objects, improving compatibility with service meshes and ingress controllers that require explicit protocol definitions.</p>
@@ -7407,7 +7407,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1539">K8SPSMDB-1539</a> - Improved the Helm chart by adding a <code>namespaceOverride</code> field to the <code>values.yaml</code> file. This improvement allows users to explicitly configure the deployment namespace within their values file, providing greater flexibility for managing resources in environments where the target namespace differs from the default Helm installation namespace.</p>
 </li>
 </ul>
-<h3 id="bugs-fixed">Bugs Fixed<a class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h3>
+<h3 id="bugs-fixed">Bugs Fixed<a data-markdown-ignore class="headerlink" href="#bugs-fixed" title="Permanent link">¶</a></h3>
 <ul>
 <li>
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1208">K8SPSMDB-1208</a> - Fixed a deletion deadlock where clusters stuck in the “initializing” state (due to unschedulable pods) could not be removed from the namespace</p>
@@ -7470,7 +7470,7 @@ window.addEventListener('afterprint', (event) => {
 <p><a href="https://perconadev.atlassian.net/browse/K8SPSMDB-1538">K8SPSMDB-1538</a> - Fixed a template condition bug in the Helm chart that prevented arbiter affinity from being applied correctly. The logic now correctly checks for <code>arbiter.affinity</code> independently of the parent replica set configuration, ensuring that arbiters are scheduled on the intended nodes even when general replica set affinity is not defined.</p>
 </li>
 </ul>
-<h2 id="supported-software">Supported software<a class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
+<h2 id="supported-software">Supported software<a data-markdown-ignore class="headerlink" href="#supported-software" title="Permanent link">¶</a></h2>
 <p>The Operator was developed and tested with the following software:</p>
 <ul>
 <li>Percona Server for MongoDB 6.0.27-21, 7.0.30-16, and 8.0.19-7</li>
@@ -7481,7 +7481,7 @@ window.addEventListener('afterprint', (event) => {
 <li>LogCollector based on fluent-bit: 4.0.1-2</li>
 </ul>
 <p>Other options may also work but have not been tested.</p>
-<h2 id="supported-platforms">Supported platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
+<h2 id="supported-platforms">Supported platforms<a data-markdown-ignore class="headerlink" href="#supported-platforms" title="Permanent link">¶</a></h2>
 <p>Percona Operators are designed for compatibility with all <a href="https://www.cncf.io/training/certification/software-conformance/">CNCF-certified <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> Kubernetes distributions. Our release process includes targeted testing and validation on major cloud provider platforms and OpenShift, as detailed below:</p>
 <ul>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine (GKE) <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.32 - 1.33</li>
@@ -7491,7 +7491,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://github.com/kubernetes/minikube">Minikube <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> 1.38.0 based on Kubernetes v1.35.0</li>
 </ul>
 <p>This list only includes the platforms that the Percona Operators are specifically tested on as part of the release process. Other Kubernetes flavors and versions depend on the backward compatibility offered by Kubernetes itself.</p>
-<h2 id="percona-certified-images">Percona certified images<a class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
+<h2 id="percona-certified-images">Percona certified images<a data-markdown-ignore class="headerlink" href="#percona-certified-images" title="Permanent link">¶</a></h2>
 <p>Find Percona’s certified Docker images that you can use with the Percona Operator for MongoDB in the following table:</p>
 <table>
 <thead>

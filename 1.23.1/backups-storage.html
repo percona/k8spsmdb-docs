@@ -26,7 +26,7 @@ authenticate.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -143,7 +143,7 @@ authenticate.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6499,14 +6499,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-storage-for-backups">Configure storage for backups<a class="headerlink" href="#configure-storage-for-backups" title="Permanent link">¶</a></h1>
+<h1 id="configure-storage-for-backups">Configure storage for backups<a data-markdown-ignore class="headerlink" href="#configure-storage-for-backups" title="Permanent link">¶</a></h1>
 <p>Backup storage is defined in the <code>backup.storages</code> subsection of the Custom Resource, in the
 <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 configuration file. Each entry needs a <code>type</code>, the settings for that type, and a way to
 authenticate.</p>
 <p>This page helps you pick the <code>type</code> value and the authentication method. For what backups
 are and when to use each backup type, see <a href="backups.html">Backup and restore</a>.</p>
-<h2 id="anatomy-of-a-storage-entry">Anatomy of a storage entry<a class="headerlink" href="#anatomy-of-a-storage-entry" title="Permanent link">¶</a></h2>
+<h2 id="anatomy-of-a-storage-entry">Anatomy of a storage entry<a data-markdown-ignore class="headerlink" href="#anatomy-of-a-storage-entry" title="Permanent link">¶</a></h2>
 <p>Each entry under <code>backup.storages</code> is a named block. The name is how you refer to the
 storage everywhere else - in a backup task, in an on-demand backup, and in a restore.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">backup</span><span class="p">:</span>
@@ -6531,7 +6531,7 @@ storage everywhere else - in a backup task, in an on-demand backup, and in a res
   If you set it, you must include the same prefix when restoring from that storage -
   a missing prefix is a common cause of a restore that cannot find its backup.</li>
 </ul>
-<h2 id="choose-the-storage-type">Choose the storage type<a class="headerlink" href="#choose-the-storage-type" title="Permanent link">¶</a></h2>
+<h2 id="choose-the-storage-type">Choose the storage type<a data-markdown-ignore class="headerlink" href="#choose-the-storage-type" title="Permanent link">¶</a></h2>
 <p>Two of these need explaining, because the service you use does not always map to the type
 name you would expect:</p>
 <ul>
@@ -6582,7 +6582,7 @@ name you would expect:</p>
 <p class="admonition-title">Note</p>
 <p>The <code>minio</code> storage type requires Percona Backup for MongoDB 2.12.0 or later.</p>
 </div>
-<h2 id="choose-how-to-authenticate">Choose how to authenticate<a class="headerlink" href="#choose-how-to-authenticate" title="Permanent link">¶</a></h2>
+<h2 id="choose-how-to-authenticate">Choose how to authenticate<a data-markdown-ignore class="headerlink" href="#choose-how-to-authenticate" title="Permanent link">¶</a></h2>
 <p>Most storages read credentials from a <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes Secret  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 that you reference from the Custom Resource. On some cloud platforms you can instead use
 identity-based access, where the platform issues short-lived credentials to the Pod and
@@ -6648,7 +6648,7 @@ cluster from access keys to IRSA, remove <code>credentialsSecret</code> from the
 configuration - otherwise the Operator keeps using the old keys and the change appears
 to have no effect.</p>
 </div>
-<h2 id="verify-the-storage-works">Verify the storage works<a class="headerlink" href="#verify-the-storage-works" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-storage-works">Verify the storage works<a data-markdown-ignore class="headerlink" href="#verify-the-storage-works" title="Permanent link">¶</a></h2>
 <p>Storage problems surface as failed backups, not as errors when you apply the Custom
 Resource. Confirm the configuration by taking a backup and watching it finish:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
@@ -6657,7 +6657,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span clas
 <p>The backup must reach the <code>ready</code> state. A backup stuck in <code>running</code> or <code>waiting</code>, or one
 that lands in <code>error</code>, usually means the bucket name, the region, the endpoint, or the
 credentials are wrong. See <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
-<h2 id="storage-setup-guides">Storage setup guides<a class="headerlink" href="#storage-setup-guides" title="Permanent link">¶</a></h2>
+<h2 id="storage-setup-guides">Storage setup guides<a data-markdown-ignore class="headerlink" href="#storage-setup-guides" title="Permanent link">¶</a></h2>
 <p>Use the page for your storage type:</p>
 <ul>
 <li><a href="backups-storage-s3.html">Amazon S3 storage</a></li>
@@ -6668,7 +6668,7 @@ credentials are wrong. See <a href="debug-backup-restore.html">Troubleshoot back
 <li><a href="backups-storage-oci.html">Oracle Cloud Infrastructure Object Storage</a></li>
 <li><a href="backups-storage-filesystem.html">Remote file server</a></li>
 </ul>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-scheduled.html">Scheduled backup</a>
 <a class="md-button" href="backups-ondemand.html">On-demand backup</a></p>
 <hr>

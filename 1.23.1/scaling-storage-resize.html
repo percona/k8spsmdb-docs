@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6604,7 +6604,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="resize-storage">Resize storage<a class="headerlink" href="#resize-storage" title="Permanent link">¶</a></h1>
+<h1 id="resize-storage">Resize storage<a data-markdown-ignore class="headerlink" href="#resize-storage" title="Permanent link">¶</a></h1>
 <p>Kubernetes manages storage with the following components:</p>
 <ul>
 <li>a PersistentVolume (PV) - a segment of
@@ -6633,7 +6633,7 @@ To check if your storage supports the expansion capability, run the following co
 <p>Find exact details about
 PVCs and the supported volume types in <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims">Kubernetes
 documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="automatic-storage-resizing">Automatic storage resizing<a class="headerlink" href="#automatic-storage-resizing" title="Permanent link">¶</a></h2>
+<h2 id="automatic-storage-resizing">Automatic storage resizing<a data-markdown-ignore class="headerlink" href="#automatic-storage-resizing" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a></p>
 </div>
@@ -6725,7 +6725,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <p>The Operator also logs the same error with the <code>failed to check/resize PVC</code> message.</p>
 </details>
 <p>When the storage size reaches the limit, no further resizing is done and the Operator logs the <code>PVC already at maxSize</code> message. Reaching the limit is not an error, so the Operator doesn’t set the <code>lastError</code> field. You can either clean up the data or set a new limit based on your organization’s policies and requirements. For help with common issues, see <a href="debug-storage.html">Troubleshooting storage </a>.</p>
-<h2 id="storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a class="headerlink" href="#storage-resizing-with-volume-expansion-capability" title="Permanent link">¶</a></h2>
+<h2 id="storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a data-markdown-ignore class="headerlink" href="#storage-resizing-with-volume-expansion-capability" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html">1.16.0</a></p>
 </div>
@@ -6771,7 +6771,7 @@ options in the Custom Resource. </p>
 <li>updates the <code>.status.storageAutoscaling.&lt;PVC_NAME&gt;.resizeCount</code> field.</li>
 </ul>
 <p>After the resize finishes, the Operator deletes this annotation.</p>
-<h3 id="resize-mongos-log-storage">Resize mongos log storage<a class="headerlink" href="#resize-mongos-log-storage" title="Permanent link">¶</a></h3>
+<h3 id="resize-mongos-log-storage">Resize mongos log storage<a data-markdown-ignore class="headerlink" href="#resize-mongos-log-storage" title="Permanent link">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.html">1.23.1</a></p>
 </div>
@@ -6804,7 +6804,7 @@ options in the Custom Resource. </p>
 <p>The Operator resizes the existing <code>mongos</code> log PVCs in place. The logs stored on them are preserved. To check the new size, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="manual-scaling-without-volume-expansion-capability">Manual scaling without Volume Expansion capability<a class="headerlink" href="#manual-scaling-without-volume-expansion-capability" title="Permanent link">¶</a></h2>
+<h2 id="manual-scaling-without-volume-expansion-capability">Manual scaling without Volume Expansion capability<a data-markdown-ignore class="headerlink" href="#manual-scaling-without-volume-expansion-capability" title="Permanent link">¶</a></h2>
 <p>Manual scaling is the way to go if:</p>
 <ul>
 <li>your version of the Operator is older than 1.16.0,</li>
@@ -6888,10 +6888,10 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w">
 </li>
 </ol>
 <p>The storage size change takes some time. When it starts, the Operator automatically adds the <code>pvc-resize-in-progress</code> annotation to the <code>PerconaServerMongoDB</code> Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.</p>
-<h2 id="storage-resizing-with-an-external-autoscaler">Storage resizing with an external autoscaler<a class="headerlink" href="#storage-resizing-with-an-external-autoscaler" title="Permanent link">¶</a></h2>
+<h2 id="storage-resizing-with-an-external-autoscaler">Storage resizing with an external autoscaler<a data-markdown-ignore class="headerlink" href="#storage-resizing-with-an-external-autoscaler" title="Permanent link">¶</a></h2>
 <p>You can configure the Operator to use an external storage autoscaler instead of its own resizing logic. This ability may be useful for organizations needing centralized, advanced, or cross-application scaling policies.</p>
 <p>To use an external autoscaler, set the <code>spec.storageScaling.enableExternalAutoscaling</code> option to <code>true</code> in the Custom Resource manifest.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling-about.html">Scaling and storage</a></li>
 <li><a href="storage.html">Manage local storage</a></li>

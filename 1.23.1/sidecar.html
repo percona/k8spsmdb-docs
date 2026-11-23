@@ -25,7 +25,7 @@ monitoring solutions, etc.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ monitoring solutions, etc.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6606,7 +6606,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="using-sidecar-containers">Using sidecar containers<a class="headerlink" href="#using-sidecar-containers" title="Permanent link">¶</a></h1>
+<h1 id="using-sidecar-containers">Using sidecar containers<a data-markdown-ignore class="headerlink" href="#using-sidecar-containers" title="Permanent link">¶</a></h1>
 <p>The Operator allows you to deploy additional (so-called <em>sidecar</em>) containers
 to the Pod. You can use this feature to run debugging tools, some specific
 monitoring solutions, etc.</p>
@@ -6615,7 +6615,7 @@ monitoring solutions, etc.</p>
 <p>Custom sidecar containers <a href="https://kubernetes.io/docs/concepts/workloads/pods/#resource-sharing-and-communication">can easily access other components of your cluster  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
 Therefore they should be used carefully and by experienced users only.</p>
 </div>
-<h2 id="adding-a-sidecar-container">Adding a sidecar container<a class="headerlink" href="#adding-a-sidecar-container" title="Permanent link">¶</a></h2>
+<h2 id="adding-a-sidecar-container">Adding a sidecar container<a data-markdown-ignore class="headerlink" href="#adding-a-sidecar-container" title="Permanent link">¶</a></h2>
 <p>You can add sidecar containers to Percona Distribution for MongoDB Replica Set,
 Config Servers, and mongos Pods. Just use <code>sidecars</code> subsection in the
 <code>replsets</code>, <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> of the
@@ -6664,16 +6664,16 @@ rs-sidecar-0:
 ....
 </code></pre></div>
 </details>
-<h2 id="getting-shell-access-to-a-sidecar-container">Getting shell access to a sidecar container<a class="headerlink" href="#getting-shell-access-to-a-sidecar-container" title="Permanent link">¶</a></h2>
+<h2 id="getting-shell-access-to-a-sidecar-container">Getting shell access to a sidecar container<a data-markdown-ignore class="headerlink" href="#getting-shell-access-to-a-sidecar-container" title="Permanent link">¶</a></h2>
 <p>You can login to your sidecar container as follows:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-c<span class="w"> </span>rs-sidecar-0<span class="w"> </span>--<span class="w"> </span>sh
 /<span class="w"> </span><span class="c1">#</span>
 </code></pre></div>
-<h2 id="mount-volumes-into-sidecar-containers">Mount volumes into sidecar containers<a class="headerlink" href="#mount-volumes-into-sidecar-containers" title="Permanent link">¶</a></h2>
+<h2 id="mount-volumes-into-sidecar-containers">Mount volumes into sidecar containers<a data-markdown-ignore class="headerlink" href="#mount-volumes-into-sidecar-containers" title="Permanent link">¶</a></h2>
 <p>It is possible to mount volumes into sidecar containers.</p>
 <p>Following subsections describe different <a href="https://kubernetes.io/docs/concepts/storage/volumes/#volume-types">volume types  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>,
 which were tested with sidecar containers and are known to work. They allow either dynamically provisioning volumes for sidecar containers or mounting existing volumes.</p>
-<h3 id="persistent-volume">Persistent Volume<a class="headerlink" href="#persistent-volume" title="Permanent link">¶</a></h3>
+<h3 id="persistent-volume">Persistent Volume<a data-markdown-ignore class="headerlink" href="#persistent-volume" title="Permanent link">¶</a></h3>
 <p>You can use <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent volumes  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 when you need dynamically provisioned storage which doesn’t depend on the Pod
 lifecycle. To use such volume, you should <em>claim</em> durable storage with
@@ -6711,7 +6711,7 @@ support: <code>sharding.mongos.sidecarPVCs</code> option can be used if there is
 single mongos in deployment or when <code>ReadWriteMany/ReadOnlyMany</code>
 access modes are used (but these modes are available not in every storage).</p>
 </div>
-<h3 id="secret">Secret<a class="headerlink" href="#secret" title="Permanent link">¶</a></h3>
+<h3 id="secret">Secret<a data-markdown-ignore class="headerlink" href="#secret" title="Permanent link">¶</a></h3>
 <p>You can use a <a href="https://kubernetes.io/docs/concepts/storage/volumes/#secret">secret volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 to pass the information which needs additional protection (e.g. passwords), to
 the container. Secrets are stored with the Kubernetes API and mounted to the
@@ -6739,7 +6739,7 @@ and mounts it to the <code>rs-sidecar-0</code> container’s filesystem under th
 <p class="admonition-title">Note</p>
 <p>Don’t forget you need to <a href="https://kubernetes.io/docs/concepts/configuration/secret/">create a Secret Object  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> before you can use it.</p>
 </div>
-<h3 id="configmap">configMap<a class="headerlink" href="#configmap" title="Permanent link">¶</a></h3>
+<h3 id="configmap">configMap<a data-markdown-ignore class="headerlink" href="#configmap" title="Permanent link">¶</a></h3>
 <p>You can use a <a href="https://kubernetes.io/docs/concepts/storage/volumes/#configmap">configMap volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 to pass some configuration data to the container. Secrets are stored with the
 Kubernetes API and mounted to the container as RAM-stored files.</p>

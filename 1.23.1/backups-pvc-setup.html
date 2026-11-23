@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6632,14 +6632,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="configure-pvc-snapshots">Configure PVC snapshots<a class="headerlink" href="#configure-pvc-snapshots" title="Permanent link">¶</a></h1>
+<h1 id="configure-pvc-snapshots">Configure PVC snapshots<a data-markdown-ignore class="headerlink" href="#configure-pvc-snapshots" title="Permanent link">¶</a></h1>
 <p>This guide provides step-by-step instructions for configuring and using Persistent Volume Claim (PVC) Snapshots with Percona Operator for MongoDB.</p>
 <p>For when to use snapshots compared with other backup types, see <a href="backups.html#backup-types">Backup types</a>. For requirements, see <a href="backups-pvc-snapshots.html">PVC snapshots</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Amazon EKS users</p>
 <p>If you run your cluster on Amazon EKS, refer to the <a href="#add-a-volumesnapshotclass-on-eks">Add a VolumeSnapshotClass on EKS</a> section. EKS requires specific addons, a <code>gp3</code> storage class, and a matching <code>VolumeSnapshotClass</code> before you can use PVC snapshots.</p>
 </div>
-<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
+<h2 id="requirements">Requirements<a data-markdown-ignore class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
 <p>Your environment must satisfy the following before PVC snapshots work at all:</p>
 <ol>
 <li>
@@ -6673,7 +6673,7 @@ window.addEventListener('afterprint', (event) => {
 <p>To use PVC snapshots, you must run the Operator version 1.23.0 or later.</p>
 </li>
 </ol>
-<h2 id="prepare-your-environment">Prepare your environment<a class="headerlink" href="#prepare-your-environment" title="Permanent link">¶</a></h2>
+<h2 id="prepare-your-environment">Prepare your environment<a data-markdown-ignore class="headerlink" href="#prepare-your-environment" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Clone the Operator repository to be able to edit manifests:</p>
@@ -6687,12 +6687,12 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </li>
 </ol>
-<h2 id="add-a-volumesnapshotclass">Add a VolumeSnapshotClass<a class="headerlink" href="#add-a-volumesnapshotclass" title="Permanent link">¶</a></h2>
+<h2 id="add-a-volumesnapshotclass">Add a VolumeSnapshotClass<a data-markdown-ignore class="headerlink" href="#add-a-volumesnapshotclass" title="Permanent link">¶</a></h2>
 <p>If your cluster has no suitable <code>VolumeSnapshotClass</code>, create one for your platform.</p>
 <ol>
 <li>
 <p>Create a VolumeSnapshotClass configuration file with the following configuration:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Google Kubernetes Engine (GKE)</label><label for="__tabbed_1_2">Azure Kubernetes Service (AKS)</label><label for="__tabbed_1_3">OpenShift</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Google Kubernetes Engine (GKE)</label><label for="__tabbed_1_2">Azure Kubernetes Service (AKS)</label><label for="__tabbed_1_3">OpenShift</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">volume-snapshot-class.yaml</span><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot.storage.k8s.io/v1</span>
@@ -6741,7 +6741,7 @@ gke-snapshot-class   pd.csi.storage.gke.io   Delete           42s
 </details>
 </li>
 </ol>
-<h3 id="add-a-volumesnapshotclass-on-eks">Add a VolumeSnapshotClass on EKS<a class="headerlink" href="#add-a-volumesnapshotclass-on-eks" title="Permanent link">¶</a></h3>
+<h3 id="add-a-volumesnapshotclass-on-eks">Add a VolumeSnapshotClass on EKS<a data-markdown-ignore class="headerlink" href="#add-a-volumesnapshotclass-on-eks" title="Permanent link">¶</a></h3>
 <ol>
 <li>
 <p>Before you start, ensure you have the following:</p>
@@ -6753,7 +6753,7 @@ gke-snapshot-class   pd.csi.storage.gke.io   Delete           42s
 </li>
 <li>
 <p>Enable required EKS addons. EKS requires two addons for volume snapshots: the Amazon EBS CSI driver and the snapshot controller. You can enable them when you create the cluster or add them to an existing cluster.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">At cluster creation</label><label for="__tabbed_2_2">On existing cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">At cluster creation</label><label for="__tabbed_2_2">On existing cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>If you deploy the cluster with <code>eksctl</code> or a similar tool, include these addons in your cluster configuration:</p>
@@ -6827,7 +6827,7 @@ aws<span class="w"> </span>eks<span class="w"> </span>create-addon<span class="w
 </details>
 </li>
 </ol>
-<h2 id="verify-the-setup">Verify the setup<a class="headerlink" href="#verify-the-setup" title="Permanent link">¶</a></h2>
+<h2 id="verify-the-setup">Verify the setup<a data-markdown-ignore class="headerlink" href="#verify-the-setup" title="Permanent link">¶</a></h2>
 <p>Confirm the <code>VolumeSnapshotClass</code> exists and names the CSI driver your storage class uses:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>volumesnapshotclass
 </code></pre></div>
@@ -6837,7 +6837,7 @@ aws<span class="w"> </span>eks<span class="w"> </span>create-addon<span class="w
 <p>The backup must reach the <code>ready</code> state. A backup that fails here usually means the
 <code>VolumeSnapshotClass</code> name in the task does not match one returned above, or the driver does
 not match the one behind the volumes.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-pvc-usage.html">Use PVC snapshots for backups and restores</a></p>
 <hr>
 <div class="md-source-file">

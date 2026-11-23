@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6598,17 +6598,17 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-multi-cluster-and-multi-region-percona-operator-for-mongodb-deployments">About multi-cluster and multi-region Percona Operator for MongoDB deployments<a class="headerlink" href="#about-multi-cluster-and-multi-region-percona-operator-for-mongodb-deployments" title="Permanent link">¶</a></h1>
+<h1 id="about-multi-cluster-and-multi-region-percona-operator-for-mongodb-deployments">About multi-cluster and multi-region Percona Operator for MongoDB deployments<a data-markdown-ignore class="headerlink" href="#about-multi-cluster-and-multi-region-percona-operator-for-mongodb-deployments" title="Permanent link">¶</a></h1>
 <p>MongoDB is built for distributed resilience — and Percona Operator for MongoDB unlocks that power across clusters and regions. </p>
 <p>This section introduces two powerful deployment models — <strong>multi-cluster</strong> and <strong>multi-region</strong>. It also explains how to configure cross-site replication using the Operator. You’ll learn how to structure your clusters, understand the roles of Main and Replica sites, and set up secure, synchronized Percona Server for MongoDB clusters across environments with the Operator.</p>
-<h2 id="deployment-models-multi-cluster-vs-multi-region">Deployment models: Multi-cluster vs Multi-region<a class="headerlink" href="#deployment-models-multi-cluster-vs-multi-region" title="Permanent link">¶</a></h2>
+<h2 id="deployment-models-multi-cluster-vs-multi-region">Deployment models: Multi-cluster vs Multi-region<a data-markdown-ignore class="headerlink" href="#deployment-models-multi-cluster-vs-multi-region" title="Permanent link">¶</a></h2>
 <p>At a glance, both models involve running Percona Server for MongoDB nodes across multiple environments. But their goals, scope, and setup differ.</p>
 <ul>
 <li><strong>Multi-cluster</strong> deployments span multiple Kubernetes clusters, typically within the same cloud provider or region. This model is ideal for high availability, staging/production isolation, or cluster migration.</li>
 <li><strong>Multi-region</strong> deployments extend MongoDB across geographically distributed data centers or cloud regions. This setup supports disaster recovery, latency optimization, and jurisdictional data control.</li>
 </ul>
 <p>While the underlying mechanics such as replica sets, TLS, and service exposure are similar, multi-region deployments introduce additional complexity around DNS, network reachability, and manual configuration.</p>
-<h3 id="cross-site-replication">Cross-site replication<a class="headerlink" href="#cross-site-replication" title="Permanent link">¶</a></h3>
+<h3 id="cross-site-replication">Cross-site replication<a data-markdown-ignore class="headerlink" href="#cross-site-replication" title="Permanent link">¶</a></h3>
 <p>To maintain the same set of data in clusters within multi-cluster or multi-region deployment, the Operator uses the <strong>cross-site replication</strong>. This means that one cluster is the Main site and another one(s) - the Replica site(s).</p>
 <p>The following diagram shows how the data is replicated between the sites.</p>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/replication-pods.svg" data-desc-position="bottom"><img alt="image" src="assets/images/replication-pods.svg"></a></p>
@@ -6617,14 +6617,14 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Replica site</strong>: These are secondary clusters that host MongoDB nodes and replicate data from the Main site. The Operator deploys this site in passive mode and doesn’t control the replica set configuration there. The passive mode is set by the <code>unmanaged: true</code> flag in the Custom Resource.</li>
 </ul>
 <p>This separation ensures consistency and avoids conflicts when managing distributed deployments.</p>
-<h3 id="voting-members-across-sites">Voting members across sites<a class="headerlink" href="#voting-members-across-sites" title="Permanent link">¶</a></h3>
+<h3 id="voting-members-across-sites">Voting members across sites<a data-markdown-ignore class="headerlink" href="#voting-members-across-sites" title="Permanent link">¶</a></h3>
 <p>MongoDB needs an <strong>odd number of voting members</strong> in each replica set for reliable primary elections. When you interconnect Main and Replica sites, you typically add remote members through <code>replsets.externalNodes</code> and keep the total voter count odd. Common approaches:</p>
 <ul>
 <li>Add an even number of remote data-bearing members as voting, and one remote member as non-voting (<code>votes: 0</code>, <code>priority: 0</code>). The main <a href="replication-interconnect.html">Interconnect sites</a> guide uses this pattern.</li>
 <li>Add an <strong>external arbiter</strong> as a voting member (<code>arbiterOnly: true</code>, <code>votes: 1</code>, <code>priority: 0</code>). The arbiter stores no data and cannot become primary, but it participates in elections. This is useful for a Primary-Secondary-Arbiter (PSA) layout distributed across data centers, or for two data-bearing sites plus a third arbiter site.</li>
 </ul>
 <p>For a full example that deploys two data-bearing clusters and an arbiter site, then registers the arbiter on the Main site, see <a href="replication-multi-dc.html">Splitting a replica set across multiple data centers</a>.</p>
-<h2 id="why-to-use-multi-cluster-or-multi-region">Why to use multi-cluster or multi-region?<a class="headerlink" href="#why-to-use-multi-cluster-or-multi-region" title="Permanent link">¶</a></h2>
+<h2 id="why-to-use-multi-cluster-or-multi-region">Why to use multi-cluster or multi-region?<a data-markdown-ignore class="headerlink" href="#why-to-use-multi-cluster-or-multi-region" title="Permanent link">¶</a></h2>
 <p>Choosing the right topology depends on your goals. Here are common use cases that you can achieve with these models:</p>
 <ul>
 <li>High availability - Spread MongoDB nodes across clusters to avoid single points of failure. If one cluster goes down, others remain operational.</li>
@@ -6634,7 +6634,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Geo-distributed applications - Serve users from the nearest region to reduce latency and improve experience.</li>
 <li>Compliance isolation - Keep data within specific jurisdictions to meet regulatory requirements.</li>
 </ul>
-<h2 id="choose-a-path">Choose a path<a class="headerlink" href="#choose-a-path" title="Permanent link">¶</a></h2>
+<h2 id="choose-a-path">Choose a path<a data-markdown-ignore class="headerlink" href="#choose-a-path" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6669,7 +6669,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 </tbody>
 </table>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Setting <code>clusterServiceDNSMode</code> to <code>ServiceMesh</code> cannot be combined with multi-cluster
   Services - the two are mutually exclusive.</li>
@@ -6679,7 +6679,7 @@ window.addEventListener('afterprint', (event) => {
   <a href="expose.html">Networking and external access</a> before you interconnect sites.</li>
 </ul>
 <p>For the full list, see <a href="limitations.html">Known limitations</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="replication-plan-deployment.html">Plan your deployment</a></p>
 <hr>
 <div class="md-source-file">

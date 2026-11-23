@@ -24,7 +24,7 @@ A Helm chart   is a package that contains all the necessary resources to deploy 
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ A Helm chart   is a package that contains all the necessary resources to deploy 
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6593,14 +6593,14 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="install-percona-server-for-mongodb-using-helm">Install Percona Server for MongoDB using Helm<a class="headerlink" href="#install-percona-server-for-mongodb-using-helm" title="Permanent link">¶</a></h1>
+<h1 id="install-percona-server-for-mongodb-using-helm">Install Percona Server for MongoDB using Helm<a data-markdown-ignore class="headerlink" href="#install-percona-server-for-mongodb-using-helm" title="Permanent link">¶</a></h1>
 <p><a href="https://github.com/helm/helm">Helm  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is the package manager for Kubernetes. 
 A Helm <a href="https://helm.sh/docs/topics/charts/">chart  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is a package that contains all the necessary resources to deploy an application to a Kubernetes cluster.</p>
 <p>You can find Percona Helm charts in <a href="https://github.com/percona/percona-helm-charts">percona/percona-helm-charts  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> repository in GitHub.</p>
-<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
+<h2 id="assumptions">Assumptions<a data-markdown-ignore class="headerlink" href="#assumptions" title="Permanent link">¶</a></h2>
 <p>This guide walks you through installing Percona Operator for MongoDB in a <a href="namespace-mode.html#single-namespace-deployment">single-namespace mode</a> with default parameters. </p>
 <p>For how to install Percona Operator for MongoDB in a multi-namespace mode, see <a href="cluster-wide.html">Install in a multi-namespace mode</a>. For how ton install Percona Operator for MongoDB with customized parameters, see <a href="custom-install.html">Install Percona Operator for MongoDB with customized parameters</a>.</p>
-<h2 id="what-you-will-install">What you will install<a class="headerlink" href="#what-you-will-install" title="Permanent link">¶</a></h2>
+<h2 id="what-you-will-install">What you will install<a data-markdown-ignore class="headerlink" href="#what-you-will-install" title="Permanent link">¶</a></h2>
 <ul>
 <li>
 <p>The Operator - the custom controller that uses the custom resources to install and manage the lifecycle of your database cluster. It consists of the following components:</p>
@@ -6615,7 +6615,7 @@ A Helm <a href="https://helm.sh/docs/topics/charts/">chart  <span class="twemoji
 </li>
 </ul>
 <p>The default Percona Server for MongoDB configuration includes three mongod, three mongos, and three config server instances with <a href="sharding.html">enabled sharding</a>.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="prerequisites">Prerequisites<a data-markdown-ignore class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
 <p>To install and deploy the Operator, you need the following:</p>
 <ol>
 <li><a href="https://docs.helm.sh/using_helm/#installing-helm">Helm v3  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
@@ -6633,7 +6633,7 @@ A Helm <a href="https://helm.sh/docs/topics/charts/">chart  <span class="twemoji
 </div>
 </li>
 </ol>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¶</a></h2>
+<h2 id="installation">Installation<a data-markdown-ignore class="headerlink" href="#installation" title="Permanent link">¶</a></h2>
 <p class="power-number">Here’s a sequence of steps to follow:</p>
 <ol>
 <li>
@@ -6714,9 +6714,9 @@ cluster1-psmdb-db   cluster1-psmdb-db-mongos.&lt;namespace&gt;.svc.cluster.local
 <p>You have successfully installed and deployed the Operator with default parameters. </p>
 <p>You can find in the documentation for the charts which <a href="https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-operator#installing-the-chart">Operator <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and <a href="https://github.com/percona/percona-helm-charts/tree/main/charts/psmdb-db#installing-the-chart">database <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> parameters can be customized during installation.
 Also, you can check the rest of the Operator’s parameters in the <a href="operator.html">Custom Resource options reference</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="connect.html">Connect and insert sample data <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <p><a href="custom-install.html">Install Percona Server for MongoDB with customized parameters</a></p>
 <hr>
 <div class="md-source-file">

@@ -24,7 +24,7 @@ previously, then insert some sample data so later steps have something to work w
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ previously, then insert some sample data so later steps have something to work w
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6499,10 +6499,10 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="2-connect-and-insert-sample-data">2. Connect and insert sample data<a class="headerlink" href="#2-connect-and-insert-sample-data" title="Permanent link">¶</a></h1>
+<h1 id="2-connect-and-insert-sample-data">2. Connect and insert sample data<a data-markdown-ignore class="headerlink" href="#2-connect-and-insert-sample-data" title="Permanent link">¶</a></h1>
 <p>In this tutorial, you connect to the Percona Server for MongoDB cluster you deployed
 previously, then insert some sample data so later steps have something to work with.</p>
-<h2 id="connect-to-the-database">Connect to the database<a class="headerlink" href="#connect-to-the-database" title="Permanent link">¶</a></h2>
+<h2 id="connect-to-the-database">Connect to the database<a data-markdown-ignore class="headerlink" href="#connect-to-the-database" title="Permanent link">¶</a></h2>
 <p class="power-number">The Operator creates a Secret with a ready-to-use connection string for the <code>databaseAdmin</code>
 user. Use it to connect to the database.</p>
 <ol>
@@ -6511,7 +6511,7 @@ user. Use it to connect to the database.</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>The connection string Secret is named <code>&lt;cluster_name&gt;-databaseadmin-conn-str</code>. The <code>&lt;cluster_name&gt;</code> value is the <a href="operator.html#metadata">name of your Percona Server for MongoDB</a>. The default variant is:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">via kubectl</label><label for="__tabbed_1_2">via Helm</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">via kubectl</label><label for="__tabbed_1_2">via Helm</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><code>my-cluster-name-databaseadmin-conn-str</code></p>
@@ -6524,7 +6524,7 @@ user. Use it to connect to the database.</p>
 </li>
 <li>
 <p>Retrieve the connection string. Replace <code>&lt;cluster-name&gt;</code> and <code>&lt;namespace&gt;</code> with your values:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">sharding is on</label><label for="__tabbed_2_2">sharding is off</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;cluster-name&gt;-databaseadmin-conn-str<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -6577,7 +6577,7 @@ user. Use it to connect to the database.</p>
 see <a href="get-a-cluster.html">Get started</a> (developer path) or <a href="connect-from-app.html">Connect your
 application</a>.</p>
 <p>Keep this shell open - you’ll use it in the next section.</p>
-<h2 id="insert-sample-data">Insert sample data<a class="headerlink" href="#insert-sample-data" title="Permanent link">¶</a></h2>
+<h2 id="insert-sample-data">Insert sample data<a data-markdown-ignore class="headerlink" href="#insert-sample-data" title="Permanent link">¶</a></h2>
 <p class="power-number">MongoDB provides <a href="https://www.mongodb.com/docs/v7.0/reference/insert-methods/">multiple methods for data insert  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. We will use a <code>For</code> loop to insert some sample documents.</p>
 <ol>
 <li>
@@ -6635,7 +6635,7 @@ twice), then delete the Pod:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>percona-client<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <p>Congratulations! You have connected to Percona Server for MongoDB and inserted sample data.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backup-tutorial.html">Take your first backup <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
 <hr>
 <div class="md-source-file">

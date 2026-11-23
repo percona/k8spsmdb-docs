@@ -24,7 +24,7 @@ Node.js, Python, and Go.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@ Node.js, Python, and Go.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6565,7 +6565,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="connection-examples">Connection examples<a class="headerlink" href="#connection-examples" title="Permanent link">¶</a></h1>
+<h1 id="connection-examples">Connection examples<a data-markdown-ignore class="headerlink" href="#connection-examples" title="Permanent link">¶</a></h1>
 <p>The examples below connect and run a simple operation with the official MongoDB drivers for
 Node.js, Python, and Go.</p>
 <p>None of them hardcodes a URI. Each one reads <code>MONGODB_URI</code> from the environment, so the same
@@ -6577,7 +6577,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
 </code></pre></div>
 <p>On a replica set cluster the key is <code>&lt;username&gt;_rs0_connectionString</code> instead. See
 <a href="connection-secrets.html#secret-names">Connection secrets</a> for the full key layout.</p>
-<h2 id="nodejs">Node.js<a class="headerlink" href="#nodejs" title="Permanent link">¶</a></h2>
+<h2 id="nodejs">Node.js<a data-markdown-ignore class="headerlink" href="#nodejs" title="Permanent link">¶</a></h2>
 <p>Use the <a href="https://www.mongodb.com/docs/drivers/node/current/">MongoDB Node.js driver</a>. Install it with:</p>
 <div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>mongodb
 </code></pre></div>
@@ -6601,7 +6601,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
 <span class="nx">run</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
 </code></pre></div>
 <p>The Operator’s replica set connection string already carries <code>replicaSet=rs0</code>, so the driver handles failover and reconnection without any extra code.</p>
-<h2 id="python">Python<a class="headerlink" href="#python" title="Permanent link">¶</a></h2>
+<h2 id="python">Python<a data-markdown-ignore class="headerlink" href="#python" title="Permanent link">¶</a></h2>
 <p>Use <a href="https://pymongo.readthedocs.io/">PyMongo</a>. Install it with:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pymongo
 </code></pre></div>
@@ -6620,7 +6620,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
     <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
 <p>Use the same URI format as in <a href="connect-from-app.html">Connect your application</a>. For replica set, include <code>replicaSet=rs0</code> in the URI; PyMongo will discover members and handle failover.</p>
-<h2 id="go">Go<a class="headerlink" href="#go" title="Permanent link">¶</a></h2>
+<h2 id="go">Go<a data-markdown-ignore class="headerlink" href="#go" title="Permanent link">¶</a></h2>
 <p>Use the <a href="https://www.mongodb.com/docs/drivers/go/current/">MongoDB Go driver</a>. Add the module:</p>
 <div class="highlight"><pre><span></span><code>go<span class="w"> </span>get<span class="w"> </span>go.mongodb.org/mongo-driver/mongo
 </code></pre></div>
@@ -6656,7 +6656,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
 <span class="p">}</span>
 </code></pre></div>
 <p>Use the same URI for replica set (with <code>replicaSet=rs0</code>); the driver handles replica set discovery and reconnection.</p>
-<h2 id="keep-the-uri-in-an-environment-variable-for-the-connection-string">Keep the URI in an environment variable for the connection string<a class="headerlink" href="#keep-the-uri-in-an-environment-variable-for-the-connection-string" title="Permanent link">¶</a></h2>
+<h2 id="keep-the-uri-in-an-environment-variable-for-the-connection-string">Keep the URI in an environment variable for the connection string<a data-markdown-ignore class="headerlink" href="#keep-the-uri-in-an-environment-variable-for-the-connection-string" title="Permanent link">¶</a></h2>
 <p>Do not hardcode the MongoDB URI or credentials in your code. Use environment variables (for example <code>MONGODB_URI</code> or <code>MONGODB_USER</code> and <code>MONGODB_PASSWORD</code>) so you can change them per environment (local, staging, production) without changing code.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">MONGODB_URI</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>&lt;connection-secret-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span><span class="se">\</span>
@@ -6664,9 +6664,9 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
 </code></pre></div>
 <p>Taking the value from the Secret rather than typing a URI keeps the host, the replica set name, and the TLS settings correct without you tracking them. Your app reads the variable at startup. In Kubernetes, you can inject it from a <a href="app-credentials.html#use-the-connection-string-in-your-app">Secret</a> or ConfigMap.</p>
 <p>Use a <a href="app-credentials.html">dedicated application user</a> rather than the database admin account, with only the roles it needs. That limits the damage if the credentials leak.</p>
-<h2 id="retries-and-connection-pooling">Retries and connection pooling<a class="headerlink" href="#retries-and-connection-pooling" title="Permanent link">¶</a></h2>
+<h2 id="retries-and-connection-pooling">Retries and connection pooling<a data-markdown-ignore class="headerlink" href="#retries-and-connection-pooling" title="Permanent link">¶</a></h2>
 <p>MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example <a href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/">Node.js</a>, <a href="https://www.mongodb.com/docs/languages/python/pymongo-driver/current/connect/connection-options/connection-pools/">Python</a>, <a href="https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/">Go</a>) for options like connection timeouts and retry logic.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="troubleshoot-connection.html">Troubleshoot connection issues <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
 <hr>
 <div class="md-source-file">

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6542,9 +6542,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="3-take-your-first-backup">3. Take your first backup<a class="headerlink" href="#3-take-your-first-backup" title="Permanent link">¶</a></h1>
+<h1 id="3-take-your-first-backup">3. Take your first backup<a data-markdown-ignore class="headerlink" href="#3-take-your-first-backup" title="Permanent link">¶</a></h1>
 <p>In this tutorial you will learn how to make a logical backup of your data manually. To learn more about backup types and storages, see <a href="backups.html">Backup and restore</a>.</p>
-<h2 id="considerations-and-prerequisites">Considerations and prerequisites<a class="headerlink" href="#considerations-and-prerequisites" title="Permanent link">¶</a></h2>
+<h2 id="considerations-and-prerequisites">Considerations and prerequisites<a data-markdown-ignore class="headerlink" href="#considerations-and-prerequisites" title="Permanent link">¶</a></h2>
 <p>In this tutorial we use the <a href="https://aws.amazon.com/s3/">AWS S3  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> as the backup storage. You need the following S3-related information:</p>
 <ul>
 <li>the name of the S3 storage</li>
@@ -6563,11 +6563,11 @@ backups. So, clone the percona-server-mongodb-operator repository:</p>
 <p>It is crucial to specify the right branch with <code>-b</code>
 option while cloning the code on this step. Please be careful.</p>
 </div>
-<h2 class="power-number" id="configure-backup-storage">Configure backup storage<a class="headerlink" href="#configure-backup-storage" title="Permanent link">¶</a></h2>
+<h2 class="power-number" id="configure-backup-storage">Configure backup storage<a data-markdown-ignore class="headerlink" href="#configure-backup-storage" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Encode S3 credentials, substituting <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> with your real values:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">on Linux</label><label for="__tabbed_1_2">on MacOS</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">on Linux</label><label for="__tabbed_1_2">on MacOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'AWS_ACCESS_KEY_ID'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--wrap<span class="o">=</span><span class="m">0</span>
@@ -6635,7 +6635,7 @@ option while cloning the code on this step. Please be careful.</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 class="power-number" id="make-a-logical-backup">Make a logical backup<a class="headerlink" href="#make-a-logical-backup" title="Permanent link">¶</a></h2>
+<h2 class="power-number" id="make-a-logical-backup">Make a logical backup<a data-markdown-ignore class="headerlink" href="#make-a-logical-backup" title="Permanent link">¶</a></h2>
 <ol>
 <li>
 <p>Before you start, verify the backup configuration in the <code>deploy/cr.yaml</code> file:</p>
@@ -6682,10 +6682,10 @@ option while cloning the code on this step. Please be careful.</p>
 <p>When the status changes to <code>Ready</code>, backup is made.</p>
 </li>
 </ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <p>If you face issues with the backup, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
 <p>Congratulations! You have made the first backup manually. Continue with <a href="backups-configure.html">Configure backups</a> to <a href="backups-pitr.html">enable point-in-time recovery</a>, <a href="backups-encryption.html">encrypt backups</a>, and <a href="backups-scheduled.html">run backups on a schedule</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="restore-tutorial.html">Restore sample data <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg></span></a></p>
 <hr>
 <div class="md-source-file">

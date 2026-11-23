@@ -1,0 +1,69 @@
+> For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
+
+# Design and architecture
+
+The Percona Operator for MongoDB automates deploying and operating Percona Server for MongoDB on Kubernetes. This document explains what components the Operator uses and how they work together to provide a highly available MongoDB database. See also [How the Operator works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html).
+
+## Components
+
+The Operator deploys and manages the following components:
+
+- **Percona Server for MongoDB** - a drop-in replacement for MongoDB Community Server with enterprise-grade features. Each replica set member runs as a `mongod` process in its own Pod. The Operator deploys these Pods via a StatefulSet so that each member has a stable network identity and a PersistentVolume for data. You can run one or more replica sets; in a sharded cluster, each shard is a replica set.
+- **Percona Backup for MongoDB (PBM)** - an open-source backup and restore solution for Percona Server for MongoDB, MongoDB Community Edition, and MongoDB Enterprise Advanced with guaranteed data consistency. When you [configure backup storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage.html), the Operator runs PBM as a [sidecar container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) in each database Pod. PBM performs logical or physical backups and uploads them to the configured storage. Read more about types, storages, restores, and point-in-time recovery in [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html).
+- **Percona ClusterSync for MongoDB (PCSM)** — enables real-time data migration and replication from an external MongoDB deployment (on-premises, Atlas, or another Kubernetes cluster) into the Operator-managed cluster. Deployed and managed by the Operator through the `PerconaServerMongoDBClusterSync` Custom Resource, PCSM runs as a separate Deployment and performs an initial sync followed by continuous change-stream replication. To learn more, see [Data migration](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html).
+- **Percona Search for MongoDB** (tech preview) - a search engine that adds full-text and vector search over your MongoDB data. When you enable search, the Operator deploys it as a dedicated `mongot` StatefulSet — one per data-bearing replica set or shard, each with its own PVC. Applications never connect to it directly: `mongod` (or `mongos` in a sharded cluster) forwards search queries to it over gRPC. Read more in [About full-text and vector search](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html).
+- **mongos** (sharded clusters only) - is the query router that acts as the entry point to the sharded cluster for client applications. Clients connect to mongos, which routes queries to the appropriate shard(s). The Operator deploys mongos via a StatefulSet; you control the number of mongos replicas in the custom resource.
+- **Config server replica set** (sharded clusters only) - a special replica set that stores cluster metadata and configuration. Config servers run a `mongod` process with a dedicated role; see [Sharding](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html) for configuration options.
+
+It can also include [sidecar containers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sidecar.html) that you can add to replica set, config server, or mongos Pods. Examples of sidecar containers are Percona Monitoring and Management (PMM) client for [monitoring](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/monitoring.html), or custom exporters and tools. The Operator supports multiple sidecars per Pod with configurable images, commands, and volume mounts.
+
+## Percona Server for MongoDB topology
+
+The design of the Operator is tied to the Percona Server for MongoDB replica set and sharded cluster model.
+
+### Replica set
+
+A replica set consists of one primary and one or more secondary nodes. The primary accepts writes; secondaries replicate data and can serve reads. The following diagram shows a simple replica set.
+
+Client applications connect to the replica set using a MongoDB driver and a connection string from the Operator’s [connection Secrets](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/connection-secrets.html). Prefer the `mongodb+srv` URI.
+
+### Sharded cluster
+
+When you need horizontal scaling, you enable sharding. Each shard is a replica set holding a subset of the data. The **mongos** query router is the entry point for clients; **config servers** store sharding metadata. A simplified view:
+
+For details, see [Percona Server for MongoDB Sharding](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html).
+
+By default, the Operator creates a three-member replica set - the minimal recommended configuration, providing high availability out of the box. See [Default database deployment](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html#default-database-deployment) for supported replica set sizes.
+
+## High availability
+
+High-availability is natively supported via Percona Server for MongoDB replica set or sharded cluster topology.
+
+The Operator adds to it through replica set topology, Pod distribution, automatic recovery, and client connectivity.
+
+### Pod distribution
+
+The Operator uses [node affinity and anti-affinity](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/constraints.html) to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can [tune affinity](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/constraints.html) rules in the `PerconaServerMongoDB` custom resource.
+
+### Automatic recovery
+
+- **Node or Pod failure** — Kubernetes reschedules the Pod on another healthy node. The mongod process starts and rejoins the replica set. If the failed node was the primary, the replica set holds an [election](https://www.mongodb.com/docs/manual/core/replica-set-elections/) and promotes a secondary to primary.
+- **Operator failure** — If the node running the Operator fails, Kubernetes restarts the Operator on another node. The Operator resumes watching PerconaServerMongoDB resources and reconciling state.
+
+The database cluster is deployed as a replica set with at least three nodes (or as a sharded cluster whose shards and config servers are replica sets), so there is no single point of failure for the data path.
+
+### Client connectivity
+
+The Operator creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the `databaseAdmin` user and for application users you declare in the Custom Resource. Use those URIs in your app instead of assembling hostnames and credentials yourself. The Operator refreshes the Secrets when topology, exposure, or passwords change.
+
+Prefer a **mongodb+srv** URI (the `_connectionStringSrv` key). MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the Services and DNS entries those URIs rely on. For connections from outside the cluster, use the `_connectionStringExposed` key after you [expose the Service](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html).
+
+See [Connection secrets](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/connection-secrets.html) for Secret names and keys.
+
+Note
+
+The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the [installation instructions](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/System-Requirements.html#installation-guidelines).
+
+## Next steps
+
+[Get started with the Operator](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/quickstart.html) [Compare with other solutions](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/compare.html)

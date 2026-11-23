@@ -25,7 +25,7 @@ which of them need planning before you deploy.">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ which of them need planning before you deploy.">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6600,11 +6600,11 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="about-scaling-and-storage">About scaling and storage<a class="headerlink" href="#about-scaling-and-storage" title="Permanent link">¶</a></h1>
+<h1 id="about-scaling-and-storage">About scaling and storage<a data-markdown-ignore class="headerlink" href="#about-scaling-and-storage" title="Permanent link">¶</a></h1>
 <p>A cluster rarely stays the size you first deployed it at. This page covers the three ways
 the Operator lets a cluster grow - more members, bigger members, and bigger disks - and
 which of them need planning before you deploy.</p>
-<h2 id="ways-to-scale">Ways to scale<a class="headerlink" href="#ways-to-scale" title="Permanent link">¶</a></h2>
+<h2 id="ways-to-scale">Ways to scale<a data-markdown-ignore class="headerlink" href="#ways-to-scale" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -6633,7 +6633,7 @@ which of them need planning before you deploy.</p>
 </table>
 <p>Horizontal and vertical scaling are covered in
 <a href="scaling.html">Horizontal and vertical scaling</a>.</p>
-<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">¶</a></h2>
+<h2 id="storage">Storage<a data-markdown-ignore class="headerlink" href="#storage" title="Permanent link">¶</a></h2>
 <p>Each data-bearing member gets its own persistent volume, defined in
 <code>replsets.volumeSpec</code>. The storage class you pick decides what you can do with that
 volume later, so it is worth choosing deliberately rather than falling back to the
@@ -6641,7 +6641,7 @@ cluster default: whether it can be <a href="scaling-storage-resize.html">resized
 whether it supports <a href="backups-pvc-snapshots.html">PVC snapshots</a> for backups. For
 node-local volumes instead of a cluster-provisioned PVC - <code>emptyDir</code> and <code>hostPath</code> -
 see <a href="storage.html">Manage local storage</a>.</p>
-<h3 id="growing-volumes">Growing volumes<a class="headerlink" href="#growing-volumes" title="Permanent link">¶</a></h3>
+<h3 id="growing-volumes">Growing volumes<a data-markdown-ignore class="headerlink" href="#growing-volumes" title="Permanent link">¶</a></h3>
 <p>Volume expansion is controlled by the <code>storageScaling</code> section of the Custom Resource:</p>
 <ul>
 <li><code>storageScaling.enableVolumeScaling</code> - lets the Operator resize PVCs when you change
@@ -6656,10 +6656,10 @@ resizing without Volume Expansion, and external autoscalers - see
 <a href="scaling-storage-resize.html">Resize storage</a>.</p>
 <p>Not every storage class supports expansion. If a resize does not take effect, start with
 <a href="debug-storage.html">Troubleshoot storage resizing</a>.</p>
-<h3 id="volume-attributes">Volume attributes<a class="headerlink" href="#volume-attributes" title="Permanent link">¶</a></h3>
+<h3 id="volume-attributes">Volume attributes<a data-markdown-ignore class="headerlink" href="#volume-attributes" title="Permanent link">¶</a></h3>
 <p>Some storage systems expose tunables such as IOPS and throughput through a
 <code>VolumeAttributesClass</code>. See <a href="volume-attributes-class.html">volume-attributes-class.md</a>.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
+<h2 id="limitations">Limitations<a data-markdown-ignore class="headerlink" href="#limitations" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Volumes cannot shrink.</strong> Kubernetes supports expanding a PersistentVolumeClaim, not
   reducing it, and the Operator rejects a spec that asks for less storage than is already
@@ -6671,14 +6671,14 @@ resizing without Volume Expansion, and external autoscalers - see
 <li>Scaling a replica set changes its voting membership. Review
   <a href="ha-topology.html">High availability and topology</a> before changing member counts.</li>
 </ul>
-<h2 id="verify-a-scaling-change">Verify a scaling change<a class="headerlink" href="#verify-a-scaling-change" title="Permanent link">¶</a></h2>
+<h2 id="verify-a-scaling-change">Verify a scaling change<a data-markdown-ignore class="headerlink" href="#verify-a-scaling-change" title="Permanent link">¶</a></h2>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>The cluster must return to <code>ready</code>, and PVC capacity must show the new size. A PVC stuck at
 the old size with the cluster otherwise healthy means the storage class did not accept the
 expansion - check the PVC events.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="scaling.html">Horizontal and vertical scaling</a></li>
 <li><a href="scaling-storage-resize.html">Resize storage</a></li>

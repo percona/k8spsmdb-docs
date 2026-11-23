@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6407,9 +6407,9 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="how-the-operator-works">How the Operator works<a class="headerlink" href="#how-the-operator-works" title="Permanent link">¶</a></h1>
+<h1 id="how-the-operator-works">How the Operator works<a data-markdown-ignore class="headerlink" href="#how-the-operator-works" title="Permanent link">¶</a></h1>
 <p>The Percona Operator for MongoDB is a custom controller. It is deployed as a Deployment. The Operator automates deployment and management of Percona Server for MongoDB on Kubernetes. This page explains how the Operator fits into Kubernetes and how it keeps your database cluster in the state you define.</p>
-<h2 id="extending-the-kubernetes-api">Extending the Kubernetes API<a class="headerlink" href="#extending-the-kubernetes-api" title="Permanent link">¶</a></h2>
+<h2 id="extending-the-kubernetes-api">Extending the Kubernetes API<a data-markdown-ignore class="headerlink" href="#extending-the-kubernetes-api" title="Permanent link">¶</a></h2>
 <p>The Operator extends the Kubernetes API with a set of Custom Resources: </p>
 <ul>
 <li><strong>PerconaServerMongoDB</strong> for the database cluster</li>
@@ -6427,14 +6427,14 @@ window.addEventListener('afterprint', (event) => {
 </ul>
 <p>These operations ensure that your actual database environment always matches your request.</p>
 <p>Each <code>PerconaServerMongoDB</code> object corresponds to a single Percona Server for MongoDB setup - either a replica set or a sharded cluster. The Operator does not manage MongoDB servers that were created without using these custom resources.</p>
-<h2 id="default-database-deployment">Default database deployment<a class="headerlink" href="#default-database-deployment" title="Permanent link">¶</a></h2>
+<h2 id="default-database-deployment">Default database deployment<a data-markdown-ignore class="headerlink" href="#default-database-deployment" title="Permanent link">¶</a></h2>
 <p>By default, the Operator creates Percona Server for MongoDB replica set with three members: one primary and the remaining secondaries. This is the minimal recommended configuration and it natively provides high availability. A replica set can have up to 50 members with the maximum of 7 voting members. Read more about these requirements in <a href="https://www.mongodb.com/docs/manual/core/replica-set-architectures/#strategies">MongoDB documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">¶</a></h2>
+<h2 id="storage">Storage<a data-markdown-ignore class="headerlink" href="#storage" title="Permanent link">¶</a></h2>
 <p>To keep your data safe and persistent, the Operator uses Kubernetes storage systems called Persistent Volumes (PVs) and PersistentVolumeClaims (PVCs). When you request storage for your database, a PVC automatically finds and attaches available storage for you. If a node fails, the Kubernetes storage system can move your data to another node, making sure your database remains available and your data stays protected. For local or special storage needs, see <a href="storage.html">Local Storage</a>.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p>Ready to get started? Continue to the <a href="quickstart.html">quickstart guide</a> to deploy your first cluster. Or, explore the <a href="architecture.html">architecture overview</a> to understand the inner workings of the Operator.</p>
 <p><a class="md-button" href="quickstart.html">Quickstart guide</a></p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="architecture.html">Design and architecture</a></li>
 <li><a href="features.html">Features and capabilities</a> </li>

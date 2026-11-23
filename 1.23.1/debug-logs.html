@@ -25,7 +25,7 @@ logs with the kubectl logs command:">
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -142,7 +142,7 @@ logs with the kubectl logs command:">
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6456,7 +6456,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="check-the-logs">Check the Logs<a class="headerlink" href="#check-the-logs" title="Permanent link">¶</a></h1>
+<h1 id="check-the-logs">Check the Logs<a data-markdown-ignore class="headerlink" href="#check-the-logs" title="Permanent link">¶</a></h1>
 <p>Logs provide valuable information. It makes sense to check the logs of the
 database Pods and the Operator Pod. Following flags are helpful for checking the
 logs with the <code>kubectl logs</code> command:</p>
@@ -6518,7 +6518,7 @@ logs with the <code>kubectl logs</code> command:</p>
 </code></pre></div>
 </li>
 </ul>
-<h2 id="changing-logs-representation">Changing logs representation<a class="headerlink" href="#changing-logs-representation" title="Permanent link">¶</a></h2>
+<h2 id="changing-logs-representation">Changing logs representation<a data-markdown-ignore class="headerlink" href="#changing-logs-representation" title="Permanent link">¶</a></h2>
 <p>You can also change the representation of logs: either use structured representation, which produces a parsing-friendly JSON, or use traditional console-friendly logging with specific level. Changing representation of logs is possible by editing the <code>deploy/operator.yml</code> file, which sets the following environment variables with self-speaking names and values:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>

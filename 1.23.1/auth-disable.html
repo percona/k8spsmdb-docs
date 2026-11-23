@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/operators_fav.svg">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.2">
     
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -140,7 +140,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"><div class="agent-hint" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap">For AI agents: an index of this documentation is at <a href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt" tabindex="-1">llms.txt</a>.</div>
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -6642,13 +6642,13 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="disable-authentication">Disable authentication<a class="headerlink" href="#disable-authentication" title="Permanent link">¶</a></h1>
+<h1 id="disable-authentication">Disable authentication<a data-markdown-ignore class="headerlink" href="#disable-authentication" title="Permanent link">¶</a></h1>
 <p>You can disable authentication in Percona Server for MongoDB clusters. This is useful for development, testing, or migration scenarios where you need access to the database without authentication.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Disabling authentication removes an important security layer. Only disable authentication in trusted environments, such as isolated development or testing clusters. Never disable authentication in production environments without proper security measures.</p>
 </div>
-<h2 id="when-to-disable-authentication">When to disable authentication<a class="headerlink" href="#when-to-disable-authentication" title="Permanent link">¶</a></h2>
+<h2 id="when-to-disable-authentication">When to disable authentication<a data-markdown-ignore class="headerlink" href="#when-to-disable-authentication" title="Permanent link">¶</a></h2>
 <p>You might want to disable authentication in the following scenarios:</p>
 <ul>
 <li><strong>Development and testing</strong>: When you need quick access to the database during development without managing user credentials</li>
@@ -6656,18 +6656,18 @@ window.addEventListener('afterprint', (event) => {
 <li><strong>Troubleshooting</strong>: When debugging authentication-related issues</li>
 <li><strong>Legacy application compatibility</strong>: When working with applications that don’t support MongoDB authentication</li>
 </ul>
-<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
+<h2 id="before-you-begin">Before you begin<a data-markdown-ignore class="headerlink" href="#before-you-begin" title="Permanent link">¶</a></h2>
 <p>Export your namespace so the commands below can use it. Replace <code>&lt;namespace&gt;</code> with your
 value:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 </code></pre></div>
-<h2 id="considerations">Considerations<a class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
+<h2 id="considerations">Considerations<a data-markdown-ignore class="headerlink" href="#considerations" title="Permanent link">¶</a></h2>
 <p>Consider the following for disabling authentication</p>
 <ul>
 <li>You must <a href="tls-disable.html">disable TLS encryption</a> first. You cannot disable authentication while TLS is enabled.</li>
 <li>You must disable authentication for each component of your Percona Server for MongoDB cluster separately. This mean you must modify the configuration for each shard and the config server replica set.</li>
 </ul>
-<h2 id="disable-authentication-for-a-new-cluster">Disable authentication for a new cluster<a class="headerlink" href="#disable-authentication-for-a-new-cluster" title="Permanent link">¶</a></h2>
+<h2 id="disable-authentication-for-a-new-cluster">Disable authentication for a new cluster<a data-markdown-ignore class="headerlink" href="#disable-authentication-for-a-new-cluster" title="Permanent link">¶</a></h2>
 <p>To disable authentication for a new cluster, follow these steps:</p>
 <ol>
 <li>
@@ -6682,7 +6682,7 @@ value:</p>
 <li>Set <code>unsafeFlags.tls</code> to <code>true</code></li>
 <li>Add the <code>security.authorization: disabled</code> option to the <code>configuration</code> section for each component</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Non-sharded cluster</label><label for="__tabbed_1_2">Sharded cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Non-sharded cluster</label><label for="__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
@@ -6741,7 +6741,7 @@ value:</p>
 </code></pre></div>
 </li>
 </ol>
-<h2 id="disable-authentication-for-a-running-cluster">Disable authentication for a running cluster<a class="headerlink" href="#disable-authentication-for-a-running-cluster" title="Permanent link">¶</a></h2>
+<h2 id="disable-authentication-for-a-running-cluster">Disable authentication for a running cluster<a data-markdown-ignore class="headerlink" href="#disable-authentication-for-a-running-cluster" title="Permanent link">¶</a></h2>
 <p>To disable authentication for a running cluster, you must <a href="pause.html">pause</a> the cluster, update the configuration, and then unpause it.</p>
 <ol>
 <li>
@@ -6774,7 +6774,7 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local:27017   pause
 </li>
 <li>
 <p>Disable TLS and authentication by setting the following configuration in the <code>deploy/cr.yaml</code> Custom Resource manifest:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Non-sharded cluster</label><label for="__tabbed_2_2">Sharded cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_2_1">Non-sharded cluster</label><label for="__tabbed_2_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nn">...</span>
@@ -6843,11 +6843,11 @@ my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local:27017   pause
 <p>Wait for the cluster to be resumed. Check the status with the <code>kubectl get psmdb</code> command.</p>
 </li>
 </ol>
-<h2 id="re-enable-authentication">Re-enable authentication<a class="headerlink" href="#re-enable-authentication" title="Permanent link">¶</a></h2>
+<h2 id="re-enable-authentication">Re-enable authentication<a data-markdown-ignore class="headerlink" href="#re-enable-authentication" title="Permanent link">¶</a></h2>
 <p>To re-enable authentication, repeat the same steps as for disabling it (pause the cluster, apply config changes, resume), but <strong>remove</strong> any <code>security.authorization: disabled</code> lines from your <code>deploy/cr.yaml</code> manifest. Optionally, set <code>tls.mode</code> back to your preferred state if you also want to re-enable TLS. Apply the manifest and unpause the cluster.</p>
-<h2 id="verify-authentication-is-disabled">Verify authentication is disabled<a class="headerlink" href="#verify-authentication-is-disabled" title="Permanent link">¶</a></h2>
+<h2 id="verify-authentication-is-disabled">Verify authentication is disabled<a data-markdown-ignore class="headerlink" href="#verify-authentication-is-disabled" title="Permanent link">¶</a></h2>
 <p>After disabling authentication, you can connect to the cluster without providing credentials:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Non-sharded cluster</label><label for="__tabbed_3_2">Sharded cluster</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_3_1">Non-sharded cluster</label><label for="__tabbed_3_2">Sharded cluster</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>mongosh<span class="w"> </span><span class="s2">"mongodb://my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017/?replicaSet=rs0"</span>
