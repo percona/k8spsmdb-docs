@@ -4610,6 +4610,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -4758,6 +4760,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot Pod scheduling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-oom.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot out-of-memory errors
   </span>
   
 
@@ -6669,6 +6691,8 @@ kubectl describe &lt;mongos-pod-name&gt;
 ```
 
 Check the information in the `Status` section. The `State` and `State Description` fields explain why the Pod reports errors.
+
+If a container restarts, check its `Last State`. The reason `OOMKilled` means that the container ran out of memory. See [Troubleshoot out-of-memory errors](debug-oom.md).
 </code></pre></div>
 <ol>
 <li>
@@ -6696,7 +6720,7 @@ Check the information in the `Status` section. The `State` and `State Descriptio
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
       
         <br>
         Created:

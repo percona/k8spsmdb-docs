@@ -4616,6 +4616,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4680,6 +4682,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot Pod scheduling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-oom.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot out-of-memory errors
   </span>
   
 
@@ -8451,10 +8473,21 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#debug-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Troubleshoot out-of-memory errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#debug-shell" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 Exec into the container
+        10.4 Exec into the container
       
     </span>
   </a>
@@ -8465,7 +8498,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-logs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.4 Check the logs
+        10.5 Check the logs
       
     </span>
   </a>
@@ -8476,7 +8509,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-backup-restore" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.5 Troubleshoot backups and restores
+        10.6 Troubleshoot backups and restores
       
     </span>
   </a>
@@ -8487,7 +8520,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-upgrade" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.6 Troubleshoot upgrades and crVersion
+        10.7 Troubleshoot upgrades and crVersion
       
     </span>
   </a>
@@ -8498,7 +8531,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-images" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.7 Special debug images
+        10.8 Special debug images
       
     </span>
   </a>
@@ -8509,7 +8542,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.8 Storage resizing
+        10.9 Storage resizing
       
     </span>
   </a>
@@ -21437,6 +21470,7 @@ section in the Custom Resource:</p>
 </code></pre></div>
 <p>Use our reference documentation for the <a href="#operator">Custom Resource options</a> 
 for more details about other components.</p>
+<p>If a container is restarted with <code>OOMKilled</code> after you lower a memory limit, or because the workload grew, see <a href="#debug-oom">Troubleshoot out-of-memory errors</a>.</p>
 <p><a name="scale-storage"></a></p>
 <p>Storage capacity is scaled separately - see <a href="#scaling-storage-resize">Resize storage</a>.</p>
 <h2 id="scaling-horizontal-scaling">Horizontal scaling<a class="headerlink" href="#scaling-horizontal-scaling" title="Permanent link">¶</a></h2>
@@ -30579,7 +30613,8 @@ percona-server-mongodb-operator-665cd69f9b-xg5dl   1/1     Running   0          
     impacted by the <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy">Container Restart Policy  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
     In an ideal world, the restart count would be zero, meaning no issues from
     the beginning. If the restart count exceeds zero, it may be reasonable to
-    check why it happens.</li>
+    check why it happens. If a container was killed because it ran out of memory
+    (<code>OOMKilled</code>), see <a href="#debug-oom">Troubleshoot out-of-memory errors</a>.</li>
 <li><code>AGE</code>: Indicates how long the Pod is running. Any abnormality in this value
     needs to be checked.</li>
 </ul>
@@ -30807,6 +30842,8 @@ kubectl describe &lt;mongos-pod-name&gt;
 ```
 
 Check the information in the `Status` section. The `State` and `State Description` fields explain why the Pod reports errors.
+
+If a container restarts, check its `Last State`. The reason `OOMKilled` means that the container ran out of memory. See [Troubleshoot out-of-memory errors](debug-oom.md).
 </code></pre></div>
 <ol>
 <li>
@@ -31181,7 +31218,348 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w">
 <li><a href="#constraints">Control Pod scheduling</a></li>
 <li><a href="#troubleshoot-operator">Troubleshoot the Operator installation issues</a></li>
 <li><a href="#debug-storage">Troubleshooting storage</a></li>
-</ul></body></html></section><section class="print-page" id="debug-shell" heading-number="10.3"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-oom" heading-number="10.3"><html><head>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
+        })
+        </script>
+        </head><body><h1 id="troubleshoot-out-of-memory-errors">Troubleshoot out-of-memory errors<a class="headerlink" href="#debug-oom-troubleshoot-out-of-memory-errors" title="Permanent link">¶</a></h1>
+<p>Use this page when a container restarts with <code>OOMKilled</code>, or when the <code>RESTARTS</code> count of a Pod keeps growing and you suspect memory.</p>
+<p>A container that uses more memory than is defined in its <code>resources.limits.memory</code> is killed by the Linux kernel. Kubernetes records the restart, but it doesn’t choose or prevent it. The Pod keeps its data and restarts in place. Every kill drops the connections to that container, and if the killed container is <code>mongod</code> on the primary, the replica set holds an election.</p>
+<p>The fix depends on which container was killed, so find that out first.</p>
+<h2 id="debug-oom-find-the-container-that-was-killed">Find the container that was killed<a class="headerlink" href="#debug-oom-find-the-container-that-was-killed" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>List the Pods. A killed container shows <code>OOMKilled</code> in the <code>STATUS</code> column for a moment, <code>READY</code> is lower than the number of containers, and <code>RESTARTS</code> grows:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>NAME                    READY   STATUS      RESTARTS      AGE
+my-cluster-name-rs0-0   3/3     Running     0             2m54s
+my-cluster-name-rs0-1   2/3     OOMKilled   1 (9s ago)    2m23s
+my-cluster-name-rs0-2   3/3     Running     1 (76s ago)   3m24s
+</code></pre></div>
+</details>
+</li>
+<li>
+<p>Show the reason for the last restart of every container in the Pod. The columns are the container name, the restart count, the reason and the exit code:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .status.containerStatuses[*]}{.name}{"\t"}{.restartCount}{"\t"}{.lastState.terminated.reason}{"\t"}{.lastState.terminated.exitCode}{"\n"}{end}'</span>
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>logrotate   0
+logs        0
+mongod      2   OOMKilled   137
+</code></pre></div>
+</details>
+<p>Kubernetes lists the containers in alphabetical order, not in the order of the Pod spec. In scripts, select a container by name, for example <code>{.status.containerStatuses[?(@.name=="mongod")].lastState.terminated.reason}</code>.</p>
+</li>
+<li>
+<p>To see the same information with more detail, describe the Pod and look at <code>Last State</code> under the container:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Last State:     Terminated
+  Reason:       OOMKilled
+  Exit Code:    137
+</code></pre></div>
+</details>
+</li>
+</ol>
+<p>Kubernetes doesn’t post an <code>OOMKilled</code> event, so <code>kubectl get events</code> doesn’t show the kill. The Operator doesn’t flag it either: <code>kubectl get psmdb</code> reports <code>initializing</code>. After a long crash loop, the status becomes <code>error</code> with a message such as <code>Error: pod my-cluster-name-cfg-0 is in CrashLoopBackOff state</code>.</p>
+<p>An <code>OOMKilled</code> reason can also result from node-wide memory exhaustion. Check node/kernel diagnostics and the affected container’s cgroup memory counters to distinguish node pressure from a container-limit OOM before increasing limits.</p>
+<p>Use the container name to choose the next step:</p>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What it means</th>
+<th>Go to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mongod</code> in a replica set Pod</td>
+<td>The database container was OOM-killed; check its memory limit and node memory pressure</td>
+<td><a href="#debug-oom-mongod-is-killed">mongod is killed</a></td>
+</tr>
+<tr>
+<td><code>mongos</code>, or <code>mongod</code> in a config server Pod</td>
+<td>A router or config server was OOM-killed; check its memory limit and node memory pressure</td>
+<td><a href="#debug-oom-mongos-and-config-server-pods">mongos and config server Pods</a></td>
+</tr>
+<tr>
+<td><code>backup-agent</code>, <code>pmm-client</code>, <code>logs</code>, or <code>logrotate</code></td>
+<td>A sidecar was OOM-killed; check its memory limit and node memory pressure</td>
+<td><a href="#debug-oom-sidecar-containers">Sidecar containers</a></td>
+</tr>
+<tr>
+<td>The Operator Pod</td>
+<td>The Operator was OOM-killed; check its memory limit and node memory pressure</td>
+<td><a href="#debug-oom-the-operator-is-killed">The Operator is killed</a></td>
+</tr>
+<tr>
+<td>Exit code <code>137</code> without <code>OOMKilled</code></td>
+<td>The process got <code>SIGKILL</code> for another reason, such as a failed liveness probe or a node shutdown</td>
+<td>Check the Pod events and the node, not the memory limit</td>
+</tr>
+<tr>
+<td>The Pod is <code>Evicted</code></td>
+<td>The node ran short of memory and the kubelet evicted the Pod. This is node pressure, not the container limit</td>
+<td>Check <code>kubectl describe node &lt;node-name&gt;</code> and the requests of the other Pods on the node</td>
+</tr>
+</tbody>
+</table>
+<h2 id="debug-oom-mongod-is-killed">mongod is killed<a class="headerlink" href="#debug-oom-mongod-is-killed" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> The memory limit of the <code>mongod</code> container has to hold two things: the WiredTiger cache, and everything else. The cache has a fixed size that the Operator calculates from the limit. Everything else is connections, query and aggregation memory, index builds, and memory that the allocator hasn’t returned to the system. It isn’t capped by the cache size, and it is what usually pushes the container over its limit.</p>
+<p>After the restart, the log of the new <code>mongod</code> process shows that the previous one didn’t shut down cleanly. The killed process writes nothing, because a kernel kill can’t be logged. With the log collector enabled (the default), <code>mongod</code> writes its log to a file, and the log of the <code>mongod</code> container is almost empty. Read the log from the <code>logs</code> container instead. See <a href="#debug-logs">Check logs</a> for more.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-c<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"Detected unclean shutdown"</span>
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>"msg":"Detected unclean shutdown - Lock file is not empty
+</code></pre></div>
+</details>
+<h3 id="debug-oom-check-the-memory-settings">Check the memory settings<a class="headerlink" href="#debug-oom-check-the-memory-settings" title="Permanent link">¶</a></h3>
+<p>Connect directly to the affected <code>mongod</code> member with <a href="#connection-secrets-open-an-interactive-shell-with-mongosh">mongosh</a>. Use a <code>mongodb://</code> URI with that Pod’s hostname and port as the only host, and add <code>directConnection=true</code>, retaining the authentication and TLS settings from the connection guide. Check how much memory <code>mongod</code> sees and how large its cache is:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">db</span><span class="p">.</span><span class="nx">hostInfo</span><span class="p">().</span><span class="nx">system</span><span class="p">.</span><span class="nx">memLimitMB</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">serverStatus</span><span class="p">().</span><span class="nx">wiredTiger</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="s2">"maximum bytes configured"</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1024</span>
+</code></pre></div>
+<p><code>memLimitMB</code> must match the <code>resources.limits.memory</code> of the container. If it shows the memory of the node, the component has no memory limit. In that case, the Operator doesn’t set the cache size, and <code>mongod</code> sizes the cache from the memory of the whole node, which is more than the Pod’s share of it. Set <code>resources.limits.memory</code> for the component.</p>
+<h3 id="debug-oom-how-the-operator-sizes-the-cache">How the Operator sizes the cache<a class="headerlink" href="#debug-oom-how-the-operator-sizes-the-cache" title="Permanent link">¶</a></h3>
+<p>The Operator starts <code>mongod</code> with a WiredTiger cache of <code>(memory limit − 1 GiB) × cacheSizeRatio</code>, with a minimum of 256 MiB. The <a href="#operator-replsetsstoragewiredtigerengineconfigcachesizeratio"><code>cacheSizeRatio</code></a> option is set for each replica set and defaults to <code>0.5</code>. Whatever the cache doesn’t take is all the room that <code>mongod</code> has for everything else:</p>
+<table>
+<thead>
+<tr>
+<th>Memory limit</th>
+<th><code>cacheSizeRatio</code></th>
+<th>WiredTiger cache</th>
+<th>Left for everything else</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1Gi</td>
+<td>0.5</td>
+<td>256 MiB (minimum)</td>
+<td>about 0.75 GiB</td>
+</tr>
+<tr>
+<td>5Gi</td>
+<td>0.5</td>
+<td>2 GiB</td>
+<td>3 GiB</td>
+</tr>
+<tr>
+<td>5Gi</td>
+<td>0.8</td>
+<td>3.2 GiB</td>
+<td>1.8 GiB</td>
+</tr>
+<tr>
+<td>8Gi</td>
+<td>0.5</td>
+<td>3.5 GiB</td>
+<td>4.5 GiB</td>
+</tr>
+<tr>
+<td>8Gi</td>
+<td>0.8</td>
+<td>5.6 GiB</td>
+<td>2.4 GiB</td>
+</tr>
+</tbody>
+</table>
+<p>A high <code>cacheSizeRatio</code> on a small limit leaves little room for connections and queries.</p>
+<p>The in-memory engine is different. Its size is <code>memory limit ×</code><a href="#operator-replsetsstorageinmemoryengineconfiginmemorysizeratio"><code>inMemorySizeRatio</code></a>, which defaults to <code>0.9</code>, and the Operator doesn’t subtract 1 GiB. The data lives in that memory, and with a 1Gi limit only about 100 MiB is left for everything else.</p>
+<h3 id="debug-oom-find-what-uses-the-memory">Find what uses the memory<a class="headerlink" href="#debug-oom-find-what-uses-the-memory" title="Permanent link">¶</a></h3>
+<p>The configured cache size does not cap the total memory used by <code>mongod</code>. An OOM kill alone does not tell you whether cache or non-cache memory grew. Compare the two in <code>mongosh</code>, ideally several times while the memory rises:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">serverStatus</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">GiB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">Number</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1073741824</span><span class="p">).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"allocated     "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">GiB</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">tcmalloc</span><span class="p">.</span><span class="nx">generic</span><span class="p">.</span><span class="nx">current_allocated_bytes</span><span class="p">));</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"wt cache      "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">GiB</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">wiredTiger</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="s2">"bytes currently in the cache"</span><span class="p">]));</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"connections   "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">connections</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"open cursors  "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">metrics</span><span class="p">.</span><span class="nx">cursor</span><span class="p">.</span><span class="nx">open</span><span class="p">.</span><span class="nx">total</span><span class="p">);</span>
+</code></pre></div>
+<p>The <code>allocated</code> value minus the <code>wt cache</code> value is a rough estimate of live heap allocations outside the cache. It excludes free memory retained by the allocator and other memory charged to the container. Also compare <code>db.serverStatus().mem.resident</code> (in MiB) with the container’s cgroup memory usage. If live allocations grow while the cache stays flat, look at what the workload is doing. These are the patterns that occur most often:</p>
+<ul>
+<li>
+<p><strong>Abandoned cursors.</strong> A client reads one batch and never iterates or closes the cursor. If the query needed an in-memory sort, the cursor holds the sorted result outside the cache. List the idle cursors with:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">db</span><span class="p">.</span><span class="nx">getSiblingDB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">).</span><span class="nx">aggregate</span><span class="p">([</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">$currentOp</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">allUsers</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">idleCursors</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">$match</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">"idleCursor"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="p">])</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Blocking sorts and collection scans.</strong> A sort that no index supports, or a <code>COLLSCAN</code> in the slow query log, uses memory for each query. Many of them at once add up. Drivers retry reads, so the same query can run again and kill <code>mongod</code> right after the restart.</p>
+</li>
+<li><strong>Connection spikes.</strong> Each connection uses memory. A jump in <code>connections.current</code> that lines up with the kills points at the clients or their connection pools.</li>
+<li><strong>Change streams.</strong> Many open change streams, especially on the primary, are a common source of growth. A <code>fullDocument</code> lookup adds work and memory.</li>
+</ul>
+<p>If you don’t have PMM, the <code>diagnostic.data</code> directory in the data directory of <code>mongod</code> records <code>serverStatus</code> every second and covers the minutes before the kill.</p>
+<p>If the container keeps being killed after you raise the limit, the cause is almost always one of these workload patterns, not the size of the limit.</p>
+<h3 id="debug-oom-fix-the-cause">Fix the cause<a class="headerlink" href="#debug-oom-fix-the-cause" title="Permanent link">¶</a></h3>
+<ol>
+<li>
+<p>Fix the workload first. A larger limit only delays the next kill when the memory outside the cache keeps growing:</p>
+<ul>
+<li>Make the application exhaust or close its cursors. Use a real <code>limit(n)</code> instead of a very large one, and add an index that supports the sort. As a stopgap, kill idle cursors with <code>killCursors</code>. This stops the growth, and <code>mongod</code> reuses the freed memory, but the memory use that Kubernetes reports may not drop at once.</li>
+<li>Add indexes for the queries that show <code>COLLSCAN</code> or an in-memory sort.</li>
+<li>Cap the connection pools in the application drivers.</li>
+<li>Open change streams on as few collections as possible, and avoid <code>fullDocument</code> lookups that you don’t need.</li>
+</ul>
+</li>
+<li>
+<p>Give <code>mongod</code> more room outside the cache. Raise the limit, lower <code>cacheSizeRatio</code>, or both. Keep <code>requests.memory</code> equal to <code>limits.memory</code>, so the scheduler places the Pod only on a node that has that memory:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"8Gi"</span>
+<span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"8Gi"</span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">wiredTiger</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">engineConfig</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">cacheSizeRatio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+</code></pre></div>
+</li>
+<li>
+<p>Apply the change:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>With the default <code>SmartUpdate</code> strategy, the Operator restarts the members one at a time: the secondaries first and the primary last, after a step-down. <code>RollingUpdate</code> uses the StatefulSet controller’s update order; <code>OnDelete</code> requires you to delete and recreate each Pod manually. See <a href="#update-update-strategies">Update strategies</a> and <a href="#update-manually">Upgrade manually</a>. Once a member has restarted with the new settings, its cache size follows the new limit. Check the new values with the <code>mongosh</code> commands from <a href="#debug-oom-check-the-memory-settings">Check the memory settings</a>.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a Pod that is crash-looping or <code>Pending</code> still has the old resource settings, confirm that the StatefulSet’s Pod template has the new settings before deleting that Pod. Delete one Pod at a time and wait for it to become ready before proceeding. If a <code>Pending</code> Pod already has the new request and its scheduling events report insufficient memory, add node capacity or revise the requested resources; deleting it won’t resolve that capacity shortage.</p>
+</div>
+<p>For the settings of the limits, see <a href="#operator-replsetsresourceslimitsmemory"><code>replsets.resources.limits.memory</code></a>. For sizing, see <a href="#scaling">Scaling</a>.</p>
+<h2 id="debug-oom-mongos-and-config-server-pods">mongos and config server Pods<a class="headerlink" href="#debug-oom-mongos-and-config-server-pods" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> In a sharded cluster, the <code>mongos</code> Pods and the config server replica set have their own limits. A limit of a few MiB is too small, and the container is killed or starved under load. That shows up as failures on the shards too. An idle <code>mongos</code> used about 40 MiB in a test, before it handled any load. A killed <code>mongos</code> shows <code>CrashLoopBackOff</code> in <code>kubectl get pods</code>, and its message is in <code>.status.mongos.message</code>. The other <code>mongos</code> Pods keep serving, so the cluster stays available.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Raise the limit of the component that was killed:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
+<span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
+<span class="w">    </span><span class="nt">configsvrReplSet</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
+<span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"1Gi"</span>
+</code></pre></div>
+<p>Size them like any other <code>mongod</code> or router, not to a token value. See <a href="#operator-shardingmongosresourceslimitsmemory"><code>sharding.mongos.resources.limits.memory</code></a> and <a href="#operator-shardingconfigsvrreplsetresourceslimitsmemory"><code>sharding.configsvrReplSet.resources.limits.memory</code></a>.</p>
+</li>
+<li>
+<p>Apply the change with <code>kubectl apply -f deploy/cr.yaml -n &lt;namespace&gt;</code>. Delete any Pod that is still crash-looping, one at a time, so that it starts with the new settings.</p>
+</li>
+</ol>
+<h2 id="debug-oom-sidecar-containers">Sidecar containers<a class="headerlink" href="#debug-oom-sidecar-containers" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> Each sidecar has its own limit. When a sidecar is killed, <code>mongod</code> in the same Pod keeps running and stays a member of the replica set. Find the key for the container that was killed:</p>
+<table>
+<thead>
+<tr>
+<th>Container</th>
+<th>Limit is set in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mongod</code></td>
+<td><code>replsets[].resources</code></td>
+</tr>
+<tr>
+<td><code>backup-agent</code></td>
+<td><a href="#operator-backupresourceslimitsmemory"><code>backup.resources</code></a></td>
+</tr>
+<tr>
+<td><code>pmm-client</code></td>
+<td><a href="#operator-pmmresourceslimitsmemory"><code>pmm.resources</code></a></td>
+</tr>
+<tr>
+<td><code>logs</code> (the log collector)</td>
+<td><code>logcollector.resources</code></td>
+</tr>
+<tr>
+<td><code>logrotate</code></td>
+<td><code>logcollector.resources</code> (shared with <code>logs</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>A restore needs much more memory in <code>backup-agent</code> than a backup does. To find the peak that a sidecar reaches, read the memory counters of its cgroup while a backup or a restore runs. This example is for nodes that use cgroup v2:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>--<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'cat /sys/fs/cgroup/memory.current /sys/fs/cgroup/memory.peak /sys/fs/cgroup/memory.max; grep oom_kill /sys/fs/cgroup/memory.events'</span>
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>17555456
+17887232
+25165824
+oom_kill 0
+</code></pre></div>
+</details>
+<p>The lines are the current use, the peak, and the limit, all in bytes, followed by the number of OOM kills in the cgroup. On nodes that use cgroup v1, the files are <code>/sys/fs/cgroup/memory/memory.usage_in_bytes</code> and <code>/sys/fs/cgroup/memory/memory.limit_in_bytes</code>.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>Set the limit with a margin above the peak that you measured. Removing the limit also stops the kills, but then the sidecar can take memory that the node needs for <code>mongod</code>.</li>
+<li>Apply the change with <code>kubectl apply -f deploy/cr.yaml -n &lt;namespace&gt;</code>.</li>
+<li>Delete the Pods that are still crash-looping, one at a time. A Pod in a crash loop keeps the old limit until the StatefulSet recreates it.</li>
+</ol>
+<h2 id="debug-oom-the-operator-is-killed">The Operator is killed<a class="headerlink" href="#debug-oom-the-operator-is-killed" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> The default Operator Deployment has no resource requests or limits, and an idle Operator uses about 40 MiB. If you set a limit that the Operator exceeds, its container is killed and restarts.</p>
+<p>The database keeps running, but nothing reconciles while the Operator is down: changes to the Custom Resource, Smart Update, backups and status updates all wait. <code>kubectl get psmdb</code> keeps showing the last status, <code>ready</code>, so a stale status is a sign of a dead Operator. The log of the previous container ends normally, without an error line, because the process was killed.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Check the Operator Pod for restarts and for <code>OOMKilled</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span>percona-server-mongodb-operator
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;operator-pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Raise the memory limit of the Operator container in the Deployment of the Operator, or remove the limit that you set.</p>
+</li>
+</ol>
+<h2 id="debug-oom-verify-recovery">Verify recovery<a class="headerlink" href="#debug-oom-verify-recovery" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>Check that the Pods are running and that the restart count stops growing while the workload runs:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Check the cluster state. The <code>STATUS</code> returns to <code>ready</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+<li>
+<p>For <code>mongod</code>, check that <code>memLimitMB</code> and the cache match the new limit. See <a href="#debug-oom-check-the-memory-settings">Check the memory settings</a>.</p>
+</li>
+<li>
+<p>If the metrics server is installed, watch the memory use of the containers and confirm that it stays below the limit:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>top<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--containers
+</code></pre></div>
+</li>
+</ol>
+<h2 id="debug-oom-see-also">See also<a class="headerlink" href="#debug-oom-see-also" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#scaling">Scaling</a></li>
+<li><a href="#debug-logs">Check logs</a></li>
+<li><a href="#troubleshoot-operator">Troubleshoot the Operator installation issues</a></li>
+</ul></body></html></section><section class="print-page" id="debug-shell" heading-number="10.4"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31255,7 +31633,7 @@ Server for MongoDB Pod as follows:</p>
 </code></pre></div>
 <p>The instance will restart automatically and run in its usual way as soon as you
 remove this file (you can do it with a command similar to the one you have used
-to create the file, just substitute <code>touch</code> to <code>rm</code> in it).</p></body></html></section><section class="print-page" id="debug-logs" heading-number="10.4"><html><head>
+to create the file, just substitute <code>touch</code> to <code>rm</code> in it).</p></body></html></section><section class="print-page" id="debug-logs" heading-number="10.5"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31296,6 +31674,10 @@ logs with the <code>kubectl logs</code> command:</p>
 </tbody>
 </table>
 <p>In the following examples we will access containers of the <code>my-cluster-name-rs0-0</code> Pod.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With the log collector enabled (the default), <code>mongod</code> writes its log to a file. This leaves the log of the <code>mongod</code> container almost empty. Read the <code>mongod</code> log from the <code>logs</code> container instead, for example <code>kubectl logs my-cluster-name-rs0-0 -c logs</code>. Each line there is wrapped in a JSON object that has the <code>file</code> and <code>log</code> fields. The <code>logs</code> container keeps running when <code>mongod</code> restarts, so it also has the log from before the restart.</p>
+</div>
 <ul>
 <li>
 <p>Check logs of the <code>mongod</code> container:</p>
@@ -31332,7 +31714,7 @@ logs with the <code>kubectl logs</code> command:</p>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_LEVEL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</code></pre></div></body></html></section><section class="print-page" id="debug-backup-restore" heading-number="10.5"><html><head>
+</code></pre></div></body></html></section><section class="print-page" id="debug-backup-restore" heading-number="10.6"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31521,7 +31903,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 <h2 id="debug-backup-restore-see-also">See also<a class="headerlink" href="#debug-backup-restore-see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="#backups">Backup and restore</a></li>
-</ul></body></html></section><section class="print-page" id="debug-upgrade" heading-number="10.6"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-upgrade" heading-number="10.7"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31590,7 +31972,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 <li><a href="#update">Update Percona Operator for MongoDB</a></li>
 <li><a href="#update-crversion"><code>crVersion</code> behavior</a></li>
 <li><a href="#cr-statuses">Custom resource statuses</a></li>
-</ul></body></html></section><section class="print-page" id="debug-images" heading-number="10.7"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-images" heading-number="10.8"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31620,7 +32002,7 @@ for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration 
 <p class="admonition-title">Note</p>
 <p>When the Pod is continuously restarting, you may have to delete it
 to apply image changes.</p>
-</div></body></html></section><section class="print-page" id="debug-storage" heading-number="10.8"><html><head>
+</div></body></html></section><section class="print-page" id="debug-storage" heading-number="10.9"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -33296,6 +33678,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tr>
 </tbody>
 </table>
+<p>The Operator sets the cache size to <code>(memory limit − 1 GiB) × ratio</code>, with a minimum of 0.25 GB. Without a memory limit, the Operator doesn’t set the cache size, and <code>mongod</code> sizes it from the memory of the node. See <a href="#debug-oom-how-the-operator-sizes-the-cache">How the Operator sizes the cache</a>.</p>
 <h3 id="operator-replsetsstoragewiredtigerengineconfigdirectoryforindexes"><code>replsets.storage.wiredTiger.engineConfig.directoryForIndexes</code><a class="headerlink" href="#operator-replsetsstoragewiredtigerengineconfigdirectoryforindexes" title="Permanent link">¶</a></h3>
 <p>Sets the <a href="https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes">storage.wiredTiger.engineConfig.directoryForIndexes option  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the Replica Set nodes.</p>
 <table>
@@ -33376,6 +33759,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tr>
 </tbody>
 </table>
+<p>The in-memory size is <code>memory limit × ratio</code>. Unlike the WiredTiger cache, it has no 1 GiB subtracted.</p>
 <h3 id="operator-replsetslivenessprobefailurethreshold"><code>replsets.livenessProbe.failureThreshold</code><a class="headerlink" href="#operator-replsetslivenessprobefailurethreshold" title="Permanent link">¶</a></h3>
 <p>Number of consecutive unsuccessful tries of the <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes">liveness probe  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to be undertaken before giving up.</p>
 <table>
@@ -37229,7 +37613,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingconfigsvrreplsetlimitscpu"><code>sharding.configsvrReplSet.limits.cpu</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetlimitscpu" title="Permanent link">¶</a></h3>
+<p><a name="shardingconfigsvrreplsetlimitscpu"></a></p>
+<h3 id="operator-shardingconfigsvrreplsetresourceslimitscpu"><code>sharding.configsvrReplSet.resources.limits.cpu</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetresourceslimitscpu" title="Permanent link">¶</a></h3>
 <p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes CPU limit  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for Config Server container.</p>
 <table>
 <thead>
@@ -37245,7 +37630,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingconfigsvrreplsetlimitsmemory"><code>sharding.configsvrReplSet.limits.memory</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetlimitsmemory" title="Permanent link">¶</a></h3>
+<p><a name="shardingconfigsvrreplsetlimitsmemory"></a></p>
+<h3 id="operator-shardingconfigsvrreplsetresourceslimitsmemory"><code>sharding.configsvrReplSet.resources.limits.memory</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetresourceslimitsmemory" title="Permanent link">¶</a></h3>
 <p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes Memory limit  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for Config Server container.</p>
 <table>
 <thead>
@@ -37277,7 +37663,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingconfigsvrreplsetrequestsmemory"><code>sharding.configsvrReplSet.requests.memory</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetrequestsmemory" title="Permanent link">¶</a></h3>
+<p><a name="shardingconfigsvrreplsetrequestsmemory"></a></p>
+<h3 id="operator-shardingconfigsvrreplsetresourcesrequestsmemory"><code>sharding.configsvrReplSet.resources.requests.memory</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetresourcesrequestsmemory" title="Permanent link">¶</a></h3>
 <p>The <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes Memory requests  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for Config Server container.</p>
 <table>
 <thead>
@@ -38341,7 +38728,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingmongoslimitscpu"><code>sharding.mongos.limits.cpu</code><a class="headerlink" href="#operator-shardingmongoslimitscpu" title="Permanent link">¶</a></h3>
+<p><a name="shardingmongoslimitscpu"></a></p>
+<h3 id="operator-shardingmongosresourceslimitscpu"><code>sharding.mongos.resources.limits.cpu</code><a class="headerlink" href="#operator-shardingmongosresourceslimitscpu" title="Permanent link">¶</a></h3>
 <p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes CPU limit  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for mongos container.</p>
 <table>
 <thead>
@@ -38357,7 +38745,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingmongoslimitsmemory"><code>sharding.mongos.limits.memory</code><a class="headerlink" href="#operator-shardingmongoslimitsmemory" title="Permanent link">¶</a></h3>
+<p><a name="shardingmongoslimitsmemory"></a></p>
+<h3 id="operator-shardingmongosresourceslimitsmemory"><code>sharding.mongos.resources.limits.memory</code><a class="headerlink" href="#operator-shardingmongosresourceslimitsmemory" title="Permanent link">¶</a></h3>
 <p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes Memory limit  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for mongos container.</p>
 <table>
 <thead>
@@ -38389,7 +38778,8 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="operator-shardingmongosrequestsmemory"><code>sharding.mongos.requests.memory</code><a class="headerlink" href="#operator-shardingmongosrequestsmemory" title="Permanent link">¶</a></h3>
+<p><a name="shardingmongosrequestsmemory"></a></p>
+<h3 id="operator-shardingmongosresourcesrequestsmemory"><code>sharding.mongos.resources.requests.memory</code><a class="headerlink" href="#operator-shardingmongosresourcesrequestsmemory" title="Permanent link">¶</a></h3>
 <p>The <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container">Kubernetes Memory requests  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for mongos container.</p>
 <table>
 <thead>
@@ -48486,17 +48876,19 @@ applications or code.</p>
 
 .print-site-enumerate-headings #debug-scheduling > h1:before { content: '10.2 ' }
 
-.print-site-enumerate-headings #debug-shell > h1:before { content: '10.3 ' }
+.print-site-enumerate-headings #debug-oom > h1:before { content: '10.3 ' }
 
-.print-site-enumerate-headings #debug-logs > h1:before { content: '10.4 ' }
+.print-site-enumerate-headings #debug-shell > h1:before { content: '10.4 ' }
 
-.print-site-enumerate-headings #debug-backup-restore > h1:before { content: '10.5 ' }
+.print-site-enumerate-headings #debug-logs > h1:before { content: '10.5 ' }
 
-.print-site-enumerate-headings #debug-upgrade > h1:before { content: '10.6 ' }
+.print-site-enumerate-headings #debug-backup-restore > h1:before { content: '10.6 ' }
 
-.print-site-enumerate-headings #debug-images > h1:before { content: '10.7 ' }
+.print-site-enumerate-headings #debug-upgrade > h1:before { content: '10.7 ' }
 
-.print-site-enumerate-headings #debug-storage > h1:before { content: '10.8 ' }
+.print-site-enumerate-headings #debug-images > h1:before { content: '10.8 ' }
+
+.print-site-enumerate-headings #debug-storage > h1:before { content: '10.9 ' }
 
 .print-site-enumerate-headings #section-11 > h1:before { content: '11 ' }
 .print-site-enumerate-headings #section-11-1 > h1:before { content: '11.1 ' }

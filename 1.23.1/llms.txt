@@ -168,6 +168,7 @@ Each page below is also available as markdown. For the documentation of all Perc
 - [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug.md)
 - [Troubleshoot the Operator installation issues](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.md)
 - [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.md)
+- [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.md)
 - [Exec into the container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.md)
 - [Check the logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.md)
 - [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.md)

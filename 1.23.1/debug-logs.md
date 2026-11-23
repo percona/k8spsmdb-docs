@@ -14,6 +14,10 @@ Logs provide valuable information. It makes sense to check the logs of the datab
 
 In the following examples we will access containers of the `my-cluster-name-rs0-0` Pod.
 
+Note
+
+With the log collector enabled (the default), `mongod` writes its log to a file. This leaves the log of the `mongod` container almost empty. Read the `mongod` log from the `logs` container instead, for example `kubectl logs my-cluster-name-rs0-0 -c logs`. Each line there is wrapped in a JSON object that has the `file` and `log` fields. The `logs` container keeps running when `mongod` restarts, so it also has the log from before the restart.
+
 - Check logs of the `mongod` container:
 
   ```

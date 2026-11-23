@@ -221,6 +221,10 @@
          <lastmod>2026-11-23</lastmod>
     </url>
     <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html</loc>
+         <lastmod>2026-11-23</lastmod>
+    </url>
+    <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html</loc>
          <lastmod>2026-11-23</lastmod>
     </url>

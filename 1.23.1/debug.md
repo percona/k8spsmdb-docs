@@ -68,7 +68,7 @@ The above command provides the following insights:
 
 - `READY` indicates how many containers in the Pod are ready to serve the traffic. In the above example, `my-cluster-name-rs0-0` Pod has all two containers ready (2/2). For an application to work properly, all containers of the Pod should be ready.
 - `STATUS` indicates the current status of the Pod. The Pod should be in a `Running` state to confirm that the application is working as expected. You can find out other possible states in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase) .
-- `RESTARTS` indicates how many times containers of Pod were restarted. This is impacted by the [Container Restart Policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) . In an ideal world, the restart count would be zero, meaning no issues from the beginning. If the restart count exceeds zero, it may be reasonable to check why it happens.
+- `RESTARTS` indicates how many times containers of Pod were restarted. This is impacted by the [Container Restart Policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) . In an ideal world, the restart count would be zero, meaning no issues from the beginning. If the restart count exceeds zero, it may be reasonable to check why it happens. If a container was killed because it ran out of memory (`OOMKilled`), see [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html).
 - `AGE`: Indicates how long the Pod is running. Any abnormality in this value needs to be checked.
 
 You can find more details about a specific Pod using the `kubectl describe pods <pod-name>` command.

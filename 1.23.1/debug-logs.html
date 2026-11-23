@@ -4612,6 +4612,8 @@ logs with the kubectl logs command:">
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -4676,6 +4678,26 @@ logs with the kubectl logs command:">
   
   <span class="md-ellipsis">
     Troubleshoot Pod scheduling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-oom.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot out-of-memory errors
   </span>
   
 
@@ -6513,6 +6535,10 @@ logs with the <code>kubectl logs</code> command:</p>
 </tbody>
 </table>
 <p>In the following examples we will access containers of the <code>my-cluster-name-rs0-0</code> Pod.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With the log collector enabled (the default), <code>mongod</code> writes its log to a file. This leaves the log of the <code>mongod</code> container almost empty. Read the <code>mongod</code> log from the <code>logs</code> container instead, for example <code>kubectl logs my-cluster-name-rs0-0 -c logs</code>. Each line there is wrapped in a JSON object that has the <code>file</code> and <code>log</code> fields. The <code>logs</code> container keeps running when <code>mongod</code> restarts, so it also has the log from before the restart.</p>
+</div>
 <ul>
 <li>
 <p>Check logs of the <code>mongod</code> container:</p>
@@ -6555,7 +6581,7 @@ logs with the <code>kubectl logs</code> command:</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="January 26, 2026 10:31:25 UTC">January 26, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
       
         <br>
         Created:

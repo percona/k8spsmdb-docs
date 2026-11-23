@@ -28,6 +28,8 @@ spec:
 
 Use our reference documentation for the [Custom Resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html) for more details about other components.
 
+If a container is restarted with `OOMKilled` after you lower a memory limit, or because the workload grew, see [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html).
+
 Storage capacity is scaled separately - see [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html).
 
 ## Horizontal scaling

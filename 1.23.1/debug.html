@@ -4610,6 +4610,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -4674,6 +4676,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot Pod scheduling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-oom.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot out-of-memory errors
   </span>
   
 
@@ -6494,7 +6516,8 @@ percona-server-mongodb-operator-665cd69f9b-xg5dl   1/1     Running   0          
     impacted by the <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy">Container Restart Policy  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
     In an ideal world, the restart count would be zero, meaning no issues from
     the beginning. If the restart count exceeds zero, it may be reasonable to
-    check why it happens.</li>
+    check why it happens. If a container was killed because it ran out of memory
+    (<code>OOMKilled</code>), see <a href="debug-oom.html">Troubleshoot out-of-memory errors</a>.</li>
 <li><code>AGE</code>: Indicates how long the Pod is running. Any abnormality in this value
     needs to be checked.</li>
 </ul>
@@ -6591,7 +6614,7 @@ and also events. So, describe output should be checked to see any abnormalities.
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
       
         <br>
         Created:
