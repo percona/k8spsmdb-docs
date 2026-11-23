@@ -6798,11 +6798,11 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 </ol>
 <h3 id="set-a-custom-schedule">Set a custom schedule<a data-markdown-ignore class="headerlink" href="#set-a-custom-schedule" title="Permanent link">¶</a></h3>
 <p>Starting with version 1.22.0, the default logrotate schedule changed from running once per hour to running once per day.</p>
-<p>Use the <code>logcollector.logrotate.schedule</code> option in the Custom Resource to set a custom rotation schedule as a cron expression. For example, set the new rotation time to 2:15 a.m every Sunday:</p>
+<p>Use the <code>logcollector.logrotate.schedule</code> option in the Custom Resource to set a custom rotation schedule. The value is a five-field <a href="https://en.wikipedia.org/wiki/Cron">crontab expression  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>: minute, hour, day of month, month, and day of week. For example, set the new rotation time to 2:15 a.m. every Sunday:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">logcollector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logrotate</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0"</span>
+<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0"</span><span class="w">   </span><span class="c1"># 2:15 a.m. every Sunday</span>
 </code></pre></div>
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
@@ -6817,7 +6817,7 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 10:58:36 UTC">October 5, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 14:54:16 UTC">November 23, 2026</span>
       
         <br>
         Created:

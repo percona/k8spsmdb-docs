@@ -4590,7 +4590,7 @@ Enables or disables this exact backup.
 
 ### `backup.tasks.schedule`
 
-The scheduled time to make a backup, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) .
+The scheduled time to make a backup, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) . The Operator runs the schedule itself. Starting with version 1.24.0, it can create one catch-up backup after a restart if it missed a scheduled time. See [If the Operator misses a scheduled backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.html#if-the-operator-misses-a-scheduled-backup) for the conditions and exceptions.
 
 | Value type | Example       |
 | ---------- | ------------- |
@@ -4816,11 +4816,11 @@ References a ConfigMap or a Secret containing additional logrotate configuration
 
 ### `logcollector.logrotate.schedule`
 
-Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+The scheduled time to rotate logs, specified in the [crontab format](https://en.wikipedia.org/wiki/Cron) . The default is `0 0 * * *` (midnight).
 
-| Value type | Example         |
-| ---------- | --------------- |
-| string     | `"0 0 0 * * *"` |
+| Value type | Example     |
+| ---------- | ----------- |
+| string     | `0 0 * * *` |
 
 ### `logcollector.logrotate.livenessProbe`
 

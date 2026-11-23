@@ -2612,10 +2612,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure-retention" class="md-nav__link">
+  <a href="#restore-to-a-new-kubernetes-environment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure retention
+        Restore to a new Kubernetes environment
       
     </span>
   </a>
@@ -2623,10 +2623,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#restore-to-a-new-kubernetes-environment" class="md-nav__link">
+  <a href="#if-the-operator-misses-a-scheduled-backup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Restore to a new Kubernetes environment
+        If the Operator misses a scheduled backup
       
     </span>
   </a>
@@ -6435,10 +6435,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure-retention" class="md-nav__link">
+  <a href="#restore-to-a-new-kubernetes-environment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure retention
+        Restore to a new Kubernetes environment
       
     </span>
   </a>
@@ -6446,10 +6446,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#restore-to-a-new-kubernetes-environment" class="md-nav__link">
+  <a href="#if-the-operator-misses-a-scheduled-backup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Restore to a new Kubernetes environment
+        If the Operator misses a scheduled backup
       
     </span>
   </a>
@@ -6630,21 +6630,16 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p><code>backup.tasks</code> subsection - specify the following configuration:</p>
 <ul>
-<li><code>name</code> - specify a backup name. You will need this name when you <a href="backups-restore.html">restore from this backup</a>.</li>
+<li><code>name</code> - specify the task name. The Operator adds it to every backup the task creates, in the <code>percona.com/backup-ancestor</code> label, so you can find the task’s backups. To <a href="backups-restore.html">restore from a backup</a>, you use the name of the backup itself, not the task name.</li>
 <li><code>schedule</code> - specify the desired backup schedule in <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
 <li><code>enabled</code> - set this key to <code>true</code>. This enables making the <code>&lt;backup name&gt;</code> backup along with the specified schedule.</li>
 <li><code>storageName</code> - specify the name of your <a href="backups-storage.html">already configured storage</a>. Omit for PVC snapshot (<code>external</code>) tasks.</li>
 <li><code>volumeSnapshotClass</code> - specify the <code>VolumeSnapshotClass</code> name when <code>type</code> is <code>external</code>. See <a href="backups-pvc-setup.html">Configure PVC snapshots</a> how to check if <code>VolumeSnapshotClass</code> exists in your cluster and how to add it if it doesn’t.</li>
-<li><code>retention</code> - configure the retention policy: how many backups to keep in the storage. This setting is optional. It applies to base incremental backups but is ignored for increments. See <a href="backups-delete.html#configure-backup-retention">Configure backup retention</a>.</li>
+<li><code>retention</code> - configure the retention policy: how many backups to keep before the Operator removes older ones. This setting is optional. It applies to base incremental backups but is ignored for increments. See <a href="backups-delete.html#configure-backup-retention">Configure backup retention</a> for the fields and their behavior.</li>
 <li><code>type</code> - specify what <a href="backups.html#backup-types">type of backup</a> to make. If you leave it empty, the Operator makes a <strong>logical</strong> backup by default.</li>
 </ul>
 </li>
 </ol>
-<h2 id="configure-retention">Configure retention<a data-markdown-ignore class="headerlink" href="#configure-retention" title="Permanent link">¶</a></h2>
-<p>Retention is set per task, in <code>backup.tasks.retention</code>, and decides how many backups
-are kept before older ones are removed. The fields and their behaviour - including how
-retention treats incremental backups - are documented in
-<a href="backups-delete.html#configure-backup-retention">Configure backup retention</a>.</p>
 <p><strong>Examples</strong></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Logical</label><label for="__tabbed_1_2">Physical</label><label for="__tabbed_1_3">Incremental</label><label for="__tabbed_1_4">PVC snapshot (external)</label></div>
 <div class="tabbed-content">
@@ -6769,13 +6764,27 @@ retention treats incremental backups - are documented in
 <p>To <a href="backups-restore.html#restore-on-a-new-cluster">restore from a backup to a new Kubernetes-based environment</a>, you must create a Secrets object there with the same user passwords as in the original cluster. </p>
 <p>Find the Secrets name object on the source cluster in the <code>spec.secrets</code> key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.</p>
 <p>Find more details about secrets in <a href="system-users.html">System Users</a>. </p>
+<h2 id="if-the-operator-misses-a-scheduled-backup">If the Operator misses a scheduled backup<a data-markdown-ignore class="headerlink" href="#if-the-operator-misses-a-scheduled-backup" title="Permanent link">¶</a></h2>
+<p>The Operator runs backup schedules itself, not as Kubernetes CronJobs. If the Operator Pod isn’t running when a backup is due, for example during a restart, an eviction or a node drain, it can’t start that backup.</p>
+<p>Starting with version 1.24.0, the Operator checks each task when it starts. If the task’s latest backup is older than the last time the schedule was due, the Operator creates a catch-up backup right away. It creates only one backup, even if the task missed several scheduled runs. Then the task continues on its schedule.</p>
+<p>The Operator doesn’t create a catch-up backup when:</p>
+<ul>
+<li>The task has no backups yet, for example right after you add it.</li>
+<li>The task’s latest backup is still in progress.</li>
+<li>Another backup of the cluster is running. The next backup runs on schedule.</li>
+</ul>
+<p>A catch-up backup is a regular scheduled backup, and the task’s retention policy applies to it. To find it, look for <code>catching up missed scheduled backup</code> in the Operator log. The timestamp in its name is when the Operator started, not a scheduled time.</p>
+<p>In versions before 1.24.0, the Operator skips a missed backup and doesn’t report it.</p>
 <h2 id="verify-the-schedule-works">Verify the schedule works<a data-markdown-ignore class="headerlink" href="#verify-the-schedule-works" title="Permanent link">¶</a></h2>
 <p>A scheduled task is silent until it fires, so confirm the first run rather than waiting for
 an incident. List the backups after the schedule is due:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>A backup created by a task is named after it. The backup must reach the <code>ready</code> state; an
+<p>Backups that a task creates are named <code>cron-&lt;cluster-name&gt;-&lt;YYYYMMDDhhmmss&gt;-&lt;suffix&gt;</code> and carry the task name in the <code>percona.com/backup-ancestor</code> label. To list the backups of one task:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-l<span class="w"> </span>percona.com/backup-ancestor<span class="o">=</span>&lt;task-name&gt;
+</code></pre></div>
+<p>The backup must reach the <code>ready</code> state; an
 <code>error</code> there means the task is scheduled correctly but the storage or credentials are not.
 If nothing appears at all, check that <code>backup.enabled</code> and the task’s own <code>enabled</code> are both
 <code>true</code>, and that the <code>schedule</code> expression is what you intended.</p>
@@ -6784,7 +6793,7 @@ If nothing appears at all, check that <code>backup.enabled</code> and the task�
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 3, 2026 08:29:17 UTC">September 3, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 14:52:54 UTC">November 23, 2026</span>
       
         <br>
         Created:

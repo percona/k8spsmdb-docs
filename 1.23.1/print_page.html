@@ -18140,21 +18140,16 @@ names, and document counts for your largest collections, against what you expect
 <li>
 <p><code>backup.tasks</code> subsection - specify the following configuration:</p>
 <ul>
-<li><code>name</code> - specify a backup name. You will need this name when you <a href="#backups-restore">restore from this backup</a>.</li>
+<li><code>name</code> - specify the task name. The Operator adds it to every backup the task creates, in the <code>percona.com/backup-ancestor</code> label, so you can find the task’s backups. To <a href="#backups-restore">restore from a backup</a>, you use the name of the backup itself, not the task name.</li>
 <li><code>schedule</code> - specify the desired backup schedule in <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
 <li><code>enabled</code> - set this key to <code>true</code>. This enables making the <code>&lt;backup name&gt;</code> backup along with the specified schedule.</li>
 <li><code>storageName</code> - specify the name of your <a href="#backups-storage">already configured storage</a>. Omit for PVC snapshot (<code>external</code>) tasks.</li>
 <li><code>volumeSnapshotClass</code> - specify the <code>VolumeSnapshotClass</code> name when <code>type</code> is <code>external</code>. See <a href="#backups-pvc-setup">Configure PVC snapshots</a> how to check if <code>VolumeSnapshotClass</code> exists in your cluster and how to add it if it doesn’t.</li>
-<li><code>retention</code> - configure the retention policy: how many backups to keep in the storage. This setting is optional. It applies to base incremental backups but is ignored for increments. See <a href="#backups-delete-configure-backup-retention">Configure backup retention</a>.</li>
+<li><code>retention</code> - configure the retention policy: how many backups to keep before the Operator removes older ones. This setting is optional. It applies to base incremental backups but is ignored for increments. See <a href="#backups-delete-configure-backup-retention">Configure backup retention</a> for the fields and their behavior.</li>
 <li><code>type</code> - specify what <a href="#backups-backup-types">type of backup</a> to make. If you leave it empty, the Operator makes a <strong>logical</strong> backup by default.</li>
 </ul>
 </li>
 </ol>
-<h2 id="backups-scheduled-configure-retention">Configure retention<a class="headerlink" href="#backups-scheduled-configure-retention" title="Permanent link">¶</a></h2>
-<p>Retention is set per task, in <code>backup.tasks.retention</code>, and decides how many backups
-are kept before older ones are removed. The fields and their behaviour - including how
-retention treats incremental backups - are documented in
-<a href="#backups-delete-configure-backup-retention">Configure backup retention</a>.</p>
 <p><strong>Examples</strong></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="backups-scheduled-__tabbed_1_1" name="backups-scheduled-__tabbed_1" type="radio"><input id="backups-scheduled-__tabbed_1_2" name="backups-scheduled-__tabbed_1" type="radio"><input id="backups-scheduled-__tabbed_1_3" name="backups-scheduled-__tabbed_1" type="radio"><input id="backups-scheduled-__tabbed_1_4" name="backups-scheduled-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="backups-scheduled-__tabbed_1_1">Logical</label><label for="backups-scheduled-__tabbed_1_2">Physical</label><label for="backups-scheduled-__tabbed_1_3">Incremental</label><label for="backups-scheduled-__tabbed_1_4">PVC snapshot (external)</label></div>
 <div class="tabbed-content">
@@ -18279,13 +18274,27 @@ retention treats incremental backups - are documented in
 <p>To <a href="#backups-restore-restore-on-a-new-cluster">restore from a backup to a new Kubernetes-based environment</a>, you must create a Secrets object there with the same user passwords as in the original cluster. </p>
 <p>Find the Secrets name object on the source cluster in the <code>spec.secrets</code> key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.</p>
 <p>Find more details about secrets in <a href="#system-users">System Users</a>. </p>
+<h2 id="backups-scheduled-if-the-operator-misses-a-scheduled-backup">If the Operator misses a scheduled backup<a class="headerlink" href="#backups-scheduled-if-the-operator-misses-a-scheduled-backup" title="Permanent link">¶</a></h2>
+<p>The Operator runs backup schedules itself, not as Kubernetes CronJobs. If the Operator Pod isn’t running when a backup is due, for example during a restart, an eviction or a node drain, it can’t start that backup.</p>
+<p>Starting with version 1.24.0, the Operator checks each task when it starts. If the task’s latest backup is older than the last time the schedule was due, the Operator creates a catch-up backup right away. It creates only one backup, even if the task missed several scheduled runs. Then the task continues on its schedule.</p>
+<p>The Operator doesn’t create a catch-up backup when:</p>
+<ul>
+<li>The task has no backups yet, for example right after you add it.</li>
+<li>The task’s latest backup is still in progress.</li>
+<li>Another backup of the cluster is running. The next backup runs on schedule.</li>
+</ul>
+<p>A catch-up backup is a regular scheduled backup, and the task’s retention policy applies to it. To find it, look for <code>catching up missed scheduled backup</code> in the Operator log. The timestamp in its name is when the Operator started, not a scheduled time.</p>
+<p>In versions before 1.24.0, the Operator skips a missed backup and doesn’t report it.</p>
 <h2 id="backups-scheduled-verify-the-schedule-works">Verify the schedule works<a class="headerlink" href="#backups-scheduled-verify-the-schedule-works" title="Permanent link">¶</a></h2>
 <p>A scheduled task is silent until it fires, so confirm the first run rather than waiting for
 an incident. List the backups after the schedule is due:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
 kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>A backup created by a task is named after it. The backup must reach the <code>ready</code> state; an
+<p>Backups that a task creates are named <code>cron-&lt;cluster-name&gt;-&lt;YYYYMMDDhhmmss&gt;-&lt;suffix&gt;</code> and carry the task name in the <code>percona.com/backup-ancestor</code> label. To list the backups of one task:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-l<span class="w"> </span>percona.com/backup-ancestor<span class="o">=</span>&lt;task-name&gt;
+</code></pre></div>
+<p>The backup must reach the <code>ready</code> state; an
 <code>error</code> there means the task is scheduled correctly but the storage or credentials are not.
 If nothing appears at all, check that <code>backup.enabled</code> and the task’s own <code>enabled</code> are both
 <code>true</code>, and that the <code>schedule</code> expression is what you intended.</p></body></html></section><section class="print-page" id="backups-ondemand" heading-number="9.2.3.2"><html><head>
@@ -22720,11 +22729,11 @@ Refer to the <a href="https://github.com/percona/percona-server-mongodb-operator
 </ol>
 <h3 id="logrotate-set-a-custom-schedule">Set a custom schedule<a class="headerlink" href="#logrotate-set-a-custom-schedule" title="Permanent link">¶</a></h3>
 <p>Starting with version 1.22.0, the default logrotate schedule changed from running once per hour to running once per day.</p>
-<p>Use the <code>logcollector.logrotate.schedule</code> option in the Custom Resource to set a custom rotation schedule as a cron expression. For example, set the new rotation time to 2:15 a.m every Sunday:</p>
+<p>Use the <code>logcollector.logrotate.schedule</code> option in the Custom Resource to set a custom rotation schedule. The value is a five-field <a href="https://en.wikipedia.org/wiki/Cron">crontab expression  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>: minute, hour, day of month, month, and day of week. For example, set the new rotation time to 2:15 a.m. every Sunday:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">logcollector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logrotate</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"0</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0"</span>
+<span class="w">      </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">"15</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">0"</span><span class="w">   </span><span class="c1"># 2:15 a.m. every Sunday</span>
 </code></pre></div>
 <p>Apply the configuration:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
@@ -41159,7 +41168,7 @@ Percona Server for MongoDB backups.</p>
 </tbody>
 </table>
 <h3 id="operator-backuptasksschedule"><code>backup.tasks.schedule</code><a class="headerlink" href="#operator-backuptasksschedule" title="Permanent link">¶</a></h3>
-<p>The scheduled time to make a backup, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
+<p>The scheduled time to make a backup, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The Operator runs the schedule itself. Starting with version 1.24.0, it can create one catch-up backup after a restart if it missed a scheduled time. See <a href="#backups-scheduled-if-the-operator-misses-a-scheduled-backup">If the Operator misses a scheduled backup</a> for the conditions and exceptions.</p>
 <table>
 <thead>
 <tr>
@@ -41576,7 +41585,7 @@ Percona Server for MongoDB backups.</p>
 </tbody>
 </table>
 <h3 id="operator-logcollectorlogrotateschedule"><code>logcollector.logrotate.schedule</code><a class="headerlink" href="#operator-logcollectorlogrotateschedule" title="Permanent link">¶</a></h3>
-<p>Cron expression for the logrotate schedule (default: <code>0 0 0 * * *</code>).</p>
+<p>The scheduled time to rotate logs, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The default is <code>0 0 * * *</code> (midnight).</p>
 <table>
 <thead>
 <tr>
@@ -41587,7 +41596,7 @@ Percona Server for MongoDB backups.</p>
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>"0 0 0 * * *"</code></td>
+<td><code>0 0 * * *</code></td>
 </tr>
 </tbody>
 </table>

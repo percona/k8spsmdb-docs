@@ -28980,7 +28980,7 @@ Percona Server for MongoDB backups.</p>
 </tbody>
 </table>
 <h3 id="backuptasksschedule"><code>backup.tasks.schedule</code><a data-markdown-ignore class="headerlink" href="#backuptasksschedule" title="Permanent link">¶</a></h3>
-<p>The scheduled time to make a backup, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
+<p>The scheduled time to make a backup, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The Operator runs the schedule itself. Starting with version 1.24.0, it can create one catch-up backup after a restart if it missed a scheduled time. See <a href="backups-scheduled.html#if-the-operator-misses-a-scheduled-backup">If the Operator misses a scheduled backup</a> for the conditions and exceptions.</p>
 <table>
 <thead>
 <tr>
@@ -29397,7 +29397,7 @@ Percona Server for MongoDB backups.</p>
 </tbody>
 </table>
 <h3 id="logcollectorlogrotateschedule"><code>logcollector.logrotate.schedule</code><a data-markdown-ignore class="headerlink" href="#logcollectorlogrotateschedule" title="Permanent link">¶</a></h3>
-<p>Cron expression for the logrotate schedule (default: <code>0 0 0 * * *</code>).</p>
+<p>The scheduled time to rotate logs, specified in the <a href="https://en.wikipedia.org/wiki/Cron">crontab format  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. The default is <code>0 0 * * *</code> (midnight).</p>
 <table>
 <thead>
 <tr>
@@ -29408,7 +29408,7 @@ Percona Server for MongoDB backups.</p>
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>"0 0 0 * * *"</code></td>
+<td><code>0 0 * * *</code></td>
 </tr>
 </tbody>
 </table>
@@ -29545,7 +29545,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 14:54:16 UTC">November 23, 2026</span>
       
         <br>
         Created:
