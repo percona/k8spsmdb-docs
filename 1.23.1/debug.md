@@ -113,6 +113,19 @@ Events:                      <none>
 
 This gives a lot of information about containers, resources, container status and also events. So, describe output should be checked to see any abnormalities.
 
+### Common Pod states
+
+The `STATUS` column often points to the next place to look:
+
+| `STATUS`                           | What it means                                                                                                 | Where to look                                                                                                                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Running`                          | The Pod is scheduled and its containers started. Check the `READY` column to see if all containers are ready. | [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) if `READY` is lower than expected                                                                          |
+| `Pending`                          | Kubernetes has not placed the Pod on a node yet                                                               | [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html)                                                                                     |
+| `ContainerCreating`                | The Pod is on a node, but a volume or an image is not ready                                                   | The `Events` section of `kubectl describe pods <pod-name>`                                                                                                                                            |
+| `ImagePullBackOff`, `ErrImagePull` | The node cannot pull the image                                                                                | Check the image name and registry access. See [Use a private registry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/custom-registry.html)                                             |
+| `CrashLoopBackOff`                 | A container starts and exits repeatedly                                                                       | [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) and [Special debug images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-images.html) |
+| `OOMKilled` (in `Last State`)      | The container exceeded its memory limit                                                                       | Raise the memory limit under `resources`. See [Scaling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling.html)                                                                    |
+
 ## Check logs
 
 Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) section for more information about logs and how to check them.

@@ -27,3 +27,4 @@ PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to t
 ## See also
 
 - [Scaling and storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-about.html)
+- [Storage problems that keep Pods in the `Pending` state](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html#storage-problems)

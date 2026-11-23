@@ -4614,6 +4614,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4658,6 +4660,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot the Operator installation issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-scheduling.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot Pod scheduling
   </span>
   
 
@@ -8418,10 +8440,21 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#debug-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Troubleshoot Pod scheduling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#debug-shell" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.2 Exec into the container
+        10.3 Exec into the container
       
     </span>
   </a>
@@ -8432,7 +8465,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-logs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 Check the logs
+        10.4 Check the logs
       
     </span>
   </a>
@@ -8443,7 +8476,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-backup-restore" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.4 Troubleshoot backups and restores
+        10.5 Troubleshoot backups and restores
       
     </span>
   </a>
@@ -8454,7 +8487,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-upgrade" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.5 Troubleshoot upgrades and crVersion
+        10.6 Troubleshoot upgrades and crVersion
       
     </span>
   </a>
@@ -8465,7 +8498,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-images" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.6 Special debug images
+        10.7 Special debug images
       
     </span>
   </a>
@@ -8476,7 +8509,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   <a href="#debug-storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.7 Storage resizing
+        10.8 Storage resizing
       
     </span>
   </a>
@@ -15702,6 +15735,10 @@ more of the database than it has to.</p>
 <p>The appropriate (sub)sections (<code>replsets</code>, <code>replsets.arbiter</code>, <code>backup</code>, etc.)
 of the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 file contain the keys which can be used to do assign pods to nodes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If Pods are already stuck in the <code>Pending</code> state, see <a href="#debug-scheduling">Troubleshoot Pod scheduling</a>.</p>
+</div>
 <h2 id="constraints-choose-your-approach">Choose your approach<a class="headerlink" href="#constraints-choose-your-approach" title="Permanent link">¶</a></h2>
 <table>
 <thead>
@@ -15751,6 +15788,7 @@ be able to land on it.</p>
 <p>The following example binds the Pod to any node having a self-explanatory
 <code>disktype: ssd</code> label:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span>
 </code></pre></div>
@@ -15776,6 +15814,7 @@ may have one of the following values:</p>
 <p>The following example forces Percona Server for MongoDB Pods to avoid occupying
 the same node:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 </code></pre></div>
@@ -15787,6 +15826,7 @@ tuning may be needed. In this case, the <code>advanced</code> option placed in t
 file turns off the effect of the <code>antiAffinityTopologyKey</code> and allows
 the use of the standard Kubernetes affinity constraints of any complexity:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">advanced</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">podAffinity</span><span class="p">:</span>
@@ -15834,6 +15874,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <p>Without a <code>priorityClassName</code> set, MongoDB Pods carry Kubernetes’ default priority and are exactly as evictable as anything else in the cluster. In a resource-constrained cluster, nothing protects the database from being bumped for a less critical workload unless you set this explicitly.</p>
 <p>To use it, add one or more PriorityClasses to your Kubernetes cluster, then set <code>priorityClassName</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-priority</span>
 </code></pre></div>
 <p>See the <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption">Kubernetes Pods Priority and Preemption documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
@@ -15842,6 +15883,7 @@ to find out how to define and use priority classes in your cluster.</p>
 <p>Affinity and anti-affinity covered above only control <em>where</em> Pods land - they do nothing to stop a <em>voluntary</em> disruption. A <code>kubectl drain</code> during a node upgrade, or a cluster autoscaler action, can evict two anti-affinitized replica set members back to back, breaking quorum through routine maintenance instead of hardware failure. A <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is what limits how many Pods can go down at once during such <em>voluntary disruptions</em> - the specific gap anti-affinity leaves open. The <code>maxUnavailable</code> and <code>minAvailable</code> options in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file set these limits.</p>
 <p>For the standard 3-member data-bearing replica set, losing 2 members at once breaks quorum - you need a majority of the 3 to elect a primary - so <code>maxUnavailable: 1</code> is the most you can afford to lose there:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">podDisruptionBudget</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </code></pre></div>
@@ -15907,6 +15949,7 @@ This can be useful for both high availability and resource efficiency.</p>
 <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> sections of the
 <code>deploy/cr.yaml</code> configuration file as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">topologySpreadConstraints</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span>
@@ -15932,6 +15975,7 @@ configured to not tolerating this <em>taint</em> is removed from the node. This 
 can be immediate or after the <code>tolerationSeconds</code> interval. The following
 example defines this effect and the removal interval:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"node.alpha.kubernetes.io/unreachable"</span>
 <span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">"Exists"</span>
@@ -30578,6 +30622,49 @@ Events:                      &lt;none&gt;
 </details>
 <p>This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.</p>
+<h3 id="debug-common-pod-states">Common Pod states<a class="headerlink" href="#debug-common-pod-states" title="Permanent link">¶</a></h3>
+<p>The <code>STATUS</code> column often points to the next place to look:</p>
+<table>
+<thead>
+<tr>
+<th><code>STATUS</code></th>
+<th>What it means</th>
+<th>Where to look</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Running</code></td>
+<td>The Pod is scheduled and its containers started. Check the <code>READY</code> column to see if all containers are ready.</td>
+<td><a href="#debug-logs">Check logs</a> if <code>READY</code> is lower than expected</td>
+</tr>
+<tr>
+<td><code>Pending</code></td>
+<td>Kubernetes has not placed the Pod on a node yet</td>
+<td><a href="#debug-scheduling">Troubleshoot Pod scheduling</a></td>
+</tr>
+<tr>
+<td><code>ContainerCreating</code></td>
+<td>The Pod is on a node, but a volume or an image is not ready</td>
+<td>The <code>Events</code> section of <code>kubectl describe pods &lt;pod-name&gt;</code></td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code>, <code>ErrImagePull</code></td>
+<td>The node cannot pull the image</td>
+<td>Check the image name and registry access. See <a href="#custom-registry">Use a private registry</a></td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td>A container starts and exits repeatedly</td>
+<td><a href="#debug-logs">Check logs</a> and <a href="#debug-images">Special debug images</a></td>
+</tr>
+<tr>
+<td><code>OOMKilled</code> (in <code>Last State</code>)</td>
+<td>The container exceeded its memory limit</td>
+<td>Raise the memory limit under <code>resources</code>. See <a href="#scaling">Scaling</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="debug-check-logs">Check logs<a class="headerlink" href="#debug-check-logs" title="Permanent link">¶</a></h2>
 <p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the <a href="#debug-logs">Check logs</a> section for more information about logs and how to check them.</p>
 <h2 id="debug-see-also">See also<a class="headerlink" href="#debug-see-also" title="Permanent link">¶</a></h2>
@@ -30735,12 +30822,366 @@ Check the information in the `Status` section. The `State` and `State Descriptio
 </li>
 </ol>
 <p>See the <a href="#debug-shell-avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Avoid the restart-on-fail loop for Percona Server for MongoDB containers</a> section for steps.</p>
+<p>If a Pod stays in the <code>Pending</code> state, see <a href="#debug-scheduling">Troubleshoot Pod scheduling</a>.</p>
 <p>For backup and restore failures, see <a href="#debug-backup-restore">Troubleshoot backups and restores</a>.</p>
 <p>If the problem started after an upgrade or a <code>crVersion</code> change, see <a href="#debug-upgrade">Troubleshoot upgrades and <code>crVersion</code></a>.</p>
 <h2 id="troubleshoot-operator-see-also">See also<a class="headerlink" href="#troubleshoot-operator-see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="#system-requirements">Installation</a></li>
-</ul></body></html></section><section class="print-page" id="debug-shell" heading-number="10.2"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-scheduling" heading-number="10.2"><html><head>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
+        })
+        </script>
+        </head><body><h1 id="troubleshoot-pod-scheduling">Troubleshoot Pod scheduling<a class="headerlink" href="#debug-scheduling-troubleshoot-pod-scheduling" title="Permanent link">¶</a></h1>
+<p>Use this page when <code>kubectl get pods</code> shows <code>Pending</code> for one or more database Pods.</p>
+<p>A database Pod stays <code>Pending</code> and never starts. Kubernetes has not chosen a node for it, so the cluster does not become ready. The Operator has already created the Pod. The Kubernetes scheduler is what selects a node, so restarting the Operator leaves the Pod <code>Pending</code>.</p>
+<p>The Pod’s events name every node the scheduler rejected, and why. Fix that reason in the Custom Resource or in the cluster.</p>
+<p>Refer to the sections below for the steps.</p>
+<p>For other Pod states, see <a href="#debug-check-the-pods">Check the Pods</a>.</p>
+<h2 id="debug-scheduling-find-the-reason">Find the reason<a class="headerlink" href="#debug-scheduling-find-the-reason" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>List the Pods and note which ones are <code>Pending</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>wide
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>NAME                    READY   STATUS    RESTARTS   AGE   NODE
+my-cluster-name-rs0-0   4/4     Running   0          12m   node-1
+my-cluster-name-rs0-1   4/4     Running   0          11m   node-2
+my-cluster-name-rs0-2   0/4     Pending   0          10m   &lt;none&gt;
+</code></pre></div>
+</details>
+<p>A <code>Pending</code> Pod has <code>&lt;none&gt;</code> in the <code>NODE</code> column. The <code>READY</code> count depends on the enabled sidecars, such as the backup agent and the log collector.</p>
+</li>
+<li>
+<p>Read the events of the <code>Pending</code> Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>Look at the <code>Events</code> section at the bottom. The scheduler records a <code>FailedScheduling</code> event with the reason:</p>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  25s   default-scheduler  0/4 nodes are available: 4 Insufficient memory. no new claims to deallocate, preemption: 0/4 nodes are available: 4 Preemption is not helpful for scheduling.
+</code></pre></div>
+</details>
+<p>The exact wording depends on the Kubernetes version. Newer versions add a clause about preemption (<code>preemption: ...</code>) at the end. You can ignore it. The reason is in the part before it.</p>
+</li>
+<li>
+<p>Read the whole message. It lists every node and groups the nodes by the reason each was rejected. The number before each reason is how many nodes it applies to, and different nodes can fail for different reasons:</p>
+<div class="no-copy highlight"><pre><span></span><code>0/4 nodes are available: 2 node(s) didn't match pod topology spread constraints, 2 node(s) were unschedulable.
+</code></pre></div>
+<p>To place the Pod, you must fix the reason for at least one node.</p>
+</li>
+<li>
+<p>Check the Custom Resource. While a Pod is <code>Pending</code>, <code>kubectl get psmdb</code> reports the state <code>initializing</code>. The scheduler’s message is in the status of the replica set, after the next reconcile:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.replsets.rs0.message}'</span>
+</code></pre></div>
+<p>Replace <code>rs0</code> with the name of the replica set that the Pod belongs to.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the <code>Events</code> section is empty, the events have expired (Kubernetes keeps them for about an hour by default). Delete the <code>Pending</code> Pod. The StatefulSet recreates it, and the scheduler records a fresh event.</p>
+</div>
+<p>Each component is scheduled with its own settings. A change under <code>replsets</code> doesn’t affect the config server or <code>mongos</code> Pods. Apply the fix to the section that the <code>Pending</code> Pod belongs to.</p>
+<h2 id="debug-scheduling-event-messages-at-a-glance">Event messages at a glance<a class="headerlink" href="#debug-scheduling-event-messages-at-a-glance" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>The event says</th>
+<th>What it means</th>
+<th>Go to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Insufficient cpu</code> or <code>Insufficient memory</code></td>
+<td>No node has enough unreserved CPU or memory for the Pod’s requests</td>
+<td><a href="#debug-scheduling-not-enough-cpu-or-memory">Not enough CPU or memory</a></td>
+</tr>
+<tr>
+<td><code>didn't match pod anti-affinity rules</code> or <br> <code>didn't satisfy existing pods anti-affinity rules</code></td>
+<td>There are fewer nodes (or zones) than replica set members</td>
+<td><a href="#debug-scheduling-not-enough-nodes-or-zones-for-anti-affinity">Not enough nodes or zones</a></td>
+</tr>
+<tr>
+<td><code>had untolerated taint(s)</code></td>
+<td>The nodes are tainted and the Pod has no matching toleration</td>
+<td><a href="#debug-scheduling-taints-labels-or-selectors-block-the-pod">Taints, labels, or selectors block the Pod</a></td>
+</tr>
+<tr>
+<td><code>didn't match Pod's node affinity/selector</code></td>
+<td>No node has the labels the Pod requires</td>
+<td><a href="#debug-scheduling-taints-labels-or-selectors-block-the-pod">Taints, labels, or selectors block the Pod</a></td>
+</tr>
+<tr>
+<td><code>didn't match pod topology spread constraints</code></td>
+<td>A <code>DoNotSchedule</code> spread constraint can’t be met</td>
+<td><a href="#debug-scheduling-taints-labels-or-selectors-block-the-pod">Taints, labels, or selectors block the Pod</a></td>
+</tr>
+<tr>
+<td><code>were unschedulable</code></td>
+<td>The node is cordoned</td>
+<td><a href="#debug-scheduling-a-node-is-cordoned">A node is cordoned</a></td>
+</tr>
+<tr>
+<td><code>pod has unbound immediate PersistentVolumeClaims</code>, <br> <code>didn't find available persistent volumes to bind</code>, <br> <code>persistentvolumeclaim "&lt;name&gt;" not found</code>, <br> <code>is being deleted</code>, or <br> <code>binding volumes: context deadline exceeded</code></td>
+<td>The Pod’s volume claim doesn’t exist, can’t get a volume, or is being deleted</td>
+<td><a href="#debug-scheduling-pvc-is-missing-or-unbound">PVC is missing or unbound</a></td>
+</tr>
+<tr>
+<td><code>didn't match PersistentVolume's node affinity</code> (older Kubernetes versions: <code>had volume node affinity conflict</code>)</td>
+<td>The volume is pinned to a node or zone where the Pod can’t run</td>
+<td><a href="#debug-scheduling-volume-node-affinity-conflict">Volume node affinity conflict</a></td>
+</tr>
+<tr>
+<td><code>Pod didn't trigger scale-up</code> (reason <code>NotTriggerScaleUp</code>)</td>
+<td>The cluster autoscaler has no node group that would fit the Pod</td>
+<td><a href="#debug-scheduling-the-autoscaler-does-not-add-a-node">The autoscaler does not add a node</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="debug-scheduling-apply-the-fix">Apply the fix<a class="headerlink" href="#debug-scheduling-apply-the-fix" title="Permanent link">¶</a></h2>
+<p>How the Pod picks up a fix depends on where you make it.</p>
+<ul>
+<li><strong>A fix in the Kubernetes cluster</strong> (uncordon a node, remove a taint, add a node or a label) is picked up by the scheduler on its own. The <code>Pending</code> Pod schedules within seconds.</li>
+<li>
+<p><strong>A fix in the Custom Resource</strong> (requests, affinity, tolerations, <code>nodeSelector</code>, storage) changes the StatefulSet, but not the Pod that is already <code>Pending</code>. <a href="#update-smart-update">Smart Update</a> waits for all Pods to be ready before it replaces any of them, and a <code>Pending</code> Pod never becomes ready. Apply the change, then delete the <code>Pending</code> Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>Before deleting the Pod, inspect its StatefulSet with <code>kubectl get statefulset &lt;statefulset-name&gt; -n &lt;namespace&gt; -o yaml</code>. Wait until <code>spec.template</code> contains the corrected requests or scheduling constraints. Then delete the Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;pending-pod&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The StatefulSet recreates the Pod with the new settings. Delete only the <code>Pending</code> Pod. It never started, so no data is lost.</p>
+</li>
+</ul>
+<h2 id="debug-scheduling-not-enough-cpu-or-memory">Not enough CPU or memory<a class="headerlink" href="#debug-scheduling-not-enough-cpu-or-memory" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> The scheduler compares the Pod’s resource <em>requests</em> with what is still unreserved on each node. It adds up the requests of all containers in the Pod, including sidecars such as the log collector, and ignores <code>limits</code> and the current load. A node can be idle and still be full on paper.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Compare the requests with the free capacity. In the output, check the <code>Allocatable</code> and <code>Allocated resources</code> sections. The <code>Non-terminated Pods</code> table shows the requests of every Pod on the node:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>node<span class="w"> </span>&lt;node-name&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Do one of the following:</p>
+<ul>
+<li>Add a node, or use larger nodes.</li>
+<li>
+<p>Lower the requests in the Custom Resource. Check what your cluster can afford before you do, as the database needs enough memory to run:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300m</span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>Apply the change and delete the <code>Pending</code> Pod, as described in <a href="#debug-scheduling-apply-the-fix">Apply the fix</a>.</p>
+</li>
+</ol>
+<p>If other workloads should give way to the database Pods, you can also set <code>priorityClassName</code>. See <a href="#constraints-priority-classes">Priority Classes</a>. For sizing, see <a href="#scaling">Scaling</a>.</p>
+<h2 id="debug-scheduling-not-enough-nodes-or-zones-for-anti-affinity">Not enough nodes or zones for anti-affinity<a class="headerlink" href="#debug-scheduling-not-enough-nodes-or-zones-for-anti-affinity" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> By default, the Operator keeps replica set members on different nodes (<code>antiAffinityTopologyKey: kubernetes.io/hostname</code>). When every schedulable node already runs a member, the next Pod has nowhere to go. In the following example, two of four nodes are cordoned, and the other two already run members:</p>
+<div class="no-copy highlight"><pre><span></span><code>0/4 nodes are available: 2 node(s) didn't match pod anti-affinity rules, 2 node(s) were unschedulable.
+</code></pre></div>
+<p>With <code>topology.kubernetes.io/zone</code>, each member needs a node in its own zone, so three members need nodes in three zones.</p>
+<p>If you set <code>affinity.advanced</code>, the Operator ignores <code>antiAffinityTopologyKey</code>. Check the rules under <code>advanced</code> instead. Only <code>required...</code> rules can keep a Pod <code>Pending</code>. A <code>preferred...</code> rule never does.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>Add a node (or a zone) so that every member gets its own. This is the right fix for production, because the spread is what lets the replica set survive the loss of one node.</li>
+<li>
+<p>For a test cluster that has to run on fewer nodes, turn the rule off in <code>deploy/cr.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">affinity</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"none"</span>
+</code></pre></div>
+<p>Apply the full <code>cr.yaml</code>, then delete the <code>Pending</code> Pod, as described in <a href="#debug-scheduling-apply-the-fix">Apply the fix</a>. A merge patch with this snippet replaces the whole <code>replsets</code> list, and the API server rejects it.</p>
+<p>Don’t use <code>none</code> in production. Several members can then land on the same node, and one node failure can take down the majority of the replica set.</p>
+</li>
+</ol>
+<p>See <a href="#constraints-affinity-and-anti-affinity">Affinity and anti-affinity</a> for all valid values.</p>
+<h2 id="debug-scheduling-taints-labels-or-selectors-block-the-pod">Taints, labels, or selectors block the Pod<a class="headerlink" href="#debug-scheduling-taints-labels-or-selectors-block-the-pod" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> The scheduler rejected the nodes for one or more of these reasons:</p>
+<ul>
+<li>The node is tainted, and the Pod has no toleration for the taint.</li>
+<li>The Pod asks for a node label (<code>nodeSelector</code> or node affinity) that no node has.</li>
+<li>A <code>DoNotSchedule</code> spread constraint can’t be met.</li>
+</ul>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Check the taints and labels of the nodes. Newer Kubernetes versions print only <code>had untolerated taint(s)</code> in the event, without the key and the value, so list the taints from the nodes:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>-o<span class="w"> </span>custom-columns<span class="o">=</span>NAME:.metadata.name,TAINTS:.spec.taints
+kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>--show-labels
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>NAME     TAINTS
+node-1   [map[effect:NoSchedule key:dedicated value:mongodb]]
+node-2   &lt;none&gt;
+</code></pre></div>
+</details>
+</li>
+<li>
+<p>Compare them with the Custom Resource:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
+</code></pre></div>
+<p>Check <code>nodeSelector</code>, <code>affinity</code>, <code>tolerations</code> and <code>topologySpreadConstraints</code> under the section that the Pod belongs to.</p>
+</li>
+<li>
+<p>Either label or untaint the node, or change the Custom Resource so that the Pod matches. For example, add a toleration for a dedicated node pool. A change to the node needs no further steps. A change to the Custom Resource needs the Pod to be deleted, as described in <a href="#debug-scheduling-apply-the-fix">Apply the fix</a>. See <a href="#constraints-tolerations">Tolerations</a>, <a href="#constraints-node-selector">Node selector</a> and <a href="#constraints-topology-spread-constraints">Topology Spread Constraints</a>.</p>
+</li>
+</ol>
+<h2 id="debug-scheduling-a-node-is-cordoned">A node is cordoned<a class="headerlink" href="#debug-scheduling-a-node-is-cordoned" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> A cordoned node accepts no new Pods. It is marked <code>SchedulingDisabled</code>. It’s normal during a node drain or upgrade. However, it becomes a problem if the node was cordoned and forgotten. The message usually combines <code>were unschedulable</code> with other reasons, as in the examples above.</p>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Find the cordoned nodes:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</code></pre></div>
+</li>
+<li>
+<p>If no maintenance is running on the node, make it schedulable again:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>uncordon<span class="w"> </span>&lt;node-name&gt;
+</code></pre></div>
+<p>The <code>Pending</code> Pod schedules on its own. If a drain is still in progress, wait for it to finish.</p>
+</li>
+</ol>
+<h2 id="debug-scheduling-storage-problems">Storage problems<a class="headerlink" href="#debug-scheduling-storage-problems" title="Permanent link">¶</a></h2>
+<p>Database Pods keep their data on PersistentVolumeClaims (PVCs). If the volume can’t be provided, or is in a place the Pod can’t reach, the Pod stays <code>Pending</code>.</p>
+<h3 id="debug-scheduling-pvc-is-missing-or-unbound">PVC is missing or unbound<a class="headerlink" href="#debug-scheduling-pvc-is-missing-or-unbound" title="Permanent link">¶</a></h3>
+<p><strong>Meaning.</strong> The scheduler can’t place a Pod whose PVC doesn’t exist or can’t get a volume. The event of the Pod names the claim, but not the cause:</p>
+<table>
+<thead>
+<tr>
+<th>The event says</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pod has unbound immediate PersistentVolumeClaims</code></td>
+<td>The PVC has no volume yet and its StorageClass binds immediately</td>
+</tr>
+<tr>
+<td><code>didn't find available persistent volumes to bind</code></td>
+<td>No free volume matches the claim. For example, the StorageClass has no provisioner</td>
+</tr>
+<tr>
+<td><code>persistentvolumeclaim "&lt;name&gt;" not found</code></td>
+<td>The PVC isn’t in the Pod’s namespace</td>
+</tr>
+<tr>
+<td><code>persistentvolumeclaim "&lt;name&gt;" is being deleted</code></td>
+<td>The PVC is being replaced, for example when you recreate a member. This state is temporary</td>
+</tr>
+<tr>
+<td><code>binding volumes: context deadline exceeded</code></td>
+<td>The provisioner didn’t create the volume in time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>
+<p>Check the claims. The cause is in the events of the PVC, not in the events of the Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>describe<span class="w"> </span>pvc<span class="w"> </span>&lt;pvc-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The PVC of a member is named <code>mongod-data-&lt;pod-name&gt;</code>, for example <code>mongod-data-my-cluster-name-rs0-2</code>. Look for a <code>ProvisioningFailed</code> event:</p>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Warning  ProvisioningFailed  storageclass.storage.k8s.io "does-not-exist" not found
+</code></pre></div>
+</details>
+</li>
+<li>
+<p>Fix what the PVC events report: the StorageClass name (<code>kubectl get sc</code> lists the existing ones), the default StorageClass, the provisioner, or the namespace quota.</p>
+</li>
+</ol>
+<p>A PVC with a StorageClass that waits for the first consumer stays <code>Pending</code> until the Pod is scheduled. That alone isn’t an error. Changing <code>storageClassName</code> in the Custom Resource doesn’t change PVCs that already exist.</p>
+<p>See <a href="#debug-storage">Troubleshooting storage</a> for quota and CSI issues.</p>
+<h3 id="debug-scheduling-volume-node-affinity-conflict">Volume node affinity conflict<a class="headerlink" href="#debug-scheduling-volume-node-affinity-conflict" title="Permanent link">¶</a></h3>
+<p><strong>Meaning.</strong> A PersistentVolume is pinned to certain nodes, and the Pod can only run where the volume can be attached. The Pod waits when the place where the volume lives is not available:</p>
+<ul>
+<li>Local storage (local-path, hostPath, OpenEBS hostpath, local CSI drivers) is pinned to the node that created the volume. The Pod waits if that node is cordoned, drained, or gone.</li>
+<li>Cloud disks are pinned to a zone. The Pod waits if no schedulable node is available in that zone.</li>
+</ul>
+<p>The event looks like this:</p>
+<div class="no-copy highlight"><pre><span></span><code>0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match PersistentVolume's node affinity.
+</code></pre></div>
+<p>Older Kubernetes versions say <code>had volume node affinity conflict</code>.</p>
+<p>The PVC still shows <code>Bound</code>, so look at the volume instead:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>mongod-data-&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>describe<span class="w"> </span>pv<span class="w"> </span>&lt;pv-name&gt;
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Node Affinity:
+  Required Terms:
+    Term 0:        kubernetes.io/hostname in [node-1]
+</code></pre></div>
+</details>
+<p><strong>Fix.</strong></p>
+<ol>
+<li>If the node or zone can come back, bring it back: uncordon the node, finish the drain, or add a node in that zone. The Pod schedules on its own and keeps its data.</li>
+<li>
+<p>If the node or zone is gone for good, recreate the member. The Operator creates a new, empty volume on an available node, and the member runs an initial sync from the other members. <strong>Do this for one member at a time, and only while the rest of the replica set is healthy and keeps a majority.</strong> This applies to config server members too. The data on the member’s volume is deleted:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>mongod-data-&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--wait<span class="o">=</span><span class="nb">false</span>
+kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The <code>--wait=false</code> option keeps the first command from blocking while a running Pod still uses the claim. If the Pod is already <code>Pending</code>, deleting the claim can be enough: the StatefulSet recreates it, and the Pod schedules on its own.</p>
+</li>
+<li>
+<p>Wait until the new member is <code>SECONDARY</code> before you touch another one. Open <a href="#connection-secrets-open-an-interactive-shell-with-mongosh">mongosh</a>, connecting to the affected shard or config server replica set (<code>cfg</code>), not through <code>mongos</code>. Authenticate as a user authorized to run <code>replSetGetStatus</code>, then run <code>rs.status()</code> to check the recreated member. <code>kubectl get psmdb</code> can show <code>ready</code> before the initial sync finishes. If you recreate two members of a three-member replica set at once, there is no majority: the primary steps down, and writes fail until one of the members finishes the sync.</p>
+</li>
+</ol>
+<h2 id="debug-scheduling-the-autoscaler-does-not-add-a-node">The autoscaler does not add a node<a class="headerlink" href="#debug-scheduling-the-autoscaler-does-not-add-a-node" title="Permanent link">¶</a></h2>
+<p><strong>Meaning.</strong> The Pod stays <code>Pending</code> although the cluster has a cluster autoscaler. The autoscaler adds a node only if some node group would fit the Pod. Look for the event:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>NotTriggerScaleUp
+</code></pre></div>
+<p>The message starts with <code>Pod didn't trigger scale-up:</code> and gives the reason why a new node would not help, for example <code>max node group size reached</code>. On some platforms, such as GKE, the reason after the colon can be empty. Check the status or the logs of the cluster autoscaler for the reason.</p>
+<p><strong>Fix.</strong> Check that at least one node group has the labels, taints and zone that the Pod requires, that its machine size is large enough for the Pod’s requests, and that it hasn’t reached its maximum size. Then fix the node group, or the Pod’s constraints, as described above.</p>
+<h2 id="debug-scheduling-verify-recovery">Verify recovery<a class="headerlink" href="#debug-scheduling-verify-recovery" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>Check that the Pod is scheduled and running:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>wide
+</code></pre></div>
+<p>The <code>STATUS</code> is <code>Running</code>, the <code>READY</code> column is full (for example <code>4/4</code>), and <code>NODE</code> shows a node name.</p>
+</li>
+<li>
+<p>Check the cluster state:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The <code>STATUS</code> changes from <code>initializing</code> to <code>ready</code>. For a recreated member, also check <code>rs.status()</code> in <a href="#connection-secrets-open-an-interactive-shell-with-mongosh">mongosh</a>: the member must be <code>SECONDARY</code> or <code>PRIMARY</code>, because <code>ready</code> can appear before the initial sync finishes.</p>
+</li>
+<li>
+<p>Check that no new <code>FailedScheduling</code> events appear:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>FailedScheduling
+</code></pre></div>
+</li>
+</ol>
+<h2 id="debug-scheduling-see-also">See also<a class="headerlink" href="#debug-scheduling-see-also" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#constraints">Control Pod scheduling</a></li>
+<li><a href="#troubleshoot-operator">Troubleshoot the Operator installation issues</a></li>
+<li><a href="#debug-storage">Troubleshooting storage</a></li>
+</ul></body></html></section><section class="print-page" id="debug-shell" heading-number="10.3"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -30814,7 +31255,7 @@ Server for MongoDB Pod as follows:</p>
 </code></pre></div>
 <p>The instance will restart automatically and run in its usual way as soon as you
 remove this file (you can do it with a command similar to the one you have used
-to create the file, just substitute <code>touch</code> to <code>rm</code> in it).</p></body></html></section><section class="print-page" id="debug-logs" heading-number="10.3"><html><head>
+to create the file, just substitute <code>touch</code> to <code>rm</code> in it).</p></body></html></section><section class="print-page" id="debug-logs" heading-number="10.4"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -30891,7 +31332,7 @@ logs with the <code>kubectl logs</code> command:</p>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_LEVEL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</code></pre></div></body></html></section><section class="print-page" id="debug-backup-restore" heading-number="10.4"><html><head>
+</code></pre></div></body></html></section><section class="print-page" id="debug-backup-restore" heading-number="10.5"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31080,7 +31521,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 <h2 id="debug-backup-restore-see-also">See also<a class="headerlink" href="#debug-backup-restore-see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="#backups">Backup and restore</a></li>
-</ul></body></html></section><section class="print-page" id="debug-upgrade" heading-number="10.5"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-upgrade" heading-number="10.6"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31149,7 +31590,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 <li><a href="#update">Update Percona Operator for MongoDB</a></li>
 <li><a href="#update-crversion"><code>crVersion</code> behavior</a></li>
 <li><a href="#cr-statuses">Custom resource statuses</a></li>
-</ul></body></html></section><section class="print-page" id="debug-images" heading-number="10.6"><html><head>
+</ul></body></html></section><section class="print-page" id="debug-images" heading-number="10.7"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31179,7 +31620,7 @@ for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration 
 <p class="admonition-title">Note</p>
 <p>When the Pod is continuously restarting, you may have to delete it
 to apply image changes.</p>
-</div></body></html></section><section class="print-page" id="debug-storage" heading-number="10.7"><html><head>
+</div></body></html></section><section class="print-page" id="debug-storage" heading-number="10.8"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -31203,6 +31644,7 @@ to apply image changes.</p>
 <h2 id="debug-storage-see-also">See also<a class="headerlink" href="#debug-storage-see-also" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="#scaling-about">Scaling and storage</a></li>
+<li><a href="#debug-scheduling-storage-problems">Storage problems that keep Pods in the <code>Pending</code> state</a></li>
 </ul></body></html></section></section>
                     <section class='print-page md-section' id='section-11' heading-number='11'>
                         <h1>Reference<a class='headerlink' href='#section-11' title='Permanent link'></a>
@@ -36350,6 +36792,22 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
 <td><pre>|<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-shardingconfigsvrreplsetpriorityclassname"><code>sharding.configsvrReplSet.priorityClassName</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetpriorityclassname" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass">Kubernetes Pod priority class  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for Config Server Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>high-priority</code></td>
 </tr>
 </tbody>
 </table>
@@ -48024,17 +48482,19 @@ applications or code.</p>
 .print-site-enumerate-headings #section-10 > h1:before { content: '10 ' }
 .print-site-enumerate-headings #troubleshoot-operator > h1:before { content: '10.1 ' }
 
-.print-site-enumerate-headings #debug-shell > h1:before { content: '10.2 ' }
+.print-site-enumerate-headings #debug-scheduling > h1:before { content: '10.2 ' }
 
-.print-site-enumerate-headings #debug-logs > h1:before { content: '10.3 ' }
+.print-site-enumerate-headings #debug-shell > h1:before { content: '10.3 ' }
 
-.print-site-enumerate-headings #debug-backup-restore > h1:before { content: '10.4 ' }
+.print-site-enumerate-headings #debug-logs > h1:before { content: '10.4 ' }
 
-.print-site-enumerate-headings #debug-upgrade > h1:before { content: '10.5 ' }
+.print-site-enumerate-headings #debug-backup-restore > h1:before { content: '10.5 ' }
 
-.print-site-enumerate-headings #debug-images > h1:before { content: '10.6 ' }
+.print-site-enumerate-headings #debug-upgrade > h1:before { content: '10.6 ' }
 
-.print-site-enumerate-headings #debug-storage > h1:before { content: '10.7 ' }
+.print-site-enumerate-headings #debug-images > h1:before { content: '10.7 ' }
+
+.print-site-enumerate-headings #debug-storage > h1:before { content: '10.8 ' }
 
 .print-site-enumerate-headings #section-11 > h1:before { content: '11 ' }
 .print-site-enumerate-headings #section-11-1 > h1:before { content: '11.1 ' }

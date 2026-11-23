@@ -4789,6 +4789,8 @@ more of the database than it has to.">
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4833,6 +4835,26 @@ more of the database than it has to.">
   
   <span class="md-ellipsis">
     Troubleshoot the Operator installation issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-scheduling.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot Pod scheduling
   </span>
   
 
@@ -6743,6 +6765,10 @@ more of the database than it has to.</p>
 <p>The appropriate (sub)sections (<code>replsets</code>, <code>replsets.arbiter</code>, <code>backup</code>, etc.)
 of the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 file contain the keys which can be used to do assign pods to nodes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If Pods are already stuck in the <code>Pending</code> state, see <a href="debug-scheduling.html">Troubleshoot Pod scheduling</a>.</p>
+</div>
 <h2 id="choose-your-approach">Choose your approach<a data-markdown-ignore class="headerlink" href="#choose-your-approach" title="Permanent link">¶</a></h2>
 <table>
 <thead>
@@ -6792,6 +6818,7 @@ be able to land on it.</p>
 <p>The following example binds the Pod to any node having a self-explanatory
 <code>disktype: ssd</code> label:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span>
 </code></pre></div>
@@ -6817,6 +6844,7 @@ may have one of the following values:</p>
 <p>The following example forces Percona Server for MongoDB Pods to avoid occupying
 the same node:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">antiAffinityTopologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubernetes.io/hostname"</span>
 </code></pre></div>
@@ -6828,6 +6856,7 @@ tuning may be needed. In this case, the <code>advanced</code> option placed in t
 file turns off the effect of the <code>antiAffinityTopologyKey</code> and allows
 the use of the standard Kubernetes affinity constraints of any complexity:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">advanced</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">podAffinity</span><span class="p">:</span>
@@ -6875,6 +6904,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <p>Without a <code>priorityClassName</code> set, MongoDB Pods carry Kubernetes’ default priority and are exactly as evictable as anything else in the cluster. In a resource-constrained cluster, nothing protects the database from being bumped for a less critical workload unless you set this explicitly.</p>
 <p>To use it, add one or more PriorityClasses to your Kubernetes cluster, then set <code>priorityClassName</code> in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-priority</span>
 </code></pre></div>
 <p>See the <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption">Kubernetes Pods Priority and Preemption documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
@@ -6883,6 +6913,7 @@ to find out how to define and use priority classes in your cluster.</p>
 <p>Affinity and anti-affinity covered above only control <em>where</em> Pods land - they do nothing to stop a <em>voluntary</em> disruption. A <code>kubectl drain</code> during a node upgrade, or a cluster autoscaler action, can evict two anti-affinitized replica set members back to back, breaking quorum through routine maintenance instead of hardware failure. A <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> is what limits how many Pods can go down at once during such <em>voluntary disruptions</em> - the specific gap anti-affinity leaves open. The <code>maxUnavailable</code> and <code>minAvailable</code> options in the <a href="https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml">deploy/cr.yaml  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> file set these limits.</p>
 <p>For the standard 3-member data-bearing replica set, losing 2 members at once breaks quorum - you need a majority of the 3 to elect a primary - so <code>maxUnavailable: 1</code> is the most you can afford to lose there:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">podDisruptionBudget</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </code></pre></div>
@@ -6948,6 +6979,7 @@ This can be useful for both high availability and resource efficiency.</p>
 <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> sections of the
 <code>deploy/cr.yaml</code> configuration file as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">topologySpreadConstraints</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span>
@@ -6973,6 +7005,7 @@ configured to not tolerating this <em>taint</em> is removed from the node. This 
 can be immediate or after the <code>tolerationSeconds</code> interval. The following
 example defines this effect and the removal interval:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"node.alpha.kubernetes.io/unreachable"</span>
 <span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s">"Exists"</span>
@@ -6991,7 +7024,7 @@ contains more examples on this topic.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
       
         <br>
         Created:

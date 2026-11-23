@@ -4606,6 +4606,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -4650,6 +4652,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot the Operator installation issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-scheduling.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot Pod scheduling
   </span>
   
 
@@ -8549,6 +8571,17 @@
     <span class="md-ellipsis">
       
         sharding.configsvrReplSet.configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shardingconfigsvrreplsetpriorityclassname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sharding.configsvrReplSet.priorityClassName
       
     </span>
   </a>
@@ -16662,6 +16695,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <span class="md-ellipsis">
       
         sharding.configsvrReplSet.configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shardingconfigsvrreplsetpriorityclassname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sharding.configsvrReplSet.priorityClassName
       
     </span>
   </a>
@@ -25018,6 +25062,22 @@ options for Percona Server for MondoDB <a href="sharding.html">sharding</a>.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="shardingconfigsvrreplsetpriorityclassname"><code>sharding.configsvrReplSet.priorityClassName</code><a data-markdown-ignore class="headerlink" href="#shardingconfigsvrreplsetpriorityclassname" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass">Kubernetes Pod priority class  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for Config Server Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>high-priority</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="shardingconfigsvrreplsetenvname"><code>sharding.configsvrReplSet.env.name</code><a data-markdown-ignore class="headerlink" href="#shardingconfigsvrreplsetenvname" title="Permanent link">¶</a></h3>
 <p>The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See <a href="env-vars-custom.html">Define custom environment variables</a>.</p>
 <table>
@@ -29453,7 +29513,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 19, 2026 10:32:35 UTC">November 19, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
       
         <br>
         Created:

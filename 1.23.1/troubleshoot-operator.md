@@ -184,6 +184,8 @@ kubectl exec -it <pod-name> -- sh
 
 See the [Avoid the restart-on-fail loop for Percona Server for MongoDB containers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) section for steps.
 
+If a Pod stays in the `Pending` state, see [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html).
+
 For backup and restore failures, see [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html).
 
 If the problem started after an upgrade or a `crVersion` change, see [Troubleshoot upgrades and `crVersion`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-upgrade.html).

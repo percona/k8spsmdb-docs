@@ -4608,6 +4608,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -4652,6 +4654,26 @@
   
   <span class="md-ellipsis">
     Troubleshoot the Operator installation issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debug-scheduling.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshoot Pod scheduling
   </span>
   
 
@@ -6300,6 +6322,23 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Check the Pods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-pod-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Pod states
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6498,6 +6537,49 @@ Events:                      &lt;none&gt;
 </details>
 <p>This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.</p>
+<h3 id="common-pod-states">Common Pod states<a data-markdown-ignore class="headerlink" href="#common-pod-states" title="Permanent link">¶</a></h3>
+<p>The <code>STATUS</code> column often points to the next place to look:</p>
+<table>
+<thead>
+<tr>
+<th><code>STATUS</code></th>
+<th>What it means</th>
+<th>Where to look</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Running</code></td>
+<td>The Pod is scheduled and its containers started. Check the <code>READY</code> column to see if all containers are ready.</td>
+<td><a href="debug-logs.html">Check logs</a> if <code>READY</code> is lower than expected</td>
+</tr>
+<tr>
+<td><code>Pending</code></td>
+<td>Kubernetes has not placed the Pod on a node yet</td>
+<td><a href="debug-scheduling.html">Troubleshoot Pod scheduling</a></td>
+</tr>
+<tr>
+<td><code>ContainerCreating</code></td>
+<td>The Pod is on a node, but a volume or an image is not ready</td>
+<td>The <code>Events</code> section of <code>kubectl describe pods &lt;pod-name&gt;</code></td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code>, <code>ErrImagePull</code></td>
+<td>The node cannot pull the image</td>
+<td>Check the image name and registry access. See <a href="custom-registry.html">Use a private registry</a></td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td>A container starts and exits repeatedly</td>
+<td><a href="debug-logs.html">Check logs</a> and <a href="debug-images.html">Special debug images</a></td>
+</tr>
+<tr>
+<td><code>OOMKilled</code> (in <code>Last State</code>)</td>
+<td>The container exceeded its memory limit</td>
+<td>Raise the memory limit under <code>resources</code>. See <a href="scaling.html">Scaling</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="check-logs">Check logs<a data-markdown-ignore class="headerlink" href="#check-logs" title="Permanent link">¶</a></h2>
 <p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the <a href="debug-logs.html">Check logs</a> section for more information about logs and how to check them.</p>
 <h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
@@ -6509,7 +6591,7 @@ and also events. So, describe output should be checked to see any abnormalities.
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
       
         <br>
         Created:

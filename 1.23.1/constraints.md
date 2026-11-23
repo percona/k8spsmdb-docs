@@ -6,6 +6,10 @@ The Operator does a good job of automatically assigning new Pods to nodes to ach
 
 The appropriate (sub)sections (`replsets`, `replsets.arbiter`, `backup`, etc.) of the [deploy/cr.yaml](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contain the keys which can be used to do assign pods to nodes.
 
+Note
+
+If Pods are already stuck in the `Pending` state, see [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html).
+
 ## Choose your approach
 
 | Goal                                                                                                           | Use                         | Where                                                       |
@@ -25,6 +29,7 @@ The following example binds the Pod to any node having a self-explanatory `diskt
 
 ```
 replsets:
+- name: rs0
   nodeSelector:
     disktype: ssd
 ```
@@ -51,6 +56,7 @@ The following example forces Percona Server for MongoDB Pods to avoid occupying 
 
 ```
 replsets:
+- name: rs0
   affinity:
     antiAffinityTopologyKey: "kubernetes.io/hostname"
 ```
@@ -61,6 +67,7 @@ The previous method can be used without special knowledge of the Kubernetes way 
 
 ```
 replsets:
+- name: rs0
   affinity:
     advanced:
       podAffinity:
@@ -114,6 +121,7 @@ To use it, add one or more PriorityClasses to your Kubernetes cluster, then set 
 
 ```
 replsets:
+- name: rs0
   priorityClassName: high-priority
 ```
 
@@ -127,6 +135,7 @@ For the standard 3-member data-bearing replica set, losing 2 members at once bre
 
 ```
 replsets:
+- name: rs0
   podDisruptionBudget:
     maxUnavailable: 1
 ```
@@ -162,6 +171,7 @@ Pod topology spread constraints are controlled by the `topologySpreadConstraints
 
 ```
 replsets:
+- name: rs0
   topologySpreadConstraints:
     - labelSelector:
         matchLabels:
@@ -187,6 +197,7 @@ When a *taint* with the `NoExecute` effect is assigned to a Node, any Pod config
 
 ```
 replsets:
+- name: rs0
   tolerations:
   - key: "node.alpha.kubernetes.io/unreachable"
     operator: "Exists"

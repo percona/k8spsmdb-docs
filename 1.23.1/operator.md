@@ -2616,6 +2616,14 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | ---------- | ------- |
 | string     | \`\`\`  |
 
+### `sharding.configsvrReplSet.priorityClassName`
+
+The [Kubernetes Pod priority class](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass) for Config Server Pods.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| string     | `high-priority` |
+
 ### `sharding.configsvrReplSet.env.name`
 
 The name of a custom environment variable for Config Server mongod containers (available since Operator 1.22.0). See [Define custom environment variables](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/env-vars-custom.html).
