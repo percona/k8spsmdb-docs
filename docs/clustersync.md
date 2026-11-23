@@ -107,8 +107,9 @@ PCSM supports these topologies:
 * Replica set to replica set
 * Sharded cluster to sharded cluster
 * Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.
+* Replica set to sharded cluster. After migration, the collections remain unsharded and you must shard them yourself. 
 
-See [Supported MongoDB deployments in the PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html).
+See [Supported MongoDB deployments in the PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html) and [Limitations on sharded clusters in the PCSM documentation :octicons-link-external-16:](https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html#sharded-clusters) for more information.
 
 ## Supported MongoDB versions
 
