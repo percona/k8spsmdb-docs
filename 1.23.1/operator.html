@@ -21002,6 +21002,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </table>
 <h2 id="replsets-section"><a name="operator-replsets-section"></a>Replsets Section<a data-markdown-ignore class="headerlink" href="#replsets-section" title="Permanent link">¶</a></h2>
 <p>The replsets section controls the MongoDB Replica Set.</p>
+<p>NOTE: Replsets create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the Replset configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.</p>
 <h3 id="replsetsname"><code>replsets.name</code><a data-markdown-ignore class="headerlink" href="#replsetsname" title="Permanent link">¶</a></h3>
 <p>The name of the <a href="https://docs.mongodb.com/manual/replication/">MongoDB Replica Set  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <table>
@@ -24854,6 +24855,7 @@ readiness probe.</p>
 <h2 id="sharding-section"><a name="operator-sharding-section"></a>Sharding Section<a data-markdown-ignore class="headerlink" href="#sharding-section" title="Permanent link">¶</a></h2>
 <p>The <code>sharding</code> section in the deploy/cr.yaml file contains configuration
 options for Percona Server for MondoDB <a href="sharding.html">sharding</a>.</p>
+<p>NOTE: sharding.configsvrReplSet create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the sharding.configsvrReplSet configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.</p>
 <h3 id="shardingenabled"><code>sharding.enabled</code><a data-markdown-ignore class="headerlink" href="#shardingenabled" title="Permanent link">¶</a></h3>
 <p>Enables or disables <a href="https://docs.mongodb.com/manual/sharding/">Percona Server for MondoDB sharding  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <table>
@@ -29513,7 +29515,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:41 UTC">November 23, 2026</span>
       
         <br>
         Created:
