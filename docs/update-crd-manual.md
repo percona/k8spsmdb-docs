@@ -78,7 +78,7 @@ The upgrade includes the following steps.
 
     Since this is a working cluster, the way to update the Custom Resource is to [apply a patch  :octicons-link-external-16:](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/) with the `kubectl patch psmdb` command.
 
-    For example, to update the cluster with the name `my-cluster-name` to the `{{ release }}` version, the command is as follows:
+    This example command updates the cluster with the name `my-cluster-name` to the `{{ release }}` version. The commands in the following examples use Percona Server for MongoDB 8.3. If you run 8.0 or 7.0, update the commands with the corresponding minor versions. Find those versions in the [version compatibility matrix](versions.md).
 
     === "With PMM Client"
 
@@ -86,7 +86,7 @@ The upgrade includes the following steps.
         kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb83recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "pmm": { "image": "percona/pmm-client:{{ pmm3recommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
@@ -99,7 +99,7 @@ The upgrade includes the following steps.
         kubectl patch psmdb my-cluster-name --type=merge --patch '{
            "spec": {
               "crVersion":"{{ release }}",
-              "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+              "image": "percona/percona-server-mongodb:{{ mongodb83recommended }}",
               "backup": { "image": "percona/percona-backup-mongodb:{{ pbmrecommended }}" },
               "logcollector": { "image": "percona/fluentbit:{{fluentbitrecommended}}" }
            }}'

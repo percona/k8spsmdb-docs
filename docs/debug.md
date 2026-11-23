@@ -67,7 +67,8 @@ The above command provides the following insights:
     impacted by the [Container Restart Policy  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
     In an ideal world, the restart count would be zero, meaning no issues from
     the beginning. If the restart count exceeds zero, it may be reasonable to
-    check why it happens.
+    check why it happens. If a container was killed because it ran out of memory
+    (`OOMKilled`), see [Troubleshoot out-of-memory errors](debug-oom.md).
 * `AGE`: Indicates how long the Pod is running. Any abnormality in this value
     needs to be checked.
 
@@ -114,6 +115,19 @@ kubectl describe pods my-cluster-name-rs0-0
 
 This gives a lot of information about containers, resources, container status
 and also events. So, describe output should be checked to see any abnormalities.
+
+### Common Pod states
+
+The `STATUS` column often points to the next place to look:
+
+| `STATUS` | What it means | Where to look |
+| --- | --- | --- |
+| `Running` | The Pod is scheduled and its containers started. Check the `READY` column to see if all containers are ready. | [Check logs](debug-logs.md) if `READY` is lower than expected |
+| `Pending` | Kubernetes has not placed the Pod on a node yet | [Troubleshoot Pod scheduling](debug-scheduling.md) |
+| `ContainerCreating` | The Pod is on a node, but a volume or an image is not ready | The `Events` section of `kubectl describe pods <pod-name>` |
+| `ImagePullBackOff`, `ErrImagePull` | The node cannot pull the image | Check the image name and registry access. See [Use a private registry](custom-registry.md) |
+| `CrashLoopBackOff` | A container starts and exits repeatedly | [Check logs](debug-logs.md) and [Special debug images](debug-images.md) |
+| `OOMKilled` (in `Last State`) | The container exceeded its memory limit | Raise the memory limit under `resources`. See [Scaling](scaling.md) |
 
 ## Check logs
 
