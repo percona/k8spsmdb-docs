@@ -1,7 +1,10 @@
 # MkDocs configuration
 # Used as base - look for .yml files with INHERIT
 site_name: Percona Operator for MongoDB
-site_description: Documentation
+site_description: >-
+  Percona Operator for MongoDB deploys and manages Percona Server for MongoDB
+  replica sets and sharded clusters on Kubernetes, with backups, scaling,
+  upgrades and monitoring.
 site_author: Percona LLC
 site_url: ""
 copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2026
@@ -73,6 +76,7 @@ extra_javascript:
   - js/kapa.js
   - js/posthog-search.js
   - js/posthog-version.js
+  - js/diagram-zoom.js
 
 markdown_extensions:
   attr_list: {}
@@ -123,6 +127,10 @@ plugins:
   #  repository: k8spsmdb-docs
   #  branch: "main"
   open-in-new-tab: {}
+  # Image lightbox. Mermaid diagrams are wired up in docs/js/diagram-zoom.js.
+  glightbox:
+    zoomable: true
+    draggable: true
   meta-descriptions:
     export_csv: false
     quiet: false
@@ -140,6 +148,15 @@ plugins:
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
   section-index: {}
+  # llms.txt, llms-full.txt and a .md copy of every page, for AI agents.
+  # percona-llmstxt fills in the sections (from nav), base_url and the rest.
+  llmstxt:
+    full_output: llms-full.txt
+    markdown_description: >-
+      Each page below is also available as markdown. For the documentation of
+      all Percona products, see https://docs.percona.com/llms.txt.
+    sections: {}
+  percona-llmstxt: {}
   print-site:
     add_to_navigation: false
     print_page_title: 'Percona Operator for MongoDB documentation'
@@ -229,11 +246,13 @@ nav:
     
     - Upgrade and version management:
         - update.md
+        - "How crVersion works": update-crversion.md
         - Upgrade CRD and the Operator:
             - update-operator.md
             - update-crd-manual.md
             - update-crd-helm.md
             - update-crd-olm.md
+        - Apply security builds: security-builds.md
         - Upgrade Percona Server for MongoDB: 
           - update-db.md
           - update-minor-set-version.md
@@ -349,6 +368,7 @@ nav:
         - "Exec into the container": debug-shell.md
         - "Check the logs": debug-logs.md
         - "Troubleshoot backups and restores": debug-backup-restore.md
+        - "Troubleshoot upgrades and crVersion": debug-upgrade.md
         - "Special debug images": debug-images.md
         - "Storage resizing": debug-storage.md
 
