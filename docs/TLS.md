@@ -56,8 +56,6 @@ certificate secrets available and no cert-manager is installed. When generating 
 
     Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.
 
-    Leave [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) at `true` (the default) so the MongoDB shell, the Operator, and the backup agent accept these self-signed certificates.
-
 * The Operator can use an installed *cert-manager* to automatically generate and
     renew short-term TLS certificates. By default it creates namespace-scoped issuers
     in the database namespace. Starting with Operator 1.23.0, you can also point it
@@ -73,11 +71,15 @@ certificate secrets available and no cert-manager is installed. When generating 
 
 !!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
 
-Starting with version 1.24.0, setting [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) to `false` makes the Operator and the backup agent check the MongoDB server certificate. The MongoDB shell checks it too.
+With `crVersion` 1.24.0 or later, setting [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) to `false` makes the Operator and the backup agent check the MongoDB server certificate. They check it against the CA in the `ca.crt` key of the `<cluster-name>-ssl` Secret. The certificate has to list every hostname they use to connect. With an earlier `crVersion`, they don't check the server certificate, whatever the option says.
 
-Set the option to `false` when the Operator and the backup agent trust the CA that signed the certificate, such as your organization's CA. The certificate also has to list every hostname they use to connect. See [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) for those hostnames.
+Some setups need the option set to `true`, such as external nodes or host overrides. See [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) for the full list and for when to use `false`.
 
 If the check fails, the Operator stops reconciling the cluster and backups fail. The log reports `tls: failed to verify certificate`.
+
+!!! warning "Deprecated default"
+
+    By default, the Operator sets up the cluster to accept invalid certificates. This default behavior is deprecated. Starting with version 1.27.0, the Operator won't accept invalid certificates by default.
 
 ### Certificate management policy
 

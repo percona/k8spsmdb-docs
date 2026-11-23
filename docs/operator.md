@@ -368,13 +368,29 @@ The validity duration of the external certificate for cert manager (90 days by d
 
 ### `tls.allowInvalidCertificates`
 
-If `true` (the default), the MongoDB shell does not validate the server certificate. Starting with version 1.24.0, this option also controls certificate checks for the Operator and for the backup agent.
+Controls whether invalid TLS certificates are accepted. If `true` (the default):
 
-When the option is `true` and TLS is on, the backup agent connection string includes `tlsInsecure=true`. The Operator uses the same string during a physical restore. When you set the option to `false`, that parameter is omitted, and the Operator verifies the MongoDB certificate on its own connections.
+* `mongod` and `mongos` don't check that the cluster CA signed the certificates that clients present. See [Connect with a client certificate](TLS.md#connect-with-a-client-certificate).
+* With `crVersion` 1.24.0 or later, the Operator, the backup agent and [PCSM](clustersync.md) don't check the MongoDB server certificate. The backup agent connection string includes `tlsInsecure=true`, and the Operator uses the same string during a physical restore. With an earlier `crVersion`, they don't check the server certificate, whatever the option says.
 
-Keep the option `true` for self-signed certificates that the Operator generates when cert-manager is not installed. Set it to `false` when certificates are signed by a CA that the Operator and the backup agent trust. Include every hostname those clients use in the certificate: external nodes, host overrides, a `clusterServiceDNSMode` other than `Internal`, and [Service per Pod](expose.md#service-per-pod) addresses. With the option set to `false`, the Operator and the backup agent verify certificates for these hostnames.
+!!! warning "Deprecated default"
 
-If verification fails, the Operator cannot reconcile the cluster and backups fail. The Operator log and the backup agent log report `tls: failed to verify certificate`.
+    By default, the Operator sets up the cluster to accept invalid certificates. This default behavior is deprecated. Starting with version 1.27.0, the Operator won't accept invalid certificates by default.
+
+Keep the option `true` if your cluster uses any of the following setups. The certificates that the Operator issues, itself or through cert-manager, don't include the hostnames if they use:
+
+* External nodes, set in [`replsets.externalNodes`](#replsetsexternalnodeshost). These are members that run outside the cluster, for example on another site.
+* A [`clusterServiceDNSMode`](#clusterservicednsmode) other than `Internal`. With `ServiceMesh`, the Operator connects to the Pods by names in the form `<pod-name>.<namespace>.<cluster-DNS-suffix>`. With `External`, it connects to exposed replica set members by their external IP addresses or hostnames.
+* Host overrides, set in [`replsets.replsetOverrides.MEMBER-NAME.host`](#replsetsreplsetoverridesmember-namehost).
+
+To use `false` with these setups, [generate your own certificates](tls-manual.md) that include these hostnames.
+
+Set the option to `false` when both of these are true:
+
+* The certificates include every hostname that clients, the Operator and the backup agent use to connect.
+* The `ca.crt` key of the `<cluster-name>-ssl` Secret holds the CA that signed the server certificate.
+
+If a check fails, the Operator cannot reconcile the cluster and backups fail. The Operator log and the backup agent log report `tls: failed to verify certificate`.
 
 On a sharded cluster that uses `SmartUpdate`, the Operator restarts `mongos` before the other components when this option is `false` and `mongos` is still running a certificate that does not include a hostname the Operator needs. This happens, for example, right after you enable Service per Pod.
 
