@@ -12,7 +12,6 @@ You cancel on-demand and scheduled backups in the same way. Read [How cancellati
 * You can't restore from a canceled backup.
 * For a [PVC snapshot backup](backups-pvc-snapshots.md), the Operator deletes the `VolumeSnapshot` objects it created for this backup.
 * Deleting a running Backup object also cancels the backup. Keep this in mind if a GitOps tool prunes Backup objects.
-* A canceled backup can leave partially uploaded files on the storage. Deleting the Backup object doesn't remove them. See [Clean up a canceled backup](#clean-up-a-canceled-backup).
 
 ## Before you start
 
@@ -73,9 +72,17 @@ export NAMESPACE=<namespace>
 
 ## Clean up a canceled backup
 
-PBM tries to remove the files that a canceled backup uploaded. A file that was uploading at the moment of the cancellation can remain on the storage. This can happen with physical and incremental backups, and with logical backups on sharded clusters. PBM also keeps a record of the canceled backup.
+A canceled backup can leave files on the storage. A file that was uploading when you canceled the backup can remain. This can happen with physical and incremental backups and with logical backups on sharded clusters. PBM also keeps a record of the canceled backup.
 
-The Operator removes storage files only when you delete a `ready` backup. For a canceled backup, it deletes only the Backup object. To remove the leftover files and the PBM record, delete the backup in PBM first, then delete the Backup object. Replace `my-cluster-name` with your cluster name:
+To remove the files and the PBM record, delete the Backup object:
+
+```bash
+kubectl delete psmdb-backup backup1 -n $NAMESPACE
+```
+
+The Operator removes the files when the Backup object has the `percona.com/delete-backup` finalizer. Scheduled backups have it unless `retention.deleteFromStorage` is `false`. For on-demand backups, add it to the manifest, as in `deploy/backup/backup.yaml`. The Operator first waits until PBM releases the backup lock, then deletes the backup in PBM. For `external` backups, it deletes the VolumeSnapshots.
+
+The Operator doesn't remove files of incremental backups. To remove them, delete the backup in PBM first, then delete the Backup object. Replace `my-cluster-name` with your cluster name:
 
 ```bash
 PBM_NAME=$(kubectl get psmdb-backup backup1 -n $NAMESPACE -o jsonpath='{.status.pbmName}')
@@ -93,9 +100,9 @@ kubectl delete psmdb-backup backup1 -n $NAMESPACE
 * When PBM reports the backup as canceled, the Operator sets the status to `canceled` and releases the backup lock. Until then, other backups on this cluster wait.
 * Until the status is `canceled`, the Operator treats the backup as running. Pausing the cluster and Smart Update wait for the cancellation to finish.
 * If the `pbm-agent` stops responding during the cancellation, the Operator waits for `backup.startingDeadlineSeconds` from the cluster Custom Resource, 120 seconds by default. This deadline is counted from the last PBM heartbeat. It also waits until PBM releases its backup lock, which adds about 30 seconds. Then it sets the status to `error`.
-* When you delete a running Backup object, the Operator finishes the cancellation first and then deletes the object. It doesn't delete the files the canceled backup left on the storage.
+* When you delete a running Backup object, the Operator finishes the cancellation first, then removes the files and deletes the object. See [Clean up a canceled backup](#clean-up-a-canceled-backup).
 * A restore from a canceled backup fails with the `backup is in canceled state` error.
-* The [retention policy](backups-delete.md#configure-backup-retention) deletes only `ready` backups. Canceled Backup objects stay until you [delete them manually](backups-delete.md#delete-manually).
+* The [retention policy](backups-delete.md#configure-backup-retention) counts canceled backups together with `ready` ones and deletes canceled backups first.
 
 ## Troubleshooting
 
@@ -130,9 +137,10 @@ kubectl delete psmdb-backup backup1 -n $NAMESPACE
 **Fix:**
 
 1. Check that the `backup-agent` containers are running and PBM is ready. See [Check PBM readiness on the cluster](debug-backup-restore.md#check-pbm-readiness-on-the-cluster).
-2. [Clean up the backup](#clean-up-a-canceled-backup) and make a new one.
+2. Remove the backup files and the PBM record with `pbm delete-backup`, then delete the Backup object, as shown for incremental backups in [Clean up a canceled backup](#clean-up-a-canceled-backup). The Operator doesn't remove the files of a backup in the `error` state when you delete the Backup object.
+3. Make a new backup.
 
-When the `pbm-agent` comes back, PBM can still finish the cancellation. Then `pbm describe-backup` shows `canceled` while the Backup object shows `error`. Partial files can also remain on the storage, so remove them as described in [Clean up a canceled backup](#clean-up-a-canceled-backup).
+When the `pbm-agent` comes back, PBM can still finish the cancellation. Then `pbm describe-backup` shows `canceled` while the Backup object shows `error`. Partial files can also remain on the storage, so remove them with `pbm delete-backup` as described in [Clean up a canceled backup](#clean-up-a-canceled-backup).
 
 ## Next steps
 
