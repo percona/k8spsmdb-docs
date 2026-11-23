@@ -90,7 +90,7 @@ env:
 
 ### `RECONCILE_INTERVAL`
 
-Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).
+Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0). It doesn’t apply to backups and restores. For them, use [`BACKUP_RECONCILE_INTERVAL`](#backup_reconcile_interval) and [`RESTORE_RECONCILE_INTERVAL`](#restore_reconcile_interval).
 
 | Value type      | Default | Example           |
 | --------------- | ------- | ----------------- |
@@ -107,6 +107,48 @@ Controls how long the Operator waits before re-queuing reconciliation for a clus
 ```
 env:
   - name: RECONCILE_INTERVAL
+    value: "30s"
+```
+
+### `BACKUP_RECONCILE_INTERVAL`
+
+Controls how often the Operator rechecks a backup that is still in progress: waiting, running or being canceled. Finished backups aren’t rechecked. Available starting with version 1.24.0.
+
+| Value type      | Default | Example           |
+| --------------- | ------- | ----------------- |
+| duration string | `"5s"`  | `"30s"` or `"1m"` |
+
+**Notes:**
+
+- The value must be a Go duration string (for example, `30s`, `1m`, `5m`). Other values fall back to `5s`, and the Operator logs a message.
+- A longer interval reduces the Kubernetes API and PBM status requests for running backups. The Backup status then updates later, up to one interval after the change.
+
+**Example configuration:**
+
+```
+env:
+  - name: BACKUP_RECONCILE_INTERVAL
+    value: "30s"
+```
+
+### `RESTORE_RECONCILE_INTERVAL`
+
+Controls how often the Operator rechecks a restore that is still in progress. Finished restores aren’t rechecked. Available starting with version 1.24.0.
+
+| Value type      | Default | Example           |
+| --------------- | ------- | ----------------- |
+| duration string | `"5s"`  | `"30s"` or `"1m"` |
+
+**Notes:**
+
+- The value must be a Go duration string (for example, `30s`, `1m`, `5m`). Other values fall back to `5s`, and the Operator logs a message.
+- A restore goes through several steps, and the Operator moves to the next one only on a recheck. A longer interval can make restores take noticeably longer.
+
+**Example configuration:**
+
+```
+env:
+  - name: RESTORE_RECONCILE_INTERVAL
     value: "30s"
 ```
 

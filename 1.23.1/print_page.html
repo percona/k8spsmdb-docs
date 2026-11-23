@@ -29432,7 +29432,7 @@ external audit system:</p>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
 <h3 id="env-vars-operator-reconcile_interval"><code>RECONCILE_INTERVAL</code><a class="headerlink" href="#env-vars-operator-reconcile_interval" title="Permanent link">¶</a></h3>
-<p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).</p>
+<p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0). It doesn’t apply to backups and restores. For them, use <a href="#env-vars-operator-backup_reconcile_interval"><code>BACKUP_RECONCILE_INTERVAL</code></a> and <a href="#env-vars-operator-restore_reconcile_interval"><code>RESTORE_RECONCILE_INTERVAL</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -29458,6 +29458,62 @@ external audit system:</p>
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECONCILE_INTERVAL</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
+</code></pre></div>
+<h3 id="env-vars-operator-backup_reconcile_interval"><code>BACKUP_RECONCILE_INTERVAL</code><a class="headerlink" href="#env-vars-operator-backup_reconcile_interval" title="Permanent link">¶</a></h3>
+<p>Controls how often the Operator rechecks a backup that is still in progress: waiting, running or being canceled. Finished backups aren’t rechecked. Available starting with version 1.24.0.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>duration string</td>
+<td><code>"5s"</code></td>
+<td><code>"30s"</code> or <code>"1m"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>The value must be a Go duration string (for example, <code>30s</code>, <code>1m</code>, <code>5m</code>). Other values fall back to <code>5s</code>, and the Operator logs a message.</li>
+<li>A longer interval reduces the Kubernetes API and PBM status requests for running backups. The Backup status then updates later, up to one interval after the change.</li>
+</ul>
+<p><strong>Example configuration:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BACKUP_RECONCILE_INTERVAL</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
+</code></pre></div>
+<h3 id="env-vars-operator-restore_reconcile_interval"><code>RESTORE_RECONCILE_INTERVAL</code><a class="headerlink" href="#env-vars-operator-restore_reconcile_interval" title="Permanent link">¶</a></h3>
+<p>Controls how often the Operator rechecks a restore that is still in progress. Finished restores aren’t rechecked. Available starting with version 1.24.0.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>duration string</td>
+<td><code>"5s"</code></td>
+<td><code>"30s"</code> or <code>"1m"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>The value must be a Go duration string (for example, <code>30s</code>, <code>1m</code>, <code>5m</code>). Other values fall back to <code>5s</code>, and the Operator logs a message.</li>
+<li>A restore goes through several steps, and the Operator moves to the next one only on a recheck. A longer interval can make restores take noticeably longer.</li>
+</ul>
+<p><strong>Example configuration:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RESTORE_RECONCILE_INTERVAL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div>
 <h3 id="env-vars-operator-max_concurrent_reconciles"><code>MAX_CONCURRENT_RECONCILES</code><a class="headerlink" href="#env-vars-operator-max_concurrent_reconciles" title="Permanent link">¶</a></h3>
@@ -30270,10 +30326,11 @@ these labels and annotations in the <code>spec.ignoreAnnotations</code> or <code
 <li>Changes to the cluster state</li>
 <li>Changes to the cluster resources</li>
 </ul>
-<p>You can tune reconciliation behavior with two environment variables in the <code>percona-server-mongodb-operator</code> Deployment:</p>
+<p>You can tune reconciliation behavior with these environment variables in the <code>percona-server-mongodb-operator</code> Deployment:</p>
 <ul>
 <li><code>MAX_CONCURRENT_RECONCILES</code> — how many clusters the Operator can reconcile in parallel</li>
 <li><code>RECONCILE_INTERVAL</code> — how long the Operator waits before re-queuing reconciliation for each cluster</li>
+<li><code>BACKUP_RECONCILE_INTERVAL</code> and <code>RESTORE_RECONCILE_INTERVAL</code> — how often the Operator rechecks backups and restores that are in progress. </li>
 </ul>
 <p>See <a href="#env-vars-operator">Configure Operator environment variables</a> for the full list of supported values and defaults.</p>
 <h2 id="reconciliation-concurrency-configure-concurrent-reconciliation-workers">Configure concurrent reconciliation workers<a class="headerlink" href="#reconciliation-concurrency-configure-concurrent-reconciliation-workers" title="Permanent link">¶</a></h2>
@@ -30334,8 +30391,36 @@ these labels and annotations in the <code>spec.ignoreAnnotations</code> or <code
 </code></pre></div>
 </details>
 <h2 id="reconciliation-concurrency-configure-the-reconciliation-interval">Configure the reconciliation interval<a class="headerlink" href="#reconciliation-concurrency-configure-the-reconciliation-interval" title="Permanent link">¶</a></h2>
-<p>After each reconcile loop, the Operator schedules the next one using the <code>RECONCILE_INTERVAL</code> environment variable. The default is <code>5s</code>.</p>
-<p>Increasing this value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. Values below <code>5s</code>, zero, negative, or invalid duration strings fall back to <code>5s</code>.</p>
+<p>After each reconcile loop, the Operator schedules the next one after an interval. Each kind of object has its own interval:</p>
+<table>
+<thead>
+<tr>
+<th>Environment variable</th>
+<th>What the Operator rechecks</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RECONCILE_INTERVAL</code></td>
+<td>Each cluster</td>
+<td><code>5s</code></td>
+</tr>
+<tr>
+<td><code>BACKUP_RECONCILE_INTERVAL</code></td>
+<td>Backups that are waiting, running or being canceled. Available starting with version 1.24.0</td>
+<td><code>5s</code></td>
+</tr>
+<tr>
+<td><code>RESTORE_RECONCILE_INTERVAL</code></td>
+<td>Restores that are in progress. Available starting with version 1.24.0</td>
+<td><code>5s</code></td>
+</tr>
+</tbody>
+</table>
+<p>Increasing a value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. For example, raise <code>BACKUP_RECONCILE_INTERVAL</code> if you run many backups and want cluster changes to stay fast.</p>
+<p>A longer interval also means that the Operator notices changes later. Backup and restore status updates arrive up to one interval late. A restore goes through several steps, so a long <code>RESTORE_RECONCILE_INTERVAL</code> can make restores take noticeably longer.</p>
+<p>All three variables accept a Go duration string, such as <code>30s</code> or <code>1m</code>. Values below <code>5s</code>, zero, negative, or invalid duration strings fall back to <code>5s</code>.</p>
 <h3 id="reconciliation-concurrency-set-the-reconciliation-interval">Set the reconciliation interval<a class="headerlink" href="#reconciliation-concurrency-set-the-reconciliation-interval" title="Permanent link">¶</a></h3>
 <ol>
 <li>
@@ -30382,6 +30467,7 @@ these labels and annotations in the <code>spec.ignoreAnnotations</code> or <code
 <li>Sets the value to <code>30s</code></li>
 <li>Outputs the result</li>
 </ul>
+<p>To change <code>BACKUP_RECONCILE_INTERVAL</code> or <code>RESTORE_RECONCILE_INTERVAL</code>, use the same command with that variable name. Changing the Deployment restarts the Operator Pod, and the new value applies from then on.</p>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>30s

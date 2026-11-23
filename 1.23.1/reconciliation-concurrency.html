@@ -6625,10 +6625,11 @@ window.addEventListener('afterprint', (event) => {
 <li>Changes to the cluster state</li>
 <li>Changes to the cluster resources</li>
 </ul>
-<p>You can tune reconciliation behavior with two environment variables in the <code>percona-server-mongodb-operator</code> Deployment:</p>
+<p>You can tune reconciliation behavior with these environment variables in the <code>percona-server-mongodb-operator</code> Deployment:</p>
 <ul>
 <li><code>MAX_CONCURRENT_RECONCILES</code> — how many clusters the Operator can reconcile in parallel</li>
 <li><code>RECONCILE_INTERVAL</code> — how long the Operator waits before re-queuing reconciliation for each cluster</li>
+<li><code>BACKUP_RECONCILE_INTERVAL</code> and <code>RESTORE_RECONCILE_INTERVAL</code> — how often the Operator rechecks backups and restores that are in progress. </li>
 </ul>
 <p>See <a href="env-vars-operator.html">Configure Operator environment variables</a> for the full list of supported values and defaults.</p>
 <h2 id="configure-concurrent-reconciliation-workers">Configure concurrent reconciliation workers<a data-markdown-ignore class="headerlink" href="#configure-concurrent-reconciliation-workers" title="Permanent link">¶</a></h2>
@@ -6689,8 +6690,36 @@ window.addEventListener('afterprint', (event) => {
 </code></pre></div>
 </details>
 <h2 id="configure-the-reconciliation-interval">Configure the reconciliation interval<a data-markdown-ignore class="headerlink" href="#configure-the-reconciliation-interval" title="Permanent link">¶</a></h2>
-<p>After each reconcile loop, the Operator schedules the next one using the <code>RECONCILE_INTERVAL</code> environment variable. The default is <code>5s</code>.</p>
-<p>Increasing this value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. Values below <code>5s</code>, zero, negative, or invalid duration strings fall back to <code>5s</code>.</p>
+<p>After each reconcile loop, the Operator schedules the next one after an interval. Each kind of object has its own interval:</p>
+<table>
+<thead>
+<tr>
+<th>Environment variable</th>
+<th>What the Operator rechecks</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RECONCILE_INTERVAL</code></td>
+<td>Each cluster</td>
+<td><code>5s</code></td>
+</tr>
+<tr>
+<td><code>BACKUP_RECONCILE_INTERVAL</code></td>
+<td>Backups that are waiting, running or being canceled. Available starting with version 1.24.0</td>
+<td><code>5s</code></td>
+</tr>
+<tr>
+<td><code>RESTORE_RECONCILE_INTERVAL</code></td>
+<td>Restores that are in progress. Available starting with version 1.24.0</td>
+<td><code>5s</code></td>
+</tr>
+</tbody>
+</table>
+<p>Increasing a value reduces Kubernetes API traffic from the Operator. This can be useful in large environments where the default interval generates more requests than needed. For example, raise <code>BACKUP_RECONCILE_INTERVAL</code> if you run many backups and want cluster changes to stay fast.</p>
+<p>A longer interval also means that the Operator notices changes later. Backup and restore status updates arrive up to one interval late. A restore goes through several steps, so a long <code>RESTORE_RECONCILE_INTERVAL</code> can make restores take noticeably longer.</p>
+<p>All three variables accept a Go duration string, such as <code>30s</code> or <code>1m</code>. Values below <code>5s</code>, zero, negative, or invalid duration strings fall back to <code>5s</code>.</p>
 <h3 id="set-the-reconciliation-interval">Set the reconciliation interval<a data-markdown-ignore class="headerlink" href="#set-the-reconciliation-interval" title="Permanent link">¶</a></h3>
 <ol>
 <li>
@@ -6737,6 +6766,7 @@ window.addEventListener('afterprint', (event) => {
 <li>Sets the value to <code>30s</code></li>
 <li>Outputs the result</li>
 </ul>
+<p>To change <code>BACKUP_RECONCILE_INTERVAL</code> or <code>RESTORE_RECONCILE_INTERVAL</code>, use the same command with that variable name. Changing the Deployment restarts the Operator Pod, and the new value applies from then on.</p>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>30s
@@ -6747,7 +6777,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 6, 2026 12:15:41 UTC">July 6, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 14:52:17 UTC">November 23, 2026</span>
       
         <br>
         Created:

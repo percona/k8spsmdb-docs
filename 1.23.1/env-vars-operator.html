@@ -4546,6 +4546,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#backup_reconcile_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BACKUP_RECONCILE_INTERVAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore_reconcile_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RESTORE_RECONCILE_INTERVAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#max_concurrent_reconciles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6591,6 +6613,28 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#backup_reconcile_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BACKUP_RECONCILE_INTERVAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore_reconcile_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RESTORE_RECONCILE_INTERVAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#max_concurrent_reconciles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6926,7 +6970,7 @@ window.addEventListener('afterprint', (event) => {
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div>
 <h3 id="reconcile_interval"><code>RECONCILE_INTERVAL</code><a data-markdown-ignore class="headerlink" href="#reconcile_interval" title="Permanent link">¶</a></h3>
-<p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0).</p>
+<p>Controls how long the Operator waits before re-queuing reconciliation for a cluster after a reconcile loop completes (available since Operator 1.23.0). It doesn’t apply to backups and restores. For them, use <a href="#backup_reconcile_interval"><code>BACKUP_RECONCILE_INTERVAL</code></a> and <a href="#restore_reconcile_interval"><code>RESTORE_RECONCILE_INTERVAL</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -6952,6 +6996,62 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>Example configuration:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECONCILE_INTERVAL</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
+</code></pre></div>
+<h3 id="backup_reconcile_interval"><code>BACKUP_RECONCILE_INTERVAL</code><a data-markdown-ignore class="headerlink" href="#backup_reconcile_interval" title="Permanent link">¶</a></h3>
+<p>Controls how often the Operator rechecks a backup that is still in progress: waiting, running or being canceled. Finished backups aren’t rechecked. Available starting with version 1.24.0.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>duration string</td>
+<td><code>"5s"</code></td>
+<td><code>"30s"</code> or <code>"1m"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>The value must be a Go duration string (for example, <code>30s</code>, <code>1m</code>, <code>5m</code>). Other values fall back to <code>5s</code>, and the Operator logs a message.</li>
+<li>A longer interval reduces the Kubernetes API and PBM status requests for running backups. The Backup status then updates later, up to one interval after the change.</li>
+</ul>
+<p><strong>Example configuration:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BACKUP_RECONCILE_INTERVAL</span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
+</code></pre></div>
+<h3 id="restore_reconcile_interval"><code>RESTORE_RECONCILE_INTERVAL</code><a data-markdown-ignore class="headerlink" href="#restore_reconcile_interval" title="Permanent link">¶</a></h3>
+<p>Controls how often the Operator rechecks a restore that is still in progress. Finished restores aren’t rechecked. Available starting with version 1.24.0.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>duration string</td>
+<td><code>"5s"</code></td>
+<td><code>"30s"</code> or <code>"1m"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>The value must be a Go duration string (for example, <code>30s</code>, <code>1m</code>, <code>5m</code>). Other values fall back to <code>5s</code>, and the Operator logs a message.</li>
+<li>A restore goes through several steps, and the Operator moves to the next one only on a recheck. A longer interval can make restores take noticeably longer.</li>
+</ul>
+<p><strong>Example configuration:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RESTORE_RECONCILE_INTERVAL</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"30s"</span>
 </code></pre></div>
 <h3 id="max_concurrent_reconciles"><code>MAX_CONCURRENT_RECONCILES</code><a data-markdown-ignore class="headerlink" href="#max_concurrent_reconciles" title="Permanent link">¶</a></h3>
@@ -7037,7 +7137,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 23, 2026 08:48:42 UTC">July 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 14:52:17 UTC">November 23, 2026</span>
       
         <br>
         Created:
