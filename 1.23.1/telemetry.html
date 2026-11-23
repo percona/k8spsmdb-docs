@@ -5176,6 +5176,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Telemetry
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="telemetry.html" class="md-nav__link md-nav__link--active">
         
   
@@ -5185,6 +5196,69 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#cluster-and-software-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster and software versions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features-in-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features in use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disable telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -6339,6 +6413,58 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#cluster-and-software-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster and software versions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features-in-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features in use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disable telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -6448,30 +6574,123 @@ window.addEventListener('afterprint', (event) => {
 
 <h1 id="telemetry">Telemetry<a data-markdown-ignore class="headerlink" href="#telemetry" title="Permanent link">¶</a></h1>
 <p>The Telemetry function enables the Operator to gather and send basic anonymous data to Percona, which helps us to determine where to focus the development and what is the uptake for each release of Operator.</p>
-<p>The following information is gathered:</p>
-<ul>
-<li>ID of the Custom Resource (the <code>metadata.uid</code> field)</li>
-<li>Kubernetes version</li>
-<li>Platform (is it Kubernetes or Openshift)</li>
-<li>Is PMM enabled, and the PMM Version</li>
-<li>Operator version</li>
-<li>Mongo version</li>
-<li>Percona Backup for MongoDB (PBM) version</li>
-<li>Is <a href="sharding.html">sharding</a> enabled (starting from the Operator version 1.13)</li>
-<li>Is <a href="encryption.html#use-hashicorp-vault-to-store-and-manage-encryption-keys">Hashicorp Vault</a> enabled (starting from the Operator version 1.13)</li>
-<li>Is the Operator deployed in a <a href="cluster-wide.html">cluster-wide mode</a> (starting from the Operator version 1.13)</li>
-<li>Is <a href="scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">Volume Expansion</a> enabled (starting from the Operator version 1.19)</li>
-<li>Are <a href="replication-mcs.html">multi-cluster Services</a> enabled (starting from the Operator version 1.19)</li>
-<li>Does the Operator manage <a href="app-users.html#create-users-via-custom-resource">custom MongoDB users</a> and/or <a href="app-users.html#custom-mongodb-roles">custom MongoDB roles</a> (starting from the Operator version 1.19)</li>
-<li>Is the Operator <a href="helm.html">deployed with Helm</a></li>
-<li>Are <a href="sidecar.html">sidecar containers</a> used</li>
-<li>Are <a href="backups.html">backups</a> used, are <a href="backups-pitr.html">point-in-time recovery</a> and/or <a href="backups-scheduled.html">scheduled physical backup</a> features used, if so</li>
-<li>How large is the cluster</li>
-</ul>
-<p>We do not gather anything that identify a system, but the following thing should be mentioned:
-Custom Resource ID is a unique ID generated by Kubernetes for each Custom Resource.</p>
 <p>Telemetry is enabled by default and is sent to the <a href="update-db.html">Version Service server</a> when the Operator connects to it at scheduled times to obtain fresh information about version numbers and valid image paths needed for the upgrade.</p>
 <p>The landing page for this service, <a href="https://check.percona.com/">check.percona.com  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, explains what this service is.</p>
+<h2 id="cluster-and-software-versions">Cluster and software versions<a data-markdown-ignore class="headerlink" href="#cluster-and-software-versions" title="Permanent link">¶</a></h2>
+<p>The Operator reports the following for every cluster:</p>
+<ul>
+<li>Custom Resource ID (<code>metadata.uid</code>)</li>
+<li>Kubernetes version</li>
+<li>Platform (Kubernetes or OpenShift. Starting with Operator version 1.24, the Operator also collects the Kubernetes provider and appends it to the platform name. For example, <code>kubernetes-gke</code> for a Google Kubernetes Engine (GKE) cluster. If the Operator does not detect the provider, the value ends in <code>-unknown</code>)</li>
+<li>Operator version</li>
+<li>Percona Server for MongoDB version</li>
+<li>Percona Backup for MongoDB (PBM) version</li>
+<li>Whether Percona Monitoring and Management (PMM) is enabled, and the PMM version</li>
+<li>Cluster size</li>
+<li>Whether the Operator is <a href="helm.html">deployed with Helm</a></li>
+<li>Whether <a href="sidecar.html">sidecar containers</a> are used</li>
+</ul>
+<p>The Operator does not gather anything that identifies a system. The Custom Resource ID is a unique ID that Kubernetes generates for each Custom Resource.</p>
+<h2 id="features-in-use">Features in use<a data-markdown-ignore class="headerlink" href="#features-in-use" title="Permanent link">¶</a></h2>
+<p>The Operator reports what features are in use. The Since column shows the Operator version that added each report.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Since</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="sharding.html">Sharding</a></td>
+<td>1.13</td>
+</tr>
+<tr>
+<td><a href="encryption.html#use-hashicorp-vault-to-store-and-manage-encryption-keys">HashiCorp Vault</a></td>
+<td>1.13</td>
+</tr>
+<tr>
+<td><a href="cluster-wide.html">Cluster-wide mode</a></td>
+<td>1.13</td>
+</tr>
+<tr>
+<td><a href="scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">Volume expansion</a></td>
+<td>1.19</td>
+</tr>
+<tr>
+<td><a href="replication-mcs.html">Multi-cluster Services</a></td>
+<td>1.19</td>
+</tr>
+<tr>
+<td><a href="app-users.html#create-users-via-custom-resource">Custom MongoDB users</a> and <a href="app-users.html#custom-mongodb-roles">custom MongoDB roles</a></td>
+<td>1.19</td>
+</tr>
+<tr>
+<td><a href="search-overview.html">Vector search</a></td>
+<td>1.24</td>
+</tr>
+<tr>
+<td><a href="clustersync.html">Percona ClusterSync for MongoDB</a> for this cluster</td>
+<td>1.24</td>
+</tr>
+<tr>
+<td><a href="encryption.html">Data-at-rest encryption</a></td>
+<td>1.24</td>
+</tr>
+<tr>
+<td><a href="arbiter.html#arbiter-nodes">Arbiter</a></td>
+<td>1.24</td>
+</tr>
+<tr>
+<td><a href="arbiter.html#non-voting-nodes">Non-voting members</a></td>
+<td>1.24</td>
+</tr>
+<tr>
+<td><a href="TLS.html">Transport Layer Security (TLS)</a> mode</td>
+<td>1.24</td>
+</tr>
+<tr>
+<td>Number of <code>mongos</code> Pods in a sharded cluster</td>
+<td>1.24</td>
+</tr>
+</tbody>
+</table>
+<p>The TLS mode is one of the following:</p>
+<ul>
+<li><code>disabled</code></li>
+<li><code>allowTLS</code></li>
+<li><code>preferTLS</code></li>
+<li><code>requireTLS</code></li>
+</ul>
+<h2 id="backup-configuration">Backup configuration<a data-markdown-ignore class="headerlink" href="#backup-configuration" title="Permanent link">¶</a></h2>
+<p>The Operator reports the following about backups:</p>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="backups.html">Backups</a> enabled</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="backups-pitr.html">Point-in-time recovery</a> enabled</td>
+<td></td>
+</tr>
+<tr>
+<td>Backup storage type</td>
+<td>- <a href="backups-storage-s3.html">Amazon S3</a> <br> - S3-compatible storage (including MinIO)<br> - <a href="backups-storage-azure.html">Azure Blob Storage</a><br> - <a href="backups-storage-gcp.html">Google Cloud Storage</a> <br> - a <a href="backups-storage-filesystem.html">remote filesystem</a> <br> - <a href="backups-storage-oci.html">Oracle Cloud Infrastructure (OCI) Object Storage</a> <br>  - <a href="backups-storage-oss.html">Alibaba Cloud Object Storage Service</a></td>
+</tr>
+<tr>
+<td>Scheduled backup type</td>
+<td>Logical, physical, incremental, or <a href="backups-pvc-snapshots.html">volume snapshot</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="disable-telemetry">Disable telemetry<a data-markdown-ignore class="headerlink" href="#disable-telemetry" title="Permanent link">¶</a></h2>
 <p>You can disable telemetry with a special option when installing the Operator:</p>
 <ul>
 <li>if you <a href="helm.html">install the Operator with helm</a>, use the following installation command:</li>
@@ -6495,7 +6714,7 @@ Custom Resource ID is a unique ID generated by Kubernetes for each Custom Resour
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 7, 2026 06:31:18 UTC">September 7, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 15:15:54 UTC">November 23, 2026</span>
       
         <br>
         Created:
