@@ -9952,7 +9952,7 @@ and search each place their own constraints on sharding and member types. See
 <p><strong>From physical backup</strong></p>
 <p>A <code>pbm-agent</code> needs access to <code>mongod</code> binaries, so the Operator prepares the cluster first:</p>
 <ol>
-<li>It terminates <code>mongos</code> Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the <code>mongod</code> container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.</li>
+<li>It terminates <code>mongos</code> Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the <code>mongod</code> container, removes the PBM sidecar from the StatefulSet, and starts the restore with the PBM CLI. Starting with 1.24.0, the Operator skips Smart Update and deletes the replica set Pods together.</li>
 <li>The agent inside the <code>mongod</code> container wipes <code>dbPath</code>, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.</li>
 <li>PBM restarts <code>mongod</code> as it moves through restore phases.</li>
 <li>After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and <code>mongos</code> Pods.</li>
@@ -19186,10 +19186,19 @@ restore type and on whether the cluster is sharded:</p>
 <td>Data restore, plus refreshing sharding metadata on <code>mongos</code></td>
 <td>All Pods - replica set, config server replica set if present, and <code>mongos</code></td>
 </tr>
+<tr>
+<td>PVC snapshot (external)</td>
+<td>Time to recreate each data PVC from its snapshot, plus the restore itself</td>
+<td>All Pods - replica set, config server replica set if present, and <code>mongos</code></td>
+</tr>
 </tbody>
 </table>
 <p>Also check PBM’s <a href="https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations">restore considerations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
 for keeping MongoDB clients away from the database while the restore runs.</p>
+<div class="admonition note">
+<p class="admonition-title">How Pods are shut down in physical and PVC snapshot restores</p>
+<p>Physical restores replace data on existing volumes, while PVC snapshot restores recreate data PVCs from snapshots. To speed up restore performance, the Operator version 1.24.0 and newer no longer shuts down the replica set Pods in order, with secondaries first and the primary last. It stops <code>mongos</code> and arbiter Pods first, then deletes the replica set and config server replica set Pods together. Each <code>mongod</code> still has the Pod’s termination grace period to shut down.</p>
+</div>
 <h2 id="backups-restore-choose-backupname-or-backupsource">Choose <code>backupName</code> or <code>backupSource</code><a class="headerlink" href="#backups-restore-choose-backupname-or-backupsource" title="Permanent link">¶</a></h2>
 <p>Every restore names its source in one of two ways. Use exactly one - setting both is not allowed.</p>
 <table>
@@ -19220,14 +19229,15 @@ for keeping MongoDB clients away from the database while the restore runs.</p>
 </table>
 <p><code>backupSource</code> also works for restores onto the same cluster, if you prefer it.</p>
 <h2 id="backups-restore-before-you-begin">Before you begin<a class="headerlink" href="#backups-restore-before-you-begin" title="Permanent link">¶</a></h2>
-<p>Two preconditions are easy to miss:</p>
+<p>These preconditions are easy to miss:</p>
 <ul>
 <li>The backup you restore from must be in the <code>ready</code> state. A backup still in <code>running</code>,
   <code>waiting</code>, or <code>error</code> cannot be restored.</li>
-<li>
-<p>Restoring to a point in time additionally requires that
+<li>Restoring to a point in time additionally requires that
   <a href="#backups-pitr">oplog collection</a> was enabled <strong>before</strong> that backup was taken.
-  Enabling it afterwards does not make earlier moments recoverable.</p>
+  Enabling it afterwards does not make earlier moments recoverable.</li>
+<li>
+<p>For a physical or snapshot restore, all replica set members must be healthy and schedulable. If a member is down, the Operator still stops the healthy members. The restore then stays in <code>waiting</code> with no error and no timeout, and continues by itself once the member is back. See <a href="#debug-backup-restore-restore-stays-in-the-waiting-state">Restore stays in the <code>waiting</code> state</a>.</p>
 </li>
 <li>
 <p>Make sure that the cluster is running.</p>
@@ -31020,6 +31030,32 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>mongod<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/data/db/pbm-restore-logs
 </code></pre></div>
 <p>PBM keeps only the latest restore logs because it cleans up the data directory during the process.</p>
+<h3 id="debug-backup-restore-all-pods-terminate-when-a-physical-or-snapshot-restore-starts">All Pods terminate when a physical or snapshot restore starts<a class="headerlink" href="#debug-backup-restore-all-pods-terminate-when-a-physical-or-snapshot-restore-starts" title="Permanent link">¶</a></h3>
+<p>Starting with Operator 1.24.0, a physical or PVC snapshot restore deletes the replica set and config server replica set Pods together, after it stops the <code>mongos</code> and arbiter Pods. This is expected, and you don’t need to take any action. See <a href="#backups-restore-downtime-to-expect">Downtime to expect</a>.</p>
+<p>To watch the restore, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<h3 id="debug-backup-restore-restore-stays-in-the-waiting-state">Restore stays in the <code>waiting</code> state<a class="headerlink" href="#debug-backup-restore-restore-stays-in-the-waiting-state" title="Permanent link">¶</a></h3>
+<p>A physical or PVC snapshot restore can stay in the <code>waiting</code> state while <code>status.error</code> remains empty. This happens when at least one replica set member is not ready, for example because its Pod can’t be scheduled. The Operator has no timeout for this wait. If only one member is down, the Operator has already stopped the healthy members.</p>
+<p>The Operator log repeats <code>Waiting for statefulsets to be ready before restore</code> or <code>Waiting for pbm-agent.</code> while it waits.</p>
+<p>To recover, bring the missing member back:</p>
+<ol>
+<li>
+<p>Check the Operator log for the waiting message:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/&lt;operator-deployment-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+<li>
+<p>Find the Pods that are not ready and check why:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+<li>
+<p>Fix the cause, for example free up resources or restore the node the Pod needs.</p>
+</li>
+</ol>
+<p>The restore continues without further action once all members are ready.</p>
 <h3 id="debug-backup-restore-if-a-physical-restore-fails">If a physical restore fails<a class="headerlink" href="#debug-backup-restore-if-a-physical-restore-fails" title="Permanent link">¶</a></h3>
 <p>If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.</p>
 <p>The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.</p>

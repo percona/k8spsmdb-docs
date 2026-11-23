@@ -16,13 +16,18 @@ Every restore is a `PerconaServerMongoDBRestore` object, created from the [`depl
 
 Every restore causes downtime. How much and whether Pods are replaced depends on the restore type and on whether the cluster is sharded:
 
-| Restore                    | Downtime                                                    | Pods deleted and recreated                                                 |
-| -------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Logical, unsharded cluster | For the duration of the data restore                        | None                                                                       |
-| Logical, sharded cluster   | Data restore, plus refreshing sharding metadata on `mongos` | `mongos` Pods only                                                         |
-| Physical or incremental    | Data restore, plus refreshing sharding metadata on `mongos` | All Pods - replica set, config server replica set if present, and `mongos` |
+| Restore                    | Downtime                                                                  | Pods deleted and recreated                                                 |
+| -------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Logical, unsharded cluster | For the duration of the data restore                                      | None                                                                       |
+| Logical, sharded cluster   | Data restore, plus refreshing sharding metadata on `mongos`               | `mongos` Pods only                                                         |
+| Physical or incremental    | Data restore, plus refreshing sharding metadata on `mongos`               | All Pods - replica set, config server replica set if present, and `mongos` |
+| PVC snapshot (external)    | Time to recreate each data PVC from its snapshot, plus the restore itself | All Pods - replica set, config server replica set if present, and `mongos` |
 
 Also check PBM’s [restore considerations](https://docs.percona.com/percona-backup-mongodb/usage/restore.html#considerations) for keeping MongoDB clients away from the database while the restore runs.
+
+How Pods are shut down in physical and PVC snapshot restores
+
+Physical restores replace data on existing volumes, while PVC snapshot restores recreate data PVCs from snapshots. To speed up restore performance, the Operator version 1.24.0 and newer no longer shuts down the replica set Pods in order, with secondaries first and the primary last. It stops `mongos` and arbiter Pods first, then deletes the replica set and config server replica set Pods together. Each `mongod` still has the Pod’s termination grace period to shut down.
 
 ## Choose `backupName` or `backupSource`
 
@@ -38,11 +43,13 @@ Every restore names its source in one of two ways. Use exactly one - setting bot
 
 ## Before you begin
 
-Two preconditions are easy to miss:
+These preconditions are easy to miss:
 
 - The backup you restore from must be in the `ready` state. A backup still in `running`, `waiting`, or `error` cannot be restored.
 
 - Restoring to a point in time additionally requires that [oplog collection](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr.html) was enabled **before** that backup was taken. Enabling it afterwards does not make earlier moments recoverable.
+
+- For a physical or snapshot restore, all replica set members must be healthy and schedulable. If a member is down, the Operator still stops the healthy members. The restore then stays in `waiting` with no error and no timeout, and continues by itself once the member is back. See [Restore stays in the `waiting` state](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html#restore-stays-in-the-waiting-state).
 
 - Make sure that the cluster is running.
 

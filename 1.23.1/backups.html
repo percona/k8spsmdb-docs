@@ -6660,7 +6660,7 @@ window.addEventListener('afterprint', (event) => {
 <p><strong>From physical backup</strong></p>
 <p>A <code>pbm-agent</code> needs access to <code>mongod</code> binaries, so the Operator prepares the cluster first:</p>
 <ol>
-<li>It terminates <code>mongos</code> Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the <code>mongod</code> container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.</li>
+<li>It terminates <code>mongos</code> Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the <code>mongod</code> container, removes the PBM sidecar from the StatefulSet, and starts the restore with the PBM CLI. Starting with 1.24.0, the Operator skips Smart Update and deletes the replica set Pods together.</li>
 <li>The agent inside the <code>mongod</code> container wipes <code>dbPath</code>, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.</li>
 <li>PBM restarts <code>mongod</code> as it moves through restore phases.</li>
 <li>After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and <code>mongos</code> Pods.</li>
@@ -6835,7 +6835,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 08:24:32 UTC">November 3, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:50:07 UTC">November 23, 2026</span>
       
         <br>
         Created:

@@ -4898,6 +4898,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#all-pods-terminate-when-a-physical-or-snapshot-restore-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All Pods terminate when a physical or snapshot restore starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore-stays-in-the-waiting-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore stays in the waiting state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#if-a-physical-restore-fails" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6660,6 +6682,28 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#all-pods-terminate-when-a-physical-or-snapshot-restore-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All Pods terminate when a physical or snapshot restore starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore-stays-in-the-waiting-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore stays in the waiting state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#if-a-physical-restore-fails" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6931,6 +6975,32 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>mongod<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/data/db/pbm-restore-logs
 </code></pre></div>
 <p>PBM keeps only the latest restore logs because it cleans up the data directory during the process.</p>
+<h3 id="all-pods-terminate-when-a-physical-or-snapshot-restore-starts">All Pods terminate when a physical or snapshot restore starts<a data-markdown-ignore class="headerlink" href="#all-pods-terminate-when-a-physical-or-snapshot-restore-starts" title="Permanent link">¶</a></h3>
+<p>Starting with Operator 1.24.0, a physical or PVC snapshot restore deletes the replica set and config server replica set Pods together, after it stops the <code>mongos</code> and arbiter Pods. This is expected, and you don’t need to take any action. See <a href="backups-restore.html#downtime-to-expect">Downtime to expect</a>.</p>
+<p>To watch the restore, run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-restore<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<h3 id="restore-stays-in-the-waiting-state">Restore stays in the <code>waiting</code> state<a data-markdown-ignore class="headerlink" href="#restore-stays-in-the-waiting-state" title="Permanent link">¶</a></h3>
+<p>A physical or PVC snapshot restore can stay in the <code>waiting</code> state while <code>status.error</code> remains empty. This happens when at least one replica set member is not ready, for example because its Pod can’t be scheduled. The Operator has no timeout for this wait. If only one member is down, the Operator has already stopped the healthy members.</p>
+<p>The Operator log repeats <code>Waiting for statefulsets to be ready before restore</code> or <code>Waiting for pbm-agent.</code> while it waits.</p>
+<p>To recover, bring the missing member back:</p>
+<ol>
+<li>
+<p>Check the Operator log for the waiting message:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/&lt;operator-deployment-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+<li>
+<p>Find the Pods that are not ready and check why:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+<li>
+<p>Fix the cause, for example free up resources or restore the node the Pod needs.</p>
+</li>
+</ol>
+<p>The restore continues without further action once all members are ready.</p>
 <h3 id="if-a-physical-restore-fails">If a physical restore fails<a data-markdown-ignore class="headerlink" href="#if-a-physical-restore-fails" title="Permanent link">¶</a></h3>
 <p>If a physical restore fails, the Operator does not roll back the changes it made when preparing for the restore. You must either retry the restore or delete the StatefulSet yourself to return the cluster to its normal configuration. Deleting the StatefulSet can revert the cluster to its pre-restore configuration, but data loss or corruption is still possible depending on when the failure occurred.</p>
 <p>The Operator cannot guarantee data consistency after a failed restore because it does not know at which stage the failure happened. Data can be lost, corrupted, incomplete, or only partially restored.</p>
@@ -6961,7 +7031,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:50:07 UTC">November 23, 2026</span>
       
         <br>
         Created:
