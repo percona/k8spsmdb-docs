@@ -4,6 +4,8 @@ This page lists Percona's certified Docker images that you can use with Percona 
 
 To find images for a specific Operator version, see [Retrieve Percona certified images](image-query.md).
 
+Starting with version 1.24.0, a release also has security-build tags. See [Operator security builds](security-builds.md).
+
 **Images released with the Operator version {{release}}**:
 
 

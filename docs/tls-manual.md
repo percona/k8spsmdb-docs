@@ -19,21 +19,28 @@ When you follow the steps from this guide, you'll generate these certificate fil
 
 * `server.pem` - Server certificate for MongoDB nodes
 * `server-key.pem` - Private key for the server certificate  
-* `client.pem` - Client certificate for external connections
-* `client-key.pem` - Private key for the client certificate
+* `client.pem` - Certificate that `mongod` and `mongos` present to client applications. Despite the file name, it's a server certificate for external connections
+* `client-key.pem` - Private key for that certificate
+* `pbm.pem` - Client certificate that the Operator and the backup agents present to MongoDB. You need it when backups are enabled
+* `pbm-key.pem` - Private key for the PBM client certificate
 * `ca.pem` - Certificate Authority certificate
 * `ca-key.pem` - Certificate Authority private key
 
 ## Certificate requirements
 
-You need to create **two sets** of certificates:
+You need to create the following certificates:
 
 1. **External certificates** - for client connections from outside the cluster. This set is mandatory
 2. **Internal certificates** - for communication between MongoDB nodes within the cluster. You can omit generating a separate of certificates for internal communication. In this case, the operator reuses the external certificates for both external and internal communication.
+3. **PBM client certificate** - for the connections that the Operator and the backup agents make to MongoDB. Starting with version 1.24.0, this certificate is mandatory when backups are enabled and must meet the following requirements:
+   
+     * It must be a client certificate signed by a CA that the `ca.crt` key of the internal Secret contains. If you follow this guide, that's the same CA as for the other certificates.
+     * Its subject must differ from the member certificates: for example, the Operator's own PBM certificate uses the organization `PBM`, while the member certificates use `PSMDB`. MongoDB treats a client whose subject has the same `O`, `OU` and `DC` values as the member certificates as a cluster member.
+     * It needs no hostnames.
 
 Generating two separate sets of certificates is not mandatory but highly recommended. Using different certificates for internal and external connections gives you more control and improves security. For example, you can choose to renew or replace external certificates more often than internal ones, or set different expiration dates for each. This makes managing and securing your cluster easier in the long run.
 
-After creating the certificates, you'll create two Kubernetes Secrets and reference them in your cluster configuration.
+After creating the certificates, you'll create a Kubernetes Secret for each set and reference them in your cluster configuration.
 
 ## Prerequisites
 
@@ -143,7 +150,7 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     6. Create a Kubernetes Secret for internal cluster communication:
     
         ```bash
-        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls -n $NAMESPACE
         ```
     
     7. Generate the certificate for external client connections, including all shard components:
@@ -188,8 +195,47 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     8. Create a Kubernetes Secret for external client connections:
     
         ```bash
-        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls -n $NAMESPACE
         ```
+
+    9. If backups are enabled, generate the PBM client certificate. It has no hostnames and is valid only for client authentication:
+
+        ```bash
+        cat <<EOF > pbm-config.json
+          {
+            "signing": {
+              "default": {
+                "expiry": "87600h",
+                "usages": ["signing", "key encipherment", "client auth"]
+              }
+            }
+          }
+        EOF
+        cat <<EOF | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=./pbm-config.json - | cfssljson -bare pbm
+          {
+            "CN": "${CLUSTER_NAME}-pbm",
+            "names": [
+              {
+                "O": "PBM"
+              }
+            ],
+            "key": {
+              "algo": "rsa",
+              "size": 2048
+            }
+          }
+        EOF
+        ```
+
+        `cfssl` warns that the certificate lacks a `hosts` field. That's expected for a client certificate, so you can ignore the warning.
+
+    10. Create a Kubernetes Secret for the PBM client certificate:
+
+        ```bash
+        kubectl create secret generic my-cluster-name-pbm --from-file=tls.crt=pbm.pem --from-file=tls.key=pbm-key.pem --type=kubernetes.io/tls -n $NAMESPACE
+        ```
+
+        The Secret needs only `tls.crt` and `tls.key`. When `tls.allowInvalidCertificates` is `false`, the backup agent verifies the MongoDB server with the CA from the `my-cluster-name-ssl` Secret.
 
 === "Replica set only (no sharding)"
 
@@ -273,7 +319,7 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     6. Create a Kubernetes Secret for internal cluster communication:
     
         ```bash
-        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        kubectl create secret generic my-cluster-name-ssl-internal --from-file=tls.crt=server.pem --from-file=tls.key=server-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls -n $NAMESPACE
         ```
     
     7. Generate the certificate for external client connections:
@@ -306,8 +352,47 @@ Replace `my-cluster-name` and `my-namespace` with your actual cluster name and n
     8. Create a Kubernetes Secret for external client connections:
     
         ```bash
-        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls
+        kubectl create secret generic my-cluster-name-ssl --from-file=tls.crt=client.pem --from-file=tls.key=client-key.pem --from-file=ca.crt=ca.pem --type=kubernetes.io/tls -n $NAMESPACE
         ```
+
+    9. If backups are enabled, generate the PBM client certificate. It has no hostnames and is valid only for client authentication:
+
+        ```bash
+        cat <<EOF > pbm-config.json
+          {
+            "signing": {
+              "default": {
+                "expiry": "87600h",
+                "usages": ["signing", "key encipherment", "client auth"]
+              }
+            }
+          }
+        EOF
+        cat <<EOF | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=./pbm-config.json - | cfssljson -bare pbm
+          {
+            "CN": "${CLUSTER_NAME}-pbm",
+            "names": [
+              {
+                "O": "PBM"
+              }
+            ],
+            "key": {
+              "algo": "rsa",
+              "size": 2048
+            }
+          }
+        EOF
+        ```
+
+        `cfssl` warns that the certificate lacks a `hosts` field. That's expected for a client certificate, so you can ignore the warning.
+
+    10. Create a Kubernetes Secret for the PBM client certificate:
+
+        ```bash
+        kubectl create secret generic my-cluster-name-pbm --from-file=tls.crt=pbm.pem --from-file=tls.key=pbm-key.pem --type=kubernetes.io/tls -n $NAMESPACE
+        ```
+
+        The Secret needs only `tls.crt` and `tls.key`. When `tls.allowInvalidCertificates` is `false`, the backup agent verifies the MongoDB server with the CA from the `my-cluster-name-ssl` Secret.
 
 ### Configure your cluster
 
@@ -318,13 +403,18 @@ spec:
   secrets:
     ssl: my-cluster-name-ssl          # External certificate secret
     sslInternal: my-cluster-name-ssl-internal  # Internal certificate secret
+    sslPBM: my-cluster-name-pbm       # PBM client certificate secret
 ```
+
+If you name the PBM Secret `<cluster-name>-pbm`, you can omit `secrets.sslPBM`: that's the default.
 
 ## Important notes
 
 1. If you only create the external certificate, the Operator will use it for both external and internal communications instead of generating a separate internal certificate.
 
-2. The commands above use `rs0` as the replica set name (the default). If you set a different name in the `replsets.name` Custom Resource option, update the commands accordingly.
+2. When you provide your own external certificate and backups are enabled, the Operator doesn't generate the PBM client certificate. Create the PBM Secret yourself, or the Operator stops reconciling the cluster. See [Troubleshooting](#troubleshooting).
+
+3. The commands use `rs0` as the replica set name (the default). If you set a different name in the `replsets.name` Custom Resource option, update the commands accordingly.
 
 ## Additional resources
 
@@ -333,7 +423,7 @@ spec:
 
 ## Verify the certificates
 
-Confirm both Secrets exist and carry the three expected keys:
+Confirm the Secrets exist and carry the three expected keys:
 
 ```bash
 kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data}' | tr ',' '\n'
@@ -350,3 +440,40 @@ kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data.tls\.cr
 The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is
 otherwise valid but missing those names produces connection failures that look like TLS
 misconfiguration rather than a naming problem.
+
+If backups are enabled, check that the PBM certificate is a client certificate with its own subject:
+
+```bash
+kubectl get secret my-cluster-name-pbm -n $NAMESPACE -o jsonpath='{.data.tls\.crt}' \
+  | base64 -d | openssl x509 -noout -subject -ext extendedKeyUsage
+```
+
+??? example "Sample output"
+
+    ```{.text .no-copy}
+    subject=O=PBM, CN=my-cluster-name-pbm
+    X509v3 Extended Key Usage:
+        TLS Web Client Authentication
+    ```
+
+    The subject shows `O=PBM`, and the extended key usage is `TLS Web Client Authentication` only.
+
+## Troubleshooting
+
+### The cluster stops reconciling after you provide your own certificates
+
+**Symptom:** the cluster is in the `error` state. The status message and the Operator log report:
+
+```{.text .no-copy}
+TLS secrets handler: "PBM client TLS secret my-cluster-name-pbm is required when custom SSL secret my-cluster-name-ssl is provided and backups are enabled". Please create your TLS secret my-cluster-name-ssl manually or setup cert-manager correctly
+```
+
+The database Pods keep running, but the Operator doesn't apply other changes until you fix this.
+
+**Cause:** you created the external Secret yourself, backups are enabled, `crVersion` is 1.24.0 or later, and the PBM client Secret doesn't exist. Starting with version 1.24.0, the Operator doesn't create the PBM certificate when the external certificate comes from you.
+
+**Fix:**
+
+1. Generate the PBM client certificate with the same CA as your external certificate, as described in [Generate certificates](#generate-certificates).
+2. Create the Secret with the name from the error message, or set its name in `secrets.sslPBM`.
+3. Wait for the next reconciliation. The cluster returns to `ready`. It can take a minute or two, because the Operator retries with a delay.
