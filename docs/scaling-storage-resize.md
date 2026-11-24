@@ -35,7 +35,7 @@ Find your volume in the table to see where its size is set and since which Opera
 
 ### Database data volumes
 
-Each replica set and member type has its own size. All volumes of a replica set have the same size, so when the size changes, all of them grow.
+Each replica set and member type has its own size. Within a replica set, volumes that share the same member-type size option grow together; ordinary, non-voting, and hidden members can have different sizes.
 
 ### `mongos` log volumes
 
@@ -308,7 +308,7 @@ When a volume reaches `maxSize`, the Operator stops resizing it and logs `PVC al
 
 ## Resize storage without volume expansion
 
-Use this way if your storage doesn't support volume expansion or your Operator is older than 1.16.0. You recreate the volumes one Pod at a time, and each new member copies the data from the others. This way you can also reduce the size of database data volumes.
+Use this procedure only for replicated database data volumes if your storage doesn't support volume expansion or your Operator is older than 1.16.0. You recreate the volumes one Pod at a time, and each new member copies the data from the others. This way you can also reduce the size of database data volumes. Do not apply these steps to search or `mongos` log PVCs: search requires an index rebuild, and deleting a log PVC loses its stored logs.
 
 1. Set the new size in the Custom Resource and apply it:
 
