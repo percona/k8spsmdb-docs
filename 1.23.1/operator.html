@@ -28169,7 +28169,12 @@ Percona Server for MongoDB backups.</p>
 </tbody>
 </table>
 <h3 id="backupstoragesstorage-nameazurecredentialssecret"><code>backup.storages.STORAGE-NAME.azure.credentialsSecret</code><a data-markdown-ignore class="headerlink" href="#backupstoragesstorage-nameazurecredentialssecret" title="Permanent link">¶</a></h3>
-<p>The <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes secret  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for backups. It should contain <code>AZURE_STORAGE_ACCOUNT_NAME</code> and <code>AZURE_STORAGE_ACCOUNT_KEY</code> |</p>
+<p>The <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes secret  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for backups. It must contain these keys:</p>
+<ul>
+<li><code>AZURE_STORAGE_ACCOUNT_NAME</code> and <code>AZURE_STORAGE_ACCOUNT_KEY</code>, or</li>
+<li><code>AZURE_STORAGE_CONNECTION_STRING</code> (available starting with version 1.24.0). </li>
+</ul>
+<p>If the Secret has a connection string, the Operator uses it and ignores the other two keys. See <a href="backups-storage-azure.html">Microsoft Azure Blob storage</a>.</p>
 <table>
 <thead>
 <tr>
@@ -29566,7 +29571,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:58:10 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:59:14 UTC">November 24, 2026</span>
       
         <br>
         Created:

@@ -4198,7 +4198,12 @@ Defines the time to increase the wait time after each retry. For example, with t
 
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
-The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` |
+The [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It must contain these keys:
+
+- `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY`, or
+- `AZURE_STORAGE_CONNECTION_STRING` (available starting with version 1.24.0).
+
+If the Secret has a connection string, the Operator uses it and ignores the other two keys. See [Microsoft Azure Blob storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage-azure.html).
 
 | Value type | Example                   |
 | ---------- | ------------------------- |
