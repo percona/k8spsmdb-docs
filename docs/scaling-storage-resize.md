@@ -157,7 +157,7 @@ Automatic resizing of `mongos` log PVCs follows the same rules as for other PVCs
 
 !!! important
 
-    After you upgrade the Operator to version 1.24.0, automatic resizing of `mongos` log PVCs starts right away for clusters that already have automatic resizing enabled and `mongos` log PVCs configured. If a log PVC is already above the threshold, the Operator starts to resize it as soon as the new Operator version runs. To keep the log volumes at their current size, review the `storageScaling.autoscaling` settings before the upgrade.
+    Automatic resizing of `mongos` log PVCs starts when you upgrade the Operator to version 1.24.0 and set `crVersion` to `1.24.0`. This applies to clusters that already have automatic resizing enabled and `mongos` log PVCs configured. If a log PVC is already above the threshold, the Operator starts to resize it right after you change `crVersion`. To keep the log volumes at their current size, review the `storageScaling.autoscaling` settings before you change `crVersion`.
 
 ## Storage resizing with Volume Expansion capability
 
