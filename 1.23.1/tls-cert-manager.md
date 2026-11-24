@@ -182,7 +182,7 @@ spec:
       group: cert-manager.io
 ```
 
-Replace `my-org-issuer` with the name of your existing `ClusterIssuer`. Set [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) to `false` so MongoDB validates certificates against your trusted CA.
+Replace `my-org-issuer` with the name of your existing `ClusterIssuer`. Set [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) to `false` so clients validate certificates against your trusted CA. Starting with version 1.24.0, this includes the Operator and the backup agent as well as MongoDB. Include every hostname those clients use in the certificate. See [Turn on server certificate checks](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html#turn-on-server-certificate-checks).
 
 When you deploy the cluster, the Operator creates `Certificate` resources that reference your `ClusterIssuer`. cert-manager signs the resulting Secrets; the Operator does not create a parallel CA or overwrite your issuer.
 

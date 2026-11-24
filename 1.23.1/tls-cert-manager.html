@@ -6980,7 +6980,10 @@ request Percona Server for MongoDB certificates from that issuer instead of crea
 </code></pre></div>
 <p>Replace <code>my-org-issuer</code> with the name of your existing <code>ClusterIssuer</code>. Set
 <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> to
-<code>false</code> so MongoDB validates certificates against your trusted CA.</p>
+<code>false</code> so clients validate certificates against your trusted CA. Starting with
+version 1.24.0, this includes the Operator and the backup agent as well as
+MongoDB. Include every hostname those clients use in the certificate. See
+<a href="TLS.html#turn-on-server-certificate-checks">Turn on server certificate checks</a>.</p>
 <p>When you deploy the cluster, the Operator creates <code>Certificate</code> resources that
 reference your <code>ClusterIssuer</code>. cert-manager signs the resulting Secrets; the
 Operator does not create a parallel CA or overwrite your issuer.</p>
@@ -7052,7 +7055,7 @@ database problem.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:54:34 UTC">November 24, 2026</span>
       
         <br>
         Created:

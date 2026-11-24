@@ -6805,7 +6805,7 @@ window.addEventListener('afterprint', (event) => {
 </tr>
 <tr>
 <td><code>PBM_MONGODB_URI</code></td>
-<td>MongoDB connection string URI constructed by the Operator.</td>
+<td>MongoDB connection string the Operator builds. When TLS is on, the string includes <code>tlsInsecure=true</code> only when <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> is <code>true</code>.</td>
 </tr>
 <tr>
 <td><code>PBM_AGENT_TLS_ENABLED</code></td>
@@ -7017,7 +7017,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:54:34 UTC">November 24, 2026</span>
       
         <br>
         Created:

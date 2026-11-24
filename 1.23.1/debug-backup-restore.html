@@ -6967,6 +6967,7 @@ Status:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>pod/my-cluster-name-rs0-2<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
 <p>These logs show PBM backup execution, including storage uploads and any errors that occurred.</p>
+<p>Starting with version 1.24.0, the backup agent checks the MongoDB server certificate when <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> is <code>false</code>. If the log reports <code>tls: failed to verify certificate</code>, the certificate is untrusted or the hostname does not match. Fix the certificate, or set the option back to <code>true</code>. See <a href="TLS.html#turn-on-server-certificate-checks">Turn on server certificate checks</a>.</p>
 <p>You can also run PBM diagnostics inside the container. See <a href="debug-shell.html">Exec into the container</a> and the <a href="https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html">PBM troubleshooting guide <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="restores">Restores<a data-markdown-ignore class="headerlink" href="#restores" title="Permanent link">¶</a></h2>
 <h3 id="check-restore-status">Check restore status<a data-markdown-ignore class="headerlink" href="#check-restore-status" title="Permanent link">¶</a></h3>
@@ -7075,7 +7076,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:50:07 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:54:34 UTC">November 24, 2026</span>
       
         <br>
         Created:

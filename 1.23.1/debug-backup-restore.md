@@ -127,6 +127,8 @@ kubectl logs pod/my-cluster-name-rs0-2 -c backup-agent -n $NAMESPACE
 
 These logs show PBM backup execution, including storage uploads and any errors that occurred.
 
+Starting with version 1.24.0, the backup agent checks the MongoDB server certificate when [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) is `false`. If the log reports `tls: failed to verify certificate`, the certificate is untrusted or the hostname does not match. Fix the certificate, or set the option back to `true`. See [Turn on server certificate checks](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html#turn-on-server-certificate-checks).
+
 You can also run PBM diagnostics inside the container. See [Exec into the container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html) and the [PBM troubleshooting guide](https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html) .
 
 ## Restores
