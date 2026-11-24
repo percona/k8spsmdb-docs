@@ -11,8 +11,12 @@ Each page below is also available as markdown. For the documentation of all Perc
 
 ## About
 
-- [About](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.md)
 - [Design and architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.md)
+- [Who owns what](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-responsibilities.md)
+- [Operator responsibilities by area](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator-boundaries.md)
+- [How the Operator reacts to changes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-reconciliation.md)
+- [Key workflows](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.md)
+- [Health checks and probes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-probes.md)
 - [Comparison with other solutions](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/compare.md)
 - [Known limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/limitations.md)
 
@@ -166,7 +170,7 @@ Each page below is also available as markdown. For the documentation of all Perc
 ## Troubleshooting
 
 - [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug.md)
-- [Troubleshoot the Operator installation issues](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.md)
+- [Troubleshoot the Operator](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.md)
 - [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.md)
 - [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.md)
 - [Exec into the container](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.md)
@@ -183,11 +187,14 @@ Each page below is also available as markdown. For the documentation of all Perc
 - [Restore resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/restore-options.md)
 - [ClusterSync options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.md)
 - [Custom resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.md)
+- [Services and ports](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/services.md)
+- [Objects the Operator creates](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/objects-created.md)
 - [Operator API](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/api.md)
 - [Certified images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/images.md)
 - [Retrieve certified images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/image-query.md)
 - [Versions compatibility](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/versions.md)
 - [Frequently asked questions](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/faq.md)
+- [Glossary](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/glossary.md)
 - [Telemetry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/telemetry.md)
 - [Copyright and licensing information](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/copyright.md)
 - [Trademark policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/trademark-policy.md)

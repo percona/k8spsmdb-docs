@@ -4,7 +4,7 @@
 
 One of the great advantages brought by Kubernetes is the ease of an application scaling. Scaling a Deployment up or down ensures new Pods are created and set to available Kubernetes nodes.
 
-This page covers [vertical](#vertical-scaling) and [horizontal](#horizontal-scaling) scaling. Vertical scaling adds more compute (CPU and memory) to MongoDB nodes; horizontal scaling is about adding more nodes to the cluster. Storage capacity is scaled separately - see [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html). [High availability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html#high-availability) looks technically similar to horizontal scaling, because it also involves additional nodes, but the reason is maintaining liveness of the system in case of server or network failures.
+This page covers [vertical](#vertical-scaling) and [horizontal](#horizontal-scaling) scaling. Vertical scaling adds more compute (CPU and memory) to MongoDB nodes; horizontal scaling is about adding more nodes to the cluster. Storage capacity is scaled separately - see [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html). [High availability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/ha-topology.html) looks technically similar to horizontal scaling, because it also involves additional nodes, but the reason is maintaining liveness of the system in case of server or network failures.
 
 ## Vertical scaling
 

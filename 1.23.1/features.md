@@ -58,7 +58,7 @@ Gain visibility into your database and cluster:
 
 ## Understand how it works
 
-The [How the Operator works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html) and [Design and architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html) pages explain the controller model and the components it manages.
+The [Design and architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html) pages explain the controller model, the components the Operator manages, and what stays with you.
 
 ## Next steps
 

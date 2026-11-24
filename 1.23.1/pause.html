@@ -4,9 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="There may be external situations when it is needed to shutdown the cluster
-for a while and then start it back up (some works related to the maintenance of
-the enterprise infrastructure, etc.).">
+        <meta name="description" content="Pausing stops all database Pods and keeps the data. Clients can’t connect while the cluster is paused. Pause the cluster when you need it down for a while, for example during maintenance of the Kubernetes infrastructure or to update expired TLS certificates. To remove the cluster for good, delete it instead.">
       
       
         <meta name="author" content="Percona LLC">
@@ -96,6 +94,8 @@ the enterprise infrastructure, etc.).">
     
       <link rel="stylesheet" href="css/kapa.css">
     
+      <link rel="stylesheet" href="css/glossary.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -151,7 +151,7 @@ the enterprise infrastructure, etc.).">
     <div data-md-component="skip">
       
         
-        <a href="#pauseresume-percona-server-for-mongodb" class="md-skip">
+        <a href="#pause-and-resume-the-cluster" class="md-skip">
           Skip to content
         </a>
       
@@ -435,24 +435,16 @@ the enterprise infrastructure, etc.).">
         
         <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3">
         
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="how-it-works.html" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     About
   </span>
   
 
-            </a>
-            
-              <label class="md-nav__link " for="__nav_3">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
@@ -466,16 +458,155 @@ the enterprise infrastructure, etc.).">
   
   
   
-    <li class="md-nav__item">
-      <a href="architecture.html" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3_1">
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="architecture.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design and architecture
   </span>
   
 
+            </a>
+            
+              <label class="md-nav__link " for="__nav_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design and architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-responsibilities.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Who owns what
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operator-boundaries.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operator responsibilities by area
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-reconciliation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How the Operator reacts to changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-workflows.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-probes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health checks and probes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4576,6 +4707,17 @@ the enterprise infrastructure, etc.).">
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Pause or resume the cluster
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="pause.html" class="md-nav__link md-nav__link--active">
         
   
@@ -4585,6 +4727,102 @@ the enterprise infrastructure, etc.).">
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pause-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause the cluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-during-a-pause" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens during a pause
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-the-pause" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify the pause
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resume the cluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -4667,7 +4905,7 @@ the enterprise infrastructure, etc.).">
         
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -4868,6 +5106,12 @@ the enterprise infrastructure, etc.).">
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -5048,6 +5292,46 @@ the enterprise infrastructure, etc.).">
   
   
     <li class="md-nav__item">
+      <a href="services.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Services and ports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="objects-created.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects the Operator creates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api.html" class="md-nav__link">
         
   
@@ -5077,7 +5361,7 @@ the enterprise infrastructure, etc.).">
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_6">
         
           
           
@@ -5092,14 +5376,14 @@ the enterprise infrastructure, etc.).">
 
             </a>
             
-              <label class="md-nav__link " for="__nav_11_4">
+              <label class="md-nav__link " for="__nav_11_6">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
             <span class="md-nav__icon md-icon"></span>
             Certified images
           </label>
@@ -5179,6 +5463,26 @@ the enterprise infrastructure, etc.).">
   
   
     <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="telemetry.html" class="md-nav__link">
         
   
@@ -5212,9 +5516,9 @@ the enterprise infrastructure, etc.).">
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_11">
         
-          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_11" id="__nav_11_11_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -5225,8 +5529,8 @@ the enterprise infrastructure, etc.).">
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_11">
             <span class="md-nav__icon md-icon"></span>
             Legal
           </label>
@@ -6341,6 +6645,91 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pause-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause the cluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-during-a-pause" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens during a pause
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-the-pause" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify the pause
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resume the cluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -6448,24 +6837,90 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="pauseresume-percona-server-for-mongodb">Pause/resume Percona Server for MongoDB<a data-markdown-ignore class="headerlink" href="#pauseresume-percona-server-for-mongodb" title="Permanent link">¶</a></h1>
-<p>There may be external situations when it is needed to shutdown the cluster
-for a while and then start it back up (some works related to the maintenance of
-the enterprise infrastructure, etc.).</p>
-<p><a name="operator-pause"></a> The <code>deploy/cr.yaml</code> file contains a special <code>spec.pause</code> key for this.
-Setting it to <code>true</code> gracefully stops the cluster:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">.......</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">pause</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<h1 id="pause-and-resume-the-cluster">Pause and resume the cluster<a data-markdown-ignore class="headerlink" href="#pause-and-resume-the-cluster" title="Permanent link">¶</a></h1>
+<p>Pausing stops all database Pods and keeps the data. Clients can’t connect while the cluster is paused. Pause the cluster when you need it down for a while, for example during maintenance of the Kubernetes infrastructure or to <a href="tls-update.html#update-certificates-with-downtime">update expired TLS certificates</a>. To remove the cluster for good, <a href="delete.html#delete-the-database-cluster">delete it</a> instead.</p>
+<h2 id="before-you-start">Before you start<a data-markdown-ignore class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p>Check that no backup is running. The Operator doesn’t pause the cluster until running backups finish:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<p>To start the cluster after it was shut down just revert the <code>spec.pause</code> key
-to <code>false</code>.</p>
+<p>Backups in the <code>ready</code>, <code>error</code> or <code>waiting</code> state don’t delay the pause.</p>
+</li>
+<li>
+<p>Stop the applications that write to the cluster, or make sure they can handle the outage.</p>
+</li>
+</ul>
+<h2 id="pause-the-cluster">Pause the cluster<a data-markdown-ignore class="headerlink" href="#pause-the-cluster" title="Permanent link">¶</a></h2>
+<p>Set <code>spec.pause</code> to <code>true</code>. Replace <code>my-cluster-name</code> with the name of your cluster:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{"spec": {"pause": true}}'</span>
+</code></pre></div>
+<p>You can also set <code>pause: true</code> in your <code>deploy/cr.yaml</code> file and apply it with <code>kubectl apply -f deploy/cr.yaml -n &lt;namespace&gt;</code>.</p>
+<h2 id="what-happens-during-a-pause">What happens during a pause<a data-markdown-ignore class="headerlink" href="#what-happens-during-a-pause" title="Permanent link">¶</a></h2>
+<p>The Operator stops the cluster in an order that keeps the data consistent:</p>
+<ol>
+<li>If a backup is running, the Operator waits until it finishes. Until then, the cluster stays <code>ready</code>, and the Operator logs <code>cluster will pause after all backups finished</code>.</li>
+<li>In a sharded cluster, the Operator stops the <code>mongos</code> Pods first, so clients can’t connect during the shutdown.</li>
+<li>It stops the <code>mongot</code> search Pods, and the arbiter, non-voting and hidden members.</li>
+<li>In each replica set, it makes the Pod with the index 0, for example <code>my-cluster-name-rs0-0</code>, the primary. It then stops the other members one Pod at a time. The primary stops last, so the member that starts first on resume has the latest data.</li>
+<li>In a sharded cluster, the config server replica set stops after all shards.</li>
+</ol>
+<p>While the cluster is paused:</p>
+<ul>
+<li>PVCs and the data on them stay in place.</li>
+<li>The Operator doesn’t run Smart Updates, change the backup configuration, or manage the balancer.</li>
+<li>The <code>status.state</code> field is <code>stopping</code> while Pods shut down, and <code>paused</code> when all of them have stopped.</li>
+</ul>
+<p>The Operator also pauses the cluster by itself when you turn sharding on or off with backups enabled. See <a href="sharding.html#turning-sharding-on-and-off">Turning sharding on and off</a>.</p>
+<h2 id="verify-the-pause">Verify the pause<a data-markdown-ignore class="headerlink" href="#verify-the-pause" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>Check the cluster state:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>The <code>STATUS</code> column shows <code>paused</code>.</p>
+</li>
+<li>
+<p>Check that no database Pods are left:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/instance<span class="o">=</span>my-cluster-name
+</code></pre></div>
+<p>The output has no <code>mongod</code>, <code>mongos</code> or <code>mongot</code> Pods.</p>
+</li>
+</ol>
+<h2 id="resume-the-cluster">Resume the cluster<a data-markdown-ignore class="headerlink" href="#resume-the-cluster" title="Permanent link">¶</a></h2>
+<p>Set <code>spec.pause</code> back to <code>false</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>patch<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">'{"spec": {"pause": false}}'</span>
+</code></pre></div>
+<p>The Operator starts the Pods again with their existing PVCs. The state changes to <code>initializing</code>, and then to <code>ready</code> when all members are up and the <a href="cr-statuses.html#what-ready-means">conditions for <code>ready</code></a> are met.</p>
+<h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<p><strong>Symptom:</strong> The cluster stays <code>ready</code> after you set <code>pause: true</code>.</p>
+<p><strong>Cause:</strong> A backup is running. The Operator waits for it to finish.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the Operator logs for <code>cluster will pause after all backups finished</code>.</li>
+<li>Run <code>kubectl get psmdb-backup -n &lt;namespace&gt;</code> and wait until the backup reaches the <code>ready</code> or <code>error</code> state. The pause then starts on its own.</li>
+</ol>
+<p><strong>Symptom:</strong> The cluster stays in <code>stopping</code>.</p>
+<p><strong>Cause:</strong> A Pod doesn’t terminate, or the Operator can’t make the Pod with the index 0 the primary. The Operator logs <code>deleting rs pods</code> with the replica set name and the reason, for example <code>waiting first pod to become primary</code>.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check which Pods are still running with <code>kubectl get pods -n &lt;namespace&gt;</code>.</li>
+<li>Check the Operator logs for the <code>deleting rs pods</code> messages.</li>
+<li>If a Pod is stuck in <code>Terminating</code>, check its events with <code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code>.</li>
+</ol>
+<p>For other problems, see <a href="debug.html">Initial troubleshooting</a>.</p>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="tls-update.html#update-certificates-with-downtime">Update certificates with downtime</a> uses a pause to replace expired TLS certificates.</li>
+<li><a href="cr-statuses.html">Custom Resource statuses</a> explains every value of <code>status.state</code> and the conditions behind it.</li>
+<li><a href="architecture-reconciliation.html#what-happens-when-i-change-a-field">How the Operator reacts to changes</a> shows how other Custom Resource changes affect the Pods.</li>
+</ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 13, 2023 09:36:02 UTC">March 13, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
         <br>
         Created:

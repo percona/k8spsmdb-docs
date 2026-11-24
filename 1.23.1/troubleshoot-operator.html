@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="This section provides information on how to troubleshoot issues when you install Percona Operator for MongoDB.">
+        <meta name="description" content="Use this page when the Operator itself is the problem: the installation fails, the Operator Pod doesn’t run, the cluster gets no status or doesn’t react to your changes, or it stays in initializing. For problems with the database Pods, backups or connections, start with Initial troubleshooting.">
       
       
         <meta name="author" content="Percona LLC">
@@ -44,7 +44,7 @@
 
     
       
-        <title>Troubleshoot the Operator installation issues - Percona Operator for MongoDB</title>
+        <title>Troubleshoot the Operator - Percona Operator for MongoDB</title>
       
     
     
@@ -94,6 +94,8 @@
     
       <link rel="stylesheet" href="css/kapa.css">
     
+      <link rel="stylesheet" href="css/glossary.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -116,7 +118,7 @@
                  
                  
                  <meta property="og:type" content="website">
-                 <meta property="og:title" content="Percona Operator for MongoDB - Troubleshoot the Operator installation issues">
+                 <meta property="og:title" content="Percona Operator for MongoDB - Troubleshoot the Operator">
                  <meta property="og:image" content="https://docs.percona.com/percona-operator-for-mongodb/latest/assets/images/kubernetes-operators.png">
                  <meta property="og:url" content="https://docs.percona.com/percona-operator-for-mongodb/latest/index.html">
                               
@@ -149,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#percona-operator-troubleshooting" class="md-skip">
+        <a href="#troubleshoot-the-operator" class="md-skip">
           Skip to content
         </a>
       
@@ -215,7 +217,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshoot the Operator installation issues
+              Troubleshoot the Operator
             
           </span>
         </div>
@@ -433,24 +435,16 @@
         
         <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3">
         
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="how-it-works.html" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     About
   </span>
   
 
-            </a>
-            
-              <label class="md-nav__link " for="__nav_3">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
@@ -464,16 +458,155 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="architecture.html" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3_1">
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="architecture.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design and architecture
   </span>
   
 
+            </a>
+            
+              <label class="md-nav__link " for="__nav_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design and architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-responsibilities.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Who owns what
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operator-boundaries.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operator responsibilities by area
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-reconciliation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How the Operator reacts to changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-workflows.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-probes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health checks and probes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4664,7 +4797,7 @@
           
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -4675,7 +4808,7 @@
         
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -4697,10 +4830,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#check-connection-to-kubernetes-cluster" class="md-nav__link">
+  <a href="#before-you-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Check connection to Kubernetes cluster
+        Before you start
       
     </span>
   </a>
@@ -4708,10 +4841,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshoot-operator-installation-issues" class="md-nav__link">
+  <a href="#kubectl-cant-reach-the-cluster" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshoot Operator installation issues
+        kubectl can’t reach the cluster
       
     </span>
   </a>
@@ -4719,13 +4852,157 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting-database-cluster-issues" class="md-nav__link">
+  <a href="#the-installation-fails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshooting database cluster issues
+        The installation fails
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="The installation fails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing privileges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-customresourcedefinition-is-too-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CustomResourceDefinition is too long
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-operator-pod-isnt-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Operator Pod isn’t running
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cluster-has-no-status-or-doesnt-react-to-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cluster has no status or doesn’t react to changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options-are-missing-after-an-operator-upgrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options are missing after an Operator upgrade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-stays-in-initializing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster stays in initializing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster stays in initializing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-rollout-is-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A rollout is pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-member-isnt-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A member isn’t ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pbm-agents-report-an-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The PBM agents report an error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-pvc-resize-is-in-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A PVC resize is in progress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-endpoint-is-assigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No endpoint is assigned
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-pod-cant-be-scheduled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Pod can’t be scheduled
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4940,6 +5217,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -5120,6 +5403,46 @@
   
   
     <li class="md-nav__item">
+      <a href="services.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Services and ports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="objects-created.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects the Operator creates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api.html" class="md-nav__link">
         
   
@@ -5149,7 +5472,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_6">
         
           
           
@@ -5164,14 +5487,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_11_4">
+              <label class="md-nav__link " for="__nav_11_6">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
             <span class="md-nav__icon md-icon"></span>
             Certified images
           </label>
@@ -5251,6 +5574,26 @@
   
   
     <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="telemetry.html" class="md-nav__link">
         
   
@@ -5284,9 +5627,9 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_11">
         
-          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_11" id="__nav_11_11_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -5297,8 +5640,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_11">
             <span class="md-nav__icon md-icon"></span>
             Legal
           </label>
@@ -6420,10 +6763,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#check-connection-to-kubernetes-cluster" class="md-nav__link">
+  <a href="#before-you-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Check connection to Kubernetes cluster
+        Before you start
       
     </span>
   </a>
@@ -6431,10 +6774,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshoot-operator-installation-issues" class="md-nav__link">
+  <a href="#kubectl-cant-reach-the-cluster" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshoot Operator installation issues
+        kubectl can’t reach the cluster
       
     </span>
   </a>
@@ -6442,13 +6785,157 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting-database-cluster-issues" class="md-nav__link">
+  <a href="#the-installation-fails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshooting database cluster issues
+        The installation fails
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="The installation fails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing privileges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-customresourcedefinition-is-too-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CustomResourceDefinition is too long
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-operator-pod-isnt-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Operator Pod isn’t running
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cluster-has-no-status-or-doesnt-react-to-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cluster has no status or doesn’t react to changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options-are-missing-after-an-operator-upgrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options are missing after an Operator upgrade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-stays-in-initializing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster stays in initializing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster stays in initializing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-rollout-is-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A rollout is pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-member-isnt-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A member isn’t ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pbm-agents-report-an-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The PBM agents report an error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-pvc-resize-is-in-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A PVC resize is in progress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-endpoint-is-assigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No endpoint is assigned
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-pod-cant-be-scheduled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Pod can’t be scheduled
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -6564,56 +7051,59 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="percona-operator-troubleshooting">Percona Operator troubleshooting<a data-markdown-ignore class="headerlink" href="#percona-operator-troubleshooting" title="Permanent link">¶</a></h1>
-<p>This section provides information on how to troubleshoot issues when you install Percona Operator for MongoDB.</p>
-<p>Make sure you have CLI tool <code>kubectl</code> installed to interact with Kubernetes API.</p>
-<h2 id="check-connection-to-kubernetes-cluster">Check connection to Kubernetes cluster<a data-markdown-ignore class="headerlink" href="#check-connection-to-kubernetes-cluster" title="Permanent link">¶</a></h2>
-<p>It may happen that <code>kubectl</code> you installed locally is not connected to your Kubernetes cluster. </p>
-<p>To check connectivity to your Kubernetes API, run the following command:</p>
+<h1 id="troubleshoot-the-operator">Troubleshoot the Operator<a data-markdown-ignore class="headerlink" href="#troubleshoot-the-operator" title="Permanent link">¶</a></h1>
+<p>Use this page when the Operator itself is the problem: the installation fails, the Operator Pod doesn’t run, the cluster gets no status or doesn’t react to your changes, or it stays in <code>initializing</code>. For problems with the database Pods, backups or connections, start with <a href="debug.html">Initial troubleshooting</a>.</p>
+<h2 id="before-you-start">Before you start<a data-markdown-ignore class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
+<ul>
+<li>Install <code>kubectl</code> and configure it for your Kubernetes cluster.</li>
+<li>Know the namespace of the Operator and of the database cluster. They are the same namespace unless you run the Operator in <a href="cluster-wide.html">cluster-wide mode</a>.</li>
+<li>
+<p>Find the name of the Operator Deployment. It is <code>percona-server-mongodb-operator</code> for a <code>kubectl</code> installation, and usually ends with <code>psmdb-operator</code> for Helm:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deployments<span class="w"> </span>-A<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">'percona-server-mongodb-operator|psmdb-operator'</span>
+</code></pre></div>
+</li>
+</ul>
+<h2 id="kubectl-cant-reach-the-cluster"><code>kubectl</code> can’t reach the cluster<a data-markdown-ignore class="headerlink" href="#kubectl-cant-reach-the-cluster" title="Permanent link">¶</a></h2>
+<p><strong>Symptom:</strong> <code>kubectl</code> commands time out or fail with a connection error, or they show objects from a different cluster.</p>
+<p><strong>Cause:</strong> <code>kubectl</code> isn’t configured for this cluster, or the current context in your kubeconfig points to another cluster.</p>
+<p class="power-number"><strong>Fix:</strong></p>
+<ol>
+<li>
+<p>Check the connection:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>cluster-info
 </code></pre></div>
-<p>If you see the output similar to the following, it means that <code>kubectl</code> is connected to your Kubernetes cluster:    </p>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>Kubernetes control plane is running at https://&lt;control-plane-ip&gt;:49475
-CoreDNS is running at https://&lt;control-plane-ip&gt;:49475/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy 
+CoreDNS is running at https://&lt;control-plane-ip&gt;:49475/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre></div>
 </details>
-<p>If multiple Kubernetes configurations are present in <code>kubeconfig</code>, check if you have set the correct context. If the context is wrong, switch it.</p>
-<p class="power-number">Here’s how:</p>
-<ol>
+</li>
 <li>
-<p>Check the current context:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>config<span class="w"> </span>current-context<span class="w"> </span><span class="c1"># Get the current Context</span>
+<p>If the output shows the wrong cluster, check the current context and switch to the right one:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+kubectl<span class="w"> </span>config<span class="w"> </span>use-context<span class="w"> </span>&lt;context-name&gt;
 </code></pre></div>
 </li>
 <li>
-<p>Switch the context :</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>config<span class="w"> </span>use-context<span class="w"> </span>&lt;Context-To-Be-Used&gt;
-</code></pre></div>
-</li>
-<li>
-<p>Run the <code>kubectl cluster-info</code> command again to verify that <code>kubectl</code> is connected to your Kubernetes cluster.</p>
+<p>Run <code>kubectl cluster-info</code> again. If it still fails, ask your Kubernetes cluster administrator to check your access.</p>
 </li>
 </ol>
-<p>If you are still running into issues, check with your Kubernetes cluster administrator to resolve the connectivity or configuration issues. </p>
-<h2 id="troubleshoot-operator-installation-issues">Troubleshoot Operator installation issues<a data-markdown-ignore class="headerlink" href="#troubleshoot-operator-installation-issues" title="Permanent link">¶</a></h2>
+<h2 id="the-installation-fails">The installation fails<a data-markdown-ignore class="headerlink" href="#the-installation-fails" title="Permanent link">¶</a></h2>
+<h3 id="missing-privileges">Missing privileges<a data-markdown-ignore class="headerlink" href="#missing-privileges" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> <code>kubectl apply</code> fails with <code>forbidden</code> errors, for example <code>cannot create resource "customresourcedefinitions"</code>.</p>
+<p><strong>Cause:</strong> Installing the Operator creates cluster-scoped CustomResourceDefinitions and namespaced RBAC objects. Your account lacks the rights for some of them.</p>
+<p class="power-number"><strong>Fix:</strong></p>
 <ol>
 <li>
-<p>Check the Operator logs</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/&lt;operator-deployment-name&gt;
-</code></pre></div>
-</li>
-<li>
-<p>Installing the Operator requires specific privileges, such as the ability to create custom resource definitions and other Kubernetes objects.</p>
-<p>To verify that you have the necessary privileges, download and run the following script:</p>
+<p>Check your privileges with the privileges check script. It reports what’s missing for each Percona Operator:</p>
 <div class="highlight"><pre><span></span><code>bash<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://gist.githubusercontent.com/cshiv/6048bdd0174275b48f633549c69d0844/raw/fd547b783a30b827362ee9f9ec03436f9bc79524/check_priviliges.sh<span class="o">)</span>
 </code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>Checking privileges to install Percona Operators in kubernetes cluster...
 Warning: Unable to check the privileges for resource 'issuers', check if the resource 'issuers' is present in the cluster
-Warning: Unable to check the privileges for resource 'certificates', check if the resource 'certificates' is present in the cluster    
+Warning: Unable to check the privileges for resource 'certificates', check if the resource 'certificates' is present in the cluster
 
 Warning: Some resources are not found in the kubernetes cluster.Check the Warning messages before you proceed
 ------------------------------------------------------------------------------------------
@@ -6627,100 +7117,137 @@ GOOD TO INSTALL: Percona Operator for MongoDB
 https://docs.percona.com/percona-operator-for-mongodb/index.html
 </code></pre></div>
 </details>
-<p>If you have insufficient permissions, the script will show you which ones are missing for installing a particular Operator. In this case, contact the Kubernetes cluster administrator.</p>
+<p>If your security policy doesn’t allow running a downloaded script, check the privileges with <code>kubectl auth can-i</code> instead. Each command prints <code>yes</code> or <code>no</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>customresourcedefinitions
+kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>serviceaccounts<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>roles<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>rolebindings<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>deployments<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>For <a href="cluster-wide.html">cluster-wide mode</a>, check <code>clusterroles</code> and <code>clusterrolebindings</code> instead of <code>roles</code> and <code>rolebindings</code>.</p>
 </li>
 <li>
-<p>If you have the necessary privileges but the installation is still failing, review the Kubernetes Events for more details. Keep in mind that Kubernetes Events are retained for only 60 minutes.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">".lastTimestamp"</span>
-</code></pre></div>
-<p>Events provide good information about affinity issues, resource issues etc.</p>
+<p>If any check fails, ask your Kubernetes cluster administrator to grant the missing privileges or to install the CustomResourceDefinitions for you.</p>
 </li>
 </ol>
-<h2 id="troubleshooting-database-cluster-issues">Troubleshooting database cluster issues<a data-markdown-ignore class="headerlink" href="#troubleshooting-database-cluster-issues" title="Permanent link">¶</a></h2>
+<h3 id="the-customresourcedefinition-is-too-long">The CustomResourceDefinition is too long<a data-markdown-ignore class="headerlink" href="#the-customresourcedefinition-is-too-long" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> <code>kubectl apply</code> fails with <code>metadata.annotations: Too long: must have at most 262144 bytes</code> for <code>perconaservermongodbs.psmdb.percona.com</code>.</p>
+<p><strong>Cause:</strong> A client-side <code>kubectl apply</code> stores the whole object in an annotation. The <code>PerconaServerMongoDB</code> CustomResourceDefinition is larger than the annotation limit.</p>
+<p><strong>Fix:</strong> Apply the file with server-side apply, as the <a href="kubectl.html">installation guides</a> do:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/bundle.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<h2 id="the-operator-pod-isnt-running">The Operator Pod isn’t running<a data-markdown-ignore class="headerlink" href="#the-operator-pod-isnt-running" title="Permanent link">¶</a></h2>
+<p><strong>Symptom:</strong> The Operator Pod is in <code>ImagePullBackOff</code>, <code>ErrImagePull</code> or <code>CrashLoopBackOff</code>, or its <code>RESTARTS</code> count keeps growing.</p>
+<p><strong>Cause:</strong> The node can’t pull the Operator image, the CustomResourceDefinitions are missing, or the Operator’s service account lacks the RBAC rights it needs.</p>
+<p class="power-number"><strong>Fix:</strong></p>
 <ol>
 <li>
-<p>The Operator deployment must be in the <code>Running</code> state for the database cluster to function properly. Check the Operator Pod for restarts to identify potential issues.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>&lt;operator-pod-name&gt;
+<p>Check the Pod state and events:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>operator<span class="w"> </span>-n<span class="w"> </span>&lt;operator-namespace&gt;
 </code></pre></div>
+<p>For a Helm installation, use <code>kubectl get pods -n &lt;operator-namespace&gt;</code> to find the Pod name.</p>
 </li>
 <li>
-<p>Check the status of the database cluster</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;database-cluster-name&gt;
-</code></pre></div>
-<p>The cluster should typically be in the <code>Running</code> state. It may briefly enter the <code>initializing</code> state while reconciling changes. If the cluster remains in the <code>initializing</code> state for an extended period, investigate further to identify any underlying issues.</p>
-<p>Additionally, you can describe the database cluster and search for the information in the <code>State</code> and <code>State Description</code> fields:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb<span class="w"> </span>&lt;database-cluster-name&gt;
-</code></pre></div>
+<p>For an image pull error, check the image name and your registry access. See <a href="custom-registry.html">Use a private registry</a>.</p>
 </li>
 <li>
-<p>Check the Operator logs</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/&lt;operator-deployment-name&gt;
+<p>Read the Operator log. For a crash, <code>--previous</code> shows the log of the last run:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;operator-deployment&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;operator-namespace&gt;<span class="w"> </span>--previous
 </code></pre></div>
-</li>
-<li>
-<p>Check the events</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s2">".lastTimestamp"</span>
-</code></pre></div>
-<p>Events can provide information like storage class issues, PVC binding issues etc</p>
-</li>
-<li>
-<p>Check for the PVC, PV. Both of them should be in <code>Bound</code> status</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pv
-</code></pre></div>
-</li>
-<li>
-<p>Check for logs of database pods / <code>mongos</code> pods</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;database-pod-name&gt;
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;mongos-pod-name&gt;
-</code></pre></div>
-<p>To check logs of <code>init</code> containers or other sidecar containers, use the option <code>-c</code> with the container name:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;mongos-pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>mongo-init
-</code></pre></div>
-</li>
-<li>
-<p>Check for error details. Run the <code>kubectl describe</code> command:</p>
+<ul>
+<li>A <code>no matches for kind</code> error means the CustomResourceDefinitions aren’t installed. Apply them with <code>kubectl apply --server-side -f deploy/crd.yaml</code>.</li>
+<li>A <code>forbidden</code> error means the Operator’s service account lacks a privilege. Check that the Role or ClusterRole and its binding from the bundle were applied in the right namespace.</li>
+</ul>
 </li>
 </ol>
-<p><code>bash
-   kubectl describe &lt;database-pod-name&gt;</code>  </p>
-<div class="highlight"><pre><span></span><code>```bash
-kubectl describe &lt;mongos-pod-name&gt;
-```
-
-Check the information in the `Status` section. The `State` and `State Description` fields explain why the Pod reports errors.
-
-If a container restarts, check its `Last State`. The reason `OOMKilled` means that the container ran out of memory. See [Troubleshoot out-of-memory errors](debug-oom.md).
-</code></pre></div>
+<h2 id="the-cluster-has-no-status-or-doesnt-react-to-changes">The cluster has no status or doesn’t react to changes<a data-markdown-ignore class="headerlink" href="#the-cluster-has-no-status-or-doesnt-react-to-changes" title="Permanent link">¶</a></h2>
+<p><strong>Symptom:</strong> <code>kubectl get psmdb -n &lt;namespace&gt;</code> shows the cluster with empty <code>STATUS</code> and <code>ENDPOINT</code> columns, no Pods appear, or changes to the Custom Resource have no effect.</p>
+<p><strong>Cause:</strong> No Operator reconciles this cluster. Either the Operator isn’t running, or it doesn’t watch the cluster’s namespace. An Operator installed with <code>deploy/bundle.yaml</code> watches only its own namespace. In cluster-wide mode, the <code>WATCH_NAMESPACE</code> environment variable lists the watched namespaces, and an empty value means all namespaces.</p>
+<p class="power-number"><strong>Fix:</strong></p>
 <ol>
+<li>Check that the Operator Pod is running. See <a href="#the-operator-pod-isnt-running">The Operator Pod isn’t running</a>.</li>
 <li>
-<p>To run commands inside a container, use the <code>kubectl exec</code> command:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>--<span class="w"> </span>&lt;command&gt;
+<p>Check which namespaces the Operator watches:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>&lt;operator-deployment&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;operator-namespace&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.template.spec.containers[0].env[?(@.name=="WATCH_NAMESPACE")]}'</span>
 </code></pre></div>
-<p>If you need an interactive shell to run multiple commands, use the <code>-it</code> flag for an interactive terminal:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>--<span class="w"> </span>sh
-</code></pre></div>
+<p>A <code>fieldRef</code> to <code>metadata.namespace</code> means the Operator watches only its own namespace.</p>
 </li>
 <li>
-<p>If the pods are not running, it may not be possible to execute commands or open an interactive shell. In such cases, consider using a <code>sleep-forever</code> script to prevent the containers from restarting repeatedly. </p>
+<p>Create the cluster in a watched namespace, or reinstall the Operator in <a href="cluster-wide.html">cluster-wide mode</a> with the cluster’s namespace in <code>WATCH_NAMESPACE</code>. See <a href="namespace-mode.html">Single-namespace and multi-namespace deployment modes</a>.</p>
 </li>
 </ol>
-<p>See the <a href="debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Avoid the restart-on-fail loop for Percona Server for MongoDB containers</a> section for steps.</p>
-<p>If a Pod stays in the <code>Pending</code> state, see <a href="debug-scheduling.html">Troubleshoot Pod scheduling</a>.</p>
-<p>For backup and restore failures, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</p>
+<h2 id="options-are-missing-after-an-operator-upgrade">Options are missing after an Operator upgrade<a data-markdown-ignore class="headerlink" href="#options-are-missing-after-an-operator-upgrade" title="Permanent link">¶</a></h2>
+<p><strong>Symptom:</strong> After you upgrade the Operator, <code>kubectl apply</code> of the Custom Resource prints <code>unknown field</code> warnings, and the new options don’t stay in the Custom Resource.</p>
+<p><strong>Cause:</strong> The CustomResourceDefinitions are older than the Operator. Kubernetes drops the fields that the installed CustomResourceDefinition doesn’t define.</p>
+<p><strong>Fix:</strong> Upgrade the CustomResourceDefinitions to the Operator’s version before you use new options. See <a href="update-operator.html">Upgrade the Operator and CRD</a>.</p>
+<h2 id="cluster-stays-in-initializing">Cluster stays in <code>initializing</code><a data-markdown-ignore class="headerlink" href="#cluster-stays-in-initializing" title="Permanent link">¶</a></h2>
+<p>The cluster reports <code>initializing</code> while any of the conditions in <a href="cr-statuses.html#what-ready-means">What <code>ready</code> means</a> is not met. First find the affected component. Compare <code>ready</code> with <code>size</code> for each replica set and for <code>mongos</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.replsets}{"\n"}{.status.mongos}{"\n"}'</span>
+</code></pre></div>
+<p>Then find the matching entry.</p>
+<h3 id="a-rollout-is-pending">A rollout is pending<a data-markdown-ignore class="headerlink" href="#a-rollout-is-pending" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> Some Pods still run the previous revision. The Operator logs show <code>can't start 'SmartUpdate': waiting for running backups to be finished</code> or <code>waiting for active jobs to be finished</code>.</p>
+<p><strong>Cause:</strong> A Smart Update doesn’t restart Pods while a backup or restore runs.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>List the backups and restores: <code>kubectl get psmdb-backup,psmdb-restore -n &lt;namespace&gt;</code>.</li>
+<li>Wait until they finish. If one is stuck, see <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</li>
+</ol>
+<h3 id="a-member-isnt-ready">A member isn’t ready<a data-markdown-ignore class="headerlink" href="#a-member-isnt-ready" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> A <code>mongod</code> Pod is <code>Running</code> but not <code>Ready</code>, and the replica set reports fewer ready Pods than its size.</p>
+<p><strong>Cause:</strong> The member runs an initial sync, or it is <code>RECOVERING</code> because it fell too far behind the other members.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the member state in the database log. See <a href="debug-logs.html">Check the logs</a>.</li>
+<li>For an initial sync, wait. It can take hours for large data sets.</li>
+<li>For a member that stays <code>RECOVERING</code>, see <a href="architecture-probes.html#what-this-means-for-users">Health checks and probes</a> for why Kubernetes doesn’t restart it and what it blocks.</li>
+</ol>
+<h3 id="the-pbm-agents-report-an-error">The PBM agents report an error<a data-markdown-ignore class="headerlink" href="#the-pbm-agents-report-an-error" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> All Pods are ready, but the cluster stays in <code>initializing</code>. The Operator logs show <code>Agent is not OK</code> with the node, the replica set and the error.</p>
+<p><strong>Cause:</strong> With backups enabled, the cluster is <code>ready</code> only when every PBM agent is healthy and can reach the backup storage. Wrong storage credentials or an unreachable endpoint keep it in <code>initializing</code>.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the error in the <code>backup-agent</code> container logs: <code>kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; -c backup-agent</code>.</li>
+<li>Fix the storage configuration. See <a href="backups-storage.html">Configure storage for backups</a>.</li>
+</ol>
+<h3 id="a-pvc-resize-is-in-progress">A PVC resize is in progress<a data-markdown-ignore class="headerlink" href="#a-pvc-resize-is-in-progress" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> A replica set stays in <code>initializing</code> after you changed the storage size.</p>
+<p><strong>Cause:</strong> The replica set reports <code>initializing</code> until the resize of all its PVCs finishes.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the PVC events: <code>kubectl describe pvc &lt;pvc-name&gt; -n &lt;namespace&gt;</code>.</li>
+<li>If the resize fails, see <a href="debug-storage.html">Troubleshooting storage</a>.</li>
+</ol>
+<h3 id="no-endpoint-is-assigned">No endpoint is assigned<a data-markdown-ignore class="headerlink" href="#no-endpoint-is-assigned" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> All Pods are ready, and <code>status.host</code> is empty.</p>
+<p><strong>Cause:</strong> The <code>LoadBalancer</code> Service of <code>mongos</code> or of the exposed replica set waits for the cloud provider to assign an address.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the Service: <code>kubectl get svc -n &lt;namespace&gt;</code>. An <code>EXTERNAL-IP</code> of <code>&lt;pending&gt;</code> means no address yet.</li>
+<li>Check the Service events and your cloud provider’s load balancer quota.</li>
+</ol>
+<h3 id="a-pod-cant-be-scheduled">A Pod can’t be scheduled<a data-markdown-ignore class="headerlink" href="#a-pod-cant-be-scheduled" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> A Pod stays <code>Pending</code>. After a minute, the replica set status shows <code>error</code> and the scheduler’s message in <code>status.replsets.&lt;name&gt;.message</code>.</p>
+<p><strong>Cause:</strong> No node meets the Pod’s requirements: the required anti-affinity, the resource requests, or a volume bound to another zone.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Read the reason: <code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code>.</li>
+<li>Add nodes or relax the scheduling rules. See <a href="debug-scheduling.html">Troubleshoot Pod scheduling</a>.</li>
+</ol>
 <p>If the problem started after an upgrade or a <code>crVersion</code> change, see <a href="debug-upgrade.html">Troubleshoot upgrades and <code>crVersion</code></a>.</p>
 <h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="System-Requirements.html">Installation</a></li>
+<li><a href="debug.html">Initial troubleshooting</a> for problems with the database Pods, a quick health check and a symptom table for every layer.</li>
+<li><a href="System-Requirements.html">System requirements</a> for the supported platforms and the resources the cluster needs.</li>
+<li><a href="update-operator.html">Upgrade the Operator and CRD</a> for the order to follow when you upgrade.</li>
 </ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
         <br>
         Created:

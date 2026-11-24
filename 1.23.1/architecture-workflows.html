@@ -4,19 +4,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The Percona Operator for MongoDB is a custom controller. It is deployed as a Deployment. The Operator automates deployment and management of Percona Server for MongoDB on Kubernetes. This page explains how the Operator fits into Kubernetes and how it keeps your database cluster in the state you define.">
+        <meta name="description" content="This page describes the main workflows of the Operator step by step: how it builds and maintains the replica sets, what happens when a primary fails, and how backups, point-in-time recovery and restores work. Each section ends with the objects and fields to check when the workflow fails.">
       
       
         <meta name="author" content="Percona LLC">
       
       
-        <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html">
+        <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html">
       
       
-        <link rel="prev" href="get-help.html">
+        <link rel="prev" href="architecture-reconciliation.html">
       
       
-        <link rel="next" href="architecture.html">
+        <link rel="next" href="architecture-probes.html">
       
       
         
@@ -44,7 +44,7 @@
 
     
       
-        <title>About - Percona Operator for MongoDB</title>
+        <title>Key workflows - Percona Operator for MongoDB</title>
       
     
     
@@ -94,6 +94,8 @@
     
       <link rel="stylesheet" href="css/kapa.css">
     
+      <link rel="stylesheet" href="css/glossary.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -116,7 +118,7 @@
                  
                  
                  <meta property="og:type" content="website">
-                 <meta property="og:title" content="Percona Operator for MongoDB - About">
+                 <meta property="og:title" content="Percona Operator for MongoDB - Key workflows">
                  <meta property="og:image" content="https://docs.percona.com/percona-operator-for-mongodb/latest/assets/images/kubernetes-operators.png">
                  <meta property="og:url" content="https://docs.percona.com/percona-operator-for-mongodb/latest/index.html">
                               
@@ -149,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-the-operator-works" class="md-skip">
+        <a href="#key-workflows" class="md-skip">
           Skip to content
         </a>
       
@@ -215,7 +217,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              About
+              Key workflows
             
           </span>
         </div>
@@ -435,24 +437,16 @@
         
         <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3" checked="">
         
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="how-it-works.html" class="md-nav__link md-nav__link--active">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     About
   </span>
   
 
-            </a>
-            
-              <label class="md-nav__link md-nav__link--active" for="__nav_3">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
@@ -465,17 +459,308 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="architecture.html" class="md-nav__link">
+  
+    
+    
+      
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3_1" checked="">
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="architecture.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design and architecture
   </span>
   
 
+            </a>
+            
+              <label class="md-nav__link " for="__nav_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design and architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-responsibilities.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Who owns what
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operator-boundaries.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operator responsibilities by area
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-reconciliation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How the Operator reacts to changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="architecture-workflows.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#replica-set-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replica set membership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shards-and-the-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shards and the balancer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-failover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary failover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica-set-without-a-primary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replica set without a primary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-demand-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-demand backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled backups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point-in-time-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Point-in-time recovery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-probes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health checks and probes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4655,7 +4940,7 @@
         
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -4856,6 +5141,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -5036,6 +5327,46 @@
   
   
     <li class="md-nav__item">
+      <a href="services.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Services and ports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="objects-created.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects the Operator creates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api.html" class="md-nav__link">
         
   
@@ -5065,7 +5396,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_6">
         
           
           
@@ -5080,14 +5411,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_11_4">
+              <label class="md-nav__link " for="__nav_11_6">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
             <span class="md-nav__icon md-icon"></span>
             Certified images
           </label>
@@ -5167,6 +5498,26 @@
   
   
     <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="telemetry.html" class="md-nav__link">
         
   
@@ -5200,9 +5551,9 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_11">
         
-          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_11" id="__nav_11_11_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -5213,8 +5564,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_11">
             <span class="md-nav__icon md-icon"></span>
             Legal
           </label>
@@ -6285,7 +6636,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
                     <div data-banner="data-banner" class="edit-contrib-banner">
     <div class="banner-content">
       <!-- Edit link centered -->
-      <a href="https://github.com/percona/k8spsmdb-docs/edit/main/docs/how-it-works.md" title="Edit this page on GitHub" class="edit-page-link">
+      <a href="https://github.com/percona/k8spsmdb-docs/edit/main/docs/architecture-workflows.md" title="Edit this page on GitHub" class="edit-page-link">
         <span class="edit-page-icon">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
@@ -6336,10 +6687,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#extending-the-kubernetes-api" class="md-nav__link">
+  <a href="#replica-set-membership" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Extending the Kubernetes API
+        Replica set membership
       
     </span>
   </a>
@@ -6347,10 +6698,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-database-deployment" class="md-nav__link">
+  <a href="#shards-and-the-balancer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Default database deployment
+        Shards and the balancer
       
     </span>
   </a>
@@ -6358,10 +6709,65 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#storage" class="md-nav__link">
+  <a href="#primary-failover" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage
+        Primary failover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica-set-without-a-primary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replica set without a primary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-demand-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-demand backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled backups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point-in-time-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Point-in-time recovery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restore
       
     </span>
   </a>
@@ -6433,6 +6839,72 @@ window.addEventListener('afterprint', (event) => {
   
 
 
+  <nav class="md-path" aria-label="Navigation">
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="index.html" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="architecture-responsibilities.html" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    About
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="architecture-responsibilities.html" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Design and architecture
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
               
               <article class="md-content__inner md-typeset">
                 
@@ -6444,55 +6916,241 @@ window.addEventListener('afterprint', (event) => {
     
       
     
-    <a href="https://github.com/percona/k8spsmdb-docs/raw/main/docs/how-it-works.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/percona/k8spsmdb-docs/raw/main/docs/architecture-workflows.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
     </a>
   
 
 
-<h1 id="how-the-operator-works">How the Operator works<a data-markdown-ignore class="headerlink" href="#how-the-operator-works" title="Permanent link">¶</a></h1>
-<p>The Percona Operator for MongoDB is a custom controller. It is deployed as a Deployment. The Operator automates deployment and management of Percona Server for MongoDB on Kubernetes. This page explains how the Operator fits into Kubernetes and how it keeps your database cluster in the state you define.</p>
-<h2 id="extending-the-kubernetes-api">Extending the Kubernetes API<a data-markdown-ignore class="headerlink" href="#extending-the-kubernetes-api" title="Permanent link">¶</a></h2>
-<p>The Operator extends the Kubernetes API with a set of Custom Resources: </p>
+<h1 id="key-workflows">Key workflows<a data-markdown-ignore class="headerlink" href="#key-workflows" title="Permanent link">¶</a></h1>
+<p>This page describes the main workflows of the Operator step by step: how it builds and maintains the replica sets, what happens when a primary fails, and how backups, point-in-time recovery and restores work. Each section ends with the objects and fields to check when the workflow fails.</p>
+<p>The examples use a cluster named <code>my-cluster-name</code>.</p>
+<h2 id="replica-set-membership">Replica set membership<a data-markdown-ignore class="headerlink" href="#replica-set-membership" title="Permanent link">¶</a></h2>
+<p>The Operator turns the Pods of a StatefulSet into a replica set and keeps the replica set configuration matching the Pods.</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant O as Operator
+  participant K as Kubernetes
+  participant P0 as my-cluster-name-rs0-0
+  participant P1 as my-cluster-name-rs0-1
+  O-&gt;&gt;K: create StatefulSet my-cluster-name-rs0
+  K-&gt;&gt;P0: start Pod
+  K-&gt;&gt;P1: start Pod when rs0-0 is ready
+  Note over O: all Pods of the replica set exist
+  O-&gt;&gt;P0: rs.initiate(), create system users
+  Note over P0: becomes the primary
+  O-&gt;&gt;P0: write the configuration: add rs0-1 and rs0-2
+  P1-&gt;&gt;P0: initial sync
+  Note over O: every pass: compare members with Pods,&lt;br/&gt;fix host names, votes, priorities</code></pre>
+<p><strong>What happens:</strong></p>
+<ol>
+<li><strong>Initialization.</strong> The Operator waits until every Pod of the replica set exists. A Pod in <code>CrashLoopBackOff</code> puts the cluster in the <code>error</code> state. Then it runs <code>rs.initiate()</code> on one member and creates the <a href="system-users.html">system users</a>. In a sharded cluster, it initializes the config server replica set and each shard the same way.</li>
+<li><strong>Shards.</strong> In a sharded cluster, once <code>mongos</code> runs, the Operator adds each replica set as a shard through <code>mongos</code>. It also sets the default read and write concern from the <code>defaultRWConcern</code> section, if you set it.</li>
+<li><strong>Members.</strong> On every pass, the Operator builds the list of members it wants from the Pods and from the <code>externalNodes</code> you listed, and compares it with the replica set configuration. When they differ, it writes a new configuration. It fixes member host names, stepping the primary down first if its own host name changes. It updates member settings, removes members whose Pods are gone, and adds members for new Pods. A new member starts with an empty volume and copies the data with an <a data-preview="" href="glossary.html#initial-sync">initial sync</a>.</li>
+<li><strong>Votes.</strong> At most 7 members vote. If the number of voting members would be even, the Operator takes a vote away, starting with hidden members, so that elections always have a clear majority. It changes the vote of only one member per configuration change and never takes the vote from the primary, so that the replica set keeps its fault tolerance while votes move.</li>
+<li><strong>Priorities.</strong> Members get the default priority. Members you match with <code>primaryPreferTagSelector</code> get a higher priority, and you can set a priority for one Pod with <code>replsetOverrides</code>. Arbiter, non-voting and hidden members have priority 0 and never become primary.</li>
+</ol>
+<p>With <code>unmanaged: true</code>, the Operator skips all of this. It creates the Pods, but you or a managed cluster on another site own the replica set configuration. See <a href="operator-boundaries.html#multi-cluster-deployments">Multi-cluster deployments</a>.</p>
+<p><strong>Where to look if it fails:</strong></p>
 <ul>
-<li><strong>PerconaServerMongoDB</strong> for the database cluster</li>
-<li><strong>PerconaServerMongoDBBackup</strong> for backups</li>
-<li><strong>PerconaServerMongoDBRestore</strong> for restores</li>
-<li><strong>PerconaServerMongoDBClusterSync</strong> for data migration and real-time replication</li>
+<li><code>kubectl get psmdb my-cluster-name -o yaml</code>: <code>status.replsets.&lt;name&gt;.initialized</code>, the <code>ready</code> and <code>size</code> counts, and the member list.</li>
+<li>Operator logs: <code>Adding new nodes</code>, <code>Removing old nodes</code>, <code>Fixing hostname of member</code> and <code>Configuring member votes and priorities</code> show each change to the configuration.</li>
+<li><code>rs.status()</code> and <code>rs.conf()</code> in <code>mongosh</code> as the <code>clusterAdmin</code> user show what MongoDB sees. See <a href="debug-shell.html">Exec into the containers</a>.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
 </ul>
-<p>These Custom Resources are defined by the Custom Resource Definitions (CRD), which you install when you install the Operator. </p>
-<p>Then you describe the database you want by creating or updating a <code>PerconaServerMongoDB</code> object in <code>deploy/cr.yaml</code>. At this point, the Operator steps in and handles the hard work for you. It automatically does the following:</p>
+<h2 id="shards-and-the-balancer">Shards and the balancer<a data-markdown-ignore class="headerlink" href="#shards-and-the-balancer" title="Permanent link">¶</a></h2>
+<p>This section applies to sharded clusters only.</p>
+<p><strong>Adding a shard.</strong> When you add a replica set to <code>replsets</code>, the Operator creates its StatefulSet and initializes the replica set. Then it adds the replica set as a shard through <code>mongos</code>, and the balancer starts moving chunks to it.</p>
+<p><strong>Removing a shard.</strong> When you remove a replica set from <code>replsets</code>, the Operator does the following:</p>
+<ol>
+<li>It connects to the replica set and lists its databases. If the replica set holds any database other than the system databases, the Operator stops. The cluster goes to the <code>error</code> state with the message <code>non system db found: &lt;database&gt;</code>. Move or drop those databases first.</li>
+<li>It runs <code>removeShard</code> through <code>mongos</code>, and repeats it every 10 seconds until MongoDB reports that the shard is drained and removed. The pass waits for this to finish.</li>
+<li>It deletes the StatefulSet. The PVCs of the removed replica set stay. Delete them yourself when you no longer need the data.</li>
+</ol>
+<p><strong><code>mongos</code>.</strong> The Operator creates and updates the <code>mongos</code> StatefulSet only when every other StatefulSet of the cluster runs its current revision, and never while a restore runs. So a pending rollout of a replica set also holds back a <code>mongos</code> change.</p>
+<p><strong>The balancer.</strong> The Operator keeps the balancer in the state <code>sharding.balancer.enabled</code> asks for, <code>true</code> by default. It stops the balancer while it restarts the config server replica set. It turns the balancer back on only when every StatefulSet runs its current revision, no backup or restore is running, no storage shrink is in progress, and the cluster isn’t paused. A balancer you stop or start with <code>sh.stopBalancer()</code> or <code>sh.startBalancer()</code> is set back on the next pass, so use the CR option.</p>
+<p><strong>Where to look if it fails:</strong></p>
 <ul>
-<li>Creates and manages the necessary Kubernetes resources (StatefulSets, Services, Pods)</li>
-<li>Ensures your cluster matches the desired state you’ve defined</li>
-<li>Monitors the cluster health and automatically recovers from failures</li>
-<li>Coordinates upgrades and scaling operations</li>
+<li><code>kubectl get psmdb my-cluster-name -o yaml</code>: <code>status.message</code> for the <code>non system db found</code> error.</li>
+<li>Operator logs: the <code>removeShard</code> progress messages, and the balancer changes.</li>
+<li><code>sh.status()</code> in <code>mongosh</code> through <code>mongos</code>: the shards, the balancer state and the chunk distribution.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
 </ul>
-<p>These operations ensure that your actual database environment always matches your request.</p>
-<p>Each <code>PerconaServerMongoDB</code> object corresponds to a single Percona Server for MongoDB setup - either a replica set or a sharded cluster. The Operator does not manage MongoDB servers that were created without using these custom resources.</p>
-<h2 id="default-database-deployment">Default database deployment<a data-markdown-ignore class="headerlink" href="#default-database-deployment" title="Permanent link">¶</a></h2>
-<p>By default, the Operator creates Percona Server for MongoDB replica set with three members: one primary and the remaining secondaries. This is the minimal recommended configuration and it natively provides high availability. A replica set can have up to 50 members with the maximum of 7 voting members. Read more about these requirements in <a href="https://www.mongodb.com/docs/manual/core/replica-set-architectures/#strategies">MongoDB documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="storage">Storage<a data-markdown-ignore class="headerlink" href="#storage" title="Permanent link">¶</a></h2>
-<p>To keep your data safe and persistent, the Operator uses Kubernetes storage systems called Persistent Volumes (PVs) and PersistentVolumeClaims (PVCs). When you request storage for your database, a PVC automatically finds and attaches available storage for you. If a node fails, the Kubernetes storage system can move your data to another node, making sure your database remains available and your data stays protected. For local or special storage needs, see <a href="storage.html">Local Storage</a>.</p>
+<h2 id="primary-failover">Primary failover<a data-markdown-ignore class="headerlink" href="#primary-failover" title="Permanent link">¶</a></h2>
+<p>When the primary fails or is unavailable, MongoDB elects a new one. The Operator isn’t involved.</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant C as Client
+  participant P0 as my-cluster-name-rs0-0 (primary)
+  participant P1 as my-cluster-name-rs0-1
+  participant P2 as my-cluster-name-rs0-2
+  C-&gt;&gt;P0: writes
+  Note over P0: fails
+  P1-&gt;&gt;P2: heartbeats time out, request votes
+  P2--&gt;&gt;P1: vote
+  Note over P1: becomes the primary
+  C-&gt;&gt;P1: the driver finds the new primary and retries
+  Note over P0: Kubernetes restarts the Pod
+  P0-&gt;&gt;P1: rejoins as a secondary, catches up from the oplog</code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>The secondaries notice the missing heartbeats and hold an election. A secondary that gets the votes of a majority of the voting members becomes the primary.</li>
+<li>Drivers find the new primary from the replica set and send new writes there. Writes in flight during the election fail, and drivers retry them once by default.</li>
+<li>In a sharded cluster, <code>mongos</code> finds the new primary of the shard the same way. Clients stay connected to <code>mongos</code>.</li>
+<li>The config server replica set fails over the same way. Until it has a primary, the cluster metadata can’t change: no chunk migrations, no new databases or collections. Reads and writes to the shards continue. See <a href="https://www.mongodb.com/docs/manual/core/sharded-cluster-config-servers/#config-server-availability">Config server availability <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
+<li>When the failed member comes back with the same host name and its data, it rejoins as a secondary and catches up from the primary’s oplog. If it was down for longer than the oplog covers, it stays <code>RECOVERING</code> and needs a full copy of the data.</li>
+<li>Writes that the old primary accepted but didn’t replicate to a majority are rolled back when it rejoins. Use the <code>majority</code> write concern for data you can’t lose.</li>
+</ul>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li><code>kubectl get pods</code>: a member that stays not ready, and its restart count.</li>
+<li><code>kubectl logs my-cluster-name-rs0-0 -c mongod</code>: election and rollback messages.</li>
+<li><a href="troubleshoot-connection.html">Troubleshoot connection issues</a> for drivers that don’t find the new primary.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
+<h2 id="replica-set-without-a-primary">Replica set without a primary<a data-markdown-ignore class="headerlink" href="#replica-set-without-a-primary" title="Permanent link">¶</a></h2>
+<p>An election needs a majority of the voting members. If more members are lost than the replica set can tolerate, for example two of three, the remaining members stay secondaries and the replica set accepts no writes.</p>
+<p><strong>What happens:</strong></p>
+<ol>
+<li>The Operator can’t connect to a primary. Starting with version 1.24.0, it retries for about 80 seconds first, so that a normal election doesn’t trigger the next step.</li>
+<li>It logs <code>FULL CLUSTER CRASH</code> and connects to the first ready <code>mongod</code> Pod of the replica set directly, as the <code>clusterAdmin</code> user.</li>
+<li>It reads the replica set configuration from that member and writes it back as a <em>forced reconfiguration</em>. Starting with version 1.24.0, it first removes the members that have no Pod and are not listed in <code>externalNodes</code>, so that missing members no longer count toward the majority.</li>
+<li>With enough voting members left, the remaining members elect a primary.</li>
+</ol>
+<p>If no <code>mongod</code> Pod is ready, the Operator waits. Members whose Pods still exist stay in the configuration, even if they are down. In that case, the replica set elects a primary only when enough of them come back.</p>
+<div class="admonition warning">
+<p class="admonition-title">A forced reconfiguration can lose writes</p>
+<p>A forced reconfiguration lets the remaining members elect a primary without the members that are gone. Writes that only the lost members had are not on the new primary. If the lost members come back, MongoDB rolls those writes back. Check the <a href="https://www.mongodb.com/docs/manual/core/replica-set-rollbacks/">rollback files <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> after such an event.</p>
+</div>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li>Operator logs: <code>FULL CLUSTER CRASH</code> and the errors that follow.</li>
+<li><code>kubectl get pods</code>: whether any <code>mongod</code> Pod of the replica set is ready.</li>
+<li><code>rs.status()</code> on a remaining member: its state and the members it sees.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
+<h2 id="on-demand-backup">On-demand backup<a data-markdown-ignore class="headerlink" href="#on-demand-backup" title="Permanent link">¶</a></h2>
+<p>The PBM agents in the <code>backup-agent</code> containers make the backups. The Operator decides when a backup may start and tells PBM to run it.</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant U as User
+  participant O as Operator
+  participant L as Lease psmdb-my-cluster-name-backup-lock
+  participant A as pbm-agent on a secondary
+  participant S as Storage
+  U-&gt;&gt;O: create PerconaServerMongoDBBackup "backup1"
+  O-&gt;&gt;O: is the cluster ready? another backup or restore running?
+  O-&gt;&gt;L: take the lock
+  O-&gt;&gt;A: send the backup command through PBM
+  Note over O: state requested
+  A-&gt;&gt;S: copy and upload the data
+  Note over O: state running
+  A--&gt;&gt;O: PBM reports the backup done
+  O-&gt;&gt;L: release the lock
+  O-&gt;&gt;U: state ready</code></pre>
+<p><strong>What happens:</strong></p>
+<ol>
+<li>You create a <code>PerconaServerMongoDBBackup</code> object. See <a href="backups-ondemand.html">Make on-demand backups</a>.</li>
+<li>The Operator waits until the cluster is <code>ready</code>. To back up a cluster that isn’t <code>ready</code>, set <code>unsafeFlags.backupIfUnhealthy</code>. Even then, every replica set needs at least one ready member.</li>
+<li>If another backup or a restore is running, or a ClusterSync replicates into the cluster, the backup goes to the <code>waiting</code> state.</li>
+<li>The Operator takes the <code>psmdb-my-cluster-name-backup-lock</code> <a data-preview="" href="glossary.html#lease">Lease</a>, so that only one backup runs at a time. Backups that don’t get the lock stay <code>waiting</code>.</li>
+<li>It sends the backup command to PBM. A PBM agent on one member of each replica set copies the data and uploads it to the storage. PBM chooses the member by priority: by default, hidden members first, then secondaries, and the primary last. Before version 1.24.0, the Operator also wrote PBM priorities that kept backups off the primary and off external members. Starting with version 1.24.0, it leaves the choice to PBM. See <a href="backups.html#how-backup-and-restore-work">How backup and restore work</a> for what each backup type copies.</li>
+<li>The Operator follows the progress in PBM, sets the state to <code>ready</code> or <code>error</code>, and releases the lock.</li>
+</ol>
+<p>The backup goes through these states: empty while the Operator hasn’t processed it, <code>waiting</code>, <code>requested</code>, <code>running</code>, and <code>ready</code> or <code>error</code>. See <a href="cr-statuses.html#backup-state-values">Backup state values</a>.</p>
+<p><code>startingDeadlineSeconds</code> limits how long a new backup may wait before it starts. If it is omitted from the backup resource, the Operator uses <code>backup.startingDeadlineSeconds</code> from the cluster Custom Resource, or defaults to 120 seconds. When the deadline is exceeded, the backup fails.</p>
+<p>When you delete a backup object, the <code>percona.com/delete-backup</code> <a data-preview="" href="glossary.html#finalizer">finalizer</a> removes the backup files from the storage first.</p>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li><code>kubectl get psmdb-backup backup1 -o yaml</code>: the state, <code>status.error</code>, and <code>status.pbmPods</code>, which names the member that made the backup.</li>
+<li><code>kubectl logs &lt;pod&gt; -c backup-agent</code> on that member: errors from PBM, such as wrong storage credentials or an unreachable endpoint.</li>
+<li>Operator logs: <code>Cluster is not ready for backup</code>, <code>Waiting to finish another backup/restore</code> and <code>Another backup is holding the lock</code> show why a backup waits.</li>
+<li>See <a href="debug-backup-restore.html">Troubleshoot backups and restores</a>.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
+<h2 id="scheduled-backups">Scheduled backups<a data-markdown-ignore class="headerlink" href="#scheduled-backups" title="Permanent link">¶</a></h2>
+<p>Scheduled backups are not Kubernetes CronJobs. The Operator keeps the schedules from <code>backup.tasks</code> in its own memory and, when a run is due, creates a regular backup object named <code>cron-&lt;cluster-name&gt;-&lt;timestamp&gt;-&lt;suffix&gt;</code>, with the cluster name cut to 16 characters. The <code>percona.com/backup-ancestor</code> label holds the task name. From there, the backup follows the <a href="#on-demand-backup">on-demand workflow</a>.</p>
+<ul>
+<li><strong>The Operator creates the backup object even if the cluster isn’t <code>ready</code>.</strong> The backup then waits until the cluster is <code>ready</code>, or until its <code>startingDeadlineSeconds</code> runs out.</li>
+<li><strong>The schedule runs only while the Operator runs.</strong> Starting with version 1.24.0, when the Operator starts and finds that a task missed a run, it creates one catch-up backup right away. See <a href="backups-scheduled.html">Making scheduled backups</a>.</li>
+<li><strong>Retention.</strong> With <code>retention</code> set, the Operator deletes the oldest backups of the task beyond the configured count. Retention doesn’t apply to incremental backups. See <a href="backups-delete.html">Delete the unneeded backup</a>.</li>
+</ul>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li><code>kubectl get psmdb-backup -l percona.com/backup-ancestor=&lt;task-name&gt;</code>: the backups of one task and their states.</li>
+<li>Operator logs: errors creating backups and the backups deleted for retention.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
+<h2 id="point-in-time-recovery">Point-in-time recovery<a data-markdown-ignore class="headerlink" href="#point-in-time-recovery" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  P["Member of each replica set"] -- "oplog slices" --&gt; A["pbm-agent&lt;br/&gt;in backup-agent"]
+  A -- "upload every oplogSpanMin minutes" --&gt; S[("Main backup storage")]
+  O["Operator"] -- "latestRestorableTime" --&gt; B["Backup objects"]</code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li>When you set <code>backup.pitr.enabled</code> to <code>true</code>, the Operator turns on oplog slicing in the PBM configuration. No extra Pods are created.</li>
+<li>A PBM agent in each replica set uploads the oplog to the main backup storage in slices, every <code>backup.pitr.oplogSpanMin</code> minutes.</li>
+<li>PBM uploads the oplog only after a full backup exists. Take a full backup for a new cluster and after every restore.</li>
+<li>The <code>status.latestRestorableTime</code> field of a backup shows the latest point you can restore to.</li>
+<li>The Operator turns oplog slicing off right before a restore. PVC snapshot backups don’t support point-in-time recovery.</li>
+</ul>
+<p>See <a href="backups-pitr.html">Enable point-in-time recovery</a>.</p>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li><code>kubectl get psmdb-backup &lt;backup&gt; -o yaml</code>: <code>latestRestorableTime</code>.</li>
+<li><code>kubectl logs &lt;pod&gt; -c backup-agent</code>: oplog upload errors, such as storage access problems.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
+<h2 id="restore">Restore<a data-markdown-ignore class="headerlink" href="#restore" title="Permanent link">¶</a></h2>
+<p>A restore replaces the data of the whole cluster, or of selected namespaces for a selective restore. You start it by creating a <code>PerconaServerMongoDBRestore</code> object. See <a href="backups-restore.html">Restore from a backup</a>.</p>
+<pre class="mermaid"><code>stateDiagram-v2
+  state "waiting" as Waiting
+  state "requested" as Requested
+  state "running" as Running
+  [*] --&gt; Waiting: checks, locks, PBM resync
+  Waiting --&gt; Requested: cluster prepared,&lt;br/&gt;restore sent to PBM
+  Requested --&gt; Running
+  Running --&gt; ready: PBM done,&lt;br/&gt;cluster restored to normal
+  Waiting --&gt; error
+  Requested --&gt; error
+  Running --&gt; error
+  ready --&gt; [*]
+  error --&gt; [*]</code></pre>
+<p><strong>What happens:</strong></p>
+<ol>
+<li><strong>Checks.</strong> The Operator checks the backup: with <code>backupName</code>, the backup object must be <code>ready</code>. It also checks that no backup, restore or ClusterSync holds the cluster, and that the PBM agents are up. If PBM doesn’t know the backup, the Operator asks PBM to resync the storage first. The restore stays <code>waiting</code> meanwhile.</li>
+<li><strong>Preparation.</strong> What the Operator does depends on the topology and the restore type. In a sharded cluster, it stops <code>mongos</code> for every restore type, so clients can’t connect. For a physical, incremental or PVC snapshot restore, it also stops the arbiters, runs PBM inside the <code>mongod</code> containers and restarts the members. A logical restore of a replica set leaves the members running, and clients stay connected, so stop your applications first. Oplog slicing for point-in-time recovery is turned off. For the downtime of each restore type, see <a href="backups-restore.html#downtime-to-expect">Downtime to expect</a>.</li>
+<li><strong>Restore.</strong> PBM restores the data, and for point-in-time recovery, replays the oplog up to the target.</li>
+<li><strong>Return to normal.</strong> The Operator brings back <code>mongos</code>, the arbiters and the regular StatefulSet configuration, and sets the state to <code>ready</code>. A restore that fails sets the state to <code>error</code>, with the reason in <code>status.error</code>.</li>
+</ol>
+<p>The step-by-step flows for each backup type are in <a href="backups.html#how-backup-and-restore-work">How backup and restore work</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">A restore overwrites data</p>
+<p>The data written after the backup or the point-in-time target is lost. A sharded cluster is unavailable to clients while <code>mongos</code> is stopped, and a physical restore restarts every member. After a failed restore, the Operator can’t guarantee data consistency. Take a new full backup after every restore.</p>
+</div>
+<p><strong>Where to look if it fails:</strong></p>
+<ul>
+<li><code>kubectl get psmdb-restore &lt;restore&gt; -o yaml</code>: the <code>state</code>, the waiting reason, and the error in <code>status.error</code>.</li>
+<li><code>kubectl logs &lt;pod&gt; -c backup-agent</code> for a logical restore, or the <code>mongod</code> container logs for a physical restore. See <a href="debug-backup-restore.html#view-restore-logs">View restore logs</a>.</li>
+<li>Operator logs.</li>
+<li>More symptoms and the layer that owns each: <a href="debug.html#where-to-look-first">Initial troubleshooting</a>.</li>
+</ul>
 <h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
-<p>Ready to get started? Continue to the <a href="quickstart.html">quickstart guide</a> to deploy your first cluster. Or, explore the <a href="architecture.html">architecture overview</a> to understand the inner workings of the Operator.</p>
-<p><a class="md-button" href="quickstart.html">Quickstart guide</a></p>
+<p><a class="md-button" href="architecture-probes.html">Health checks and probes</a></p>
 <h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="architecture.html">Design and architecture</a></li>
-<li><a href="features.html">Features and capabilities</a> </li>
+<li><a href="ha-topology.html">About high availability and topology</a></li>
+<li><a href="backups.html">Backup and restore</a></li>
+<li><a href="debug-backup-restore.html">Troubleshoot backups and restores</a></li>
 </ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 09:27:14 UTC">September 9, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
         <br>
         Created:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="February 24, 2026 19:22:18 UTC">February 24, 2026</span>
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
     
   </small>

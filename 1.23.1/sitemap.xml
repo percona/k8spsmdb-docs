@@ -37,6 +37,22 @@
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-probes.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-reconciliation.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-responsibilities.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
@@ -309,6 +325,10 @@
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/glossary.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/ha-topology.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
@@ -318,10 +338,6 @@
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/hookscript.html</loc>
-         <lastmod>2026-11-24</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
@@ -381,11 +397,19 @@
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/objects-created.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/oidc.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/openshift.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator-boundaries.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>
@@ -502,6 +526,10 @@
     </url>
     <url>
          <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/security.html</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.percona.com/percona-operator-for-mongodb/1.23.1/services.html</loc>
          <lastmod>2026-11-24</lastmod>
     </url>
     <url>

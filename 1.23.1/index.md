@@ -18,8 +18,8 @@ ______________________________________________________________________
 
 Just evaluating? See how the Operator works, how it’s designed and how it stands out among other ways to run MongoDB on Kubernetes:
 
-- [How the Operator works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html)
 - [Architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html)
+- [Key workflows](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html)
 - [Compare with other solutions](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/compare.html)
 - [Features](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/features.html)
 

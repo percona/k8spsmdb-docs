@@ -2,16 +2,21 @@
 
 # Initial troubleshooting
 
-Percona Operator for MongoDB uses [Custom Resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to manage options for the various components of the cluster.
+Use this page when something is wrong and you don’t know the cause yet. For example, the cluster doesn’t reach the `ready` state, Pods restart or don’t start, or clients can’t connect. Start with the quick health check, find which layer the problem is in, then use the symptom tables to reach the page with the fix.
 
-- `PerconaServerMongoDB` Custom Resource with Percona Server for MongoDB options (it has handy `psmdb` shortname also),
-- `PerconaServerMongoDBBackup` and `PerconaServerMongoDBRestore` Custom Resources contain options for Percona Backup for MongoDB used to backup Percona Server for MongoDB and to restore it from backups (`psmdb-backup` and `psmdb-restore` shortnames are available for them).
-- `PerconaServerMongoDBClusterSync` Custom Resource contains options for Percona ClusterSync for MongoDB (`psmdb-clustersync` shortname).
+## Before you start
 
-The first thing you can check for the Custom Resource is to query it with `kubectl get` command:
+- You need `kubectl` access to the namespace of the cluster and to the namespace of the Operator. They are the same namespace unless you run the Operator in the [cluster-wide mode](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cluster-wide.html).
+- The examples use the cluster name `my-cluster-name`. Replace it and `<namespace>` with your values.
+
+## Quick health check
+
+Run these three checks first. Together they take a minute and show which part of the system needs a closer look.
+
+### Check the cluster status
 
 ```
-kubectl get psmdb
+kubectl get psmdb -n <namespace>
 ```
 
 Expected output
@@ -21,31 +26,18 @@ NAME              ENDPOINT                                           STATUS   AG
 my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
 ```
 
-The Custom Resource should have `Ready` status.
-
-Note
-
-You can check which Percona’s Custom Resources are present and get some information about them as follows:
+A healthy cluster is `ready`. The cluster is `initializing` while it is created and while it applies a change. If it stays there, see [Cluster stays in `initializing`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.html#cluster-stays-in-initializing). For an `error` state, the reason is in the `status.message` field:
 
 ```
-kubectl api-resources | grep -i percona
+kubectl get psmdb my-cluster-name -n <namespace> -o yaml
 ```
 
-Expected output
+For what each state means and what the cluster must meet to be `ready`, see [Custom Resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#what-ready-means).
+
+### Check the Pods
 
 ```
-perconaservermongodbbackups       psmdb-backup       psmdb.percona.com/v1                   true         PerconaServerMongoDBBackup
-perconaservermongodbclustersyncs  psmdb-clustersync  psmdb.percona.com/v1                   true         PerconaServerMongoDBClusterSync
-perconaservermongodbrestores      psmdb-restore      psmdb.percona.com/v1                   true         PerconaServerMongoDBRestore
-perconaservermongodbs             psmdb              psmdb.percona.com/v1                   true         PerconaServerMongoDB
-```
-
-## Check the Pods
-
-If Custom Resource is not getting `Ready` status, it makes sense to check individual Pods. You can do it as follows:
-
-```
-kubectl get pods
+kubectl get pods -n <namespace>
 ```
 
 Expected output
@@ -64,72 +56,138 @@ my-cluster-name-rs0-2                              2/2     Running   0          
 percona-server-mongodb-operator-665cd69f9b-xg5dl   1/1     Running   0          37m
 ```
 
-The above command provides the following insights:
+In a healthy cluster, every Pod is `Running` and the `READY` column shows all containers ready, such as `2/2`. A database Pod runs the `mongod` container and, depending on your configuration, `backup-agent`, `pmm-client`, `logs` and `logrotate`. See [Containers in each Pod](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/objects-created.html#containers-in-each-pod).
 
-- `READY` indicates how many containers in the Pod are ready to serve the traffic. In the above example, `my-cluster-name-rs0-0` Pod has all two containers ready (2/2). For an application to work properly, all containers of the Pod should be ready.
-- `STATUS` indicates the current status of the Pod. The Pod should be in a `Running` state to confirm that the application is working as expected. You can find out other possible states in the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase) .
-- `RESTARTS` indicates how many times containers of Pod were restarted. This is impacted by the [Container Restart Policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) . In an ideal world, the restart count would be zero, meaning no issues from the beginning. If the restart count exceeds zero, it may be reasonable to check why it happens. If a container was killed because it ran out of memory (`OOMKilled`), see [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html).
-- `AGE`: Indicates how long the Pod is running. Any abnormality in this value needs to be checked.
+A growing `RESTARTS` count means a container keeps failing. The `STATUS` column points to where to look next:
 
-You can find more details about a specific Pod using the `kubectl describe pods <pod-name>` command.
+| `STATUS`                                                                         | What it means                                              | Where to look                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Running`, but `READY` is lower than the number of containers                    | A container started but isn’t ready yet                    | [Check the logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) of the container that isn’t ready                                                                                                                                                                                     |
+| `Pending`                                                                        | Kubernetes hasn’t placed the Pod on a node                 | [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html)                                                                                                                                                                                                    |
+| `ContainerCreating`                                                              | The Pod is on a node, but a volume or an image isn’t ready | The `Events` section of `kubectl describe pod <pod-name> -n <namespace>`                                                                                                                                                                                                                                             |
+| `ImagePullBackOff`, `ErrImagePull`                                               | The node can’t pull the image                              | Check the image name and registry access. See [Use a private registry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/custom-registry.html)                                                                                                                                                            |
+| `CrashLoopBackOff`                                                               | A container starts and exits repeatedly                    | [Check the logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) with `--previous`, and [stop the restart loop](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) to investigate |
+| `OOMKilled`, or `OOMKilled` as the `Last State` reason in `kubectl describe pod` | The container ran out of memory                            | [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html)                                                                                                                                                                                                     |
+
+### Check the Operator
+
+Find the Operator Deployment. Its name depends on how you installed the Operator: `percona-server-mongodb-operator` for a `kubectl` installation, and usually a name that ends with `psmdb-operator` for Helm:
 
 ```
-kubectl describe pods my-cluster-name-rs0-0
+kubectl get deployments -n <operator-namespace> | grep -E 'percona-server-mongodb-operator|psmdb-operator'
 ```
 
-Expected output
+Read its recent logs:
 
 ```
-...
-Name:         my-cluster-name-rs0-0
-Namespace:    default
-...
-Controlled By:  StatefulSet/my-cluster-name-rs0
-Init Containers:
- mongo-init:
-...
-Containers:
- mongod:
-...
-   Restart Count:  0
-   Limits:
-     cpu:     300m
-     memory:  500M
-   Requests:
-     cpu:      300m
-     memory:   500M
-   Liveness:   exec [/opt/percona/mongodb-healthcheck k8s liveness --ssl --sslInsecure --sslCAFile /etc/mongodb-ssl/ca.crt --sslPEMKeyFile /tmp/tls.pem --startupDelaySeconds 7200] delay=60s timeout=10s period=30s #success=1 #failure=4
-   Readiness:  tcp-socket :27017 delay=10s timeout=2s period=3s #success=1 #failure=8
-   Environment Variables from:
-     internal-my-cluster-name-users  Secret  Optional: false
-   Environment:
-...
-   Mounts:
-...
-Volumes:
-...
-Events:                      <none>
+kubectl logs deployment/<operator-deployment> -n <operator-namespace> --since=30m
 ```
 
-This gives a lot of information about containers, resources, container status and also events. So, describe output should be checked to see any abnormalities.
+The Operator Pod should be `Running` with no restarts. The logs show what the Operator is doing and what it waits for. Repeated `ERROR` lines for the same cluster point to the problem.
 
-### Common Pod states
+## Which layer is it?
 
-The `STATUS` column often points to the next place to look:
+Problems come from four layers: your configuration, the Operator, Kubernetes, or Percona Server for MongoDB itself. See [Who owns what](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-responsibilities.html) for what each layer does.
 
-| `STATUS`                           | What it means                                                                                                 | Where to look                                                                                                                                                                                         |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Running`                          | The Pod is scheduled and its containers started. Check the `READY` column to see if all containers are ready. | [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) if `READY` is lower than expected                                                                          |
-| `Pending`                          | Kubernetes has not placed the Pod on a node yet                                                               | [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html)                                                                                     |
-| `ContainerCreating`                | The Pod is on a node, but a volume or an image is not ready                                                   | The `Events` section of `kubectl describe pods <pod-name>`                                                                                                                                            |
-| `ImagePullBackOff`, `ErrImagePull` | The node cannot pull the image                                                                                | Check the image name and registry access. See [Use a private registry](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/custom-registry.html)                                             |
-| `CrashLoopBackOff`                 | A container starts and exits repeatedly                                                                       | [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) and [Special debug images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-images.html) |
-| `OOMKilled` (in `Last State`)      | The container exceeded its memory limit                                                                       | Raise the memory limit under `resources`. See [Scaling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling.html)                                                                    |
+Check these sources in order. Each one narrows down the layer.
 
-## Check logs
+1. **Custom Resource status and conditions.** `kubectl get psmdb my-cluster-name -n <namespace> -o yaml` shows the cluster state, the reconcile error message, the state of each replica set and of `mongos`, and scheduling problems. An `error` state with a message about the spec points to your configuration. See [Custom Resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#perconaservermongodb-status).
 
-Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the [Check logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) section for more information about logs and how to check them.
+1. **Events.** Kubernetes problems show up here: scheduling, volume attachment and resize, image pulls, probe failures. The Operator itself adds no events for the cluster. To see the events of one Pod:
+
+   ```
+   kubectl get events -n <namespace> --sort-by=.lastTimestamp --field-selector involvedObject.name=<pod-name>
+   ```
+
+1. **Operator logs.** They show what the Operator is doing or waiting for: a stuck rolling restart, a backup that waits, a change to the replica set configuration. Most Operator problems appear only here. See [Check the Operator](#check-the-operator).
+
+1. **Database logs.** They show MongoDB problems: elections, initial sync, start failures. With the log collector enabled, as in the default `deploy/cr.yaml`, `mongod` writes its log to a file, so read it from the `logs` container: `kubectl logs my-cluster-name-rs0-0 -n <namespace> -c logs`. Without the log collector, use `-c mongod`. For backup and restore problems, read the `backup-agent` logs. See [Check the logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html).
+
+## Where to look first
+
+Find the symptom, check the place in the second column, and follow the link for the fix.
+
+### Cluster and Pods
+
+| Symptom                                                                                                                     | Look here first                                                                                       | Usually owned by                                                                                                                                       | What to do                                                                                                                                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cluster status is `error` with a message that starts with `wrong psmdb options`, such as `replset size must be odd`         | The `status` section of `kubectl get psmdb my-cluster-name -n <namespace> -o yaml`                    | **User**: the Custom Resource breaks a safety check                                                                                                    | Fix the Custom Resource. See [Stay inside safe operating limits](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator-boundaries.html#stay-inside-safe-operating-limits)                                                            |
+| The cluster stays in `initializing`                                                                                         | The `replsets` and `mongos` status in the Custom Resource, Operator logs                              | **Varies**: a pending rollout, a member that isn’t ready, PBM agent errors, a PVC resize, a missing endpoint, or a Pod that can’t be scheduled         | See [Cluster stays in `initializing`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.html#cluster-stays-in-initializing)                                                                                         |
+| The cluster doesn’t react to changes in the Custom Resource                                                                 | `kubectl get deployments -A`, Operator logs                                                           | **Operator**: its Pod isn’t running, or it doesn’t watch this namespace                                                                                | See [Check the Operator](#check-the-operator) and [Troubleshoot the Operator installation](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.html)                                                                  |
+| Pod is `Pending`                                                                                                            | The `Events` section of `kubectl describe pod <pod-name> -n <namespace>`                              | **Kubernetes**: not enough resources, nodes or zones for the affinity rules, taints, or a volume that can’t bind                                       | See [Troubleshoot Pod scheduling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-scheduling.html)                                                                                                                                |
+| A container restarts with `OOMKilled`                                                                                       | `Last State` in `kubectl describe pod <pod-name> -n <namespace>`                                      | **User**: the memory limit is too low for the workload or the cache                                                                                    | See [Troubleshoot out-of-memory errors](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-oom.html)                                                                                                                                 |
+| `mongod` fails to start after a configuration change                                                                        | `kubectl logs <pod-name> -n <namespace> -c logs`, or `-c mongod --previous` without the log collector | **User**: the Operator doesn’t validate the `configuration` section                                                                                    | Fix the option in the Custom Resource. To inspect the Pod meanwhile, [stop the restart loop](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) |
+| `mongod` stops or restarts, and the data volume is full                                                                     | `kubectl exec <pod-name> -n <namespace> -c mongod -- df -h /data/db`                                  | **User**: the storage is too small for the data and the oplog                                                                                          | Increase the storage size. See [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html)                                                                                                            |
+| Pod is `Running` but not ready; the member is in `STARTUP2` or `RECOVERING`                                                 | `rs.status()`. See [Connect to a member](#connect-to-a-member)                                        | **MongoDB**: the member runs an initial sync or catches up                                                                                             | Wait for the sync to finish. See [Health checks and probes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-probes.html#what-this-means-for-users)                                                                         |
+| `mongod` container restarts; events show `Liveness probe failed`                                                            | `kubectl describe pod <pod-name> -n <namespace>`                                                      | **Kubernetes**, acting on the probe: the member is `DOWN` or `REMOVED`, or doesn’t answer in time                                                      | See [Health checks and probes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-probes.html#where-to-look-if-probes-fail)                                                                                                   |
+| No primary; writes fail; Operator logs show `FULL CLUSTER CRASH`                                                            | Operator logs, `rs.status()` on a remaining member                                                    | **MongoDB**: the replica set lost its majority. The Operator rewrites the configuration                                                                | See [Replica set without a primary](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html#replica-set-without-a-primary)                                                                                          |
+| A rolling restart is stuck                                                                                                  | Operator logs                                                                                         | **Operator**: waits for a Pod to become ready, or for a backup or restore to finish                                                                    | See [How Smart Update works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-reconciliation.html#how-smart-update-works)                                                                                                   |
+| Sharded cluster: `mongos` Pods are missing or don’t get the new version; Operator logs show `StatefulSet is not up to date` | Operator logs, the config server and shard Pods                                                       | **Operator**: it creates and updates `mongos` only after every config server and shard StatefulSet runs its current revision, and not during a restore | Fix the replica set that isn’t up to date. See [How Smart Update works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-reconciliation.html#how-smart-update-works)                                                        |
+| The cluster stays in `stopping` after you set `pause: true`                                                                 | Operator logs: `deleting rs pods`                                                                     | **Kubernetes** or **MongoDB**: a Pod doesn’t terminate, or the first Pod can’t become the primary                                                      | See [Pause and resume the cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/pause.html#troubleshooting)                                                                                                                          |
+| Clients can’t resolve member host names                                                                                     | Cluster DNS, the replica set configuration                                                            | **Kubernetes**: networking and DNS, or the exposure settings                                                                                           | See [Troubleshoot connection issues](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-connection.html)                                                                                                                      |
+
+### Backups and restores
+
+| Symptom                                                                                         | Look here first                                                                                                                                         | Usually owned by                                                                                             | What to do                                                                                                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A backup has no state or stays `waiting`                                                        | `kubectl get psmdb-backup <backup-name> -n <namespace> -o yaml`, Operator logs: `Cluster is not ready for backup`, `Another backup is holding the lock` | **Operator**: waits for a healthy cluster, or for another backup, restore or ClusterSync to finish           | Restore cluster health or wait for the other operation. See [On-demand backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html#on-demand-backup)                                                       |
+| A backup is in the `error` state                                                                | `status.error`, the `backup-agent` logs on the Pod named in `status.pbmPods`                                                                            | **User**: storage credentials or endpoint                                                                    | See [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html)                                                                                                                 |
+| The cluster stays `initializing` while all Pods are ready; Operator logs show `Agent is not OK` | Operator logs, the `backup-agent` logs                                                                                                                  | **User**: the backup storage is unreachable                                                                  | Fix the storage configuration. See [Configure storage for backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-storage.html)                                                                                           |
+| A restore is in the `error` state                                                               | `status.error` in `kubectl get psmdb-restore <restore-name> -n <namespace> -o yaml`                                                                     | **Varies**: often the backup source or storage access                                                        | See [Restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-workflows.html#restore) and [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html) |
+| A backup object is stuck in `Terminating`                                                       | Operator logs                                                                                                                                           | **User**: the backup files can’t be deleted from storage, so the `percona.com/delete-backup` finalizer stays | Check storage access. See [Delete the unneeded backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-delete.html)                                                                                                        |
+
+### Storage and TLS
+
+| Symptom                                                               | Look here first                                                                                                                                                                          | Usually owned by                                                                                                                | What to do                                                                                                                                                                                                                    |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A storage size change does nothing                                    | The storage size in the Custom Resource compared with the PVC size, PVC events                                                                                                           | **User**, if `storageScaling.enableVolumeScaling` is off. **Kubernetes** or the CSI driver, for resize errors in the PVC events | See [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html) and [Troubleshooting storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-storage.html) |
+| TLS errors after you replaced a certificate                           | The `ca.crt` keys of the TLS Secrets                                                                                                                                                     | **User**: the CA changed in one step                                                                                            | See [Update certificates](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-update.html)                                                                                                                       |
+| TLS handshake errors, and the certificates are past their expiry date | The certificate dates. See [Check your certificates for expiration](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-update.html#check-your-certificates-for-expiration) | **User**, for certificates you manage. cert-manager, if it failed to renew them                                                 | See [Update certificates with downtime](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-update.html#update-certificates-with-downtime)                                                                       |
+
+## Connect to a member
+
+To check the replica set yourself, open `mongosh` in the `mongod` container. The container already has the `clusterAdmin` credentials in its environment:
+
+```
+kubectl exec -it my-cluster-name-rs0-0 -n <namespace> -c mongod -- \
+  bash -c 'mongosh -u "$MONGODB_CLUSTER_ADMIN_USER" -p "$MONGODB_CLUSTER_ADMIN_PASSWORD"'
+```
+
+If `tls.mode` is `requireTLS`, add `--tls --tlsCAFile /etc/mongodb-ssl/ca.crt --tlsCertificateKeyFile /tmp/tls.pem --tlsAllowInvalidHostnames` to the `mongosh` command.
+
+Useful commands:
+
+- `rs.status()` shows each member, its state and its health. The short form is `rs.status().members.map(m => ({name: m.name, state: m.stateStr, health: m.health}))`.
+- `rs.printSecondaryReplicationInfo()` shows how far each secondary is behind the primary.
+- In a sharded cluster, connect to a `mongos` Pod with `-c mongos`, for example `my-cluster-name-mongos-0`, and run `sh.status()`.
+
+If the container keeps restarting, you can’t connect. [Stop the restart loop](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) first. For more about shell access, see [Exec into the containers](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-shell.html).
+
+## Collect diagnostics for support
+
+If you need help from Percona, collect the diagnostic data first. [pt-k8s-debug-collector](https://docs.percona.com/percona-toolkit/pt-k8s-debug-collector.html) gathers the Custom Resources, Pod descriptions, events, logs and other Kubernetes objects into one archive.
+
+Run the tool on the machine where you run `kubectl`, not inside a Pod. It uses your kubeconfig to read the cluster, so it needs `kubectl` in the `PATH` and read access to the cluster’s namespace. The tool is part of [Percona Toolkit](https://docs.percona.com/percona-toolkit/installation.html) , which also installs `pt-mongodb-summary`, used for the database summary.
+
+```
+pt-k8s-debug-collector --resource=psmdb --namespace=<namespace> --cluster=my-cluster-name
+```
+
+The tool writes a `cluster-dump_<timestamp>.tar.gz` archive to the current directory.
+
+If you can’t run the tool, collect at least:
+
+- `kubectl get psmdb my-cluster-name -n <namespace> -o yaml`
+- The Operator logs. See [Check the Operator](#check-the-operator)
+- `kubectl describe pods -n <namespace>`
+- `kubectl get events -n <namespace> --sort-by=.lastTimestamp`
+- The logs of the failing containers, with `--previous` if they restarted
+
+Then see [Get help from Percona](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/get-help.html) for the community forum and support options.
 
 ## See also
 
-- [Custom resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html)
+- [Check the logs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-logs.html) explains the `kubectl logs` options and how to change the Operator log format.
+- [Troubleshoot the Operator installation](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.html) covers an Operator that doesn’t start and a cluster that stays in `initializing`.
+- [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html) walks through failed backups and restores step by step.
+- [Who owns what](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-responsibilities.html) explains which layer reacts to which event, so you know where to look next time.

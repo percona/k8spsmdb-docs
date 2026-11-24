@@ -1,15 +1,102 @@
 > For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
 
-# Pause/resume Percona Server for MongoDB
+# Pause and resume the cluster
 
-There may be external situations when it is needed to shutdown the cluster for a while and then start it back up (some works related to the maintenance of the enterprise infrastructure, etc.).
+Pausing stops all database Pods and keeps the data. Clients can’t connect while the cluster is paused. Pause the cluster when you need it down for a while, for example during maintenance of the Kubernetes infrastructure or to [update expired TLS certificates](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-update.html#update-certificates-with-downtime). To remove the cluster for good, [delete it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/delete.html#delete-the-database-cluster) instead.
 
-The `deploy/cr.yaml` file contains a special `spec.pause` key for this. Setting it to `true` gracefully stops the cluster:
+## Before you start
+
+- Check that no backup is running. The Operator doesn’t pause the cluster until running backups finish:
+
+  ```
+  kubectl get psmdb-backup -n <namespace>
+  ```
+
+  Backups in the `ready`, `error` or `waiting` state don’t delay the pause.
+
+- Stop the applications that write to the cluster, or make sure they can handle the outage.
+
+## Pause the cluster
+
+Set `spec.pause` to `true`. Replace `my-cluster-name` with the name of your cluster:
 
 ```
-spec:
-  .......
-  pause: true
+kubectl patch psmdb my-cluster-name -n <namespace> --type=merge --patch '{"spec": {"pause": true}}'
 ```
 
-To start the cluster after it was shut down just revert the `spec.pause` key to `false`.
+You can also set `pause: true` in your `deploy/cr.yaml` file and apply it with `kubectl apply -f deploy/cr.yaml -n <namespace>`.
+
+## What happens during a pause
+
+The Operator stops the cluster in an order that keeps the data consistent:
+
+1. If a backup is running, the Operator waits until it finishes. Until then, the cluster stays `ready`, and the Operator logs `cluster will pause after all backups finished`.
+1. In a sharded cluster, the Operator stops the `mongos` Pods first, so clients can’t connect during the shutdown.
+1. It stops the `mongot` search Pods, and the arbiter, non-voting and hidden members.
+1. In each replica set, it makes the Pod with the index 0, for example `my-cluster-name-rs0-0`, the primary. It then stops the other members one Pod at a time. The primary stops last, so the member that starts first on resume has the latest data.
+1. In a sharded cluster, the config server replica set stops after all shards.
+
+While the cluster is paused:
+
+- PVCs and the data on them stay in place.
+- The Operator doesn’t run Smart Updates, change the backup configuration, or manage the balancer.
+- The `status.state` field is `stopping` while Pods shut down, and `paused` when all of them have stopped.
+
+The Operator also pauses the cluster by itself when you turn sharding on or off with backups enabled. See [Turning sharding on and off](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/sharding.html#turning-sharding-on-and-off).
+
+## Verify the pause
+
+1. Check the cluster state:
+
+   ```
+   kubectl get psmdb -n <namespace>
+   ```
+
+   The `STATUS` column shows `paused`.
+
+1. Check that no database Pods are left:
+
+   ```
+   kubectl get pods -n <namespace> -l app.kubernetes.io/instance=my-cluster-name
+   ```
+
+   The output has no `mongod`, `mongos` or `mongot` Pods.
+
+## Resume the cluster
+
+Set `spec.pause` back to `false`:
+
+```
+kubectl patch psmdb my-cluster-name -n <namespace> --type=merge --patch '{"spec": {"pause": false}}'
+```
+
+The Operator starts the Pods again with their existing PVCs. The state changes to `initializing`, and then to `ready` when all members are up and the [conditions for `ready`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#what-ready-means) are met.
+
+## Troubleshooting
+
+**Symptom:** The cluster stays `ready` after you set `pause: true`.
+
+**Cause:** A backup is running. The Operator waits for it to finish.
+
+**Fix:**
+
+1. Check the Operator logs for `cluster will pause after all backups finished`.
+1. Run `kubectl get psmdb-backup -n <namespace>` and wait until the backup reaches the `ready` or `error` state. The pause then starts on its own.
+
+**Symptom:** The cluster stays in `stopping`.
+
+**Cause:** A Pod doesn’t terminate, or the Operator can’t make the Pod with the index 0 the primary. The Operator logs `deleting rs pods` with the replica set name and the reason, for example `waiting first pod to become primary`.
+
+**Fix:**
+
+1. Check which Pods are still running with `kubectl get pods -n <namespace>`.
+1. Check the Operator logs for the `deleting rs pods` messages.
+1. If a Pod is stuck in `Terminating`, check its events with `kubectl describe pod <pod-name> -n <namespace>`.
+
+For other problems, see [Initial troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug.html).
+
+## See also
+
+- [Update certificates with downtime](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-update.html#update-certificates-with-downtime) uses a pause to replace expired TLS certificates.
+- [Custom Resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html) explains every value of `status.state` and the conditions behind it.
+- [How the Operator reacts to changes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture-reconciliation.html#what-happens-when-i-change-a-field) shows how other Custom Resource changes affect the Pods.

@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The Percona Operator for MongoDB automates deploying and operating Percona Server for MongoDB on Kubernetes. This document explains what components the Operator uses and how they work together to provide a highly available MongoDB database. See also How the Operator works.">
+        <meta name="description" content="This section explains how Percona Operator for MongoDB is built: what runs in your Kubernetes cluster, which component is responsible for what, and how the pieces interact. Read it to build a mental model of the system, and come back to it when something fails and you need to know where to look first. If something is failing now, start with Initial troubleshooting. The Glossary explains the Kubernetes and MongoDB terms used in this section.">
       
       
         <meta name="author" content="Percona LLC">
@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html">
       
       
-        <link rel="prev" href="how-it-works.html">
+        <link rel="prev" href="get-help.html">
       
       
-        <link rel="next" href="compare.html">
+        <link rel="next" href="architecture-responsibilities.html">
       
       
         
@@ -93,6 +93,8 @@
       <link rel="stylesheet" href="css/rating.css">
     
       <link rel="stylesheet" href="css/kapa.css">
+    
+      <link rel="stylesheet" href="css/glossary.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -435,24 +437,16 @@
         
         <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3" checked="">
         
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="how-it-works.html" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     About
   </span>
   
 
-            </a>
-            
-              <label class="md-nav__link " for="__nav_3">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
@@ -468,164 +462,154 @@
     
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
+    
+    
       
         
       
+        
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3_1" checked="">
+        
           
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="architecture.html" class="md-nav__link md-nav__link--active">
+              
   
   <span class="md-ellipsis">
     Design and architecture
   </span>
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="architecture.html" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              <label class="md-nav__link md-nav__link--active" for="__nav_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design and architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-responsibilities.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Design and architecture
+    Who owns what
   </span>
   
 
       </a>
-      
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+              
+            
+              
+                
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-      
-        <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#percona-server-for-mongodb-topology" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Percona Server for MongoDB topology
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Percona Server for MongoDB topology">
-      <ul class="md-nav__list">
+    <li class="md-nav__item">
+      <a href="operator-boundaries.html" class="md-nav__link">
         
-          <li class="md-nav__item">
-  <a href="#replica-set" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Replica set
-      
-    </span>
-  </a>
   
-</li>
+  <span class="md-ellipsis">
+    Operator responsibilities by area
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-reconciliation.html" class="md-nav__link">
         
-          <li class="md-nav__item">
-  <a href="#sharded-cluster" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sharded cluster
-      
-    </span>
-  </a>
   
-</li>
+  <span class="md-ellipsis">
+    How the Operator reacts to changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-workflows.html" class="md-nav__link">
         
-      </ul>
-    </nav>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#high-availability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        High availability
-      
-    </span>
-  </a>
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
   
-    <nav class="md-nav" aria-label="High availability">
-      <ul class="md-nav__list">
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-probes.html" class="md-nav__link">
         
-          <li class="md-nav__item">
-  <a href="#pod-distribution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pod distribution
-      
-    </span>
-  </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#automatic-recovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automatic recovery
-      
-    </span>
-  </a>
+  <span class="md-ellipsis">
+    Health checks and probes
+  </span>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#client-connectivity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Client connectivity
-      
-    </span>
-  </a>
+
+      </a>
+    </li>
   
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next steps
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -4806,7 +4790,7 @@
         
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -5007,6 +4991,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -5187,6 +5177,46 @@
   
   
     <li class="md-nav__item">
+      <a href="services.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Services and ports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="objects-created.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects the Operator creates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api.html" class="md-nav__link">
         
   
@@ -5216,7 +5246,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_6">
         
           
           
@@ -5231,14 +5261,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_11_4">
+              <label class="md-nav__link " for="__nav_11_6">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
             <span class="md-nav__icon md-icon"></span>
             Certified images
           </label>
@@ -5318,6 +5348,26 @@
   
   
     <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="telemetry.html" class="md-nav__link">
         
   
@@ -5351,9 +5401,9 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_11">
         
-          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_11" id="__nav_11_11_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -5364,8 +5414,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_11">
             <span class="md-nav__icon md-icon"></span>
             Legal
           </label>
@@ -6487,10 +6537,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
+  <a href="#what-the-operator-is" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Components
+        What the Operator is
       
     </span>
   </a>
@@ -6498,15 +6548,48 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#percona-server-for-mongodb-topology" class="md-nav__link">
+  <a href="#percona-server-for-mongodb-in-brief" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Percona Server for MongoDB topology
+        Percona Server for MongoDB in brief
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Percona Server for MongoDB topology">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-clients-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How clients connect
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster topology
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster topology">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -6531,28 +6614,11 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#high-availability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        High availability
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="High availability">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
-  <a href="#pod-distribution" class="md-nav__link">
+  <a href="#what-differs-between-the-two-topologies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pod distribution
+        What differs between the two topologies
       
     </span>
   </a>
@@ -6560,21 +6626,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
-  <a href="#automatic-recovery" class="md-nav__link">
+  <a href="#scheduling-and-storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Automatic recovery
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#client-connectivity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Client connectivity
+        Scheduling and storage
       
     </span>
   </a>
@@ -6583,6 +6638,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-gets-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What gets created
+      
+    </span>
+  </a>
   
 </li>
       
@@ -6591,6 +6657,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <span class="md-ellipsis">
       
         Next steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -6664,8 +6741,13 @@ window.addEventListener('afterprint', (event) => {
   
     
     
+      
+  
+  
+    
+    
       <li class="md-path__item">
-        <a href="architecture.html" class="md-path__link">
+        <a href="architecture-responsibilities.html" class="md-path__link">
           
   <span class="md-ellipsis">
     About
@@ -6673,6 +6755,9 @@ window.addEventListener('afterprint', (event) => {
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -6699,70 +6784,200 @@ window.addEventListener('afterprint', (event) => {
 
 
 <h1 id="design-and-architecture">Design and architecture<a data-markdown-ignore class="headerlink" href="#design-and-architecture" title="Permanent link">¶</a></h1>
-<p>The Percona Operator for MongoDB automates deploying and operating Percona Server for MongoDB on Kubernetes. This document explains what components the Operator uses and how they work together to provide a highly available MongoDB database. See also <a href="how-it-works.html">How the Operator works</a>.</p>
-<h2 id="components">Components<a data-markdown-ignore class="headerlink" href="#components" title="Permanent link">¶</a></h2>
-<p>The Operator deploys and manages the following components:</p>
+<p>This section explains how Percona Operator for MongoDB is built: what runs in your Kubernetes cluster, which component is responsible for what, and how the pieces interact. Read it to build a mental model of the system, and come back to it when something fails and you need to know where to look first. If something is failing now, start with <a href="debug.html">Initial troubleshooting</a>. The <a data-preview="" href="glossary.html">Glossary</a> explains the Kubernetes and MongoDB terms used in this section.</p>
+<h2 id="what-the-operator-is">What the Operator is<a data-markdown-ignore class="headerlink" href="#what-the-operator-is" title="Permanent link">¶</a></h2>
+<p>The Operator is a Kubernetes controller that runs as a Deployment named <code>percona-server-mongodb-operator</code>. It extends the Kubernetes API with four <a data-preview="" href="glossary.html#custom-resource">Custom Resources</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Custom Resource</th>
+<th>Short name</th>
+<th>Describes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PerconaServerMongoDB</code></td>
+<td><code>psmdb</code></td>
+<td>The database cluster: a replica set or a sharded cluster</td>
+</tr>
+<tr>
+<td><code>PerconaServerMongoDBBackup</code></td>
+<td><code>psmdb-backup</code></td>
+<td>One backup</td>
+</tr>
+<tr>
+<td><code>PerconaServerMongoDBRestore</code></td>
+<td><code>psmdb-restore</code></td>
+<td>One restore</td>
+</tr>
+<tr>
+<td><code>PerconaServerMongoDBClusterSync</code></td>
+<td><code>psmdb-clustersync</code></td>
+<td>Data migration and replication from an external MongoDB deployment</td>
+</tr>
+</tbody>
+</table>
+<p>You install the <a data-preview="" href="glossary.html#crd">CustomResourceDefinitions (CRDs)</a> together with the Operator. Then you describe the database that you want in a <code>PerconaServerMongoDB</code> object using the <code>deploy/cr.yaml</code> example manifest. The Operator creates and maintains everything that the cluster needs. The Operator manages only the clusters that these objects describe. It doesn’t manage MongoDB deployments created in other ways.</p>
+<p>The Operator works as a <a data-preview="" href="glossary.html#reconcile">reconcile loop</a>: about every five seconds it compares the Custom Resource with what runs in Kubernetes and in the database, and changes whatever differs. So you <a href="architecture-responsibilities.html#change-the-cluster-through-the-custom-resource">change the cluster through the Custom Resource</a>, not through the objects the Operator creates. For what the Operator takes care of and what stays with you, see <a href="architecture-responsibilities.html#the-operator">Who owns what</a>. For when it acts and in which order, see <a href="architecture-reconciliation.html">How the Operator reacts to changes</a>.</p>
+<h2 id="percona-server-for-mongodb-in-brief">Percona Server for MongoDB in brief<a data-markdown-ignore class="headerlink" href="#percona-server-for-mongodb-in-brief" title="Permanent link">¶</a></h2>
+<p><em>Percona Server for MongoDB</em> is a drop-in replacement for MongoDB Community Edition. It keeps data in <a data-preview="" href="glossary.html#replica-set">replica sets</a>. A replica set is a group of <code>mongod</code> processes that hold the same data:</p>
 <ul>
-<li>
-<p><strong>Percona Server for MongoDB</strong> - a drop-in replacement for MongoDB Community Server with enterprise-grade features. Each replica set member runs as a <code>mongod</code> process in its own Pod. The Operator deploys these Pods via a StatefulSet so that each member has a stable network identity and a PersistentVolume for data. You can run one or more replica sets; in a sharded cluster, each shard is a replica set.</p>
-</li>
-<li>
-<p><strong>Percona Backup for MongoDB (PBM)</strong> - an open-source backup and restore solution for Percona Server for MongoDB, MongoDB Community Edition, and MongoDB Enterprise Advanced with guaranteed data consistency. When you <a href="backups-storage.html">configure backup storage</a>, the Operator runs PBM as a <a href="sidecar.html">sidecar container</a> in each database Pod. PBM performs logical or physical backups and uploads them to the configured storage. Read more about types, storages, restores, and point-in-time recovery in <a href="backups.html">Backup and restore</a>.</p>
-</li>
-<li>
-<p><strong>Percona ClusterSync for MongoDB (PCSM)</strong> — enables real-time data migration and replication from an external MongoDB deployment (on-premises, Atlas, or another Kubernetes cluster) into the Operator-managed cluster. Deployed and managed by the Operator through the <code>PerconaServerMongoDBClusterSync</code> Custom Resource, PCSM runs as a separate Deployment and performs an initial sync followed by continuous change-stream replication. To learn more, see <a href="clustersync.html">Data migration</a>.</p>
-</li>
-<li>
-<p><strong>Percona Search for MongoDB</strong> (tech preview) - a search engine that adds full-text and vector search over your MongoDB data. When you enable search, the Operator deploys it as a dedicated <code>mongot</code> StatefulSet — one per data-bearing replica set or shard, each with its own PVC. Applications never connect to it directly: <code>mongod</code> (or <code>mongos</code> in a sharded cluster) forwards search queries to it over gRPC. Read more in <a href="search-overview.html">About full-text and vector search</a>.</p>
-</li>
-<li>
-<p><strong>mongos</strong> (sharded clusters only) - is the query router that acts as the entry point to the sharded cluster for client applications. Clients connect to mongos, which routes queries to the appropriate shard(s). The Operator deploys mongos via a StatefulSet; you control the number of mongos replicas in the custom resource.</p>
-</li>
-<li>
-<p><strong>Config server replica set</strong> (sharded clusters only) - a special replica set that stores cluster metadata and configuration. Config servers run a <code>mongod</code> process with a dedicated role; see <a href="sharding.html">Sharding</a> for configuration options.</p>
-</li>
+<li>One member is the <a data-preview="" href="glossary.html#primary">primary</a>. It accepts all writes and records them in its <a data-preview="" href="glossary.html#oplog">oplog</a>.</li>
+<li>The other members are <em>secondaries</em>. They copy the primary’s oplog and apply it. Replication is asynchronous, so a secondary can be slightly behind the primary. Drivers read from the primary by default and see the latest data. If an application reads from secondaries with a read preference, it can get slightly older data. The <code>majority</code> write concern makes a write wait until most members acknowledge it, but secondaries still apply it on their own schedule.</li>
+<li>If the primary becomes unavailable, the voting members hold an <a data-preview="" href="glossary.html#election">election</a> and promote a secondary. A candidate needs the votes of a majority of the voting members. MongoDB <a href="https://www.mongodb.com/docs/manual/core/replica-set-elections/">usually completes an election within about 12 seconds <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. Drivers retry a failed write once by default, so applications often don’t notice the switch.</li>
 </ul>
-<p>It can also include <a href="sidecar.html">sidecar containers</a> that you can add to replica set, config server, or mongos Pods. Examples of sidecar containers are Percona Monitoring and Management (PMM) client for <a href="monitoring.html">monitoring</a>, or custom exporters and tools. The Operator supports multiple sidecars per Pod with configurable images, commands, and volume mounts.</p>
-<h2 id="percona-server-for-mongodb-topology">Percona Server for MongoDB topology<a data-markdown-ignore class="headerlink" href="#percona-server-for-mongodb-topology" title="Permanent link">¶</a></h2>
-<p>The design of the Operator is tied to the Percona Server for MongoDB replica set and sharded cluster model.</p>
+<p>A replica set can have up to 50 members, and up to 7 of them can vote. Use an odd number of voting members. With three, the replica set keeps a primary when any one member goes down. With an even number, a network partition can split the voters into two equal halves, and neither half can elect a primary.</p>
+<p>By default, the Operator creates replica sets of <strong>three data-bearing members</strong>. You can add <a href="arbiter.html">arbiters, non-voting and hidden members</a> to shape failover and read capacity.</p>
+<p>When the data or the write load outgrows one replica set, you turn on <a href="sharding.html">sharding</a>:</p>
+<ul>
+<li>Each <em>shard</em> is a replica set that holds part of the data.</li>
+<li>The <em>config server replica set</em> stores the cluster metadata: which data lives on which shard.</li>
+<li>The <code>mongos</code> <em>query routers</em> receive client queries and send each one to the shards that hold the data. <code>mongos</code> doesn’t store data.</li>
+</ul>
+<p>The example manifest <code>deploy/cr.yaml</code> creates a sharded cluster with one shard named <code>rs0</code>, three config server members and three <code>mongos</code> Pods. See <a href="ha-topology.html">High availability and topology</a> to choose between a replica set and a sharded cluster.</p>
+<h2 id="how-clients-connect">How clients connect<a data-markdown-ignore class="headerlink" href="#how-clients-connect" title="Permanent link">¶</a></h2>
+<p>There is no proxy between applications and the database. MongoDB drivers connect to the database Pods and find the members themselves.</p>
+<ul>
+<li><strong>Sharded cluster.</strong> Applications connect to <code>mongos</code> through the <code>&lt;cluster-name&gt;-mongos</code> Service on port 27017 (<code>my-cluster-name-mongos</code> by default). The Service spreads connections across all <code>mongos</code> Pods, and <code>mongos</code> routes each query to the right shards.</li>
+<li><strong>Replica set.</strong> Applications connect to the replica set members directly. The driver reads the list of members from the replica set configuration, sends writes to the primary, and finds the new primary after an election. Use a <code>mongodb+srv</code> connection string: the driver resolves the members from the DNS SRV records of the <a data-preview="" href="glossary.html#headless-service">headless Service</a> <code>my-cluster-name-rs0</code>, so you don’t list Pod host names yourself.</li>
+</ul>
+<p>The Operator creates a <a href="connection-secrets.html">connection Secret</a> with ready-to-use connection strings for the <code>databaseAdmin</code> user and for application users you declare in the Custom Resource. To connect from outside Kubernetes, expose the <code>mongos</code> Service or one Service per replica set Pod. To learn more, see <a href="expose.html">Networking and external access</a>. <a href="services.html">Services and ports</a> lists every Service, its ports and when it exists.</p>
+<h2 id="the-four-layers">The four layers<a data-markdown-ignore class="headerlink" href="#the-four-layers" title="Permanent link">¶</a></h2>
+<p>A running cluster is the combined result of four layers. Most confusion during troubleshooting comes from expecting one layer to do something that belongs to another. The <a href="architecture-responsibilities.html">Who owns what</a> page covers each layer in detail.</p>
+<pre class="mermaid"><code>flowchart TB
+  U["&lt;b&gt;User&lt;/b&gt;&lt;br/&gt;Custom Resource, Secrets,&lt;br/&gt;CRDs and RBAC, node and storage capacity"]
+  O["&lt;b&gt;Operator&lt;/b&gt;&lt;br/&gt;reconcile loop: compares the Custom Resource&lt;br/&gt;with the cluster and corrects differences"]
+  K["&lt;b&gt;Kubernetes&lt;/b&gt;&lt;br/&gt;StatefulSets, scheduling, storage (CSI),&lt;br/&gt;networking and DNS, Pod lifecycle"]
+  M["&lt;b&gt;Percona Server for MongoDB and PBM&lt;/b&gt;&lt;br/&gt;replication, elections, initial sync,&lt;br/&gt;backups and restores"]
+  U -- "writes the desired state" --&gt; O
+  O -- "creates and updates objects" --&gt; K
+  K -- "runs Pods and volumes for" --&gt; M
+  O -. "writes the replica set configuration;&lt;br/&gt;sends backup and restore commands" .-&gt; M</code></pre>
+<ul>
+<li><strong>User.</strong> You describe the cluster you want in the <code>PerconaServerMongoDB</code> Custom Resource and provide everything the Operator cannot create for you: the CRDs and RBAC, credentials for backup storage, and enough nodes and storage to run the cluster.</li>
+<li><strong>Operator.</strong> Runs the reconcile loop and the day-2 tasks: replica set membership, ordered restarts, passwords, certificates, backups and restores. See <a href="#what-the-operator-is">What the Operator is</a> and <a href="architecture-responsibilities.html#the-operator">The Operator</a>.</li>
+<li><strong>Kubernetes.</strong> Kubernetes turns the objects the Operator creates into running Pods. It schedules Pods to nodes, provisions and attaches volumes through the CSI driver, provides Services and DNS, and restarts failed containers.</li>
+<li><strong>Percona Server for MongoDB and Percona Backup for MongoDB.</strong> Inside the Pods, MongoDB replicates data, holds elections and brings new members up to date with an <a data-preview="" href="glossary.html#initial-sync">initial sync</a>. The <a data-preview="" href="glossary.html#pbm">PBM</a> agents in the database Pods make backups and restores.</li>
+</ul>
+<p>The Operator does more inside the database than create Pods. It initializes each replica set, writes the replica set configuration, and adds and removes members when the Pods change. Elections and replication stay with MongoDB. See <a href="architecture-workflows.html#replica-set-membership">Replica set membership</a>.</p>
+<h2 id="cluster-topology">Cluster topology<a data-markdown-ignore class="headerlink" href="#cluster-topology" title="Permanent link">¶</a></h2>
+<p>The following diagrams show a cluster named <code>my-cluster-name</code> with backups enabled.</p>
 <h3 id="replica-set">Replica set<a data-markdown-ignore class="headerlink" href="#replica-set" title="Permanent link">¶</a></h3>
-<p>A replica set consists of one primary and one or more secondary nodes. The primary accepts writes; secondaries replicate data and can serve reads. The following diagram shows a simple replica set.</p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/replication.svg" data-desc-position="bottom"><img alt="image" src="assets/images/replication.svg"></a></p>
-<p>Client applications connect to the replica set using a MongoDB driver and a connection string from the Operator’s <a href="connection-secrets.html">connection Secrets</a>. Prefer the <code>mongodb+srv</code> URI.</p>
+<pre class="mermaid"><code>flowchart LR
+  C[Clients] -. "DNS SRV lookup" .-&gt; S["Headless Service&lt;br/&gt;my-cluster-name-rs0"]
+  subgraph RS["Replica set rs0"]
+    P0["my-cluster-name-rs0-0&lt;br/&gt;primary"]
+    P1["my-cluster-name-rs0-1&lt;br/&gt;secondary"]
+    P2["my-cluster-name-rs0-2&lt;br/&gt;secondary"]
+  end
+  C -- "reads and writes" --&gt; P0
+  P0 -- "oplog replication" --&gt; P1
+  P0 -- "oplog replication" --&gt; P2
+  RS -- "backup-agent containers" --&gt; ST[("Backup storage")]</code></pre>
+<p>Each <code>mongod</code> Pod has its own <a data-preview="" href="glossary.html#pvc">PersistentVolumeClaim</a> for the data directory and, when backups are enabled, a <code>backup-agent</code> sidecar container with the PBM agent. Any data-bearing voting member can become the primary. The diagram shows <code>my-cluster-name-rs0-0</code> as the primary only as an example.</p>
 <h3 id="sharded-cluster">Sharded cluster<a data-markdown-ignore class="headerlink" href="#sharded-cluster" title="Permanent link">¶</a></h3>
-<p>When you need horizontal scaling, you enable sharding. Each shard is a replica set holding a subset of the data. The <strong>mongos</strong> query router is the entry point for clients; <strong>config servers</strong> store sharding metadata. A simplified view:</p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/sharding.svg" data-desc-position="bottom"><img alt="image" src="assets/images/sharding.svg"></a></p>
-<p>For details, see <a href="sharding.html">Percona Server for MongoDB Sharding</a>.</p>
-<p>By default, the Operator creates a three-member replica set - the minimal recommended configuration, providing high availability out of the box. See <a href="how-it-works.html#default-database-deployment">Default database deployment</a> for supported replica set sizes.</p>
-<h2 id="high-availability">High availability<a data-markdown-ignore class="headerlink" href="#high-availability" title="Permanent link">¶</a></h2>
-<p>High-availability is natively supported via Percona Server for MongoDB replica set or sharded cluster topology. </p>
-<p>The Operator adds to it through replica set topology, Pod distribution, automatic recovery, and client connectivity.</p>
-<h3 id="pod-distribution">Pod distribution<a data-markdown-ignore class="headerlink" href="#pod-distribution" title="Permanent link">¶</a></h3>
-<p>The Operator uses <a href="constraints.html">node affinity and anti-affinity</a> to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can <a href="constraints.html">tune affinity</a> rules in the <code>PerconaServerMongoDB</code> custom resource.</p>
-<h3 id="automatic-recovery">Automatic recovery<a data-markdown-ignore class="headerlink" href="#automatic-recovery" title="Permanent link">¶</a></h3>
+<pre class="mermaid"><code>flowchart LR
+  C[Clients] --&gt; S["Service&lt;br/&gt;my-cluster-name-mongos"]
+  S --&gt; M["mongos Pods"]
+  subgraph CFG["Config server replica set"]
+    CF["my-cluster-name-cfg-0, -1, -2"]
+  end
+  subgraph SH["Shard rs0"]
+    R0["my-cluster-name-rs0-0, -1, -2"]
+  end
+  M -- "reads metadata" --&gt; CFG
+  M -- "routes queries" --&gt; SH
+  CFG -- "backup-agent" --&gt; ST[("Backup storage")]
+  SH -- "backup-agent" --&gt; ST</code></pre>
+<p>Here is how a client request reaches the data in a sharded cluster:</p>
+<ol>
+<li>A client connects to the <code>my-cluster-name-mongos</code> Service on port 27017. The Service forwards the connection to one of the <code>mongos</code> Pods.</li>
+<li><code>mongos</code> uses the metadata from the config server replica set to find the shards that hold the requested data.</li>
+<li><code>mongos</code> sends the query to the primary of each shard involved, or to a secondary if the client asked for it with a read preference.</li>
+<li>The shard primary applies a write and replicates it to its secondaries.</li>
+</ol>
+<p>Members find each other by host name, not through the Kubernetes API. The Operator writes each member into the replica set configuration with a stable DNS name, such as <code>my-cluster-name-rs0-0.my-cluster-name-rs0.&lt;namespace&gt;.svc.cluster.local:27017</code>. If you expose the replica set, the Operator can write the address of the per-Pod Service instead. See <a href="expose.html#controlling-hostnames-in-replset-configuration">Controlling hostnames in replset configuration</a>. <code>mongos</code> gets the config server members from its start-up arguments, and learns the shards from the metadata.</p>
+<h3 id="what-differs-between-the-two-topologies">What differs between the two topologies<a data-markdown-ignore class="headerlink" href="#what-differs-between-the-two-topologies" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Replica set</th>
+<th>Sharded cluster</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StatefulSets</td>
+<td>One for each replica set</td>
+<td>One for each shard, one for the config server replica set <code>my-cluster-name-cfg</code>, and one for <code>mongos</code></td>
+</tr>
+<tr>
+<td>Client entry point</td>
+<td>The replica set members, through the headless Service <code>my-cluster-name-rs0</code></td>
+<td><code>mongos</code>, through the <code>my-cluster-name-mongos</code> Service</td>
+</tr>
+<tr>
+<td>Cluster endpoint in <code>status.host</code></td>
+<td>The headless Service of the replica set</td>
+<td>The <code>mongos</code> Service, or the list of per-Pod <code>mongos</code> Services</td>
+</tr>
+<tr>
+<td>Extra Operator tasks</td>
+<td>None</td>
+<td>Adds and removes shards, and turns the balancer on and off. See <a href="architecture-workflows.html#shards-and-the-balancer">Shards and the balancer</a></td>
+</tr>
+<tr>
+<td>Smart Update order</td>
+<td>Secondaries, then the primary</td>
+<td>The config server replica set first, then the shards, then <code>mongos</code></td>
+</tr>
+<tr>
+<td>Restore</td>
+<td>Clients stay connected during a logical restore</td>
+<td>The Operator stops <code>mongos</code> first, so clients can’t connect</td>
+</tr>
+<tr>
+<td>Pause and deletion</td>
+<td>Members stop one at a time</td>
+<td><code>mongos</code> stops first, then the replica sets</td>
+</tr>
+</tbody>
+</table>
+<p>Optional components run beside the members:</p>
 <ul>
-<li><strong>Node or Pod failure</strong> — Kubernetes reschedules the Pod on another healthy node. The mongod process starts and rejoins the replica set. If the failed node was the primary, the replica set holds an <a href="https://www.mongodb.com/docs/manual/core/replica-set-elections/">election</a> and promotes a secondary to primary.</li>
-<li><strong>Operator failure</strong> — If the node running the Operator fails, Kubernetes restarts the Operator on another node. The Operator resumes watching PerconaServerMongoDB resources and reconciling state.</li>
+<li><strong>Point-in-time recovery</strong> doesn’t add Pods. When it’s on, a PBM agent uploads the oplog to backup storage in short slices. See <a href="architecture-workflows.html#point-in-time-recovery">Point-in-time recovery</a>.</li>
+<li><strong>Percona Search for MongoDB</strong> runs a <code>mongot</code> StatefulSet for each data-bearing replica set or shard. <code>mongod</code> or <code>mongos</code> forwards search queries to it. Applications don’t connect to <code>mongot</code>. See <a href="search-overview.html">About full-text and vector search</a>.</li>
+<li><strong>Percona ClusterSync for MongoDB (PCSM)</strong> runs as a separate Deployment when you create a <code>PerconaServerMongoDBClusterSync</code> object. It copies data from an external MongoDB deployment into the cluster. See <a href="clustersync.html">Real-time replication with PCSM</a>.</li>
+<li><strong>Sidecar containers</strong> such as the PMM Client for <a href="monitoring.html">monitoring</a>, the log collector for <a href="persistent-logging.html">persistent logging</a> and your own <a href="sidecar.html">sidecars</a> run in the database and <code>mongos</code> Pods. See <a href="objects-created.html#containers-in-each-pod">Containers in each Pod</a>.</li>
 </ul>
-<p>The database cluster is deployed as a replica set with at least three nodes (or as a sharded cluster whose shards and config servers are replica sets), so there is no single point of failure for the data path.</p>
-<h3 id="client-connectivity">Client connectivity<a data-markdown-ignore class="headerlink" href="#client-connectivity" title="Permanent link">¶</a></h3>
-<p>The Operator creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the <code>databaseAdmin</code> user and for application users you declare in the Custom Resource. Use those URIs in your app instead of assembling hostnames and credentials yourself. The Operator refreshes the Secrets when topology, exposure, or passwords change.</p>
-<p>Prefer a <strong>mongodb+srv</strong> URI (the <code>_connectionStringSrv</code> key). MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the Services and DNS entries those URIs rely on. For connections from outside the cluster, use the <code>_connectionStringExposed</code> key after you <a href="expose.html">expose the Service</a>.</p>
-<p>See <a href="connection-secrets.html">Connection secrets</a> for Secret names and keys.</p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/images/operator.svg" data-desc-position="bottom"><img alt="image" src="assets/images/operator.svg"></a></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the <a href="System-Requirements.html#installation-guidelines">installation instructions</a>.</p>
-</div>
+<p>The <a href="architecture-workflows.html">Key workflows</a> page describes replica set membership, backups, restores and recovery step by step.</p>
+<h3 id="scheduling-and-storage">Scheduling and storage<a data-markdown-ignore class="headerlink" href="#scheduling-and-storage" title="Permanent link">¶</a></h3>
+<p>To survive a node failure, the Operator places the members of each replica set on separate Kubernetes nodes with <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity">Pod anti-affinity <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. By default, this rule is <em>required</em> and uses the <code>kubernetes.io/hostname</code> topology key: with three members you need at least three schedulable nodes, or a Pod stays <code>Pending</code>. See <a href="constraints.html">Control Pod scheduling</a> to change it.</p>
+<p>If a Kubernetes node fails, Kubernetes can recreate the Pod on another node, but for a <a data-preview="" href="glossary.html#statefulset">StatefulSet</a> Pod it does so only after the failed Node object is removed or the stuck Pod is force-deleted. The Operator does neither. Meanwhile, MongoDB elects a new primary if the lost member was the primary, and the replica set keeps working with the remaining members.</p>
+<p>The Pod’s data lives in a PersistentVolume, so the storage must be able to follow the Pod. The Container Storage Interface (CSI) driver and StorageClass must support attaching the volume on a different node. A volume that can attach only in one zone keeps the Pod in that zone. For local disks, see <a href="storage.html">Local storage support</a>.</p>
+<h2 id="what-gets-created">What gets created<a data-markdown-ignore class="headerlink" href="#what-gets-created" title="Permanent link">¶</a></h2>
+<p>For a cluster named <code>my-cluster-name</code>, the Operator creates a StatefulSet for each replica set, for the config server replica set and for <code>mongos</code>, together with Services, Secrets, ConfigMaps, <a data-preview="" href="glossary.html#pdb">PodDisruptionBudgets</a> and PVCs. Arbiter, non-voting and hidden members get StatefulSets of their own. The Operator creates no Kubernetes Jobs or CronJobs: the PBM agents make the backups, and the Operator keeps the backup schedules itself. PVCs and Secrets are not owned by the Custom Resource, so deleting the cluster doesn’t delete them unless you set the finalizers.</p>
+<ul>
+<li><a href="services.html">Services and ports</a> lists every Service, its ports, and when it exists.</li>
+<li><a href="objects-created.html">Objects the Operator creates</a> lists all other objects, the <a data-preview="" href="glossary.html#finalizer">finalizers</a> that clean them up, and the containers in each Pod.</li>
+</ul>
 <h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
-<p><a class="md-button" href="quickstart.html">Get started with the Operator</a>
-<a class="md-button" href="compare.html">Compare with other solutions</a></p>
+<p><a class="md-button" href="architecture-responsibilities.html">Who owns what</a></p>
+<h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="services.html">Services and ports</a></li>
+<li><a href="objects-created.html">Objects the Operator creates</a></li>
+<li><a data-preview="" href="glossary.html">Glossary</a></li>
+<li><a href="compare.html">Comparison with other solutions</a></li>
+</ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 10:56:49 UTC">September 9, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
         <br>
         Created:

@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Percona Operator for MongoDB uses Custom Resources   to manage options for the various components of the cluster.">
+        <meta name="description" content="Use this page when something is wrong and you don’t know the cause yet. For example, the cluster doesn’t reach the ready state, Pods restart or don’t start, or clients can’t connect. Start with the quick health check, find which layer the problem is in, then use the symptom tables to reach the page with the fix.">
       
       
         <meta name="author" content="Percona LLC">
@@ -93,6 +93,8 @@
       <link rel="stylesheet" href="css/rating.css">
     
       <link rel="stylesheet" href="css/kapa.css">
+    
+      <link rel="stylesheet" href="css/glossary.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -433,24 +435,16 @@
         
         <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3">
         
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="how-it-works.html" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     About
   </span>
   
 
-            </a>
-            
-              <label class="md-nav__link " for="__nav_3">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
@@ -464,16 +458,155 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="architecture.html" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3_1">
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="architecture.html" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design and architecture
   </span>
   
 
+            </a>
+            
+              <label class="md-nav__link " for="__nav_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design and architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-responsibilities.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Who owns what
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="operator-boundaries.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Operator responsibilities by area
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-reconciliation.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How the Operator reacts to changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-workflows.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Key workflows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture-probes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Health checks and probes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4655,7 +4788,7 @@
         
   
   <span class="md-ellipsis">
-    Troubleshoot the Operator installation issues
+    Troubleshoot the Operator
   </span>
   
 
@@ -4856,6 +4989,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -5036,6 +5175,46 @@
   
   
     <li class="md-nav__item">
+      <a href="services.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Services and ports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="objects-created.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Objects the Operator creates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api.html" class="md-nav__link">
         
   
@@ -5065,7 +5244,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_4">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_6">
         
           
           
@@ -5080,14 +5259,14 @@
 
             </a>
             
-              <label class="md-nav__link " for="__nav_11_4">
+              <label class="md-nav__link " for="__nav_11_6">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
             <span class="md-nav__icon md-icon"></span>
             Certified images
           </label>
@@ -5167,6 +5346,26 @@
   
   
     <li class="md-nav__item">
+      <a href="glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="telemetry.html" class="md-nav__link">
         
   
@@ -5200,9 +5399,9 @@
     <li class="md-nav__item md-nav__item--nested">
       
         
-        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_8">
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_11_11">
         
-          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_11" id="__nav_11_11_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -5213,8 +5412,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_11">
             <span class="md-nav__icon md-icon"></span>
             Legal
           </label>
@@ -6336,6 +6535,40 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick health check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick health check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-the-cluster-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check the cluster status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#check-the-pods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6344,14 +6577,13 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Check the Pods">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#common-pod-states" class="md-nav__link">
+  <a href="#check-the-operator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common Pod states
+        Check the Operator
       
     </span>
   </a>
@@ -6364,10 +6596,82 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#check-logs" class="md-nav__link">
+  <a href="#which-layer-is-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Check logs
+        Which layer is it?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-look-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to look first
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where to look first">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster-and-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster and Pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backups-and-restores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups and restores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-and-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage and TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-to-a-member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect to a member
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collect-diagnostics-for-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collect diagnostics for support
       
     </span>
   </a>
@@ -6447,20 +6751,16 @@ window.addEventListener('afterprint', (event) => {
 
 
 <h1 id="initial-troubleshooting">Initial troubleshooting<a data-markdown-ignore class="headerlink" href="#initial-troubleshooting" title="Permanent link">¶</a></h1>
-<p>Percona Operator for MongoDB uses <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resources  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> to manage options for the various components of the cluster.</p>
+<p>Use this page when something is wrong and you don’t know the cause yet. For example, the cluster doesn’t reach the <code>ready</code> state, Pods restart or don’t start, or clients can’t connect. Start with the quick health check, find which layer the problem is in, then use the symptom tables to reach the page with the fix.</p>
+<h2 id="before-you-start">Before you start<a data-markdown-ignore class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
 <ul>
-<li>
-<p><code>PerconaServerMongoDB</code> Custom Resource with Percona Server for MongoDB options (it has handy <code>psmdb</code> shortname also),</p>
-</li>
-<li>
-<p><code>PerconaServerMongoDBBackup</code> and <code>PerconaServerMongoDBRestore</code> Custom Resources contain options for Percona Backup for MongoDB used to backup Percona Server for MongoDB and to restore it from backups (<code>psmdb-backup</code> and <code>psmdb-restore</code> shortnames are available for them).</p>
-</li>
-<li>
-<p><code>PerconaServerMongoDBClusterSync</code> Custom Resource contains options for Percona ClusterSync for MongoDB (<code>psmdb-clustersync</code> shortname).</p>
-</li>
+<li>You need <code>kubectl</code> access to the namespace of the cluster and to the namespace of the Operator. They are the same namespace unless you run the Operator in the <a href="cluster-wide.html">cluster-wide mode</a>.</li>
+<li>The examples use the cluster name <code>my-cluster-name</code>. Replace it and <code>&lt;namespace&gt;</code> with your values.</li>
 </ul>
-<p>The first thing you can check for the Custom Resource is to query it with <code>kubectl get</code> command:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb
+<h2 id="quick-health-check">Quick health check<a data-markdown-ignore class="headerlink" href="#quick-health-check" title="Permanent link">¶</a></h2>
+<p>Run these three checks first. Together they take a minute and show which part of the system needs a closer look.</p>
+<h3 id="check-the-cluster-status">Check the cluster status<a data-markdown-ignore class="headerlink" href="#check-the-cluster-status" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
@@ -6468,25 +6768,12 @@ window.addEventListener('afterprint', (event) => {
 my-cluster-name   my-cluster-name-mongos.default.svc.cluster.local   ready    5m26s
 </code></pre></div>
 </details>
-<p>The Custom Resource should have <code>Ready</code> status.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You can check which Percona’s Custom Resources are present and get some information about them as follows:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>api-resources<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>percona
+<p>A healthy cluster is <code>ready</code>. The cluster is <code>initializing</code> while it is created and while it applies a change. If it stays there, see <a href="troubleshoot-operator.html#cluster-stays-in-initializing">Cluster stays in <code>initializing</code></a>. For an <code>error</code> state, the reason is in the <code>status.message</code> field:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>my-cluster-name<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
-<details class="example">
-<summary>Expected output</summary>
-<div class="no-copy highlight"><pre><span></span><code>perconaservermongodbbackups       psmdb-backup       psmdb.percona.com/v1                   true         PerconaServerMongoDBBackup
-perconaservermongodbclustersyncs  psmdb-clustersync  psmdb.percona.com/v1                   true         PerconaServerMongoDBClusterSync
-perconaservermongodbrestores      psmdb-restore      psmdb.percona.com/v1                   true         PerconaServerMongoDBRestore
-perconaservermongodbs             psmdb              psmdb.percona.com/v1                   true         PerconaServerMongoDB
-</code></pre></div>
-</details>
-</div>
-<h2 id="check-the-pods">Check the Pods<a data-markdown-ignore class="headerlink" href="#check-the-pods" title="Permanent link">¶</a></h2>
-<p>If Custom Resource is not getting <code>Ready</code> status, it makes sense to check
-individual Pods. You can do it as follows:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<p>For what each state means and what the cluster must meet to be <code>ready</code>, see <a href="cr-statuses.html#what-ready-means">Custom Resource statuses</a>.</p>
+<h3 id="check-the-pods">Check the Pods<a data-markdown-ignore class="headerlink" href="#check-the-pods" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <details class="example" open="open">
 <summary>Expected output</summary>
@@ -6503,65 +6790,8 @@ my-cluster-name-rs0-2                              2/2     Running   0          
 percona-server-mongodb-operator-665cd69f9b-xg5dl   1/1     Running   0          37m
 </code></pre></div>
 </details>
-<p>The above command provides the following insights:</p>
-<ul>
-<li><code>READY</code> indicates how many containers in the Pod are ready to serve the
-    traffic. In the above example, <code>my-cluster-name-rs0-0</code> Pod has all two
-    containers ready (2/2). For an application to work properly, all containers
-    of the Pod should be ready.</li>
-<li><code>STATUS</code> indicates the current status of the Pod. The Pod should be in a
-    <code>Running</code> state to confirm that the application is working as expected. You
-    can find out other possible states in the <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase">official Kubernetes documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</li>
-<li><code>RESTARTS</code> indicates how many times containers of Pod were restarted. This is
-    impacted by the <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy">Container Restart Policy  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.
-    In an ideal world, the restart count would be zero, meaning no issues from
-    the beginning. If the restart count exceeds zero, it may be reasonable to
-    check why it happens. If a container was killed because it ran out of memory
-    (<code>OOMKilled</code>), see <a href="debug-oom.html">Troubleshoot out-of-memory errors</a>.</li>
-<li><code>AGE</code>: Indicates how long the Pod is running. Any abnormality in this value
-    needs to be checked.</li>
-</ul>
-<p>You can find more details about a specific Pod using the
-<code>kubectl describe pods &lt;pod-name&gt;</code> command.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pods<span class="w"> </span>my-cluster-name-rs0-0
-</code></pre></div>
-<details class="example">
-<summary>Expected output</summary>
-<div class="no-copy highlight"><pre><span></span><code>...
-Name:         my-cluster-name-rs0-0
-Namespace:    default
-...
-Controlled By:  StatefulSet/my-cluster-name-rs0
-Init Containers:
- mongo-init:
-...
-Containers:
- mongod:
-...
-   Restart Count:  0
-   Limits:
-     cpu:     300m
-     memory:  500M
-   Requests:
-     cpu:      300m
-     memory:   500M
-   Liveness:   exec [/opt/percona/mongodb-healthcheck k8s liveness --ssl --sslInsecure --sslCAFile /etc/mongodb-ssl/ca.crt --sslPEMKeyFile /tmp/tls.pem --startupDelaySeconds 7200] delay=60s timeout=10s period=30s #success=1 #failure=4
-   Readiness:  tcp-socket :27017 delay=10s timeout=2s period=3s #success=1 #failure=8
-   Environment Variables from:
-     internal-my-cluster-name-users  Secret  Optional: false
-   Environment:
-...
-   Mounts:
-...
-Volumes:
-...
-Events:                      &lt;none&gt;
-</code></pre></div>
-</details>
-<p>This gives a lot of information about containers, resources, container status
-and also events. So, describe output should be checked to see any abnormalities.</p>
-<h3 id="common-pod-states">Common Pod states<a data-markdown-ignore class="headerlink" href="#common-pod-states" title="Permanent link">¶</a></h3>
-<p>The <code>STATUS</code> column often points to the next place to look:</p>
+<p>In a healthy cluster, every Pod is <code>Running</code> and the <code>READY</code> column shows all containers ready, such as <code>2/2</code>. A database Pod runs the <code>mongod</code> container and, depending on your configuration, <code>backup-agent</code>, <code>pmm-client</code>, <code>logs</code> and <code>logrotate</code>. See <a href="objects-created.html#containers-in-each-pod">Containers in each Pod</a>.</p>
+<p>A growing <code>RESTARTS</code> count means a container keeps failing. The <code>STATUS</code> column points to where to look next:</p>
 <table>
 <thead>
 <tr>
@@ -6572,49 +6802,274 @@ and also events. So, describe output should be checked to see any abnormalities.
 </thead>
 <tbody>
 <tr>
-<td><code>Running</code></td>
-<td>The Pod is scheduled and its containers started. Check the <code>READY</code> column to see if all containers are ready.</td>
-<td><a href="debug-logs.html">Check logs</a> if <code>READY</code> is lower than expected</td>
+<td><code>Running</code>, but <code>READY</code> is lower than the number of containers</td>
+<td>A container started but isn’t ready yet</td>
+<td><a href="debug-logs.html">Check the logs</a> of the container that isn’t ready</td>
 </tr>
 <tr>
 <td><code>Pending</code></td>
-<td>Kubernetes has not placed the Pod on a node yet</td>
+<td>Kubernetes hasn’t placed the Pod on a node</td>
 <td><a href="debug-scheduling.html">Troubleshoot Pod scheduling</a></td>
 </tr>
 <tr>
 <td><code>ContainerCreating</code></td>
-<td>The Pod is on a node, but a volume or an image is not ready</td>
-<td>The <code>Events</code> section of <code>kubectl describe pods &lt;pod-name&gt;</code></td>
+<td>The Pod is on a node, but a volume or an image isn’t ready</td>
+<td>The <code>Events</code> section of <code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code></td>
 </tr>
 <tr>
 <td><code>ImagePullBackOff</code>, <code>ErrImagePull</code></td>
-<td>The node cannot pull the image</td>
+<td>The node can’t pull the image</td>
 <td>Check the image name and registry access. See <a href="custom-registry.html">Use a private registry</a></td>
 </tr>
 <tr>
 <td><code>CrashLoopBackOff</code></td>
 <td>A container starts and exits repeatedly</td>
-<td><a href="debug-logs.html">Check logs</a> and <a href="debug-images.html">Special debug images</a></td>
+<td><a href="debug-logs.html">Check the logs</a> with <code>--previous</code>, and <a href="debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">stop the restart loop</a> to investigate</td>
 </tr>
 <tr>
-<td><code>OOMKilled</code> (in <code>Last State</code>)</td>
-<td>The container exceeded its memory limit</td>
-<td>Raise the memory limit under <code>resources</code>. See <a href="scaling.html">Scaling</a></td>
+<td><code>OOMKilled</code>, or <code>OOMKilled</code> as the <code>Last State</code> reason in <code>kubectl describe pod</code></td>
+<td>The container ran out of memory</td>
+<td><a href="debug-oom.html">Troubleshoot out-of-memory errors</a></td>
 </tr>
 </tbody>
 </table>
-<h2 id="check-logs">Check logs<a data-markdown-ignore class="headerlink" href="#check-logs" title="Permanent link">¶</a></h2>
-<p>Logs help you pinpoint startup failures, crash loops, configuration issues, and performance problems. They include timestamps, error messages, and component-specific context that you won’t see in Pod status alone. See the <a href="debug-logs.html">Check logs</a> section for more information about logs and how to check them.</p>
+<h3 id="check-the-operator">Check the Operator<a data-markdown-ignore class="headerlink" href="#check-the-operator" title="Permanent link">¶</a></h3>
+<p>Find the Operator Deployment. Its name depends on how you installed the Operator: <code>percona-server-mongodb-operator</code> for a <code>kubectl</code> installation, and usually a name that ends with <code>psmdb-operator</code> for Helm:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deployments<span class="w"> </span>-n<span class="w"> </span>&lt;operator-namespace&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">'percona-server-mongodb-operator|psmdb-operator'</span>
+</code></pre></div>
+<p>Read its recent logs:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;operator-deployment&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;operator-namespace&gt;<span class="w"> </span>--since<span class="o">=</span>30m
+</code></pre></div>
+<p>The Operator Pod should be <code>Running</code> with no restarts. The logs show what the Operator is doing and what it waits for. Repeated <code>ERROR</code> lines for the same cluster point to the problem.</p>
+<h2 id="which-layer-is-it">Which layer is it?<a data-markdown-ignore class="headerlink" href="#which-layer-is-it" title="Permanent link">¶</a></h2>
+<p>Problems come from four layers: your configuration, the Operator, Kubernetes, or Percona Server for MongoDB itself. See <a href="architecture-responsibilities.html">Who owns what</a> for what each layer does.</p>
+<p>Check these sources in order. Each one narrows down the layer.</p>
+<ol>
+<li><strong>Custom Resource status and conditions.</strong> <code>kubectl get psmdb my-cluster-name -n &lt;namespace&gt; -o yaml</code> shows the cluster state, the reconcile error message, the state of each replica set and of <code>mongos</code>, and scheduling problems. An <code>error</code> state with a message about the spec points to your configuration. See <a href="cr-statuses.html#perconaservermongodb-status">Custom Resource statuses</a>.</li>
+<li>
+<p><strong>Events.</strong> Kubernetes problems show up here: scheduling, volume attachment and resize, image pulls, probe failures. The Operator itself adds no events for the cluster. To see the events of one Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>--sort-by<span class="o">=</span>.lastTimestamp<span class="w"> </span>--field-selector<span class="w"> </span>involvedObject.name<span class="o">=</span>&lt;pod-name&gt;
+</code></pre></div>
+</li>
+<li>
+<p><strong>Operator logs.</strong> They show what the Operator is doing or waiting for: a stuck rolling restart, a backup that waits, a change to the replica set configuration. Most Operator problems appear only here. See <a href="#check-the-operator">Check the Operator</a>.</p>
+</li>
+<li><strong>Database logs.</strong> They show MongoDB problems: elections, initial sync, start failures. With the log collector enabled, as in the default <code>deploy/cr.yaml</code>, <code>mongod</code> writes its log to a file, so read it from the <code>logs</code> container: <code>kubectl logs my-cluster-name-rs0-0 -n &lt;namespace&gt; -c logs</code>. Without the log collector, use <code>-c mongod</code>. For backup and restore problems, read the <code>backup-agent</code> logs. See <a href="debug-logs.html">Check the logs</a>.</li>
+</ol>
+<h2 id="where-to-look-first">Where to look first<a data-markdown-ignore class="headerlink" href="#where-to-look-first" title="Permanent link">¶</a></h2>
+<p>Find the symptom, check the place in the second column, and follow the link for the fix.</p>
+<h3 id="cluster-and-pods">Cluster and Pods<a data-markdown-ignore class="headerlink" href="#cluster-and-pods" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Look here first</th>
+<th>Usually owned by</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster status is <code>error</code> with a message that starts with <code>wrong psmdb options</code>, such as <code>replset size must be odd</code></td>
+<td>The <code>status</code> section of <code>kubectl get psmdb my-cluster-name -n &lt;namespace&gt; -o yaml</code></td>
+<td><strong>User</strong>: the Custom Resource breaks a safety check</td>
+<td>Fix the Custom Resource. See <a href="operator-boundaries.html#stay-inside-safe-operating-limits">Stay inside safe operating limits</a></td>
+</tr>
+<tr>
+<td>The cluster stays in <code>initializing</code></td>
+<td>The <code>replsets</code> and <code>mongos</code> status in the Custom Resource, Operator logs</td>
+<td><strong>Varies</strong>: a pending rollout, a member that isn’t ready, PBM agent errors, a PVC resize, a missing endpoint, or a Pod that can’t be scheduled</td>
+<td>See <a href="troubleshoot-operator.html#cluster-stays-in-initializing">Cluster stays in <code>initializing</code></a></td>
+</tr>
+<tr>
+<td>The cluster doesn’t react to changes in the Custom Resource</td>
+<td><code>kubectl get deployments -A</code>, Operator logs</td>
+<td><strong>Operator</strong>: its Pod isn’t running, or it doesn’t watch this namespace</td>
+<td>See <a href="#check-the-operator">Check the Operator</a> and <a href="troubleshoot-operator.html">Troubleshoot the Operator installation</a></td>
+</tr>
+<tr>
+<td>Pod is <code>Pending</code></td>
+<td>The <code>Events</code> section of <code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code></td>
+<td><strong>Kubernetes</strong>: not enough resources, nodes or zones for the affinity rules, taints, or a volume that can’t bind</td>
+<td>See <a href="debug-scheduling.html">Troubleshoot Pod scheduling</a></td>
+</tr>
+<tr>
+<td>A container restarts with <code>OOMKilled</code></td>
+<td><code>Last State</code> in <code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code></td>
+<td><strong>User</strong>: the memory limit is too low for the workload or the cache</td>
+<td>See <a href="debug-oom.html">Troubleshoot out-of-memory errors</a></td>
+</tr>
+<tr>
+<td><code>mongod</code> fails to start after a configuration change</td>
+<td><code>kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; -c logs</code>, or <code>-c mongod --previous</code> without the log collector</td>
+<td><strong>User</strong>: the Operator doesn’t validate the <code>configuration</code> section</td>
+<td>Fix the option in the Custom Resource. To inspect the Pod meanwhile, <a href="debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">stop the restart loop</a></td>
+</tr>
+<tr>
+<td><code>mongod</code> stops or restarts, and the data volume is full</td>
+<td><code>kubectl exec &lt;pod-name&gt; -n &lt;namespace&gt; -c mongod -- df -h /data/db</code></td>
+<td><strong>User</strong>: the storage is too small for the data and the oplog</td>
+<td>Increase the storage size. See <a href="scaling-storage-resize.html">Resize storage</a></td>
+</tr>
+<tr>
+<td>Pod is <code>Running</code> but not ready; the member is in <code>STARTUP2</code> or <code>RECOVERING</code></td>
+<td><code>rs.status()</code>. See <a href="#connect-to-a-member">Connect to a member</a></td>
+<td><strong>MongoDB</strong>: the member runs an initial sync or catches up</td>
+<td>Wait for the sync to finish. See <a href="architecture-probes.html#what-this-means-for-users">Health checks and probes</a></td>
+</tr>
+<tr>
+<td><code>mongod</code> container restarts; events show <code>Liveness probe failed</code></td>
+<td><code>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;</code></td>
+<td><strong>Kubernetes</strong>, acting on the probe: the member is <code>DOWN</code> or <code>REMOVED</code>, or doesn’t answer in time</td>
+<td>See <a href="architecture-probes.html#where-to-look-if-probes-fail">Health checks and probes</a></td>
+</tr>
+<tr>
+<td>No primary; writes fail; Operator logs show <code>FULL CLUSTER CRASH</code></td>
+<td>Operator logs, <code>rs.status()</code> on a remaining member</td>
+<td><strong>MongoDB</strong>: the replica set lost its majority. The Operator rewrites the configuration</td>
+<td>See <a href="architecture-workflows.html#replica-set-without-a-primary">Replica set without a primary</a></td>
+</tr>
+<tr>
+<td>A rolling restart is stuck</td>
+<td>Operator logs</td>
+<td><strong>Operator</strong>: waits for a Pod to become ready, or for a backup or restore to finish</td>
+<td>See <a href="architecture-reconciliation.html#how-smart-update-works">How Smart Update works</a></td>
+</tr>
+<tr>
+<td>Sharded cluster: <code>mongos</code> Pods are missing or don’t get the new version; Operator logs show <code>StatefulSet is not up to date</code></td>
+<td>Operator logs, the config server and shard Pods</td>
+<td><strong>Operator</strong>: it creates and updates <code>mongos</code> only after every config server and shard StatefulSet runs its current revision, and not during a restore</td>
+<td>Fix the replica set that isn’t up to date. See <a href="architecture-reconciliation.html#how-smart-update-works">How Smart Update works</a></td>
+</tr>
+<tr>
+<td>The cluster stays in <code>stopping</code> after you set <code>pause: true</code></td>
+<td>Operator logs: <code>deleting rs pods</code></td>
+<td><strong>Kubernetes</strong> or <strong>MongoDB</strong>: a Pod doesn’t terminate, or the first Pod can’t become the primary</td>
+<td>See <a href="pause.html#troubleshooting">Pause and resume the cluster</a></td>
+</tr>
+<tr>
+<td>Clients can’t resolve member host names</td>
+<td>Cluster DNS, the replica set configuration</td>
+<td><strong>Kubernetes</strong>: networking and DNS, or the exposure settings</td>
+<td>See <a href="troubleshoot-connection.html">Troubleshoot connection issues</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="backups-and-restores">Backups and restores<a data-markdown-ignore class="headerlink" href="#backups-and-restores" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Look here first</th>
+<th>Usually owned by</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A backup has no state or stays <code>waiting</code></td>
+<td><code>kubectl get psmdb-backup &lt;backup-name&gt; -n &lt;namespace&gt; -o yaml</code>, Operator logs: <code>Cluster is not ready for backup</code>, <code>Another backup is holding the lock</code></td>
+<td><strong>Operator</strong>: waits for a healthy cluster, or for another backup, restore or ClusterSync to finish</td>
+<td>Restore cluster health or wait for the other operation. See <a href="architecture-workflows.html#on-demand-backup">On-demand backup</a></td>
+</tr>
+<tr>
+<td>A backup is in the <code>error</code> state</td>
+<td><code>status.error</code>, the <code>backup-agent</code> logs on the Pod named in <code>status.pbmPods</code></td>
+<td><strong>User</strong>: storage credentials or endpoint</td>
+<td>See <a href="debug-backup-restore.html">Troubleshoot backups and restores</a></td>
+</tr>
+<tr>
+<td>The cluster stays <code>initializing</code> while all Pods are ready; Operator logs show <code>Agent is not OK</code></td>
+<td>Operator logs, the <code>backup-agent</code> logs</td>
+<td><strong>User</strong>: the backup storage is unreachable</td>
+<td>Fix the storage configuration. See <a href="backups-storage.html">Configure storage for backups</a></td>
+</tr>
+<tr>
+<td>A restore is in the <code>error</code> state</td>
+<td><code>status.error</code> in <code>kubectl get psmdb-restore &lt;restore-name&gt; -n &lt;namespace&gt; -o yaml</code></td>
+<td><strong>Varies</strong>: often the backup source or storage access</td>
+<td>See <a href="architecture-workflows.html#restore">Restore</a> and <a href="debug-backup-restore.html">Troubleshoot backups and restores</a></td>
+</tr>
+<tr>
+<td>A backup object is stuck in <code>Terminating</code></td>
+<td>Operator logs</td>
+<td><strong>User</strong>: the backup files can’t be deleted from storage, so the <code>percona.com/delete-backup</code> finalizer stays</td>
+<td>Check storage access. See <a href="backups-delete.html">Delete the unneeded backup</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-and-tls">Storage and TLS<a data-markdown-ignore class="headerlink" href="#storage-and-tls" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Look here first</th>
+<th>Usually owned by</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A storage size change does nothing</td>
+<td>The storage size in the Custom Resource compared with the PVC size, PVC events</td>
+<td><strong>User</strong>, if <code>storageScaling.enableVolumeScaling</code> is off. <strong>Kubernetes</strong> or the CSI driver, for resize errors in the PVC events</td>
+<td>See <a href="scaling-storage-resize.html">Resize storage</a> and <a href="debug-storage.html">Troubleshooting storage</a></td>
+</tr>
+<tr>
+<td>TLS errors after you replaced a certificate</td>
+<td>The <code>ca.crt</code> keys of the TLS Secrets</td>
+<td><strong>User</strong>: the CA changed in one step</td>
+<td>See <a href="tls-update.html">Update certificates</a></td>
+</tr>
+<tr>
+<td>TLS handshake errors, and the certificates are past their expiry date</td>
+<td>The certificate dates. See <a href="tls-update.html#check-your-certificates-for-expiration">Check your certificates for expiration</a></td>
+<td><strong>User</strong>, for certificates you manage. cert-manager, if it failed to renew them</td>
+<td>See <a href="tls-update.html#update-certificates-with-downtime">Update certificates with downtime</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="connect-to-a-member">Connect to a member<a data-markdown-ignore class="headerlink" href="#connect-to-a-member" title="Permanent link">¶</a></h2>
+<p>To check the replica set yourself, open <code>mongosh</code> in the <code>mongod</code> container. The container already has the <code>clusterAdmin</code> credentials in its environment:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-c<span class="w"> </span>mongod<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'mongosh -u "$MONGODB_CLUSTER_ADMIN_USER" -p "$MONGODB_CLUSTER_ADMIN_PASSWORD"'</span>
+</code></pre></div>
+<p>If <code>tls.mode</code> is <code>requireTLS</code>, add <code>--tls --tlsCAFile /etc/mongodb-ssl/ca.crt --tlsCertificateKeyFile /tmp/tls.pem --tlsAllowInvalidHostnames</code> to the <code>mongosh</code> command.</p>
+<p>Useful commands:</p>
+<ul>
+<li><code>rs.status()</code> shows each member, its state and its health. The short form is <code>rs.status().members.map(m =&gt; ({name: m.name, state: m.stateStr, health: m.health}))</code>.</li>
+<li><code>rs.printSecondaryReplicationInfo()</code> shows how far each secondary is behind the primary.</li>
+<li>In a sharded cluster, connect to a <code>mongos</code> Pod with <code>-c mongos</code>, for example <code>my-cluster-name-mongos-0</code>, and run <code>sh.status()</code>.</li>
+</ul>
+<p>If the container keeps restarting, you can’t connect. <a href="debug-shell.html#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers">Stop the restart loop</a> first. For more about shell access, see <a href="debug-shell.html">Exec into the containers</a>.</p>
+<h2 id="collect-diagnostics-for-support">Collect diagnostics for support<a data-markdown-ignore class="headerlink" href="#collect-diagnostics-for-support" title="Permanent link">¶</a></h2>
+<p>If you need help from Percona, collect the diagnostic data first. <a href="https://docs.percona.com/percona-toolkit/pt-k8s-debug-collector.html">pt-k8s-debug-collector <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> gathers the Custom Resources, Pod descriptions, events, logs and other Kubernetes objects into one archive.</p>
+<p>Run the tool on the machine where you run <code>kubectl</code>, not inside a Pod. It uses your kubeconfig to read the cluster, so it needs <code>kubectl</code> in the <code>PATH</code> and read access to the cluster’s namespace. The tool is part of <a href="https://docs.percona.com/percona-toolkit/installation.html">Percona Toolkit <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>, which also installs <code>pt-mongodb-summary</code>, used for the database summary.</p>
+<div class="highlight"><pre><span></span><code>pt-k8s-debug-collector<span class="w"> </span>--resource<span class="o">=</span>psmdb<span class="w"> </span>--namespace<span class="o">=</span>&lt;namespace&gt;<span class="w"> </span>--cluster<span class="o">=</span>my-cluster-name
+</code></pre></div>
+<p>The tool writes a <code>cluster-dump_&lt;timestamp&gt;.tar.gz</code> archive to the current directory.</p>
+<p>If you can’t run the tool, collect at least:</p>
+<ul>
+<li><code>kubectl get psmdb my-cluster-name -n &lt;namespace&gt; -o yaml</code></li>
+<li>The Operator logs. See <a href="#check-the-operator">Check the Operator</a></li>
+<li><code>kubectl describe pods -n &lt;namespace&gt;</code></li>
+<li><code>kubectl get events -n &lt;namespace&gt; --sort-by=.lastTimestamp</code></li>
+<li>The logs of the failing containers, with <code>--previous</code> if they restarted</li>
+</ul>
+<p>Then see <a href="get-help.html">Get help from Percona</a> for the community forum and support options.</p>
 <h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="cr-statuses.html">Custom resource statuses</a></li>
+<li><a href="debug-logs.html">Check the logs</a> explains the <code>kubectl logs</code> options and how to change the Operator log format.</li>
+<li><a href="troubleshoot-operator.html">Troubleshoot the Operator installation</a> covers an Operator that doesn’t start and a cluster that stays in <code>initializing</code>.</li>
+<li><a href="debug-backup-restore.html">Troubleshoot backups and restores</a> walks through failed backups and restores step by step.</li>
+<li><a href="architecture-responsibilities.html">Who owns what</a> explains which layer reacts to which event, so you know where to look next time.</li>
 </ul>
 <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:52:55 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
       
         <br>
         Created:

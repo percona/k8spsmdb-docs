@@ -2,7 +2,7 @@
 
 # Install Percona Server for MongoDB using kubectl
 
-Percona Operator for MongoDB is a special type of controller introduced to automate deployment and management of Percona Server for MongoDB in Kubernetes. The Operator extends the Kubernetes API with custom resources. Learn more about [how the Operator works](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/how-it-works.html) and its [architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html).
+Percona Operator for MongoDB is a special type of controller introduced to automate deployment and management of Percona Server for MongoDB in Kubernetes. The Operator extends the Kubernetes API with custom resources. Learn more about how the Operator works in [Design and architecture](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/architecture.html).
 
 We recommend installing the Operator with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. It is the universal way to interact with Kubernetes. Alternatively, you can install it using the [Helm](https://github.com/helm/helm) package manager.
 

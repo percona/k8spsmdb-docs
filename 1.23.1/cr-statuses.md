@@ -108,16 +108,28 @@ Common fields:
 
 `status.state` values are:
 
-| Value          | Meaning                                                      |
-| -------------- | ------------------------------------------------------------ |
-| `""`           | The Operator has not set a state yet.                        |
-| `initializing` | The Operator is creating or reconciling the cluster.         |
-| `stopping`     | The Operator is stopping or scaling down cluster components. |
-| `paused`       | The cluster is paused.                                       |
-| `ready`        | The cluster is up and healthy.                               |
-| `error`        | The Operator detected an error; check conditions and events. |
+| Value          | Meaning                                                                                                           |
+| -------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `""`           | The Operator has not set a state yet.                                                                             |
+| `initializing` | The Operator is creating or reconciling the cluster.                                                              |
+| `stopping`     | The Operator is stopping or scaling down cluster components.                                                      |
+| `paused`       | The cluster is paused.                                                                                            |
+| `ready`        | The cluster is up and healthy. See [What `ready` means](#what-ready-means).                                       |
+| `error`        | The last reconcile failed. The reason is in `status.message` and in a condition with the reason `ErrorReconcile`. |
 
-When [vector search is enabled](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#searchenabled), the cluster is not marked `ready` until every entry in `status.search` is also `ready`.
+### What `ready` means
+
+The cluster is `ready` only when all of the following are true:
+
+- Every Pod of every replica set, including the config server replica set, has all containers ready.
+- Every Pod is a member of its replica set, and the Operator can reach all of them.
+- In a sharded cluster, every `mongos` Pod is ready.
+- Every Pod runs the current revision of its StatefulSet, so no rollout is pending.
+- With backups enabled, every PBM agent reports that it is healthy and can reach the backup storage.
+- The cluster endpoint, `status.host`, is known. For a `LoadBalancer` Service, this means the cloud provider has assigned an address.
+- With [vector search enabled](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#searchenabled), every entry in `status.search` is `ready`.
+
+A `ready` cluster goes back to `initializing` as soon as one of these conditions stops being true, for example after a container restart. If the cluster stays in `initializing`, see [Cluster stays in `initializing`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/troubleshoot-operator.html#cluster-stays-in-initializing).
 
 ### Replica set and mongos status
 
