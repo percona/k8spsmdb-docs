@@ -24,4 +24,6 @@ exclude_loopback = true
 
 exclude = [
   '^https?://(www\.)?example\.(com|org|net)(/|$)',
+  # Release notes for 1.24.0 are not published yet.
+  'Kubernetes-Operator-for-PSMONGODB-RN1\.24\.0\.md',
 ]
