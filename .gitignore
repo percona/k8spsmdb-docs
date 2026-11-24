@@ -6,3 +6,6 @@ Pipfile.lock
 *~
 .cursor/
 Claude outputs/
+
+.lycheecache
+lychee/

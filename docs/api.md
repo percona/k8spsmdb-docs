@@ -89,7 +89,7 @@ Create a `PerconaServerMongoDB` object. The usual path is to maintain `deploy/cr
         "namespace": "my-namespace-name"
       },
       "spec": {
-        "image": "percona/percona-server-mongodb:{{ mongodb80recommended }}",
+        "image": "percona/percona-server-mongodb:{{ mongodb83recommended }}",
         "replsets": [
           {
             "name": "rs0",
@@ -316,7 +316,7 @@ Remove by array index (check the current order with `kubectl get psmdb my-cluste
 
     ```bash
     kubectl patch psmdb my-cluster-name -n $NAMESPACE --type=json -p='[
-      {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
+      {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb83recommended }}"}
     ]'
     ```
 
@@ -329,7 +329,7 @@ Remove by array index (check the current order with `kubectl get psmdb my-cluste
       -H "Content-Type: application/json-patch+json" \
       -H "Accept: application/json" \
       -d '[
-        {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb80recommended }}"}
+        {"op": "replace", "path": "/spec/image", "value": "percona/percona-server-mongodb:{{ mongodb83recommended }}"}
       ]'
     ```
 
