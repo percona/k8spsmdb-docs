@@ -50,6 +50,10 @@ See [Limitations](search-overview.md#limitations) in the search overview.
 
 --8<-- "clustersync.md:pcsmlimitations"
 
+## Transport encryption
+
+Switch every Percona Server for MongoDB cluster that uses cert-manager to your own certificates before you uninstall cert-manager. cert-manager is cluster-wide, so removing it puts every such cluster into the `error` state. Database Pods keep running. See [Uninstall cert-manager](tls-cert-manager.md#uninstall-cert-manager).
+
 ## Next steps
 
 [Get started](quickstart.md){.md-button}

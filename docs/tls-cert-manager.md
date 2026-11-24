@@ -294,3 +294,22 @@ issuer does not exist or is not ready - check `kubectl describe certificate` for
 The cluster itself stays in `initializing` until all of these Secrets exist, so a cluster that never
 reaches `ready` after enabling cert-manager is nearly always an issuance problem, not a
 database problem.
+
+## Uninstall cert-manager
+
+cert-manager is installed once for the Kubernetes cluster. Uninstalling it affects every Percona Server for MongoDB cluster that uses cert-manager for TLS, in every namespace. It also affects any other application in this Kubernetes cluster that uses cert-manager.
+
+Switch every such Percona Server for MongoDB cluster to your own certificates first:
+
+1. Create your own TLS Secrets for each cluster, signed by the certificate authority (CA) that cluster already trusts, and reference them in its Custom Resource.
+2. Wait until every one of those clusters reports `ready`.
+
+Uninstall cert-manager only after that.
+
+!!! warning
+
+    If you uninstall cert-manager while a cluster still uses it, the Operator keeps trying to update that cluster's certificates through cert-manager. The updates fail, and the cluster status changes to `error`.
+
+    Database Pods keep running. The cluster does not return to `ready` on its own.
+
+    To recover, delete the cluster's TLS Secrets and restart its Pods. The Operator issues new certificates under a new CA. Pass that CA to every client that trusted the previous one.
