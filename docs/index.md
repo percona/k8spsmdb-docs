@@ -20,8 +20,8 @@ The Percona Operator for MongoDB runs and manages Percona Server for MongoDB ins
 
 Just evaluating? See how the Operator works, how it's designed and how it stands out among other ways to run MongoDB on Kubernetes:
 
-* [How the Operator works](how-it-works.md)
 * [Architecture](architecture.md)
+* [Key workflows](architecture-workflows.md)
 * [Compare with other solutions](compare.md)
 * [Features](features.md)
 

@@ -42,9 +42,13 @@ On OpenShift, database upgrades follow a different procedure. See [Upgrade Perco
 
 Do these for every upgrade:
 
-* **Take a backup first.** See [Backup and restore](backups.md) or [On-demand backup](backup-tutorial.md).
-* **Test in staging first.** This matters most for Operator upgrades and major database version upgrades. Operator upgrades can cause performance degradation.
-* **Move one version at a time.** You can upgrade the Operator only to the nearest `major.minor` version, and database major versions also move one at a time. Bigger gaps need several sequential upgrades. See [Considerations](update-operator.md#for-the-operator-upgrades) and [Major version upgrades](update-major.md).
+* **Take a backup first.** Do this before any upgrade. See [Backup and restore](backups.md) or [On-demand backup](backup-tutorial.md).
+* **Test in staging first.** Do this for any upgrade, especially Operator upgrades and major database version upgrades, before you run it against production. Operator upgrades can cause performance degradation.
+* **Move one version at a time.** You can upgrade the Operator only to the nearest `major.minor` version. Bigger gaps need several sequential upgrades. Database major versions also move one version at a time. See [Considerations](update-operator.md#for-the-operator-upgrades) and [Major version upgrades](update-major.md).
+* **Stay within the CRD compatibility window.** The CRD supports the last three minor Operator versions. Plan stage 2 before your Operator moves more than two minor versions ahead of a cluster's `crVersion`. See [Why the stages can be separated](#why-the-stages-can-be-separated) and [Considerations](update-operator.md#considerations).
+* **FCV changes are not easily reversible.** Setting [`upgradeOptions.setFCV`](operator.md#upgradeoptionssetfcv) is not undone by downgrading the image afterward. See [Feature Compatibility Version](update-major.md#feature-compatibility-version).
+* **MongoDB end-of-life notices.** MongoDB 4.4 reached end of life in Operator 1.16.0, MongoDB 5.0 in Operator 1.19.0, and Percona Server for MongoDB 6.0 in Operator 1.24.0. Upgrade the database to a supported major version before you upgrade the Operator past those releases. See [End of Life versions of MongoDB](update-minor-automatic.md#procedure).
+* **Known problematic version combination.** Operator 1.19.0 or 1.19.1 with a sharded cluster and MongoDB 8.0 can fail point-in-time recovery. See [Considerations](update-operator.md#considerations).
 
 Check whether any of these apply to you:
 
@@ -110,6 +114,8 @@ Set `updateStrategy` in the [Custom Resource](operator.md) to choose how the Ope
 | `SmartUpdate` (default, recommended) | The Operator | Restarts Pods so the primary is updated last, which reduces connection disruption. Also applies when you change a ConfigMap, rotate passwords, or change resource values, not only during database version upgrades. |
 | `RollingUpdate` | [Kubernetes :octicons-link-external-16:](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies) | The StatefulSet controller deletes a Pod, updates it, waits until it reports Ready, then moves to the next Pod. The order matches Pod termination order, which may not be optimal for Percona Server for MongoDB. |
 | `OnDelete` | You | You delete each Pod, and the StatefulSet controller recreates it with the updated configuration. |
+
+Smart Update restarts secondaries first, then the primary after it steps down. In a sharded cluster it restarts the config server replica set, then the shards, then `mongos`. It waits for running backups and restores to finish before it starts. For what it waits for and its timeouts, see [How Smart Update works](architecture-reconciliation.md#how-smart-update-works).
 
 For upgrades that use `RollingUpdate` or `OnDelete`, see [Upgrade manually](update-manually.md).
 
