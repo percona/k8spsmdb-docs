@@ -54,7 +54,7 @@ You can configure TLS security in several ways:
 * By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
 certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets `<cluster-name>-ssl` and `<cluster-name>-ssl-internal`. When backups are enabled, it also creates `<cluster-name>-pbm`. These Secrets are referenced in the `secrets.ssl`, `secrets.sslInternal` and `secrets.sslPBM` options in the Custom Resource.
 
-    Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.
+    Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates. If you add or change [split-horizon DNS](expose.md#exposing-replica-set-with-split-horizon-dns) names, the Operator version 1.24.0 and above updates those names on Operator-generated certificates and on cert-manager Certificate resources. It does this only when the [certificate management policy](#certificate-management-policy) is `auto`. Add those names yourself to certificates you generate manually.
 
 * The Operator can use an installed *cert-manager* to automatically generate and
     renew short-term TLS certificates. By default it creates namespace-scoped issuers
