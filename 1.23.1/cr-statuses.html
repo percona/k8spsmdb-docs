@@ -5296,6 +5296,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#example-status" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6860,6 +6871,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#example-status" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7444,8 +7466,15 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <li><code>status.lagTimeSeconds</code> – replication lag in seconds</li>
 <li><code>status.error</code> – error details from PCSM or the Operator (for example, missing Secret or cluster busy)</li>
 <li><code>status.startedAt</code> – timestamp of the first time PCSM reported <code>running</code></li>
+<li><code>status.size</code> – number of PCSM instances requested in <code>spec.size</code></li>
+<li><code>status.readyReplicas</code> – number of ready PCSM Pods. A value lower than <code>status.size</code> means some requested instances are not ready; check <code>status.state</code>, <code>status.activeInstance</code>, and replication lag to assess whether replication is continuing.</li>
+<li><code>status.activeInstance</code> – name of the PCSM Pod that holds the lease and replicates. See <a href="clustersync.html#high-availability">High availability in PCSM</a>.</li>
 <li><code>status.conditions</code> – condition list with reason and message</li>
 </ul>
+<p><code>kubectl get psmdb-clustersync</code> shows the main fields as columns:</p>
+<div class="no-copy highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        2       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
+</code></pre></div>
 <h3 id="clustersync-mode-values">ClusterSync mode values<a data-markdown-ignore class="headerlink" href="#clustersync-mode-values" title="Permanent link">¶</a></h3>
 <p><code>status.mode</code> mirrors <code>spec.mode</code> after the Operator applies the matching PCSM command:</p>
 <table>
@@ -7527,17 +7556,24 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
+<h3 id="events">Events<a data-markdown-ignore class="headerlink" href="#events" title="Permanent link">¶</a></h3>
+<p>When another PCSM instance becomes active, the Operator records a <code>PCSMFailover</code> event on the ClusterSync resource with the message <code>Active PCSM instance changed from "&lt;old-pod&gt;" to "&lt;new-pod&gt;"</code>. To see the events:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-clustersync<span class="w"> </span>&lt;clustersync-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
 <h3 id="example-status">Example status<a data-markdown-ignore class="headerlink" href="#example-status" title="Permanent link">¶</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">lagTimeSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">72</span>
+<span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">readyReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">activeInstance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p</span>
 <span class="w">  </span><span class="nt">startedAt</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-07-01T12:00:00Z"</span>
 <span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span>
 <span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"True"</span>
-<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMReplicating</span>
-<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSM is applying changes from source</span>
+<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMRunning</span>
+<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSM is replicating from source to target</span>
 </code></pre></div>
 <p>On failure:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
@@ -7554,7 +7590,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:07:40 UTC">November 24, 2026</span>
       
         <br>
         Created:

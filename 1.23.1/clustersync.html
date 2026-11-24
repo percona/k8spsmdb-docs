@@ -149,7 +149,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#real-time-replication-and-near-zero-downtime-migration-with-percona-clustersync-for-mongodb-pcsm" class="md-skip">
+        <a href="#real-time-replication-with-percona-clustersync-for-mongodb-pcsm" class="md-skip">
           Skip to content
         </a>
       
@@ -803,10 +803,60 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tls-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS connections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High availability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="High availability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#change-the-lease-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change the lease duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-mongodb-deployments" class="md-nav__link">
     <span class="md-ellipsis">
       
         Supported MongoDB deployments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-mongodb-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported MongoDB versions
       
     </span>
   </a>
@@ -825,10 +875,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sharding-support-in-pcsm-tech-preview" class="md-nav__link">
+  <a href="#sharding-support" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharding support in PCSM (tech preview)
+        Sharding support
       
     </span>
   </a>
@@ -6497,10 +6547,60 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
+  <a href="#tls-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS connections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High availability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="High availability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#change-the-lease-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change the lease duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-mongodb-deployments" class="md-nav__link">
     <span class="md-ellipsis">
       
         Supported MongoDB deployments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-mongodb-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported MongoDB versions
       
     </span>
   </a>
@@ -6519,10 +6619,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
-  <a href="#sharding-support-in-pcsm-tech-preview" class="md-nav__link">
+  <a href="#sharding-support" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sharding support in PCSM (tech preview)
+        Sharding support
       
     </span>
   </a>
@@ -6674,7 +6774,7 @@ window.addEventListener('afterprint', (event) => {
   
 
 
-<h1 id="real-time-replication-and-near-zero-downtime-migration-with-percona-clustersync-for-mongodb-pcsm">Real-time replication and near-zero downtime migration with Percona ClusterSync for MongoDB (PCSM)<a data-markdown-ignore class="headerlink" href="#real-time-replication-and-near-zero-downtime-migration-with-percona-clustersync-for-mongodb-pcsm" title="Permanent link">¶</a></h1>
+<h1 id="real-time-replication-with-percona-clustersync-for-mongodb-pcsm">Real-time replication with Percona ClusterSync for MongoDB (PCSM)<a data-markdown-ignore class="headerlink" href="#real-time-replication-with-percona-clustersync-for-mongodb-pcsm" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
 </div>
@@ -6722,12 +6822,57 @@ reconfigure client applications to point to the target cluster.</p>
 <p><strong>Target cluster</strong> – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.</p>
 </li>
 <li>
-<p><strong>PCSM Deployment</strong> — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see <a href="clustersync-setup.html#troubleshooting">Troubleshooting</a>.</p>
+<p><strong>PCSM Deployment</strong> – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can’t resume: if it’s interrupted, start a new sync. See <a href="clustersync-setup.html#troubleshooting">Troubleshooting</a>.</p>
 </li>
 </ul>
+<h2 id="tls-connections">TLS connections<a data-markdown-ignore class="headerlink" href="#tls-connections" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md">1.24.0</a></p>
+</div>
+<p><strong>To the target cluster.</strong> If the target cluster has TLS turned on and its <code>crVersion</code> is 1.24.0 or later, PCSM connects to it over TLS. You don’t need to configure anything:</p>
+<ul>
+<li>The Operator mounts the target cluster’s TLS Secret, set in <a href="operator.html#secretsssl"><code>secrets.ssl</code></a>, into the PCSM Pods.</li>
+<li>PCSM presents the certificate from this Secret and checks the target cluster’s certificate against the Secret’s <code>ca.crt</code>.</li>
+<li>PCSM follows the target cluster’s <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> setting.</li>
+</ul>
+<p>The Operator restarts the PCSM Pods in these cases:</p>
+<ul>
+<li>When the target cluster’s certificates change, for example when cert-manager renews them or you rotate them. </li>
+<li>When you change <code>tls.allowInvalidCertificates</code>. </li>
+</ul>
+<p>A restart during the initial clone stops the sync. See <a href="#limitations">Limitations</a>.</p>
+<p>With a <code>crVersion</code> earlier than 1.24.0, PCSM connects to the target cluster without TLS. This works only if the target accepts connections without TLS, with <code>tls.mode</code> set to <code>preferTLS</code> or <code>allowTLS</code>.</p>
+<p><strong>To the source cluster.</strong> Add TLS options to the connection string in <a href="clustersync-options.html#sourceuri"><code>source.uri</code></a>, for example <code>tls=true</code>. The Operator doesn’t add certificates for the source connection.</p>
+<h2 id="high-availability">High availability<a data-markdown-ignore class="headerlink" href="#high-availability" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md">1.24.0</a></p>
+</div>
+<p>A migration or a continuous replica can run for hours. With a single PCSM instance, a Pod failure, node drain or eviction stops replication until Kubernetes restarts the Pod. Run PCSM with high availability to keep replication going through these events without your involvement: a standby instance takes over within seconds and continues from the last checkpoint, so replication doesn’t start over and the lag stays low.</p>
+<p>To turn it on, set <a href="clustersync-options.html#size"><code>spec.size</code></a> to <code>2</code> or more. One instance is active and replicates, and the others are standbys.</p>
+<p>The instances elect the active one through a lease that PCSM keeps on the target cluster, in the <code>percona_clustersync_mongodb</code> database. The active instance renews the lease every 3 seconds. If it stops renewing it, the lease expires in 10 seconds by default. Then a standby takes the lease and continues replication from the last saved checkpoint.</p>
+<p>When PCSM runs with high availability, the Operator manages the group for you:</p>
+<ul>
+<li>Sends <code>pause</code>, <code>resume</code> and <code>finalize</code> commands to the active instance and stores its Pod name in <code>status.activeInstance</code>.</li>
+<li>Records a <code>PCSMFailover</code> event each time another instance becomes active.</li>
+<li>Creates the <code>&lt;clustersync-name&gt;-pcsm</code> PodDisruptionBudget, which allows one PCSM Pod to be unavailable at a time. To change it, see <a href="clustersync-options.html#poddisruptionbudgetmaxunavailable"><code>podDisruptionBudget</code></a>.</li>
+<li>Replaces the Pods one at a time when you change the ClusterSync configuration.</li>
+</ul>
+<p>High availability protects replication after the initial clone. For what it doesn’t cover, see <a href="#limitations">Limitations</a>.</p>
+<p>By default, PCSM runs as a single instance. If its Pod restarts, PCSM resumes from the last checkpoint after the previous lease expires.</p>
+<h3 id="change-the-lease-duration">Change the lease duration<a data-markdown-ignore class="headerlink" href="#change-the-lease-duration" title="Permanent link">¶</a></h3>
+<p>You can set how long the lease lasts with the <code>PCSM_HA_LEASE_TTL</code> environment variable in <a href="clustersync-options.html#env"><code>spec.env</code></a>, for example <code>30s</code>. The minimum and the default are <code>10s</code>. A longer lease lets the active instance survive short outages of the target cluster, but a standby takes over later when the active instance fails. See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/high-availability.html">High availability in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="supported-mongodb-deployments">Supported MongoDB deployments<a data-markdown-ignore class="headerlink" href="#supported-mongodb-deployments" title="Permanent link">¶</a></h2>
-<p>Both source and target cluster can be replica sets or sharded clusters and must have the same major version. Minimum supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0.</p>
-<p>Replication between sharded clusters is in the tech preview stage and is not recommended for production use yet. See <a href="#sharding-support-in-pcsm-tech-preview">Sharding support</a> to learn more.</p>
+<p>PCSM supports these topologies:</p>
+<ul>
+<li>Replica set to replica set</li>
+<li>Sharded cluster to sharded cluster</li>
+<li>Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.</li>
+<li>Replica set to sharded cluster. After migration, the collections remain unsharded and you must shard them yourself. </li>
+</ul>
+<p>See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html">Supported MongoDB deployments in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html#sharded-clusters">Limitations on sharded clusters in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for more information.</p>
+<h2 id="supported-mongodb-versions">Supported MongoDB versions<a data-markdown-ignore class="headerlink" href="#supported-mongodb-versions" title="Permanent link">¶</a></h2>
+<p>The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0. </p>
+<p>To learn more, see <a href="https://docs.percona.com/percona-clustersync-for-mongodb/version-compatibility.html#version-compatibility-matrix">Version compatibility matrix in PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="replication-modes-and-states">Replication modes and states<a data-markdown-ignore class="headerlink" href="#replication-modes-and-states" title="Permanent link">¶</a></h2>
 <p>You control the replication flow through the <code>PerconaServerMongoDBClusterSync</code> custom resource. Supported modes are:</p>
 <ul>
@@ -6737,9 +6882,10 @@ reconfigure client applications to point to the target cluster.</p>
 </ul>
 <p>PCSM also reports a runtime <strong>state</strong>, which the Operator stores in <code>status.state</code>: <code>idle</code>, <code>running</code>, <code>paused</code>, <code>finalizing</code>, <code>finalized</code>, <code>failed</code>.</p>
 <p>Find more information about modes, states, and conditions in <a href="cr-statuses.html#perconaservermongodbclustersync-status">Custom resource statuses</a>. For all configuration fields, see <a href="clustersync-options.html">ClusterSync Resource options</a>.</p>
-<h2 id="sharding-support-in-pcsm-tech-preview">Sharding support in PCSM (tech preview)<a data-markdown-ignore class="headerlink" href="#sharding-support-in-pcsm-tech-preview" title="Permanent link">¶</a></h2>
-<p>PCSM can replicate data between sharded clusters. Before the replication, it checks the source cluster for sharded collections and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names, and zones internally.</p>
-<p>PCSM replicates <strong>data only</strong>, not sharding metadata. It connects through <code>mongos</code> on both sides, so source and target can have different numbers of shards.</p>
+<h2 id="sharding-support">Sharding support<a data-markdown-ignore class="headerlink" href="#sharding-support" title="Permanent link">¶</a></h2>
+<p>PCSM replicates from a sharded source to a sharded cluster or to a replica set. It connects to a sharded cluster through <code>mongos</code>.</p>
+<p>For a sharded target, PCSM checks the source for sharded collections before the replication and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names and zones. PCSM replicates <strong>data only</strong>, not sharding metadata, so the source and target can have different numbers of shards.</p>
+<p>For a replica set target, sharded collections on the source become regular collections. See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/sharding.html">Sharding support in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="backup-and-restore-management">Backup and restore management<a data-markdown-ignore class="headerlink" href="#backup-and-restore-management" title="Permanent link">¶</a></h2>
 <p>You can run backups and restores on the <strong>source</strong> as usual.</p>
 <p>On the <strong>target</strong>, the Operator holds a lease while PCSM is active, so backups and restores wait. After you finalize replication and PCSM reports <code>finalized</code>, the Operator releases the lease and you can back up or restore the target again.</p>
@@ -6754,10 +6900,11 @@ reconfigure client applications to point to the target cluster.</p>
 <p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <p>Notable constraints:</p>
 <ul>
-<li>Same <strong>major</strong> MongoDB version required on source and target.</li>
+<li>Source and target run the same major MongoDB version, or one of the supported upgrade paths. See <a href="clustersync.html#supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
 <li>Single source / single target pair only.</li>
 <li>Reverse synchronization is not supported.</li>
-<li>Initial sync is <strong>not resumable</strong>. If PCSM failed during initial sync, it restarts it from scratch.</li>
+<li>The initial clone is <strong>not resumable</strong>, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error <code>initial clone interrupted by failover and is not resumable</code>. See <a href="clustersync-setup.html#status-shows-failed">Status shows <code>failed</code></a>.</li>
+<li>With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.</li>
 <li>PCSM connects to the <strong>primary</strong> only; <code>directConnection</code> to secondaries is ignored.</li>
 <li>Users, roles, and <code>system.*</code> collections are not synchronized.</li>
 <li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
@@ -6770,7 +6917,7 @@ reconfigure client applications to point to the target cluster.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 5, 2026 19:07:06 UTC">October 5, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:07:40 UTC">November 24, 2026</span>
       
         <br>
         Created:

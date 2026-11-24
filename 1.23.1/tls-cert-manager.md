@@ -58,18 +58,6 @@ See the sections below for how you can fine-tune the Operator and cert-manager t
 - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
 - [Configure TLS certificate management policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-management-policy.html)
 - [Configure TLS using cert-manager](#configure-tls-using-cert-manager)
-- [About the *cert-manager*](#about-the-cert-manager)
-- [Install the *cert-manager*](#install-the-cert-manager)
-- [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
-  - [Rules and limitations](#rules-and-limitations)
-  - [Configuration](#configuration)
-- [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
-- [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
-- [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
-- [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
-- [Pre-create certificates before deployment](#pre-create-certificates-before-deployment)
-- [Operator environment variable](#operator-environment-variable)
-- [Verify the certificates](#verify-the-certificates)
 
 ## Customize certificate duration for cert-manager
 
@@ -122,6 +110,14 @@ Once you create the database with the Operator and cert-manager is running, the 
 - the PBM client `Certificate` `<cluster-name>-pbm` when backups are enabled and the `crVersion` is 1.24.0 or higher. It’s a client-only certificate that the Operator and the backup agents present to MongoDB. See [Transport Layer Security (TLS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for how the certificates work together. If you set `secrets.sslPBM`, the `Certificate` keeps the name `<cluster-name>-pbm` and writes to the Secret you named.
 
 cert-manager issues short-lived certificates (90 days by default) and renews them on schedule. Set [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) to `true` (the default) for this self-signed setup.
+
+## Update certificates for split-horizon names
+
+Version availability: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+With `tls.certManagementPolicy: auto`, the Operator updates `dnsNames` on the `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources when you add or change [split-horizon DNS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) names. cert-manager reissues the certificates. You do not edit `dnsNames` yourself. However, for user-managed Certificate resources or `tls.certManagementPolicy: userProvidedOnly`, update `dnsNames` yourself.
+
+This applies to every issuer on this page: Operator-managed issuers, and an existing `Issuer` or `ClusterIssuer`.
 
 ## Operator-managed issuers with ClusterIssuer scope
 
@@ -186,6 +182,8 @@ Replace `my-org-issuer` with the name of your existing `ClusterIssuer`. Set [`tl
 
 When you deploy the cluster, the Operator creates `Certificate` resources that reference your `ClusterIssuer`. cert-manager signs the resulting Secrets; the Operator does not create a parallel CA or overwrite your issuer.
 
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
+
 Note
 
 The Operator’s default RBAC does not grant access to cluster-scoped `ClusterIssuer` resources. This is expected: cert-manager resolves the issuer when processing `Certificate` objects. You do not need to add extra Operator permissions to use an existing `ClusterIssuer`.
@@ -205,6 +203,8 @@ spec:
 ```
 
 When the issuer name refers to an existing resource, the Operator creates TLS `Certificate` resources that cert-manager signs through your issuer. It does not recreate the issuer or its CA chain.
+
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
 
 ## Pre-create certificates before deployment
 

@@ -7214,7 +7214,15 @@ follows:</p>
 <span class="w">            </span><span class="nt">external-2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0-2.mycluster2.xyz</span>
 </code></pre></div>
 <p>URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.</p>
-<p>Starting with version 1.22.0, the Operator adds the DNS records defined in the <code>splitHorizons</code> subsection to the certificates it generates. </p>
+<p>Starting with version 1.22.0, the Operator adds each horizon DNS name to the TLS certificates it generates. A port in the URI is not added to the certificate.</p>
+<p>Starting with version 1.24.0, the Operator updates those certificates when you add or change horizon DNS names on a running cluster:</p>
+<ul>
+<li>Operator-generated certificates are re-signed in <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> with the CA in the <code>&lt;cluster-name&gt;-ca-cert</code> Secret. If that Secret has no CA key, the Operator leaves the certificates unchanged.</li>
+<li>cert-manager certificates are reissued after the Operator adds the DNS names to the <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> Certificate resources.</li>
+</ul>
+<p>The Operator adds DNS names that are missing. It does not remove a DNS name when you delete it from <code>splitHorizons</code>. Replica set members stop advertising that horizon. The certificate still lists the old name.</p>
+<p>Horizon DNS names that you set only under <a href="operator.html#replsetsreplsetoverridesmember-namehorizonshorizon-name"><code>replsets.replsetOverrides.&lt;pod-name&gt;.horizons</code></a> are included starting with version 1.24.0. When the same horizon key is set in both <code>splitHorizons</code> and <code>replsetOverrides</code>, the certificate uses the override. On versions 1.22 and 1.23, the Operator adds horizon names only when <code>splitHorizons</code> is set.</p>
+<p>The Operator does not change certificates that you provide. When you <a href="tls-manual.html">generate certificates manually</a>, or when <code>tls.certManagementPolicy</code> is <code>userProvidedOnly</code>, add each horizon DNS name to the certificate yourself. </p>
 <p>Split horizon has following limitations:</p>
 <ul>
 <li>duplicating domain names in horizons is not allowed by MongoDB</li>
@@ -7241,7 +7249,7 @@ follows:</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 17, 2026 08:52:22 UTC">September 17, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 12:00:03 UTC">November 24, 2026</span>
       
         <br>
         Created:

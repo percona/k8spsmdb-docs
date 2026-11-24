@@ -54,10 +54,11 @@ PCSM follows upstream [known issues and limitations](https://docs.percona.com/pe
 
 Notable constraints:
 
-- Same **major** MongoDB version required on source and target.
+- Source and target run the same major MongoDB version, or one of the supported upgrade paths. See [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
 - Single source / single target pair only.
 - Reverse synchronization is not supported.
-- Initial sync is **not resumable**. If PCSM failed during initial sync, it restarts it from scratch.
+- The initial clone is **not resumable**, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error `initial clone interrupted by failover and is not resumable`. See [Status shows `failed`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#status-shows-failed).
+- With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.
 - PCSM connects to the **primary** only; `directConnection` to secondaries is ignored.
 - Users, roles, and `system.*` collections are not synchronized.
 - Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.

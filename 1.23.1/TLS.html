@@ -6631,7 +6631,7 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p>By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
 certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. When backups are enabled, it also creates <code>&lt;cluster-name&gt;-pbm</code>. These Secrets are referenced in the <code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code> options in the Custom Resource.</p>
-<p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.</p>
+<p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates. If you add or change <a href="expose.html#exposing-replica-set-with-split-horizon-dns">split-horizon DNS</a> names, the Operator version 1.24.0 and above updates those names on Operator-generated certificates and on cert-manager Certificate resources. It does this only when the <a href="#certificate-management-policy">certificate management policy</a> is <code>auto</code>. Add those names yourself to certificates you generate manually.</p>
 </li>
 <li>
 <p>The Operator can use an installed <em>cert-manager</em> to automatically generate and
@@ -6759,7 +6759,7 @@ Kubernetes. For a guided walkthrough that does this inside a throwaway Pod, see
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:54:34 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 12:00:03 UTC">November 24, 2026</span>
       
         <br>
         Created:

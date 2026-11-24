@@ -437,9 +437,9 @@ kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data.tls\.cr
   | base64 -d | openssl x509 -noout -text | grep -A1 'Subject Alternative Name'
 ```
 
-The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is otherwise valid but missing those names produces connection failures that look like TLS misconfiguration rather than a naming problem.
+The Subject Alternative Name (SAN) list must cover the Pod and Service DNS names of your cluster. A certificate that is otherwise valid but missing those names produces connection failures that look like TLS misconfiguration rather than a naming problem.
 
-If backups are enabled, check that the PBM certificate is a client certificate with its own subject:
+If the cluster uses [split-horizon DNS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns), include each horizon hostname in that list. Do not include the port. The Operator does not add these names to a certificate you created. If backups are enabled, check that the PBM certificate is a client certificate with its own subject:
 
 ```
 kubectl get secret my-cluster-name-pbm -n $NAMESPACE -o jsonpath='{.data.tls\.crt}' \

@@ -54,13 +54,47 @@ Allowed values:
 | ---------- | --------- |
 | string     | `running` |
 
+### `size`
+
+The number of PCSM instances. With `1`, PCSM runs as a single instance. With `2` or more, the instances form an active/standby group: one replicates, and the others take over if it fails. See [High availability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#high-availability). Available starting with version 1.24.0.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+### `imagePullPolicy`
+
+The [policy used to update the PCSM image](https://kubernetes.io/docs/concepts/containers/images/#updating-images) .
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Always` |
+
+### `imagePullSecrets`
+
+The [Kubernetes imagePullSecrets](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) for a private registry.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| array      | `[{name: my-registry-secret}]` |
+
+### `env`
+
+Environment variables for the PCSM container. Use them for PCSM settings that have no option in the ClusterSync resource, for example `PCSM_HA_LEASE_TTL`. See the list of [available environment variables](https://docs.percona.com/percona-clustersync-for-mongodb/install/parameters.html#environment-variables) .
+
+The Operator sets `PCSM_SOURCE_URI`, `PCSM_TARGET_URI` and `PCSM_GROUP_NAME` itself and ignores them here.
+
+| Value type | Example                                     |
+| ---------- | ------------------------------------------- |
+| array      | `[{name: PCSM_HA_LEASE_TTL, value: "30s"}]` |
+
 ## The `source` subsection
 
 Defines how PCSM connects to the source MongoDB cluster. You manage the source.
 
 ### `source.uri`
 
-Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed.
+Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed. TLS options here apply only to the source. The Operator sets up TLS to the target cluster for you. See [TLS connections](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#tls-connections).
 
 For replica sets, use replica set members and `replicaSet`. For sharded clusters, use the `mongos` endpoint.
 
@@ -96,6 +130,14 @@ Sets the PCSM log level. Allowed values: `debug`, `info`, `warn`, `error`.
 | ---------- | ------- |
 | string     | `info`  |
 
+### `pcsmConfig.logJSON`
+
+Writes PCSM logs in JSON format.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
 ## Pod and scheduling options
 
 These options configure the PCSM Deployment Pod the same way as other Operator-managed workloads.
@@ -107,3 +149,109 @@ Specifies CPU and memory requests and limits for the PCSM container.
 | Value type | Example                                |
 | ---------- | -------------------------------------- |
 | object     | `requests: {cpu: 500m, memory: 512Mi}` |
+
+### `nodeSelector`
+
+[Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) for the PCSM Pods.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `tolerations`
+
+[Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) for the PCSM Pods.
+
+| Value type | Example                                                                              |
+| ---------- | ------------------------------------------------------------------------------------ |
+| array      | `[{key: node.alpha.kubernetes.io/unreachable, operator: Exists, effect: NoExecute}]` |
+
+### `affinity.antiAffinityTopologyKey`
+
+The topology key for [Pod anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) between PCSM Pods. When you set it, PCSM Pods must run in different topology domains. Set `none` to turn anti-affinity off.
+
+If you leave `affinity` unset and the target cluster’s `crVersion` is 1.24.0 or later, the Operator prefers to place PCSM Pods on different nodes, but still schedules them on one node if no other node fits.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `affinity.advanced`
+
+A full [Kubernetes affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) definition. It replaces `affinity.antiAffinityTopologyKey`.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `podDisruptionBudget.maxUnavailable`
+
+The maximum number of PCSM Pods that can be unavailable during a voluntary disruption, such as a node drain. The Operator creates the PodDisruptionBudget only when `size` is `2` or more. The default is `1`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `podDisruptionBudget.minAvailable`
+
+The minimum number of PCSM Pods that must stay available during a voluntary disruption. Use it instead of `podDisruptionBudget.maxUnavailable`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `annotations`
+
+[Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) for the PCSM Pods.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| label      | `example.com/team: data` |
+
+### `labels`
+
+[Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the PCSM Pods.
+
+| Value type | Example      |
+| ---------- | ------------ |
+| label      | `team: data` |
+
+### `runtimeClassName`
+
+The [runtime class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for the PCSM Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `image-rc` |
+
+### `containerSecurityContext`
+
+The [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM container. If you set `readOnlyRootFilesystem: true` and the target cluster uses TLS, the Operator mounts a writable `/tmp` volume for the TLS files.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| subdoc     | `readOnlyRootFilesystem: true` |
+
+### `podSecurityContext`
+
+The [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM Pods.
+
+| Value type | Example              |
+| ---------- | -------------------- |
+| subdoc     | `runAsNonRoot: true` |
+
+### `livenessProbe`
+
+A [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. The default probe queries the PCSM HTTP endpoint on port `2242` every 10 seconds. When the target cluster’s `crVersion` is 1.24.0 or later, it uses `/metrics`, which both active and standby instances answer. Earlier versions use `/status`.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `readinessProbe`
+
+A [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. It uses the same endpoint as the default liveness probe.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |

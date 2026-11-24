@@ -3876,6 +3876,17 @@ with your value:">
 </li>
       
         <li class="md-nav__item">
+  <a href="#update-certificates-for-split-horizon-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update certificates for split-horizon names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#operator-managed-issuers-with-clusterissuer-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6591,6 +6602,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
+  <a href="#update-certificates-for-split-horizon-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update certificates for split-horizon names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#operator-managed-issuers-with-clusterissuer-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6860,20 +6882,6 @@ cert-manager-webhook-84fcdcd5d-697k4       1/1     Running   0          3m8s
 <li><a href="#customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a></li>
 <li><a href="tls-cert-management-policy.html">Configure TLS certificate management policy</a></li>
 <li><a href="#configure-tls-using-cert-manager">Configure TLS using cert-manager</a></li>
-<li><a href="#about-the-cert-manager">About the <em>cert-manager</em></a></li>
-<li><a href="#install-the-cert-manager">Install the <em>cert-manager</em></a></li>
-<li><a href="#customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a><ul>
-<li><a href="#rules-and-limitations">Rules and limitations</a></li>
-<li><a href="#configuration">Configuration</a></li>
-</ul>
-</li>
-<li><a href="#operator-managed-namespace-scoped-issuers-default">Operator-managed namespace-scoped issuers (default)</a></li>
-<li><a href="#operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope</a></li>
-<li><a href="#use-an-existing-clusterissuer">Use an existing ClusterIssuer</a></li>
-<li><a href="#use-an-existing-namespace-scoped-issuer">Use an existing namespace-scoped Issuer</a></li>
-<li><a href="#pre-create-certificates-before-deployment">Pre-create certificates before deployment</a></li>
-<li><a href="#operator-environment-variable">Operator environment variable</a></li>
-<li><a href="#verify-the-certificates">Verify the certificates</a></li>
 </ul>
 <h2 id="customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager<a data-markdown-ignore class="headerlink" href="#customize-certificate-duration-for-cert-manager" title="Permanent link">¶</a></h2>
 <p>When you deploy the cluster using the default configuration, the Operator triggers the cert-manager to create certificates
@@ -6924,7 +6932,17 @@ Operator automatically creates:</p>
 </ul>
 <p>cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set <a href="operator.html#tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a>
-to <code>true</code> (the default) for this self-signed setup. </p>
+to <code>true</code> (the default) for this self-signed setup.</p>
+<h2 id="update-certificates-for-split-horizon-names">Update certificates for split-horizon names<a data-markdown-ignore class="headerlink" href="#update-certificates-for-split-horizon-names" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md">1.24.0</a></p>
+</div>
+<p>With <code>tls.certManagementPolicy: auto</code>, the Operator updates <code>dnsNames</code> on the
+<code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> Certificate resources
+when you add or change <a href="expose.html#exposing-replica-set-with-split-horizon-dns">split-horizon DNS</a>
+names. cert-manager reissues the certificates. You do not edit <code>dnsNames</code> yourself. However, for user-managed Certificate resources or <code>tls.certManagementPolicy: userProvidedOnly</code>,
+ update <code>dnsNames</code> yourself.</p>
+<p>This applies to every issuer on this page: Operator-managed issuers, and an existing <code>Issuer</code> or <code>ClusterIssuer</code>.</p>
 <h2 id="operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope<a data-markdown-ignore class="headerlink" href="#operator-managed-issuers-with-clusterissuer-scope" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version availability: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html">1.23.0</a></p>
@@ -6987,6 +7005,7 @@ MongoDB. Include every hostname those clients use in the certificate. See
 <p>When you deploy the cluster, the Operator creates <code>Certificate</code> resources that
 reference your <code>ClusterIssuer</code>. cert-manager signs the resulting Secrets; the
 Operator does not create a parallel CA or overwrite your issuer.</p>
+<p>The Operator updates <code>dnsNames</code> when split-horizon names change. See <a href="#update-certificates-for-split-horizon-names">Update certificates for split-horizon names</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Operator’s default RBAC does not grant access to cluster-scoped
@@ -7009,6 +7028,7 @@ You can leave <code>kind</code> at the default value (<code>Issuer</code>).</p>
 <p>When the issuer name refers to an existing resource, the Operator creates TLS
 <code>Certificate</code> resources that cert-manager signs through your issuer. It does not
 recreate the issuer or its CA chain.</p>
+<p>The Operator updates <code>dnsNames</code> when split-horizon names change. See <a href="#update-certificates-for-split-horizon-names">Update certificates for split-horizon names</a>.</p>
 <h2 id="pre-create-certificates-before-deployment">Pre-create certificates before deployment<a data-markdown-ignore class="headerlink" href="#pre-create-certificates-before-deployment" title="Permanent link">¶</a></h2>
 <p>If your platform team manages cert-manager objects directly, you can create
 <code>Certificate</code> (and optionally <code>ClusterIssuer</code>) resources before deploying the
@@ -7055,7 +7075,7 @@ database problem.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:54:34 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 12:00:03 UTC">November 24, 2026</span>
       
         <br>
         Created:

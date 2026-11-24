@@ -693,6 +693,14 @@ Use if you need to [override the replica set members FQDNs with custom host name
 | ---------- | ----------------------------------------- |
 | string     | `my-cluster-name-rs0-0.example.net:27017` |
 
+### `replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME`
+
+DNS name for one [split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) entry on this Pod. `HORIZON-NAME` is the horizon key, such as `external`. The value may include a port number. The certificate lists the DNS name without the port. Starting with version 1.24.0, the Operator adds this name to the TLS certificates. If the same key is set in `splitHorizons`, this value replaces it.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `rs0-0.example.com` |
+
 ### `replsets.replsetOverrides.MEMBER-NAME.priority`
 
 Use if you need to override the [replica set members priorities](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/) .
@@ -1179,7 +1187,7 @@ The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/wor
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type | Example               |
 | ---------- | --------------------- |
@@ -1187,7 +1195,7 @@ External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-m
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type | Example                |
 | ---------- | ---------------------- |
@@ -3082,7 +3090,7 @@ Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type | Example               |
 | ---------- | --------------------- |
@@ -3090,7 +3098,7 @@ External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-m
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type | Example                |
 | ---------- | ---------------------- |

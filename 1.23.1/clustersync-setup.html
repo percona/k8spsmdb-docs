@@ -4461,6 +4461,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pcsm-doesnt-start-because-of-the-target-tls-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCSM doesn’t start because of the target TLS Secret
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#status-shows-failed" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6805,6 +6816,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#pcsm-doesnt-start-because-of-the-target-tls-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PCSM doesn’t start because of the target TLS Secret
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#status-shows-failed" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6965,8 +6987,8 @@ window.addEventListener('afterprint', (event) => {
 <p>Before you start, make sure that:</p>
 <ul>
 <li>You run Percona Operator for MongoDB <strong>1.23.0</strong> or later.</li>
-<li>The source and target clusters use the <strong>same major MongoDB version</strong>. Minimum supported versions are listed in <a href="clustersync.html#supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
-<li>The source and target topologies are compatible for your scenario (replica set to replica set, or sharded cluster to sharded cluster). </li>
+<li>The source and target MongoDB versions are supported. See <a href="clustersync.html#supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
+<li>The source and target topologies are supported: replica set to replica set, sharded cluster to sharded cluster, or sharded cluster to replica set.</li>
 <li>The PCSM Pod can reach the source cluster endpoint over the network.</li>
 <li>You understand the <a href="clustersync.html#limitations">limitations</a>, including that users and roles are not synchronized and initial sync is not resumable after a hard failure.</li>
 </ul>
@@ -7004,7 +7026,7 @@ window.addEventListener('afterprint', (event) => {
 </table>
 <p>Replace them with your values, if needed.</p>
 <p>Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:</p>
-<div class="highlight"><pre><span></span><code>percona/percona-clustersync-mongodb:0.9.0
+<div class="highlight"><pre><span></span><code>percona/percona-clustersync-mongodb:1.1.0
 </code></pre></div>
 <h2 id="configuration">Configuration<a data-markdown-ignore class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
 <h3 id="1-prepare-the-environment">1. Prepare the environment<a data-markdown-ignore class="headerlink" href="#1-prepare-the-environment" title="Permanent link">¶</a></h3>
@@ -7022,10 +7044,20 @@ window.addEventListener('afterprint', (event) => {
 </li>
 </ol>
 <h3 id="2-deploy-the-operator">2. Deploy the Operator<a data-markdown-ignore class="headerlink" href="#2-deploy-the-operator" title="Permanent link">¶</a></h3>
-<p>Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/cw-bundle.yaml
+<p>The Operator manages every cluster in the namespace it watches, so one Operator in <code>$NAMESPACE</code> manages both the source and the target cluster.</p>
+<ol>
+<li>
+<p>Create the namespace:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>Refer to the <a href="cluster-wide.html#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode">Install the Operator in the cluster-wide mode</a> for how to install the Operator in another namespace.</p>
+</li>
+<li>
+<p>Deploy the Operator in it:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/bundle.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+</ol>
+<p>If the source cluster runs in another namespace, deploy a separate Operator there, or install one Operator in <a href="cluster-wide.html">cluster-wide mode</a> to watch both namespaces.</p>
 <h3 id="3-deploy-the-source-cluster">3. Deploy the source cluster<a data-markdown-ignore class="headerlink" href="#3-deploy-the-source-cluster" title="Permanent link">¶</a></h3>
 <ol>
 <li>
@@ -7188,6 +7220,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <li><code>spec.source.uri</code> - specify the endpoint to the source cluster.</li>
 <li><code>spec.source.credentialsSecret</code> - reference the Secret that stores the credentials of the PCSM user from the source cluster.</li>
 <li><code>spec.mode</code> defaults to <code>running</code>, so replication starts when the PCSM Pod is ready.</li>
+<li><code>spec.size</code> defaults to <code>1</code>. To run PCSM in high-availability mode, first ensure that the Operator and its CRDs are version <strong>1.24.0 or later</strong>, then set <code>spec.size</code> to <code>2</code> or more. In this mode, an active instance replicates while standby instances take over if it fails. See <a href="clustersync.html#high-availability">High availability</a>.</li>
 </ul>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div data-markdown-ignore class="tabbed-labels"><label for="__tabbed_1_1">Replica set</label><label for="__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
@@ -7207,7 +7240,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>For sharded clusters, specify the <code>mongos</code> Service name for the source URI. Sharded replication is in tech preview. See <a href="clustersync.html#sharding-support-in-pcsm-tech-preview">Sharding support in PCSM</a>.</p>
+<p>For sharded clusters, specify the <code>mongos</code> Service name for the source URI. See <a href="clustersync.html#sharding-support">Sharding support</a>.</p>
 <div class="highlight"><span class="filename">clustersync-sharded.yaml</span><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDBClusterSync</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -7230,11 +7263,11 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <p>To check the status of your Percona ClusterSync (PCSM), use the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>This displays a summary table including the <code>MODE</code>, <code>STATE</code>, and replication lag time.</p>
+<p>This displays a summary table with the <code>MODE</code>, <code>STATE</code>, replication lag, the number of ready PCSM Pods and the active PCSM Pod.</p>
 <details class="example">
 <summary>Sample output</summary>
-<div class="highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   AGE
-my-cluster-sync   my-target-cluster   running   running            39m
+<div class="no-copy highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        1       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
 </code></pre></div>
 </details>
 <p>To get detailed information about a ClusterSync resource and see the replication status, use:</p>
@@ -7309,7 +7342,7 @@ my-cluster-sync   my-target-cluster   running   running            39m
 <h2 id="troubleshooting">Troubleshooting<a data-markdown-ignore class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <h3 id="pcsm-pod-is-not-ready">PCSM Pod is not ready<a data-markdown-ignore class="headerlink" href="#pcsm-pod-is-not-ready" title="Permanent link">¶</a></h3>
 <p>Check the Deployment and Pod:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,pods<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,pods<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/instance<span class="o">=</span>my-cluster-sync,app.kubernetes.io/component<span class="o">=</span>pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>describe<span class="w"> </span>deploy<span class="w"> </span>my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -7320,6 +7353,21 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <li>Target cluster is not <code>ready</code></li>
 <li>Source and target major MongoDB versions differ</li>
 </ul>
+<h3 id="pcsm-doesnt-start-because-of-the-target-tls-secret">PCSM doesn’t start because of the target TLS Secret<a data-markdown-ignore class="headerlink" href="#pcsm-doesnt-start-because-of-the-target-tls-secret" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> PCSM doesn’t start, and <code>status.error</code> of the ClusterSync object starts with <code>target tls:</code>, for example <code>target tls: target ssl secret &lt;namespace&gt;/&lt;secret-name&gt; is missing ca.crt</code>.</p>
+<p><strong>Cause:</strong> the target cluster has TLS turned on and <code>crVersion</code> 1.24.0 or later, so the Operator mounts its TLS Secret into the PCSM Pods. The Secret doesn’t exist or lacks one of the <code>ca.crt</code>, <code>tls.crt</code> and <code>tls.key</code> keys.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>
+<p>Check the error:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.error}{"\n"}'</span>
+</code></pre></div>
+</li>
+<li>
+<p>Make sure the Secret set in the target cluster’s <code>secrets.ssl</code> exists and has all three keys. If you provide your own certificates, see <a href="tls-manual.html">Generate certificates manually</a>.</p>
+</li>
+</ol>
+<p>The Operator retries on its own and starts PCSM once the Secret is correct. See <a href="clustersync.html#tls-connections">TLS connections</a>.</p>
 <h3 id="status-shows-failed">Status shows <code>failed</code><a data-markdown-ignore class="headerlink" href="#status-shows-failed" title="Permanent link">¶</a></h3>
 <p>Inspect the error:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
@@ -7339,10 +7387,11 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 </li>
 <li>Resume with <code>mode: running</code>, or delete and recreate the ClusterSync CR to start a fresh initial sync.</li>
 </ol>
-<p>Initial sync cannot be resumed after a hard failure. Recreate the ClusterSync CR to start over. See <a href="clustersync.html#limitations">Limitations</a>.</p>
+<p>Initial sync cannot be resumed after a hard failure. This includes a failover of the active PCSM instance during the clone: <code>status.error</code> then contains <code>initial clone interrupted by failover and is not resumable</code>. Recreate the ClusterSync CR to start over. See <a href="clustersync.html#limitations">Limitations</a>.</p>
 <h3 id="inspect-pcsm-from-inside-the-pod">Inspect PCSM from inside the Pod<a data-markdown-ignore class="headerlink" href="#inspect-pcsm-from-inside-the-pod" title="Permanent link">¶</a></h3>
-<p>For advanced troubleshooting:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pcsm<span class="w"> </span>status
+<p>For advanced troubleshooting on Operator <strong>1.24.0 or later</strong>, run the commands below in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with <code>not_active</code>. On Operator <strong>1.23.x</strong>, use <code>kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status</code> instead.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">ACTIVE_POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.activeInstance}'</span><span class="k">)</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="nv">$ACTIVE_POD</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pcsm<span class="w"> </span>status
 </code></pre></div>
 <p>Use manual <code>pcsm</code> commands only when you need details beyond the Custom Resource status.</p>
 <hr>
@@ -7350,7 +7399,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 14:00:56 UTC">November 17, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:07:40 UTC">November 24, 2026</span>
       
         <br>
         Created:

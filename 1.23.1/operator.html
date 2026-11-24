@@ -5909,6 +5909,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#replsetsreplsetoverridesmember-namehorizonshorizon-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#replsetsreplsetoverridesmember-namepriority" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -14033,6 +14044,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
         
           <li class="md-nav__item">
+  <a href="#replsetsreplsetoverridesmember-namehorizonshorizon-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#replsetsreplsetoverridesmember-namepriority" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -21190,6 +21212,22 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tr>
 </tbody>
 </table>
+<h3 id="replsetsreplsetoverridesmember-namehorizonshorizon-name"><code>replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME</code><a data-markdown-ignore class="headerlink" href="#replsetsreplsetoverridesmember-namehorizonshorizon-name" title="Permanent link">¶</a></h3>
+<p>DNS name for one <a href="expose.html#exposing-replica-set-with-split-horizon-dns">split-horizon</a> entry on this Pod. <code>HORIZON-NAME</code> is the horizon key, such as <code>external</code>. The value may include a port number. The certificate lists the DNS name without the port. Starting with version 1.24.0, the Operator adds this name to the TLS certificates. If the same key is set in <code>splitHorizons</code>, this value replaces it.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>rs0-0.example.com</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="replsetsreplsetoverridesmember-namepriority"><code>replsets.replsetOverrides.MEMBER-NAME.priority</code><a data-markdown-ignore class="headerlink" href="#replsetsreplsetoverridesmember-namepriority" title="Permanent link">¶</a></h3>
 <p>Use if you need to override the <a href="https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/">replica set members priorities  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <table>
@@ -22153,7 +22191,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tbody>
 </table>
 <h3 id="replsetssplithorizonsreplicaset-pod-nameexternal"><code>replsets.splitHorizons.REPLICASET-POD-NAME.external</code><a data-markdown-ignore class="headerlink" href="#replsetssplithorizonsreplicaset-pod-nameexternal" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.</p>
 <table>
 <thead>
 <tr>
@@ -22169,7 +22207,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tbody>
 </table>
 <h3 id="replsetssplithorizonsreplicaset-pod-nameexternal-2"><code>replsets.splitHorizons.REPLICASET-POD-NAME.external-2</code><a data-markdown-ignore class="headerlink" href="#replsetssplithorizonsreplicaset-pod-nameexternal-2" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.</p>
 <table>
 <thead>
 <tr>
@@ -25969,7 +26007,7 @@ options for Percona Server for MondoDB <a href="sharding.html">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal"><code>sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external</code><a data-markdown-ignore class="headerlink" href="#shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.</p>
 <table>
 <thead>
 <tr>
@@ -25985,7 +26023,7 @@ options for Percona Server for MondoDB <a href="sharding.html">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal-2"><code>sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2</code><a data-markdown-ignore class="headerlink" href="#shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal-2" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="expose.html#exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.</p>
 <table>
 <thead>
 <tr>
@@ -29571,7 +29609,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:59:14 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 12:00:03 UTC">November 24, 2026</span>
       
         <br>
         Created:

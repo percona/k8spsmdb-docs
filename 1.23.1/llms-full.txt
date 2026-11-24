@@ -356,10 +356,11 @@ PCSM follows upstream [known issues and limitations](https://docs.percona.com/pe
 
 Notable constraints:
 
-- Same **major** MongoDB version required on source and target.
+- Source and target run the same major MongoDB version, or one of the supported upgrade paths. See [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
 - Single source / single target pair only.
 - Reverse synchronization is not supported.
-- Initial sync is **not resumable**. If PCSM failed during initial sync, it restarts it from scratch.
+- The initial clone is **not resumable**, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error `initial clone interrupted by failover and is not resumable`. See [Status shows `failed`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#status-shows-failed).
+- With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.
 - PCSM connects to the **primary** only; `directConnection` to secondaries is ignored.
 - Users, roles, and `system.*` collections are not synchronized.
 - Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.
@@ -1058,7 +1059,7 @@ To use full-text and vector search with the Operator, you must meet the followin
 
 - [About security](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/security.html) - `mongot` authenticates to the database like any other client
 
-# Real-time replication and near-zero downtime migration with Percona ClusterSync for MongoDB (PCSM)
+# Real-time replication with Percona ClusterSync for MongoDB (PCSM)
 
 Version added: [1.23.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html)
 
@@ -1097,13 +1098,70 @@ Components of this architecture are:
 
 - **Source cluster** – The cluster you replicate data from. You can run it on premises (MongoDB Enterprise Advanced), in the cloud (MongoDB Atlas) or as another Kubernetes deployment. You manage the source cluster and must prepare it for replication: configure authentication, create a Kubernetes Secret with the PCSM user credentials and provide the cluster endpoint.
 - **Target cluster** – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.
-- **PCSM Deployment** — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#troubleshooting).
+- **PCSM Deployment** – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can’t resume: if it’s interrupted, start a new sync. See [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#troubleshooting).
+
+## TLS connections
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+**To the target cluster.** If the target cluster has TLS turned on and its `crVersion` is 1.24.0 or later, PCSM connects to it over TLS. You don’t need to configure anything:
+
+- The Operator mounts the target cluster’s TLS Secret, set in [`secrets.ssl`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#secretsssl), into the PCSM Pods.
+- PCSM presents the certificate from this Secret and checks the target cluster’s certificate against the Secret’s `ca.crt`.
+- PCSM follows the target cluster’s [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) setting.
+
+The Operator restarts the PCSM Pods in these cases:
+
+- When the target cluster’s certificates change, for example when cert-manager renews them or you rotate them.
+- When you change `tls.allowInvalidCertificates`.
+
+A restart during the initial clone stops the sync. See [Limitations](#limitations).
+
+With a `crVersion` earlier than 1.24.0, PCSM connects to the target cluster without TLS. This works only if the target accepts connections without TLS, with `tls.mode` set to `preferTLS` or `allowTLS`.
+
+**To the source cluster.** Add TLS options to the connection string in [`source.uri`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#sourceuri), for example `tls=true`. The Operator doesn’t add certificates for the source connection.
+
+## High availability
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+A migration or a continuous replica can run for hours. With a single PCSM instance, a Pod failure, node drain or eviction stops replication until Kubernetes restarts the Pod. Run PCSM with high availability to keep replication going through these events without your involvement: a standby instance takes over within seconds and continues from the last checkpoint, so replication doesn’t start over and the lag stays low.
+
+To turn it on, set [`spec.size`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#size) to `2` or more. One instance is active and replicates, and the others are standbys.
+
+The instances elect the active one through a lease that PCSM keeps on the target cluster, in the `percona_clustersync_mongodb` database. The active instance renews the lease every 3 seconds. If it stops renewing it, the lease expires in 10 seconds by default. Then a standby takes the lease and continues replication from the last saved checkpoint.
+
+When PCSM runs with high availability, the Operator manages the group for you:
+
+- Sends `pause`, `resume` and `finalize` commands to the active instance and stores its Pod name in `status.activeInstance`.
+- Records a `PCSMFailover` event each time another instance becomes active.
+- Creates the `<clustersync-name>-pcsm` PodDisruptionBudget, which allows one PCSM Pod to be unavailable at a time. To change it, see [`podDisruptionBudget`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#poddisruptionbudgetmaxunavailable).
+- Replaces the Pods one at a time when you change the ClusterSync configuration.
+
+High availability protects replication after the initial clone. For what it doesn’t cover, see [Limitations](#limitations).
+
+By default, PCSM runs as a single instance. If its Pod restarts, PCSM resumes from the last checkpoint after the previous lease expires.
+
+### Change the lease duration
+
+You can set how long the lease lasts with the `PCSM_HA_LEASE_TTL` environment variable in [`spec.env`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#env), for example `30s`. The minimum and the default are `10s`. A longer lease lets the active instance survive short outages of the target cluster, but a standby takes over later when the active instance fails. See [High availability in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/high-availability.html) .
 
 ## Supported MongoDB deployments
 
-Both source and target cluster can be replica sets or sharded clusters and must have the same major version. Minimum supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0.
+PCSM supports these topologies:
 
-Replication between sharded clusters is in the tech preview stage and is not recommended for production use yet. See [Sharding support](#sharding-support-in-pcsm-tech-preview) to learn more.
+- Replica set to replica set
+- Sharded cluster to sharded cluster
+- Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.
+- Replica set to sharded cluster. After migration, the collections remain unsharded and you must shard them yourself.
+
+See [Supported MongoDB deployments in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html) and [Limitations on sharded clusters in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html#sharded-clusters) for more information.
+
+## Supported MongoDB versions
+
+The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0.
+
+To learn more, see [Version compatibility matrix in PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/version-compatibility.html#version-compatibility-matrix) .
 
 ## Replication modes and states
 
@@ -1117,11 +1175,13 @@ PCSM also reports a runtime **state**, which the Operator stores in `status.stat
 
 Find more information about modes, states, and conditions in [Custom resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#perconaservermongodbclustersync-status). For all configuration fields, see [ClusterSync Resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html).
 
-## Sharding support in PCSM (tech preview)
+## Sharding support
 
-PCSM can replicate data between sharded clusters. Before the replication, it checks the source cluster for sharded collections and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names, and zones internally.
+PCSM replicates from a sharded source to a sharded cluster or to a replica set. It connects to a sharded cluster through `mongos`.
 
-PCSM replicates **data only**, not sharding metadata. It connects through `mongos` on both sides, so source and target can have different numbers of shards.
+For a sharded target, PCSM checks the source for sharded collections before the replication and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names and zones. PCSM replicates **data only**, not sharding metadata, so the source and target can have different numbers of shards.
+
+For a replica set target, sharded collections on the source become regular collections. See [Sharding support in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/sharding.html) .
 
 ## Backup and restore management
 
@@ -1142,10 +1202,11 @@ PCSM follows upstream [known issues and limitations](https://docs.percona.com/pe
 
 Notable constraints:
 
-- Same **major** MongoDB version required on source and target.
+- Source and target run the same major MongoDB version, or one of the supported upgrade paths. See [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
 - Single source / single target pair only.
 - Reverse synchronization is not supported.
-- Initial sync is **not resumable**. If PCSM failed during initial sync, it restarts it from scratch.
+- The initial clone is **not resumable**, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error `initial clone interrupted by failover and is not resumable`. See [Status shows `failed`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#status-shows-failed).
+- With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.
 - PCSM connects to the **primary** only; `directConnection` to secondaries is ignored.
 - Users, roles, and `system.*` collections are not synchronized.
 - Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.
@@ -1531,7 +1592,18 @@ Split-horizon can be configured via the `replset.splitHorizons` subsection in th
 
 URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.
 
-Starting with version 1.22.0, the Operator adds the DNS records defined in the `splitHorizons` subsection to the certificates it generates.
+Starting with version 1.22.0, the Operator adds each horizon DNS name to the TLS certificates it generates. A port in the URI is not added to the certificate.
+
+Starting with version 1.24.0, the Operator updates those certificates when you add or change horizon DNS names on a running cluster:
+
+- Operator-generated certificates are re-signed in `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` with the CA in the `<cluster-name>-ca-cert` Secret. If that Secret has no CA key, the Operator leaves the certificates unchanged.
+- cert-manager certificates are reissued after the Operator adds the DNS names to the `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources.
+
+The Operator adds DNS names that are missing. It does not remove a DNS name when you delete it from `splitHorizons`. Replica set members stop advertising that horizon. The certificate still lists the old name.
+
+Horizon DNS names that you set only under [`replsets.replsetOverrides.<pod-name>.horizons`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#replsetsreplsetoverridesmember-namehorizonshorizon-name) are included starting with version 1.24.0. When the same horizon key is set in both `splitHorizons` and `replsetOverrides`, the certificate uses the override. On versions 1.22 and 1.23, the Operator adds horizon names only when `splitHorizons` is set.
+
+The Operator does not change certificates that you provide. When you [generate certificates manually](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-manual.html), or when `tls.certManagementPolicy` is `userProvidedOnly`, add each horizon DNS name to the certificate yourself.
 
 Split horizon has following limitations:
 
@@ -14896,7 +14968,7 @@ You can configure TLS security in several ways:
 
 - By default, the Operator generates long-term certificates automatically during the cluster creation if there are no certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets `<cluster-name>-ssl` and `<cluster-name>-ssl-internal`. When backups are enabled, it also creates `<cluster-name>-pbm`. These Secrets are referenced in the `secrets.ssl`, `secrets.sslInternal` and `secrets.sslPBM` options in the Custom Resource.
 
-  Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.
+  Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates. If you add or change [split-horizon DNS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) names, the Operator version 1.24.0 and above updates those names on Operator-generated certificates and on cert-manager Certificate resources. It does this only when the [certificate management policy](#certificate-management-policy) is `auto`. Add those names yourself to certificates you generate manually.
 
 - The Operator can use an installed *cert-manager* to automatically generate and renew short-term TLS certificates. By default it creates namespace-scoped issuers in the database namespace. Starting with Operator 1.23.0, you can also point it at an existing cluster-wide [`ClusterIssuer`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-manager.html#use-an-existing-clusterissuer) so MongoDB certificates are signed by your organization’s CA.
 
@@ -15080,18 +15152,6 @@ See the sections below for how you can fine-tune the Operator and cert-manager t
 - [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
 - [Configure TLS certificate management policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-cert-management-policy.html)
 - [Configure TLS using cert-manager](#configure-tls-using-cert-manager)
-- [About the *cert-manager*](#about-the-cert-manager)
-- [Install the *cert-manager*](#install-the-cert-manager)
-- [Customize certificate duration for cert-manager](#customize-certificate-duration-for-cert-manager)
-  - [Rules and limitations](#rules-and-limitations)
-  - [Configuration](#configuration)
-- [Operator-managed namespace-scoped issuers (default)](#operator-managed-namespace-scoped-issuers-default)
-- [Operator-managed issuers with ClusterIssuer scope](#operator-managed-issuers-with-clusterissuer-scope)
-- [Use an existing ClusterIssuer](#use-an-existing-clusterissuer)
-- [Use an existing namespace-scoped Issuer](#use-an-existing-namespace-scoped-issuer)
-- [Pre-create certificates before deployment](#pre-create-certificates-before-deployment)
-- [Operator environment variable](#operator-environment-variable)
-- [Verify the certificates](#verify-the-certificates)
 
 ## Customize certificate duration for cert-manager
 
@@ -15144,6 +15204,14 @@ Once you create the database with the Operator and cert-manager is running, the 
 - the PBM client `Certificate` `<cluster-name>-pbm` when backups are enabled and the `crVersion` is 1.24.0 or higher. It’s a client-only certificate that the Operator and the backup agents present to MongoDB. See [Transport Layer Security (TLS)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/TLS.html) for how the certificates work together. If you set `secrets.sslPBM`, the `Certificate` keeps the name `<cluster-name>-pbm` and writes to the Secret you named.
 
 cert-manager issues short-lived certificates (90 days by default) and renews them on schedule. Set [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) to `true` (the default) for this self-signed setup.
+
+## Update certificates for split-horizon names
+
+Version availability: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+With `tls.certManagementPolicy: auto`, the Operator updates `dnsNames` on the `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources when you add or change [split-horizon DNS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) names. cert-manager reissues the certificates. You do not edit `dnsNames` yourself. However, for user-managed Certificate resources or `tls.certManagementPolicy: userProvidedOnly`, update `dnsNames` yourself.
+
+This applies to every issuer on this page: Operator-managed issuers, and an existing `Issuer` or `ClusterIssuer`.
 
 ## Operator-managed issuers with ClusterIssuer scope
 
@@ -15208,6 +15276,8 @@ Replace `my-org-issuer` with the name of your existing `ClusterIssuer`. Set [`tl
 
 When you deploy the cluster, the Operator creates `Certificate` resources that reference your `ClusterIssuer`. cert-manager signs the resulting Secrets; the Operator does not create a parallel CA or overwrite your issuer.
 
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
+
 Note
 
 The Operator’s default RBAC does not grant access to cluster-scoped `ClusterIssuer` resources. This is expected: cert-manager resolves the issuer when processing `Certificate` objects. You do not need to add extra Operator permissions to use an existing `ClusterIssuer`.
@@ -15227,6 +15297,8 @@ spec:
 ```
 
 When the issuer name refers to an existing resource, the Operator creates TLS `Certificate` resources that cert-manager signs through your issuer. It does not recreate the issuer or its CA chain.
+
+The Operator updates `dnsNames` when split-horizon names change. See [Update certificates for split-horizon names](#update-certificates-for-split-horizon-names).
 
 ## Pre-create certificates before deployment
 
@@ -15694,9 +15766,9 @@ kubectl get secret my-cluster-name-ssl -n $NAMESPACE -o jsonpath='{.data.tls\.cr
   | base64 -d | openssl x509 -noout -text | grep -A1 'Subject Alternative Name'
 ```
 
-The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is otherwise valid but missing those names produces connection failures that look like TLS misconfiguration rather than a naming problem.
+The Subject Alternative Name (SAN) list must cover the Pod and Service DNS names of your cluster. A certificate that is otherwise valid but missing those names produces connection failures that look like TLS misconfiguration rather than a naming problem.
 
-If backups are enabled, check that the PBM certificate is a client certificate with its own subject:
+If the cluster uses [split-horizon DNS](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns), include each horizon hostname in that list. Do not include the port. The Operator does not add these names to a certificate you created. If backups are enabled, check that the PBM certificate is a client certificate with its own subject:
 
 ```
 kubectl get secret my-cluster-name-pbm -n $NAMESPACE -o jsonpath='{.data.tls\.crt}' \
@@ -15742,6 +15814,8 @@ How your TLS certificates are updated depends on how they were created:
 - Certificates issued by the cert-manager are short-term. They are valid for 3 months by default. The cert-manager automatically reissues the certificates on schedule and without downtime.
 
 - Certificates manually generated by you are not renewed automatically. It is your responsibility to timely update them. Use the steps in the following sections for how to do it.
+
+If [PCSM](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html) replicates data into this cluster, updating its certificates restarts the PCSM Pods. A restart during the initial clone stops the sync. Plan certificate updates after the clone finishes. See [TLS connections](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#tls-connections).
 
 ## Check your certificates for expiration
 
@@ -18960,8 +19034,8 @@ For concepts, architecture, modes, and limitations, see [Real-time replication a
 Before you start, make sure that:
 
 - You run Percona Operator for MongoDB **1.23.0** or later.
-- The source and target clusters use the **same major MongoDB version**. Minimum supported versions are listed in [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
-- The source and target topologies are compatible for your scenario (replica set to replica set, or sharded cluster to sharded cluster).
+- The source and target MongoDB versions are supported. See [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
+- The source and target topologies are supported: replica set to replica set, sharded cluster to sharded cluster, or sharded cluster to replica set.
 - The PCSM Pod can reach the source cluster endpoint over the network.
 - You understand the [limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#limitations), including that users and roles are not synchronized and initial sync is not resumable after a hard failure.
 
@@ -18982,7 +19056,7 @@ Replace them with your values, if needed.
 Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:
 
 ```
-percona/percona-clustersync-mongodb:0.9.0
+percona/percona-clustersync-mongodb:1.1.0
 ```
 
 ## Configuration
@@ -19004,13 +19078,21 @@ percona/percona-clustersync-mongodb:0.9.0
 
 ### 2. Deploy the Operator
 
-Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:
+The Operator manages every cluster in the namespace it watches, so one Operator in `$NAMESPACE` manages both the source and the target cluster.
 
-```
-kubectl apply --server-side -f deploy/cw-bundle.yaml
-```
+1. Create the namespace:
 
-Refer to the [Install the Operator in the cluster-wide mode](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cluster-wide.html#install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode) for how to install the Operator in another namespace.
+   ```
+   kubectl create namespace $NAMESPACE
+   ```
+
+1. Deploy the Operator in it:
+
+   ```
+   kubectl apply --server-side -f deploy/bundle.yaml -n $NAMESPACE
+   ```
+
+If the source cluster runs in another namespace, deploy a separate Operator there, or install one Operator in [cluster-wide mode](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cluster-wide.html) to watch both namespaces.
 
 ### 3. Deploy the source cluster
 
@@ -19198,6 +19280,7 @@ Create a `PerconaServerMongoDBClusterSync` Custom Resource. Edit the `deploy/clu
 - `spec.source.uri` - specify the endpoint to the source cluster.
 - `spec.source.credentialsSecret` - reference the Secret that stores the credentials of the PCSM user from the source cluster.
 - `spec.mode` defaults to `running`, so replication starts when the PCSM Pod is ready.
+- `spec.size` defaults to `1`. To run PCSM in high-availability mode, first ensure that the Operator and its CRDs are version **1.24.0 or later**, then set `spec.size` to `2` or more. In this mode, an active instance replicates while standby instances take over if it fails. See [High availability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#high-availability).
 
 **Replica set**
 
@@ -19221,7 +19304,7 @@ spec:
 
 **Sharded cluster**
 
-For sharded clusters, specify the `mongos` Service name for the source URI. Sharded replication is in tech preview. See [Sharding support in PCSM](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#sharding-support-in-pcsm-tech-preview).
+For sharded clusters, specify the `mongos` Service name for the source URI. See [Sharding support](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#sharding-support).
 
 clustersync-sharded.yaml
 
@@ -19253,13 +19336,13 @@ To check the status of your Percona ClusterSync (PCSM), use the following comman
 kubectl get psmdb-clustersync -n $NAMESPACE
 ```
 
-This displays a summary table including the `MODE`, `STATE`, and replication lag time.
+This displays a summary table with the `MODE`, `STATE`, replication lag, the number of ready PCSM Pods and the active PCSM Pod.
 
 Sample output
 
 ```
-NAME              CLUSTER             MODE      STATE     LAG(S)   AGE
-my-cluster-sync   my-target-cluster   running   running            39m
+NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        1       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
 ```
 
 To get detailed information about a ClusterSync resource and see the replication status, use:
@@ -19361,7 +19444,7 @@ This removes the PCSM Deployment and Operator-owned Secrets. The source credenti
 Check the Deployment and Pod:
 
 ```
-kubectl get deploy,pods -l app.kubernetes.io/component=clustersync -n $NAMESPACE
+kubectl get deploy,pods -l app.kubernetes.io/instance=my-cluster-sync,app.kubernetes.io/component=pcsm -n $NAMESPACE
 kubectl describe deploy my-cluster-sync-pcsm -n $NAMESPACE
 kubectl logs deploy/my-cluster-sync-pcsm -n $NAMESPACE
 ```
@@ -19372,6 +19455,24 @@ Common causes:
 - Source credentials Secret is missing or has wrong keys (`username` / `password`)
 - Target cluster is not `ready`
 - Source and target major MongoDB versions differ
+
+### PCSM doesn’t start because of the target TLS Secret
+
+**Symptom:** PCSM doesn’t start, and `status.error` of the ClusterSync object starts with `target tls:`, for example `target tls: target ssl secret <namespace>/<secret-name> is missing ca.crt`.
+
+**Cause:** the target cluster has TLS turned on and `crVersion` 1.24.0 or later, so the Operator mounts its TLS Secret into the PCSM Pods. The Secret doesn’t exist or lacks one of the `ca.crt`, `tls.crt` and `tls.key` keys.
+
+**Fix:**
+
+1. Check the error:
+
+   ```
+   kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.error}{"\n"}'
+   ```
+
+1. Make sure the Secret set in the target cluster’s `secrets.ssl` exists and has all three keys. If you provide your own certificates, see [Generate certificates manually](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-manual.html).
+
+The Operator retries on its own and starts PCSM once the Secret is correct. See [TLS connections](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#tls-connections).
 
 ### Status shows `failed`
 
@@ -19397,14 +19498,15 @@ If the failure keeps recurring:
 
 1. Resume with `mode: running`, or delete and recreate the ClusterSync CR to start a fresh initial sync.
 
-Initial sync cannot be resumed after a hard failure. Recreate the ClusterSync CR to start over. See [Limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#limitations).
+Initial sync cannot be resumed after a hard failure. This includes a failover of the active PCSM instance during the clone: `status.error` then contains `initial clone interrupted by failover and is not resumable`. Recreate the ClusterSync CR to start over. See [Limitations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#limitations).
 
 ### Inspect PCSM from inside the Pod
 
-For advanced troubleshooting:
+For advanced troubleshooting on Operator **1.24.0 or later**, run the commands below in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with `not_active`. On Operator **1.23.x**, use `kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status` instead.
 
 ```
-kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status
+ACTIVE_POD=$(kubectl get psmdb-clustersync my-cluster-sync -n $NAMESPACE -o jsonpath='{.status.activeInstance}')
+kubectl exec -it $ACTIVE_POD -n $NAMESPACE -- pcsm status
 ```
 
 Use manual `pcsm` commands only when you need details beyond the Custom Resource status.
@@ -23290,6 +23392,14 @@ Use if you need to [override the replica set members FQDNs with custom host name
 | ---------- | ----------------------------------------- |
 | string     | `my-cluster-name-rs0-0.example.net:27017` |
 
+### `replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME`
+
+DNS name for one [split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) entry on this Pod. `HORIZON-NAME` is the horizon key, such as `external`. The value may include a port number. The certificate lists the DNS name without the port. Starting with version 1.24.0, the Operator adds this name to the TLS certificates. If the same key is set in `splitHorizons`, this value replaces it.
+
+| Value type | Example             |
+| ---------- | ------------------- |
+| string     | `rs0-0.example.com` |
+
 ### `replsets.replsetOverrides.MEMBER-NAME.priority`
 
 Use if you need to override the [replica set members priorities](https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/) .
@@ -23776,7 +23886,7 @@ The [Kubernetes Pod distribution budget](https://kubernetes.io/docs/concepts/wor
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type | Example               |
 | ---------- | --------------------- |
@@ -23784,7 +23894,7 @@ External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-m
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type | Example                |
 | ---------- | ---------------------- |
@@ -25679,7 +25789,7 @@ Hostnames for [Kubernetes host aliases](https://kubernetes.io/docs/tasks/network
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type | Example               |
 | ---------- | --------------------- |
@@ -25687,7 +25797,7 @@ External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-m
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type | Example                |
 | ---------- | ---------------------- |
@@ -27914,13 +28024,47 @@ Allowed values:
 | ---------- | --------- |
 | string     | `running` |
 
+### `size`
+
+The number of PCSM instances. With `1`, PCSM runs as a single instance. With `2` or more, the instances form an active/standby group: one replicates, and the others take over if it fails. See [High availability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#high-availability). Available starting with version 1.24.0.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `2`     |
+
+### `imagePullPolicy`
+
+The [policy used to update the PCSM image](https://kubernetes.io/docs/concepts/containers/images/#updating-images) .
+
+| Value type | Example  |
+| ---------- | -------- |
+| string     | `Always` |
+
+### `imagePullSecrets`
+
+The [Kubernetes imagePullSecrets](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets) for a private registry.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| array      | `[{name: my-registry-secret}]` |
+
+### `env`
+
+Environment variables for the PCSM container. Use them for PCSM settings that have no option in the ClusterSync resource, for example `PCSM_HA_LEASE_TTL`. See the list of [available environment variables](https://docs.percona.com/percona-clustersync-for-mongodb/install/parameters.html#environment-variables) .
+
+The Operator sets `PCSM_SOURCE_URI`, `PCSM_TARGET_URI` and `PCSM_GROUP_NAME` itself and ignores them here.
+
+| Value type | Example                                     |
+| ---------- | ------------------------------------------- |
+| array      | `[{name: PCSM_HA_LEASE_TTL, value: "30s"}]` |
+
 ## The `source` subsection
 
 Defines how PCSM connects to the source MongoDB cluster. You manage the source.
 
 ### `source.uri`
 
-Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed.
+Specifies the source MongoDB connection string **without credentials**. Include replica set options, TLS parameters, and other driver options in the URI query string as needed. TLS options here apply only to the source. The Operator sets up TLS to the target cluster for you. See [TLS connections](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#tls-connections).
 
 For replica sets, use replica set members and `replicaSet`. For sharded clusters, use the `mongos` endpoint.
 
@@ -27956,6 +28100,14 @@ Sets the PCSM log level. Allowed values: `debug`, `info`, `warn`, `error`.
 | ---------- | ------- |
 | string     | `info`  |
 
+### `pcsmConfig.logJSON`
+
+Writes PCSM logs in JSON format.
+
+| Value type | Example |
+| ---------- | ------- |
+| boolean    | `true`  |
+
 ## Pod and scheduling options
 
 These options configure the PCSM Deployment Pod the same way as other Operator-managed workloads.
@@ -27967,6 +28119,112 @@ Specifies CPU and memory requests and limits for the PCSM container.
 | Value type | Example                                |
 | ---------- | -------------------------------------- |
 | object     | `requests: {cpu: 500m, memory: 512Mi}` |
+
+### `nodeSelector`
+
+[Kubernetes nodeSelector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) for the PCSM Pods.
+
+| Value type | Example         |
+| ---------- | --------------- |
+| label      | `disktype: ssd` |
+
+### `tolerations`
+
+[Kubernetes Pod tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) for the PCSM Pods.
+
+| Value type | Example                                                                              |
+| ---------- | ------------------------------------------------------------------------------------ |
+| array      | `[{key: node.alpha.kubernetes.io/unreachable, operator: Exists, effect: NoExecute}]` |
+
+### `affinity.antiAffinityTopologyKey`
+
+The topology key for [Pod anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) between PCSM Pods. When you set it, PCSM Pods must run in different topology domains. Set `none` to turn anti-affinity off.
+
+If you leave `affinity` unset and the target cluster’s `crVersion` is 1.24.0 or later, the Operator prefers to place PCSM Pods on different nodes, but still schedules them on one node if no other node fits.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| string     | `kubernetes.io/hostname` |
+
+### `affinity.advanced`
+
+A full [Kubernetes affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) definition. It replaces `affinity.antiAffinityTopologyKey`.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `podDisruptionBudget.maxUnavailable`
+
+The maximum number of PCSM Pods that can be unavailable during a voluntary disruption, such as a node drain. The Operator creates the PodDisruptionBudget only when `size` is `2` or more. The default is `1`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `podDisruptionBudget.minAvailable`
+
+The minimum number of PCSM Pods that must stay available during a voluntary disruption. Use it instead of `podDisruptionBudget.maxUnavailable`.
+
+| Value type | Example |
+| ---------- | ------- |
+| int        | `1`     |
+
+### `annotations`
+
+[Kubernetes annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) for the PCSM Pods.
+
+| Value type | Example                  |
+| ---------- | ------------------------ |
+| label      | `example.com/team: data` |
+
+### `labels`
+
+[Kubernetes labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the PCSM Pods.
+
+| Value type | Example      |
+| ---------- | ------------ |
+| label      | `team: data` |
+
+### `runtimeClassName`
+
+The [runtime class](https://kubernetes.io/docs/concepts/containers/runtime-class/) for the PCSM Pods.
+
+| Value type | Example    |
+| ---------- | ---------- |
+| string     | `image-rc` |
+
+### `containerSecurityContext`
+
+The [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM container. If you set `readOnlyRootFilesystem: true` and the target cluster uses TLS, the Operator mounts a writable `/tmp` volume for the TLS files.
+
+| Value type | Example                        |
+| ---------- | ------------------------------ |
+| subdoc     | `readOnlyRootFilesystem: true` |
+
+### `podSecurityContext`
+
+The [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) of the PCSM Pods.
+
+| Value type | Example              |
+| ---------- | -------------------- |
+| subdoc     | `runAsNonRoot: true` |
+
+### `livenessProbe`
+
+A [liveness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. The default probe queries the PCSM HTTP endpoint on port `2242` every 10 seconds. When the target cluster’s `crVersion` is 1.24.0 or later, it uses `/metrics`, which both active and standby instances answer. Earlier versions use `/status`.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
+
+### `readinessProbe`
+
+A [readiness probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) that replaces the default. It uses the same endpoint as the default liveness probe.
+
+| Value type | Example |
+| ---------- | ------- |
+| subdoc     |         |
 
 # Custom resource statuses
 
@@ -28358,7 +28616,17 @@ Common fields:
 - `status.lagTimeSeconds` – replication lag in seconds
 - `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
 - `status.startedAt` – timestamp of the first time PCSM reported `running`
+- `status.size` – number of PCSM instances requested in `spec.size`
+- `status.readyReplicas` – number of ready PCSM Pods. A value lower than `status.size` means some requested instances are not ready; check `status.state`, `status.activeInstance`, and replication lag to assess whether replication is continuing.
+- `status.activeInstance` – name of the PCSM Pod that holds the lease and replicates. See [High availability in PCSM](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#high-availability).
 - `status.conditions` – condition list with reason and message
+
+`kubectl get psmdb-clustersync` shows the main fields as columns:
+
+```
+NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        2       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
+```
 
 ### ClusterSync mode values
 
@@ -28394,6 +28662,14 @@ Conditions show more detail about ClusterSync state changes in `status.condition
 | `Running`   | `True` while `status.state` is `running`; otherwise `False` with reason such as `PCSMNotRunning`. |
 | `Finalized` | `True` once `status.state` is `finalized`. Remains set afterwards.                                |
 
+### Events
+
+When another PCSM instance becomes active, the Operator records a `PCSMFailover` event on the ClusterSync resource with the message `Active PCSM instance changed from "<old-pod>" to "<new-pod>"`. To see the events:
+
+```
+kubectl describe psmdb-clustersync <clustersync-name> -n <namespace>
+```
+
 ### Example status
 
 ```
@@ -28401,12 +28677,15 @@ status:
   mode: running
   state: running
   lagTimeSeconds: 72
+  size: 2
+  readyReplicas: 2
+  activeInstance: my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p
   startedAt: "2026-07-01T12:00:00Z"
   conditions:
     - type: Running
       status: "True"
-      reason: PCSMReplicating
-      message: PCSM is applying changes from source
+      reason: PCSMRunning
+      message: PCSM is replicating from source to target
 ```
 
 On failure:

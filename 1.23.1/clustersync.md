@@ -1,6 +1,6 @@
 > For the complete documentation index, see [llms.txt](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/llms.txt).
 
-# Real-time replication and near-zero downtime migration with Percona ClusterSync for MongoDB (PCSM)
+# Real-time replication with Percona ClusterSync for MongoDB (PCSM)
 
 Version added: [1.23.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.0.html)
 
@@ -39,13 +39,70 @@ Components of this architecture are:
 
 - **Source cluster** – The cluster you replicate data from. You can run it on premises (MongoDB Enterprise Advanced), in the cloud (MongoDB Atlas) or as another Kubernetes deployment. You manage the source cluster and must prepare it for replication: configure authentication, create a Kubernetes Secret with the PCSM user credentials and provide the cluster endpoint.
 - **Target cluster** – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.
-- **PCSM Deployment** — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#troubleshooting).
+- **PCSM Deployment** – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can’t resume: if it’s interrupted, start a new sync. See [Troubleshooting](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#troubleshooting).
+
+## TLS connections
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+**To the target cluster.** If the target cluster has TLS turned on and its `crVersion` is 1.24.0 or later, PCSM connects to it over TLS. You don’t need to configure anything:
+
+- The Operator mounts the target cluster’s TLS Secret, set in [`secrets.ssl`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#secretsssl), into the PCSM Pods.
+- PCSM presents the certificate from this Secret and checks the target cluster’s certificate against the Secret’s `ca.crt`.
+- PCSM follows the target cluster’s [`tls.allowInvalidCertificates`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsallowinvalidcertificates) setting.
+
+The Operator restarts the PCSM Pods in these cases:
+
+- When the target cluster’s certificates change, for example when cert-manager renews them or you rotate them.
+- When you change `tls.allowInvalidCertificates`.
+
+A restart during the initial clone stops the sync. See [Limitations](#limitations).
+
+With a `crVersion` earlier than 1.24.0, PCSM connects to the target cluster without TLS. This works only if the target accepts connections without TLS, with `tls.mode` set to `preferTLS` or `allowTLS`.
+
+**To the source cluster.** Add TLS options to the connection string in [`source.uri`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#sourceuri), for example `tls=true`. The Operator doesn’t add certificates for the source connection.
+
+## High availability
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+A migration or a continuous replica can run for hours. With a single PCSM instance, a Pod failure, node drain or eviction stops replication until Kubernetes restarts the Pod. Run PCSM with high availability to keep replication going through these events without your involvement: a standby instance takes over within seconds and continues from the last checkpoint, so replication doesn’t start over and the lag stays low.
+
+To turn it on, set [`spec.size`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#size) to `2` or more. One instance is active and replicates, and the others are standbys.
+
+The instances elect the active one through a lease that PCSM keeps on the target cluster, in the `percona_clustersync_mongodb` database. The active instance renews the lease every 3 seconds. If it stops renewing it, the lease expires in 10 seconds by default. Then a standby takes the lease and continues replication from the last saved checkpoint.
+
+When PCSM runs with high availability, the Operator manages the group for you:
+
+- Sends `pause`, `resume` and `finalize` commands to the active instance and stores its Pod name in `status.activeInstance`.
+- Records a `PCSMFailover` event each time another instance becomes active.
+- Creates the `<clustersync-name>-pcsm` PodDisruptionBudget, which allows one PCSM Pod to be unavailable at a time. To change it, see [`podDisruptionBudget`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#poddisruptionbudgetmaxunavailable).
+- Replaces the Pods one at a time when you change the ClusterSync configuration.
+
+High availability protects replication after the initial clone. For what it doesn’t cover, see [Limitations](#limitations).
+
+By default, PCSM runs as a single instance. If its Pod restarts, PCSM resumes from the last checkpoint after the previous lease expires.
+
+### Change the lease duration
+
+You can set how long the lease lasts with the `PCSM_HA_LEASE_TTL` environment variable in [`spec.env`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html#env), for example `30s`. The minimum and the default are `10s`. A longer lease lets the active instance survive short outages of the target cluster, but a standby takes over later when the active instance fails. See [High availability in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/high-availability.html) .
 
 ## Supported MongoDB deployments
 
-Both source and target cluster can be replica sets or sharded clusters and must have the same major version. Minimum supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0.
+PCSM supports these topologies:
 
-Replication between sharded clusters is in the tech preview stage and is not recommended for production use yet. See [Sharding support](#sharding-support-in-pcsm-tech-preview) to learn more.
+- Replica set to replica set
+- Sharded cluster to sharded cluster
+- Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.
+- Replica set to sharded cluster. After migration, the collections remain unsharded and you must shard them yourself.
+
+See [Supported MongoDB deployments in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html) and [Limitations on sharded clusters in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html#sharded-clusters) for more information.
+
+## Supported MongoDB versions
+
+The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0.
+
+To learn more, see [Version compatibility matrix in PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/version-compatibility.html#version-compatibility-matrix) .
 
 ## Replication modes and states
 
@@ -59,11 +116,13 @@ PCSM also reports a runtime **state**, which the Operator stores in `status.stat
 
 Find more information about modes, states, and conditions in [Custom resource statuses](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/cr-statuses.html#perconaservermongodbclustersync-status). For all configuration fields, see [ClusterSync Resource options](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-options.html).
 
-## Sharding support in PCSM (tech preview)
+## Sharding support
 
-PCSM can replicate data between sharded clusters. Before the replication, it checks the source cluster for sharded collections and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names, and zones internally.
+PCSM replicates from a sharded source to a sharded cluster or to a replica set. It connects to a sharded cluster through `mongos`.
 
-PCSM replicates **data only**, not sharding metadata. It connects through `mongos` on both sides, so source and target can have different numbers of shards.
+For a sharded target, PCSM checks the source for sharded collections before the replication and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names and zones. PCSM replicates **data only**, not sharding metadata, so the source and target can have different numbers of shards.
+
+For a replica set target, sharded collections on the source become regular collections. See [Sharding support in the PCSM documentation](https://docs.percona.com/percona-clustersync-for-mongodb/sharding.html) .
 
 ## Backup and restore management
 
@@ -84,10 +143,11 @@ PCSM follows upstream [known issues and limitations](https://docs.percona.com/pe
 
 Notable constraints:
 
-- Same **major** MongoDB version required on source and target.
+- Source and target run the same major MongoDB version, or one of the supported upgrade paths. See [Supported MongoDB deployments](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync.html#supported-mongodb-deployments).
 - Single source / single target pair only.
 - Reverse synchronization is not supported.
-- Initial sync is **not resumable**. If PCSM failed during initial sync, it restarts it from scratch.
+- The initial clone is **not resumable**, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error `initial clone interrupted by failover and is not resumable`. See [Status shows `failed`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/clustersync-setup.html#status-shows-failed).
+- With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.
 - PCSM connects to the **primary** only; `directConnection` to secondaries is ignored.
 - Users, roles, and `system.*` collections are not synchronized.
 - Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.

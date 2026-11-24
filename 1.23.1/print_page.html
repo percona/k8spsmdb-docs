@@ -9794,10 +9794,11 @@ and when to expect it in the
 <p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <p>Notable constraints:</p>
 <ul>
-<li>Same <strong>major</strong> MongoDB version required on source and target.</li>
+<li>Source and target run the same major MongoDB version, or one of the supported upgrade paths. See <a href="#clustersync-supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
 <li>Single source / single target pair only.</li>
 <li>Reverse synchronization is not supported.</li>
-<li>Initial sync is <strong>not resumable</strong>. If PCSM failed during initial sync, it restarts it from scratch.</li>
+<li>The initial clone is <strong>not resumable</strong>, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error <code>initial clone interrupted by failover and is not resumable</code>. See <a href="#clustersync-setup-status-shows-failed">Status shows <code>failed</code></a>.</li>
+<li>With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.</li>
 <li>PCSM connects to the <strong>primary</strong> only; <code>directConnection</code> to secondaries is ignored.</li>
 <li>Users, roles, and <code>system.*</code> collections are not synchronized.</li>
 <li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
@@ -10802,7 +10803,7 @@ requirements:</p>
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
         })
         </script>
-        </head><body><h1 id="real-time-replication-and-near-zero-downtime-migration-with-percona-clustersync-for-mongodb-pcsm">Real-time replication and near-zero downtime migration with Percona ClusterSync for MongoDB (PCSM)<a class="headerlink" href="#clustersync-real-time-replication-and-near-zero-downtime-migration-with-percona-clustersync-for-mongodb-pcsm" title="Permanent link">¶</a></h1>
+        </head><body><h1 id="real-time-replication-with-percona-clustersync-for-mongodb-pcsm">Real-time replication with Percona ClusterSync for MongoDB (PCSM)<a class="headerlink" href="#clustersync-real-time-replication-with-percona-clustersync-for-mongodb-pcsm" title="Permanent link">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.23.0">1.23.0</a></p>
 </div>
@@ -10850,12 +10851,57 @@ reconfigure client applications to point to the target cluster.</p>
 <p><strong>Target cluster</strong> – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.</p>
 </li>
 <li>
-<p><strong>PCSM Deployment</strong> — Managed by the Operator. The Operator restarts and re-runs initial sync if it is interrupted during clone. After initial sync, it auto-resumes from a checkpoint on recoverable failures. For a hard failure during initial sync that needs a full reset, see <a href="#clustersync-setup-troubleshooting">Troubleshooting</a>.</p>
+<p><strong>PCSM Deployment</strong> – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can’t resume: if it’s interrupted, start a new sync. See <a href="#clustersync-setup-troubleshooting">Troubleshooting</a>.</p>
 </li>
 </ul>
+<h2 id="clustersync-tls-connections">TLS connections<a class="headerlink" href="#clustersync-tls-connections" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
+</div>
+<p><strong>To the target cluster.</strong> If the target cluster has TLS turned on and its <code>crVersion</code> is 1.24.0 or later, PCSM connects to it over TLS. You don’t need to configure anything:</p>
+<ul>
+<li>The Operator mounts the target cluster’s TLS Secret, set in <a href="#operator-secretsssl"><code>secrets.ssl</code></a>, into the PCSM Pods.</li>
+<li>PCSM presents the certificate from this Secret and checks the target cluster’s certificate against the Secret’s <code>ca.crt</code>.</li>
+<li>PCSM follows the target cluster’s <a href="#operator-tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a> setting.</li>
+</ul>
+<p>The Operator restarts the PCSM Pods in these cases:</p>
+<ul>
+<li>When the target cluster’s certificates change, for example when cert-manager renews them or you rotate them. </li>
+<li>When you change <code>tls.allowInvalidCertificates</code>. </li>
+</ul>
+<p>A restart during the initial clone stops the sync. See <a href="#clustersync-limitations">Limitations</a>.</p>
+<p>With a <code>crVersion</code> earlier than 1.24.0, PCSM connects to the target cluster without TLS. This works only if the target accepts connections without TLS, with <code>tls.mode</code> set to <code>preferTLS</code> or <code>allowTLS</code>.</p>
+<p><strong>To the source cluster.</strong> Add TLS options to the connection string in <a href="#clustersync-options-sourceuri"><code>source.uri</code></a>, for example <code>tls=true</code>. The Operator doesn’t add certificates for the source connection.</p>
+<h2 id="clustersync-high-availability">High availability<a class="headerlink" href="#clustersync-high-availability" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
+</div>
+<p>A migration or a continuous replica can run for hours. With a single PCSM instance, a Pod failure, node drain or eviction stops replication until Kubernetes restarts the Pod. Run PCSM with high availability to keep replication going through these events without your involvement: a standby instance takes over within seconds and continues from the last checkpoint, so replication doesn’t start over and the lag stays low.</p>
+<p>To turn it on, set <a href="#clustersync-options-size"><code>spec.size</code></a> to <code>2</code> or more. One instance is active and replicates, and the others are standbys.</p>
+<p>The instances elect the active one through a lease that PCSM keeps on the target cluster, in the <code>percona_clustersync_mongodb</code> database. The active instance renews the lease every 3 seconds. If it stops renewing it, the lease expires in 10 seconds by default. Then a standby takes the lease and continues replication from the last saved checkpoint.</p>
+<p>When PCSM runs with high availability, the Operator manages the group for you:</p>
+<ul>
+<li>Sends <code>pause</code>, <code>resume</code> and <code>finalize</code> commands to the active instance and stores its Pod name in <code>status.activeInstance</code>.</li>
+<li>Records a <code>PCSMFailover</code> event each time another instance becomes active.</li>
+<li>Creates the <code>&lt;clustersync-name&gt;-pcsm</code> PodDisruptionBudget, which allows one PCSM Pod to be unavailable at a time. To change it, see <a href="#clustersync-options-poddisruptionbudgetmaxunavailable"><code>podDisruptionBudget</code></a>.</li>
+<li>Replaces the Pods one at a time when you change the ClusterSync configuration.</li>
+</ul>
+<p>High availability protects replication after the initial clone. For what it doesn’t cover, see <a href="#clustersync-limitations">Limitations</a>.</p>
+<p>By default, PCSM runs as a single instance. If its Pod restarts, PCSM resumes from the last checkpoint after the previous lease expires.</p>
+<h3 id="clustersync-change-the-lease-duration">Change the lease duration<a class="headerlink" href="#clustersync-change-the-lease-duration" title="Permanent link">¶</a></h3>
+<p>You can set how long the lease lasts with the <code>PCSM_HA_LEASE_TTL</code> environment variable in <a href="#clustersync-options-env"><code>spec.env</code></a>, for example <code>30s</code>. The minimum and the default are <code>10s</code>. A longer lease lets the active instance survive short outages of the target cluster, but a standby takes over later when the active instance fails. See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/high-availability.html">High availability in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="clustersync-supported-mongodb-deployments">Supported MongoDB deployments<a class="headerlink" href="#clustersync-supported-mongodb-deployments" title="Permanent link">¶</a></h2>
-<p>Both source and target cluster can be replica sets or sharded clusters and must have the same major version. Minimum supported MongoDB versions are: 6.0.17, 7.0.13, 8.0.0.</p>
-<p>Replication between sharded clusters is in the tech preview stage and is not recommended for production use yet. See <a href="#clustersync-sharding-support-in-pcsm-tech-preview">Sharding support</a> to learn more.</p>
+<p>PCSM supports these topologies:</p>
+<ul>
+<li>Replica set to replica set</li>
+<li>Sharded cluster to sharded cluster</li>
+<li>Sharded cluster to replica set. Sharded collections on the source become regular collections on the target.</li>
+<li>Replica set to sharded cluster. After migration, the collections remain unsharded and you must shard them yourself. </li>
+</ul>
+<p>See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/deployment.html">Supported MongoDB deployments in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> and <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html#sharded-clusters">Limitations on sharded clusters in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for more information.</p>
+<h2 id="clustersync-supported-mongodb-versions">Supported MongoDB versions<a class="headerlink" href="#clustersync-supported-mongodb-versions" title="Permanent link">¶</a></h2>
+<p>The source and target run the same major MongoDB version, or the target runs a higher one on a supported path: 6.0 to 7.0, 6.0 to 8.0 or 7.0 to 8.0. Minimum supported MongoDB versions are 6.0.17, 7.0.13 and 8.0.0. </p>
+<p>To learn more, see <a href="https://docs.percona.com/percona-clustersync-for-mongodb/version-compatibility.html#version-compatibility-matrix">Version compatibility matrix in PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="clustersync-replication-modes-and-states">Replication modes and states<a class="headerlink" href="#clustersync-replication-modes-and-states" title="Permanent link">¶</a></h2>
 <p>You control the replication flow through the <code>PerconaServerMongoDBClusterSync</code> custom resource. Supported modes are:</p>
 <ul>
@@ -10865,9 +10911,10 @@ reconfigure client applications to point to the target cluster.</p>
 </ul>
 <p>PCSM also reports a runtime <strong>state</strong>, which the Operator stores in <code>status.state</code>: <code>idle</code>, <code>running</code>, <code>paused</code>, <code>finalizing</code>, <code>finalized</code>, <code>failed</code>.</p>
 <p>Find more information about modes, states, and conditions in <a href="#cr-statuses-perconaservermongodbclustersync-status">Custom resource statuses</a>. For all configuration fields, see <a href="#clustersync-options">ClusterSync Resource options</a>.</p>
-<h2 id="clustersync-sharding-support-in-pcsm-tech-preview">Sharding support in PCSM (tech preview)<a class="headerlink" href="#clustersync-sharding-support-in-pcsm-tech-preview" title="Permanent link">¶</a></h2>
-<p>PCSM can replicate data between sharded clusters. Before the replication, it checks the source cluster for sharded collections and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names, and zones internally.</p>
-<p>PCSM replicates <strong>data only</strong>, not sharding metadata. It connects through <code>mongos</code> on both sides, so source and target can have different numbers of shards.</p>
+<h2 id="clustersync-sharding-support">Sharding support<a class="headerlink" href="#clustersync-sharding-support" title="Permanent link">¶</a></h2>
+<p>PCSM replicates from a sharded source to a sharded cluster or to a replica set. It connects to a sharded cluster through <code>mongos</code>.</p>
+<p>For a sharded target, PCSM checks the source for sharded collections before the replication and creates matching collections with the same shard keys on the target. The target cluster manages chunk distribution, primary shard names and zones. PCSM replicates <strong>data only</strong>, not sharding metadata, so the source and target can have different numbers of shards.</p>
+<p>For a replica set target, sharded collections on the source become regular collections. See <a href="https://docs.percona.com/percona-clustersync-for-mongodb/sharding.html">Sharding support in the PCSM documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
 <h2 id="clustersync-backup-and-restore-management">Backup and restore management<a class="headerlink" href="#clustersync-backup-and-restore-management" title="Permanent link">¶</a></h2>
 <p>You can run backups and restores on the <strong>source</strong> as usual.</p>
 <p>On the <strong>target</strong>, the Operator holds a lease while PCSM is active, so backups and restores wait. After you finalize replication and PCSM reports <code>finalized</code>, the Operator releases the lease and you can back up or restore the target again.</p>
@@ -10882,10 +10929,11 @@ reconfigure client applications to point to the target cluster.</p>
 <p>PCSM follows upstream <a href="https://docs.percona.com/percona-clustersync-for-mongodb/limitations.html">known issues and limitations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <p>Notable constraints:</p>
 <ul>
-<li>Same <strong>major</strong> MongoDB version required on source and target.</li>
+<li>Source and target run the same major MongoDB version, or one of the supported upgrade paths. See <a href="#clustersync-supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
 <li>Single source / single target pair only.</li>
 <li>Reverse synchronization is not supported.</li>
-<li>Initial sync is <strong>not resumable</strong>. If PCSM failed during initial sync, it restarts it from scratch.</li>
+<li>The initial clone is <strong>not resumable</strong>, even with high availability. If it’s interrupted, start a new sync. A failover during the clone stops the sync with the error <code>initial clone interrupted by failover and is not resumable</code>. See <a href="#clustersync-setup-status-shows-failed">Status shows <code>failed</code></a>.</li>
+<li>With high availability, the Operator replaces the PCSM Pods in no fixed order during an update, so the active role can move more than once.</li>
 <li>PCSM connects to the <strong>primary</strong> only; <code>directConnection</code> to secondaries is ignored.</li>
 <li>Users, roles, and <code>system.*</code> collections are not synchronized.</li>
 <li>Unsupported types include timeseries, queryable encryption, Percona Memory Engine, and several sharding admin commands during replication.</li>
@@ -11282,7 +11330,15 @@ follows:</p>
 <span class="w">            </span><span class="nt">external-2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0-2.mycluster2.xyz</span>
 </code></pre></div>
 <p>URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.</p>
-<p>Starting with version 1.22.0, the Operator adds the DNS records defined in the <code>splitHorizons</code> subsection to the certificates it generates. </p>
+<p>Starting with version 1.22.0, the Operator adds each horizon DNS name to the TLS certificates it generates. A port in the URI is not added to the certificate.</p>
+<p>Starting with version 1.24.0, the Operator updates those certificates when you add or change horizon DNS names on a running cluster:</p>
+<ul>
+<li>Operator-generated certificates are re-signed in <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> with the CA in the <code>&lt;cluster-name&gt;-ca-cert</code> Secret. If that Secret has no CA key, the Operator leaves the certificates unchanged.</li>
+<li>cert-manager certificates are reissued after the Operator adds the DNS names to the <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> Certificate resources.</li>
+</ul>
+<p>The Operator adds DNS names that are missing. It does not remove a DNS name when you delete it from <code>splitHorizons</code>. Replica set members stop advertising that horizon. The certificate still lists the old name.</p>
+<p>Horizon DNS names that you set only under <a href="#operator-replsetsreplsetoverridesmember-namehorizonshorizon-name"><code>replsets.replsetOverrides.&lt;pod-name&gt;.horizons</code></a> are included starting with version 1.24.0. When the same horizon key is set in both <code>splitHorizons</code> and <code>replsetOverrides</code>, the certificate uses the override. On versions 1.22 and 1.23, the Operator adds horizon names only when <code>splitHorizons</code> is set.</p>
+<p>The Operator does not change certificates that you provide. When you <a href="#tls-manual">generate certificates manually</a>, or when <code>tls.certManagementPolicy</code> is <code>userProvidedOnly</code>, add each horizon DNS name to the certificate yourself. </p>
 <p>Split horizon has following limitations:</p>
 <ul>
 <li>duplicating domain names in horizons is not allowed by MongoDB</li>
@@ -24500,7 +24556,7 @@ flags and connect with just <code>mongosh "&lt;connection-string&gt;"</code>.</p
 <li>
 <p>By default, the Operator generates long-term certificates automatically during the cluster creation if there are no
 certificate secrets available and no cert-manager is installed. When generating certificates, the Operator creates the Secrets <code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code>. When backups are enabled, it also creates <code>&lt;cluster-name&gt;-pbm</code>. These Secrets are referenced in the <code>secrets.ssl</code>, <code>secrets.sslInternal</code> and <code>secrets.sslPBM</code> options in the Custom Resource.</p>
-<p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates.</p>
+<p>Operator-generated certificates are not renewed automatically. You must renew them manually if you need new certificates. If you add or change <a href="#expose-exposing-replica-set-with-split-horizon-dns">split-horizon DNS</a> names, the Operator version 1.24.0 and above updates those names on Operator-generated certificates and on cert-manager Certificate resources. It does this only when the <a href="#tls-certificate-management-policy">certificate management policy</a> is <code>auto</code>. Add those names yourself to certificates you generate manually.</p>
 </li>
 <li>
 <p>The Operator can use an installed <em>cert-manager</em> to automatically generate and
@@ -24683,20 +24739,6 @@ cert-manager-webhook-84fcdcd5d-697k4       1/1     Running   0          3m8s
 <li><a href="#tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a></li>
 <li><a href="#tls-cert-management-policy">Configure TLS certificate management policy</a></li>
 <li><a href="#tls-cert-manager-configure-tls-using-cert-manager">Configure TLS using cert-manager</a></li>
-<li><a href="#tls-cert-manager-about-the-cert-manager">About the <em>cert-manager</em></a></li>
-<li><a href="#tls-cert-manager-install-the-cert-manager">Install the <em>cert-manager</em></a></li>
-<li><a href="#tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager</a><ul>
-<li><a href="#tls-cert-manager-rules-and-limitations">Rules and limitations</a></li>
-<li><a href="#tls-cert-manager-configuration">Configuration</a></li>
-</ul>
-</li>
-<li><a href="#tls-cert-manager-operator-managed-namespace-scoped-issuers-default">Operator-managed namespace-scoped issuers (default)</a></li>
-<li><a href="#tls-cert-manager-operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope</a></li>
-<li><a href="#tls-cert-manager-use-an-existing-clusterissuer">Use an existing ClusterIssuer</a></li>
-<li><a href="#tls-cert-manager-use-an-existing-namespace-scoped-issuer">Use an existing namespace-scoped Issuer</a></li>
-<li><a href="#tls-cert-manager-pre-create-certificates-before-deployment">Pre-create certificates before deployment</a></li>
-<li><a href="#tls-cert-manager-operator-environment-variable">Operator environment variable</a></li>
-<li><a href="#tls-cert-manager-verify-the-certificates">Verify the certificates</a></li>
 </ul>
 <h2 id="tls-cert-manager-customize-certificate-duration-for-cert-manager">Customize certificate duration for cert-manager<a class="headerlink" href="#tls-cert-manager-customize-certificate-duration-for-cert-manager" title="Permanent link">¶</a></h2>
 <p>When you deploy the cluster using the default configuration, the Operator triggers the cert-manager to create certificates
@@ -24747,7 +24789,17 @@ Operator automatically creates:</p>
 </ul>
 <p>cert-manager issues short-lived certificates (90 days by default) and renews them
 on schedule. Set <a href="#operator-tlsallowinvalidcertificates"><code>tls.allowInvalidCertificates</code></a>
-to <code>true</code> (the default) for this self-signed setup. </p>
+to <code>true</code> (the default) for this self-signed setup.</p>
+<h2 id="tls-cert-manager-update-certificates-for-split-horizon-names">Update certificates for split-horizon names<a class="headerlink" href="#tls-cert-manager-update-certificates-for-split-horizon-names" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version availability: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
+</div>
+<p>With <code>tls.certManagementPolicy: auto</code>, the Operator updates <code>dnsNames</code> on the
+<code>&lt;cluster-name&gt;-ssl</code> and <code>&lt;cluster-name&gt;-ssl-internal</code> Certificate resources
+when you add or change <a href="#expose-exposing-replica-set-with-split-horizon-dns">split-horizon DNS</a>
+names. cert-manager reissues the certificates. You do not edit <code>dnsNames</code> yourself. However, for user-managed Certificate resources or <code>tls.certManagementPolicy: userProvidedOnly</code>,
+ update <code>dnsNames</code> yourself.</p>
+<p>This applies to every issuer on this page: Operator-managed issuers, and an existing <code>Issuer</code> or <code>ClusterIssuer</code>.</p>
 <h2 id="tls-cert-manager-operator-managed-issuers-with-clusterissuer-scope">Operator-managed issuers with ClusterIssuer scope<a class="headerlink" href="#tls-cert-manager-operator-managed-issuers-with-clusterissuer-scope" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version availability: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.23.0">1.23.0</a></p>
@@ -24810,6 +24862,7 @@ MongoDB. Include every hostname those clients use in the certificate. See
 <p>When you deploy the cluster, the Operator creates <code>Certificate</code> resources that
 reference your <code>ClusterIssuer</code>. cert-manager signs the resulting Secrets; the
 Operator does not create a parallel CA or overwrite your issuer.</p>
+<p>The Operator updates <code>dnsNames</code> when split-horizon names change. See <a href="#tls-cert-manager-update-certificates-for-split-horizon-names">Update certificates for split-horizon names</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Operator’s default RBAC does not grant access to cluster-scoped
@@ -24832,6 +24885,7 @@ You can leave <code>kind</code> at the default value (<code>Issuer</code>).</p>
 <p>When the issuer name refers to an existing resource, the Operator creates TLS
 <code>Certificate</code> resources that cert-manager signs through your issuer. It does not
 recreate the issuer or its CA chain.</p>
+<p>The Operator updates <code>dnsNames</code> when split-horizon names change. See <a href="#tls-cert-manager-update-certificates-for-split-horizon-names">Update certificates for split-horizon names</a>.</p>
 <h2 id="tls-cert-manager-pre-create-certificates-before-deployment">Pre-create certificates before deployment<a class="headerlink" href="#tls-cert-manager-pre-create-certificates-before-deployment" title="Permanent link">¶</a></h2>
 <p>If your platform team manages cert-manager objects directly, you can create
 <code>Certificate</code> (and optionally <code>ClusterIssuer</code>) resources before deploying the
@@ -25281,10 +25335,11 @@ names the cluster uses:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-ssl<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-text<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A1<span class="w"> </span><span class="s1">'Subject Alternative Name'</span>
 </code></pre></div>
-<p>The SAN list must cover the Pod and Service DNS names of your cluster. A certificate that is
+<p>The Subject Alternative Name (SAN) list must cover the Pod and Service DNS names of your cluster. A certificate that is
 otherwise valid but missing those names produces connection failures that look like TLS
 misconfiguration rather than a naming problem.</p>
-<p>If backups are enabled, check that the PBM certificate is a client certificate with its own subject:</p>
+<p>If the cluster uses <a href="#expose-exposing-replica-set-with-split-horizon-dns">split-horizon DNS</a>, include each horizon hostname in that list. Do not include the port. The Operator does not add these names to a certificate you created.
+If backups are enabled, check that the PBM certificate is a client certificate with its own subject:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-cluster-name-pbm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.tls\.crt}'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-noout<span class="w"> </span>-subject<span class="w"> </span>-ext<span class="w"> </span>extendedKeyUsage
 </code></pre></div>
@@ -25328,6 +25383,7 @@ X509v3 Extended Key Usage:
 <ul>
 <li>Certificates manually generated by you are not renewed automatically. It is your responsibility to timely update them. Use the steps in the following sections for how to do it.</li>
 </ul>
+<p>If <a href="#clustersync">PCSM</a> replicates data into this cluster, updating its certificates restarts the PCSM Pods. A restart during the initial clone stops the sync. Plan certificate updates after the clone finishes. See <a href="#clustersync-tls-connections">TLS connections</a>.</p>
 <h2 id="tls-update-check-your-certificates-for-expiration">Check your certificates for expiration<a class="headerlink" href="#tls-update-check-your-certificates-for-expiration" title="Permanent link">¶</a></h2>
 <ol>
 <li>
@@ -28410,8 +28466,8 @@ neighbors to <code>[1.0, 0.0, 0.0]</code> (closest to <code>"apple"</code>):</p>
 <p>Before you start, make sure that:</p>
 <ul>
 <li>You run Percona Operator for MongoDB <strong>1.23.0</strong> or later.</li>
-<li>The source and target clusters use the <strong>same major MongoDB version</strong>. Minimum supported versions are listed in <a href="#clustersync-supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
-<li>The source and target topologies are compatible for your scenario (replica set to replica set, or sharded cluster to sharded cluster). </li>
+<li>The source and target MongoDB versions are supported. See <a href="#clustersync-supported-mongodb-deployments">Supported MongoDB deployments</a>.</li>
+<li>The source and target topologies are supported: replica set to replica set, sharded cluster to sharded cluster, or sharded cluster to replica set.</li>
 <li>The PCSM Pod can reach the source cluster endpoint over the network.</li>
 <li>You understand the <a href="#clustersync-limitations">limitations</a>, including that users and roles are not synchronized and initial sync is not resumable after a hard failure.</li>
 </ul>
@@ -28449,7 +28505,7 @@ neighbors to <code>[1.0, 0.0, 0.0]</code> (closest to <code>"apple"</code>):</p>
 </table>
 <p>Replace them with your values, if needed.</p>
 <p>Percona ClusterSync for MongoDB (PCSM) image and version used in this tutorial are:</p>
-<div class="highlight"><pre><span></span><code>percona/percona-clustersync-mongodb:0.9.0
+<div class="highlight"><pre><span></span><code>percona/percona-clustersync-mongodb:1.1.0
 </code></pre></div>
 <h2 id="clustersync-setup-configuration">Configuration<a class="headerlink" href="#clustersync-setup-configuration" title="Permanent link">¶</a></h2>
 <h3 id="clustersync-setup-1-prepare-the-environment">1. Prepare the environment<a class="headerlink" href="#clustersync-setup-1-prepare-the-environment" title="Permanent link">¶</a></h3>
@@ -28467,10 +28523,20 @@ neighbors to <code>[1.0, 0.0, 0.0]</code> (closest to <code>"apple"</code>):</p>
 </li>
 </ol>
 <h3 id="clustersync-setup-2-deploy-the-operator">2. Deploy the Operator<a class="headerlink" href="#clustersync-setup-2-deploy-the-operator" title="Permanent link">¶</a></h3>
-<p>Since source and target clusters are in the same namespace, deploy the Operator in the cluster-wide mode:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/cw-bundle.yaml
+<p>The Operator manages every cluster in the namespace it watches, so one Operator in <code>$NAMESPACE</code> manages both the source and the target cluster.</p>
+<ol>
+<li>
+<p>Create the namespace:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>Refer to the <a href="#cluster-wide-install-percona-operator-for-mongodb-in-multi-namespace-cluster-wide-mode">Install the Operator in the cluster-wide mode</a> for how to install the Operator in another namespace.</p>
+</li>
+<li>
+<p>Deploy the Operator in it:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>--server-side<span class="w"> </span>-f<span class="w"> </span>deploy/bundle.yaml<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+</ol>
+<p>If the source cluster runs in another namespace, deploy a separate Operator there, or install one Operator in <a href="#cluster-wide">cluster-wide mode</a> to watch both namespaces.</p>
 <h3 id="clustersync-setup-3-deploy-the-source-cluster">3. Deploy the source cluster<a class="headerlink" href="#clustersync-setup-3-deploy-the-source-cluster" title="Permanent link">¶</a></h3>
 <ol>
 <li>
@@ -28633,6 +28699,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <li><code>spec.source.uri</code> - specify the endpoint to the source cluster.</li>
 <li><code>spec.source.credentialsSecret</code> - reference the Secret that stores the credentials of the PCSM user from the source cluster.</li>
 <li><code>spec.mode</code> defaults to <code>running</code>, so replication starts when the PCSM Pod is ready.</li>
+<li><code>spec.size</code> defaults to <code>1</code>. To run PCSM in high-availability mode, first ensure that the Operator and its CRDs are version <strong>1.24.0 or later</strong>, then set <code>spec.size</code> to <code>2</code> or more. In this mode, an active instance replicates while standby instances take over if it fails. See <a href="#clustersync-high-availability">High availability</a>.</li>
 </ul>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="clustersync-setup-__tabbed_1_1" name="clustersync-setup-__tabbed_1" type="radio"><input id="clustersync-setup-__tabbed_1_2" name="clustersync-setup-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="clustersync-setup-__tabbed_1_1">Replica set</label><label for="clustersync-setup-__tabbed_1_2">Sharded cluster</label></div>
 <div class="tabbed-content">
@@ -28652,7 +28719,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>For sharded clusters, specify the <code>mongos</code> Service name for the source URI. Sharded replication is in tech preview. See <a href="#clustersync-sharding-support-in-pcsm-tech-preview">Sharding support in PCSM</a>.</p>
+<p>For sharded clusters, specify the <code>mongos</code> Service name for the source URI. See <a href="#clustersync-sharding-support">Sharding support</a>.</p>
 <div class="highlight"><span class="filename">clustersync-sharded.yaml</span><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">psmdb.percona.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PerconaServerMongoDBClusterSync</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -28675,11 +28742,11 @@ kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> 
 <p>To check the status of your Percona ClusterSync (PCSM), use the following command:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
-<p>This displays a summary table including the <code>MODE</code>, <code>STATE</code>, and replication lag time.</p>
+<p>This displays a summary table with the <code>MODE</code>, <code>STATE</code>, replication lag, the number of ready PCSM Pods and the active PCSM Pod.</p>
 <details class="example">
 <summary>Sample output</summary>
-<div class="highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   AGE
-my-cluster-sync   my-target-cluster   running   running            39m
+<div class="no-copy highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        1       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
 </code></pre></div>
 </details>
 <p>To get detailed information about a ClusterSync resource and see the replication status, use:</p>
@@ -28754,7 +28821,7 @@ my-cluster-sync   my-target-cluster   running   running            39m
 <h2 id="clustersync-setup-troubleshooting">Troubleshooting<a class="headerlink" href="#clustersync-setup-troubleshooting" title="Permanent link">¶</a></h2>
 <h3 id="clustersync-setup-pcsm-pod-is-not-ready">PCSM Pod is not ready<a class="headerlink" href="#clustersync-setup-pcsm-pod-is-not-ready" title="Permanent link">¶</a></h3>
 <p>Check the Deployment and Pod:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,pods<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>clustersync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,pods<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/instance<span class="o">=</span>my-cluster-sync,app.kubernetes.io/component<span class="o">=</span>pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>describe<span class="w"> </span>deploy<span class="w"> </span>my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
@@ -28765,6 +28832,21 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 <li>Target cluster is not <code>ready</code></li>
 <li>Source and target major MongoDB versions differ</li>
 </ul>
+<h3 id="clustersync-setup-pcsm-doesnt-start-because-of-the-target-tls-secret">PCSM doesn’t start because of the target TLS Secret<a class="headerlink" href="#clustersync-setup-pcsm-doesnt-start-because-of-the-target-tls-secret" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> PCSM doesn’t start, and <code>status.error</code> of the ClusterSync object starts with <code>target tls:</code>, for example <code>target tls: target ssl secret &lt;namespace&gt;/&lt;secret-name&gt; is missing ca.crt</code>.</p>
+<p><strong>Cause:</strong> the target cluster has TLS turned on and <code>crVersion</code> 1.24.0 or later, so the Operator mounts its TLS Secret into the PCSM Pods. The Secret doesn’t exist or lacks one of the <code>ca.crt</code>, <code>tls.crt</code> and <code>tls.key</code> keys.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>
+<p>Check the error:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.error}{"\n"}'</span>
+</code></pre></div>
+</li>
+<li>
+<p>Make sure the Secret set in the target cluster’s <code>secrets.ssl</code> exists and has all three keys. If you provide your own certificates, see <a href="#tls-manual">Generate certificates manually</a>.</p>
+</li>
+</ol>
+<p>The Operator retries on its own and starts PCSM once the Secret is correct. See <a href="#clustersync-tls-connections">TLS connections</a>.</p>
 <h3 id="clustersync-setup-status-shows-failed">Status shows <code>failed</code><a class="headerlink" href="#clustersync-setup-status-shows-failed" title="Permanent link">¶</a></h3>
 <p>Inspect the error:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span><span class="se">\</span>
@@ -28784,10 +28866,11 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/my-cluster-syn
 </li>
 <li>Resume with <code>mode: running</code>, or delete and recreate the ClusterSync CR to start a fresh initial sync.</li>
 </ol>
-<p>Initial sync cannot be resumed after a hard failure. Recreate the ClusterSync CR to start over. See <a href="#clustersync-limitations">Limitations</a>.</p>
+<p>Initial sync cannot be resumed after a hard failure. This includes a failover of the active PCSM instance during the clone: <code>status.error</code> then contains <code>initial clone interrupted by failover and is not resumable</code>. Recreate the ClusterSync CR to start over. See <a href="#clustersync-limitations">Limitations</a>.</p>
 <h3 id="clustersync-setup-inspect-pcsm-from-inside-the-pod">Inspect PCSM from inside the Pod<a class="headerlink" href="#clustersync-setup-inspect-pcsm-from-inside-the-pod" title="Permanent link">¶</a></h3>
-<p>For advanced troubleshooting:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/my-cluster-sync-pcsm<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pcsm<span class="w"> </span>status
+<p>For advanced troubleshooting on Operator <strong>1.24.0 or later</strong>, run the commands below in the active PCSM Pod. With more than one PCSM instance, a standby Pod refuses them with <code>not_active</code>. On Operator <strong>1.23.x</strong>, use <code>kubectl exec -it deploy/my-cluster-sync-pcsm -n $NAMESPACE -- pcsm status</code> instead.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">ACTIVE_POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-clustersync<span class="w"> </span>my-cluster-sync<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.activeInstance}'</span><span class="k">)</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="nv">$ACTIVE_POD</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pcsm<span class="w"> </span>status
 </code></pre></div>
 <p>Use manual <code>pcsm</code> commands only when you need details beyond the Custom Resource status.</p></body></html></section><section class="print-page" id="backups-move-from-external-db" heading-number="9.8.2"><html><head>
         <script type="text/javascript">
@@ -33489,6 +33572,22 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tr>
 </tbody>
 </table>
+<h3 id="operator-replsetsreplsetoverridesmember-namehorizonshorizon-name"><code>replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME</code><a class="headerlink" href="#operator-replsetsreplsetoverridesmember-namehorizonshorizon-name" title="Permanent link">¶</a></h3>
+<p>DNS name for one <a href="#expose-exposing-replica-set-with-split-horizon-dns">split-horizon</a> entry on this Pod. <code>HORIZON-NAME</code> is the horizon key, such as <code>external</code>. The value may include a port number. The certificate lists the DNS name without the port. Starting with version 1.24.0, the Operator adds this name to the TLS certificates. If the same key is set in <code>splitHorizons</code>, this value replaces it.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>rs0-0.example.com</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="operator-replsetsreplsetoverridesmember-namepriority"><code>replsets.replsetOverrides.MEMBER-NAME.priority</code><a class="headerlink" href="#operator-replsetsreplsetoverridesmember-namepriority" title="Permanent link">¶</a></h3>
 <p>Use if you need to override the <a href="https://www.mongodb.com/docs/manual/tutorial/adjust-replica-set-member-priority/">replica set members priorities  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>. </p>
 <table>
@@ -34452,7 +34551,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tbody>
 </table>
 <h3 id="operator-replsetssplithorizonsreplicaset-pod-nameexternal"><code>replsets.splitHorizons.REPLICASET-POD-NAME.external</code><a class="headerlink" href="#operator-replsetssplithorizonsreplicaset-pod-nameexternal" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.</p>
 <table>
 <thead>
 <tr>
@@ -34468,7 +34567,7 @@ authentication. If this value is set, the Operator uses the provided token to au
 </tbody>
 </table>
 <h3 id="operator-replsetssplithorizonsreplicaset-pod-nameexternal-2"><code>replsets.splitHorizons.REPLICASET-POD-NAME.external-2</code><a class="headerlink" href="#operator-replsetssplithorizonsreplicaset-pod-nameexternal-2" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.</p>
 <table>
 <thead>
 <tr>
@@ -38268,7 +38367,7 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="operator-shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal"><code>sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.</p>
 <table>
 <thead>
 <tr>
@@ -38284,7 +38383,7 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="operator-shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal-2"><code>sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2</code><a class="headerlink" href="#operator-shardingconfigsvrreplsetsplithorizonscfgreplicaset-pod-nameexternal-2" title="Permanent link">¶</a></h3>
-<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster.</p>
+<p>External URI for <a href="#expose-exposing-replica-set-with-split-horizon-dns">Split-horizon</a> for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.</p>
 <table>
 <thead>
 <tr>
@@ -42527,10 +42626,75 @@ Percona Server for MongoDB backups.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="clustersync-options-size"><code>size</code><a class="headerlink" href="#clustersync-options-size" title="Permanent link">¶</a></h3>
+<p>The number of PCSM instances. With <code>1</code>, PCSM runs as a single instance. With <code>2</code> or more, the instances form an active/standby group: one replicates, and the others take over if it fails. See <a href="#clustersync-high-availability">High availability</a>. Available starting with version 1.24.0.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"></path></svg></span> int</td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-imagepullpolicy"><code>imagePullPolicy</code><a class="headerlink" href="#clustersync-options-imagepullpolicy" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/containers/images/#updating-images">policy used to update the PCSM image <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>Always</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-imagepullsecrets"><code>imagePullSecrets</code><a class="headerlink" href="#clustersync-options-imagepullsecrets" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets">Kubernetes imagePullSecrets <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for a private registry.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> array</td>
+<td><code>[{name: my-registry-secret}]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-env"><code>env</code><a class="headerlink" href="#clustersync-options-env" title="Permanent link">¶</a></h3>
+<p>Environment variables for the PCSM container. Use them for PCSM settings that have no option in the ClusterSync resource, for example <code>PCSM_HA_LEASE_TTL</code>. See the list of <a href="https://docs.percona.com/percona-clustersync-for-mongodb/install/parameters.html#environment-variables">available environment variables <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
+<p>The Operator sets <code>PCSM_SOURCE_URI</code>, <code>PCSM_TARGET_URI</code> and <code>PCSM_GROUP_NAME</code> itself and ignores them here.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> array</td>
+<td><code>[{name: PCSM_HA_LEASE_TTL, value: "30s"}]</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="clustersync-options-the-source-subsection">The <code>source</code> subsection<a class="headerlink" href="#clustersync-options-the-source-subsection" title="Permanent link">¶</a></h2>
 <p>Defines how PCSM connects to the source MongoDB cluster. You manage the source.</p>
 <h3 id="clustersync-options-sourceuri"><code>source.uri</code><a class="headerlink" href="#clustersync-options-sourceuri" title="Permanent link">¶</a></h3>
-<p>Specifies the source MongoDB connection string <strong>without credentials</strong>. Include replica set options, TLS parameters, and other driver options in the URI query string as needed.</p>
+<p>Specifies the source MongoDB connection string <strong>without credentials</strong>. Include replica set options, TLS parameters, and other driver options in the URI query string as needed. TLS options here apply only to the source. The Operator sets up TLS to the target cluster for you. See <a href="#clustersync-tls-connections">TLS connections</a>.</p>
 <p>For replica sets, use replica set members and <code>replicaSet</code>. For sharded clusters, use the <code>mongos</code> endpoint.</p>
 <table>
 <thead>
@@ -42596,6 +42760,22 @@ Percona Server for MongoDB backups.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="clustersync-options-pcsmconfiglogjson"><code>pcsmConfig.logJSON</code><a class="headerlink" href="#clustersync-options-pcsmconfiglogjson" title="Permanent link">¶</a></h3>
+<p>Writes PCSM logs in JSON format.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4m0-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg></span> boolean</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="clustersync-options-pod-and-scheduling-options">Pod and scheduling options<a class="headerlink" href="#clustersync-options-pod-and-scheduling-options" title="Permanent link">¶</a></h2>
 <p>These options configure the PCSM Deployment Pod the same way as other Operator-managed workloads.</p>
 <h3 id="clustersync-options-resources"><code>resources</code><a class="headerlink" href="#clustersync-options-resources" title="Permanent link">¶</a></h3>
@@ -42611,6 +42791,215 @@ Percona Server for MongoDB backups.</p>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> object</td>
 <td><code>requests: {cpu: 500m, memory: 512Mi}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-nodeselector"><code>nodeSelector</code><a class="headerlink" href="#clustersync-options-nodeselector" title="Permanent link">¶</a></h3>
+<p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector">Kubernetes nodeSelector <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"></path></svg></span> label</td>
+<td><code>disktype: ssd</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-tolerations"><code>tolerations</code><a class="headerlink" href="#clustersync-options-tolerations" title="Permanent link">¶</a></h3>
+<p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">Kubernetes Pod tolerations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> array</td>
+<td><code>[{key: node.alpha.kubernetes.io/unreachable, operator: Exists, effect: NoExecute}]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-affinityantiaffinitytopologykey"><code>affinity.antiAffinityTopologyKey</code><a class="headerlink" href="#clustersync-options-affinityantiaffinitytopologykey" title="Permanent link">¶</a></h3>
+<p>The topology key for <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity">Pod anti-affinity <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> between PCSM Pods. When you set it, PCSM Pods must run in different topology domains. Set <code>none</code> to turn anti-affinity off.</p>
+<p>If you leave <code>affinity</code> unset and the target cluster’s <code>crVersion</code> is 1.24.0 or later, the Operator prefers to place PCSM Pods on different nodes, but still schedules them on one node if no other node fits.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>kubernetes.io/hostname</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-affinityadvanced"><code>affinity.advanced</code><a class="headerlink" href="#clustersync-options-affinityadvanced" title="Permanent link">¶</a></h3>
+<p>A full <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity">Kubernetes affinity <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> definition. It replaces <code>affinity.antiAffinityTopologyKey</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> subdoc</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-poddisruptionbudgetmaxunavailable"><code>podDisruptionBudget.maxUnavailable</code><a class="headerlink" href="#clustersync-options-poddisruptionbudgetmaxunavailable" title="Permanent link">¶</a></h3>
+<p>The maximum number of PCSM Pods that can be unavailable during a voluntary disruption, such as a node drain. The Operator creates the PodDisruptionBudget only when <code>size</code> is <code>2</code> or more. The default is <code>1</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"></path></svg></span> int</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-poddisruptionbudgetminavailable"><code>podDisruptionBudget.minAvailable</code><a class="headerlink" href="#clustersync-options-poddisruptionbudgetminavailable" title="Permanent link">¶</a></h3>
+<p>The minimum number of PCSM Pods that must stay available during a voluntary disruption. Use it instead of <code>podDisruptionBudget.maxUnavailable</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"></path></svg></span> int</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-annotations"><code>annotations</code><a class="headerlink" href="#clustersync-options-annotations" title="Permanent link">¶</a></h3>
+<p><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">Kubernetes annotations <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"></path></svg></span> label</td>
+<td><code>example.com/team: data</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-labels"><code>labels</code><a class="headerlink" href="#clustersync-options-labels" title="Permanent link">¶</a></h3>
+<p><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Kubernetes labels <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"></path></svg></span> label</td>
+<td><code>team: data</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-runtimeclassname"><code>runtimeClassName</code><a class="headerlink" href="#clustersync-options-runtimeclassname" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/concepts/containers/runtime-class/">runtime class <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> for the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
+<td><code>image-rc</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-containersecuritycontext"><code>containerSecurityContext</code><a class="headerlink" href="#clustersync-options-containersecuritycontext" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">security context <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> of the PCSM container. If you set <code>readOnlyRootFilesystem: true</code> and the target cluster uses TLS, the Operator mounts a writable <code>/tmp</code> volume for the TLS files.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> subdoc</td>
+<td><code>readOnlyRootFilesystem: true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-podsecuritycontext"><code>podSecurityContext</code><a class="headerlink" href="#clustersync-options-podsecuritycontext" title="Permanent link">¶</a></h3>
+<p>The <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">security context <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> of the PCSM Pods.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> subdoc</td>
+<td><code>runAsNonRoot: true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-livenessprobe"><code>livenessProbe</code><a class="headerlink" href="#clustersync-options-livenessprobe" title="Permanent link">¶</a></h3>
+<p>A <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">liveness probe <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> that replaces the default. The default probe queries the PCSM HTTP endpoint on port <code>2242</code> every 10 seconds. When the target cluster’s <code>crVersion</code> is 1.24.0 or later, it uses <code>/metrics</code>, which both active and standby instances answer. Earlier versions use <code>/status</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> subdoc</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="clustersync-options-readinessprobe"><code>readinessProbe</code><a class="headerlink" href="#clustersync-options-readinessprobe" title="Permanent link">¶</a></h3>
+<p>A <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">readiness probe <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> that replaces the default. It uses the same endpoint as the default liveness probe.</p>
+<table>
+<thead>
+<tr>
+<th>Value type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4z"></path></svg></span> subdoc</td>
+<td></td>
 </tr>
 </tbody>
 </table></body></html></section></section><section class="print-page" id="cr-statuses" heading-number="11.2"><html><head>
@@ -43079,8 +43468,15 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <li><code>status.lagTimeSeconds</code> – replication lag in seconds</li>
 <li><code>status.error</code> – error details from PCSM or the Operator (for example, missing Secret or cluster busy)</li>
 <li><code>status.startedAt</code> – timestamp of the first time PCSM reported <code>running</code></li>
+<li><code>status.size</code> – number of PCSM instances requested in <code>spec.size</code></li>
+<li><code>status.readyReplicas</code> – number of ready PCSM Pods. A value lower than <code>status.size</code> means some requested instances are not ready; check <code>status.state</code>, <code>status.activeInstance</code>, and replication lag to assess whether replication is continuing.</li>
+<li><code>status.activeInstance</code> – name of the PCSM Pod that holds the lease and replicates. See <a href="#clustersync-high-availability">High availability in PCSM</a>.</li>
 <li><code>status.conditions</code> – condition list with reason and message</li>
 </ul>
+<p><code>kubectl get psmdb-clustersync</code> shows the main fields as columns:</p>
+<div class="no-copy highlight"><pre><span></span><code>NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        2       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
+</code></pre></div>
 <h3 id="cr-statuses-clustersync-mode-values">ClusterSync mode values<a class="headerlink" href="#cr-statuses-clustersync-mode-values" title="Permanent link">¶</a></h3>
 <p><code>status.mode</code> mirrors <code>spec.mode</code> after the Operator applies the matching PCSM command:</p>
 <table>
@@ -43162,17 +43558,24 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 </tbody>
 </table>
+<h3 id="cr-statuses-events">Events<a class="headerlink" href="#cr-statuses-events" title="Permanent link">¶</a></h3>
+<p>When another PCSM instance becomes active, the Operator records a <code>PCSMFailover</code> event on the ClusterSync resource with the message <code>Active PCSM instance changed from "&lt;old-pod&gt;" to "&lt;new-pod&gt;"</code>. To see the events:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>psmdb-clustersync<span class="w"> </span>&lt;clustersync-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
 <h3 id="cr-statuses-example-status">Example status<a class="headerlink" href="#cr-statuses-example-status" title="Permanent link">¶</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
 <span class="w">  </span><span class="nt">lagTimeSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">72</span>
+<span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">readyReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">activeInstance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p</span>
 <span class="w">  </span><span class="nt">startedAt</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-07-01T12:00:00Z"</span>
 <span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span>
 <span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">"True"</span>
-<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMReplicating</span>
-<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSM is applying changes from source</span>
+<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSMRunning</span>
+<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCSM is replicating from source to target</span>
 </code></pre></div>
 <p>On failure:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">status</span><span class="p">:</span>
