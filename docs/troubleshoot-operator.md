@@ -166,6 +166,8 @@ If you are still running into issues, check with your Kubernetes cluster adminis
     
     Check the information in the `Status` section. The `State` and `State Description` fields explain why the Pod reports errors.
 
+    If a container restarts, check its `Last State`. The reason `OOMKilled` means that the container ran out of memory. See [Troubleshoot out-of-memory errors](debug-oom.md).
+
 8. To run commands inside a container, use the `kubectl exec` command:
 
     ```bash
@@ -182,7 +184,11 @@ If you are still running into issues, check with your Kubernetes cluster adminis
    
    See the [Avoid the restart-on-fail loop for Percona Server for MongoDB containers](debug-shell.md#avoid-the-restart-on-fail-loop-for-percona-server-for-mongodb-containers) section for steps.
 
+If a Pod stays in the `Pending` state, see [Troubleshoot Pod scheduling](debug-scheduling.md).
+
 For backup and restore failures, see [Troubleshoot backups and restores](debug-backup-restore.md).
+
+If the problem started after an upgrade or a `crVersion` change, see [Troubleshoot upgrades and `crVersion`](debug-upgrade.md).
 
 ## See also
 

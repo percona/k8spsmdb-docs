@@ -40,7 +40,9 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 
     Check the [Release notes index](RN/index.md) for the list of the Operator versions.
 
-2. CRD supports **the last 3 minor versions of the Operator**. This means it is compatible with the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+2. Percona supports the CRD with **the last 3 minor versions of the Operator**: the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+
+    The same support window applies to the `crVersion` of your database clusters. The Operator doesn't reject an older `crVersion`, so keeping your clusters inside the window is up to you. See [What `crVersion` does](update-crversion.md#what-crversion-does).
 
 3. Starting from version 1.14.0, the Operator configures replica set members
     using local fully-qualified domain names (FQDN). Before this version, if you [exposed a replica set](expose.md), it
@@ -79,10 +81,7 @@ This page covers an upgrade to a new Operator version. To stay on your current v
             ...
     ```
 
-6. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
-    Operator has reached its end-of-life. Make sure that you have a supported
-    MongoDB version before upgrading the Operator to 1.16.0 (you can use
-    [major version upgrade functionality](update-major.md)) to fix it.
+6. Starting from the Operator version 1.24.0, Percona Server for MongoDB 6.0 support has reached its end-of-life. Upgrade the database to 7.0 or 8.0 before you upgrade the Operator to 1.24.0. You can use the [major version upgrade](update-major.md).
 
 7. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 

@@ -25,7 +25,7 @@ disk on the source cluster is not reachable from the destination.
 * PBM packages are installed on the replica set nodes of the *source* cluster, following the
   [official installation instructions  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/installation.html),
   and `pbm-agent` authentication
-  [is configured  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/initial-setup.html#configure-authentication-in-mongodb)
+  [is configured  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/install/configure-authentication.html)
   so it can access your database.
 * The Operator and the *destination* cluster are [installed](quickstart.md) in your
   Kubernetes environment.

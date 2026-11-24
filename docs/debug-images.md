@@ -9,8 +9,10 @@ MongoDB, which has the following specifics:
     mongodb-debuginfo package, etc.),
 * extra verbosity is added to the mongodb daemon.
 
-Images are available for Percona server for MongoDB versions 5.0 and 6.0,
-not for 7.0.
+Debug images are published for Percona Server for MongoDB 5.0 and 6.0.
+They are not published for 7.0 or 8.0. Operator 1.24.0 does not support
+6.0, so use a debug image only on a cluster that still runs an Operator
+release that includes 6.0. The newest 6.0 debug tag is `6.0.12-9-debug`.
 
 Particularly, using this image is useful if the container entry point fails
 (`mongod` crashes). In such a situation, Pod is continuously restarting.
@@ -20,7 +22,7 @@ and so a special approach is needed to make fixes.
 To use the debug image instead of the normal one, set the following image name
 for the `image` key in the `deploy/cr.yaml` configuration file:
 
-`percona/percona-server-mongodb:{{ mongodb60recommended }}-debug`
+`percona/percona-server-mongodb:6.0.12-9-debug`
 
 The Pod should be restarted to get the new image.
 

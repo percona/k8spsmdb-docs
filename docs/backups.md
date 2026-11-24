@@ -39,7 +39,7 @@ The Operator does not copy data itself. It writes a document into the Percona Ba
 
     A `pbm-agent` needs access to `mongod` binaries, so the Operator prepares the cluster first:
 
-    1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.
+    1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar from the StatefulSet, and starts the restore with the PBM CLI. Starting with 1.24.0, the Operator skips Smart Update and deletes the replica set Pods together.
     2. The agent inside the `mongod` container wipes `dbPath`, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.
     3. PBM restarts `mongod` as it moves through restore phases.
     4. After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and `mongos` Pods.
