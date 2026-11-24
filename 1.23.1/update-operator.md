@@ -77,7 +77,7 @@ This page covers an upgrade to a new Operator version. To stay on your current v
            ...
    ```
 
-1. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the Operator has reached its end-of-life. Make sure that you have a supported MongoDB version before upgrading the Operator to 1.16.0 (you can use [major version upgrade functionality](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-major.html)) to fix it.
+1. Starting from the Operator version 1.24.0, Percona Server for MongoDB 6.0 support has reached its end-of-life. Upgrade the database to 7.0 or 8.0 before you upgrade the Operator to 1.24.0. You can use the [major version upgrade](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-major.html).
 
 1. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
 

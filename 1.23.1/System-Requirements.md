@@ -2,7 +2,7 @@
 
 # System Requirements
 
-The Operator was developed and tested with Percona Server for MongoDB 7.0.43-23, 8.0.32-14, and 8.3.13-4. Other options may also work but have not been tested. The Operator 1.23.1 also uses Percona Backup for MongoDB 2.15.0 and Percona ClusterSync for MongoDB.
+The Operator was developed and tested with Percona Server for MongoDB 7.0.43-23, 8.0.32-14 and 8.3.13-4. Other options may also work but have not been tested. The Operator 1.23.1 also uses Percona Backup for MongoDB 2.15.0 and Percona ClusterSync for MongoDB.
 
 ## Officially supported platforms
 

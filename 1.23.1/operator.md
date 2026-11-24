@@ -157,9 +157,9 @@ The option is optional. If you omit it, the Operator writes its own version into
 
 The Docker image of [Percona Server for MongoDB](https://www.percona.com/doc/percona-server-for-mongodb/LATEST/index.html) to deploy (actual image names can be found [in the list of certified images](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/images.html)).
 
-| Value type | Example                                                         |
-| ---------- | --------------------------------------------------------------- |
-| string     | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
+| Value type | Example                                        |
+| ---------- | ---------------------------------------------- |
+| string     | `percona/percona`-`server`-`mongodb:8.0.32-14` |
 
 ### `imagePullPolicy`
 
@@ -449,7 +449,7 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-db.html) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-db.html) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version stringof Percona Server for MongoDB (e.g. `7.0.43-23`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type | Example    |
 | ---------- | ---------- |

@@ -44,9 +44,13 @@ On OpenShift, database upgrades follow a different procedure. See [Upgrade Perco
 
 Do these for every upgrade:
 
-- **Take a backup first.** See [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html) or [On-demand backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backup-tutorial.html).
-- **Test in staging first.** This matters most for Operator upgrades and major database version upgrades. Operator upgrades can cause performance degradation.
-- **Move one version at a time.** You can upgrade the Operator only to the nearest `major.minor` version, and database major versions also move one at a time. Bigger gaps need several sequential upgrades. See [Considerations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-operator.html#for-the-operator-upgrades) and [Major version upgrades](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-major.html).
+- **Take a backup first.** Do this before any upgrade. See [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html) or [On-demand backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backup-tutorial.html).
+- **Test in staging first.** Do this for any upgrade, especially Operator upgrades and major database version upgrades, before you run it against production. Operator upgrades can cause performance degradation.
+- **Move one version at a time.** You can upgrade the Operator only to the nearest `major.minor` version. Bigger gaps need several sequential upgrades. Database major versions also move one version at a time. See [Considerations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-operator.html#for-the-operator-upgrades) and [Major version upgrades](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-major.html).
+- **Stay within the CRD compatibility window.** The CRD supports the last three minor Operator versions. Plan stage 2 before your Operator moves more than two minor versions ahead of a cluster’s `crVersion`. See [Why the stages can be separated](#why-the-stages-can-be-separated) and [Considerations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-operator.html#considerations).
+- **FCV changes are not easily reversible.** Setting [`upgradeOptions.setFCV`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#upgradeoptionssetfcv) is not undone by downgrading the image afterward. See [Feature Compatibility Version](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-major.html#feature-compatibility-version).
+- **MongoDB end-of-life notices.** MongoDB 4.4 reached end of life in Operator 1.16.0, MongoDB 5.0 in Operator 1.19.0, and Percona Server for MongoDB 6.0 in Operator 1.24.0. Upgrade the database to a supported major version before you upgrade the Operator past those releases. See [End of Life versions of MongoDB](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-minor-automatic.html#procedure).
+- **Known problematic version combination.** Operator 1.19.0 or 1.19.1 with a sharded cluster and MongoDB 8.0 can fail point-in-time recovery. See [Considerations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-operator.html#considerations).
 
 Check whether any of these apply to you:
 

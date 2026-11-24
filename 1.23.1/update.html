@@ -6576,9 +6576,13 @@ window.addEventListener('afterprint', (event) => {
 <h2 id="before-you-upgrade">Before you upgrade<a data-markdown-ignore class="headerlink" href="#before-you-upgrade" title="Permanent link">¶</a></h2>
 <p>Do these for every upgrade:</p>
 <ul>
-<li><strong>Take a backup first.</strong> See <a href="backups.html">Backup and restore</a> or <a href="backup-tutorial.html">On-demand backup</a>.</li>
-<li><strong>Test in staging first.</strong> This matters most for Operator upgrades and major database version upgrades. Operator upgrades can cause performance degradation.</li>
-<li><strong>Move one version at a time.</strong> You can upgrade the Operator only to the nearest <code>major.minor</code> version, and database major versions also move one at a time. Bigger gaps need several sequential upgrades. See <a href="update-operator.html#for-the-operator-upgrades">Considerations</a> and <a href="update-major.html">Major version upgrades</a>.</li>
+<li><strong>Take a backup first.</strong> Do this before any upgrade. See <a href="backups.html">Backup and restore</a> or <a href="backup-tutorial.html">On-demand backup</a>.</li>
+<li><strong>Test in staging first.</strong> Do this for any upgrade, especially Operator upgrades and major database version upgrades, before you run it against production. Operator upgrades can cause performance degradation.</li>
+<li><strong>Move one version at a time.</strong> You can upgrade the Operator only to the nearest <code>major.minor</code> version. Bigger gaps need several sequential upgrades. Database major versions also move one version at a time. See <a href="update-operator.html#for-the-operator-upgrades">Considerations</a> and <a href="update-major.html">Major version upgrades</a>.</li>
+<li><strong>Stay within the CRD compatibility window.</strong> The CRD supports the last three minor Operator versions. Plan stage 2 before your Operator moves more than two minor versions ahead of a cluster’s <code>crVersion</code>. See <a href="#why-the-stages-can-be-separated">Why the stages can be separated</a> and <a href="update-operator.html#considerations">Considerations</a>.</li>
+<li><strong>FCV changes are not easily reversible.</strong> Setting <a href="operator.html#upgradeoptionssetfcv"><code>upgradeOptions.setFCV</code></a> is not undone by downgrading the image afterward. See <a href="update-major.html#feature-compatibility-version">Feature Compatibility Version</a>.</li>
+<li><strong>MongoDB end-of-life notices.</strong> MongoDB 4.4 reached end of life in Operator 1.16.0, MongoDB 5.0 in Operator 1.19.0, and Percona Server for MongoDB 6.0 in Operator 1.24.0. Upgrade the database to a supported major version before you upgrade the Operator past those releases. See <a href="update-minor-automatic.html#procedure">End of Life versions of MongoDB</a>.</li>
+<li><strong>Known problematic version combination.</strong> Operator 1.19.0 or 1.19.1 with a sharded cluster and MongoDB 8.0 can fail point-in-time recovery. See <a href="update-operator.html#considerations">Considerations</a>.</li>
 </ul>
 <p>Check whether any of these apply to you:</p>
 <table>
@@ -6688,7 +6692,7 @@ flowchart TB
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 15:27:31 UTC">November 18, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:58:10 UTC">November 24, 2026</span>
       
         <br>
         Created:

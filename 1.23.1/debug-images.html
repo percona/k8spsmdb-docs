@@ -6450,15 +6450,17 @@ MongoDB, which has the following specifics:</p>
     mongodb-debuginfo package, etc.),</li>
 <li>extra verbosity is added to the mongodb daemon.</li>
 </ul>
-<p>Images are available for Percona server for MongoDB versions 5.0 and 6.0,
-not for 7.0.</p>
+<p>Debug images are published for Percona Server for MongoDB 5.0 and 6.0.
+They are not published for 7.0 or 8.0. Operator 1.24.0 does not support
+6.0, so use a debug image only on a cluster that still runs an Operator
+release that includes 6.0. The newest 6.0 debug tag is <code>6.0.12-9-debug</code>.</p>
 <p>Particularly, using this image is useful if the container entry point fails
 (<code>mongod</code> crashes). In such a situation, Pod is continuously restarting.
 Continuous restarts prevent to get console access to the container,
 and so a special approach is needed to make fixes.</p>
 <p>To use the debug image instead of the normal one, set the following image name
 for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration file:</p>
-<p><code>percona/percona-server-mongodb:{{ mongodb60recommended }}-debug</code></p>
+<p><code>percona/percona-server-mongodb:6.0.12-9-debug</code></p>
 <p>The Pod should be restarted to get the new image.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -6470,7 +6472,7 @@ to apply image changes.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 24, 2024 14:59:02 UTC">May 24, 2024</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:58:10 UTC">November 24, 2026</span>
       
         <br>
         Created:

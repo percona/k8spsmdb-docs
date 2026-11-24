@@ -12762,8 +12762,7 @@ name, namespace, replica set name, or TLS setting happens to be. Take the URI fr
         </script>
         </head><body><h1 id="system-requirements">System Requirements<a class="headerlink" href="#system-requirements-system-requirements" title="Permanent link">¶</a></h1>
 <p>The Operator was developed and tested with Percona Server for MongoDB
-7.0.43-23, 
-8.0.32-14, and 8.3.13-4. Other options may also work but have not been
+7.0.43-23, 8.0.32-14 and 8.3.13-4. Other options may also work but have not been
 tested. The Operator 1.23.1 also uses Percona Backup for MongoDB
 2.15.0 and Percona ClusterSync for MongoDB.</p>
 <h2 id="system-requirements-officially-supported-platforms">Officially supported platforms<a class="headerlink" href="#system-requirements-officially-supported-platforms" title="Permanent link">¶</a></h2>
@@ -14152,9 +14151,13 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 <h2 id="update-before-you-upgrade">Before you upgrade<a class="headerlink" href="#update-before-you-upgrade" title="Permanent link">¶</a></h2>
 <p>Do these for every upgrade:</p>
 <ul>
-<li><strong>Take a backup first.</strong> See <a href="#backups">Backup and restore</a> or <a href="#backup-tutorial">On-demand backup</a>.</li>
-<li><strong>Test in staging first.</strong> This matters most for Operator upgrades and major database version upgrades. Operator upgrades can cause performance degradation.</li>
-<li><strong>Move one version at a time.</strong> You can upgrade the Operator only to the nearest <code>major.minor</code> version, and database major versions also move one at a time. Bigger gaps need several sequential upgrades. See <a href="#update-operator-for-the-operator-upgrades">Considerations</a> and <a href="#update-major">Major version upgrades</a>.</li>
+<li><strong>Take a backup first.</strong> Do this before any upgrade. See <a href="#backups">Backup and restore</a> or <a href="#backup-tutorial">On-demand backup</a>.</li>
+<li><strong>Test in staging first.</strong> Do this for any upgrade, especially Operator upgrades and major database version upgrades, before you run it against production. Operator upgrades can cause performance degradation.</li>
+<li><strong>Move one version at a time.</strong> You can upgrade the Operator only to the nearest <code>major.minor</code> version. Bigger gaps need several sequential upgrades. Database major versions also move one version at a time. See <a href="#update-operator-for-the-operator-upgrades">Considerations</a> and <a href="#update-major">Major version upgrades</a>.</li>
+<li><strong>Stay within the CRD compatibility window.</strong> The CRD supports the last three minor Operator versions. Plan stage 2 before your Operator moves more than two minor versions ahead of a cluster’s <code>crVersion</code>. See <a href="#update-why-the-stages-can-be-separated">Why the stages can be separated</a> and <a href="#update-operator-considerations">Considerations</a>.</li>
+<li><strong>FCV changes are not easily reversible.</strong> Setting <a href="#operator-upgradeoptionssetfcv"><code>upgradeOptions.setFCV</code></a> is not undone by downgrading the image afterward. See <a href="#update-major-feature-compatibility-version">Feature Compatibility Version</a>.</li>
+<li><strong>MongoDB end-of-life notices.</strong> MongoDB 4.4 reached end of life in Operator 1.16.0, MongoDB 5.0 in Operator 1.19.0, and Percona Server for MongoDB 6.0 in Operator 1.24.0. Upgrade the database to a supported major version before you upgrade the Operator past those releases. See <a href="#update-minor-automatic-procedure">End of Life versions of MongoDB</a>.</li>
+<li><strong>Known problematic version combination.</strong> Operator 1.19.0 or 1.19.1 with a sharded cluster and MongoDB 8.0 can fail point-in-time recovery. See <a href="#update-operator-considerations">Considerations</a>.</li>
 </ul>
 <p>Check whether any of these apply to you:</p>
 <table>
@@ -14481,10 +14484,7 @@ flowchart TB
 </code></pre></div>
 </li>
 <li>
-<p>Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
-    Operator has reached its end-of-life. Make sure that you have a supported
-    MongoDB version before upgrading the Operator to 1.16.0 (you can use
-    <a href="#update-major">major version upgrade functionality</a>) to fix it.</p>
+<p>Starting from the Operator version 1.24.0, Percona Server for MongoDB 6.0 support has reached its end-of-life. Upgrade the database to 7.0 or 8.0 before you upgrade the Operator to 1.24.0. You can use the <a href="#update-major">major version upgrade</a>.</p>
 </li>
 <li>
 <p>The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.</p>
@@ -15080,6 +15080,11 @@ problematic version combinations.</li>
 <div class="admonition note">
 <p class="admonition-title">End of Life versions of MongoDB</p>
 <ul>
+<li>MongoDB 6.0 support has reached its end-of-life in the
+    Operator version 1.24.0. Therefore, the <code>6.0-recommended</code>
+    or <code>6.0-latest</code> values are no longer supported. Users of existing clusters based on Percona
+    Server for MongoDB 6.0 should explicitly switch to a newer major database
+    version before upgrading the Operator to 1.24.0.</li>
 <li>MongoDB 5.0 support has reached its end-of-life in the
     Operator version 1.19.0. Therefore, the <code>5.0-recommended</code>
     or <code>5.0-latest</code> values are no longer supported. Users of existing clusters based on Percona
@@ -15112,7 +15117,7 @@ problematic version combinations.</li>
 <tbody>
 <tr>
 <td><code>Recommended</code></td>
-<td>Automatic upgrade chooses the most recent version flagged as Recommended. For clusters created from scratch, MongoDB 8.0 is selected instead of 7.0 or 6.0, regardless of the image path. For existing clusters, the current major version branch (6.0 / 7.0 / 8.0) is preserved.</td>
+<td>Automatic upgrade chooses the most recent version flagged as Recommended. For clusters created from scratch, MongoDB 8.3 is selected instead of 8.0 or 7.0, regardless of the image path. For existing clusters, the current major version branch (7.0 / 8.0 / 8.3) is preserved.</td>
 </tr>
 <tr>
 <td><code>Latest</code></td>
@@ -15231,7 +15236,7 @@ any moment (after the upgrade or even before it) by setting the
 <p>You can set the <code>setFCV</code> flag to <code>true</code> simultaneously with the <code>apply</code> flag but you must be absolutely sure that the whole
     procedure is tested on staging environment and works as expected.</p>
 <h2 id="update-major-downgrades">Downgrades<a class="headerlink" href="#update-major-downgrades" title="Permanent link">¶</a></h2>
-<p>When making downgrades (e.g. changing version from 7.0 to 6.0), make
+<p>When making downgrades (e.g. changing version from 8.0 to 7.0), make
 sure to remove incompatible features that are persisted and/or update
 incompatible configuration settings. Compatibility issues between major
 MongoDB versions can be found in
@@ -32096,15 +32101,17 @@ MongoDB, which has the following specifics:</p>
     mongodb-debuginfo package, etc.),</li>
 <li>extra verbosity is added to the mongodb daemon.</li>
 </ul>
-<p>Images are available for Percona server for MongoDB versions 5.0 and 6.0,
-not for 7.0.</p>
+<p>Debug images are published for Percona Server for MongoDB 5.0 and 6.0.
+They are not published for 7.0 or 8.0. Operator 1.24.0 does not support
+6.0, so use a debug image only on a cluster that still runs an Operator
+release that includes 6.0. The newest 6.0 debug tag is <code>6.0.12-9-debug</code>.</p>
 <p>Particularly, using this image is useful if the container entry point fails
 (<code>mongod</code> crashes). In such a situation, Pod is continuously restarting.
 Continuous restarts prevent to get console access to the container,
 and so a special approach is needed to make fixes.</p>
 <p>To use the debug image instead of the normal one, set the following image name
 for the <code>image</code> key in the <code>deploy/cr.yaml</code> configuration file:</p>
-<p><code>percona/percona-server-mongodb:{{ mongodb60recommended }}-debug</code></p>
+<p><code>percona/percona-server-mongodb:6.0.12-9-debug</code></p>
 <p>The Pod should be restarted to get the new image.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -32400,7 +32407,7 @@ to apply image changes.</p>
 <tbody>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> string</td>
-<td><code>percona/percona</code>-<code>server</code>-<code>mongodb:{{ mongodb60recommended }}</code></td>
+<td><code>percona/percona</code>-<code>server</code>-<code>mongodb:8.0.32-14</code></td>
 </tr>
 </tbody>
 </table>
@@ -32919,7 +32926,7 @@ for setup steps.</p>
 </tbody>
 </table>
 <h3 id="operator-upgradeoptionsapply"><code>upgradeOptions.apply</code><a class="headerlink" href="#operator-upgradeoptionsapply" title="Permanent link">¶</a></h3>
-<p>Specifies how <a href="#update-db">updates are processed</a> by the Operator. <code>Never</code> or <code>Disabled</code> will completely disable automatic upgrades, otherwise it can be set to <code>Latest</code> or <code>Recommended</code> or to a specific version <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> stringof Percona Server for MongoDB (e.g. <code>{{ mongodb60recommended }}</code>) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).</p>
+<p>Specifies how <a href="#update-db">updates are processed</a> by the Operator. <code>Never</code> or <code>Disabled</code> will completely disable automatic upgrades, otherwise it can be set to <code>Latest</code> or <code>Recommended</code> or to a specific version <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9.5 6h-1A1.5 1.5 0 0 1 10 9.5 1.5 1.5 0 0 1 11.5 8h1A1.5 1.5 0 0 1 14 9.5h2A3.5 3.5 0 0 0 12.5 6h-1A3.5 3.5 0 0 0 8 9.5a3.5 3.5 0 0 0 3.5 3.5h1a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H8a3.5 3.5 0 0 0 3.5 3.5h1a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-3.5-3.5"></path></svg></span> stringof Percona Server for MongoDB (e.g. <code>7.0.43-23</code>) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).</p>
 <table>
 <thead>
 <tr>
