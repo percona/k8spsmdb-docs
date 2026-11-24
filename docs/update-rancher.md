@@ -32,7 +32,7 @@ The Operator chart installs the CRDs from its `crds` folder. Helm never upgrades
 
     1. Go to **Apps > Installed Apps**. When a newer chart version is available, the **Upgradable** column of the `psmdb-operator` app shows it.
     2. Select the version in the **Upgradable** column.
-    3. On the **Metadata** step, select **Next**.
+    3. On the **Metadata** step, ensure the selected chart version is the target identified under **Before you start**, whose **Application Version** matches the CRDs applied earlier. Change the selected chart version if necessary, then select **Next**.
     4. On the **Values** step, review the values and select **Upgrade**. Rancher runs `helm upgrade` with the values from this step. The upgrade is done when the log ends with `SUCCESS`.
 
 ## Verify
@@ -54,7 +54,7 @@ The Operator chart installs the CRDs from its `crds` folder. Helm never upgrades
 
 ## Upgrade the database cluster app
 
-After the Operator, upgrade the `psmdb-db` app the same way, to the chart version with the same **Application Version** as the Operator. The new chart version changes `crVersion` and the image versions in the Custom Resource, and the Operator then upgrades the database cluster. To learn how the Operator applies these changes and what to check first, see [Upgrade Percona Server for MongoDB](update-db.md).
+After the Operator, upgrade the `psmdb-db` app to the chart version with the same **Application Version** as the Operator. Before upgrading, read [Upgrade Percona Server for MongoDB](update-db.md) and choose your target database version. On the **Values** step, review retained values and update `crVersion` and database and component image versions as needed while preserving your other custom settings; changing the chart version does not override explicitly configured values. After upgrading the app, check the `crVersion` and image versions in the live Custom Resource and verify that the database upgrade completes.
 
 ## Next steps
 

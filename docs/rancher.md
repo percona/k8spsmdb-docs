@@ -138,7 +138,7 @@ The Operator names the cluster after the release. If the release name contains `
 **Fix:**
 
 1. Check the claims: `kubectl get pvc -n <namespace>`.
-2. Set a default StorageClass, or set `storageClassName` under `volumeSpec.pvc` in the `psmdb-db` app values and upgrade the app.
+2. If `spec.storageClassName` is unset on the claims, configure a default StorageClass; this does not apply to claims that explicitly set it to `""`. If the claims reference a StorageClass that doesn't exist, create a StorageClass with that name and a suitable provisioner. Changing `storageClassName` in the app values and upgrading the app does not change the StorageClass of existing PVCs. Set the correct storage settings before installing a new cluster.
 
 For other problems, see [Troubleshooting](debug.md).
 

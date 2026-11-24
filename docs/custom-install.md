@@ -37,7 +37,7 @@ To check available configuration options, see [`deploy/cr.yaml`  :octicons-link-
       --set pmm.enabled=true
     ```
 
-    The examples install the `psmdb-db` chart {{ dbchart }}, which installs Operator {{ release }}. Percona can release a newer chart version for the same Operator version after this documentation is published. Before you proceed, [check the chart versions](helm.md#find-the-chart-versions) and use the latest one.
+    The examples install the `psmdb-db` chart {{ dbchart }}, which creates a database cluster for Operator {{ release }} to manage. Install the Operator first as described in [Install with Helm](helm.md). Percona can release a newer chart version for the same Operator version after this documentation is published. Before you proceed, [check the chart versions](helm.md#find-the-chart-versions) and use the latest one.
 
     **Using a `values.yaml` file**
 

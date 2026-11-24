@@ -160,7 +160,7 @@ If you installed the Operator from [Rancher Apps](rancher.md), delete the apps i
 {.power-number}
 
 1. Go to **Apps > Installed Apps**, select the database cluster app, by default `psmdb-db`, select **Delete** and confirm. The log tab shows `uninstalled release psmdb-db`.
-2. Delete the Operator app, by default `psmdb-operator`, the same way.
+2. Wait until the database Custom Resource is deleted, for example with `kubectl wait --for=delete psmdb/<cluster-name> -n <namespace> --timeout=10m`. Replace the placeholders with your cluster name and namespace. If the wait times out, investigate the deletion while keeping the Operator running. Only after the Custom Resource is gone, delete the Operator app, by default `psmdb-operator`, the same way.
 
 These resources stay in the cluster after you delete the apps:
 
