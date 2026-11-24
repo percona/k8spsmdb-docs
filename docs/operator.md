@@ -66,7 +66,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `enableVolumeExpansion`
 
-Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](scaling-storage-resize.md#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -96,7 +96,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `storageScaling.enableVolumeScaling`
 
-Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](scaling-storage-resize.md#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -104,7 +104,7 @@ Enables or disables [storage scaling / volume expansion](scaling-storage-resize.
 
 ### `storageScaling.enableExternalAutoscaling`
 
-Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability)
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Use an external autoscaler](scaling-storage-resize.md#use-an-external-autoscaler)
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -112,9 +112,9 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 ### `storageScaling.autoscaling.enabled`
 
-Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing).
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Resize storage automatically](scaling-storage-resize.md#resize-storage-automatically).
 
-Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. All of them use the same `storageScaling.autoscaling` settings. See [Automatic resizing of mongos log PVCs](scaling-storage-resize.md#automatic-resizing-of-mongos-log-pvcs).
+Applies to all PVCs that the Operator resizes: database data and, starting with version 1.24.0, `mongos` logs and search index data. All of them use the same `storageScaling.autoscaling` settings. See [Volumes and their size](scaling-storage-resize.md#volumes-and-their-size).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -122,7 +122,7 @@ Applies to replica set and config server PVCs and, starting with version 1.24.0,
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. It applies to all PVCs that the Operator resizes. Minimum value is 50, maximum is 95. If you use [search](search-overview.md), set it below 90: Percona Search for MongoDB becomes read-only at about 90% disk usage.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -130,7 +130,7 @@ The percentage of the storage usage that triggers automatic resizing. It applies
 
 ### `storageScaling.autoscaling.growthStep`
 
-The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi
+The amount to increase the storage during automatic resizing. It applies to all PVCs that the Operator resizes. Default value is 2Gi
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -138,7 +138,7 @@ The amount to increase the storage during automatic resizing. It applies to data
 
 ### `storageScaling.autoscaling.maxSize`
 
-The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.
+The maximum size to which storage can be automatically resized. It applies to all PVCs that the Operator resizes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2039,7 +2039,7 @@ The value must be `1`. Has no effect unless
 
 Per-replica-set override for the `mongot` PVC size. Fully replaces the
 cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage)
-value for this replica set or shard.
+value for this replica set or shard. Starting with version 1.24.0, the Operator sets this option when it [grows the search PVC automatically](scaling-storage-resize.md#search-volumes).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2430,7 +2430,7 @@ compatibility, but every effective value must equal `1`.
 ### `search.storage.persistentVolumeClaim.resources.requests.storage`
 
 The [Kubernetes Persistent Volume :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size. Starting with version 1.24.0, you can [increase this size](scaling-storage-resize.md#resize-storage-yourself) on a running cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3713,7 +3713,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 ### `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage`
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage) to change it.
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize storage yourself](scaling-storage-resize.md#resize-storage-yourself) to change it.
 
 | Value type  | Example    |
 | ----------- | ---------- |
