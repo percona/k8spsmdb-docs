@@ -3422,6 +3422,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Automatic storage resizing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-resizing-of-mongos-log-pvcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic resizing of mongos log PVCs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6657,6 +6674,23 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Automatic storage resizing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-resizing-of-mongos-log-pvcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic resizing of mongos log PVCs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6859,7 +6893,7 @@ storage supplied by the Kubernetes administrator,</li>
 Note that you <strong>cannot</strong> shrink the size of an existing PVC object.</p>
 <p>Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:</p>
 <ul>
-<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see <a href="#resize-mongos-log-storage">Resize mongos log storage</a>.</li>
+<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Starting with version 1.24.0, it also scales the PVCs that store <code>mongos</code> logs.</li>
 <li>storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest</li>
 <li>manual scaling - scale the storage manually.</li>
 </ul>
@@ -6880,7 +6914,8 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html">1.22.0</a></p>
 </div>
-<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for <strong>replica sets and config server Pods</strong> based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit. </p>
+<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. Starting with the Operator version 1.24.0, <code>mongos</code> log PVCs are also automatically resized using the same thresholds. </p>
+<p>The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit.</p>
 <p>This feature gives you:</p>
 <ul>
 <li>fewer outages from full disks because storage grows with demand</li>
@@ -6889,7 +6924,6 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <li>cost control by expanding only when needed</li>
 <li>a more predictable environment so teams can focus on delivery</li>
 </ul>
-<p><strong>mongos log PVCs are not supported by automatic storage resizing.</strong> You can <a href="#resize-mongos-log-storage">resize them manually</a>.</p>
 <p class="power-number">To enable automatic storage resizing, edit the <code>deploy/cr.yaml</code> Custom Resource manifest as follows:</p>
 <ol>
 <li>
@@ -6946,7 +6980,7 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
     resizeCount: 2
 </code></pre></div>
 </details>
-<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource. It has an entry for each PVC, with the following fields:</p>
+<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource. It has an entry for each PVC with the following fields:</p>
 <ul>
 <li><code>currentSize</code> - the filesystem size of the volume, as reported by the <code>df</code> command in the database container</li>
 <li><code>lastResizeTime</code> - the time when the Operator last detected that the volume grew</li>
@@ -6968,6 +7002,24 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <p>The Operator also logs the same error with the <code>failed to check/resize PVC</code> message.</p>
 </details>
 <p>When the storage size reaches the limit, no further resizing is done and the Operator logs the <code>PVC already at maxSize</code> message. Reaching the limit is not an error, so the Operator doesn’t set the <code>lastError</code> field. You can either clean up the data or set a new limit based on your organization’s policies and requirements. For help with common issues, see <a href="debug-storage.html">Troubleshooting storage </a>.</p>
+<h3 id="automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs<a data-markdown-ignore class="headerlink" href="#automatic-resizing-of-mongos-log-pvcs" title="Permanent link">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md">1.24.0</a></p>
+</div>
+<p>The Operator also checks the usage of the PVCs that store <code>mongos</code> logs. These PVCs exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="persistent-logging.html#for-mongos-pods">Persistent logging</a> for how to set it up. Without it, <code>mongos</code> logs are stored on an <code>emptyDir</code> volume, and automatic resizing has nothing to resize.</p>
+<p>Automatic resizing of <code>mongos</code> log PVCs follows the same rules as for other PVCs:</p>
+<ul>
+<li>it uses the same <code>storageScaling.autoscaling</code> settings: the  <code>triggerThresholdPercent</code>, <code>growthStep</code> and <code>maxSize</code> values apply to data volumes and log volumes. Choose these values with both in mind: for example, a <code>growthStep</code> of <code>2Gi</code> grows a 1Gi log volume to 3Gi in one step, and <code>maxSize</code> caps the log volume as well.</li>
+<li>it requires <code>storageScaling.enableVolumeScaling</code> and <code>storageScaling.autoscaling.enabled</code> set to <code>true</code></li>
+<li>it is disabled when you use an <a href="#storage-resizing-with-an-external-autoscaler">external autoscaler</a></li>
+<li>the Operator measures the usage in the <code>mongos</code> container, in the <code>/data/db/logs</code> directory</li>
+<li>the new size is written to the <code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code> option. This option is common for all <code>mongos</code> Pods, so when one log volume exceeds the threshold, the Operator resizes the log PVCs of all <code>mongos</code> Pods.</li>
+<li>the Operator reports the size in <code>.status.storageAutoscaling</code> under the PVC name, for example, <code>mongos-logs-my-cluster-name-mongos-0</code>.</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>After you upgrade the Operator to version 1.24.0, automatic resizing of <code>mongos</code> log PVCs starts right away for clusters that already have automatic resizing enabled and <code>mongos</code> log PVCs configured. If a log PVC is already above the threshold, the Operator starts to resize it as soon as the new Operator version runs. To keep the log volumes at their current size, review the <code>storageScaling.autoscaling</code> settings before the upgrade.</p>
+</div>
 <h2 id="storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a data-markdown-ignore class="headerlink" href="#storage-resizing-with-volume-expansion-capability" title="Permanent link">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.16.0.html">1.16.0</a></p>
@@ -7019,7 +7071,7 @@ options in the Custom Resource. </p>
 <p class="admonition-title">Version added: <a href="RN/Kubernetes-Operator-for-PSMONGODB-RN1.23.1.html">1.23.1</a></p>
 </div>
 <p>In a sharded cluster, you can also resize the PVCs that store <code>mongos</code> logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="persistent-logging.html#for-mongos-pods">Persistent logging</a> to learn how to configure them.</p>
-<p class="power-number">To resize the <code>mongos</code> log PVCs, do the following:</p>
+<p class="power-number">To resize the <code>mongos</code> log PVCs yourself, do the following:</p>
 <ol>
 <li>Make sure the <a href="operator.html#storagescalingenablevolumescaling">storageScaling.enableVolumeScaling</a> Custom Resource option is set to <code>true</code>.</li>
 <li>
@@ -7146,7 +7198,7 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 29, 2026 14:12:26 UTC">October 29, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
       
         <br>
         Created:

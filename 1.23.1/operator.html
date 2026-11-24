@@ -20328,7 +20328,7 @@ window.addEventListener('afterprint', (event) => {
 </table>
 <h3 id="storagescalingautoscalingenabled"><code>storageScaling.autoscaling.enabled</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingenabled" title="Permanent link">¶</a></h3>
 <p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="scaling-storage-resize.html#automatic-storage-resizing">Automatic storage resizing</a>.</p>
-<p>Does not apply to mongos log PVCs defined via <code>sharding.mongos.logs.persistentVolumeClaim</code>. Resize those manually, see <a href="scaling-storage-resize.html#resize-mongos-log-storage">Resize mongos log storage</a>.</p>
+<p>Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via <code>sharding.mongos.logs.persistentVolumeClaim</code>. All of them use the same <code>storageScaling.autoscaling</code> settings. See <a href="scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs</a>.</p>
 <table>
 <thead>
 <tr>
@@ -20344,7 +20344,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalingtriggerthresholdpercent"><code>storageScaling.autoscaling.triggerThresholdPercent</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingtriggerthresholdpercent" title="Permanent link">¶</a></h3>
-<p>The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.</p>
+<p>The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.</p>
 <table>
 <thead>
 <tr>
@@ -20360,7 +20360,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalinggrowthstep"><code>storageScaling.autoscaling.growthStep</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalinggrowthstep" title="Permanent link">¶</a></h3>
-<p>The amount to increase the storage during automatic resizing. Default value is 2Gi</p>
+<p>The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi</p>
 <table>
 <thead>
 <tr>
@@ -20376,7 +20376,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalingmaxsize"><code>storageScaling.autoscaling.maxSize</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingmaxsize" title="Permanent link">¶</a></h3>
-<p>The maximum size to which storage can be automatically resized.</p>
+<p>The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.</p>
 <table>
 <thead>
 <tr>
@@ -29808,7 +29808,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 12:00:03 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
       
         <br>
         Created:

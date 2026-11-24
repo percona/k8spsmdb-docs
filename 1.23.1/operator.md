@@ -113,7 +113,7 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
 
-Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. Resize those manually, see [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
+Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. All of them use the same `storageScaling.autoscaling` settings. See [Automatic resizing of mongos log PVCs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs).
 
 | Value type | Example |
 | ---------- | ------- |
@@ -121,7 +121,7 @@ Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVo
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -129,7 +129,7 @@ The percentage of the storage usage that triggers automatic resizing. Minimum va
 
 ### `storageScaling.autoscaling.growthStep`
 
-The amount to increase the storage during automatic resizing. Default value is 2Gi
+The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi
 
 | Value type | Example |
 | ---------- | ------- |
@@ -137,7 +137,7 @@ The amount to increase the storage during automatic resizing. Default value is 2
 
 ### `storageScaling.autoscaling.maxSize`
 
-The maximum size to which storage can be automatically resized.
+The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.
 
 | Value type | Example |
 | ---------- | ------- |

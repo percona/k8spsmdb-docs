@@ -68,7 +68,7 @@ To view the collected `mongos` logs, run:
 kubectl logs my-cluster-name-mongos-0 -c logs
 ```
 
-To increase the size of the `mongos` log PVCs, see [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
+Starting with version 1.24.0, the Operator can grow the `mongos` log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See [Automatic resizing of mongos log PVCs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs). To resize them yourself, see [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
 
 ## Configure log collector
 

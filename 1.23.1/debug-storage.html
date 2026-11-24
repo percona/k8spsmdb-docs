@@ -5034,6 +5034,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mongos-log-pvc-does-not-grow-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mongos log PVC does not grow automatically
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pvc-resize-is-one-way" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6685,6 +6696,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 </li>
       
         <li class="md-nav__item">
+  <a href="#mongos-log-pvc-does-not-grow-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mongos log PVC does not grow automatically
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pvc-resize-is-one-way" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6820,6 +6842,14 @@ window.addEventListener('afterprint', (event) => {
 <p>The Operator always grows storage by the full <code>growthStep</code> value. If the current size plus <code>growthStep</code> exceeds the <code>maxSize</code> value, the Operator caps the resize at <code>maxSize</code> instead. To avoid large jumps or unexpected caps, either set the <code>growthStep</code> value to the increment you want the storage to resize or raise the <code>maxSize</code> limit.</p>
 <h2 id="scaling-doesnt-happen-despite-it-hasnt-reached-the-maximum">Scaling doesn’t happen despite it hasn’t reached the maximum.<a data-markdown-ignore class="headerlink" href="#scaling-doesnt-happen-despite-it-hasnt-reached-the-maximum" title="Permanent link">¶</a></h2>
 <p>If storage is not scaling, check if any PVC has reached the max size. Thresholds and limits apply to all PVCs, so when one hits the limit, scaling stops for all. Adjust PVC sizes if needed.</p>
+<h2 id="mongos-log-pvc-does-not-grow-automatically">mongos log PVC does not grow automatically<a data-markdown-ignore class="headerlink" href="#mongos-log-pvc-does-not-grow-automatically" title="Permanent link">¶</a></h2>
+<p>Starting with version 1.24.0, the Operator grows the PVCs that store <code>mongos</code> logs together with the other PVCs. If a <code>mongos</code> log PVC stays at the same size, check the following:</p>
+<ul>
+<li>The <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. Without it, <code>mongos</code> logs are stored on an <code>emptyDir</code> volume and there is no PVC to grow. See <a href="persistent-logging.html#for-mongos-pods">Persistent logging</a>.</li>
+<li><code>storageScaling.enableVolumeScaling</code> and <code>storageScaling.autoscaling.enabled</code> are <code>true</code>.</li>
+<li>The PVC didn’t reach <code>autoscaling.maxSize</code>. The same limit applies to data volumes and to <code>mongos</code> log volumes.</li>
+<li>The <code>lastError</code> field in <code>.status.storageAutoscaling</code> for the <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;N&gt;</code> PVC. See <a href="scaling-storage-resize.html#automatic-storage-resizing">Automatic storage resizing</a>.</li>
+</ul>
 <h2 id="pvc-resize-is-one-way">PVC resize is one-way<a data-markdown-ignore class="headerlink" href="#pvc-resize-is-one-way" title="Permanent link">¶</a></h2>
 <p>PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to the old size without recreating it. Recreating PVCs can cause data loss, so make sure you have a backup strategy in place. See <a href="backups.html">Backup and restore</a>.</p>
 <h2 id="see-also">See also<a data-markdown-ignore class="headerlink" href="#see-also" title="Permanent link">¶</a></h2>
@@ -6832,7 +6862,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:51:13 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
       
         <br>
         Created:

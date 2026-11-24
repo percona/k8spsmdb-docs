@@ -1760,6 +1760,7 @@ Each data-bearing member gets its own persistent volume, defined in `replsets.vo
 
 Volume expansion is controlled by the `storageScaling` section of the Custom Resource:
 
+- `storageScaling.autoscaling` - lets the Operator grow the volumes when their usage crosses a threshold. It covers replica set, config server volumes and the volumes that store `mongos` logs. The Operator uses the same scaling settings for all of them. Automatic resizing of `mongos` logs is available starting with version 1.24.0.
 - `storageScaling.enableVolumeScaling` - lets the Operator resize PVCs when you change the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec changes.
 - `storageScaling.enableExternalAutoscaling` - hands volume autoscaling to an external system such as the Kubernetes Vertical Pod Autoscaler. When enabled, the Operator skips its own autoscaling and resize operations.
 
@@ -12992,7 +12993,7 @@ Starting with Kubernetes v1.11, you can increase the size of an existing PVC obj
 
 Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:
 
-- automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Automatic scaling does not cover PVCs for mongos logs. To learn more, see [Resize mongos log storage](#resize-mongos-log-storage).
+- automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Starting with version 1.24.0, it also scales the PVCs that store `mongos` logs.
 - storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest
 - manual scaling - scale the storage manually.
 
@@ -13016,7 +13017,9 @@ Find exact details about PVCs and the supported volume types in [Kubernetes docu
 
 Version added: [1.22.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.html)
 
-The Operator can automatically resize Persistent Volume Claims (PVCs) for **replica sets and config server Pods** based on your configured thresholds. The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit.
+The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. Starting with the Operator version 1.24.0, `mongos` log PVCs are also automatically resized using the same thresholds.
+
+The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit.
 
 This feature gives you:
 
@@ -13025,8 +13028,6 @@ This feature gives you:
 - lower operational effort for developers and platform engineers
 - cost control by expanding only when needed
 - a more predictable environment so teams can focus on delivery
-
-**mongos log PVCs are not supported by automatic storage resizing.** You can [resize them manually](#resize-mongos-log-storage).
 
 To enable automatic storage resizing, edit the `deploy/cr.yaml` Custom Resource manifest as follows:
 
@@ -13089,7 +13090,7 @@ storageAutoscaling:
     resizeCount: 2
 ```
 
-The `storageAutoscaling` section appears under `.status` in the Custom Resource. It has an entry for each PVC, with the following fields:
+The `storageAutoscaling` section appears under `.status` in the Custom Resource. It has an entry for each PVC with the following fields:
 
 - `currentSize` - the filesystem size of the volume, as reported by the `df` command in the database container
 - `lastResizeTime` - the time when the Operator last detected that the volume grew
@@ -13115,6 +13116,25 @@ storageAutoscaling:
 The Operator also logs the same error with the `failed to check/resize PVC` message.
 
 When the storage size reaches the limit, no further resizing is done and the Operator logs the `PVC already at maxSize` message. Reaching the limit is not an error, so the Operator doesn’t set the `lastError` field. You can either clean up the data or set a new limit based on your organization’s policies and requirements. For help with common issues, see [Troubleshooting storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-storage.html) .
+
+### Automatic resizing of mongos log PVCs
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+The Operator also checks the usage of the PVCs that store `mongos` logs. These PVCs exist only if you configured the `sharding.mongos.logs.persistentVolumeClaim` subsection. See [Persistent logging](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html#for-mongos-pods) for how to set it up. Without it, `mongos` logs are stored on an `emptyDir` volume, and automatic resizing has nothing to resize.
+
+Automatic resizing of `mongos` log PVCs follows the same rules as for other PVCs:
+
+- it uses the same `storageScaling.autoscaling` settings: the `triggerThresholdPercent`, `growthStep` and `maxSize` values apply to data volumes and log volumes. Choose these values with both in mind: for example, a `growthStep` of `2Gi` grows a 1Gi log volume to 3Gi in one step, and `maxSize` caps the log volume as well.
+- it requires `storageScaling.enableVolumeScaling` and `storageScaling.autoscaling.enabled` set to `true`
+- it is disabled when you use an [external autoscaler](#storage-resizing-with-an-external-autoscaler)
+- the Operator measures the usage in the `mongos` container, in the `/data/db/logs` directory
+- the new size is written to the `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage` option. This option is common for all `mongos` Pods, so when one log volume exceeds the threshold, the Operator resizes the log PVCs of all `mongos` Pods.
+- the Operator reports the size in `.status.storageAutoscaling` under the PVC name, for example, `mongos-logs-my-cluster-name-mongos-0`.
+
+Important
+
+After you upgrade the Operator to version 1.24.0, automatic resizing of `mongos` log PVCs starts right away for clusters that already have automatic resizing enabled and `mongos` log PVCs configured. If a log PVC is already above the threshold, the Operator starts to resize it as soon as the new Operator version runs. To keep the log volumes at their current size, review the `storageScaling.autoscaling` settings before the upgrade.
 
 ## Storage resizing with Volume Expansion capability
 
@@ -13170,7 +13190,7 @@ Version added: [1.23.1](https://docs.percona.com/percona-operator-for-mongodb/1.
 
 In a sharded cluster, you can also resize the PVCs that store `mongos` logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the `sharding.mongos.logs.persistentVolumeClaim` subsection. See [Persistent logging](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html#for-mongos-pods) to learn how to configure them.
 
-To resize the `mongos` log PVCs, do the following:
+To resize the `mongos` log PVCs yourself, do the following:
 
 1. Make sure the [storageScaling.enableVolumeScaling](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#storagescalingenablevolumescaling) Custom Resource option is set to `true`.
 
@@ -14074,7 +14094,7 @@ To view the collected `mongos` logs, run:
 kubectl logs my-cluster-name-mongos-0 -c logs
 ```
 
-To increase the size of the `mongos` log PVCs, see [Resize storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
+Starting with version 1.24.0, the Operator can grow the `mongos` log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See [Automatic resizing of mongos log PVCs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs). To resize them yourself, see [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
 
 ## Configure log collector
 
@@ -23895,6 +23915,15 @@ The Operator always grows storage by the full `growthStep` value. If the current
 
 If storage is not scaling, check if any PVC has reached the max size. Thresholds and limits apply to all PVCs, so when one hits the limit, scaling stops for all. Adjust PVC sizes if needed.
 
+## mongos log PVC does not grow automatically
+
+Starting with version 1.24.0, the Operator grows the PVCs that store `mongos` logs together with the other PVCs. If a `mongos` log PVC stays at the same size, check the following:
+
+- The `sharding.mongos.logs.persistentVolumeClaim` subsection is set. Without it, `mongos` logs are stored on an `emptyDir` volume and there is no PVC to grow. See [Persistent logging](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/persistent-logging.html#for-mongos-pods).
+- `storageScaling.enableVolumeScaling` and `storageScaling.autoscaling.enabled` are `true`.
+- The PVC didn’t reach `autoscaling.maxSize`. The same limit applies to data volumes and to `mongos` log volumes.
+- The `lastError` field in `.status.storageAutoscaling` for the `mongos-logs-<cluster-name>-mongos-<N>` PVC. See [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
+
 ## PVC resize is one-way
 
 PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to the old size without recreating it. Recreating PVCs can cause data loss, so make sure you have a backup strategy in place. See [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html).
@@ -24018,7 +24047,7 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
 
-Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. Resize those manually, see [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage).
+Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. All of them use the same `storageScaling.autoscaling` settings. See [Automatic resizing of mongos log PVCs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs).
 
 | Value type | Example |
 | ---------- | ------- |
@@ -24026,7 +24055,7 @@ Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVo
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -24034,7 +24063,7 @@ The percentage of the storage usage that triggers automatic resizing. Minimum va
 
 ### `storageScaling.autoscaling.growthStep`
 
-The amount to increase the storage during automatic resizing. Default value is 2Gi
+The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi
 
 | Value type | Example |
 | ---------- | ------- |
@@ -24042,7 +24071,7 @@ The amount to increase the storage during automatic resizing. Default value is 2
 
 ### `storageScaling.autoscaling.maxSize`
 
-The maximum size to which storage can be automatically resized.
+The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -29533,7 +29562,7 @@ Common fields:
 - `status.backupVersion` / `status.backupImage` – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs `spec.backup.image`. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With [automatic upgrades](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-minor-automatic.html), the Operator sets `status.backupVersion` to the target version as soon as it starts the upgrade. `status.backupImage` updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
-- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing) for more information about this feature.
+- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the `mongos` log PVCs. See [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing) for more information about this feature.
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#vaultrequestinterval) is set.
 
 ### Cluster state values
