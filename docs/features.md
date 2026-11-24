@@ -56,7 +56,7 @@ Gain visibility into your database and cluster:
 
 ## Understand how it works
 
-The [How the Operator works](how-it-works.md) and [Design and architecture](architecture.md) pages explain the controller model and the components it manages.
+The [Design and architecture](architecture.md) pages explain the controller model, the components the Operator manages, and what stays with you.
 
 ## Next steps
 

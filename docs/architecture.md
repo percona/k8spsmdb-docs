@@ -1,79 +1,166 @@
 # Design and architecture
 
-The Percona Operator for MongoDB automates deploying and operating Percona Server for MongoDB on Kubernetes. This document explains what components the Operator uses and how they work together to provide a highly available MongoDB database. See also [How the Operator works](how-it-works.md).
+This section explains how Percona Operator for MongoDB is built: what runs in your Kubernetes cluster, which component is responsible for what, and how the pieces interact. Read it to build a mental model of the system, and come back to it when something fails and you need to know where to look first. If something is failing now, start with [Initial troubleshooting](debug.md). The [Glossary](glossary.md) explains the Kubernetes and MongoDB terms used in this section.
 
-## Components
+## What the Operator is
 
-The Operator deploys and manages the following components:
+The Operator is a Kubernetes controller that runs as a Deployment named `percona-server-mongodb-operator`. It extends the Kubernetes API with four [Custom Resources](glossary.md#custom-resource):
 
-* **Percona Server for MongoDB** - a drop-in replacement for MongoDB Community Server with enterprise-grade features. Each replica set member runs as a `mongod` process in its own Pod. The Operator deploys these Pods via a StatefulSet so that each member has a stable network identity and a PersistentVolume for data. You can run one or more replica sets; in a sharded cluster, each shard is a replica set.
+| Custom Resource | Short name | Describes |
+| --- | --- | --- |
+| `PerconaServerMongoDB` | `psmdb` | The database cluster: a replica set or a sharded cluster |
+| `PerconaServerMongoDBBackup` | `psmdb-backup` | One backup |
+| `PerconaServerMongoDBRestore` | `psmdb-restore` | One restore |
+| `PerconaServerMongoDBClusterSync` | `psmdb-clustersync` | Data migration and replication from an external MongoDB deployment |
 
-* **Percona Backup for MongoDB (PBM)** - an open-source backup and restore solution for Percona Server for MongoDB, MongoDB Community Edition, and MongoDB Enterprise Advanced with guaranteed data consistency. When you [configure backup storage](backups-storage.md), the Operator runs PBM as a [sidecar container](sidecar.md) in each database Pod. PBM performs logical or physical backups and uploads them to the configured storage. Read more about types, storages, restores, and point-in-time recovery in [Backup and restore](backups.md).
+You install the [CustomResourceDefinitions (CRDs)](glossary.md#crd) together with the Operator. Then you describe the database that you want in a `PerconaServerMongoDB` object using the `deploy/cr.yaml` example manifest. The Operator creates and maintains everything that the cluster needs. The Operator manages only the clusters that these objects describe. It doesn't manage MongoDB deployments created in other ways.
 
-* **Percona ClusterSync for MongoDB (PCSM)** — enables real-time data migration and replication from an external MongoDB deployment (on-premises, Atlas, or another Kubernetes cluster) into the Operator-managed cluster. Deployed and managed by the Operator through the `PerconaServerMongoDBClusterSync` Custom Resource, PCSM runs as a separate Deployment and performs an initial sync followed by continuous change-stream replication. To learn more, see [Data migration](clustersync.md).
+The Operator works as a [reconcile loop](glossary.md#reconcile): about every five seconds it compares the Custom Resource with what runs in Kubernetes and in the database, and changes whatever differs. So you [change the cluster through the Custom Resource](architecture-responsibilities.md#change-the-cluster-through-the-custom-resource), not through the objects the Operator creates. For what the Operator takes care of and what stays with you, see [Who owns what](architecture-responsibilities.md#the-operator). For when it acts and in which order, see [How the Operator reacts to changes](architecture-reconciliation.md).
 
-* **Percona Search for MongoDB** (tech preview) - a search engine that adds full-text and vector search over your MongoDB data. When you enable search, the Operator deploys it as a dedicated `mongot` StatefulSet — one per data-bearing replica set or shard, each with its own PVC. Applications never connect to it directly: `mongod` (or `mongos` in a sharded cluster) forwards search queries to it over gRPC. Read more in [About full-text and vector search](search-overview.md).
-  
-* **mongos** (sharded clusters only) - is the query router that acts as the entry point to the sharded cluster for client applications. Clients connect to mongos, which routes queries to the appropriate shard(s). The Operator deploys mongos via a StatefulSet; you control the number of mongos replicas in the custom resource.
+## Percona Server for MongoDB in brief
 
-* **Config server replica set** (sharded clusters only) - a special replica set that stores cluster metadata and configuration. Config servers run a `mongod` process with a dedicated role; see [Sharding](sharding.md) for configuration options.
+*Percona Server for MongoDB* is a drop-in replacement for MongoDB Community Edition. It keeps data in [replica sets](glossary.md#replica-set). A replica set is a group of `mongod` processes that hold the same data:
 
-It can also include [sidecar containers](sidecar.md) that you can add to replica set, config server, or mongos Pods. Examples of sidecar containers are Percona Monitoring and Management (PMM) client for [monitoring](monitoring.md), or custom exporters and tools. The Operator supports multiple sidecars per Pod with configurable images, commands, and volume mounts.
+* One member is the [primary](glossary.md#primary). It accepts all writes and records them in its [oplog](glossary.md#oplog).
+* The other members are *secondaries*. They copy the primary's oplog and apply it. Replication is asynchronous, so a secondary can be slightly behind the primary. Drivers read from the primary by default and see the latest data. If an application reads from secondaries with a read preference, it can get slightly older data. The `majority` write concern makes a write wait until most members acknowledge it, but secondaries still apply it on their own schedule.
+* If the primary becomes unavailable, the voting members hold an [election](glossary.md#election) and promote a secondary. A candidate needs the votes of a majority of the voting members. MongoDB [usually completes an election within about 12 seconds :octicons-link-external-16:](https://www.mongodb.com/docs/manual/core/replica-set-elections/). Drivers retry a failed write once by default, so applications often don't notice the switch.
 
-## Percona Server for MongoDB topology
+A replica set can have up to 50 members, and up to 7 of them can vote. Use an odd number of voting members. With three, the replica set keeps a primary when any one member goes down. With an even number, a network partition can split the voters into two equal halves, and neither half can elect a primary.
 
-The design of the Operator is tied to the Percona Server for MongoDB replica set and sharded cluster model.
+By default, the Operator creates replica sets of **three data-bearing members**. You can add [arbiters, non-voting and hidden members](arbiter.md) to shape failover and read capacity.
+
+When the data or the write load outgrows one replica set, you turn on [sharding](sharding.md):
+
+* Each *shard* is a replica set that holds part of the data.
+* The *config server replica set* stores the cluster metadata: which data lives on which shard.
+* The `mongos` *query routers* receive client queries and send each one to the shards that hold the data. `mongos` doesn't store data.
+
+The example manifest `deploy/cr.yaml` creates a sharded cluster with one shard named `rs0`, three config server members and three `mongos` Pods. See [High availability and topology](ha-topology.md) to choose between a replica set and a sharded cluster.
+
+## How clients connect
+
+There is no proxy between applications and the database. MongoDB drivers connect to the database Pods and find the members themselves.
+
+* **Sharded cluster.** Applications connect to `mongos` through the `<cluster-name>-mongos` Service on port 27017 (`my-cluster-name-mongos` by default). The Service spreads connections across all `mongos` Pods, and `mongos` routes each query to the right shards.
+* **Replica set.** Applications connect to the replica set members directly. The driver reads the list of members from the replica set configuration, sends writes to the primary, and finds the new primary after an election. Use a `mongodb+srv` connection string: the driver resolves the members from the DNS SRV records of the [headless Service](glossary.md#headless-service) `my-cluster-name-rs0`, so you don't list Pod host names yourself.
+
+The Operator creates a [connection Secret](connection-secrets.md) with ready-to-use connection strings for the `databaseAdmin` user and for application users you declare in the Custom Resource. To connect from outside Kubernetes, expose the `mongos` Service or one Service per replica set Pod. To learn more, see [Networking and external access](expose.md). [Services and ports](services.md) lists every Service, its ports and when it exists.
+
+## The four layers
+
+A running cluster is the combined result of four layers. Most confusion during troubleshooting comes from expecting one layer to do something that belongs to another. The [Who owns what](architecture-responsibilities.md) page covers each layer in detail.
+
+```mermaid
+flowchart TB
+  U["<b>User</b><br/>Custom Resource, Secrets,<br/>CRDs and RBAC, node and storage capacity"]
+  O["<b>Operator</b><br/>reconcile loop: compares the Custom Resource<br/>with the cluster and corrects differences"]
+  K["<b>Kubernetes</b><br/>StatefulSets, scheduling, storage (CSI),<br/>networking and DNS, Pod lifecycle"]
+  M["<b>Percona Server for MongoDB and PBM</b><br/>replication, elections, initial sync,<br/>backups and restores"]
+  U -- "writes the desired state" --> O
+  O -- "creates and updates objects" --> K
+  K -- "runs Pods and volumes for" --> M
+  O -. "writes the replica set configuration;<br/>sends backup and restore commands" .-> M
+```
+
+* **User.** You describe the cluster you want in the `PerconaServerMongoDB` Custom Resource and provide everything the Operator cannot create for you: the CRDs and RBAC, credentials for backup storage, and enough nodes and storage to run the cluster.
+* **Operator.** Runs the reconcile loop and the day-2 tasks: replica set membership, ordered restarts, passwords, certificates, backups and restores. See [What the Operator is](#what-the-operator-is) and [The Operator](architecture-responsibilities.md#the-operator).
+* **Kubernetes.** Kubernetes turns the objects the Operator creates into running Pods. It schedules Pods to nodes, provisions and attaches volumes through the CSI driver, provides Services and DNS, and restarts failed containers.
+* **Percona Server for MongoDB and Percona Backup for MongoDB.** Inside the Pods, MongoDB replicates data, holds elections and brings new members up to date with an [initial sync](glossary.md#initial-sync). The [PBM](glossary.md#pbm) agents in the database Pods make backups and restores.
+
+The Operator does more inside the database than create Pods. It initializes each replica set, writes the replica set configuration, and adds and removes members when the Pods change. Elections and replication stay with MongoDB. See [Replica set membership](architecture-workflows.md#replica-set-membership).
+
+## Cluster topology
+
+The following diagrams show a cluster named `my-cluster-name` with backups enabled.
 
 ### Replica set
 
-A replica set consists of one primary and one or more secondary nodes. The primary accepts writes; secondaries replicate data and can serve reads. The following diagram shows a simple replica set.
+```mermaid
+flowchart LR
+  C[Clients] -. "DNS SRV lookup" .-> S["Headless Service<br/>my-cluster-name-rs0"]
+  subgraph RS["Replica set rs0"]
+    P0["my-cluster-name-rs0-0<br/>primary"]
+    P1["my-cluster-name-rs0-1<br/>secondary"]
+    P2["my-cluster-name-rs0-2<br/>secondary"]
+  end
+  C -- "reads and writes" --> P0
+  P0 -- "oplog replication" --> P1
+  P0 -- "oplog replication" --> P2
+  RS -- "backup-agent containers" --> ST[("Backup storage")]
+```
 
-![image](assets/images/replication.svg)
-
-Client applications connect to the replica set using a MongoDB driver and a connection string from the Operator’s [connection Secrets](connection-secrets.md). Prefer the `mongodb+srv` URI.
+Each `mongod` Pod has its own [PersistentVolumeClaim](glossary.md#pvc) for the data directory and, when backups are enabled, a `backup-agent` sidecar container with the PBM agent. Any data-bearing voting member can become the primary. The diagram shows `my-cluster-name-rs0-0` as the primary only as an example.
 
 ### Sharded cluster
 
-When you need horizontal scaling, you enable sharding. Each shard is a replica set holding a subset of the data. The **mongos** query router is the entry point for clients; **config servers** store sharding metadata. A simplified view:
+```mermaid
+flowchart LR
+  C[Clients] --> S["Service<br/>my-cluster-name-mongos"]
+  S --> M["mongos Pods"]
+  subgraph CFG["Config server replica set"]
+    CF["my-cluster-name-cfg-0, -1, -2"]
+  end
+  subgraph SH["Shard rs0"]
+    R0["my-cluster-name-rs0-0, -1, -2"]
+  end
+  M -- "reads metadata" --> CFG
+  M -- "routes queries" --> SH
+  CFG -- "backup-agent" --> ST[("Backup storage")]
+  SH -- "backup-agent" --> ST
+```
 
-![image](assets/images/sharding.svg)
+Here is how a client request reaches the data in a sharded cluster:
 
-For details, see [Percona Server for MongoDB Sharding](sharding.md).
+1. A client connects to the `my-cluster-name-mongos` Service on port 27017. The Service forwards the connection to one of the `mongos` Pods.
+2. `mongos` uses the metadata from the config server replica set to find the shards that hold the requested data.
+3. `mongos` sends the query to the primary of each shard involved, or to a secondary if the client asked for it with a read preference.
+4. The shard primary applies a write and replicates it to its secondaries.
 
-By default, the Operator creates a three-member replica set - the minimal recommended configuration, providing high availability out of the box. See [Default database deployment](how-it-works.md#default-database-deployment) for supported replica set sizes.
+Members find each other by host name, not through the Kubernetes API. The Operator writes each member into the replica set configuration with a stable DNS name, such as `my-cluster-name-rs0-0.my-cluster-name-rs0.<namespace>.svc.cluster.local:27017`. If you expose the replica set, the Operator can write the address of the per-Pod Service instead. See [Controlling hostnames in replset configuration](expose.md#controlling-hostnames-in-replset-configuration). `mongos` gets the config server members from its start-up arguments, and learns the shards from the metadata.
 
-## High availability
+### What differs between the two topologies
 
-High-availability is natively supported via Percona Server for MongoDB replica set or sharded cluster topology. 
+| | Replica set | Sharded cluster |
+| --- | --- | --- |
+| StatefulSets | One for each replica set | One for each shard, one for the config server replica set `my-cluster-name-cfg`, and one for `mongos` |
+| Client entry point | The replica set members, through the headless Service `my-cluster-name-rs0` | `mongos`, through the `my-cluster-name-mongos` Service |
+| Cluster endpoint in `status.host` | The headless Service of the replica set | The `mongos` Service, or the list of per-Pod `mongos` Services |
+| Extra Operator tasks | None | Adds and removes shards, and turns the balancer on and off. See [Shards and the balancer](architecture-workflows.md#shards-and-the-balancer) |
+| Smart Update order | Secondaries, then the primary | The config server replica set first, then the shards, then `mongos` |
+| Restore | Clients stay connected during a logical restore | The Operator stops `mongos` first, so clients can't connect |
+| Pause and deletion | Members stop one at a time | `mongos` stops first, then the replica sets |
 
-The Operator adds to it through replica set topology, Pod distribution, automatic recovery, and client connectivity.
+Optional components run beside the members:
 
-### Pod distribution
+* **Point-in-time recovery** doesn't add Pods. When it's on, a PBM agent uploads the oplog to backup storage in short slices. See [Point-in-time recovery](architecture-workflows.md#point-in-time-recovery).
+* **Percona Search for MongoDB** runs a `mongot` StatefulSet for each data-bearing replica set or shard. `mongod` or `mongos` forwards search queries to it. Applications don't connect to `mongot`. See [About full-text and vector search](search-overview.md).
+* **Percona ClusterSync for MongoDB (PCSM)** runs as a separate Deployment when you create a `PerconaServerMongoDBClusterSync` object. It copies data from an external MongoDB deployment into the cluster. See [Real-time replication with PCSM](clustersync.md).
+* **Sidecar containers** such as the PMM Client for [monitoring](monitoring.md), the log collector for [persistent logging](persistent-logging.md) and your own [sidecars](sidecar.md) run in the database and `mongos` Pods. See [Containers in each Pod](objects-created.md#containers-in-each-pod).
 
-The Operator uses [node affinity and anti-affinity](constraints.md) to spread MongoDB Pods across separate worker nodes when possible. That way a single node failure does not take down multiple replica set members. You can [tune affinity](constraints.md) rules in the `PerconaServerMongoDB` custom resource.
+The [Key workflows](architecture-workflows.md) page describes replica set membership, backups, restores and recovery step by step.
 
-### Automatic recovery
+### Scheduling and storage
 
-- **Node or Pod failure** — Kubernetes reschedules the Pod on another healthy node. The mongod process starts and rejoins the replica set. If the failed node was the primary, the replica set holds an [election](https://www.mongodb.com/docs/manual/core/replica-set-elections/) and promotes a secondary to primary.
-- **Operator failure** — If the node running the Operator fails, Kubernetes restarts the Operator on another node. The Operator resumes watching PerconaServerMongoDB resources and reconciling state.
+To survive a node failure, the Operator places the members of each replica set on separate Kubernetes nodes with [Pod anti-affinity :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity). By default, this rule is *required* and uses the `kubernetes.io/hostname` topology key: with three members you need at least three schedulable nodes, or a Pod stays `Pending`. See [Control Pod scheduling](constraints.md) to change it.
 
-The database cluster is deployed as a replica set with at least three nodes (or as a sharded cluster whose shards and config servers are replica sets), so there is no single point of failure for the data path.
+If a Kubernetes node fails, Kubernetes can recreate the Pod on another node, but for a [StatefulSet](glossary.md#statefulset) Pod it does so only after the failed Node object is removed or the stuck Pod is force-deleted. The Operator does neither. Meanwhile, MongoDB elects a new primary if the lost member was the primary, and the replica set keeps working with the remaining members.
 
-### Client connectivity
+The Pod's data lives in a PersistentVolume, so the storage must be able to follow the Pod. The Container Storage Interface (CSI) driver and StorageClass must support attaching the volume on a different node. A volume that can attach only in one zone keeps the Pod in that zone. For local disks, see [Local storage support](storage.md).
 
-The Operator creates and maintains Kubernetes Secrets with ready-to-use MongoDB connection strings for the `databaseAdmin` user and for application users you declare in the Custom Resource. Use those URIs in your app instead of assembling hostnames and credentials yourself. The Operator refreshes the Secrets when topology, exposure, or passwords change.
+## What gets created
 
-Prefer a **mongodb+srv** URI (the `_connectionStringSrv` key). MongoDB drivers (4.2 and later) discover replica set members from DNS SRV records, so you do not need to list hostnames for dynamically assigned Pods. The Operator creates the Services and DNS entries those URIs rely on. For connections from outside the cluster, use the `_connectionStringExposed` key after you [expose the Service](expose.md).
+For a cluster named `my-cluster-name`, the Operator creates a StatefulSet for each replica set, for the config server replica set and for `mongos`, together with Services, Secrets, ConfigMaps, [PodDisruptionBudgets](glossary.md#pdb) and PVCs. Arbiter, non-voting and hidden members get StatefulSets of their own. The Operator creates no Kubernetes Jobs or CronJobs: the PBM agents make the backups, and the Operator keeps the backup schedules itself. PVCs and Secrets are not owned by the Custom Resource, so deleting the cluster doesn't delete them unless you set the finalizers.
 
-See [Connection secrets](connection-secrets.md) for Secret names and keys.
-
-![image](assets/images/operator.svg)
-
-!!! note
-
-    The Operator applies security settings that are stricter than default Percona Server for MongoDB. The initial configuration includes default passwords for required user accounts; change them in production as described in the [installation instructions](System-Requirements.md#installation-guidelines).
+* [Services and ports](services.md) lists every Service, its ports, and when it exists.
+* [Objects the Operator creates](objects-created.md) lists all other objects, the [finalizers](glossary.md#finalizer) that clean them up, and the containers in each Pod.
 
 ## Next steps
 
-[Get started with the Operator](quickstart.md){.md-button}
-[Compare with other solutions](compare.md){.md-button}
+[Who owns what](architecture-responsibilities.md){.md-button}
+
+## See also
+
+* [Services and ports](services.md)
+* [Objects the Operator creates](objects-created.md)
+* [Glossary](glossary.md)
+* [Comparison with other solutions](compare.md)
