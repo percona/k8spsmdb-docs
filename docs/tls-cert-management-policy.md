@@ -146,6 +146,8 @@ Under `userProvidedOnly`, restoring Secrets does not by itself force a rolling r
 
 Safe when TLS Secrets already exist and you want to prevent automatic regeneration if they are lost later. Apply the updated Custom Resource; no immediate Pod restart is required solely for this change.
 
+This is also the first step before you uninstall cert-manager. See [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md).
+
 ### Change to auto
 
 If TLS Secrets are **missing** when you switch to `auto`, the Operator creates new certificates. That may change the CA and trigger a rolling restart. Only switch back to `auto` if you intentionally want the Operator to take over certificate creation again.

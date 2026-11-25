@@ -179,6 +179,7 @@ If you use your own CA, sign the client certificate with a CA that the `ca.crt` 
 The following sections provide guidelines how to:
 
 * [Configure TLS security with the Operator using cert-manager](tls-cert-manager.md)
+* [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md)
 * [Generate certificates manually](tls-manual.md)
 * [Update certificates](tls-update.md)
 * [Configure the TLS certificate management policy](tls-cert-management-policy.md)
