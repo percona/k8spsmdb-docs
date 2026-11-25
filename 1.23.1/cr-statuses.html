@@ -2651,6 +2651,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2707,6 +2709,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -7562,7 +7584,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <tbody>
 <tr>
 <td><code>""</code></td>
-<td>Backup is created but not processed yet.</td>
+<td>Backup is created but not processed yet. You can still <a href="backups-cancel.html">cancel it</a></td>
 </tr>
 <tr>
 <td><code>waiting</code></td>
@@ -7570,11 +7592,19 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 <tr>
 <td><code>requested</code></td>
-<td>The Operator accepted the backup request.</td>
+<td>The Operator sent the backup command to PBM, and PBM is preparing to start the backup.</td>
 </tr>
 <tr>
 <td><code>running</code></td>
 <td>Backup is in progress.</td>
+</tr>
+<tr>
+<td><code>canceling</code></td>
+<td>You <a href="backups-cancel.html">canceled the backup</a>, and the Operator is stopping it.</td>
+</tr>
+<tr>
+<td><code>canceled</code></td>
+<td>The backup was canceled. You can’t restore from it.</td>
 </tr>
 <tr>
 <td><code>ready</code></td>
@@ -7822,7 +7852,7 @@ my-cluster-sync   my-target-cluster   running   running   2        2       my-cl
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:

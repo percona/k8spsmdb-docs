@@ -2653,6 +2653,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2709,6 +2711,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -6705,7 +6727,7 @@ window.addEventListener('afterprint', (event) => {
 <h3 id="backup-and-restore">Backup and restore<a data-markdown-ignore class="headerlink" href="#backup-and-restore" title="Permanent link">¶</a></h3>
 <p>Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The <a href="backups.html">Backup and restore</a> overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow <a href="backups-configure.html">Configure backups</a>.</p>
 <ul>
-<li><strong>Scheduled and on-demand backups</strong> — <a href="backups-scheduled.html">Run backups on a schedule</a> or <a href="backups-ondemand.html">create one when you need it</a>.</li>
+<li><strong>Scheduled and on-demand backups</strong> — <a href="backups-scheduled.html">Run backups on a schedule</a> or <a href="backups-ondemand.html">create one when you need it</a>. If a running backup gets in the way of maintenance or was started with the wrong settings, <a href="backups-cancel.html">cancel it</a> instead of waiting for it to finish.</li>
 <li><strong>Logical, physical, incremental, and PVC snapshots</strong> — See <a href="backups.html#backup-types">backup types</a> to pick the right one.</li>
 <li><strong>Point-in-time recovery</strong> — Roll back the database to a specific time.</li>
 <li><strong>Restore</strong> — <a href="backups-restore.html">Restore on the same cluster or a new cluster</a>.</li>
@@ -6745,7 +6767,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:27:38 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:

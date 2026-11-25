@@ -105,6 +105,7 @@ Each page below is also available as markdown. For the documentation of all Perc
 - [Restore to a point in time](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.md)
 - [Scheduled backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.md)
 - [On-demand backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.md)
+- [Cancel a running backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.md)
 - [Use PVC snapshots](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-snapshots.md)
 - [Configure PVC snapshots](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-setup.md)
 - [Restore from a PVC snapshot](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-usage.md)

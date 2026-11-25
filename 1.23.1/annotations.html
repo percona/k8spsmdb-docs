@@ -2653,6 +2653,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2709,6 +2711,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -7117,6 +7139,12 @@ window.addEventListener('afterprint', (event) => {
 <td></td>
 </tr>
 <tr>
+<td><code>percona.com/cancel-backup</code></td>
+<td>Backup (<code>PerconaServerMongoDBBackup</code>)</td>
+<td>You set it to cancel a backup that is still running. The Operator reads only the value <code>"true"</code>, which is case-sensitive. It doesn’t remove the annotation after the cancellation. Available starting with version 1.24.0. See <a href="backups-cancel.html">Cancel a running backup</a>.</td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
 <td><code>percona.com/external-dns-managed</code></td>
 <td>Services</td>
 <td>Set by the Operator when External DNS <code>/hostname</code> and <code>/ttl</code> annotations are generated from values defined in <code>expose.externalDNS</code>. Marks ownership of those annotations.  Do not set or remove it manually. See <a href="expose.html#how-the-operator-manages-external-dns-annotations">How the Operator manages External DNS annotations</a>.</td>
@@ -7207,7 +7235,7 @@ these labels and annotations in the <code>spec.ignoreAnnotations</code> or <code
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:59:54 UTC">November 13, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:

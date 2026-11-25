@@ -2659,6 +2659,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2715,6 +2717,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -7695,6 +7717,17 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#backups-cancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2.3.3 Cancel a running backup
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11481,7 +11514,7 @@ and when to expect it in the
 <h3 id="features-backup-and-restore">Backup and restore<a class="headerlink" href="#features-backup-and-restore" title="Permanent link">¶</a></h3>
 <p>Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The <a href="#backups">Backup and restore</a> overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow <a href="#backups-configure">Configure backups</a>.</p>
 <ul>
-<li><strong>Scheduled and on-demand backups</strong> — <a href="#backups-scheduled">Run backups on a schedule</a> or <a href="#backups-ondemand">create one when you need it</a>.</li>
+<li><strong>Scheduled and on-demand backups</strong> — <a href="#backups-scheduled">Run backups on a schedule</a> or <a href="#backups-ondemand">create one when you need it</a>. If a running backup gets in the way of maintenance or was started with the wrong settings, <a href="#backups-cancel">cancel it</a> instead of waiting for it to finish.</li>
 <li><strong>Logical, physical, incremental, and PVC snapshots</strong> — See <a href="#backups-backup-types">backup types</a> to pick the right one.</li>
 <li><strong>Point-in-time recovery</strong> — Roll back the database to a specific time.</li>
 <li><strong>Restore</strong> — <a href="#backups-restore">Restore on the same cluster or a new cluster</a>.</li>
@@ -11840,7 +11873,9 @@ and search each place their own constraints on sharding and member types. See
 <li>After a failed restore, the Operator cannot guarantee data consistency.</li>
 </ul>
 <h2 id="backups-backup-lifecycle">Backup lifecycle<a class="headerlink" href="#backups-backup-lifecycle" title="Permanent link">¶</a></h2>
-<p>Each backup object has the <code>delete-backup</code> finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with <a href="#operator-backuptasksretentioncount">backup.tasks.retention</a>. See <a href="#backups-delete-configure-backup-retention">Configure retention policy</a>.</p>
+<p>Starting with version 1.24.0, you can <a href="#backups-cancel">cancel a backup</a> while it’s still running. Deleting a running Backup object cancels the backup first.</p>
+<p>To remove a finished backup, delete its Backup object. For a <code>ready</code> or canceled backup, the <code>delete-backup</code> finalizer also removes the backup files from storage. For a failed backup, the Operator deletes only the Backup object. See <a href="#backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup</a>. </p>
+<p>To have the Operator delete old backups for you, set how many to keep with <a href="#operator-backuptasksretentioncount">backup.tasks.retention</a>. See <a href="#backups-delete-configure-backup-retention">Configure retention policy</a>.</p>
 <h2 id="backups-next-steps">Next steps<a class="headerlink" href="#backups-next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="#backups-configure">Configure backups</a></p></body></html></section><section class="print-page" id="replication" heading-number="4.3"><html><head>
         <script type="text/javascript">
@@ -20264,12 +20299,138 @@ backup1   my-cluster-name   s3-us-west   s3://my-bucket/2025-09-23T10:34:59Z   l
 <p>It should show the status as <code>READY</code> when the backup process is over.</p>
 </li>
 </ol>
+<p>To stop a backup that is still running, see <a href="#backups-cancel">Cancel a running backup</a>.</p>
 <h2 id="backups-ondemand-troubleshooting">Troubleshooting<a class="headerlink" href="#backups-ondemand-troubleshooting" title="Permanent link">¶</a></h2>
 <p>If you have any issues with a backup, see <a href="#debug-backup-restore">Troubleshoot backups and restores</a>.</p>
 <h2 id="backups-ondemand-restore-to-a-new-kubernetes-environment">Restore to a new Kubernetes environment<a class="headerlink" href="#backups-ondemand-restore-to-a-new-kubernetes-environment" title="Permanent link">¶</a></h2>
 <p>To <a href="#backups-restore-restore-on-a-new-cluster">restore from a backup to a new Kubernetes-based environment</a>, you must create a Secrets object there with the same user passwords as in the original cluster. </p>
 <p>Find the Secrets name object on the source cluster in the <code>spec.secrets</code> key in the `deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.</p>
-<p>Find more details about secrets in <a href="#system-users">System Users</a>. </p></body></html></section></section><section class="print-page" id="backups-pvc-snapshots" heading-number="9.2.4"><html><head>
+<p>Find more details about secrets in <a href="#system-users">System Users</a>. </p></body></html></section><section class="print-page" id="backups-cancel" heading-number="9.2.3.3"><html><head>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
+        })
+        </script>
+        </head><body><h1 id="cancel-a-running-backup">Cancel a running backup<a class="headerlink" href="#backups-cancel-cancel-a-running-backup" title="Permanent link">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
+</div>
+<p>You can cancel a backup that is still in progress. For example, cancel it to free the cluster for maintenance or to stop a backup you started with the wrong storage or type. To cancel a backup, add the <code>percona.com/cancel-backup: "true"</code> annotation to the Backup object. The Operator asks Percona Backup for MongoDB (PBM) to stop the backup and shows the progress in the Backup status.</p>
+<p>You cancel on-demand and scheduled backups in the same way. Read <a href="#backups-cancel-how-cancellation-works">How cancellation works</a> to learn more.</p>
+<h2 id="backups-cancel-considerations">Considerations<a class="headerlink" href="#backups-cancel-considerations" title="Permanent link">¶</a></h2>
+<ul>
+<li>You can’t undo a cancellation. Once the status is <code>canceling</code>, removing the annotation doesn’t stop it.</li>
+<li>You can’t restore from a canceled backup.</li>
+<li>For a <a href="#backups-pvc-snapshots">PVC snapshot backup</a>, the Operator deletes the <code>VolumeSnapshot</code> objects it created for this backup.</li>
+<li>Deleting a running Backup object also cancels the backup. Keep this in mind if a GitOps tool prunes Backup objects.</li>
+</ul>
+<h2 id="backups-cancel-before-you-start">Before you start<a class="headerlink" href="#backups-cancel-before-you-start" title="Permanent link">¶</a></h2>
+<ul>
+<li>The Operator is version 1.24.0 or later.</li>
+<li>The backup isn’t finished. Its status is empty, <code>waiting</code>, <code>requested</code> or <code>running</code>. The annotation has no effect on a <code>ready</code>, <code>error</code> or <code>canceled</code> backup.</li>
+</ul>
+<p>Export your namespace. Replace <code>&lt;namespace&gt;</code> with your value:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NAMESPACE</span><span class="o">=</span>&lt;namespace&gt;
+</code></pre></div>
+<h2 class="power-number" id="backups-cancel-cancel-a-backup">Cancel a backup<a class="headerlink" href="#backups-cancel-cancel-a-backup" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>Find the name of the running backup:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>NAME      CLUSTER           STORAGE      DESTINATION                           TYPE       SIZE   STATUS    COMPLETED   AGE
+backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          running               2m
+</code></pre></div>
+</details>
+</li>
+<li>
+<p>Add the <code>percona.com/cancel-backup</code> annotation with the value <code>true</code>:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>annotate<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>percona.com/cancel-backup<span class="o">=</span><span class="nb">true</span><span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 class="power-number" id="backups-cancel-verify">Verify<a class="headerlink" href="#backups-cancel-verify" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>Watch the Backup status change to <code>canceled</code>. A backup that PBM has already started goes through <code>canceling</code> first:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-w
+</code></pre></div>
+<details class="example">
+<summary>Sample output</summary>
+<div class="no-copy highlight"><pre><span></span><code>NAME      CLUSTER           STORAGE      DESTINATION                           TYPE       SIZE   STATUS      COMPLETED   AGE
+backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          canceling               3m
+backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          canceled                3m
+</code></pre></div>
+</details>
+</li>
+<li>
+<p>Optionally, check the status in PBM. Get the PBM backup name from the Backup object, then describe the backup from any database Pod of this cluster. Replace <code>my-cluster-name</code> with your cluster name:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">PBM_NAME</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.pbmName}'</span><span class="k">)</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pbm<span class="w"> </span>describe-backup<span class="w"> </span><span class="nv">$PBM_NAME</span>
+</code></pre></div>
+<p>The <code>status</code> field is <code>canceled</code>. The <code>error</code> field shows why PBM stopped the backup, for example <code>context canceled</code>. This is expected.</p>
+</li>
+</ol>
+<h2 id="backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup<a class="headerlink" href="#backups-cancel-clean-up-a-canceled-backup" title="Permanent link">¶</a></h2>
+<p>A canceled backup can leave files on the storage. A file that was uploading when you canceled the backup can remain. This can happen with physical and incremental backups and with logical backups on sharded clusters. PBM also keeps a record of the canceled backup.</p>
+<p>To remove the files and the PBM record, delete the Backup object:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<p>The Operator removes the files when the Backup object has the <code>percona.com/delete-backup</code> finalizer. Scheduled backups have it unless <code>retention.deleteFromStorage</code> is <code>false</code>. For on-demand backups, add it to the manifest, as in <code>deploy/backup/backup.yaml</code>. The Operator first waits until PBM releases the backup lock, then deletes the backup in PBM. For <code>external</code> backups, it deletes the VolumeSnapshots.</p>
+<p>The Operator doesn’t remove files of incremental backups. To remove them, delete the backup in PBM first, then delete the Backup object. Replace <code>my-cluster-name</code> with your cluster name:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">PBM_NAME</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.pbmName}'</span><span class="k">)</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my-cluster-name-rs0-0<span class="w"> </span>-c<span class="w"> </span>backup-agent<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span><span class="w"> </span>--<span class="w"> </span>pbm<span class="w"> </span>delete-backup<span class="w"> </span>-y<span class="w"> </span><span class="nv">$PBM_NAME</span>
+kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb-backup<span class="w"> </span>backup1<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+<p><code>pbm list</code> doesn’t show canceled backups. To see them, run <code>pbm status</code> in the <code>backup-agent</code> container.</p>
+<h2 id="backups-cancel-how-cancellation-works">How cancellation works<a class="headerlink" href="#backups-cancel-how-cancellation-works" title="Permanent link">¶</a></h2>
+<ul>
+<li>If the Operator hasn’t sent the backup to PBM yet, for example while the backup waits for another one to finish, the Operator sets the status to <code>canceled</code> right away.</li>
+<li>Otherwise, it sets the status to <code>canceling</code> and sends the cancel command to PBM.</li>
+<li>For a PVC snapshot backup, the Operator waits until the <code>VolumeSnapshot</code> objects are deleted and clears <code>status.snapshots</code>. Some storage drivers delete a snapshot only after it finishes, so the backup can stay in <code>canceling</code> for a minute or more.</li>
+<li>When PBM reports the backup as canceled, the Operator sets the status to <code>canceled</code> and releases the backup lock. Until then, other backups on this cluster wait.</li>
+<li>Until the status is <code>canceled</code>, the Operator treats the backup as running. Pausing the cluster and Smart Update wait for the cancellation to finish.</li>
+<li>If the <code>pbm-agent</code> stops responding during the cancellation, the Operator waits for <code>backup.startingDeadlineSeconds</code> from the cluster Custom Resource, 120 seconds by default. This deadline is counted from the last PBM heartbeat. It also waits until PBM releases its backup lock, which adds about 30 seconds. Then it sets the status to <code>error</code>.</li>
+<li>When you delete a running Backup object, the Operator finishes the cancellation first, then removes the files and deletes the object. See <a href="#backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup</a>.</li>
+<li>A restore from a canceled backup fails with the <code>backup is in canceled state</code> error.</li>
+<li>The <a href="#backups-delete-configure-backup-retention">retention policy</a> counts canceled backups together with <code>ready</code> ones and deletes canceled backups first.</li>
+</ul>
+<h2 id="backups-cancel-troubleshooting">Troubleshooting<a class="headerlink" href="#backups-cancel-troubleshooting" title="Permanent link">¶</a></h2>
+<h3 id="backups-cancel-the-backup-stays-in-canceling">The backup stays in <code>canceling</code><a class="headerlink" href="#backups-cancel-the-backup-stays-in-canceling" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> the status doesn’t change from <code>canceling</code>.</p>
+<p><strong>Cause:</strong> PBM is still stopping the backup. For a PVC snapshot backup, a <code>VolumeSnapshot</code> can’t be deleted yet, for example because of a finalizer or a snapshot that is still in progress. The Operator doesn’t time out while a <code>VolumeSnapshot</code> remains or a <code>pbm-agent</code> still holds the backup lock.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check the <code>backup-agent</code> logs of the Pod that runs the backup. The <code>status.pbmPod</code> field of the Backup object names that Pod. See <a href="#debug-backup-restore-find-the-pod-that-ran-the-backup">Troubleshoot backups and restores</a>.</li>
+<li>
+<p>For a PVC snapshot backup, check which snapshots remain and why they aren’t deleted:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>volumesnapshot<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>volumesnapshot<span class="w"> </span>&lt;snapshot-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
+</code></pre></div>
+</li>
+<li>
+<p>If the output shows a <code>Deletion Timestamp</code> and a finalizer that isn’t from your CSI snapshot controller, find out which tool added it and remove it.</p>
+</li>
+</ol>
+<h3 id="backups-cancel-the-cancellation-ends-in-error">The cancellation ends in <code>error</code><a class="headerlink" href="#backups-cancel-the-cancellation-ends-in-error" title="Permanent link">¶</a></h3>
+<p><strong>Symptom:</strong> the status is <code>error</code>, and <code>status.error</code> says one of the following:</p>
+<ul>
+<li><code>PBM backup agent stopped responding before cancellation could finish</code></li>
+<li><code>PBM backup metadata not found during cancellation within the allowed timeout</code></li>
+<li><code>backup did not progress from 'starting' state within the allowed timeout</code></li>
+</ul>
+<p><strong>Cause:</strong> the <code>pbm-agent</code> stopped before PBM could finish the cancellation.</p>
+<p><strong>Fix:</strong></p>
+<ol>
+<li>Check that the <code>backup-agent</code> containers are running and PBM is ready. See <a href="#debug-backup-restore-check-pbm-readiness-on-the-cluster">Check PBM readiness on the cluster</a>.</li>
+<li>Remove the backup files and the PBM record with <code>pbm delete-backup</code>, then delete the Backup object, as shown for incremental backups in <a href="#backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup</a>. The Operator doesn’t remove the files of a backup in the <code>error</code> state when you delete the Backup object.</li>
+<li>Make a new backup.</li>
+</ol>
+<p>When the <code>pbm-agent</code> comes back, PBM can still finish the cancellation. Then <code>pbm describe-backup</code> shows <code>canceled</code> while the Backup object shows <code>error</code>. Partial files can also remain on the storage, so remove them with <code>pbm delete-backup</code> as described in <a href="#backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup</a>.</p>
+<h2 id="backups-cancel-next-steps">Next steps<a class="headerlink" href="#backups-cancel-next-steps" title="Permanent link">¶</a></h2>
+<p><a class="md-button" href="#backups-delete">Delete the unneeded backup</a></p></body></html></section></section><section class="print-page" id="backups-pvc-snapshots" heading-number="9.2.4"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
@@ -21631,7 +21792,7 @@ with your value:</p>
 <p>Use the <code>backup.tasks.retention</code> subsection to configure the retention policy for backups. Specify the following parameters:</p>
 <ul>
 <li><code>backup.tasks.retention.type</code> - the retention strategy. The default (and currently only supported strategy) is <code>count</code>, which keeps the most recent <code>backup.tasks.retention.count</code> backups and removes older ones.</li>
-<li><code>backup.tasks.retention.count</code> - how many backups to keep. Older backups are removed from the storage. See <a href="#backups-delete-retention-and-incremental-backups">Retention and incremental backups</a> below.</li>
+<li><code>backup.tasks.retention.count</code> - how many backups to keep. Older backups are removed from the storage. Backups in the <code>ready</code> and <code>canceled</code> state count. When there are more, the Operator deletes canceled backups first, then the oldest ready ones. Failed backups stay until you delete them manually. See <a href="#backups-delete-retention-and-incremental-backups">Retention and incremental backups</a> below.</li>
 <li><code>backup.tasks.retention.deleteFromStorage</code> - if to delete backup files from storage as well.</li>
 </ul>
 <h3 id="backups-delete-retention-and-incremental-backups">Retention and incremental backups<a class="headerlink" href="#backups-delete-retention-and-incremental-backups" title="Permanent link">¶</a></h3>
@@ -21659,6 +21820,7 @@ backup2   some-name   aws-s3       s3://operator-testing/psmdb-scheduled-backup/
 <p>Now, you can delete the desired backup as follows:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb-backup/&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
+<p>If the backup is still running, the Operator <a href="#backups-cancel">cancels it</a> first and then deletes the object. The Operator removes backup files from storage for <code>ready</code> and <code>canceled</code> backups, except incremental ones. To remove the files of a failed backup, see <a href="#backups-cancel-clean-up-a-canceled-backup">Clean up a canceled backup</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Delete base backups for point-in-time recovery</p>
 <p>You can delete a backup used <a href="#backups-pitr">as a base for point-in-time recovery (PITR)</a> starting from the Operator version 1.15.0. Note that  deleting such a backup will delete the stored operations log updates based on this backup.</p>
@@ -32100,6 +32262,12 @@ external audit system:</p>
 <td>Secrets</td>
 <td>Indicates when passwords were last updated in the Secret</td>
 <td></td>
+</tr>
+<tr>
+<td><code>percona.com/cancel-backup</code></td>
+<td>Backup (<code>PerconaServerMongoDBBackup</code>)</td>
+<td>You set it to cancel a backup that is still running. The Operator reads only the value <code>"true"</code>, which is case-sensitive. It doesn’t remove the annotation after the cancellation. Available starting with version 1.24.0. See <a href="#backups-cancel">Cancel a running backup</a>.</td>
+<td><code>"true"</code></td>
 </tr>
 <tr>
 <td><code>percona.com/external-dns-managed</code></td>
@@ -43929,6 +44097,12 @@ Percona Server for MongoDB backups.</p>
 <li>
 <p><code>name</code> - The name of the backup resource used to identify it in your deployment. You also use the backup name for the restore operation.</p>
 </li>
+<li>
+<p><code>annotations</code> - The Operator reads the following annotations:</p>
+<ul>
+<li><code>percona.com/cancel-backup: "true"</code> - cancels the backup if it is still running. Available starting with version 1.24.0. See <a href="#backups-cancel">Cancel a running backup</a>.</li>
+</ul>
+</li>
 </ul>
 <h2 id="backup-resource-options-spec"><code>spec</code><a class="headerlink" href="#backup-resource-options-spec" title="Permanent link">¶</a></h2>
 <p>This subsection includes the configuration of a backup resource.</p>
@@ -45283,7 +45457,7 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 <tbody>
 <tr>
 <td><code>""</code></td>
-<td>Backup is created but not processed yet.</td>
+<td>Backup is created but not processed yet. You can still <a href="#backups-cancel">cancel it</a></td>
 </tr>
 <tr>
 <td><code>waiting</code></td>
@@ -45291,11 +45465,19 @@ my-cluster-name-rs0-2.my-cluster-name-rs0.psmdb.svc.cluster.local:27017 SECONDAR
 </tr>
 <tr>
 <td><code>requested</code></td>
-<td>The Operator accepted the backup request.</td>
+<td>The Operator sent the backup command to PBM, and PBM is preparing to start the backup.</td>
 </tr>
 <tr>
 <td><code>running</code></td>
 <td>Backup is in progress.</td>
+</tr>
+<tr>
+<td><code>canceling</code></td>
+<td>You <a href="#backups-cancel">canceled the backup</a>, and the Operator is stopping it.</td>
+</tr>
+<tr>
+<td><code>canceled</code></td>
+<td>The backup was canceled. You can’t restore from it.</td>
 </tr>
 <tr>
 <td><code>ready</code></td>
@@ -51876,6 +52058,8 @@ applications or code.</p>
 .print-site-enumerate-headings #backups-scheduled > h1:before { content: '9.2.3.1 ' }
 
 .print-site-enumerate-headings #backups-ondemand > h1:before { content: '9.2.3.2 ' }
+
+.print-site-enumerate-headings #backups-cancel > h1:before { content: '9.2.3.3 ' }
 
 .print-site-enumerate-headings #backups-pvc-snapshots > h1:before { content: '9.2.4 ' }
 

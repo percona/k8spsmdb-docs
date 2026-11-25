@@ -18,7 +18,7 @@ export NAMESPACE=<namespace>
 Use the `backup.tasks.retention` subsection to configure the retention policy for backups. Specify the following parameters:
 
 - `backup.tasks.retention.type` - the retention strategy. The default (and currently only supported strategy) is `count`, which keeps the most recent `backup.tasks.retention.count` backups and removes older ones.
-- `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Retention and incremental backups](#retention-and-incremental-backups) below.
+- `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. Backups in the `ready` and `canceled` state count. When there are more, the Operator deletes canceled backups first, then the oldest ready ones. Failed backups stay until you delete them manually. See [Retention and incremental backups](#retention-and-incremental-backups) below.
 - `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well.
 
 ### Retention and incremental backups
@@ -49,6 +49,8 @@ Now, you can delete the desired backup as follows:
 ```
 kubectl delete psmdb-backup/<backup-name> -n $NAMESPACE
 ```
+
+If the backup is still running, the Operator [cancels it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) first and then deletes the object. The Operator removes backup files from storage for `ready` and `canceled` backups, except incremental ones. To remove the files of a failed backup, see [Clean up a canceled backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html#clean-up-a-canceled-backup).
 
 Delete base backups for point-in-time recovery
 

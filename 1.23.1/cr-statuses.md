@@ -310,14 +310,16 @@ Common fields:
 
 `status.state` values are:
 
-| Value       | Meaning                                    |
-| ----------- | ------------------------------------------ |
-| `""`        | Backup is created but not processed yet.   |
-| `waiting`   | Backup is queued or waiting for resources. |
-| `requested` | The Operator accepted the backup request.  |
-| `running`   | Backup is in progress.                     |
-| `ready`     | Backup completed successfully.             |
-| `error`     | Backup failed.                             |
+| Value       | Meaning                                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `""`        | Backup is created but not processed yet. You can still [cancel it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) |
+| `waiting`   | Backup is queued or waiting for resources.                                                                                                           |
+| `requested` | The Operator sent the backup command to PBM, and PBM is preparing to start the backup.                                                               |
+| `running`   | Backup is in progress.                                                                                                                               |
+| `canceling` | You [canceled the backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html), and the Operator is stopping it.        |
+| `canceled`  | The backup was canceled. You can’t restore from it.                                                                                                  |
+| `ready`     | Backup completed successfully.                                                                                                                       |
+| `error`     | Backup failed.                                                                                                                                       |
 
 ## PerconaServerMongoDBRestore status
 

@@ -149,6 +149,8 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
    It should show the status as `READY` when the backup process is over.
 
+To stop a backup that is still running, see [Cancel a running backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html).
+
 ## Troubleshooting
 
 If you have any issues with a backup, see [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html).

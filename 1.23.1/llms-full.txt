@@ -1402,7 +1402,7 @@ Here is what the Operator brings to your infrastructure:
 
 Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html) overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow [Configure backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-configure.html).
 
-- **Scheduled and on-demand backups** — [Run backups on a schedule](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.html) or [create one when you need it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.html).
+- **Scheduled and on-demand backups** — [Run backups on a schedule](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.html) or [create one when you need it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.html). If a running backup gets in the way of maintenance or was started with the wrong settings, [cancel it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) instead of waiting for it to finish.
 - **Logical, physical, incremental, and PVC snapshots** — See [backup types](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html#backup-types) to pick the right one.
 - **Point-in-time recovery** — Roll back the database to a specific time.
 - **Restore** — [Restore on the same cluster or a new cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore.html).
@@ -1663,7 +1663,11 @@ See [Known limitations](https://docs.percona.com/percona-operator-for-mongodb/1.
 
 ## Backup lifecycle
 
-Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with [backup.tasks.retention](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#backuptasksretentioncount). See [Configure retention policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-delete.html#configure-backup-retention).
+Starting with version 1.24.0, you can [cancel a backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) while it’s still running. Deleting a running Backup object cancels the backup first.
+
+To remove a finished backup, delete its Backup object. For a `ready` or canceled backup, the `delete-backup` finalizer also removes the backup files from storage. For a failed backup, the Operator deletes only the Backup object. See [Clean up a canceled backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html#clean-up-a-canceled-backup).
+
+To have the Operator delete old backups for you, set how many to keep with [backup.tasks.retention](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#backuptasksretentioncount). See [Configure retention policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-delete.html#configure-backup-retention).
 
 ## Next steps
 
@@ -9872,6 +9876,8 @@ To create a Backup resource, you need a special custom resource manifest. The [d
 
    It should show the status as `READY` when the backup process is over.
 
+To stop a backup that is still running, see [Cancel a running backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html).
+
 ## Troubleshooting
 
 If you have any issues with a backup, see [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html).
@@ -9883,6 +9889,155 @@ To [restore from a backup to a new Kubernetes-based environment](https://docs.pe
 Find the Secrets name object on the source cluster in the `spec.secrets` key in the \`deploy/cr.yaml. Use this name to recreate the Secrets on the target cluster.
 
 Find more details about secrets in [System Users](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/system-users.html).
+
+# Cancel a running backup
+
+Version added: [1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)
+
+You can cancel a backup that is still in progress. For example, cancel it to free the cluster for maintenance or to stop a backup you started with the wrong storage or type. To cancel a backup, add the `percona.com/cancel-backup: "true"` annotation to the Backup object. The Operator asks Percona Backup for MongoDB (PBM) to stop the backup and shows the progress in the Backup status.
+
+You cancel on-demand and scheduled backups in the same way. Read [How cancellation works](#how-cancellation-works) to learn more.
+
+## Considerations
+
+- You can’t undo a cancellation. Once the status is `canceling`, removing the annotation doesn’t stop it.
+- You can’t restore from a canceled backup.
+- For a [PVC snapshot backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pvc-snapshots.html), the Operator deletes the `VolumeSnapshot` objects it created for this backup.
+- Deleting a running Backup object also cancels the backup. Keep this in mind if a GitOps tool prunes Backup objects.
+
+## Before you start
+
+- The Operator is version 1.24.0 or later.
+- The backup isn’t finished. Its status is empty, `waiting`, `requested` or `running`. The annotation has no effect on a `ready`, `error` or `canceled` backup.
+
+Export your namespace. Replace `<namespace>` with your value:
+
+```
+export NAMESPACE=<namespace>
+```
+
+## Cancel a backup
+
+1. Find the name of the running backup:
+
+   ```
+   kubectl get psmdb-backup -n $NAMESPACE
+   ```
+
+   Sample output
+
+   ```
+   NAME      CLUSTER           STORAGE      DESTINATION                           TYPE       SIZE   STATUS    COMPLETED   AGE
+   backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          running               2m
+   ```
+
+1. Add the `percona.com/cancel-backup` annotation with the value `true`:
+
+   ```
+   kubectl annotate psmdb-backup backup1 percona.com/cancel-backup=true -n $NAMESPACE
+   ```
+
+## Verify
+
+1. Watch the Backup status change to `canceled`. A backup that PBM has already started goes through `canceling` first:
+
+   ```
+   kubectl get psmdb-backup backup1 -n $NAMESPACE -w
+   ```
+
+   Sample output
+
+   ```
+   NAME      CLUSTER           STORAGE      DESTINATION                           TYPE       SIZE   STATUS      COMPLETED   AGE
+   backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          canceling               3m
+   backup1   my-cluster-name   s3-us-west   s3://my-bucket/2026-11-06T10:34:59Z   physical          canceled                3m
+   ```
+
+1. Optionally, check the status in PBM. Get the PBM backup name from the Backup object, then describe the backup from any database Pod of this cluster. Replace `my-cluster-name` with your cluster name:
+
+   ```
+   PBM_NAME=$(kubectl get psmdb-backup backup1 -n $NAMESPACE -o jsonpath='{.status.pbmName}')
+   kubectl exec my-cluster-name-rs0-0 -c backup-agent -n $NAMESPACE -- pbm describe-backup $PBM_NAME
+   ```
+
+   The `status` field is `canceled`. The `error` field shows why PBM stopped the backup, for example `context canceled`. This is expected.
+
+## Clean up a canceled backup
+
+A canceled backup can leave files on the storage. A file that was uploading when you canceled the backup can remain. This can happen with physical and incremental backups and with logical backups on sharded clusters. PBM also keeps a record of the canceled backup.
+
+To remove the files and the PBM record, delete the Backup object:
+
+```
+kubectl delete psmdb-backup backup1 -n $NAMESPACE
+```
+
+The Operator removes the files when the Backup object has the `percona.com/delete-backup` finalizer. Scheduled backups have it unless `retention.deleteFromStorage` is `false`. For on-demand backups, add it to the manifest, as in `deploy/backup/backup.yaml`. The Operator first waits until PBM releases the backup lock, then deletes the backup in PBM. For `external` backups, it deletes the VolumeSnapshots.
+
+The Operator doesn’t remove files of incremental backups. To remove them, delete the backup in PBM first, then delete the Backup object. Replace `my-cluster-name` with your cluster name:
+
+```
+PBM_NAME=$(kubectl get psmdb-backup backup1 -n $NAMESPACE -o jsonpath='{.status.pbmName}')
+kubectl exec my-cluster-name-rs0-0 -c backup-agent -n $NAMESPACE -- pbm delete-backup -y $PBM_NAME
+kubectl delete psmdb-backup backup1 -n $NAMESPACE
+```
+
+`pbm list` doesn’t show canceled backups. To see them, run `pbm status` in the `backup-agent` container.
+
+## How cancellation works
+
+- If the Operator hasn’t sent the backup to PBM yet, for example while the backup waits for another one to finish, the Operator sets the status to `canceled` right away.
+- Otherwise, it sets the status to `canceling` and sends the cancel command to PBM.
+- For a PVC snapshot backup, the Operator waits until the `VolumeSnapshot` objects are deleted and clears `status.snapshots`. Some storage drivers delete a snapshot only after it finishes, so the backup can stay in `canceling` for a minute or more.
+- When PBM reports the backup as canceled, the Operator sets the status to `canceled` and releases the backup lock. Until then, other backups on this cluster wait.
+- Until the status is `canceled`, the Operator treats the backup as running. Pausing the cluster and Smart Update wait for the cancellation to finish.
+- If the `pbm-agent` stops responding during the cancellation, the Operator waits for `backup.startingDeadlineSeconds` from the cluster Custom Resource, 120 seconds by default. This deadline is counted from the last PBM heartbeat. It also waits until PBM releases its backup lock, which adds about 30 seconds. Then it sets the status to `error`.
+- When you delete a running Backup object, the Operator finishes the cancellation first, then removes the files and deletes the object. See [Clean up a canceled backup](#clean-up-a-canceled-backup).
+- A restore from a canceled backup fails with the `backup is in canceled state` error.
+- The [retention policy](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-delete.html#configure-backup-retention) counts canceled backups together with `ready` ones and deletes canceled backups first.
+
+## Troubleshooting
+
+### The backup stays in `canceling`
+
+**Symptom:** the status doesn’t change from `canceling`.
+
+**Cause:** PBM is still stopping the backup. For a PVC snapshot backup, a `VolumeSnapshot` can’t be deleted yet, for example because of a finalizer or a snapshot that is still in progress. The Operator doesn’t time out while a `VolumeSnapshot` remains or a `pbm-agent` still holds the backup lock.
+
+**Fix:**
+
+1. Check the `backup-agent` logs of the Pod that runs the backup. The `status.pbmPod` field of the Backup object names that Pod. See [Troubleshoot backups and restores](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html#find-the-pod-that-ran-the-backup).
+
+1. For a PVC snapshot backup, check which snapshots remain and why they aren’t deleted:
+
+   ```
+   kubectl get volumesnapshot -n $NAMESPACE
+   kubectl describe volumesnapshot <snapshot-name> -n $NAMESPACE
+   ```
+
+1. If the output shows a `Deletion Timestamp` and a finalizer that isn’t from your CSI snapshot controller, find out which tool added it and remove it.
+
+### The cancellation ends in `error`
+
+**Symptom:** the status is `error`, and `status.error` says one of the following:
+
+- `PBM backup agent stopped responding before cancellation could finish`
+- `PBM backup metadata not found during cancellation within the allowed timeout`
+- `backup did not progress from 'starting' state within the allowed timeout`
+
+**Cause:** the `pbm-agent` stopped before PBM could finish the cancellation.
+
+**Fix:**
+
+1. Check that the `backup-agent` containers are running and PBM is ready. See [Check PBM readiness on the cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/debug-backup-restore.html#check-pbm-readiness-on-the-cluster).
+1. Remove the backup files and the PBM record with `pbm delete-backup`, then delete the Backup object, as shown for incremental backups in [Clean up a canceled backup](#clean-up-a-canceled-backup). The Operator doesn’t remove the files of a backup in the `error` state when you delete the Backup object.
+1. Make a new backup.
+
+When the `pbm-agent` comes back, PBM can still finish the cancellation. Then `pbm describe-backup` shows `canceled` while the Backup object shows `error`. Partial files can also remain on the storage, so remove them with `pbm delete-backup` as described in [Clean up a canceled backup](#clean-up-a-canceled-backup).
+
+## Next steps
+
+[Delete the unneeded backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-delete.html)
 
 # PVC snapshots
 
@@ -11271,7 +11426,7 @@ export NAMESPACE=<namespace>
 Use the `backup.tasks.retention` subsection to configure the retention policy for backups. Specify the following parameters:
 
 - `backup.tasks.retention.type` - the retention strategy. The default (and currently only supported strategy) is `count`, which keeps the most recent `backup.tasks.retention.count` backups and removes older ones.
-- `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. See [Retention and incremental backups](#retention-and-incremental-backups) below.
+- `backup.tasks.retention.count` - how many backups to keep. Older backups are removed from the storage. Backups in the `ready` and `canceled` state count. When there are more, the Operator deletes canceled backups first, then the oldest ready ones. Failed backups stay until you delete them manually. See [Retention and incremental backups](#retention-and-incremental-backups) below.
 - `backup.tasks.retention.deleteFromStorage` - if to delete backup files from storage as well.
 
 ### Retention and incremental backups
@@ -11302,6 +11457,8 @@ Now, you can delete the desired backup as follows:
 ```
 kubectl delete psmdb-backup/<backup-name> -n $NAMESPACE
 ```
+
+If the backup is still running, the Operator [cancels it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) first and then deletes the object. The Operator removes backup files from storage for `ready` and `canceled` backups, except incremental ones. To remove the files of a failed backup, see [Clean up a canceled backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html#clean-up-a-canceled-backup).
 
 Delete base backups for point-in-time recovery
 
@@ -21755,20 +21912,21 @@ Use **Annotations** when:
 
 ### Annotations
 
-| Name                                                            | Associated resources | Description                                                                                                                                                                                                                                                                                                                                                                                      | Example values                                 |
-| --------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| `iam.amazonaws.com/role`                                        | Pod, PVC, Service    | Assigns an AWS IAM role to the resource for permissions.                                                                                                                                                                                                                                                                                                                                         | `role-arn`                                     |
-| `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` | Service              | Specifies protocol for AWS load balancer backend.                                                                                                                                                                                                                                                                                                                                                | `http`                                         |
-| `percona.com/last-applied-tls`                                  | Services             | Stores the hash of the last applied TLS configuration for the service                                                                                                                                                                                                                                                                                                                            |                                                |
-| `percona.com/last-applied-secret`                               | Secrets              | Stores the hash of the last applied user Secret configuration                                                                                                                                                                                                                                                                                                                                    |                                                |
-| `percona.com/configuration-hash`                                | Services             | Used to track and validate configuration changes in the MySQL cluster components                                                                                                                                                                                                                                                                                                                 | `percona.com/last-applied-secret: "hashvalue"` |
-| `percona.com/last-config-hash`                                  | Services             | Stores the hash of the most recent configuration                                                                                                                                                                                                                                                                                                                                                 |                                                |
-| `percona.com/ssl-hash`                                          | Pods                 | Stores the hash of the most recent TLS configuration                                                                                                                                                                                                                                                                                                                                             |                                                |
-| `percona.com/pbm-tls-hash`                                      | Pods                 | Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It’s also set on `mongos` Pods, so they restart too. Available starting with version 1.24.0.                                                                                                                                                                                |                                                |
-| `percona.com/ssl-internal-hash`                                 | Pods                 | Stores the hash of the most recent TLS configuration for internal communication                                                                                                                                                                                                                                                                                                                  |                                                |
-| `percona.com/passwords-updated`                                 | Secrets              | Indicates when passwords were last updated in the Secret                                                                                                                                                                                                                                                                                                                                         |                                                |
-| `percona.com/external-dns-managed`                              | Services             | Set by the Operator when External DNS `/hostname` and `/ttl` annotations are generated from values defined in `expose.externalDNS`. Marks ownership of those annotations. Do not set or remove it manually. See [How the Operator manages External DNS annotations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#how-the-operator-manages-external-dns-annotations). | `"true"`                                       |
-| `kubectl.kubernetes.io/restartedAt`                             | PVC                  | Records the most recent timestamp when the associated resource was intentionally restarted. This annotation is typically used to trigger rolling restarts of StatefulSets, ensuring Pods or PVCs are refreshed according to Kubernetes best practices.                                                                                                                                           | `2026-02-01T12:34:56Z`                         |
+| Name                                                            | Associated resources                  | Description                                                                                                                                                                                                                                                                                                                                                                                      | Example values                                 |
+| --------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| `iam.amazonaws.com/role`                                        | Pod, PVC, Service                     | Assigns an AWS IAM role to the resource for permissions.                                                                                                                                                                                                                                                                                                                                         | `role-arn`                                     |
+| `service.beta.kubernetes.io/aws-load-balancer-backend-protocol` | Service                               | Specifies protocol for AWS load balancer backend.                                                                                                                                                                                                                                                                                                                                                | `http`                                         |
+| `percona.com/last-applied-tls`                                  | Services                              | Stores the hash of the last applied TLS configuration for the service                                                                                                                                                                                                                                                                                                                            |                                                |
+| `percona.com/last-applied-secret`                               | Secrets                               | Stores the hash of the last applied user Secret configuration                                                                                                                                                                                                                                                                                                                                    |                                                |
+| `percona.com/configuration-hash`                                | Services                              | Used to track and validate configuration changes in the MySQL cluster components                                                                                                                                                                                                                                                                                                                 | `percona.com/last-applied-secret: "hashvalue"` |
+| `percona.com/last-config-hash`                                  | Services                              | Stores the hash of the most recent configuration                                                                                                                                                                                                                                                                                                                                                 |                                                |
+| `percona.com/ssl-hash`                                          | Pods                                  | Stores the hash of the most recent TLS configuration                                                                                                                                                                                                                                                                                                                                             |                                                |
+| `percona.com/pbm-tls-hash`                                      | Pods                                  | Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It’s also set on `mongos` Pods, so they restart too. Available starting with version 1.24.0.                                                                                                                                                                                |                                                |
+| `percona.com/ssl-internal-hash`                                 | Pods                                  | Stores the hash of the most recent TLS configuration for internal communication                                                                                                                                                                                                                                                                                                                  |                                                |
+| `percona.com/passwords-updated`                                 | Secrets                               | Indicates when passwords were last updated in the Secret                                                                                                                                                                                                                                                                                                                                         |                                                |
+| `percona.com/cancel-backup`                                     | Backup (`PerconaServerMongoDBBackup`) | You set it to cancel a backup that is still running. The Operator reads only the value `"true"`, which is case-sensitive. It doesn’t remove the annotation after the cancellation. Available starting with version 1.24.0. See [Cancel a running backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html).                                                      | `"true"`                                       |
+| `percona.com/external-dns-managed`                              | Services                              | Set by the Operator when External DNS `/hostname` and `/ttl` annotations are generated from values defined in `expose.externalDNS`. Marks ownership of those annotations. Do not set or remove it manually. See [How the Operator manages External DNS annotations](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/expose.html#how-the-operator-manages-external-dns-annotations). | `"true"`                                       |
+| `kubectl.kubernetes.io/restartedAt`                             | PVC                                   | Records the most recent timestamp when the associated resource was intentionally restarted. This annotation is typically used to trigger rolling restarts of StatefulSets, ensuring Pods or PVCs are refreshed according to Kubernetes best practices.                                                                                                                                           | `2026-02-01T12:34:56Z`                         |
 
 ## Setting labels and annotations in the Custom Resource
 
@@ -28881,6 +29039,10 @@ The metadata part of the `deploy/backup/backup.yaml` contains metadata about the
 
 - `name` - The name of the backup resource used to identify it in your deployment. You also use the backup name for the restore operation.
 
+- `annotations` - The Operator reads the following annotations:
+
+  - `percona.com/cancel-backup: "true"` - cancels the backup if it is still running. Available starting with version 1.24.0. See [Cancel a running backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html).
+
 ## `spec`
 
 This subsection includes the configuration of a backup resource.
@@ -29771,14 +29933,16 @@ Common fields:
 
 `status.state` values are:
 
-| Value       | Meaning                                    |
-| ----------- | ------------------------------------------ |
-| `""`        | Backup is created but not processed yet.   |
-| `waiting`   | Backup is queued or waiting for resources. |
-| `requested` | The Operator accepted the backup request.  |
-| `running`   | Backup is in progress.                     |
-| `ready`     | Backup completed successfully.             |
-| `error`     | Backup failed.                             |
+| Value       | Meaning                                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `""`        | Backup is created but not processed yet. You can still [cancel it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) |
+| `waiting`   | Backup is queued or waiting for resources.                                                                                                           |
+| `requested` | The Operator sent the backup command to PBM, and PBM is preparing to start the backup.                                                               |
+| `running`   | Backup is in progress.                                                                                                                               |
+| `canceling` | You [canceled the backup](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html), and the Operator is stopping it.        |
+| `canceled`  | The backup was canceled. You can’t restore from it.                                                                                                  |
+| `ready`     | Backup completed successfully.                                                                                                                       |
+| `error`     | Backup failed.                                                                                                                                       |
 
 ## PerconaServerMongoDBRestore status
 

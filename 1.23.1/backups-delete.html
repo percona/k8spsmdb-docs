@@ -2655,6 +2655,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2711,6 +2713,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -6859,7 +6881,7 @@ with your value:</p>
 <p>Use the <code>backup.tasks.retention</code> subsection to configure the retention policy for backups. Specify the following parameters:</p>
 <ul>
 <li><code>backup.tasks.retention.type</code> - the retention strategy. The default (and currently only supported strategy) is <code>count</code>, which keeps the most recent <code>backup.tasks.retention.count</code> backups and removes older ones.</li>
-<li><code>backup.tasks.retention.count</code> - how many backups to keep. Older backups are removed from the storage. See <a href="#retention-and-incremental-backups">Retention and incremental backups</a> below.</li>
+<li><code>backup.tasks.retention.count</code> - how many backups to keep. Older backups are removed from the storage. Backups in the <code>ready</code> and <code>canceled</code> state count. When there are more, the Operator deletes canceled backups first, then the oldest ready ones. Failed backups stay until you delete them manually. See <a href="#retention-and-incremental-backups">Retention and incremental backups</a> below.</li>
 <li><code>backup.tasks.retention.deleteFromStorage</code> - if to delete backup files from storage as well.</li>
 </ul>
 <h3 id="retention-and-incremental-backups">Retention and incremental backups<a data-markdown-ignore class="headerlink" href="#retention-and-incremental-backups" title="Permanent link">¶</a></h3>
@@ -6887,6 +6909,7 @@ backup2   some-name   aws-s3       s3://operator-testing/psmdb-scheduled-backup/
 <p>Now, you can delete the desired backup as follows:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>psmdb-backup/&lt;backup-name&gt;<span class="w"> </span>-n<span class="w"> </span><span class="nv">$NAMESPACE</span>
 </code></pre></div>
+<p>If the backup is still running, the Operator <a href="backups-cancel.html">cancels it</a> first and then deletes the object. The Operator removes backup files from storage for <code>ready</code> and <code>canceled</code> backups, except incremental ones. To remove the files of a failed backup, see <a href="backups-cancel.html#clean-up-a-canceled-backup">Clean up a canceled backup</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Delete base backups for point-in-time recovery</p>
 <p>You can delete a backup used <a href="backups-pitr.html">as a base for point-in-time recovery (PITR)</a> starting from the Operator version 1.15.0. Note that  deleting such a backup will delete the stored operations log updates based on this backup.</p>
@@ -6920,7 +6943,7 @@ before 1.17.0 must be removed manually to free storage.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2026 10:57:56 UTC">September 8, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:

@@ -23,7 +23,7 @@ Here is what the Operator brings to your infrastructure:
 
 Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The [Backup and restore](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html) overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow [Configure backups](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-configure.html).
 
-- **Scheduled and on-demand backups** — [Run backups on a schedule](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.html) or [create one when you need it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.html).
+- **Scheduled and on-demand backups** — [Run backups on a schedule](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-scheduled.html) or [create one when you need it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-ondemand.html). If a running backup gets in the way of maintenance or was started with the wrong settings, [cancel it](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-cancel.html) instead of waiting for it to finish.
 - **Logical, physical, incremental, and PVC snapshots** — See [backup types](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups.html#backup-types) to pick the right one.
 - **Point-in-time recovery** — Roll back the database to a specific time.
 - **Restore** — [Restore on the same cluster or a new cluster](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-restore.html).

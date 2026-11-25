@@ -2792,6 +2792,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2848,6 +2850,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -7070,7 +7092,9 @@ window.addEventListener('afterprint', (event) => {
 <li>After a failed restore, the Operator cannot guarantee data consistency.</li>
 </ul>
 <h2 id="backup-lifecycle">Backup lifecycle<a data-markdown-ignore class="headerlink" href="#backup-lifecycle" title="Permanent link">¶</a></h2>
-<p>Each backup object has the <code>delete-backup</code> finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with <a href="operator.html#backuptasksretentioncount">backup.tasks.retention</a>. See <a href="backups-delete.html#configure-backup-retention">Configure retention policy</a>.</p>
+<p>Starting with version 1.24.0, you can <a href="backups-cancel.html">cancel a backup</a> while it’s still running. Deleting a running Backup object cancels the backup first.</p>
+<p>To remove a finished backup, delete its Backup object. For a <code>ready</code> or canceled backup, the <code>delete-backup</code> finalizer also removes the backup files from storage. For a failed backup, the Operator deletes only the Backup object. See <a href="backups-cancel.html#clean-up-a-canceled-backup">Clean up a canceled backup</a>. </p>
+<p>To have the Operator delete old backups for you, set how many to keep with <a href="operator.html#backuptasksretentioncount">backup.tasks.retention</a>. See <a href="backups-delete.html#configure-backup-retention">Configure retention policy</a>.</p>
 <h2 id="next-steps">Next steps<a data-markdown-ignore class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="backups-configure.html">Configure backups</a></p>
 <hr>
@@ -7078,7 +7102,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 23, 2026 13:50:07 UTC">November 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:

@@ -2651,6 +2651,8 @@
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -2707,6 +2709,26 @@
   
   <span class="md-ellipsis">
     On-demand backup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backups-cancel.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cancel a running backup
   </span>
   
 
@@ -6977,6 +6999,12 @@ window.addEventListener('afterprint', (event) => {
 <li>
 <p><code>name</code> - The name of the backup resource used to identify it in your deployment. You also use the backup name for the restore operation.</p>
 </li>
+<li>
+<p><code>annotations</code> - The Operator reads the following annotations:</p>
+<ul>
+<li><code>percona.com/cancel-backup: "true"</code> - cancels the backup if it is still running. Available starting with version 1.24.0. See <a href="backups-cancel.html">Cancel a running backup</a>.</li>
+</ul>
+</li>
 </ul>
 <h2 id="spec"><code>spec</code><a data-markdown-ignore class="headerlink" href="#spec" title="Permanent link">¶</a></h2>
 <p>This subsection includes the configuration of a backup resource.</p>
@@ -7100,7 +7128,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 23, 2026 07:53:00 UTC">July 23, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
       
         <br>
         Created:
