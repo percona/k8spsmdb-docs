@@ -76,6 +76,7 @@ Use **Annotations** when:
 | `percona.com/configuration-hash` | Services | Used to track and validate configuration changes in the MySQL cluster components | `percona.com/last-applied-secret: "hashvalue"`|
 | `percona.com/last-config-hash` | Services | Stores the hash of the most recent configuration |
 | `percona.com/ssl-hash` | Pods | Stores the hash of the most recent TLS configuration | 
+| `percona.com/pbm-tls-hash` | Pods | Stores the hash of the PBM client TLS Secret. When the Secret changes, the Pods restart to load the new certificate. It's also set on `mongos` Pods, so they restart too. Available starting with version 1.24.0. | |
 | `percona.com/ssl-internal-hash` | Pods | Stores the hash of the most recent TLS configuration for internal communication |
 | `percona.com/passwords-updated`| Secrets | Indicates when passwords were last updated in the Secret |
 | `percona.com/cancel-backup` | Backup (`PerconaServerMongoDBBackup`) | You set it to cancel a backup that is still running. The Operator reads only the value `"true"`, which is case-sensitive. It doesn't remove the annotation after the cancellation. Available starting with version 1.24.0. See [Cancel a running backup](backups-cancel.md). | `"true"` |

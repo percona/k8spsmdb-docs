@@ -393,7 +393,18 @@ follows:
 
 URIs for external usage are specified as key-value pairs, where the key is an arbitrary name and the value is the actual URI. The URI may include a port number. If no port is specified, the default MongoDB port (27017) is used.
 
-Starting with version 1.22.0, the Operator adds the DNS records defined in the `splitHorizons` subsection to the certificates it generates. 
+Starting with version 1.22.0, the Operator adds each horizon DNS name to the TLS certificates it generates. A port in the URI is not added to the certificate.
+
+Starting with version 1.24.0, the Operator updates those certificates when you add or change horizon DNS names on a running cluster:
+
+- Operator-generated certificates are re-signed in `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` with the CA in the `<cluster-name>-ca-cert` Secret. If that Secret has no CA key, the Operator leaves the certificates unchanged.
+- cert-manager certificates are reissued after the Operator adds the DNS names to the `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` Certificate resources.
+
+The Operator adds DNS names that are missing. It does not remove a DNS name when you delete it from `splitHorizons`. Replica set members stop advertising that horizon. The certificate still lists the old name.
+
+Horizon DNS names that you set only under [`replsets.replsetOverrides.<pod-name>.horizons`](operator.md#replsetsreplsetoverridesmember-namehorizonshorizon-name) are included starting with version 1.24.0. When the same horizon key is set in both `splitHorizons` and `replsetOverrides`, the certificate uses the override. On versions 1.22 and 1.23, the Operator adds horizon names only when `splitHorizons` is set.
+
+The Operator does not change certificates that you provide. When you [generate certificates manually](tls-manual.md), or when `tls.certManagementPolicy` is `userProvidedOnly`, add each horizon DNS name to the certificate yourself. 
 
 Split horizon has following limitations:
 

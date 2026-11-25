@@ -4,6 +4,8 @@ To update the Operator, you need to update the Custom Resource Definition (CRD) 
 
 The upgrade process is similar for all installation methods, including Helm and OLM.
 
+This page covers an upgrade to a new Operator version. To stay on your current version and apply only security fixes, see [Apply security builds](security-builds.md).
+
 ## Considerations 
 
 **Read all of these before you upgrade.** 
@@ -38,7 +40,9 @@ The upgrade process is similar for all installation methods, including Helm and 
 
     Check the [Release notes index](RN/index.md) for the list of the Operator versions.
 
-2. CRD supports **the last 3 minor versions of the Operator**. This means it is compatible with the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+2. Percona supports the CRD with **the last 3 minor versions of the Operator**: the newest Operator version and the two previous minor versions. If the Operator is older than the CRD by no more than two versions, you should be able to continue using the old Operator version. But updating the CRD and Operator is the recommended path.
+
+    The same support window applies to the `crVersion` of your database clusters. The Operator doesn't reject an older `crVersion`, so keeping your clusters inside the window is up to you. See [What `crVersion` does](update-crversion.md#what-crversion-does).
 
 3. Starting from version 1.14.0, the Operator configures replica set members
     using local fully-qualified domain names (FQDN). Before this version, if you [exposed a replica set](expose.md), it
@@ -77,12 +81,13 @@ The upgrade process is similar for all installation methods, including Helm and 
             ...
     ```
 
-6. Starting from the Operator version 1.16.0, MongoDB 4.4 support in the
-    Operator has reached its end-of-life. Make sure that you have a supported
-    MongoDB version before upgrading the Operator to 1.16.0 (you can use
-    [major version upgrade functionality](update-major.md)) to fix it.
+6. Starting from the Operator version 1.24.0, Percona Server for MongoDB 6.0 support has reached its end-of-life. Upgrade the database to 7.0 or 8.0 before you upgrade the Operator to 1.24.0. You can use the [major version upgrade](update-major.md).
 
 7. The Operator versions 1.19.0 and 1.19.1 have a recommended MongoDB version set to 7.0 because point-in-time recovery may fail on MongoDB 8.0 if sharding is enabled and the Operator version is 1.19.x. Therefore, upgrading to Operator 1.19.0/1.19.1 is not recommended for sharded MongoDB 8.0 clusters.
+
+8. Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated [PBM client certificate](TLS.md) instead of the external server certificate. Upgrading the Operator alone doesn't change anything. The Operator creates the PBM certificate when you set `crVersion` to `1.24.0`, and the database Pods restart to mount it.
+
+    If TLS and backups are enabled and you provide your own external certificate in `secrets.ssl`, create the PBM client Secret **before** you set `crVersion` to `1.24.0`. Otherwise the Operator stops reconciling the cluster. See [Generate TLS certificates manually](tls-manual.md#generate-certificates) for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.
 
 ## Update guides
 
