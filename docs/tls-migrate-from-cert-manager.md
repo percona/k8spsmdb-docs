@@ -52,7 +52,7 @@ Do this while cert-manager is still installed. Repeat it for every Percona Serve
 
 ## Uninstall cert-manager
 
-Skip this step if any Percona Server for MongoDB cluster, or any other application, still uses cert-manager.
+Skip this step if any Percona Server for MongoDB cluster, or any other application, still uses cert-manager. In that case, before removing Secret metadata or renewing certificates manually, delete the migrating cluster's cert-manager `Certificate` resources with `--cascade=orphan` to preserve their Secrets. Include the cluster's dedicated CA `Certificate`, if applicable, in its actual namespace, but do not delete shared CA resources or issuers. Setting `userProvidedOnly` stops only the Percona Operator's certificate management; cert-manager continues renewing certificates for any remaining `Certificate` resources.
 
 Remove cert-manager the same way you installed it. For a manifest install, delete that manifest. Replace the version in this command if you installed a different one:
 
@@ -176,14 +176,16 @@ You sign new certificates with the CA from the `${CLUSTER_NAME}-ca-cert` Secret 
         --from-file=ca.crt=ca.crt --from-file=tls.crt="$s.crt" --from-file=tls.key="$s.key" \
         --dry-run=client -o yaml | kubectl apply -f -
     done
-    kubectl create secret generic "${CLUSTER_NAME}-pbm" -n "${NAMESPACE}" --type=kubernetes.io/tls \
+    PBM_SECRET=$(kubectl get psmdb "${CLUSTER_NAME}" -n "${NAMESPACE}" -o jsonpath='{.spec.secrets.sslPBM}')
+    PBM_SECRET=${PBM_SECRET:-${CLUSTER_NAME}-pbm}
+    kubectl create secret generic "${PBM_SECRET}" -n "${NAMESPACE}" --type=kubernetes.io/tls \
       --from-file=tls.crt=pbm.crt --from-file=tls.key=pbm.key \
       --dry-run=client -o yaml | kubectl apply -f -
     ```
 
     Skip the `${CLUSTER_NAME}-pbm` command if backups are disabled.
 
-6. Wait until the cluster is `ready`. The Operator restarts the database Pods one at a time, and clients that trust the CA stay connected:
+6. With `updateStrategy: SmartUpdate` or `RollingUpdate`, the database Pods restart automatically to load the new certificates. If you use `updateStrategy: OnDelete`, manually restart the database Pods one at a time, waiting for each replacement Pod to become ready before restarting the next. See [Update strategies](update.md#update-strategies). Then wait until the cluster is `ready`:
 
     ```bash
     kubectl wait psmdb "${CLUSTER_NAME}" -n "${NAMESPACE}" \
