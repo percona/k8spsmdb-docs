@@ -24,9 +24,22 @@ If storage is not scaling, check if any PVC has reached the max size. Thresholds
 Starting with version 1.24.0, the Operator grows the PVCs that store `mongos` logs together with the other PVCs. If a `mongos` log PVC stays at the same size, check the following:
 
 - The `sharding.mongos.logs.persistentVolumeClaim` subsection is set. Without it, `mongos` logs are stored on an `emptyDir` volume and there is no PVC to grow. See [Persistent logging](persistent-logging.md#for-mongos-pods).
+- The Operator version and the cluster's `crVersion` are both at least `1.24.0`.
 - `storageScaling.enableVolumeScaling` and `storageScaling.autoscaling.enabled` are `true`.
 - The PVC didn't reach `autoscaling.maxSize`. The same limit applies to data volumes and to `mongos` log volumes.
-- The `lastError` field in `.status.storageAutoscaling` for the `mongos-logs-<cluster-name>-mongos-<N>` PVC. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing).
+- The `lastError` field in `.status.storageAutoscaling` for the `mongos-logs-<cluster-name>-mongos-<N>` PVC. See [Check the resize status](scaling-storage-resize.md#check-the-resize-status).
+
+## Search PVC does not grow automatically
+
+Starting with version 1.24.0, the Operator also grows the PVCs that store the search index data. If a search PVC stays at the same size, check the following:
+
+- `search.enabled` is `true` and the search storage uses a PVC.
+- `storageScaling.enableVolumeScaling` and `storageScaling.autoscaling.enabled` are `true`.
+- The PVC didn't reach `autoscaling.maxSize`. The same limit applies to all PVCs.
+- The `mongot` container is running. The Operator measures the usage only in a running container.
+- The `lastError` field in `.status.storageAutoscaling` for the `mongot-data-<cluster-name>-<replset-name>-search-0` PVC. See [Resize storage automatically](scaling-storage-resize.md#resize-storage-automatically).
+
+If you changed the default `search.storage` size and a search PVC didn't follow, check whether its replica set has its own `replsets.<replset-name>.search.storage` value. The Operator adds it during automatic resizing, and it replaces the default size for this replica set. See [Search volumes](scaling-storage-resize.md#search-volumes).
 
 ## PVC resize is one-way
 

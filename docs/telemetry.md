@@ -32,7 +32,7 @@ The Operator reports what features are in use. The Since column shows the Operat
 | [Sharding](sharding.md) | 1.13 |
 | [HashiCorp Vault](encryption.md#use-hashicorp-vault-to-store-and-manage-encryption-keys) | 1.13 |
 | [Cluster-wide mode](cluster-wide.md) | 1.13 |
-| [Volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) | 1.19 |
+| [Volume expansion](scaling-storage-resize.md#resize-storage-yourself) | 1.19 |
 | [Multi-cluster Services](replication-mcs.md) | 1.19 |
 | [Custom MongoDB users](app-users.md#create-users-via-custom-resource) and [custom MongoDB roles](app-users.md#custom-mongodb-roles) | 1.19 |
 | [Vector search](search-overview.md) | 1.24 |

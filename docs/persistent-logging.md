@@ -66,7 +66,7 @@ To view the collected `mongos` logs, run:
 kubectl logs my-cluster-name-mongos-0 -c logs
 ```
 
-Starting with version 1.24.0, the Operator can grow the `mongos` log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See [Automatic resizing of mongos log PVCs](scaling-storage-resize.md#automatic-resizing-of-mongos-log-pvcs). To resize them yourself, see [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage).
+Starting with version 1.24.0, the Operator can grow the `mongos` log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See [Resize storage automatically](scaling-storage-resize.md#resize-storage-automatically). To resize them yourself, see [Resize storage yourself](scaling-storage-resize.md#resize-storage-yourself).
 
 ## Configure log collector
 
