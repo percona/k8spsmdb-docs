@@ -183,7 +183,9 @@ requirements:
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
    the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
    becomes read-only at about 90% disk usage. The default PVC size of `10Gi` is
-   enough for small datasets; tune storage for larger workloads.
+   enough for small datasets; tune storage for larger workloads. Starting with
+   version 1.24.0, you can increase the size on a running cluster or let the
+   Operator grow it automatically. See [Search volumes](scaling-storage-resize.md#search-volumes).
 3. **Resource requirements**. The Operator follows upstream [resource requirements :octicons-link-external-16:](https://www.mongodb.com/docs/vector-search/deployment/deployment-options/#resource-usage)
 4. **Kubernetes resources.** Default requests are 2 CPU and 2Gi memory per
    Percona Search for MongoDB pod. Size resources for your index and query load.
@@ -214,6 +216,8 @@ requirements:
   and cannot correctly distribute long-lived gRPC streams across multiple
   backends. Multi-replica Percona Search for MongoDB HA (which needs an L7 gRPC-aware load
   balancer) is postponed to a later release.
+* **Search storage can't shrink.** You can increase the size of the search PVC,
+  but not reduce it. See [Search volumes](scaling-storage-resize.md#search-volumes).
 * **No automated embedding.** Generating and managing embeddings through an
   external embedding API (for example automated / Voyage AI embedding) is not supported. You provide and store vector embeddings yourself.
 * **No migration from externally managed `mongot`.** Deployments that already

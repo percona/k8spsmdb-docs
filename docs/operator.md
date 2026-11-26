@@ -66,7 +66,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `enableVolumeExpansion`
 
-Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](scaling-storage-resize.md#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -96,7 +96,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `storageScaling.enableVolumeScaling`
 
-Enables or disables [storage scaling / volume expansion](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](scaling-storage-resize.md#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -120,7 +120,7 @@ The maximum disk usage on any Pod, as a percentage of the new, smaller size. If 
 
 ### `storageScaling.enableExternalAutoscaling`
 
-Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability)
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Use an external autoscaler](scaling-storage-resize.md#use-an-external-autoscaler)
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -128,9 +128,9 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 ### `storageScaling.autoscaling.enabled`
 
-Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing).
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Resize storage automatically](scaling-storage-resize.md#resize-storage-automatically).
 
-Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. Resize those manually, see [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage).
+Applies to all PVCs that the Operator resizes: database data and, starting with version 1.24.0, `mongos` logs and search index data. All of them use the same `storageScaling.autoscaling` settings. See [Volumes and their size](scaling-storage-resize.md#volumes-and-their-size).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -138,7 +138,7 @@ Does not apply to mongos log PVCs defined via `sharding.mongos.logs.persistentVo
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percentage of the storage usage that triggers automatic resizing. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. It applies to all PVCs that the Operator resizes. Minimum value is 50, maximum is 95. If you use [search](search-overview.md), set it below 90: Percona Search for MongoDB becomes read-only at about 90% disk usage.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -146,7 +146,7 @@ The percentage of the storage usage that triggers automatic resizing. Minimum va
 
 ### `storageScaling.autoscaling.growthStep`
 
-The amount to increase the storage during automatic resizing. Default value is 2Gi
+The amount to increase the storage during automatic resizing. It applies to all PVCs that the Operator resizes. Default value is 2Gi
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -154,7 +154,7 @@ The amount to increase the storage during automatic resizing. Default value is 2
 
 ### `storageScaling.autoscaling.maxSize`
 
-The maximum size to which storage can be automatically resized.
+The maximum size to which storage can be automatically resized. It applies to all PVCs that the Operator resizes.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -162,7 +162,9 @@ The maximum size to which storage can be automatically resized.
 
 ### `crVersion`
 
-Version of the Operator the Custom Resource belongs to.
+The Operator version whose behavior the cluster follows. Changing this value rolls the database Pods.
+
+The option is optional. If you omit it, the Operator writes its own version into the Custom Resource on the first reconcile and keeps that value after later Operator upgrades. We recommend setting it explicitly. See [What `crVersion` does](update-crversion.md#what-crversion-does).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -174,7 +176,7 @@ The Docker image of [Percona Server for MongoDB  :octicons-link-external-16:](ht
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `percona/percona`-`server`-`mongodb:{{ mongodb60recommended }}` |
+| :material-code-string: string     | `percona/percona`-`server`-`mongodb:{{ mongodb80recommended }}` |
 
 ### `imagePullPolicy`
 
@@ -358,7 +360,7 @@ Prevents running backup on a cluster with [failed health checks :octicons-link-e
 
 The `tls` section in the [deploy/cr.yaml  :octicons-link-external-16:](https://github.com/percona/percona-server-mongodb-operator/blob/main/deploy/cr.yaml) file contains various configuration options for additional customization of the [Transport Layer Security](TLS.md).
 
-The [`tls.issuerConf`](#operator-issuerconf-section) options below control which cert-manager issuer
+The [`tls.issuerConf`](#tlsissuerconfname) options below control which cert-manager issuer
 signs MongoDB TLS certificates. See [Configure TLS using cert-manager](tls-cert-manager.md)
 for setup examples.
 
@@ -382,8 +384,31 @@ The validity duration of the external certificate for cert manager (90 days by d
 
 ### `tls.allowInvalidCertificates`
 
-If `true`, the mongo shell will not attempt to validate the server certificates.
-**Should be `true` (the default) to use self-signed certificates generated by the Operator when there is no cert-manager.** Set to `false` when using cert-manager with a trusted organizational CA (for example, an existing `ClusterIssuer`).
+Controls whether invalid TLS certificates are accepted. If `true` (the default):
+
+* `mongod` and `mongos` don't check that the cluster CA signed the certificates that clients present. See [Connect with a client certificate](TLS.md#connect-with-a-client-certificate).
+* With `crVersion` 1.24.0 or later, the Operator, the backup agent and [PCSM](clustersync.md) don't check the MongoDB server certificate. The backup agent connection string includes `tlsInsecure=true`, and the Operator uses the same string during a physical restore. With an earlier `crVersion`, they don't check the server certificate, whatever the option says.
+
+!!! warning "Deprecated default"
+
+    By default, the Operator sets up the cluster to accept invalid certificates. This default behavior is deprecated. Starting with version 1.27.0, the Operator won't accept invalid certificates by default.
+
+Keep the option `true` if your cluster uses any of the following setups. The certificates that the Operator issues, itself or through cert-manager, don't include the hostnames if they use:
+
+* External nodes, set in [`replsets.externalNodes`](#replsetsexternalnodeshost). These are members that run outside the cluster, for example on another site.
+* A [`clusterServiceDNSMode`](#clusterservicednsmode) other than `Internal`. With `ServiceMesh`, the Operator connects to the Pods by names in the form `<pod-name>.<namespace>.<cluster-DNS-suffix>`. With `External`, it connects to exposed replica set members by their external IP addresses or hostnames.
+* Host overrides, set in [`replsets.replsetOverrides.MEMBER-NAME.host`](#replsetsreplsetoverridesmember-namehost).
+
+To use `false` with these setups, [generate your own certificates](tls-manual.md) that include these hostnames.
+
+Set the option to `false` when both of these are true:
+
+* The certificates include every hostname that clients, the Operator and the backup agent use to connect.
+* The `ca.crt` key of the `<cluster-name>-ssl` Secret holds the CA that signed the server certificate.
+
+If a check fails, the Operator cannot reconcile the cluster and backups fail. The Operator log and the backup agent log report `tls: failed to verify certificate`.
+
+On a sharded cluster that uses `SmartUpdate`, the Operator restarts `mongos` before the other components when this option is `false` and `mongos` is still running a certificate that does not include a hostname the Operator needs. This happens, for example, right after you enable Service per Pod.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -451,7 +476,7 @@ The Version Service URL used to check versions compatibility for upgrade.
 
 ### `upgradeOptions.apply`
 
-Specifies how [updates are processed](update-db.md) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb60recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
+Specifies how [updates are processed](update-db.md) by the Operator. `Never` or `Disabled` will completely disable automatic upgrades, otherwise it can be set to `Latest` or `Recommended` or to a specific version :material-code-string: stringof Percona Server for MongoDB (e.g. `{{ mongodb70recommended }}`) that is wished to be version-locked (so that the user can control the version running, but use automatic upgrades to move between them).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -513,11 +538,19 @@ A secret with TLS certificate generated for *external* communications. When gene
 
 ### `secrets.sslInternal`
 
-A secret with TLS certificate generated for *internal* communications. When generated by the Operator, the name defaults to `<cluster-name>-sslInternal`. See [Transport Layer Security (TLS)](TLS.md) for details.
+A secret with TLS certificate generated for *internal* communications. When generated by the Operator, the name defaults to `<cluster-name>-ssl-internal`. See [Transport Layer Security (TLS)](TLS.md) for details.
 
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-custom-ssl-internal` |
+
+### `secrets.sslPBM`
+
+A Secret with the client TLS certificate that the Operator and the backup agents present when they connect to the database. The Secret holds the `tls.crt` and `tls.key` keys. The name defaults to `<cluster-name>-pbm`. The Operator creates this certificate when TLS and backups are enabled and `crVersion` is 1.24.0 or later, unless you provide your own external certificate in `secrets.ssl`. With cert-manager, the `Certificate` is always named `<cluster-name>-pbm`. This option sets only the Secret name. Available starting with version 1.24.0. See [Transport Layer Security (TLS)](TLS.md) for how the certificates work together.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `my-cluster-name-pbm` |
 
 ### `secrets.encryptionKey`
 
@@ -616,6 +649,8 @@ authentication. If this value is set, the Operator uses the provided token to au
 
 The replsets section controls the MongoDB Replica Set.
 
+NOTE: Replsets create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the Replset configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.
+
 ### `replsets.name`
 
 The name of the [MongoDB Replica Set  :octicons-link-external-16:](https://docs.mongodb.com/manual/replication/).
@@ -687,6 +722,14 @@ Use if you need to [override the replica set members FQDNs with custom host name
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | `my-cluster-name-rs0-0.example.net:27017` |
+
+### `replsets.replsetOverrides.MEMBER-NAME.horizons.HORIZON-NAME`
+
+DNS name for one [split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) entry on this Pod. `HORIZON-NAME` is the horizon key, such as `external`. The value may include a port number. The certificate lists the DNS name without the port. Starting with version 1.24.0, the Operator adds this name to the TLS certificates. If the same key is set in `splitHorizons`, this value replaces it.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `rs0-0.example.com` |
 
 ### `replsets.replsetOverrides.MEMBER-NAME.priority`
 
@@ -896,6 +939,8 @@ The ratio used to compute the [storage.wiredTiger.engineConfig.cacheSizeGB optio
 | ----------- | ---------- |
 | :material-decimal: float       | `0.5`      |
 
+The Operator sets the cache size to `(memory limit − 1 GiB) × ratio`, with a minimum of 0.25 GB. Without a memory limit, the Operator doesn't set the cache size, and `mongod` sizes it from the memory of the node. See [How the Operator sizes the cache](debug-oom.md#how-the-operator-sizes-the-cache).
+
 ### `replsets.storage.wiredTiger.engineConfig.directoryForIndexes`
 
 Sets the [storage.wiredTiger.engineConfig.directoryForIndexes option  :octicons-link-external-16:](https://www.mongodb.com/docs/manual/reference/configuration-options/#mongodb-setting-storage.wiredTiger.engineConfig.directoryForIndexes) for the Replica Set nodes.
@@ -935,6 +980,8 @@ The ratio used to compute the [storage.engine.inMemory.inMemorySizeGb option  :o
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-decimal: float       |  `0.9`     |
+
+The in-memory size is `memory limit × ratio`. Unlike the WiredTiger cache, it has no 1 GiB subtracted.
 
 ### `replsets.livenessProbe.failureThreshold`
 
@@ -1146,7 +1193,7 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 
 ### `replsets.sidecarPVCs`
 
-[Persistent Volume Claim  :octicons-link-external-16:](https://v1-20.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
+[Persistent Volume Claim  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for the [custom sidecar container](sidecar.md) volume for Replica Set Pods.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1170,7 +1217,7 @@ The [Kubernetes Pod distribution budget  :octicons-link-external-16:](https://ku
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -1178,7 +1225,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 
 ### `replsets.splitHorizons.REPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster.
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for replica set Pods of the exposed cluster. Starting with version 1.24.0, the Operator adds this name to the TLS certificates when you set or change it.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2008,7 +2055,7 @@ The value must be `1`. Has no effect unless
 
 Per-replica-set override for the `mongot` PVC size. Fully replaces the
 cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage)
-value for this replica set or shard.
+value for this replica set or shard. Starting with version 1.24.0, the Operator sets this option when it [grows the search PVC automatically](scaling-storage-resize.md#search-volumes).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2366,7 +2413,7 @@ The same image applies to every `mongot` pod in the cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `percona/percona-server-mongodb-mongot:1.70.1-1` |
+| :material-code-string: string     | `percona/percona-search-mongodb:1.70.1-1` |
 
 ### `search.imagePullPolicy`
 
@@ -2399,7 +2446,7 @@ compatibility, but every effective value must equal `1`.
 ### `search.storage.persistentVolumeClaim.resources.requests.storage`
 
 The [Kubernetes Persistent Volume :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](search-overview.md#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size. Starting with version 1.24.0, you can [increase this size](scaling-storage-resize.md#resize-storage-yourself) on a running cluster.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -2591,6 +2638,9 @@ Number of seconds after which the readiness probe times out.
 The `sharding` section in the deploy/cr.yaml file contains configuration
 options for Percona Server for MondoDB [sharding](sharding.md).
 
+NOTE: sharding.configsvrReplSet create Kubernetes StatefulSets, and certain fields, such as spec.volumeClaimTemplates, are immutable after creation. Any subsequent changes to these fields in the sharding.configsvrReplSet configuration will not be applied to the existing StatefulSets. Such changes may require manual intervention, depending on the field being modified.
+
+
 ### `sharding.enabled`
 
 Enables or disables [Percona Server for MondoDB sharding  :octicons-link-external-16:](https://docs.mongodb.com/manual/sharding/).
@@ -2695,6 +2745,14 @@ Custom configuration options for Config Servers. Please refer to the [official m
 | Value type  | Example    |
 | ----------- | ---------- |
 | :material-code-string: string     | <pre>&#124;<br>operationProfiling:<br>  mode: slowOp<br>systemLog:<br>  verbosity: 1</pre> |
+
+### `sharding.configsvrReplSet.priorityClassName`
+
+The [Kubernetes Pod priority class  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass) for Config Server Pods.
+
+| Value type  | Example    |
+| ----------- | ---------- |
+| :material-code-string: string     | `high-priority` |
 
 ### `sharding.configsvrReplSet.env.name`
 
@@ -2905,7 +2963,9 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 | :material-code-string: string     | `/psmdb-some-name-rs0` |
 
 
-### `sharding.configsvrReplSet.limits.cpu`
+<a name="shardingconfigsvrreplsetlimitscpu"></a>
+
+### `sharding.configsvrReplSet.resources.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -2913,7 +2973,9 @@ The path on the NFS server that will be provided as a remote filesystem to the [
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.configsvrReplSet.limits.memory`
+<a name="shardingconfigsvrreplsetlimitsmemory"></a>
+
+### `sharding.configsvrReplSet.resources.limits.memory`
 
 [Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -2929,7 +2991,9 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.configsvrReplSet.requests.memory`
+<a name="shardingconfigsvrreplsetrequestsmemory"></a>
+
+### `sharding.configsvrReplSet.resources.requests.memory`
 
 The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for Config Server container.
 
@@ -3123,7 +3187,7 @@ Hostnames for [Kubernetes host aliases  :octicons-link-external-16:](https://kub
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external`
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3131,7 +3195,7 @@ External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horiz
 
 ### `sharding.configsvrReplSet.splitHorizons.CFGREPLICASET-POD-NAME.external-2`
 
-External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster.
+External URI for [Split-horizon](expose.md#exposing-replica-set-with-split-horizon-dns) for Config Server replica set Pods of the exposed cluster. The Operator does not add this name to TLS certificates.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -3465,7 +3529,9 @@ Name of the [custom sidecar container](sidecar.md) for mongos Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `rs-sidecar-1` |
 
-### `sharding.mongos.limits.cpu`
+<a name="shardingmongoslimitscpu"></a>
+
+### `sharding.mongos.resources.limits.cpu`
 
 [Kubernetes CPU limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
@@ -3473,7 +3539,9 @@ Name of the [custom sidecar container](sidecar.md) for mongos Pods.
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.mongos.limits.memory`
+<a name="shardingmongoslimitsmemory"></a>
+
+### `sharding.mongos.resources.limits.memory`
 
 [Kubernetes Memory limit  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
@@ -3489,7 +3557,9 @@ The [Kubernetes CPU requests  :octicons-link-external-16:](https://kubernetes.io
 | ----------- | ---------- |
 | :material-code-string: string     | `300m`     |
 
-### `sharding.mongos.requests.memory`
+<a name="shardingmongosrequestsmemory"></a>
+
+### `sharding.mongos.resources.requests.memory`
 
 The [Kubernetes Memory requests  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) for mongos container.
 
@@ -3659,7 +3729,7 @@ The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernet
 
 ### `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage`
 
-The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize mongos log storage](scaling-storage-resize.md#resize-mongos-log-storage) to change it.
+The [Kubernetes Persistent Volume  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize storage yourself](scaling-storage-resize.md#resize-storage-yourself) to change it.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4246,7 +4316,12 @@ Defines the time to increase the wait time after each retry. For example, with t
 
 ### `backup.storages.STORAGE-NAME.azure.credentialsSecret`
 
-The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It should contain `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY` |
+The [Kubernetes secret  :octicons-link-external-16:](https://kubernetes.io/docs/concepts/configuration/secret/) for backups. It must contain these keys:
+
+* `AZURE_STORAGE_ACCOUNT_NAME` and `AZURE_STORAGE_ACCOUNT_KEY`, or
+* `AZURE_STORAGE_CONNECTION_STRING` (available starting with version 1.24.0). 
+  
+If the Secret has a connection string, the Operator uses it and ignores the other two keys. See [Microsoft Azure Blob storage](backups-storage-azure.md).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4550,7 +4625,7 @@ Number of minutes between the uploads of oplogs.
 
 ### `backup.pitr.compressionType`
 
-The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups).
+The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4558,7 +4633,7 @@ The point-in-time-recovery chunks compression format, [can be gzip, snappy, lz4,
 
 ### `backup.pitr.compressionLevel`
 
-The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/point-in-time-recovery.html#incremental-backups)).
+The point-in-time-recovery chunks compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/features/point-in-time-recovery.html#compressed-oplog-slices)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4662,7 +4737,7 @@ Enables or disables this exact backup.
 
 ### `backup.tasks.schedule`
 
-The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron).
+The scheduled time to make a backup, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron). The Operator runs the schedule itself. Starting with version 1.24.0, it can create one catch-up backup after a restart if it missed a scheduled time. See [If the Operator misses a scheduled backup](backups-scheduled.md#if-the-operator-misses-a-scheduled-backup) for the conditions and exceptions.
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4712,7 +4787,7 @@ The name of the S3-compatible storage for backups, configured in the storages su
 
 ### `backup.tasks.compressionType`
 
-The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup).
+The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or none  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#configure-backup-compression).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4720,7 +4795,7 @@ The backup compression format, [can be gzip, snappy, lz4, pgzip, zstd, s2, or no
 
 ### `backup.tasks.compressionLevel`
 
-The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/running.html#starting-a-backup)).
+The backup compression level ([higher values result in better but slower compression  :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/usage/compression.html#compression-level-setup)).
 
 | Value type  | Example    |
 | ----------- | ---------- |
@@ -4888,11 +4963,11 @@ References a ConfigMap or a Secret containing additional logrotate configuration
 
 ### `logcollector.logrotate.schedule`
 
-Cron expression for the logrotate schedule (default: `0 0 0 * * *`).
+The scheduled time to rotate logs, specified in the [crontab format  :octicons-link-external-16:](https://en.wikipedia.org/wiki/Cron). The default is `0 0 * * *` (midnight).
 
 | Value type  | Example    |
 | ----------- | ---------- |
-| :material-code-string: string     | `"0 0 0 * * *"` |
+| :material-code-string: string     | `0 0 * * *` |
 
 ### `logcollector.logrotate.livenessProbe`
 

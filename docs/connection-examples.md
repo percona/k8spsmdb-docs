@@ -136,7 +136,7 @@ Use a [dedicated application user](app-credentials.md) rather than the database 
 
 ## Retries and connection pooling
 
-MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example [Node.js](https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/), [Python](https://pymongo.readthedocs.io/en/stable/faq.html#connection-pooling), [Go](https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/)) for options like connection timeouts and retry logic.
+MongoDB drivers support automatic retries and connection pooling. For replica sets, the driver can reconnect and fail over if the primary changes. See your driver’s documentation (for example [Node.js](https://www.mongodb.com/docs/drivers/node/current/fundamentals/connection/), [Python](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/connect/connection-options/connection-pools/), [Go](https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/)) for options like connection timeouts and retry logic.
 
 ## Next steps
 

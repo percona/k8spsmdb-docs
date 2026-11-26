@@ -72,7 +72,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 
 ## Deprecation, Rename and Removal
 
-* The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](../scaling-storage-resize.md#storage-resizing-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
+* The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](../scaling-storage-resize.md#resize-storage-yourself). The default value of this option is `false`, which means that the automated scaling is turned off by default.
 
 * A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide a unified experience with other Percona Operators:
 

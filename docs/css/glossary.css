@@ -1,0 +1,15 @@
+/* Links to the glossary. The material.extensions.preview extension marks them
+   with data-preview, and hovering them shows the glossary entry. The style
+   sets them apart from links to other pages. */
+.md-typeset a[data-preview] {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+
+.md-typeset a[data-preview]:hover,
+.md-typeset a[data-preview]:focus {
+  color: var(--md-accent-fg-color);
+}
