@@ -8,7 +8,7 @@ This page describes known limitations of Percona Operator for MongoDB. Understan
 
 Starting with Operator version [1.22.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.22.0.md), the Operator image is based on [Red Hat Universal Base Image (UBI) 10 :octicons-link-external-16:](https://catalog.redhat.com/software/base-images). RHEL 10 / UBI 10 requires the **x86-64-v3** CPU microarchitecture on `amd64` hosts. That level includes AVX2, BMI1, BMI2, and FMA (roughly Intel Haswell 2013 or newer, or AMD Excavator 2015 or newer).
 
-This requirement is stricter than the [AVX requirement for MongoDB 5.0 and later :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/install/system-requirements.html). Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.
+This requirement is stricter than the [AVX requirement for MongoDB 5.0 and later :octicons-link-external-16:](https://docs.percona.com/percona-server-for-mongodb/8.0/system-requirements.html). Older hosts such as Sandy Bridge-class CPUs may meet the MongoDB AVX requirement but still fail with UBI 10.
 
 ## Backups and restores
 

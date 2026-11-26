@@ -54,7 +54,7 @@ You can set the `setFCV` flag to `true` simultaneously with the `apply` flag but
 
 ## Downgrades
 
-When making downgrades (e.g. changing version from 7.0 to 6.0), make
+When making downgrades (e.g. changing version from 8.0 to 7.0), make
 sure to remove incompatible features that are persisted and/or update
 incompatible configuration settings. Compatibility issues between major
 MongoDB versions can be found in

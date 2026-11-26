@@ -21,7 +21,7 @@ Here is what the Operator brings to your infrastructure:
 
 Protect your data with Percona Backup for MongoDB, which runs as a sidecar in your database Pods. The [Backup and restore](backups.md) overview covers types, storages, restores, and point-in-time recovery. When you are ready to set things up, follow [Configure backups](backups-configure.md).
 
-* **Scheduled and on-demand backups** — [Run backups on a schedule](backups-scheduled.md) or [create one when you need it](backups-ondemand.md).
+* **Scheduled and on-demand backups** — [Run backups on a schedule](backups-scheduled.md) or [create one when you need it](backups-ondemand.md). If a running backup gets in the way of maintenance or was started with the wrong settings, [cancel it](backups-cancel.md) instead of waiting for it to finish.
 * **Logical, physical, incremental, and PVC snapshots** — See [backup types](backups.md#backup-types) to pick the right one.
 * **Point-in-time recovery** — Roll back the database to a specific time.
 * **Restore** — [Restore on the same cluster or a new cluster](backups-restore.md).
@@ -56,7 +56,7 @@ Gain visibility into your database and cluster:
 
 ## Understand how it works
 
-The [How the Operator works](how-it-works.md) and [Design and architecture](architecture.md) pages explain the controller model and the components it manages.
+The [Design and architecture](architecture.md) pages explain the controller model, the components the Operator manages, and what stays with you.
 
 ## Next steps
 

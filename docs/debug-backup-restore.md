@@ -126,6 +126,8 @@ kubectl logs pod/my-cluster-name-rs0-2 -c backup-agent -n $NAMESPACE
 
 These logs show PBM backup execution, including storage uploads and any errors that occurred.
 
+Starting with version 1.24.0, the backup agent checks the MongoDB server certificate when [`tls.allowInvalidCertificates`](operator.md#tlsallowinvalidcertificates) is `false`. If the log reports `tls: failed to verify certificate`, the certificate is untrusted or the hostname does not match. Fix the certificate, or set the option back to `true`. See [Turn on server certificate checks](TLS.md#turn-on-server-certificate-checks).
+
 You can also run PBM diagnostics inside the container. See [Exec into the container](debug-shell.md) and the [PBM troubleshooting guide :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html).
 
 ### Backups or restores fail with an access error with temporary S3 credentials
@@ -224,6 +226,41 @@ kubectl exec -it <pod-name> -c mongod -n $NAMESPACE -- ls -la /data/db/pbm-resto
 ```
 
 PBM keeps only the latest restore logs because it cleans up the data directory during the process.
+
+### All Pods terminate when a physical or snapshot restore starts
+
+Starting with Operator 1.24.0, a physical or PVC snapshot restore deletes the replica set and config server replica set Pods together, after it stops the `mongos` and arbiter Pods. This is expected, and you don't need to take any action. See [Downtime to expect](backups-restore.md#downtime-to-expect).
+
+To watch the restore, run:
+
+```bash
+kubectl get psmdb-restore -n $NAMESPACE
+```
+
+### Restore stays in the `waiting` state
+
+A physical or PVC snapshot restore can stay in the `waiting` state while `status.error` remains empty. This happens when at least one replica set member is not ready, for example because its Pod can't be scheduled. The Operator has no timeout for this wait. If only one member is down, the Operator has already stopped the healthy members.
+
+The Operator log repeats `Waiting for statefulsets to be ready before restore` or `Waiting for pbm-agent.` while it waits.
+
+To recover, bring the missing member back:
+
+1. Check the Operator log for the waiting message:
+
+    ```bash
+    kubectl logs deploy/<operator-deployment-name> -n $NAMESPACE
+    ```
+
+2. Find the Pods that are not ready and check why:
+
+    ```bash
+    kubectl get pods -n $NAMESPACE
+    kubectl describe pod <pod-name> -n $NAMESPACE
+    ```
+
+3. Fix the cause, for example free up resources or restore the node the Pod needs.
+
+The restore continues without further action once all members are ready.
 
 ### If a physical restore fails
 

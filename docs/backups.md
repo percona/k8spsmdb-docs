@@ -39,7 +39,7 @@ The Operator does not copy data itself. It writes a document into the Percona Ba
 
     A `pbm-agent` needs access to `mongod` binaries, so the Operator prepares the cluster first:
 
-    1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar (rolling restart), and starts the restore with the PBM CLI.
+    1. It terminates `mongos` Pods (sharded clusters) and arbiter nodes, moves PBM binaries into the `mongod` container, removes the PBM sidecar from the StatefulSet, and starts the restore with the PBM CLI. Starting with 1.24.0, the Operator skips Smart Update and deletes the replica set Pods together.
     2. The agent inside the `mongod` container wipes `dbPath`, downloads backup files, copies them into the data directory, and applies oplog from the snapshot for consistency.
     3. PBM restarts `mongod` as it moves through restore phases.
     4. After a successful restore, the Operator recreates the StatefulSet so PBM runs as a sidecar again, then restarts database, arbiter, and `mongos` Pods.
@@ -155,7 +155,11 @@ See [Known limitations](limitations.md#backups-and-restores) for the full list. 
 
 ## Backup lifecycle
 
-Each backup object has the `delete-backup` finalizer, so deleting the object also removes the backup files from storage. Control how many backups to keep with [backup.tasks.retention](operator.md#backuptasksretentioncount). See [Configure retention policy](backups-delete.md#configure-backup-retention).
+Starting with version 1.24.0, you can [cancel a backup](backups-cancel.md) while it's still running. Deleting a running Backup object cancels the backup first.
+
+To remove a finished backup, delete its Backup object. For a `ready` or canceled backup, the `delete-backup` finalizer also removes the backup files from storage. For a failed backup, the Operator deletes only the Backup object. See [Clean up a canceled backup](backups-cancel.md#clean-up-a-canceled-backup). 
+
+To have the Operator delete old backups for you, set how many to keep with [backup.tasks.retention](operator.md#backuptasksretentioncount). See [Configure retention policy](backups-delete.md#configure-backup-retention).
 
 ## Next steps
 

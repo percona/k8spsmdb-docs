@@ -99,7 +99,7 @@ Common fields:
 - `status.backupVersion` / `status.backupImage` – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs `spec.backup.image`. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With [automatic upgrades](update-minor-automatic.md), the Operator sets `status.backupVersion` to the target version as soon as it starts the upgrade. `status.backupImage` updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished
 - `status.conditions` – detailed condition list with reason and message
 - `status.search` – vector search (`mongot`) readiness per replica set or shard. Available when search is enabled.
-- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. See [Automatic storage resizing](scaling-storage-resize.md#automatic-storage-resizing) for more information about this feature.
+- `status.storageAutoscaling` – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the `mongos` log PVCs and the search PVCs. See [Check the resize status](scaling-storage-resize.md#check-the-resize-status) for more information about this feature.
 - `status.vaultLastRequestedAt` – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when [`spec.vault.requestInterval`](operator.md#vaultrequestinterval) is set.
 
 ### Cluster state values
@@ -112,10 +112,22 @@ Common fields:
 | `initializing` | The Operator is creating or reconciling the cluster. |
 | `stopping` | The Operator is stopping or scaling down cluster components. |
 | `paused` | The cluster is paused. |
-| `ready` | The cluster is up and healthy. |
-| `error` | The Operator detected an error; check conditions and events. |
+| `ready` | The cluster is up and healthy. See [What `ready` means](#what-ready-means). |
+| `error` | The last reconcile failed. The reason is in `status.message` and in a condition with the reason `ErrorReconcile`. |
 
-When [vector search is enabled](operator.md#searchenabled), the cluster is not marked `ready` until every entry in `status.search` is also `ready`.
+### What `ready` means
+
+The cluster is `ready` only when all of the following are true:
+
+* Every Pod of every replica set, including the config server replica set, has all containers ready.
+* Every Pod is a member of its replica set, and the Operator can reach all of them.
+* In a sharded cluster, every `mongos` Pod is ready.
+* Every Pod runs the current revision of its StatefulSet, so no rollout is pending.
+* With backups enabled, every PBM agent reports that it is healthy and can reach the backup storage.
+* The cluster endpoint, `status.host`, is known. For a `LoadBalancer` Service, this means the cloud provider has assigned an address.
+* With [vector search enabled](operator.md#searchenabled), every entry in `status.search` is `ready`.
+
+A `ready` cluster goes back to `initializing` as soon as one of these conditions stops being true, for example after a container restart. If the cluster stays in `initializing`, see [Cluster stays in `initializing`](troubleshoot-operator.md#cluster-stays-in-initializing).
 
 ### Replica set and mongos status
 
@@ -296,10 +308,12 @@ Common fields:
 
 | Value | Meaning |
 | --- | --- |
-| `""` | Backup is created but not processed yet. |
+| `""` | Backup is created but not processed yet. You can still [cancel it](backups-cancel.md)|
 | `waiting` | Backup is queued or waiting for resources. |
-| `requested` | The Operator accepted the backup request. |
+| `requested` | The Operator sent the backup command to PBM, and PBM is preparing to start the backup. |
 | `running` | Backup is in progress. |
+| `canceling` | You [canceled the backup](backups-cancel.md), and the Operator is stopping it. |
+| `canceled` | The backup was canceled. You can't restore from it. |
 | `ready` | Backup completed successfully. |
 | `error` | Backup failed. |
 
@@ -387,7 +401,17 @@ Common fields:
 - `status.lagTimeSeconds` – replication lag in seconds
 - `status.error` – error details from PCSM or the Operator (for example, missing Secret or cluster busy)
 - `status.startedAt` – timestamp of the first time PCSM reported `running`
+- `status.size` – number of PCSM instances requested in `spec.size`
+- `status.readyReplicas` – number of ready PCSM Pods. A value lower than `status.size` means some requested instances are not ready; check `status.state`, `status.activeInstance`, and replication lag to assess whether replication is continuing.
+- `status.activeInstance` – name of the PCSM Pod that holds the lease and replicates. See [High availability in PCSM](clustersync.md#high-availability).
 - `status.conditions` – condition list with reason and message
+
+`kubectl get psmdb-clustersync` shows the main fields as columns:
+
+```{.text .no-copy}
+NAME              CLUSTER             MODE      STATE     LAG(S)   READY   ACTIVE                                  AGE
+my-cluster-sync   my-target-cluster   running   running   2        2       my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p   39m
+```
 
 ### ClusterSync mode values
 
@@ -423,6 +447,14 @@ Conditions show more detail about ClusterSync state changes in `status.condition
 | `Running` | `True` while `status.state` is `running`; otherwise `False` with reason such as `PCSMNotRunning`. |
 | `Finalized` | `True` once `status.state` is `finalized`. Remains set afterwards. |
 
+### Events
+
+When another PCSM instance becomes active, the Operator records a `PCSMFailover` event on the ClusterSync resource with the message `Active PCSM instance changed from "<old-pod>" to "<new-pod>"`. To see the events:
+
+```bash
+kubectl describe psmdb-clustersync <clustersync-name> -n <namespace>
+```
+
 ### Example status
 
 ```yaml
@@ -430,12 +462,15 @@ status:
   mode: running
   state: running
   lagTimeSeconds: 72
+  size: 2
+  readyReplicas: 2
+  activeInstance: my-cluster-sync-pcsm-6d9c7b8f5d-x2k8p
   startedAt: "2026-07-01T12:00:00Z"
   conditions:
     - type: Running
       status: "True"
-      reason: PCSMReplicating
-      message: PCSM is applying changes from source
+      reason: PCSMRunning
+      message: PCSM is replicating from source to target
 ```
 
 On failure:

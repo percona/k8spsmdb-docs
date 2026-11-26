@@ -1,7 +1,10 @@
 # MkDocs configuration
 # Used as base - look for .yml files with INHERIT
 site_name: Percona Operator for MongoDB
-site_description: Documentation
+site_description: >-
+  Percona Operator for MongoDB deploys and manages Percona Server for MongoDB
+  replica sets and sharded clusters on Kubernetes, with backups, scaling,
+  upgrades and monitoring.
 site_author: Percona LLC
 site_url: ""
 copyright: Percona LLC and/or its affiliates, &#169; 2009 - 2026
@@ -65,6 +68,7 @@ extra_css:
   - css/operators.css
   - css/rating.css
   - css/kapa.css
+  - css/glossary.css
 
 extra_javascript:
   - js/promptremover.js
@@ -97,6 +101,11 @@ markdown_extensions:
     alternate_style: true
   pymdownx.tasklist:
     custom_checkbox: true
+  # Show the glossary entry when a reader hovers a link to the glossary
+  material.extensions.preview:
+    targets:
+      include:
+        - glossary.md
   pymdownx.snippets:
       base_path: 
         - snippets
@@ -145,6 +154,15 @@ plugins:
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
   #    htmlproofer: {}
   section-index: {}
+  # llms.txt, llms-full.txt and a .md copy of every page, for AI agents.
+  # percona-llmstxt fills in the sections (from nav), base_url and the rest.
+  llmstxt:
+    full_output: llms-full.txt
+    markdown_description: >-
+      Each page below is also available as markdown. For the documentation of
+      all Percona products, see https://docs.percona.com/llms.txt.
+    sections: {}
+  percona-llmstxt: {}
   print-site:
     add_to_navigation: false
     print_page_title: 'Percona Operator for MongoDB documentation'
@@ -164,9 +182,6 @@ plugins:
     enabled: true
 
 extra: # Used in main.html template and can't be externalized
-  edit_page_text: '<i class="uil uil-pen"></i> <b>Edit this page</b>'
-  updated_text: '<i class="uil uil-refresh"></i> Page updated'
-  
   version:
     provider: mike
 
@@ -177,8 +192,13 @@ nav:
     - Welcome: index.md
     - Get help from Percona: get-help.md
     - About:
-       - how-it-works.md
-       - "Design and architecture": architecture.md
+       - Design and architecture:
+           - architecture.md
+           - "Who owns what": architecture-responsibilities.md
+           - "Operator responsibilities by area": operator-boundaries.md
+           - "How the Operator reacts to changes": architecture-reconciliation.md
+           - "Key workflows": architecture-workflows.md
+           - "Health checks and probes": architecture-probes.md
        - "Comparison with other solutions": compare.md
        - "Known limitations": limitations.md
 
@@ -234,6 +254,7 @@ nav:
     
     - Upgrade and version management:
         - update.md
+        - "How crVersion works": update-crversion.md
         - Upgrade CRD and the Operator:
             - update-operator.md
             - update-crd-manual.md
@@ -270,6 +291,7 @@ nav:
             - Make a backup:
                 - "Scheduled backup": backups-scheduled.md
                 - "On-demand backup": backups-ondemand.md
+                - "Cancel a running backup": backups-cancel.md
             - "Use PVC snapshots":
                 - backups-pvc-snapshots.md
                 - "Configure PVC snapshots": backups-pvc-setup.md
@@ -351,10 +373,13 @@ nav:
         - "Pause or resume the cluster": pause.md
     - Troubleshooting:
         - debug.md
-        - Troubleshoot the Operator installation issues: troubleshoot-operator.md
+        - "Troubleshoot the Operator": troubleshoot-operator.md
+        - "Troubleshoot Pod scheduling": debug-scheduling.md
+        - "Troubleshoot out-of-memory errors": debug-oom.md
         - "Exec into the container": debug-shell.md
         - "Check the logs": debug-logs.md
         - "Troubleshoot backups and restores": debug-backup-restore.md
+        - "Troubleshoot upgrades and crVersion": debug-upgrade.md
         - "Special debug images": debug-images.md
         - "Storage resizing": debug-storage.md
 
@@ -365,12 +390,15 @@ nav:
               - "Restore resource options": restore-options.md
               - "ClusterSync options": clustersync-options.md
           - "Custom resource statuses": cr-statuses.md
+          - "Services and ports": services.md
+          - "Objects the Operator creates": objects-created.md
           - "Operator API": api.md           
           - "Certified images":
                   - images.md
                   - "Retrieve certified images": image-query.md
           - "Versions compatibility": versions.md
           - "Frequently asked questions": faq.md
+          - "Glossary": glossary.md
           - telemetry.md
           - Legal:
               - "Copyright and licensing information": copyright.md
