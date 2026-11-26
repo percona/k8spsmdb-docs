@@ -168,6 +168,7 @@ Create the `PerconaServerMongoDBClusterSync` Custom Resource. Set `spec.clusterN
       clusterName: my-target-cluster
       image: percona/percona-clustersync-mongodb:{{clustersync}}
       mode: running
+      size: 1
       source:
         uri: mongodb://mongo1.example.com:27017,mongo2.example.com:27017,mongo3.example.com:27017/admin?replicaSet=rs0
         credentialsSecret: my-migration-source
@@ -186,6 +187,7 @@ Create the `PerconaServerMongoDBClusterSync` Custom Resource. Set `spec.clusterN
       clusterName: my-target-cluster
       image: percona/percona-clustersync-mongodb:{{clustersync}}
       mode: running
+      size: 1
       source:
         uri: mongodb://mongos.example.com:27017/admin
         credentialsSecret: my-migration-source
@@ -204,6 +206,7 @@ Create the `PerconaServerMongoDBClusterSync` Custom Resource. Set `spec.clusterN
       clusterName: my-target-cluster
       image: percona/percona-clustersync-mongodb:{{clustersync}}
       mode: running
+      size: 1
       source:
         uri: mongodb+srv://cluster0.abcde.mongodb.net/admin
         credentialsSecret: my-migration-source
@@ -239,7 +242,7 @@ kubectl get psmdb-clustersync my-migration -n $NAMESPACE
 `STATE` is `running` both while PCSM copies data and while it replicates changes. To see whether the initial copy is done, ask PCSM directly:
 
 ```bash
-kubectl exec deploy/my-migration-pcsm -n $NAMESPACE -- pcsm status
+kubectl exec -n $NAMESPACE $(kubectl get psmdb-clustersync my-migration -o jsonpath='{.status.activeInstance}') -- pcsm status
 ```
 
 The initial copy is done when `initialSync.completed` is `true`. After that, `LAG(S)` shows how far the target trails the source. The `info` field shows the current phase, for example `Replicating Changes`.
