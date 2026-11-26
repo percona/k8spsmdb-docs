@@ -176,10 +176,10 @@ The `TLSSecretsReady` condition stays `True`, so check `status.state` and `statu
 **Fix:** let the Operator generate new certificates under a new certificate authority (CA). All database Pods restart at once, so the database is unavailable for a few minutes. Clients need the new CA and client certificates afterwards.
 {.power-number}
 
-1. Delete the TLS Secrets, including the CA Secret that cert-manager created. The Operator can't reuse that CA Secret. Skip `<cluster-name>-pbm` if backups are disabled. If `spec.secrets.sslPBM` is set, replace `<cluster-name>-pbm` in the command with that Secret name:
+1. Delete the TLS Secrets, including the CA Secret that cert-manager created. The Operator can't reuse that CA Secret. Skip `<cluster-name>-pbm` if backups are disabled. If `spec.secrets.sslPBM` is set, replace `<cluster-name>-pbm` in the command with that Secret name. If the cluster used an Operator-managed `ClusterIssuer`, the CA Secret was in the cert-manager namespace and is already gone, so `<cluster-name>-ca-cert` doesn't exist:
 
     ```bash
-    kubectl delete secret <cluster-name>-ssl <cluster-name>-ssl-internal <cluster-name>-ca-cert <cluster-name>-pbm -n <namespace>
+    kubectl delete secret <cluster-name>-ssl <cluster-name>-ssl-internal <cluster-name>-ca-cert <cluster-name>-pbm -n <namespace> --ignore-not-found
     ```
 
 2. Make the Operator reconcile the cluster right away:

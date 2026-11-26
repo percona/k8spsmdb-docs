@@ -17,6 +17,21 @@ export CLUSTER_NAME=<cluster-name>
 export NAMESPACE=<namespace>
 ```
 
+## Before you start
+
+This procedure applies to clusters that get their certificates from the default issuer, a namespace-scoped `Issuer` that the Operator creates. Check which issuer the cluster uses:
+
+```bash
+kubectl get psmdb "${CLUSTER_NAME}" -n "${NAMESPACE}" -o jsonpath='{.spec.tls.issuerConf}'
+```
+
+The procedure applies if the output is empty, or if it has no `name` and its `kind` is `Issuer`. The Operator then keeps the certificate authority (CA) in the `${CLUSTER_NAME}-ca-cert` Secret in the cluster namespace. This Secret stays in place when you uninstall cert-manager, so you can renew the certificates under the same CA later.
+
+Don't follow this procedure for clusters with other issuers. Keep cert-manager installed for them:
+
+* `kind` is `ClusterIssuer` and there is no `name`. The Operator keeps the CA in the `${CLUSTER_NAME}-${NAMESPACE}-ca-cert` Secret in the cert-manager namespace. Uninstalling cert-manager deletes this namespace together with the CA, so you can't renew the certificates under the same CA.
+* `name` is set. The certificates come from [your own issuer](tls-cert-manager.md#use-an-existing-clusterissuer), and the CA belongs to your PKI. The Operator doesn't keep a CA Secret for this cluster.
+
 ## Stop the Operator from managing certificates
 
 Do this while cert-manager is still installed. Repeat it for every Percona Server for MongoDB cluster that uses cert-manager.
