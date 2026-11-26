@@ -6988,7 +6988,7 @@ window.addEventListener('afterprint', (event) => {
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1000">K8SPSMDB-1000</a>: Users who store backups on Azure Blob Storage can now use <a href="../operator.html#backupstoragesstorage-nameazureendpointurl">private endpoints</a></li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1055">K8SPSMDB-1055</a>: The <code>kubectl get psmdb-backup</code> command now shows <a href="../backups-pitr-restore.html#choose-the-target-time">latest restorable time</a> to make it easier to pick a point-in-time recovery target</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-491">K8SPSMDB-491</a>: It is now possible to specify the <a href="../operator.html#tlsissuerconfname">existing cert-manager issuer</a> which should be used by the Operator</li>
-<li><a href="https://jira.percona.com/browse/K8SPSMDB-733">K8SPSMDB-733</a>: It is now possible to <a href="../scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">resize Persistent Volume Claims</a> by patching the PerconaServerMongoDB custom resource: change  <code>persistentVolumeClaim.resources.requests.storage</code> and let the Operator do the scaling</li>
+<li><a href="https://jira.percona.com/browse/K8SPSMDB-733">K8SPSMDB-733</a>: It is now possible to <a href="../scaling-storage-resize.html#resize-storage-yourself">resize Persistent Volume Claims</a> by patching the PerconaServerMongoDB custom resource: change  <code>persistentVolumeClaim.resources.requests.storage</code> and let the Operator do the scaling</li>
 </ul>
 <h2 id="improvements">Improvements<a data-markdown-ignore class="headerlink" href="#improvements" title="Permanent link">¶</a></h2>
 <ul>
@@ -7050,7 +7050,7 @@ Operator also uses Percona Backup for MongoDB 2.4.1.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 7, 2026 06:31:18 UTC">September 7, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:

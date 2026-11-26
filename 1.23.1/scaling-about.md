@@ -22,7 +22,7 @@ Each data-bearing member gets its own persistent volume, defined in `replsets.vo
 
 Volume expansion is controlled by the `storageScaling` section of the Custom Resource:
 
-- `storageScaling.autoscaling` - lets the Operator grow the volumes when their usage crosses a threshold. It covers replica set, config server volumes and the volumes that store `mongos` logs. The Operator uses the same scaling settings for all of them. Automatic resizing of `mongos` logs is available starting with version 1.24.0.
+- `storageScaling.autoscaling` - lets the Operator grow the volumes when their usage crosses a threshold. Autoscaling covers replica set and config server volumes. Starting with version 1.24.0, it also covers the volumes that store `mongos` logs and search index data when they are enabled. The Operator uses the same scaling settings for all of them. See [Volumes and their size](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#volumes-and-their-size).
 - `storageScaling.enableVolumeScaling` - lets the Operator resize PVCs when you change the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec changes.
 - `storageScaling.enableExternalAutoscaling` - hands volume autoscaling to an external system such as the Kubernetes Vertical Pod Autoscaler. When enabled, the Operator skips its own autoscaling and resize operations.
 

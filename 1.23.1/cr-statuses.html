@@ -7319,7 +7319,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <li><code>status.backupVersion</code> / <code>status.backupImage</code> – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs <code>spec.backup.image</code>. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With <a href="update-minor-automatic.html">automatic upgrades</a>, the Operator sets <code>status.backupVersion</code> to the target version as soon as it starts the upgrade. <code>status.backupImage</code> updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished</li>
 <li><code>status.conditions</code> – detailed condition list with reason and message</li>
 <li><code>status.search</code> – vector search (<code>mongot</code>) readiness per replica set or shard. Available when search is enabled.</li>
-<li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the <code>mongos</code> log PVCs. See <a href="scaling-storage-resize.html#automatic-storage-resizing">Automatic storage resizing</a> for more information about this feature.</li>
+<li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the <code>mongos</code> log PVCs and the search PVCs. See <a href="scaling-storage-resize.html#check-the-resize-status">Check the resize status</a> for more information about this feature.</li>
 <li><code>status.vaultLastRequestedAt</code> – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when <a href="operator.html#vaultrequestinterval"><code>spec.vault.requestInterval</code></a> is set.</li>
 </ul>
 <h3 id="cluster-state-values">Cluster state values<a data-markdown-ignore class="headerlink" href="#cluster-state-values" title="Permanent link">¶</a></h3>
@@ -7852,7 +7852,7 @@ my-cluster-sync   my-target-cluster   running   running   2        2       my-cl
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 25, 2026 11:05:00 UTC">November 25, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:

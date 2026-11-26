@@ -67,7 +67,7 @@ Pause/resume: setting it to `true` gracefully stops the cluster, and setting it 
 
 ### `enableVolumeExpansion`
 
-Enables or disables [storage scaling / volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -95,7 +95,7 @@ Setting it to `true` instructs the Operator to run the cluster in unmanaged stat
 
 ### `storageScaling.enableVolumeScaling`
 
-Enables or disables [storage scaling / volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability) with Volume Expansion capability.
+Enables or disables [volume expansion](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself). The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -103,7 +103,7 @@ Enables or disables [storage scaling / volume expansion](https://docs.percona.co
 
 ### `storageScaling.enableExternalAutoscaling`
 
-Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Storage resizing with Volume Expansion capability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability)
+Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in [Use an external autoscaler](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#use-an-external-autoscaler)
 
 | Value type | Example |
 | ---------- | ------- |
@@ -111,9 +111,9 @@ Enables or disables the use of external volume autoscaler. When disabled, the Op
 
 ### `storageScaling.autoscaling.enabled`
 
-Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Automatic storage resizing](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
+Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in [Resize storage automatically](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-automatically).
 
-Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via `sharding.mongos.logs.persistentVolumeClaim`. All of them use the same `storageScaling.autoscaling` settings. See [Automatic resizing of mongos log PVCs](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs).
+Applies to all PVCs that the Operator resizes: database data and, starting with version 1.24.0, `mongos` logs and search index data. All of them use the same `storageScaling.autoscaling` settings. See [Volumes and their size](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#volumes-and-their-size).
 
 | Value type | Example |
 | ---------- | ------- |
@@ -121,7 +121,7 @@ Applies to replica set and config server PVCs and, starting with version 1.24.0,
 
 ### `storageScaling.autoscaling.triggerThresholdPercent`
 
-The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.
+The percentage of the storage usage that triggers automatic resizing. It applies to all PVCs that the Operator resizes. Minimum value is 50, maximum is 95. If you use [search](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html), set it below 90: Percona Search for MongoDB becomes read-only at about 90% disk usage.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -129,7 +129,7 @@ The percentage of the storage usage that triggers automatic resizing. It applies
 
 ### `storageScaling.autoscaling.growthStep`
 
-The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi
+The amount to increase the storage during automatic resizing. It applies to all PVCs that the Operator resizes. Default value is 2Gi
 
 | Value type | Example |
 | ---------- | ------- |
@@ -137,7 +137,7 @@ The amount to increase the storage during automatic resizing. It applies to data
 
 ### `storageScaling.autoscaling.maxSize`
 
-The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.
+The maximum size to which storage can be automatically resized. It applies to all PVCs that the Operator resizes.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -2019,7 +2019,7 @@ Per-replica-set override for the number of `mongot` pods for this replica set or
 
 ### `replsets.search.storage.persistentVolumeClaim.resources.requests.storage`
 
-Per-replica-set override for the `mongot` PVC size. Fully replaces the cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage) value for this replica set or shard.
+Per-replica-set override for the `mongot` PVC size. Fully replaces the cluster-wide [`search.storage`](#searchstoragepersistentvolumeclaimresourcesrequestsstorage) value for this replica set or shard. Starting with version 1.24.0, the Operator sets this option when it [grows the search PVC automatically](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#search-volumes).
 
 | Value type | Example |
 | ---------- | ------- |
@@ -2386,7 +2386,7 @@ Number of `mongot` pods per replica set or shard. Default: `1`. Per-replica-set 
 
 ### `search.storage.persistentVolumeClaim.resources.requests.storage`
 
-The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size.
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for `mongot` index data. Each `mongot` pod needs its own PVC, separate from the database storage. Refer to [Requirements](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/search-overview.html#availability-and-requirements) for guidance on estimating storage size search indexes based on your data set size. Starting with version 1.24.0, you can [increase this size](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself) on a running cluster.
 
 | Value type | Example |
 | ---------- | ------- |
@@ -3626,7 +3626,7 @@ The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/p
 
 ### `sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage`
 
-The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize mongos log storage](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-mongos-log-storage) to change it.
+The [Kubernetes Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) size for the PVC that stores mongos logs. Required when the `sharding.mongos.logs.persistentVolumeClaim` subsection is set. The Operator creates one PVC of this size per mongos Pod. See [Resize storage yourself](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself) to change it.
 
 | Value type | Example |
 | ---------- | ------- |

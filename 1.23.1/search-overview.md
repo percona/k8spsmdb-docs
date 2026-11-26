@@ -125,7 +125,7 @@ You can scrape metrics from the headless search Service (`<cluster>-<rs>-search`
 To use full-text and vector search with the Operator, you must meet the following requirements:
 
 1. **Percona Server for MongoDB 8.3 or later.** Percona Search for MongoDB is available only starting with MongoDB 8.3. You must explicitly specify [Percona Server for MongoDB 8.3 images](https://hub.docker.com/r/percona/percona-server-mongodb/tags?name=8.3) in the Custom Resource to use search capabilities.
-1. **Dedicated persistent storage for each Percona Search for MongoDB pod.** Each Percona Search for MongoDB needs its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2× the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB becomes read-only at about 90% disk usage. The default PVC size of `10Gi` is enough for small datasets; tune storage for larger workloads.
+1. **Dedicated persistent storage for each Percona Search for MongoDB pod.** Each Percona Search for MongoDB needs its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2× the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB becomes read-only at about 90% disk usage. The default PVC size of `10Gi` is enough for small datasets; tune storage for larger workloads. Starting with version 1.24.0, you can increase the size on a running cluster or let the Operator grow it automatically. See [Search volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#search-volumes).
 1. **Resource requirements**. The Operator follows upstream [resource requirements](https://www.mongodb.com/docs/vector-search/deployment/deployment-options/#resource-usage)
 1. **Kubernetes resources.** Default requests are 2 CPU and 2Gi memory per Percona Search for MongoDB pod. Size resources for your index and query load.
 
@@ -141,6 +141,7 @@ To use full-text and vector search with the Operator, you must meet the followin
 ## Limitations
 
 - **Single Percona Search for MongoDB pod per replica set or shard.** The search StatefulSet is limited to `size: 1`. Kubernetes `Service` ClusterIP load balancing is L4-only and cannot correctly distribute long-lived gRPC streams across multiple backends. Multi-replica Percona Search for MongoDB HA (which needs an L7 gRPC-aware load balancer) is postponed to a later release.
+- **Search storage can’t shrink.** You can increase the size of the search PVC, but not reduce it. See [Search volumes](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#search-volumes).
 - **No automated embedding.** Generating and managing embeddings through an external embedding API (for example automated / Voyage AI embedding) is not supported. You provide and store vector embeddings yourself.
 - **No migration from externally managed `mongot`.** Deployments that already run `mongot` outside the Operator are not imported. Manage them manually, or switch to Operator-managed Percona Search for MongoDB.
 - **Logical restores on sharded clusters with MongoDB 8.3 can leave the cluster broken.** This is a known PBM 2.15.0 limitation tracked in [PBM-1764](https://perconadev.atlassian.net/browse/PBM-1764) .

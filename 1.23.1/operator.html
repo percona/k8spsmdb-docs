@@ -20265,7 +20265,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="enablevolumeexpansion"><code>enableVolumeExpansion</code><a data-markdown-ignore class="headerlink" href="#enablevolumeexpansion" title="Permanent link">¶</a></h3>
-<p>Enables or disables <a href="scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">storage scaling / volume expansion</a> with Volume Expansion capability.</p>
+<p>Enables or disables <a href="scaling-storage-resize.html#resize-storage-yourself">volume expansion</a>. The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.</p>
 <table>
 <thead>
 <tr>
@@ -20317,7 +20317,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingenablevolumescaling"><code>storageScaling.enableVolumeScaling</code><a data-markdown-ignore class="headerlink" href="#storagescalingenablevolumescaling" title="Permanent link">¶</a></h3>
-<p>Enables or disables <a href="scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">storage scaling / volume expansion</a> with Volume Expansion capability.</p>
+<p>Enables or disables <a href="scaling-storage-resize.html#resize-storage-yourself">volume expansion</a>. The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.</p>
 <table>
 <thead>
 <tr>
@@ -20333,7 +20333,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingenableexternalautoscaling"><code>storageScaling.enableExternalAutoscaling</code><a data-markdown-ignore class="headerlink" href="#storagescalingenableexternalautoscaling" title="Permanent link">¶</a></h3>
-<p>Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in <a href="scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability</a></p>
+<p>Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in <a href="scaling-storage-resize.html#use-an-external-autoscaler">Use an external autoscaler</a></p>
 <table>
 <thead>
 <tr>
@@ -20349,8 +20349,8 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalingenabled"><code>storageScaling.autoscaling.enabled</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingenabled" title="Permanent link">¶</a></h3>
-<p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="scaling-storage-resize.html#automatic-storage-resizing">Automatic storage resizing</a>.</p>
-<p>Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via <code>sharding.mongos.logs.persistentVolumeClaim</code>. All of them use the same <code>storageScaling.autoscaling</code> settings. See <a href="scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs</a>.</p>
+<p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="scaling-storage-resize.html#resize-storage-automatically">Resize storage automatically</a>.</p>
+<p>Applies to all PVCs that the Operator resizes: database data and, starting with version 1.24.0, <code>mongos</code> logs and search index data. All of them use the same <code>storageScaling.autoscaling</code> settings. See <a href="scaling-storage-resize.html#volumes-and-their-size">Volumes and their size</a>.</p>
 <table>
 <thead>
 <tr>
@@ -20366,7 +20366,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalingtriggerthresholdpercent"><code>storageScaling.autoscaling.triggerThresholdPercent</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingtriggerthresholdpercent" title="Permanent link">¶</a></h3>
-<p>The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.</p>
+<p>The percentage of the storage usage that triggers automatic resizing. It applies to all PVCs that the Operator resizes. Minimum value is 50, maximum is 95. If you use <a href="search-overview.html">search</a>, set it below 90: Percona Search for MongoDB becomes read-only at about 90% disk usage.</p>
 <table>
 <thead>
 <tr>
@@ -20382,7 +20382,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalinggrowthstep"><code>storageScaling.autoscaling.growthStep</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalinggrowthstep" title="Permanent link">¶</a></h3>
-<p>The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi</p>
+<p>The amount to increase the storage during automatic resizing. It applies to all PVCs that the Operator resizes. Default value is 2Gi</p>
 <table>
 <thead>
 <tr>
@@ -20398,7 +20398,7 @@ window.addEventListener('afterprint', (event) => {
 </tbody>
 </table>
 <h3 id="storagescalingautoscalingmaxsize"><code>storageScaling.autoscaling.maxSize</code><a data-markdown-ignore class="headerlink" href="#storagescalingautoscalingmaxsize" title="Permanent link">¶</a></h3>
-<p>The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.</p>
+<p>The maximum size to which storage can be automatically resized. It applies to all PVCs that the Operator resizes.</p>
 <table>
 <thead>
 <tr>
@@ -24073,7 +24073,7 @@ The value must be <code>1</code>. Has no effect unless
 <h3 id="replsetssearchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>replsets.search.storage.persistentVolumeClaim.resources.requests.storage</code><a data-markdown-ignore class="headerlink" href="#replsetssearchstoragepersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
 <p>Per-replica-set override for the <code>mongot</code> PVC size. Fully replaces the
 cluster-wide <a href="#searchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>search.storage</code></a>
-value for this replica set or shard.</p>
+value for this replica set or shard. Starting with version 1.24.0, the Operator sets this option when it <a href="scaling-storage-resize.html#search-volumes">grows the search PVC automatically</a>.</p>
 <table>
 <thead>
 <tr>
@@ -24811,7 +24811,7 @@ compatibility, but every effective value must equal <code>1</code>.</p>
 </table>
 <h3 id="searchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>search.storage.persistentVolumeClaim.resources.requests.storage</code><a data-markdown-ignore class="headerlink" href="#searchstoragepersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
 <p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
-size for <code>mongot</code> index data. Each <code>mongot</code> pod needs its own PVC, separate from the database storage. Refer to <a href="search-overview.html#availability-and-requirements">Requirements</a> for guidance on estimating storage size search indexes based on your data set size.</p>
+size for <code>mongot</code> index data. Each <code>mongot</code> pod needs its own PVC, separate from the database storage. Refer to <a href="search-overview.html#availability-and-requirements">Requirements</a> for guidance on estimating storage size search indexes based on your data set size. Starting with version 1.24.0, you can <a href="scaling-storage-resize.html#resize-storage-yourself">increase this size</a> on a running cluster.</p>
 <table>
 <thead>
 <tr>
@@ -27295,7 +27295,7 @@ options for Percona Server for MondoDB <a href="sharding.html">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage"><code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code><a data-markdown-ignore class="headerlink" href="#shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
-<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> size for the PVC that stores mongos logs. Required when the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. The Operator creates one PVC of this size per mongos Pod. See <a href="scaling-storage-resize.html#resize-mongos-log-storage">Resize mongos log storage</a> to change it.</p>
+<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> size for the PVC that stores mongos logs. Required when the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. The Operator creates one PVC of this size per mongos Pod. See <a href="scaling-storage-resize.html#resize-storage-yourself">Resize storage yourself</a> to change it.</p>
 <table>
 <thead>
 <tr>
@@ -29830,7 +29830,7 @@ Percona Server for MongoDB backups.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:

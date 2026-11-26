@@ -6932,7 +6932,7 @@ window.addEventListener('afterprint', (event) => {
 <p>To view the collected <code>mongos</code> logs, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-mongos-0<span class="w"> </span>-c<span class="w"> </span>logs
 </code></pre></div>
-<p>Starting with version 1.24.0, the Operator can grow the <code>mongos</code> log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See <a href="scaling-storage-resize.html#automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs</a>. To resize them yourself, see <a href="scaling-storage-resize.html#resize-mongos-log-storage">Resize mongos log storage</a>.</p>
+<p>Starting with version 1.24.0, the Operator can grow the <code>mongos</code> log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See <a href="scaling-storage-resize.html#resize-storage-automatically">Resize storage automatically</a>. To resize them yourself, see <a href="scaling-storage-resize.html#resize-storage-yourself">Resize storage yourself</a>.</p>
 <h2 id="configure-log-collector">Configure log collector<a data-markdown-ignore class="headerlink" href="#configure-log-collector" title="Permanent link">¶</a></h2>
 <p>Cluster-level logging is enabled by default and is controlled with the <code>logcollector.enabled</code> key in the <code>deploy/cr.yaml</code> Custom Resource manifest.</p>
 <p>You can additionally configure Fluent Bit using the <code>logcollector.configuration</code> subsection in the <code>deploy/cr.yaml</code> Custom Resource manifest. This allows you to define custom filters or output plugins to suit your specific logging and monitoring needs.</p>
@@ -6951,7 +6951,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:

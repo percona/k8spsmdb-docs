@@ -73,7 +73,7 @@ Recent improvements in cross-site replication made it possible to [keep the repl
 
 ## Deprecation, Rename and Removal
 
-- The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability). The default value of this option is `false`, which means that the automated scaling is turned off by default.
+- The new `enableVolumeExpansion` Custom Resource option allows users to disable the [automated storage scaling with Volume Expansion capability](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself). The default value of this option is `false`, which means that the automated scaling is turned off by default.
 
 - A number of Service exposure Custom Resource options in the `replsets`, `sharding.configsvrReplSet`, and `sharding.mongos` subsections were renamed to provide a unified experience with other Percona Operators:
 

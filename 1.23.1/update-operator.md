@@ -85,6 +85,13 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 
    If TLS and backups are enabled and you provide your own external certificate in `secrets.ssl`, create the PBM client Secret **before** you set `crVersion` to `1.24.0`. Otherwise the Operator stops reconciling the cluster. See [Generate TLS certificates manually](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/tls-manual.html#generate-certificates) for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.
 
+1. Starting with version 1.24.0, automatic storage resizing also covers `mongos` log PVCs and search PVCs. For clusters that already have automatic resizing enabled:
+
+   - `mongos` log PVCs start when you upgrade the Operator to version 1.24.0 and set `crVersion` to `1.24.0`.
+   - Search PVCs start right after you upgrade the Operator to version 1.24.0, even if `crVersion` still has an older value.
+
+   If a PVC is already above the threshold, the Operator starts to resize it as soon as automatic resizing starts for it. Review the `storageScaling.autoscaling` settings before you upgrade the Operator. See [After the upgrade to 1.24.0](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#after-the-upgrade-to-1240).
+
 ## Update guides
 
 [Update manually](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-crd-manual.html) [Update via Helm](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-crd-helm.html) [Update via OLM (OpenShift)](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/update-crd-olm.html)

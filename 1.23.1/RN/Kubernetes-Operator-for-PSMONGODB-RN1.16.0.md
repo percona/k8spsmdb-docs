@@ -52,7 +52,7 @@ Also, TLS configuration is now enabled or disabled by a special `tls.mode` Custo
 - [K8SPSMDB-1000](https://jira.percona.com/browse/K8SPSMDB-1000): Users who store backups on Azure Blob Storage can now use [private endpoints](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#backupstoragesstorage-nameazureendpointurl)
 - [K8SPSMDB-1055](https://jira.percona.com/browse/K8SPSMDB-1055): The `kubectl get psmdb-backup` command now shows [latest restorable time](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/backups-pitr-restore.html#choose-the-target-time) to make it easier to pick a point-in-time recovery target
 - [K8SPSMDB-491](https://jira.percona.com/browse/K8SPSMDB-491): It is now possible to specify the [existing cert-manager issuer](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/operator.html#tlsissuerconfname) which should be used by the Operator
-- [K8SPSMDB-733](https://jira.percona.com/browse/K8SPSMDB-733): It is now possible to [resize Persistent Volume Claims](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#storage-resizing-with-volume-expansion-capability) by patching the PerconaServerMongoDB custom resource: change `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
+- [K8SPSMDB-733](https://jira.percona.com/browse/K8SPSMDB-733): It is now possible to [resize Persistent Volume Claims](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-yourself) by patching the PerconaServerMongoDB custom resource: change `persistentVolumeClaim.resources.requests.storage` and let the Operator do the scaling
 
 ## Improvements
 

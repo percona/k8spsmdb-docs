@@ -12016,7 +12016,7 @@ see <a href="#storage">Manage local storage</a>.</p>
 <p>Volume expansion is controlled by the <code>storageScaling</code> section of the Custom Resource:</p>
 <ul>
 <li><code>storageScaling.autoscaling</code> - lets the Operator grow the volumes when their usage
-  crosses a threshold. It covers replica set, config server volumes and the volumes that store <code>mongos</code> logs. The Operator uses the same scaling settings for all of them. Automatic resizing of <code>mongos</code> logs is available starting with version 1.24.0.</li>
+  crosses a threshold. Autoscaling covers replica set and config server volumes. Starting with version 1.24.0, it also covers the volumes that store <code>mongos</code> logs and search index data when they are enabled. The Operator uses the same scaling settings for all of them. See <a href="#scaling-storage-resize-volumes-and-their-size">Volumes and their size</a>.</li>
 <li><code>storageScaling.enableVolumeScaling</code> - lets the Operator resize PVCs when you change
   the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec
   changes.</li>
@@ -12442,7 +12442,9 @@ requirements:</p>
    its own PVC; volumes cannot be shared. Index data is typically about 0.25×–2×
    the source data size, with 2× headroom recommended for rebuilds. Percona Search for MongoDB 
    becomes read-only at about 90% disk usage. The default PVC size of <code>10Gi</code> is
-   enough for small datasets; tune storage for larger workloads.</li>
+   enough for small datasets; tune storage for larger workloads. Starting with
+   version 1.24.0, you can increase the size on a running cluster or let the
+   Operator grow it automatically. See <a href="#scaling-storage-resize-search-volumes">Search volumes</a>.</li>
 <li><strong>Resource requirements</strong>. The Operator follows upstream <a href="https://www.mongodb.com/docs/vector-search/deployment/deployment-options/#resource-usage">resource requirements <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a></li>
 <li><strong>Kubernetes resources.</strong> Default requests are 2 CPU and 2Gi memory per
    Percona Search for MongoDB pod. Size resources for your index and query load.</li>
@@ -12472,6 +12474,8 @@ requirements:</p>
   and cannot correctly distribute long-lived gRPC streams across multiple
   backends. Multi-replica Percona Search for MongoDB HA (which needs an L7 gRPC-aware load
   balancer) is postponed to a later release.</li>
+<li><strong>Search storage can’t shrink.</strong> You can increase the size of the search PVC,
+  but not reduce it. See <a href="#scaling-storage-resize-search-volumes">Search volumes</a>.</li>
 <li><strong>No automated embedding.</strong> Generating and managing embeddings through an
   external embedding API (for example automated / Voyage AI embedding) is not supported. You provide and store vector embeddings yourself.</li>
 <li><strong>No migration from externally managed <code>mongot</code>.</strong> Deployments that already
@@ -16240,6 +16244,14 @@ flowchart TB
 <li>
 <p>Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated <a href="#tls">PBM client certificate</a> instead of the external server certificate. Upgrading the Operator alone doesn’t change anything. The Operator creates the PBM certificate when you set <code>crVersion</code> to <code>1.24.0</code>, and the database Pods restart to mount it.</p>
 <p>If TLS and backups are enabled and you provide your own external certificate in <code>secrets.ssl</code>, create the PBM client Secret <strong>before</strong> you set <code>crVersion</code> to <code>1.24.0</code>. Otherwise the Operator stops reconciling the cluster. See <a href="#tls-manual-generate-certificates">Generate TLS certificates manually</a> for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.</p>
+</li>
+<li>
+<p>Starting with version 1.24.0, automatic storage resizing also covers <code>mongos</code> log PVCs and search PVCs. For clusters that already have automatic resizing enabled:</p>
+<ul>
+<li><code>mongos</code> log PVCs start when you upgrade the Operator to version 1.24.0 and set <code>crVersion</code> to <code>1.24.0</code>.</li>
+<li>Search PVCs start right after you upgrade the Operator to version 1.24.0, even if <code>crVersion</code> still has an older value.</li>
+</ul>
+<p>If a PVC is already above the threshold, the Operator starts to resize it as soon as automatic resizing starts for it. Review the <code>storageScaling.autoscaling</code> settings before you upgrade the Operator. See <a href="#scaling-storage-resize-after-the-upgrade-to-1240">After the upgrade to 1.24.0</a>.</p>
 </li>
 </ol>
 <h2 id="update-operator-update-guides">Update guides<a class="headerlink" href="#update-operator-update-guides" title="Permanent link">¶</a></h2>
@@ -23556,72 +23568,69 @@ set the same way, by its component label:</p>
         })
         </script>
         </head><body><h1 id="resize-storage">Resize storage<a class="headerlink" href="#scaling-storage-resize-resize-storage" title="Permanent link">¶</a></h1>
-<p>Kubernetes manages storage with the following components:</p>
+<p>The Operator stores the database data, and optionally <code>mongos</code> logs and search indexes, on PersistentVolumeClaims (PVCs). When a volume runs out of space, you can make it bigger without downtime.</p>
+<p>Resizing works the same way for every volume: the storage size in the Custom Resource goes up, and the Operator grows the PVCs to match. The size can go up in two ways:</p>
 <ul>
-<li>a PersistentVolume (PV) - a segment of
-storage supplied by the Kubernetes administrator,</li>
-<li>a PersistentVolumeClaim
-(PVC) - a request for storage from a user.</li>
+<li><a href="#scaling-storage-resize-resize-storage-yourself">You change it</a> in the Custom Resource.</li>
+<li><a href="#scaling-storage-resize-resize-storage-automatically">The Operator changes it</a> when a volume fills up to a threshold that you set.</li>
 </ul>
-<p>Starting with Kubernetes v1.11, you can increase the size of an existing PVC object (considered stable since Kubernetes v1.24).
-Note that you <strong>cannot</strong> shrink the size of an existing PVC object.</p>
-<p>Use storage scaling to keep up with growing data while keeping the cluster online. The Operator supports the following scaling options:</p>
-<ul>
-<li>automatic scaling - Starting with version 1.22.0, the Operator monitors storage usage for replica sets and config server Pods and scales the storage automatically. Starting with version 1.24.0, it also scales the PVCs that store <code>mongos</code> logs.</li>
-<li>storage resizing with Volume Expansion capability - Starting with version 1.16.0, instruct the Operator to scale the storage by updating the Custom Resource manifest</li>
-<li>manual scaling - scale the storage manually.</li>
-</ul>
-<p>You can also use an external autoscaler with the Operator. Enabling an external autoscaler disables the Operator’s internal logic for automatic storage resizing. Choose one method based on your environment and requirements; using both simultaneously is not supported.</p>
-<p>For either option, the volume type must support PVC expansion.
-To check if your storage supports the expansion capability, run the following command:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>&lt;storage<span class="w"> </span>class<span class="w"> </span>name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>AllowVolumeExpansion
+<p>Both ways use the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims">volume expansion <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> capability of Kubernetes. If your storage doesn’t support it, <a href="#scaling-storage-resize-resize-storage-without-volume-expansion">recreate the volumes</a> instead. You can also hand resizing to an <a href="#scaling-storage-resize-use-an-external-autoscaler">external autoscaler</a>.</p>
+<h2 id="scaling-storage-resize-before-you-start">Before you start<a class="headerlink" href="#scaling-storage-resize-before-you-start" title="Permanent link">¶</a></h2>
+<p>Check that the StorageClass of your volumes supports expansion:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>&lt;storage-class-name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>AllowVolumeExpansion
 </code></pre></div>
 <details class="example">
 <summary>Expected output</summary>
 <div class="no-copy highlight"><pre><span></span><code>AllowVolumeExpansion: true
 </code></pre></div>
 </details>
-<p>Find exact details about
-PVCs and the supported volume types in <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims">Kubernetes
-documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>.</p>
-<h2 id="scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing<a class="headerlink" href="#scaling-storage-resize-automatic-storage-resizing" title="Permanent link">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.22.0">1.22.0</a></p>
-</div>
-<p>The Operator can automatically resize Persistent Volume Claims (PVCs) for replica sets and config server Pods based on your configured thresholds. Starting with the Operator version 1.24.0, <code>mongos</code> log PVCs are also automatically resized using the same thresholds. </p>
-<p>The Operator monitors storage usage of all PVCs and when it exceeds the defined threshold, triggers resizing until the storage size reaches the maximum limit.</p>
-<p>This feature gives you:</p>
+<h2 id="scaling-storage-resize-volumes-and-their-size">Volumes and their size<a class="headerlink" href="#scaling-storage-resize-volumes-and-their-size" title="Permanent link">¶</a></h2>
+<p>Find your volume in the table to see where its size is set and since which Operator version each way of resizing works.</p>
+<table>
+<thead>
+<tr>
+<th>Volume</th>
+<th>PVC name</th>
+<th>Where you set the size</th>
+<th>Resize yourself</th>
+<th>Resize automatically</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database data of replica sets and the config server replica set</td>
+<td><code>mongod-data-&lt;statefulset-name&gt;-&lt;N&gt;</code></td>
+<td><code>replsets.volumeSpec</code>, <code>sharding.configsvrReplSet.volumeSpec</code>, <code>replsets.nonvoting.volumeSpec</code>, <code>replsets.hidden.volumeSpec</code></td>
+<td>1.16.0</td>
+<td>1.22.0</td>
+</tr>
+<tr>
+<td><code>mongos</code> logs</td>
+<td><code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;N&gt;</code></td>
+<td><code>sharding.mongos.logs.persistentVolumeClaim</code></td>
+<td>1.23.1</td>
+<td>1.24.0</td>
+</tr>
+<tr>
+<td>Search indexes</td>
+<td><code>mongot-data-&lt;cluster-name&gt;-&lt;replset-name&gt;-search-0</code></td>
+<td><code>search.storage</code>, or <code>replsets.search.storage</code> for one replica set or shard</td>
+<td>1.24.0</td>
+<td>1.24.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scaling-storage-resize-database-data-volumes">Database data volumes<a class="headerlink" href="#scaling-storage-resize-database-data-volumes" title="Permanent link">¶</a></h3>
+<p>Each replica set and member type has its own size. Within a replica set, volumes that share the same member-type size option grow together; ordinary, non-voting, and hidden members can have different sizes.</p>
+<h3 id="scaling-storage-resize-mongos-log-volumes"><code>mongos</code> log volumes<a class="headerlink" href="#scaling-storage-resize-mongos-log-volumes" title="Permanent link">¶</a></h3>
+<p>These volumes exist only if you configure them in the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. Otherwise the logs are on an <code>emptyDir</code> volume and there is nothing to resize. To set up the volumes, see <a href="#persistent-logging-for-mongos-pods">Persistent logging for <code>mongos</code> Pods</a>. One size applies to all <code>mongos</code> Pods, so when it changes, the log volumes of all <code>mongos</code> Pods grow. The database data volumes keep their size.</p>
+<h3 id="scaling-storage-resize-search-volumes">Search volumes<a class="headerlink" href="#scaling-storage-resize-search-volumes" title="Permanent link">¶</a></h3>
+<p>When <a href="#search-overview">search</a> is enabled, each replica set or shard has one search volume. You can set its size in two places:</p>
 <ul>
-<li>fewer outages from full disks because storage grows with demand</li>
-<li>less guesswork on capacity planning and fewer last-minute fixes</li>
-<li>lower operational effort for developers and platform engineers</li>
-<li>cost control by expanding only when needed</li>
-<li>a more predictable environment so teams can focus on delivery</li>
+<li><code>search.storage</code> sets the default size for all replica sets and shards.</li>
+<li><code>replsets.&lt;replset-name&gt;.search.storage</code> sets the size for one replica set or shard. It replaces the default for this replica set.</li>
 </ul>
-<p class="power-number">To enable automatic storage resizing, edit the <code>deploy/cr.yaml</code> Custom Resource manifest as follows:</p>
-<ol>
-<li>
-<p>Make sure each MongoDB container has a storage size set.</p>
-<p>Example for a replica set container:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">replsets</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
-<span class="w">  </span><span class="nt">volumeSpec</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3Gi</span>
-</code></pre></div>
-</li>
-<li>
-<p>Configure autoscaling thresholds in the <code>storageScaling</code> subsection:</p>
-<ul>
-<li><code>enableVolumeScaling</code> - set to <code>true</code></li>
-<li><code>autoscaling.enabled</code> - set to <code>true</code></li>
-<li><code>autoscaling.triggerThresholdPercent</code> - specify the usage percentage. When the usage exceeds this threshold, this triggers autoscaling</li>
-<li><code>autoscaling.growthStep</code> - specify how much to increase the storage on</li>
-<li><code>autoscaling.maxSize</code> - specify the upper limit for storage growth. When this limit is reached, scaling is no longer possible.</li>
-</ul>
-<p>Example configuration:</p>
+<p>In this example, <code>rs0</code> uses the default size of 10Gi and <code>rs1</code> has its own size of 20Gi. Both volumes can grow automatically up to 50Gi:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -23629,22 +23638,224 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">triggerThresholdPercent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 <span class="w">      </span><span class="nt">growthStep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
-<span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">"10Gi"</span>
+<span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50Gi</span>
+<span class="w">  </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percona/percona-search-mongodb:1.70.5-3</span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs1</span>
+<span class="w">    </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20Gi</span>
 </code></pre></div>
+<p>When the Operator <a href="#scaling-storage-resize-resize-storage-automatically">resizes a search volume automatically</a>, it saves the new size as the replica set’s own size. If <code>rs0</code> grows to 12Gi, the Operator adds <code>replsets.rs0.search.storage</code> with 12Gi. From then on, a change to the default no longer applies to <code>rs0</code>.</p>
+<p>You can’t shrink search volumes.</p>
+<h2 id="scaling-storage-resize-resize-storage-yourself">Resize storage yourself<a class="headerlink" href="#scaling-storage-resize-resize-storage-yourself" title="Permanent link">¶</a></h2>
+<ol>
+<li>
+<p>In the <code>deploy/cr.yaml</code> file, turn on volume expansion and set the new size for your volume. Volume expansion is turned off by default. See <a href="#scaling-storage-resize-volumes-and-their-size">Volumes and their size</a> for the option names.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="scaling-storage-resize-__tabbed_1_1" name="scaling-storage-resize-__tabbed_1" type="radio"><input id="scaling-storage-resize-__tabbed_1_2" name="scaling-storage-resize-__tabbed_1" type="radio"><input id="scaling-storage-resize-__tabbed_1_3" name="scaling-storage-resize-__tabbed_1" type="radio"><input id="scaling-storage-resize-__tabbed_1_4" name="scaling-storage-resize-__tabbed_1" type="radio"><div class="tabbed-labels"><label for="scaling-storage-resize-__tabbed_1_1">Replica set</label><label for="scaling-storage-resize-__tabbed_1_2">Config server</label><label for="scaling-storage-resize-__tabbed_1_3"><code>mongos</code> logs</label><label for="scaling-storage-resize-__tabbed_1_4">Search</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">volumeSpec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">configsvrReplSet</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">volumeSpec</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>To change the default size for all replica sets and shards:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
+</code></pre></div>
+<p>To change the size of one replica set or shard that has its own size:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 </li>
 <li>
-<p>Apply the configuration:</p>
+<p>Apply the Custom Resource:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 </li>
 </ol>
-<p>When the Operator changes the storage size, it updates the Custom Resource status as follows:</p>
-<ul>
-<li>adds the <code>pvc-resize-in-progress</code> annotation. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.</li>
-<li>records the new size in the <code>currentSize</code> field</li>
-<li>updates the <code>resizeCount</code> field.</li>
-</ul>
-<p>Run the <code>kubectl get psmdb -o yaml -n &lt;namespace&gt;</code> to check the current cluster state.</p>
+<p>The Operator grows the PVCs in place and keeps the data on them. While the resize runs, the Custom Resource has the <code>pvc-resize-in-progress</code> annotation with the start time. The Operator removes it when the resize finishes.</p>
+<h3 id="scaling-storage-resize-check-the-result">Check the result<a class="headerlink" href="#scaling-storage-resize-check-the-result" title="Permanent link">¶</a></h3>
+<p>List the PVCs and their size:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+<p>To list the volumes of one type, add <code>-l app.kubernetes.io/component=mongos</code> or <code>-l app.kubernetes.io/component=search</code>.</p>
+<h3 id="scaling-storage-resize-if-you-set-a-smaller-size">If you set a smaller size<a class="headerlink" href="#scaling-storage-resize-if-you-set-a-smaller-size" title="Permanent link">¶</a></h3>
+<p>The Operator restores the current size in the Custom Resource and reports the <code>requested storage (&lt;new size&gt;) is less than actual storage (&lt;current size&gt;)</code> error. For search volumes, it saves the current size as the replica set’s own size in <code>replsets.&lt;replset-name&gt;.search.storage</code>.</p>
+<h2 id="scaling-storage-resize-resize-storage-automatically">Resize storage automatically<a class="headerlink" href="#scaling-storage-resize-resize-storage-automatically" title="Permanent link">¶</a></h2>
+<p>The Operator checks the usage of every volume in <a href="#scaling-storage-resize-volumes-and-their-size">Volumes and their size</a>. When a volume is fuller than the threshold you set, the Operator raises the size in the Custom Resource by a set step and grows the volume, until the size reaches the limit you set.</p>
+<h3 id="scaling-storage-resize-turn-on-automatic-resizing">Turn on automatic resizing<a class="headerlink" href="#scaling-storage-resize-turn-on-automatic-resizing" title="Permanent link">¶</a></h3>
+<ol>
+<li>
+<p>In the <code>deploy/cr.yaml</code> file, turn on volume expansion and automatic resizing, and make sure each volume has a size. This example covers all three volume types. Keep the parts for the volumes you have:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageScaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">autoscaling</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">triggerThresholdPercent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">      </span><span class="nt">growthStep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
+<span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
+<span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
+<span class="w">    </span><span class="nt">volumeSpec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3Gi</span>
+<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<span class="w">  </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5Gi</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>storageScaling.enableVolumeScaling</code></td>
+<td>Turns on volume expansion. Must be <code>true</code></td>
+</tr>
+<tr>
+<td><code>storageScaling.autoscaling.enabled</code></td>
+<td>Turns on automatic resizing</td>
+</tr>
+<tr>
+<td><code>storageScaling.autoscaling.triggerThresholdPercent</code></td>
+<td>Usage in percent that starts a resize, from 50 to 95</td>
+</tr>
+<tr>
+<td><code>storageScaling.autoscaling.growthStep</code></td>
+<td>How much to add in one resize. Default <code>2Gi</code></td>
+</tr>
+<tr>
+<td><code>storageScaling.autoscaling.maxSize</code></td>
+<td>The largest size the Operator resizes a volume to</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Apply the Custom Resource:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</code></pre></div>
+</li>
+</ol>
+<p>The settings apply to all volume types, but the Operator checks each volume on its own. A volume that crosses the threshold grows together with the volumes that share its size option, as shown in the next table. Volumes of other types keep their size. Choose the settings with every volume in mind. For example, a <code>growthStep</code> of <code>2Gi</code> grows a 1Gi <code>mongos</code> log volume to 3Gi in one step, and <code>maxSize</code> caps the log and search volumes too.</p>
+<p>If you use search, set <code>triggerThresholdPercent</code> below 90. Search becomes read-only at about 90% disk usage, so with a higher threshold it can stop accepting index updates before the Operator grows the volume.</p>
+<h3 id="scaling-storage-resize-how-the-operator-resizes-each-volume-type">How the Operator resizes each volume type<a class="headerlink" href="#scaling-storage-resize-how-the-operator-resizes-each-volume-type" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Volume</th>
+<th>Where the Operator measures the usage</th>
+<th>Where it saves the new size</th>
+<th>Which volumes grow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database data</td>
+<td><code>mongod</code> container, <code>/data/db</code></td>
+<td>The <code>volumeSpec</code> of the replica set or member type</td>
+<td>All volumes of the replica set</td>
+</tr>
+<tr>
+<td><code>mongos</code> logs</td>
+<td><code>mongos</code> container, <code>/data/db/logs</code></td>
+<td><code>sharding.mongos.logs.persistentVolumeClaim</code></td>
+<td>The log volumes of all <code>mongos</code> Pods</td>
+</tr>
+<tr>
+<td>Search indexes</td>
+<td><code>mongot</code> container, <code>/data/mongot</code></td>
+<td><code>replsets.&lt;replset-name&gt;.search.storage</code>. See <a href="#scaling-storage-resize-search-volumes">Search volumes</a></td>
+<td>The search volume of that replica set or shard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scaling-storage-resize-check-the-resize-status">Check the resize status<a class="headerlink" href="#scaling-storage-resize-check-the-resize-status" title="Permanent link">¶</a></h3>
+<p>The Operator reports each volume in <code>.status.storageAutoscaling</code> of the Custom Resource, under the PVC name:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>psmdb<span class="w"> </span>&lt;cluster-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
+</code></pre></div>
 <details class="example">
 <summary>Sample output</summary>
 <div class="no-copy highlight"><pre><span></span><code>storageAutoscaling:
@@ -23654,14 +23865,33 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
     resizeCount: 2
 </code></pre></div>
 </details>
-<p>The <code>storageAutoscaling</code> section appears under <code>.status</code> in the Custom Resource. It has an entry for each PVC with the following fields:</p>
-<ul>
-<li><code>currentSize</code> - the filesystem size of the volume, as reported by the <code>df</code> command in the database container</li>
-<li><code>lastResizeTime</code> - the time when the Operator last detected that the volume grew</li>
-<li><code>resizeCount</code> - how many times the volume grew</li>
-<li><code>lastError</code> - the error from the latest failed attempt to check or resize the volume. The Operator clears this field on the next successful usage check, so while the problem persists, the field can appear and disappear between reconciliation loops.</li>
-</ul>
-<p>The Operator resizes storage for the whole replica set, so <code>lastResizeTime</code> and <code>resizeCount</code> change for every PVC in that replica set, not only for the PVC that exceeded the threshold.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>currentSize</code></td>
+<td>The filesystem size of the volume, as <code>df</code> reports it in the container</td>
+</tr>
+<tr>
+<td><code>lastResizeTime</code></td>
+<td>When the Operator last saw the volume grow</td>
+</tr>
+<tr>
+<td><code>resizeCount</code></td>
+<td>How many times the volume grew</td>
+</tr>
+<tr>
+<td><code>lastError</code></td>
+<td>The error of the latest failed check or resize. The Operator clears it on the next successful check, so the field can appear and disappear while the problem lasts</td>
+</tr>
+</tbody>
+</table>
+<p>Because all volumes of a replica set grow together, <code>lastResizeTime</code> and <code>resizeCount</code> change for every volume of the replica set, not only for the one that crossed the threshold.</p>
 <details class="example">
 <summary>Sample output with an error</summary>
 <p>In this example, an admission policy in the Kubernetes cluster rejected the Operator’s request to increase the storage size:</p>
@@ -23675,197 +23905,59 @@ documentation  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" vie
 </code></pre></div>
 <p>The Operator also logs the same error with the <code>failed to check/resize PVC</code> message.</p>
 </details>
-<p>When the storage size reaches the limit, no further resizing is done and the Operator logs the <code>PVC already at maxSize</code> message. Reaching the limit is not an error, so the Operator doesn’t set the <code>lastError</code> field. You can either clean up the data or set a new limit based on your organization’s policies and requirements. For help with common issues, see <a href="#debug-storage">Troubleshooting storage </a>.</p>
-<h3 id="scaling-storage-resize-automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs<a class="headerlink" href="#scaling-storage-resize-automatic-resizing-of-mongos-log-pvcs" title="Permanent link">¶</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.24.0.md">1.24.0</a></p>
-</div>
-<p>The Operator also checks the usage of the PVCs that store <code>mongos</code> logs. These PVCs exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="#persistent-logging-for-mongos-pods">Persistent logging</a> for how to set it up. Without it, <code>mongos</code> logs are stored on an <code>emptyDir</code> volume, and automatic resizing has nothing to resize.</p>
-<p>Automatic resizing of <code>mongos</code> log PVCs follows the same rules as for other PVCs:</p>
-<ul>
-<li>it uses the same <code>storageScaling.autoscaling</code> settings: the  <code>triggerThresholdPercent</code>, <code>growthStep</code> and <code>maxSize</code> values apply to data volumes and log volumes. Choose these values with both in mind: for example, a <code>growthStep</code> of <code>2Gi</code> grows a 1Gi log volume to 3Gi in one step, and <code>maxSize</code> caps the log volume as well.</li>
-<li>it requires <code>storageScaling.enableVolumeScaling</code> and <code>storageScaling.autoscaling.enabled</code> set to <code>true</code></li>
-<li>it is disabled when you use an <a href="#scaling-storage-resize-storage-resizing-with-an-external-autoscaler">external autoscaler</a></li>
-<li>the Operator measures the usage in the <code>mongos</code> container, in the <code>/data/db/logs</code> directory</li>
-<li>the new size is written to the <code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code> option. This option is common for all <code>mongos</code> Pods, so when one log volume exceeds the threshold, the Operator resizes the log PVCs of all <code>mongos</code> Pods.</li>
-<li>the Operator reports the size in <code>.status.storageAutoscaling</code> under the PVC name, for example, <code>mongos-logs-my-cluster-name-mongos-0</code>.</li>
-</ul>
+<p>When a volume reaches <code>maxSize</code>, the Operator stops resizing it and logs <code>PVC already at maxSize</code>. This isn’t an error, so <code>lastError</code> stays empty. Free up space or raise the limit. For other problems, see <a href="#debug-storage">Troubleshooting storage</a>.</p>
+<h3 id="scaling-storage-resize-after-the-upgrade-to-1240">After the upgrade to 1.24.0<a class="headerlink" href="#scaling-storage-resize-after-the-upgrade-to-1240" title="Permanent link">¶</a></h3>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>After you upgrade the Operator to version 1.24.0, automatic resizing of <code>mongos</code> log PVCs starts right away for clusters that already have automatic resizing enabled and <code>mongos</code> log PVCs configured. If a log PVC is already above the threshold, the Operator starts to resize it as soon as the new Operator version runs. To keep the log volumes at their current size, review the <code>storageScaling.autoscaling</code> settings before the upgrade.</p>
+<p>Automatic resizing of <code>mongos</code> log and search PVCs is available starting with version 1.24.0. For clusters that already have automatic resizing enabled, it starts as follows:</p>
+<ul>
+<li><code>mongos</code> log PVCs: when you upgrade the Operator to version 1.24.0 and set <code>crVersion</code> to <code>1.24.0</code>.</li>
+<li>Search PVCs: right after you upgrade the Operator to version 1.24.0, even if <code>crVersion</code> still has an older value.</li>
+</ul>
+<p>If a PVC is already above the threshold, the Operator starts to resize it as soon as automatic resizing starts for it. To keep the volumes at their current size, review the <code>storageScaling.autoscaling</code> settings before you upgrade the Operator.</p>
 </div>
-<h2 id="scaling-storage-resize-storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability<a class="headerlink" href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability" title="Permanent link">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.16.0">1.16.0</a></p>
-</div>
-<p class="power-number">To enable storage resizing via volume expansion, do the following:</p>
+<h2 id="scaling-storage-resize-resize-storage-without-volume-expansion">Resize storage without volume expansion<a class="headerlink" href="#scaling-storage-resize-resize-storage-without-volume-expansion" title="Permanent link">¶</a></h2>
+<p>Use this procedure only for replicated database data volumes if your storage doesn’t support volume expansion or your Operator is older than 1.16.0. You recreate the volumes one Pod at a time, and each new member copies the data from the others. This way you can also reduce the size of database data volumes. Do not apply these steps to search or <code>mongos</code> log PVCs: search requires an index rebuild, and deleting a log PVC loses its stored logs.</p>
 <ol>
-<li>Set the <a href="#operator-storagescalingenablevolumescaling">storageScaling.enableVolumeScaling</a> Custom Resource option to <code>true</code> (it is turned off by default).</li>
 <li>
-<p>Specify new storage size for the  <code>replsets.&lt;NAME&gt;.volumeSpec.persistentVolumeClaim.resources.requests.storage</code>
-and/or <code>configsvrReplSet.volumeSpec.persistentVolumeClaim.resources.requests.storage</code>
-options in the Custom Resource. </p>
-<p>This is the example configuration of defining a new storage size in the <code>deploy/cr.yaml</code> file:</p>
+<p>Set the new size in the Custom Resource and apply it:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
-<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="w">  </span><span class="nt">replsets</span><span class="p">:</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumeSpec</span><span class="p p-Indicator">:</span>
-<span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="nt">configsvrReplSets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rs0</span>
 <span class="w">    </span><span class="nt">volumeSpec</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
+<span class="w">            </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new-size&gt;</span>
 </code></pre></div>
-</li>
-<li>
-<p>Apply changes as usual:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>cr.yaml
-</code></pre></div>
-</li>
-</ol>
-<p>The storage size change takes some time. When it starts, the Operator does the following:</p>
-<ul>
-<li>automatically adds the <code>pvc-resize-in-progress</code> annotation to the <code>PerconaServerMongoDB</code> Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running.</li>
-<li>records the new size in the <code>.status.storageAutoscaling.&lt;PVC_NAME&gt;.currentSize</code> field.</li>
-<li>updates the <code>.status.storageAutoscaling.&lt;PVC_NAME&gt;.resizeCount</code> field.</li>
-</ul>
-<p>After the resize finishes, the Operator deletes this annotation.</p>
-<h3 id="scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage<a class="headerlink" href="#scaling-storage-resize-resize-mongos-log-storage" title="Permanent link">¶</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Version added: <a href="#rn-kubernetes-operator-for-psmongodb-rn1.23.1">1.23.1</a></p>
-</div>
-<p>In a sharded cluster, you can also resize the PVCs that store <code>mongos</code> logs. Unlike replica set and config server PVCs, these PVCs are optional: they exist only if you configured the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection. See <a href="#persistent-logging-for-mongos-pods">Persistent logging</a> to learn how to configure them.</p>
-<p class="power-number">To resize the <code>mongos</code> log PVCs yourself, do the following:</p>
-<ol>
-<li>Make sure the <a href="#operator-storagescalingenablevolumescaling">storageScaling.enableVolumeScaling</a> Custom Resource option is set to <code>true</code>.</li>
-<li>
-<p>Specify the new storage size for the <code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code> option in the Custom Resource:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">storageScaling</span><span class="p p-Indicator">:</span>
-<span class="w">    </span><span class="nt">enableVolumeScaling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="nt">sharding</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">mongos</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">logs</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
-<span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;NEW STORAGE SIZE&gt;</span>
-</code></pre></div>
-</li>
-<li>
-<p>Apply the changes:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 </li>
-</ol>
-<p>The Operator resizes the existing <code>mongos</code> log PVCs in place. The logs stored on them are preserved. To check the new size, run:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>mongos<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
-</code></pre></div>
-<h2 id="scaling-storage-resize-manual-scaling-without-volume-expansion-capability">Manual scaling without Volume Expansion capability<a class="headerlink" href="#scaling-storage-resize-manual-scaling-without-volume-expansion-capability" title="Permanent link">¶</a></h2>
-<p>Manual scaling is the way to go if:</p>
-<ul>
-<li>your version of the Operator is older than 1.16.0,</li>
-<li>your volumes have a type that does not support Volume Expansion, or </li>
-<li>you do not rely on automated scaling.</li>
-</ul>
-<p>You will need to delete Pods and their persistent volumes one by one to resync 
-the data to the new volumes. <strong>This way you can also shrink the storage.</strong></p>
-<p class="power-number">Here’s how to resize the storage:</p>
-<ol>
 <li>
-<p>Update the Custom Resource with the new storage size by editing and applying
-    the <code>deploy/cr.yaml</code> file:</p>
-<div class="no-copy highlight"><pre><span></span><code>spec:
-  ...
-  replsets:
-    ...
-    volumeSpec:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: &lt;NEW STORAGE SIZE&gt;
+<p>Delete the StatefulSet but keep its Pods running. The Operator recreates the StatefulSet with the new size:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>sts<span class="w"> </span>&lt;statefulset-name&gt;<span class="w"> </span>--cascade<span class="o">=</span>orphan<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>get<span class="w"> </span>sts<span class="w"> </span>&lt;statefulset-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 </li>
 <li>
-<p>Apply the Custom Resource for the changes to come into effect:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
-</code></pre></div>
+<p>Optionally, add members to keep the cluster’s capacity while you replace volumes. For example, set <code>replsets.size</code> to 5 and apply the Custom Resource. The new Pods get volumes of the new size.</p>
 </li>
 <li>
-<p>Delete the StatefulSet with the <code>orphan</code> option</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>sts<span class="w"> </span>&lt;statefulset-name&gt;<span class="w"> </span>--cascade<span class="o">=</span>orphan
+<p>Replace the old volumes one Pod at a time. Delete the PVC and the Pod, then wait until the new member finishes the data sync before you move to the next Pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>&lt;pvc-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
-<p>The Pods will not go down and the Operator is going to recreate
-the StatefulSet:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>sts<span class="w"> </span>&lt;statefulset-name&gt;
-</code></pre></div>
-<details class="example">
-<summary>Expected output</summary>
-<div class="no-copy highlight"><pre><span></span><code>my-cluster-name-rs0       3/3     39s
-</code></pre></div>
-</details>
-</li>
-<li>
-<p>Scale up the cluster (Optional)</p>
-<p>Changing the storage size would require us to terminate the Pods, which 
-decreases the computational power of the cluster and might cause performance 
-issues. To improve performance during the operation we are going to 
-change the size of the cluster from 3 to 5 nodes:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">replsets</span><span class="p p-Indicator">:</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">size</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-</code></pre></div>
-<p>Apply the change:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
-</code></pre></div>
-<p>New Pods will already have the new storage size:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pvc
-</code></pre></div>
-<details class="example">
-<summary>Expected output</summary>
-<div class="no-copy highlight"><pre><span></span><code>NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-mongod-data-my-cluster-name-cfg-0   Bound    pvc-a2b37f4d-6f11-443c-8670-de82ce9fc335   10Gi       RWO            standard       110m
-mongod-data-my-cluster-name-cfg-1   Bound    pvc-ded949e5-0f93-4f57-ab2c-7c5fd9528fa0   10Gi       RWO            standard       109m
-mongod-data-my-cluster-name-cfg-2   Bound    pvc-f3a441dd-94b6-4dc0-b96c-58b7851dfaa0   10Gi       RWO            standard       108m
-mongod-data-my-cluster-name-rs0-0   Bound    pvc-b183c40b-c165-445a-aacd-9a34b8fff227   19Gi       RWO            standard       49m
-mongod-data-my-cluster-name-rs0-1   Bound    pvc-f186426b-cbbe-4c31-860e-97a4dfca3de0   19Gi       RWO            standard       47m
-mongod-data-my-cluster-name-rs0-2   Bound    pvc-6beb6ccd-8b3a-4580-b3ef-a2345a2c21d6   19Gi       RWO            standard       45m 
-</code></pre></div>
-</details>
-</li>
-<li>
-<p>Delete PVCs and Pods with the old storage size one by one. Wait for data to sync 
-    before you proceed to the next node.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>&lt;PVC<span class="w"> </span>NAME&gt;
-kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;POD<span class="w"> </span>NAME&gt;
-</code></pre></div>
-<p>The new PVC is going to be created along with the Pod.</p>
+<p>The Operator creates the Pod with a new PVC of the new size.</p>
 </li>
 </ol>
-<p>The storage size change takes some time. When it starts, the Operator automatically adds the <code>pvc-resize-in-progress</code> annotation to the <code>PerconaServerMongoDB</code> Custom Resource. The annotation contains the timestamp of the resize start and indicates that the resize operation is running. After the resize finishes, the Operator deletes this annotation.</p>
-<h2 id="scaling-storage-resize-storage-resizing-with-an-external-autoscaler">Storage resizing with an external autoscaler<a class="headerlink" href="#scaling-storage-resize-storage-resizing-with-an-external-autoscaler" title="Permanent link">¶</a></h2>
-<p>You can configure the Operator to use an external storage autoscaler instead of its own resizing logic. This ability may be useful for organizations needing centralized, advanced, or cross-application scaling policies.</p>
-<p>To use an external autoscaler, set the <code>spec.storageScaling.enableExternalAutoscaling</code> option to <code>true</code> in the Custom Resource manifest.</p>
+<h2 id="scaling-storage-resize-use-an-external-autoscaler">Use an external autoscaler<a class="headerlink" href="#scaling-storage-resize-use-an-external-autoscaler" title="Permanent link">¶</a></h2>
+<p>To resize volumes with your own autoscaler, set <code>storageScaling.enableExternalAutoscaling</code> to <code>true</code>. The Operator then stops its own automatic resizing. Don’t use both at the same time.</p>
 <h2 id="scaling-storage-resize-see-also">See also<a class="headerlink" href="#scaling-storage-resize-see-also" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="#scaling-about">Scaling and storage</a></li>
+<li><a href="#scaling-about">Scaling and storage</a> for an overview of the ways to scale a cluster</li>
+<li><a href="#debug-storage">Troubleshooting storage</a> if a volume doesn’t grow</li>
+<li><a href="#volume-attributes-class">Configure VolumeAttributesClass</a> to change IOPS or throughput of the volumes</li>
 <li><a href="#storage">Manage local storage</a></li>
-<li><a href="#volume-attributes-class">Configure VolumeAttributesClass</a></li>
-<li><a href="#debug-storage">Troubleshoot storage resizing</a></li>
 </ul></body></html></section><section class="print-page" id="storage" heading-number="9.4.2"><html><head>
         <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
@@ -24547,7 +24639,7 @@ vmagent-vm-k8s-stack-victoria-metrics-k8s-stack-55fd8fc4fbcxwhx   2/2     Runnin
 <p>To view the collected <code>mongos</code> logs, run:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>my-cluster-name-mongos-0<span class="w"> </span>-c<span class="w"> </span>logs
 </code></pre></div>
-<p>Starting with version 1.24.0, the Operator can grow the <code>mongos</code> log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See <a href="#scaling-storage-resize-automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs</a>. To resize them yourself, see <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage</a>.</p>
+<p>Starting with version 1.24.0, the Operator can grow the <code>mongos</code> log PVCs automatically when their usage reaches the threshold, using the same settings as for the data volumes. See <a href="#scaling-storage-resize-resize-storage-automatically">Resize storage automatically</a>. To resize them yourself, see <a href="#scaling-storage-resize-resize-storage-yourself">Resize storage yourself</a>.</p>
 <h2 id="persistent-logging-configure-log-collector">Configure log collector<a class="headerlink" href="#persistent-logging-configure-log-collector" title="Permanent link">¶</a></h2>
 <p>Cluster-level logging is enabled by default and is controlled with the <code>logcollector.enabled</code> key in the <code>deploy/cr.yaml</code> Custom Resource manifest.</p>
 <p>You can additionally configure Fluent Bit using the <code>logcollector.configuration</code> subsection in the <code>deploy/cr.yaml</code> Custom Resource manifest. This allows you to define custom filters or output plugins to suit your specific logging and monitoring needs.</p>
@@ -34414,10 +34506,21 @@ to apply image changes.</p>
 <p>Starting with version 1.24.0, the Operator grows the PVCs that store <code>mongos</code> logs together with the other PVCs. If a <code>mongos</code> log PVC stays at the same size, check the following:</p>
 <ul>
 <li>The <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. Without it, <code>mongos</code> logs are stored on an <code>emptyDir</code> volume and there is no PVC to grow. See <a href="#persistent-logging-for-mongos-pods">Persistent logging</a>.</li>
+<li>The Operator version and the cluster’s <code>crVersion</code> are both at least <code>1.24.0</code>.</li>
 <li><code>storageScaling.enableVolumeScaling</code> and <code>storageScaling.autoscaling.enabled</code> are <code>true</code>.</li>
 <li>The PVC didn’t reach <code>autoscaling.maxSize</code>. The same limit applies to data volumes and to <code>mongos</code> log volumes.</li>
-<li>The <code>lastError</code> field in <code>.status.storageAutoscaling</code> for the <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;N&gt;</code> PVC. See <a href="#scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing</a>.</li>
+<li>The <code>lastError</code> field in <code>.status.storageAutoscaling</code> for the <code>mongos-logs-&lt;cluster-name&gt;-mongos-&lt;N&gt;</code> PVC. See <a href="#scaling-storage-resize-check-the-resize-status">Check the resize status</a>.</li>
 </ul>
+<h2 id="debug-storage-search-pvc-does-not-grow-automatically">Search PVC does not grow automatically<a class="headerlink" href="#debug-storage-search-pvc-does-not-grow-automatically" title="Permanent link">¶</a></h2>
+<p>Starting with version 1.24.0, the Operator also grows the PVCs that store the search index data. If a search PVC stays at the same size, check the following:</p>
+<ul>
+<li><code>search.enabled</code> is <code>true</code> and the search storage uses a PVC.</li>
+<li><code>storageScaling.enableVolumeScaling</code> and <code>storageScaling.autoscaling.enabled</code> are <code>true</code>.</li>
+<li>The PVC didn’t reach <code>autoscaling.maxSize</code>. The same limit applies to all PVCs.</li>
+<li>The <code>mongot</code> container is running. The Operator measures the usage only in a running container.</li>
+<li>The <code>lastError</code> field in <code>.status.storageAutoscaling</code> for the <code>mongot-data-&lt;cluster-name&gt;-&lt;replset-name&gt;-search-0</code> PVC. See <a href="#scaling-storage-resize-resize-storage-automatically">Resize storage automatically</a>.</li>
+</ul>
+<p>If you changed the default <code>search.storage</code> size and a search PVC didn’t follow, check whether its replica set has its own <code>replsets.&lt;replset-name&gt;.search.storage</code> value. The Operator adds it during automatic resizing, and it replaces the default size for this replica set. See <a href="#scaling-storage-resize-search-volumes">Search volumes</a>.</p>
 <h2 id="debug-storage-pvc-resize-is-one-way">PVC resize is one-way<a class="headerlink" href="#debug-storage-pvc-resize-is-one-way" title="Permanent link">¶</a></h2>
 <p>PVC resizing in Kubernetes is one-way. You cannot shrink a PVC to roll back to the old size without recreating it. Recreating PVCs can cause data loss, so make sure you have a backup strategy in place. See <a href="#backups">Backup and restore</a>.</p>
 <h2 id="debug-storage-see-also">See also<a class="headerlink" href="#debug-storage-see-also" title="Permanent link">¶</a></h2>
@@ -34512,7 +34615,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-enablevolumeexpansion"><code>enableVolumeExpansion</code><a class="headerlink" href="#operator-enablevolumeexpansion" title="Permanent link">¶</a></h3>
-<p>Enables or disables <a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">storage scaling / volume expansion</a> with Volume Expansion capability.</p>
+<p>Enables or disables <a href="#scaling-storage-resize-resize-storage-yourself">volume expansion</a>. The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.</p>
 <table>
 <thead>
 <tr>
@@ -34564,7 +34667,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingenablevolumescaling"><code>storageScaling.enableVolumeScaling</code><a class="headerlink" href="#operator-storagescalingenablevolumescaling" title="Permanent link">¶</a></h3>
-<p>Enables or disables <a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">storage scaling / volume expansion</a> with Volume Expansion capability.</p>
+<p>Enables or disables <a href="#scaling-storage-resize-resize-storage-yourself">volume expansion</a>. The Operator needs it to resize the PVCs, both when you change the size and when it resizes them automatically.</p>
 <table>
 <thead>
 <tr>
@@ -34580,7 +34683,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingenableexternalautoscaling"><code>storageScaling.enableExternalAutoscaling</code><a class="headerlink" href="#operator-storagescalingenableexternalautoscaling" title="Permanent link">¶</a></h3>
-<p>Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in <a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">Storage resizing with Volume Expansion capability</a></p>
+<p>Enables or disables the use of external volume autoscaler. When disabled, the Operator uses its own expansion logic with Volume Expansion capability. Read more about it in <a href="#scaling-storage-resize-use-an-external-autoscaler">Use an external autoscaler</a></p>
 <table>
 <thead>
 <tr>
@@ -34596,8 +34699,8 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingautoscalingenabled"><code>storageScaling.autoscaling.enabled</code><a class="headerlink" href="#operator-storagescalingautoscalingenabled" title="Permanent link">¶</a></h3>
-<p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="#scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing</a>.</p>
-<p>Applies to replica set and config server PVCs and, starting with version 1.24.0, to the mongos log PVCs defined via <code>sharding.mongos.logs.persistentVolumeClaim</code>. All of them use the same <code>storageScaling.autoscaling</code> settings. See <a href="#scaling-storage-resize-automatic-resizing-of-mongos-log-pvcs">Automatic resizing of mongos log PVCs</a>.</p>
+<p>Enables or disables automatic storage resizing based on user-defined thresholds. Read more about this feature in <a href="#scaling-storage-resize-resize-storage-automatically">Resize storage automatically</a>.</p>
+<p>Applies to all PVCs that the Operator resizes: database data and, starting with version 1.24.0, <code>mongos</code> logs and search index data. All of them use the same <code>storageScaling.autoscaling</code> settings. See <a href="#scaling-storage-resize-volumes-and-their-size">Volumes and their size</a>.</p>
 <table>
 <thead>
 <tr>
@@ -34613,7 +34716,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingautoscalingtriggerthresholdpercent"><code>storageScaling.autoscaling.triggerThresholdPercent</code><a class="headerlink" href="#operator-storagescalingautoscalingtriggerthresholdpercent" title="Permanent link">¶</a></h3>
-<p>The percentage of the storage usage that triggers automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Minimum value is 50, maximum is 95.</p>
+<p>The percentage of the storage usage that triggers automatic resizing. It applies to all PVCs that the Operator resizes. Minimum value is 50, maximum is 95. If you use <a href="#search-overview">search</a>, set it below 90: Percona Search for MongoDB becomes read-only at about 90% disk usage.</p>
 <table>
 <thead>
 <tr>
@@ -34629,7 +34732,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingautoscalinggrowthstep"><code>storageScaling.autoscaling.growthStep</code><a class="headerlink" href="#operator-storagescalingautoscalinggrowthstep" title="Permanent link">¶</a></h3>
-<p>The amount to increase the storage during automatic resizing. It applies to data and, starting with version 1.24.0, to mongos log PVCs. Default value is 2Gi</p>
+<p>The amount to increase the storage during automatic resizing. It applies to all PVCs that the Operator resizes. Default value is 2Gi</p>
 <table>
 <thead>
 <tr>
@@ -34645,7 +34748,7 @@ to apply image changes.</p>
 </tbody>
 </table>
 <h3 id="operator-storagescalingautoscalingmaxsize"><code>storageScaling.autoscaling.maxSize</code><a class="headerlink" href="#operator-storagescalingautoscalingmaxsize" title="Permanent link">¶</a></h3>
-<p>The maximum size to which storage can be automatically resized. It applies to data and, starting with version 1.24.0, to mongos log PVCs.</p>
+<p>The maximum size to which storage can be automatically resized. It applies to all PVCs that the Operator resizes.</p>
 <table>
 <thead>
 <tr>
@@ -38320,7 +38423,7 @@ The value must be <code>1</code>. Has no effect unless
 <h3 id="operator-replsetssearchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>replsets.search.storage.persistentVolumeClaim.resources.requests.storage</code><a class="headerlink" href="#operator-replsetssearchstoragepersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
 <p>Per-replica-set override for the <code>mongot</code> PVC size. Fully replaces the
 cluster-wide <a href="#operator-searchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>search.storage</code></a>
-value for this replica set or shard.</p>
+value for this replica set or shard. Starting with version 1.24.0, the Operator sets this option when it <a href="#scaling-storage-resize-search-volumes">grows the search PVC automatically</a>.</p>
 <table>
 <thead>
 <tr>
@@ -39058,7 +39161,7 @@ compatibility, but every effective value must equal <code>1</code>.</p>
 </table>
 <h3 id="operator-searchstoragepersistentvolumeclaimresourcesrequestsstorage"><code>search.storage.persistentVolumeClaim.resources.requests.storage</code><a class="headerlink" href="#operator-searchstoragepersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
 <p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a>
-size for <code>mongot</code> index data. Each <code>mongot</code> pod needs its own PVC, separate from the database storage. Refer to <a href="#search-overview-availability-and-requirements">Requirements</a> for guidance on estimating storage size search indexes based on your data set size.</p>
+size for <code>mongot</code> index data. Each <code>mongot</code> pod needs its own PVC, separate from the database storage. Refer to <a href="#search-overview-availability-and-requirements">Requirements</a> for guidance on estimating storage size search indexes based on your data set size. Starting with version 1.24.0, you can <a href="#scaling-storage-resize-resize-storage-yourself">increase this size</a> on a running cluster.</p>
 <table>
 <thead>
 <tr>
@@ -41542,7 +41645,7 @@ options for Percona Server for MondoDB <a href="#sharding">sharding</a>.</p>
 </tbody>
 </table>
 <h3 id="operator-shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage"><code>sharding.mongos.logs.persistentVolumeClaim.resources.requests.storage</code><a class="headerlink" href="#operator-shardingmongoslogspersistentvolumeclaimresourcesrequestsstorage" title="Permanent link">¶</a></h3>
-<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> size for the PVC that stores mongos logs. Required when the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. The Operator creates one PVC of this size per mongos Pod. See <a href="#scaling-storage-resize-resize-mongos-log-storage">Resize mongos log storage</a> to change it.</p>
+<p>The <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Kubernetes Persistent Volume  <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2m6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.042-.018.75.75 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1"></path></svg></span></a> size for the PVC that stores mongos logs. Required when the <code>sharding.mongos.logs.persistentVolumeClaim</code> subsection is set. The Operator creates one PVC of this size per mongos Pod. See <a href="#scaling-storage-resize-resize-storage-yourself">Resize storage yourself</a> to change it.</p>
 <table>
 <thead>
 <tr>
@@ -45192,7 +45295,7 @@ TLS secret my-cluster-name-ssl is missing, certManagementPolicy is userProvidedO
 <li><code>status.backupVersion</code> / <code>status.backupImage</code> – Percona Backup for MongoDB (PBM) version and image. The Operator sets these fields when backups are enabled, after a ready Pod runs <code>spec.backup.image</code>. When you change the backup image, the Operator updates these fields after a Pod runs the new image. With <a href="#update-minor-automatic">automatic upgrades</a>, the Operator sets <code>status.backupVersion</code> to the target version as soon as it starts the upgrade. <code>status.backupImage</code> updates only after a Pod runs the new image, so check the Pod images to confirm the backup image change finished</li>
 <li><code>status.conditions</code> – detailed condition list with reason and message</li>
 <li><code>status.search</code> – vector search (<code>mongot</code>) readiness per replica set or shard. Available when search is enabled.</li>
-<li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the <code>mongos</code> log PVCs. See <a href="#scaling-storage-resize-automatic-storage-resizing">Automatic storage resizing</a> for more information about this feature.</li>
+<li><code>status.storageAutoscaling</code> – storage size, resize history, and the last error for each PVC. Available when automatic storage resizing is enabled. Starting with version 1.24.0, it also has entries for the <code>mongos</code> log PVCs and the search PVCs. See <a href="#scaling-storage-resize-check-the-resize-status">Check the resize status</a> for more information about this feature.</li>
 <li><code>status.vaultLastRequestedAt</code> – time of the last system user credential read from HashiCorp Vault. The Operator sets this field only when <a href="#operator-vaultrequestinterval"><code>spec.vault.requestInterval</code></a> is set.</li>
 </ul>
 <h3 id="cr-statuses-cluster-state-values">Cluster state values<a class="headerlink" href="#cr-statuses-cluster-state-values" title="Permanent link">¶</a></h3>
@@ -47512,7 +47615,7 @@ the following steps:</p>
 <td>1.13</td>
 </tr>
 <tr>
-<td><a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">Volume expansion</a></td>
+<td><a href="#scaling-storage-resize-resize-storage-yourself">Volume expansion</a></td>
 <td>1.19</td>
 </tr>
 <tr>
@@ -48542,7 +48645,7 @@ drain or another incident.</p>
 <span class="w">      </span><span class="nt">growthStep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
 <span class="w">      </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">"10Gi"</span>
 </code></pre></div>
-<p>Learn more about the workflow and troubleshooting tips in our <a href="#scaling-storage-resize-automatic-storage-resizing">documentation</a>.</p>
+<p>Learn more about the workflow and troubleshooting tips in our <a href="#scaling-storage-resize-resize-storage-automatically">documentation</a>.</p>
 <h3 id="rn-kubernetes-operator-for-psmongodb-rn1.22.0-cluster-readiness-now-reflects-pbm-state">Cluster readiness now reflects PBM state<a class="headerlink" href="#rn-kubernetes-operator-for-psmongodb-rn1.22.0-cluster-readiness-now-reflects-pbm-state" title="Permanent link">¶</a></h3>
 <p>The <code>PerconaServerMongoDB</code> Custom Resource status now includes a new <code>PBMReady</code> condition. It provides a clear, stable signal that PBM has finished processing all configured storages, so automation tools can reliably trigger backups and other operations.</p>
 <p>To check the status, use either the <code>kubectl describe psmdb &lt;cluster-name&gt;</code> or <code>kubectl get psmdb &lt;cluster-name&gt; -o yaml</code> command.</p>
@@ -50004,7 +50107,7 @@ You can find more about configuring such a multi-datacenter MongoDB cluster and 
 <h2 id="rn-kubernetes-operator-for-psmongodb-rn1.18.0-deprecation-rename-and-removal">Deprecation, Rename and Removal<a class="headerlink" href="#rn-kubernetes-operator-for-psmongodb-rn1.18.0-deprecation-rename-and-removal" title="Permanent link">¶</a></h2>
 <ul>
 <li>
-<p>The new <code>enableVolumeExpansion</code> Custom Resource option allows users to disable the <a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">automated storage scaling with Volume Expansion capability</a>. The default value of this option is <code>false</code>, which means that the automated scaling is turned off by default.</p>
+<p>The new <code>enableVolumeExpansion</code> Custom Resource option allows users to disable the <a href="#scaling-storage-resize-resize-storage-yourself">automated storage scaling with Volume Expansion capability</a>. The default value of this option is <code>false</code>, which means that the automated scaling is turned off by default.</p>
 </li>
 <li>
 <p>A number of Service exposure Custom Resource options in the <code>replsets</code>, <code>sharding.configsvrReplSet</code>, and <code>sharding.mongos</code> subsections were renamed to provide a unified experience with other Percona Operators:</p>
@@ -50228,7 +50331,7 @@ Operator also uses Percona Backup for MongoDB 2.4.1.</p>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1000">K8SPSMDB-1000</a>: Users who store backups on Azure Blob Storage can now use <a href="#operator-backupstoragesstorage-nameazureendpointurl">private endpoints</a></li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-1055">K8SPSMDB-1055</a>: The <code>kubectl get psmdb-backup</code> command now shows <a href="#backups-pitr-restore-choose-the-target-time">latest restorable time</a> to make it easier to pick a point-in-time recovery target</li>
 <li><a href="https://jira.percona.com/browse/K8SPSMDB-491">K8SPSMDB-491</a>: It is now possible to specify the <a href="#operator-tlsissuerconfname">existing cert-manager issuer</a> which should be used by the Operator</li>
-<li><a href="https://jira.percona.com/browse/K8SPSMDB-733">K8SPSMDB-733</a>: It is now possible to <a href="#scaling-storage-resize-storage-resizing-with-volume-expansion-capability">resize Persistent Volume Claims</a> by patching the PerconaServerMongoDB custom resource: change  <code>persistentVolumeClaim.resources.requests.storage</code> and let the Operator do the scaling</li>
+<li><a href="https://jira.percona.com/browse/K8SPSMDB-733">K8SPSMDB-733</a>: It is now possible to <a href="#scaling-storage-resize-resize-storage-yourself">resize Persistent Volume Claims</a> by patching the PerconaServerMongoDB custom resource: change  <code>persistentVolumeClaim.resources.requests.storage</code> and let the Operator do the scaling</li>
 </ul>
 <h2 id="rn-kubernetes-operator-for-psmongodb-rn1.16.0-improvements">Improvements<a class="headerlink" href="#rn-kubernetes-operator-for-psmongodb-rn1.16.0-improvements" title="Permanent link">¶</a></h2>
 <ul>

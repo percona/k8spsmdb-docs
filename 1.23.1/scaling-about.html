@@ -6910,7 +6910,7 @@ see <a href="storage.html">Manage local storage</a>.</p>
 <p>Volume expansion is controlled by the <code>storageScaling</code> section of the Custom Resource:</p>
 <ul>
 <li><code>storageScaling.autoscaling</code> - lets the Operator grow the volumes when their usage
-  crosses a threshold. It covers replica set, config server volumes and the volumes that store <code>mongos</code> logs. The Operator uses the same scaling settings for all of them. Automatic resizing of <code>mongos</code> logs is available starting with version 1.24.0.</li>
+  crosses a threshold. Autoscaling covers replica set and config server volumes. Starting with version 1.24.0, it also covers the volumes that store <code>mongos</code> logs and search index data when they are enabled. The Operator uses the same scaling settings for all of them. See <a href="scaling-storage-resize.html#volumes-and-their-size">Volumes and their size</a>.</li>
 <li><code>storageScaling.enableVolumeScaling</code> - lets the Operator resize PVCs when you change
   the size in the spec. When it is disabled, PVC sizes stay as they are even if the spec
   changes.</li>
@@ -6957,7 +6957,7 @@ expansion - check the PVC events.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 15:41:33 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:

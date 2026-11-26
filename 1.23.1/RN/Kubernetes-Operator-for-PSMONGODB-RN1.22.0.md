@@ -219,7 +219,7 @@ spec:
       maxSize: "10Gi"
 ```
 
-Learn more about the workflow and troubleshooting tips in our [documentation](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#automatic-storage-resizing).
+Learn more about the workflow and troubleshooting tips in our [documentation](https://docs.percona.com/percona-operator-for-mongodb/1.23.1/scaling-storage-resize.html#resize-storage-automatically).
 
 ### Cluster readiness now reflects PBM state
 

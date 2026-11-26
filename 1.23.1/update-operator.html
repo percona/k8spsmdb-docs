@@ -6796,6 +6796,14 @@ window.addEventListener('afterprint', (event) => {
 <p>Starting with version 1.24.0, the Operator and the backup agents connect to MongoDB with a dedicated <a href="TLS.html">PBM client certificate</a> instead of the external server certificate. Upgrading the Operator alone doesn’t change anything. The Operator creates the PBM certificate when you set <code>crVersion</code> to <code>1.24.0</code>, and the database Pods restart to mount it.</p>
 <p>If TLS and backups are enabled and you provide your own external certificate in <code>secrets.ssl</code>, create the PBM client Secret <strong>before</strong> you set <code>crVersion</code> to <code>1.24.0</code>. Otherwise the Operator stops reconciling the cluster. See <a href="tls-manual.html#generate-certificates">Generate TLS certificates manually</a> for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.</p>
 </li>
+<li>
+<p>Starting with version 1.24.0, automatic storage resizing also covers <code>mongos</code> log PVCs and search PVCs. For clusters that already have automatic resizing enabled:</p>
+<ul>
+<li><code>mongos</code> log PVCs start when you upgrade the Operator to version 1.24.0 and set <code>crVersion</code> to <code>1.24.0</code>.</li>
+<li>Search PVCs start right after you upgrade the Operator to version 1.24.0, even if <code>crVersion</code> still has an older value.</li>
+</ul>
+<p>If a PVC is already above the threshold, the Operator starts to resize it as soon as automatic resizing starts for it. Review the <code>storageScaling.autoscaling</code> settings before you upgrade the Operator. See <a href="scaling-storage-resize.html#after-the-upgrade-to-1240">After the upgrade to 1.24.0</a>.</p>
+</li>
 </ol>
 <h2 id="update-guides">Update guides<a data-markdown-ignore class="headerlink" href="#update-guides" title="Permanent link">¶</a></h2>
 <p><a class="md-button" href="update-crd-manual.html">Update manually</a>
@@ -6806,7 +6814,7 @@ window.addEventListener('afterprint', (event) => {
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 24, 2026 11:58:10 UTC">November 24, 2026</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 26, 2026 09:46:14 UTC">November 26, 2026</span>
       
         <br>
         Created:
