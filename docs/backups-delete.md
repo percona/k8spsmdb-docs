@@ -88,4 +88,4 @@ To find and remove these legacy backups:
 ## See also
 
 * [Disaster recovery and multi-site](replication.md)
-* [Data migration](clustersync.md)
+* [Migrate to the Operator](migration.md)

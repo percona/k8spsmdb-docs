@@ -120,7 +120,7 @@ The Operator connects to MongoDB with its own system users. Because the Kubernet
     * `my-cluster-name-ssl` for client connections and `my-cluster-name-ssl-internal` for connections between members. Both certificates need the `serverAuth` and `clientAuth` key usages, and must include the addresses of the Kubernetes members: their DNS names or IP addresses.
     * `my-cluster-name-pbm`, the client certificate that PBM uses. Sign it with the same CA and give it a subject that differs from the member certificates. The Operator needs it when you [turn on backups](#7-hand-the-replica-set-to-the-operator).
 
-    If you use the external IP addresses of the Services, you will know them only after you [deploy the target on Kubernetes](#3-deploy-the-kubernetes-members-in-unmanaged-mode). Create the member certificates with the Kubernetes Service names now, and add the IP addresses in [step 3.5](#3-deploy-the-kubernetes-members-in-unmanaged-mode).
+    If you use the external IP addresses of the Services, you will know them only after you [deploy the target on Kubernetes](#3-deploy-the-kubernetes-members-in-unmanaged-mode). Create the member certificates with the Kubernetes Service names now, and add the IP addresses in sub-step 5 of [step 3](#3-deploy-the-kubernetes-members-in-unmanaged-mode).
 
 ## 3. Deploy the Kubernetes members in unmanaged mode
 
@@ -132,7 +132,7 @@ The Operator connects to MongoDB with its own system users. Because the Kubernet
     * `spec.secrets.users` and `spec.secrets.keyFile`: the Secrets from step 2. Setting `keyFile` makes the members use keyfile internal authentication, like the source.
     * `spec.replsets[].name`: the source replica set name.
     * `spec.replsets[].expose`: a Service per Pod that the source can reach, for example `type: LoadBalancer`.
-    * `spec.replsets[].replsetOverrides`: the address of each Pod, a DNS name or the external IP address of its Service. The Operator uses these addresses in the replica set configuration after the handover, so they must be the addresses you add to the source. With DNS names, set them when you first apply the Custom Resource. With IP addresses, add them in [step 5](#3-deploy-the-kubernetes-members-in-unmanaged-mode) after the Services get their addresses.
+    * `spec.replsets[].replsetOverrides`: the address of each Pod, a DNS name or the external IP address of its Service. The Operator uses these addresses in the replica set configuration after the handover, so they must be the addresses you add to the source. With DNS names, set them when you first apply the Custom Resource. With IP addresses, add them in sub-step 5 of [this step](#3-deploy-the-kubernetes-members-in-unmanaged-mode) after the Services get their addresses.
     * `spec.sharding.enabled: false` and `spec.backup.enabled: false`.
     * TLS settings that match the source. Use the tab that matches your source.
 
@@ -286,7 +286,7 @@ rs.add({ host: "rs0-1.k8s.example.com:27017", priority: 0, votes: 0 })
 rs.add({ host: "rs0-2.k8s.example.com:27017", priority: 0, votes: 0 })
 ```
 
-`rs.add()` succeeds even if a member can't be reached. 
+`rs.add()` succeeds even if a member can't be reached. Check `rs.status()` before you continue.
 
 ## 5. Wait for the initial sync
 
@@ -313,34 +313,35 @@ A replica set must keep the majority of voting members reachable at every step. 
 
     Repeat for each Kubernetes member. With three source members and three Kubernetes members, the replica set briefly has six voting members, which stays within MongoDB's limit of seven.
 
+    You don't need to stop writes. Drivers that connect with a replica set connection string follow the primary when it moves.
+
     !!! warning
 
-        While the Kubernetes members vote, the replica set needs both sites for a majority. If the link between the sites fails, the source loses its primary and writes stop. Keep the time until sub-step 6 short. To recover, see [The replica set has no primary after the link between the sites fails](#the-replica-set-has-no-primary-after-the-link-between-the-sites-fails).
+        While the Kubernetes members vote, the replica set needs both sites for a majority. If the link between the sites fails, the source loses its primary and writes stop. Keep the time until you remove the source members short. To recover, see [The replica set has no primary after the link between the sites fails](#the-replica-set-has-no-primary-after-the-link-between-the-sites-fails).
 
-2. You don't need to stop writes. Drivers that connect with a replica set connection string follow the primary when it moves.
-
-3. Give the Kubernetes members a higher priority than the source members, in one configuration change:
+2. Give the Kubernetes members a priority higher than the highest source priority, in one configuration change. Check `rs.conf()` first. Replace `<priority>` with a number higher than the highest source priority. With the default priority of 1, use 2:
 
     ```javascript
     k8sMembers = ["rs0-0.k8s.example.com:27017", "rs0-1.k8s.example.com:27017", "rs0-2.k8s.example.com:27017"]
     cfg = rs.conf()
-    cfg.members.forEach(m => { if (k8sMembers.includes(m.host)) { m.priority = 2 } })
+    cfg.members.map(m => m.host + " " + m.priority)
+    cfg.members.forEach(m => { if (k8sMembers.includes(m.host)) { m.priority = <priority> } })
     rs.reconfig(cfg)
     ```
 
-4. Step down the source primary:
+3. Step down the source primary:
 
     ```javascript
     rs.stepDown()
     ```
 
-5. Check that a Kubernetes member is now the primary:
+4. Check that a Kubernetes member is now the primary:
 
     ```javascript
     rs.status().members.filter(m => m.stateStr === "PRIMARY").map(m => m.name)
     ```
 
-6. Remove the source members through the new primary in Kubernetes:
+5. Remove the source members through the new primary in Kubernetes:
 
     1. Get the `clusterAdmin` password from the users Secret:
 
@@ -373,7 +374,7 @@ A replica set must keep the majority of voting members reachable at every step. 
 
         The last command must list only the Kubernetes members, with one `PRIMARY`.
 
-7. Point your applications at the Kubernetes members. The connection strings are in [Connection secrets](connection-secrets.md#retrieve-a-connection-string). Update the connection strings before your applications next restart. A client that starts with the old connection string can't connect once the source members are removed.
+6. Point your applications at the Kubernetes members. The connection strings are in [Connection secrets](connection-secrets.md#retrieve-a-connection-string). Update the connection strings before your applications next restart. A client that starts with the old connection string can't connect once the source members are removed.
 
 ## 7. Hand the replica set to the Operator
 
@@ -439,12 +440,13 @@ After the primary moves to Kubernetes, but **before you remove the source member
       mongosh -u clusterAdmin -p "$CLUSTER_ADMIN_PASSWORD" --authenticationDatabase admin
     ```
     
-2. Give the source members a higher priority than the Kubernetes members:
+2. Give the source members a priority higher than the Kubernetes members. Check `rs.conf()` first. Replace `<priority>` with a number higher than the highest Kubernetes member priority. If those members are at 2, use 3:
 
     ```javascript
     k8sMembers = ["rs0-0.k8s.example.com:27017", "rs0-1.k8s.example.com:27017", "rs0-2.k8s.example.com:27017"]
     cfg = rs.conf()
-    cfg.members.forEach(m => { if (!k8sMembers.includes(m.host)) { m.priority = 3 } })
+    cfg.members.map(m => m.host + " " + m.priority)
+    cfg.members.forEach(m => { if (!k8sMembers.includes(m.host)) { m.priority = <priority> } })
     rs.reconfig(cfg)
     ```
 

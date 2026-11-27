@@ -39,7 +39,7 @@ This guide uses these example names. Replace them with yours:
 | ClusterSync Custom Resource | `my-migration` |
 | Secret with the source credentials | `my-migration-source` |
 
-This guide uses MongoDB and Percona Server for MongoDB 8.3.
+This guide uses MongoDB and Percona Server for MongoDB 8.0.
 
 ## 1. Deploy the target cluster
 
@@ -138,7 +138,7 @@ Before you start the migration, check from the target namespace that the source 
 
 ```bash
 kubectl run pcsm-check -n $NAMESPACE --rm -i --restart=Never --image=<psmdb-image> \
-  --env="PCSM_PASSWORD=$(kubectl get secret my-migration-source -n $NAMESPACE -o jsonpath='{.data.password}' | base64 -d)" \
+  --env="PCSM_PASSWORD=$(kubectl get secret my-migration-source -n $NAMESPACE -o jsonpath='{.data.password}' | base64 --decode)" \
   --command -- sh -c 'mongosh "<source-uri>" --username pcsmSource --password "$PCSM_PASSWORD" --quiet --eval "db.adminCommand({ ping: 1 })"'
 ```
 
@@ -242,7 +242,7 @@ kubectl get psmdb-clustersync my-migration -n $NAMESPACE
 `STATE` is `running` both while PCSM copies data and while it replicates changes. To see whether the initial copy is done, ask PCSM directly:
 
 ```bash
-kubectl exec -n $NAMESPACE $(kubectl get psmdb-clustersync my-migration -o jsonpath='{.status.activeInstance}') -- pcsm status
+kubectl exec -n $NAMESPACE $(kubectl get psmdb-clustersync my-migration -n $NAMESPACE -o jsonpath='{.status.activeInstance}') -- pcsm status
 ```
 
 The initial copy is done when `initialSync.completed` is `true`. After that, `LAG(S)` shows how far the target trails the source. The `info` field shows the current phase, for example `Replicating Changes`.
@@ -277,7 +277,7 @@ kubectl patch psmdb-clustersync my-migration -n $NAMESPACE --type=merge -p '{"sp
 
 Compare the source and the target before you decommission the source:
 
-1. On both clusters, list databases and collections, and compare document counts for your largest collections. The target also has the `percona_clustersync_mongodb` database, where PCSM keeps its state. You remove it when you [Clean up](#clean-up). Also see how you can [abandon migration](#abandon-the-migration)
+1. On both clusters, list databases and collections, and compare document counts for your largest collections. The target also has the `percona_clustersync_mongodb` database, where PCSM keeps its state. You remove it when you [Clean up](#clean-up). 
 
     ```javascript
     db.getMongo().getDBNames()
@@ -292,6 +292,8 @@ Compare the source and the target before you decommission the source:
     ```
 
 3. Connect as each application user and run a read your application depends on.
+
+Also see how you can [abandon migration](#abandon-the-migration).
 
 ## Clean up
 

@@ -31,15 +31,19 @@ flowchart TD
     C -- No --> D{Do the topology or<br/>the major version change?}
     D -- Yes --> P2[PCSM]
     D -- No --> E{Can source and Kubernetes<br/>members reach each other<br/>in both directions?}
-    E -- Yes --> EXT[PCSM or<br/>cross-site replication]
+    E -- Yes --> F{Do you want data to flow<br/>in both directions<br/>until cutover?}
+    F -- Yes --> CSR[Cross-site replication]
+    F -- No --> P4[PCSM]
     E -- No --> P3[PCSM]
 ```
 
+When the major version and the topology stay the same and the source and Kubernetes members can reach each other, use cross-site replication if you want data to flow in both directions until cutover. Use PCSM if you want to leave the source untouched.
+
 | Method | Downtime | Use it when | Key constraints | Procedure |
 |---|---|---|---|---|
-| [Percona ClusterSync for MongoDB (PCSM)](clustersync.md) | Cutover only | - The source is MongoDB Atlas M10 or higher, <br> - The topology or the major version changes, <br> - Only the target can reach the source | - Users and roles aren't copied. <br> - Some collection types aren't copied, see [PCSM limitations](clustersync.md#limitations). <br> - Backups on the target wait until the migration is finalized | [Migrate with PCSM](migration-pcsm.md) |
-| Cross-site replication | Cutover only | The source is a self-hosted replica set or sharded cluster that you control. Kubernetes members join it, take over as primary and the source members leave | - The same MongoDB major version, replica set names and internal authentication keyfile on both sides. <br> - Every member reaches every other member in both directions. <br> - Not for MongoDB Atlas | [Migrate with cross-site replication](migration-replication.md) |
-| Backup and restore | With PBM and point-in-time recovery, from the cutover until the restore finishes. With `mongodump`, from the dump until the restore finishes | There's no network path between the sites, a maintenance window is acceptable, or the source is MongoDB Atlas M0 or Flex | - The target runs the same major version as the source. <br> - From MongoDB Atlas, you recreate users and roles. <br> - Physical and incremental backups need a Percona Server for MongoDB source and a target without data-at-rest encryption | [Migrate with backup and restore](backups-move-from-external-db.md) |
+| [Percona ClusterSync for MongoDB (PCSM)](clustersync.md) | Cutover only | - The source is MongoDB Atlas M10 or higher, <br> - The topology or the major version changes, <br> - Only the target can reach the source, <br> - The major version and the topology stay the same, and you want to leave the source untouched | - Users and roles aren't copied. <br> - Some collection types aren't copied, see [PCSM limitations](clustersync.md#limitations). <br> - Backups on the target wait until the migration is finalized | [Migrate with PCSM](migration-pcsm.md) |
+| Cross-site replication | Cutover only | The major version and the topology stay the same, and you want data to flow in both directions until cutover. The source is a self-hosted replica set or sharded cluster that you control. Kubernetes members join it, take over as primary, and the source members leave | - The same MongoDB major version, replica set names and internal authentication keyfile on both sides. <br> - Every member reaches every other member in both directions. <br> - Not for MongoDB Atlas | [Migrate with cross-site replication](migration-replication.md) |
+| Backup and restore | With PBM and point-in-time recovery, from the cutover until the restore finishes. With `mongodump`, from the start of the dump until the restore finishes | There's no network path between the sites, a maintenance window is acceptable, or the source is MongoDB Atlas M0 or Flex | - The target runs the same major version as the source. <br> - From MongoDB Atlas, you recreate users and roles. <br> - Physical and incremental backups need a Percona Server for MongoDB source and a target without data-at-rest encryption | [Migrate with backup and restore](backups-move-from-external-db.md) |
 
 ## Before you start
 

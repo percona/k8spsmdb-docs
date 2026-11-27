@@ -56,7 +56,7 @@ A PBM restore replaces the users and roles on the target with the ones in the ba
     done
     ```
 
-2. Connect to the source primary as a user that can create users and roles, and create them with these passwords. Skip `pbmAnyAction` if your PBM setup already created it:
+2. Connect to the source primary as a user that can create users and roles, and create them with these passwords. Skip `pbmAnyAction` if your PBM setup already created it. Skip a user that already exists: for example a `backup` user from an earlier PBM setup. `createUser` fails for an existing user. If you skip a user, set its password to the one from the target Secret with `db.changeUserPassword("<user>", "<password>")`:
 
     ```javascript
     use admin
