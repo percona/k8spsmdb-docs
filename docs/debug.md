@@ -127,6 +127,7 @@ Find the symptom, check the place in the second column, and follow the link for 
 | A storage size change does nothing | The storage size in the Custom Resource compared with the PVC size, PVC events | **User**, if `storageScaling.enableVolumeScaling` is off. **Kubernetes** or the CSI driver, for resize errors in the PVC events | See [Resize storage](scaling-storage-resize.md) and [Troubleshooting storage](debug-storage.md) |
 | TLS errors after you replaced a certificate | The `ca.crt` keys of the TLS Secrets | **User**: the CA changed in one step | See [Update certificates](tls-update.md) |
 | TLS handshake errors, and the certificates are past their expiry date | The certificate dates. See [Check your certificates for expiration](tls-update.md#check-your-certificates-for-expiration) | **User**, for certificates you manage. cert-manager, if it failed to renew them | See [Update certificates with downtime](tls-update.md#update-certificates-with-downtime) |
+| The cluster is in `error` after cert-manager was uninstalled | `status.message` mentions `issuers.cert-manager.io` | **User**: cert-manager was removed while it managed the certificates | See [The cluster is in `error` after cert-manager was uninstalled](troubleshoot-operator.md#the-cluster-is-in-error-after-cert-manager-was-uninstalled) |
 
 ## Connect to a member
 

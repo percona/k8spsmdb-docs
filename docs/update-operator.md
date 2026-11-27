@@ -89,7 +89,8 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 
     If TLS and backups are enabled and you provide your own external certificate in `secrets.ssl`, create the PBM client Secret **before** you set `crVersion` to `1.24.0`. Otherwise the Operator stops reconciling the cluster. See [Generate TLS certificates manually](tls-manual.md#generate-certificates) for how to create it. If the Operator or cert-manager manages your certificates, the Operator creates the PBM certificate for you.
 
-9. Starting with version 1.24.0, automatic storage resizing also covers `mongos` log PVCs and search PVCs. For clusters that already have automatic resizing enabled:
+9. Starting with version 1.24.0, the Operator decides whether cert-manager manages a cluster's certificates from the labels on the TLS Secrets. It no longer checks the cert-manager installation on every reconcile. This applies right after the Operator upgrade. If you uninstall cert-manager while it still manages the certificates, the cluster goes into the `error` state, and the Operator stops applying changes to it. Earlier versions switched to certificates that the Operator generates. To stop using cert-manager, follow [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md).
+10. Starting with version 1.24.0, automatic storage resizing also covers `mongos` log PVCs and search PVCs. For clusters that already have automatic resizing enabled:
 
     * `mongos` log PVCs start when you upgrade the Operator to version 1.24.0 and set `crVersion` to `1.24.0`.
     * Search PVCs start right after you upgrade the Operator to version 1.24.0, even if `crVersion` still has an older value.

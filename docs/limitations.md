@@ -50,6 +50,10 @@ See [Limitations](search-overview.md#limitations) in the search overview.
 
 --8<-- "clustersync.md:pcsmlimitations"
 
+## Transport encryption
+
+Before you uninstall cert-manager, set `tls.certManagementPolicy` to `userProvidedOnly` on every cluster whose TLS certificates cert-manager issued. cert-manager is cluster-wide, so removing it first puts each of these clusters into the `error` state in every namespace. The Operator stops applying changes to them, though the database Pods keep running. Clusters that use your own certificates, or certificates that the Operator generated without cert-manager, aren't affected. See [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md) for the safe order, and [The cluster is in `error` after cert-manager was uninstalled](troubleshoot-operator.md#the-cluster-is-in-error-after-cert-manager-was-uninstalled) to recover.
+
 ## Next steps
 
 [Get started](quickstart.md){.md-button}

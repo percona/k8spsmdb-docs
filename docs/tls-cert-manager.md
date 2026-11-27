@@ -15,6 +15,12 @@ of TLS certificates. It is community-driven and open source.
 
 When the Operator creates a database cluster, it checks if the [cert-manager is installed](#install-the-cert-manager) and if you haven't provided custom TLS secrets. If these conditions are met, the Operator creates the self-signed `Issuer` or `ClusterIssuer` resource within the cert-manager and requests a certificate from it. The cert-manager generates certificates and stores them in Kubernetes Secrets. The Operator uses these Secrets for TLS in the cluster. The cert-manager manages the certificate lifecycle. 
 
+Starting with version 1.24.0, the Operator checks for cert-manager only when the cluster's TLS Secrets don't exist yet. When both `<cluster-name>-ssl` and `<cluster-name>-ssl-internal` exist, the Operator decides from the cert-manager label on these Secrets whether cert-manager manages them. As a result:
+
+* If one of the Secrets is missing, the Operator checks for cert-manager again, and cert-manager issues the missing certificate.
+* Installing cert-manager later doesn't move an existing cluster with certificates that the Operator generated to cert-manager.
+* Uninstalling cert-manager while it still manages a cluster's certificates puts the cluster into the `error` state. Before you uninstall it, see [Uninstall cert-manager](#uninstall-cert-manager).
+
 You can use cert-manager in two ways:
 
 * **Operator-managed issuers (default)** — By default, the Operator creates a Kubernetes `Issuer` resource, which is namespace-scoped, along with a local self-signed Certificate Authority (CA) in the same database namespace. The `Issuer` is used for clusters that are deployed within a single namespace and handles certificate generation for that specific namespace.
@@ -294,3 +300,11 @@ issuer does not exist or is not ready - check `kubectl describe certificate` for
 The cluster itself stays in `initializing` until all of these Secrets exist, so a cluster that never
 reaches `ready` after enabling cert-manager is nearly always an issuance problem, not a
 database problem.
+
+## Uninstall cert-manager
+
+cert-manager is installed once for the Kubernetes cluster. Uninstalling it affects every Percona Server for MongoDB cluster that uses cert-manager for TLS, in every namespace. It also affects any other application in this Kubernetes cluster that uses cert-manager.
+
+Set `tls.certManagementPolicy` to `userProvidedOnly` on every such cluster before you uninstall cert-manager. The certificates stay in place, and you renew them yourself. See [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md).
+
+If you already uninstalled cert-manager and a cluster is in the `error` state, see [The cluster is in `error` after cert-manager was uninstalled](troubleshoot-operator.md#the-cluster-is-in-error-after-cert-manager-was-uninstalled).

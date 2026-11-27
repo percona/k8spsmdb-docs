@@ -161,6 +161,55 @@ kubectl apply --server-side -f deploy/bundle.yaml -n <namespace>
 
 **Fix:** Upgrade the CustomResourceDefinitions to the Operator's version before you use new options. See [Upgrade the Operator and CRD](update-operator.md).
 
+## The cluster is in `error` after cert-manager was uninstalled
+
+**Symptom:** after cert-manager was uninstalled, the cluster status is `error`, and the Operator stops applying changes to the cluster. The database Pods keep running. `status.message` contains:
+
+``` {.text .no-copy}
+create ssl by cert-manager: ... the server could not find the requested resource (post issuers.cert-manager.io). Please create your TLS secret <cluster-name>-ssl manually or setup cert-manager correctly
+```
+
+The `TLSSecretsReady` condition stays `True`, so check `status.state` and `status.message`.
+
+**Cause:** cert-manager issued the cluster's TLS certificates, and `tls.certManagementPolicy` was `auto` when cert-manager was uninstalled. Starting with version 1.24.0, the Operator reads the cert-manager label on the TLS Secrets and keeps trying to update the certificates through cert-manager. Earlier versions switched to certificates the Operator generates.
+
+**Fix:** let the Operator generate new certificates under a new certificate authority (CA). All database Pods restart at once, so the database is unavailable for a few minutes. Clients need the new CA and client certificates afterwards.
+{.power-number}
+
+1. Delete the TLS Secrets, including the CA Secret that cert-manager created. The Operator can't reuse that CA Secret. Skip `<cluster-name>-pbm` if backups are disabled. If `spec.secrets.sslPBM` is set, replace `<cluster-name>-pbm` in the command with that Secret name. If the cluster used an Operator-managed `ClusterIssuer`, the CA Secret was in the cert-manager namespace and is already gone, so `<cluster-name>-ca-cert` doesn't exist:
+
+    ```bash
+    kubectl delete secret <cluster-name>-ssl <cluster-name>-ssl-internal <cluster-name>-ca-cert <cluster-name>-pbm -n <namespace> --ignore-not-found
+    ```
+
+2. Make the Operator reconcile the cluster right away:
+
+    ```bash
+    kubectl annotate psmdb <cluster-name> -n <namespace> percona.com/reconcile-trigger="$(date +%s)" --overwrite
+    ```
+
+3. Wait until the Operator creates new Secrets:
+
+    ```bash
+    kubectl get secret <cluster-name>-ssl <cluster-name>-ssl-internal <cluster-name>-ca-cert -n <namespace>
+    ```
+
+4. Delete all database Pods at once. A rolling restart can't work across a CA change, because the old Pods don't trust the new certificates:
+
+    ```bash
+    kubectl delete pod -n <namespace> -l app.kubernetes.io/instance=<cluster-name>,app.kubernetes.io/managed-by=percona-server-mongodb-operator
+    ```
+
+5. Wait until the cluster is `ready`:
+
+    ```bash
+    kubectl get psmdb <cluster-name> -n <namespace> -o jsonpath='{.status.state}'
+    ```
+
+6. Give clients the new CA and new client certificates. See [Connect with a client certificate](TLS.md#connect-with-a-client-certificate).
+
+To avoid this state, follow [Migrate from cert-manager to custom TLS certificates](tls-migrate-from-cert-manager.md) before you uninstall cert-manager.
+
 ## Cluster stays in `initializing`
 
 The cluster reports `initializing` while any of the conditions in [What `ready` means](cr-statuses.md#what-ready-means) is not met. First find the affected component. Compare `ready` with `size` for each replica set and for `mongos`:
