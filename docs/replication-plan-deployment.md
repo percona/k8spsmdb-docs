@@ -1,5 +1,7 @@
 # Plan your multi-cluster or multi-region deployment
 
+This page helps you plan a deployment where the Main and Replica sites stay connected, for example for disaster recovery. To move an existing deployment into the Operator for good, see [Migrate with cross-site replication](migration-replication.md).
+
 ## Requirements
 
 Regardless of topology, successful deployments share several technical requirements:

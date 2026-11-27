@@ -27,7 +27,7 @@ the following:
 * Deploys the PCSM Deployment
 * Provisions a sync user on the target cluster
 * Constructs MongoDB connection URIs to both source and target
-clusters.
+clusters. See [How PCSM connects to the source](#how-pcsm-connects-to-the-source).
 * Starts the replication: first it does the initial sync and
 then replicates the changes from source to target in real time
 * Monitors the replication mode changes and pauses, resumes or
@@ -53,6 +53,15 @@ Components of this architecture are:
 * **Target cluster** – The cluster you replicate data to. It is managed by the Operator. The Operator creates the sync user and constructs the connection string automatically based on the cluster topology.
 
 * **PCSM Deployment** – One or more PCSM Pods managed by the Operator. After the initial clone, PCSM saves checkpoints, and the Operator resumes replication from the last checkpoint after a recoverable failure. The initial clone can't resume: if it's interrupted, start a new sync. See [Troubleshooting](clustersync-setup.md#troubleshooting).
+
+### How PCSM connects to the source
+
+The Operator runs PCSM as the `<clustersync-name>-pcsm` Deployment in the namespace of the target cluster. It builds the source connection string from `spec.source.uri` and the user name and password in the Secret you name in `spec.source.credentialsSecret`. It passes the result to PCSM through the `<clustersync-name>-pcsm-secret` Secret. Options in the connection string, such as `replicaSet`, `tls` or `authSource`, reach PCSM unchanged. For the target, the Operator creates a sync user and connects PCSM to it for you.
+
+PCSM opens every connection from its Pod: to the source and to the target. The source never connects to Kubernetes. What you provide:
+
+* A user on the source with the roles PCSM needs.
+* A network path from the Kubernetes nodes to the source, allowed by every firewall or access list on the way.
 
 ## TLS connections
 
@@ -174,3 +183,7 @@ Notable constraints:
 ## Next steps
 
 [Set up and use PCSM](clustersync-setup.md){.md-button}
+
+## See also
+
+* [Migrate with PCSM](migration-pcsm.md) to move a production deployment into the Operator with PCSM
