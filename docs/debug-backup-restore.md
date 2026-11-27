@@ -130,6 +130,23 @@ Starting with version 1.24.0, the backup agent checks the MongoDB server certifi
 
 You can also run PBM diagnostics inside the container. See [Exec into the container](debug-shell.md) and the [PBM troubleshooting guide :octicons-link-external-16:](https://docs.percona.com/percona-backup-mongodb/troubleshoot/troubleshooting.html).
 
+### Backups or restores fail with an access error with temporary S3 credentials
+
+**Symptom:** backups or restores to Amazon S3 or MinIO fail with HTTP status 403 or an expired token error, although the IAM policy allows access to the bucket. The Secret holds temporary credentials, for example from AWS Security Token Service.
+
+**Cause:** the Secret has no `AWS_SESSION_TOKEN` key, the credentials have expired, or the Operator version is earlier than 1.24.0 and doesn't pass the token to PBM.
+
+**Fix:**
+
+1. Check that the Secret has the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN` keys. The command lists the keys without their values:
+
+    ```bash
+    kubectl describe secret <secret-name> -n $NAMESPACE
+    ```
+
+2. Request new credentials and update the Secret. See [Use temporary credentials](backups-storage-s3.md#use-temporary-credentials) for how the Operator applies them.
+3. If the Operator version is earlier than 1.24.0, [upgrade the Operator](update-operator.md).
+
 ## Restores
 
 ### Check restore status

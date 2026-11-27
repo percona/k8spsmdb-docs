@@ -22,7 +22,7 @@ To encrypt backups at rest on S3, see [Enable server-side encryption for backups
 
 You can use one of the following options to authenticate to S3:
    
-* **S3 access keys**. Store your AWS S3 access key and secret key in a Kubernetes Secret and reference it in your cluster configuration. This method **works on any Kubernetes platform** and requires that you manage the credentials yourself.
+* **S3 access keys**. Store your AWS S3 access key and secret key in a Kubernetes Secret and reference it in your cluster configuration. This method **works on any Kubernetes platform** and requires that you manage the credentials yourself. Starting with version 1.24.0, you can also use [temporary credentials with a session token](#use-temporary-credentials).
 * **IAM role for service accounts (IRSA)**. Assign an IAM role to the Kubernetes Service Account used by the Operator. With IRSA, you don’t need to manage static secrets since AWS automatically provides temporary credentials to the Pod, following best practices for security and rotation. This is the recommended approach on Amazon Elastic Kubernetes Service (EKS), because you can map S3 permissions to specific Kubernetes service accounts instead of sharing them across all pods on a node.
 * **IAM instance profile**. Attach an IAM role with S3 permissions to your EC2 worker nodes. Pods that run backup agents obtain credentials through the instance metadata service, so you don't need to manage static secrets. Use this method when your cluster runs on EC2 instances and IRSA is not configured. All pods on the same node share the node's permissions.
 
@@ -123,6 +123,36 @@ Follow these steps to authenticate using an AWS S3 access key and secret key. Th
     ```bash
     kubectl apply -f deploy/cr.yaml -n $NAMESPACE
     ```
+
+### Use temporary credentials
+
+!!! note "Version added: [1.24.0](RN/Kubernetes-Operator-for-PSMONGODB-RN1.24.0.md)"
+
+Temporary credentials from AWS Security Token Service (STS) include a session token. Examples are credentials obtained with `aws sts assume-role` or provided through AWS IAM Identity Center. Add the session to the Secret as the `AWS_SESSION_TOKEN` key, next to the access key and the secret key:
+
+```yaml title="deploy/backup-s3.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-cluster-name-backup-s3
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: <access-key-id>
+  AWS_SECRET_ACCESS_KEY: <secret-access-key>
+  AWS_SESSION_TOKEN: <session-token>
+```
+
+The Operator passes the token to Percona Backup for MongoDB together with the keys.
+
+Temporary credentials expire, so you must keep them valid:
+
+* Replace the values in the Secret before the credentials expire. Automate this, for example with a job that requests new credentials and updates the Secret.
+* With `crVersion` 1.23.0 or later, the Operator notices the changed Secret within one reconciliation interval and applies the new credentials. With an earlier `crVersion`, it doesn't detect the change.
+* Request credentials that stay valid until running backups and restores finish.
+
+On Amazon EKS, consider [IRSA](#authenticate-with-irsa) instead. With IRSA, AWS refreshes the credentials for you.
+
+If backups or restores fail with an access error, see [Troubleshoot backups and restores](debug-backup-restore.md#backups-or-restores-fail-with-an-access-error-with-temporary-s3-credentials).
 
 <a name="automate-access-to-amazon-s3-using-irsa"></a>
 
