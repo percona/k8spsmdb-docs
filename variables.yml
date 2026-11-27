@@ -7,6 +7,13 @@ clusterName: 'my-cluster-name'
 release: '1.23.1'
 apiversion: '1'
 
+# Helm chart versions that install the Operator release
+# Update at each release: check the APP VERSION in the Percona Helm repository
+
+crdchart: '1.23.1'
+operatorchart: '1.23.2'
+dbchart: '1.23.4'
+
 # Percona Software for MongoDB images
 
 mongodb83recommended: '8.3.13-4'
