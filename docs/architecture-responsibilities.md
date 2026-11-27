@@ -27,7 +27,7 @@ The table lists failures from the smallest to the largest scope first, then chan
 | Someone edits an object the Operator manages | **The Operator.** It reverts the fields it manages | [Change the cluster through the Custom Resource](#change-the-cluster-through-the-custom-resource) |
 | A scheduled backup is due | **The Operator.** It creates the backup object, and a PBM agent makes the backup | [Scheduled backups](architecture-workflows.md#scheduled-backups) |
 | A TLS certificate gets close to its expiry date | **cert-manager, or you.** cert-manager renews the certificates it issued. You renew the certificates you supplied. Operator-generated certificates are valid until the year 9999 | [Manage certificates](operator-boundaries.md#manage-certificates) |
-| A disk fills up | **You, or the Operator.** You resize the storage. With storage autoscaling on, the Operator grows the volume | [Resize storage](scaling-storage-resize.md#automatic-storage-resizing) |
+| A disk fills up | **You, or the Operator.** You resize the storage. With storage autoscaling on, the Operator grows the volume | [Resize storage](scaling-storage-resize.md#resize-storage-automatically) |
 
 When something fails and you don't know which layer to start with, see [Which layer is it?](debug.md#which-layer-is-it) in Initial troubleshooting.
 

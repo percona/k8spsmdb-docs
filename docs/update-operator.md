@@ -96,6 +96,8 @@ This page covers an upgrade to a new Operator version. To stay on your current v
 
     If a PVC is already above the threshold, the Operator starts to resize it as soon as automatic resizing starts for it. Review the `storageScaling.autoscaling` settings before you upgrade the Operator. See [After the upgrade to 1.24.0](scaling-storage-resize.md#after-the-upgrade-to-1240).
 
+10. Starting with version 1.24.0, the Operator can [shrink storage](scaling-storage-resize.md#shrink-storage). Shrinking is turned off by default, so the upgrade doesn't change the volumes. If you manage the cluster with Argo CD or another GitOps tool and use automatic resizing, the storage size in the Custom Resource can be smaller than the actual PVC size. Turning on shrinking then shrinks the volumes to the size in the Custom Resource. Before you turn it on, configure Argo CD as described in [Use automatic resizing with Argo CD](scaling-storage-resize.md#use-automatic-resizing-with-argo-cd) and check that the sizes match.
+
 ## Update guides
 
 [Update manually](update-crd-manual.md){.md-button}
